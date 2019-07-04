@@ -2,7 +2,7 @@
 
 var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
 
-var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/combos_combo.xml";
+var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
 
 var _groupedCombos;
 
@@ -67,7 +67,7 @@ function groupCombos() {
   _groupedCombos = {};
 
   // group by category
-  $.Each(CombosCollection.combos, function(combo, _name) {
+  $.Each(CombosCollection.combos, function (combo, _name) {
     if (!_groupedCombos[combo.category]) {
       _groupedCombos[combo.category] = [];
     }
@@ -76,8 +76,8 @@ function groupCombos() {
   });
 
   // sort each group by (hero_level, name)
-  $.Each(_groupedCombos, function(group, _category) {
-    group.sort(function(left, right) {
+  $.Each(_groupedCombos, function (group, _category) {
+    group.sort(function (left, right) {
       if (left.hero_level === right.hero_level) {
         return StringLexicalCompare(left.name, right.name);
       }
@@ -92,14 +92,14 @@ function renderCombos() {
 
   _combosContainer.RemoveAndDeleteChildren();
 
-  $.Each(PICKER_COLUMNS, function(category) {
+  $.Each(PICKER_COLUMNS, function (category) {
     var group = _groupedCombos[category];
 
     if (!group) { return; }
 
     var columnPanel = createCombosColumnPanel(category);
 
-    $.Each(group, function(combo) {
+    $.Each(group, function (combo) {
       createComboPanel(columnPanel, combo);
     });
   });
@@ -150,7 +150,7 @@ function Refresh() {
   CombosCollection.Reload();
 }
 
-(function() {
+(function () {
   _slideout = $("#CombosSlideout");
   _combosContainer = $("#CombosContainer");
 

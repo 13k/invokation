@@ -4,14 +4,14 @@
     <include src="file://{resources}/scripts/internal/context_data.js" />
     <include src="file://{resources}/scripts/internal/context_logging.js" />
     <include src="file://{resources}/scripts/internal/custom_events.js" />
-    <include src="file://{resources}/scripts/custom_game/combos_combo.js" />
+    <include src="file://{resources}/scripts/custom_game/picker_combo.js" />
   </scripts>
 
   <styles>
     <include src="s2r://panorama/styles/dotastyles.vcss_c" />
     <include src="file://{resources}/styles/shared/panelstyles.css" />
     <include src="file://{resources}/styles/shared/colors.css" />
-    <include src="file://{resources}/styles/custom_game/combos_combo.css" />
+    <include src="file://{resources}/styles/custom_game/picker_combo.css" />
   </styles>
 
   <Panel class="HeroCombo">

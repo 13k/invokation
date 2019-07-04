@@ -9,7 +9,7 @@
   <Panel>
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combat_log.xml" />
-    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combos.xml" />
+    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/picker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combo_details.xml" />
   </Panel>
 </root>
