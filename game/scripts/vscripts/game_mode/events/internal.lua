@@ -11,9 +11,9 @@ function GameMode:_OnGameRulesStateChange(keys)
 
   local newState = GameRules:State_Get()
 
-  if newState == Settings.DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
+  if newState == DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
     self.seenWaitForPlayers = true
-  elseif newState == Settings.DOTA_GAMERULES_STATE_HERO_SELECTION then
+  elseif newState == DOTA_GAMERULES_STATE_HERO_SELECTION then
     self:PostLoadPrecache()
     self:OnAllPlayersLoaded()
 
@@ -25,7 +25,7 @@ function GameMode:_OnGameRulesStateChange(keys)
         end
       end
     end
-  elseif newState == Settings.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+  elseif newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
     self:OnGameInProgress()
   end
 
@@ -35,7 +35,7 @@ function GameMode:_OnGameRulesStateChange(keys)
 end
 
 --[[
-  _OnNPCSpawned() is called when an Settings.NPC has spawned somewhere in game,
+  _OnNPCSpawned() is called when an NPC has spawned somewhere in game,
   including heroes.
 ]]
 function GameMode:_OnNPCSpawned(keys)
@@ -73,7 +73,7 @@ function GameMode:_OnEntityKilled(keys)
   end
 
   if killedUnit:IsRealHero() then
-    self:d("Settings.KILLED:", killedUnit:GetName(), "Settings.KILLER:", killerEntity:GetName())
+    self:d("KILLED:", killedUnit:GetName(), "KILLER:", killerEntity:GetName())
 
     if Settings.END_GAME_ON_KILLS then
       if GetTeamHeroKills(killerEntity:GetTeam()) >= Settings.KILLS_TO_END_GAME_FOR_TEAM then
@@ -84,14 +84,8 @@ function GameMode:_OnEntityKilled(keys)
 
     --PlayerResource:GetTeamKills
     if Settings.SHOW_KILLS_ON_TOPBAR then
-      GameRules:GetGameModeEntity():SetTopBarTeamValue(
-        Settings.DOTA_TEAM_BADGUYS,
-        GetTeamHeroKills(Settings.DOTA_TEAM_BADGUYS)
-      )
-      GameRules:GetGameModeEntity():SetTopBarTeamValue(
-        Settings.DOTA_TEAM_GOODGUYS,
-        GetTeamHeroKills(Settings.DOTA_TEAM_GOODGUYS)
-      )
+      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_BADGUYS, GetTeamHeroKills(DOTA_TEAM_BADGUYS))
+      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_GOODGUYS, GetTeamHeroKills(DOTA_TEAM_GOODGUYS))
     end
   end
 
