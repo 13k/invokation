@@ -1,4 +1,6 @@
-require("game_mode.events.listeners")
+require("game_mode.events.internal")
+require("game_mode.events.game_events")
+require("game_mode.events.custom_events")
 
 local lfunc = require("lang.function")
 local CustomEvents = require("dota2.custom_events")
