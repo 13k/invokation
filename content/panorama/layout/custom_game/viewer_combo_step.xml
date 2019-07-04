@@ -2,12 +2,12 @@
   <scripts>
     <include src="file://{resources}/scripts/internal/context_data.js" />
     <include src="file://{resources}/scripts/internal/context_logging.js" />
-    <include src="file://{resources}/scripts/custom_game/combo_details_step.js" />
+    <include src="file://{resources}/scripts/custom_game/viewer_combo_step.js" />
   </scripts>
 
   <styles>
     <include src="s2r://panorama/styles/dotastyles.vcss_c" />
-    <include src="file://{resources}/styles/custom_game/combo_details_step.css" />
+    <include src="file://{resources}/styles/custom_game/viewer_combo_step.css" />
   </styles>
 
   <Panel class="ComboStep">

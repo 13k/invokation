@@ -10,6 +10,6 @@
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combat_log.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/picker.xml" />
-    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combo_details.xml" />
+    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/viewer.xml" />
   </Panel>
 </root>

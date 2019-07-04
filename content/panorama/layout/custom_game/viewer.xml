@@ -3,13 +3,13 @@
     <include src="file://{resources}/scripts/internal/context_data.js" />
     <include src="file://{resources}/scripts/internal/context_logging.js" />
     <include src="file://{resources}/scripts/internal/custom_events.js" />
-    <include src="file://{resources}/scripts/custom_game/combo_details.js" />
+    <include src="file://{resources}/scripts/custom_game/viewer.js" />
   </scripts>
 
   <styles>
     <include src="s2r://panorama/styles/dotastyles.vcss_c" />
     <include src="file://{resources}/styles/shared/panelstyles.css" />
-    <include src="file://{resources}/styles/custom_game/combo_details.css" />
+    <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
   <Panel class="Root Closed" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
@@ -17,7 +17,7 @@
       <Panel class="DetailsTitleContainer PanelTitleContainer">
         <Button class="CloseButton" onactivate="Close()" />
         <Label id="Title" class="PanelTitle" hittest="false" />
-        <Button class="RefreshButton" onactivate="Refresh()" />
+        <Button class="RefreshButton" onactivate="Reload()" />
       </Panel>
 
       <Panel id="SequenceContainer" />

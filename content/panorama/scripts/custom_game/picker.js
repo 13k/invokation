@@ -23,7 +23,7 @@ function onPickerShow() {
 function onComboDetailsShow(combo) {
   L("onComboDetailsShow()");
   hidePicker();
-  renderDetails(combo);
+  renderViewer(combo);
 }
 
 function onComboPlay(combo) {
@@ -39,12 +39,6 @@ function onComboStarted() {
 function onComboStopped() {
   L("onComboStopped()");
   showPicker();
-}
-
-function renderDetails(combo) {
-  // CustomEvents.SendServer(EVENT_COMBO_DETAILS_RENDER, { name: combo.name });
-  // FIXME: this should send only to the local player
-  CustomEvents.SendAll(EVENT_COMBO_DETAILS_RENDER, combo);
 }
 
 function startCombo(combo) {
@@ -137,6 +131,12 @@ function hidePicker() {
   _slideout.AddClass("DrawerClosed");
 }
 
+function renderViewer(combo) {
+  // CustomEvents.SendServer(EVENT_VIEWER_RENDER, { name: combo.name });
+  // FIXME: this should send only to the local player
+  CustomEvents.SendAll(EVENT_VIEWER_RENDER, combo);
+}
+
 function TogglePicker() {
   if (_slideout.BHasClass("DrawerClosed")) {
     showPicker();
@@ -145,8 +145,8 @@ function TogglePicker() {
   }
 }
 
-function Refresh() {
-  L("Refresh()");
+function Reload() {
+  L("Reload()");
   CombosCollection.Reload();
 }
 

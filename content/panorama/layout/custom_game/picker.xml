@@ -29,7 +29,7 @@
     <Panel id="CombosSlideout" class="DrawerClosed">
       <Panel id="CombosContents" class="TranslucentPanel">
         <Panel class="PickerTitleContainer PanelTitleContainer">
-          <Button class="RefreshButton" onactivate="Refresh()" />
+          <Button class="RefreshButton" onactivate="Reload()" />
           <Label class="PickerTitle PanelTitle" text="#invokation_combos_picker_title" hittest="false" />
         </Panel>
         <Panel id="CombosContainer" />
