@@ -1,0 +1,126 @@
+@define combatLogWidth: 560px;
+@define combatLogHeight: 200px;
+@define combatLogTranslate: -150px;
+@define thumbWidth: 19px;
+@define thumbHeight: 19px;
+@define abilityIconWidth: 32px;
+@define abilityIconHeight: 32px;
+@define barHeight: 50px;
+
+.Root {
+  flow-children: right;
+  align: center top;
+  width: combatLogWidth;
+  height: combatLogHeight;
+}
+
+#CombatLog {
+  flow-children: down;
+  width: 100%;
+  height: 100%;
+  transform: translateY(0);
+  transition-property: transform;
+  transition-delay: 0.0s;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in-out;
+}
+
+#CombatLog.Closed {
+  transform: translateY(combatLogTranslate);
+}
+
+.CombatLogBar {
+  flow-children: right;
+  width: 100%;
+  height: barHeight;
+  padding: 0 8px;
+  background-color: #00000033;
+  border-top: 1px solid #222;
+}
+
+.CombatLogThumb {
+  horizontal-align: left;
+  vertical-align: middle;
+}
+
+.CombatLogThumb .TickBox {
+  width: thumbWidth;
+  height: thumbHeight;
+  wash-color: #d8d8d8;
+  transform: rotateZ(180deg) translateY(-2px);
+}
+
+.CombatLogThumb:selected .TickBox {
+  width: thumbWidth;
+  height: thumbHeight;
+  wash-color: #d8d8d8;
+  transform: rotateZ(0deg) translateY(2px);
+}
+
+.CombatLogThumb .TickBox:hover {
+  wash-color: #fff;
+}
+
+.CombatLogTitle {
+  horizontal-align: left;
+  vertical-align: middle;
+  text-transform: uppercase;
+  text-overflow: shrink;
+  color: white;
+  font-family: panelTitleFont;
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 0px 3 #00000066;
+  letter-spacing: 2px;
+}
+
+.CombatLogBarActions {
+  height: 100%;
+  flow-children: right;
+  horizontal-align: right;
+}
+
+#CombatLog.Closed .CombatLogBarActions {
+  visibility: collapse;
+}
+
+.CombatLogBarActions .BarItem {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.CombatLogBarActions > ToggleButton > Label {
+  margin-left: 5px;
+  margin-top: 3px;
+  text-shadow: 1px 1px 0px 2px #00000066;
+}
+
+.CombatLogBarActions .ClearButton {
+  margin: 0;
+}
+
+#CombatLogContents {
+  flow-children: down;
+  width: 100%;
+  height: fill-parent-flow(1.0);
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  overflow: clip scroll;
+}
+
+.CombatLogRow {
+  flow-children: right;
+}
+
+.CombatLogAbility {
+  width: abilityIconWidth;
+  height: abilityIconHeight;
+  margin: 2px;
+  background-color: #000000dd;
+  box-shadow: #222 -2px -2px 4px 4px;
+}
+
+.CombatLogAbility DOTAItemImage {
+  vertical-align: middle;
+}

@@ -1,0 +1,105 @@
+@define contentTopMargin: 180px;
+@define slideoutWidth: 1136px;
+@define slideoutHeight: 60%;
+@define slideoutClosedWidth: 46px;
+@define thumbWidth: 36px;
+@define thumbHeight: 100%;
+@define contentWidth: 1100px;
+@define contentWidthTranslate: -1100px;
+
+.Root {
+  flow-children: right;
+  width: 100%;
+  height: 100%;
+}
+
+#CombosSlideout {
+  flow-children: right;
+  width: slideoutWidth;
+  height: slideoutHeight;
+  align: left top;
+  margin-top: contentTopMargin;
+  transition-property: width;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+}
+
+#CombosSlideout.DrawerClosed {
+  width: slideoutClosedWidth;
+}
+
+#CombosContents {
+  width: fill-parent-flow(1.0);
+  height: 100%;
+  flow-children: down;
+  background-image: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
+  background-size: 100%;
+}
+
+#CombosThumb {
+  width: thumbWidth;
+  height: thumbHeight;
+  vertical-align: center;
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor), color-stop(0.33, wexTextColor), to(exortTextColor));
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  box-shadow: none;
+}
+
+#CombosThumb:hover {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor&dd), color-stop(0.33, wexTextColor&dd), to(exortTextColor&dd));
+}
+
+#CombosThumb .PanelSlideThumbArrow {
+  horizontal-align: right;
+  wash-color: #666;
+  transform: translateX(-9px);
+}
+
+#CombosThumb:hover .PanelSlideThumbArrow {
+  transform: translateX(-12px);
+  wash-color: black;
+}
+
+#CombosSlideout.DrawerClosed #CombosThumb .PanelSlideThumbArrow
+{
+  transform: rotateZ(180deg) translateX(-9px);
+}
+
+#CombosSlideout.DrawerClosed #CombosThumb:hover .PanelSlideThumbArrow
+{
+  transform: translateX(6px) rotateZ(180deg);
+}
+
+.PickerTitleContainer .RefreshButton {
+  width: 24px;
+  height: 24px;
+  background-size: 100%;
+}
+
+#CombosContainer {
+  flow-children: right;
+  width: 100%;
+  height: 100%;
+  overflow: clip scroll;
+}
+
+.CombosColumn {
+  flow-children: down;
+  width: 270px;
+  padding: 10px;
+}
+
+/*
+.CombosColumn.laning_phase {
+}
+
+.CombosColumn.ganking_solo_pick {
+}
+
+.CombosColumn.teamfight {
+}
+
+.CombosColumn.late_game {
+}
+*/

@@ -1,0 +1,43 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/internal/util.js" />
+    <include src="file://{resources}/scripts/internal/context_data.js" />
+    <include src="file://{resources}/scripts/internal/context_logging.js" />
+    <include src="file://{resources}/scripts/internal/custom_events.js" />
+    <include src="file://{resources}/scripts/internal/net_table.js" />
+    <include src="file://{resources}/scripts/internal/combos_collection.js" />
+    <include src="file://{resources}/scripts/custom_game/combos.js" />
+  </scripts>
+
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/shared/panelstyles.css" />
+    <include src="file://{resources}/styles/shared/colors.css" />
+    <include src="file://{resources}/styles/custom_game/combos.css" />
+  </styles>
+
+  <snippets>
+    <snippet name="CombosColumn">
+      <Panel class="CombosColumn">
+        <Label id="Title" class="PanelTitle" hittest="false" />
+        <Panel id="Combos" />
+      </Panel>
+    </snippet>
+  </snippets>
+
+  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel id="CombosSlideout" class="DrawerClosed">
+      <Panel id="CombosContents" class="TranslucentPanel">
+        <Panel class="PickerTitleContainer PanelTitleContainer">
+          <Button class="RefreshButton" onactivate="Refresh()" />
+          <Label class="PickerTitle PanelTitle" text="#invokation_combos_picker_title" hittest="false" />
+        </Panel>
+        <Panel id="CombosContainer" />
+      </Panel>
+
+      <Button id="CombosThumb" class="PanelSlideThumb" onactivate="TogglePicker()">
+        <Panel class="PanelSlideThumbArrow" />
+      </Button>
+    </Panel>
+  </Panel>
+</root>

@@ -1,0 +1,66 @@
+"lang"
+{
+  "Language" "English"
+  "Tokens"
+  {
+    "game_mode_15" "Invokation"
+    "addon_game_name" "Invokation"
+
+    "invokation_combat_log_title" "Combat Log"
+    "invokation_combat_log_filter_orbs" "Hide Orbs"
+    "invokation_combat_log_clear" "Clear"
+
+    "invokation_combos_picker_title" "Select combo"
+    "invokation_combo_play" "Play"
+
+    "invokation_combo_category_laning_phase" "Laning Phase"
+    "invokation_combo_category_ganking_solo_pick" "Ganking/Solo Pick"
+    "invokation_combo_category_teamfight" "Teamfight"
+    "invokation_combo_category_late_game" "Late Game"
+
+    "invokation_combo_tooltip_details" "Details"
+    "invokation_combo_tooltip_specialty" "Specialty: {s:specialty}"
+    "invokation_combo_tooltip_stance" "Stance: {s:stance}"
+    "invokation_combo_tooltip_hero_level" "Required hero level"
+    "invokation_combo_tooltip_damage_rating" "Damage: {s:damage_rating}"
+    "invokation_combo_tooltip_damage_rating_0" "None"
+    "invokation_combo_tooltip_damage_rating_1" "Light"
+    "invokation_combo_tooltip_damage_rating_2" "Considerable"
+    "invokation_combo_tooltip_damage_rating_3" "Lethal"
+    "invokation_combo_tooltip_damage_rating_4" "Exceptional"
+    "invokation_combo_tooltip_damage_rating_5" "Brutal"
+    "invokation_combo_tooltip_difficulty_rating" "Difficulty: {s:difficulty_rating}"
+    "invokation_combo_tooltip_difficulty_rating_1" "Very easy"
+    "invokation_combo_tooltip_difficulty_rating_2" "Easy"
+    "invokation_combo_tooltip_difficulty_rating_3" "Medium"
+    "invokation_combo_tooltip_difficulty_rating_4" "Hard"
+    "invokation_combo_tooltip_difficulty_rating_5" "Very hard"
+
+    "invokation_combo_specialty_qw" "Quas/Wex"
+    "invokation_combo_specialty_qe" "Quas/Exort"
+    "invokation_combo_specialty_qwe" "Quas/Wex/Exort"
+
+    "invokation_combo_stance_defensive" "Defensive"
+    "invokation_combo_stance_offensive" "Offensive"
+
+    "invokation_combo_group_baller" "Baller (Damage over time)"
+    "invokation_combo_group_striker" "Striker (Burst Damage)"
+    "invokation_combo_group_puncher" "Puncher (Physical Damage)"
+
+    "invokation_combo_lane_anti_gank1" "Anti-gank 1"
+    "invokation_combo_lane_anti_gank2" "Anti-gank 2"
+    "invokation_combo_lane_harass_emp" "Harass - EMP"
+    "invokation_combo_lane_harass_forge_spirit1" "Harass - Forge Spirit 1"
+    "invokation_combo_lane_harass_forge_spirit2" "Harass - Forge Spirit 2"
+    "invokation_combo_solo_control_magic_damage1" "Control & Magic Damage 1 - Blast"
+    "invokation_combo_solo_control_magic_damage2" "Control & Magic Damage 2 - Strike"
+    "invokation_combo_solo_control_magic_damage3" "Control & Magic Damage 3 - Snap"
+    "invokation_combo_solo_control_magic_damage4" "Control & Magic Damage 4 - Snap Wall"
+    "invokation_combo_solo_control_magic_damage5" "Control & Magic Damage 5 - Blast Wall"
+    "invokation_combo_solo_control_magic_damage6" "Control & Magic Damage 6 - Strike Wall"
+    "invokation_combo_solo_control_magic_damage7" "Control & Magic Damage 7 - Shock Wall"
+    "invokation_combo_solo_control_physical_damage1" "Control & Physical Damage 1 - Blast Snap"
+    "invokation_combo_tf_control_magic_damage1" "Control & Magic Damage 1 - Shock Wall"
+    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Double Blast"
+  }
+}

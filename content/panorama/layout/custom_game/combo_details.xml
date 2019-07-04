@@ -1,0 +1,33 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/internal/context_data.js" />
+    <include src="file://{resources}/scripts/internal/context_logging.js" />
+    <include src="file://{resources}/scripts/internal/custom_events.js" />
+    <include src="file://{resources}/scripts/custom_game/combo_details.js" />
+  </scripts>
+
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/shared/panelstyles.css" />
+    <include src="file://{resources}/styles/custom_game/combo_details.css" />
+  </styles>
+
+  <Panel class="Root Closed" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel class="ComboDetails TranslucentPanel">
+      <Panel class="DetailsTitleContainer PanelTitleContainer">
+        <Button class="CloseButton" onactivate="Close()" />
+        <Label id="Title" class="PanelTitle" hittest="false" />
+        <Button class="RefreshButton" onactivate="Refresh()" />
+      </Panel>
+
+      <Panel id="SequenceContainer" />
+      <Panel id="Contents" />
+
+      <Panel class="Footer">
+        <Button class="PlayGameButton" onactivate="Play()">
+          <Label text="#invokation_combo_play" hittest="false" />
+        </Button>
+      </Panel>
+    </Panel>
+  </Panel>
+</root>

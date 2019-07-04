@@ -1,0 +1,52 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/internal/context_logging.js" />
+    <include src="file://{resources}/scripts/internal/custom_events.js" />
+    <include src="file://{resources}/scripts/internal/grid.js" />
+    <include src="file://{resources}/scripts/custom_game/combat_log.js" />
+  </scripts>
+
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/shared/panelstyles.css" />
+    <include src="file://{resources}/styles/custom_game/combat_log.css" />
+  </styles>
+
+  <snippets>
+    <snippet name="CombatLogRow">
+      <Panel class="CombatLogRow" />
+    </snippet>
+
+    <snippet name="CombatLogAbility">
+      <Button class="CombatLogAbility">
+        <DOTAAbilityImage id="Image" />
+      </Button>
+    </snippet>
+
+    <snippet name="CombatLogItem">
+      <Button class="CombatLogAbility">
+        <DOTAItemImage id="Image" />
+      </Button>
+    </snippet>
+  </snippets>
+
+  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel id="CombatLog" class="TransparentPanel">
+      <Panel id="CombatLogContents" />
+
+      <Panel class="CombatLogBar">
+        <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="ToggleCombatLog()">
+          <Label class="CombatLogTitle" text="#invokation_combat_log_title" />
+        </ToggleButton>
+
+        <Panel class="CombatLogBarActions">
+          <ToggleButton id="FilterOrbs" class="BarItem Checkbox" text="#invokation_combat_log_filter_orbs" />
+
+          <Button class="BarItem ClearButton BlueButton" onactivate="Clear()">
+            <Label hittest="false" text="#invokation_combat_log_clear" />
+          </Button>
+        </Panel>
+      </Panel>
+    </Panel>
+	</Panel>
+</root>

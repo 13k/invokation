@@ -1,0 +1,169 @@
+.HeroCombo {
+  flow-children: down;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.HeroCombo:hover {
+  background-color: black;
+}
+
+.HeroCombo .PanelTitle {
+  text-align: left;
+  font-size: 12px;
+}
+
+.HeroCombo .InfoContainer {
+  flow-children: right;
+}
+
+.HeroCombo .ComboIcon {
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+  margin: 3px;
+  tooltip-position: right;
+  tooltip-body-position: 50% 10%;
+}
+
+.HeroCombo .InfoIcon {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.HeroCombo .InfoIcon:hover {
+  wash-color: #fff;
+}
+
+.HeroCombo .SpecialtyIcon {
+  border-radius: 50%;
+}
+
+.HeroCombo.specialty_qw .SpecialtyIcon {
+  background-color: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.50, #000), color-stop(0.51, wexAccentColor), to(wexAccentColor&44));
+}
+
+.HeroCombo.specialty_qe .SpecialtyIcon {
+  background-color: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.50, #000), color-stop(0.51, exortAccentColor), to(exortAccentColor&44));
+}
+
+.HeroCombo .StanceIcon {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  wash-color: #888888;
+  transition-property: wash-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+}
+
+.HeroCombo.stance_offensive .StanceIcon {
+  background-image: url("s2r://panorama/images/status_icons/modifier_kill_effect_psd.vtex");
+}
+
+.HeroCombo.stance_defensive .StanceIcon {
+  background-image: url("s2r://panorama/images/hud/reborn/icon_armor_psd.vtex");
+}
+
+.HeroCombo .HeroLevelIcon {
+  border-radius: 50%;
+  background-color: #121212;
+}
+
+.HeroCombo:hover .HeroLevelIcon {
+  background-color: #222;
+}
+
+.HeroCombo .HeroLevelLabel {
+  width: 14px;
+  horizontal-align: center;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 3px;
+  text-shadow: 0px 0px 3px 3.7 #EC780E24;
+  color: #E7D291;
+  text-overflow: shrink;
+}
+
+.HeroCombo .RatingsContainer {
+  flow-children: down;
+}
+
+.HeroCombo .RatingContainer {
+  flow-children: right;
+}
+
+.HeroCombo .ComboRating {
+  width: 80px;
+  height: 16px;
+  background-image: url("s2r://panorama/images/custom_game/ulti_base.png");
+  background-position: 0% 0%;
+  background-repeat: repeat-x;
+  background-size: contain;
+  z-index: -1;
+}
+
+.HeroCombo .ComboRatingActive {
+  width: 0;
+  height: 100%;
+  background-image: url("s2r://panorama/images/custom_game/ulti_achieved.png");
+  background-position: 0% 0%;
+  background-repeat: repeat-x;
+  background-size: contain;
+  z-index: 50;
+}
+
+.ComboRating.rating_1 .ComboRatingActive {
+  width: 16px;
+}
+
+.ComboRating.rating_2 .ComboRatingActive {
+  width: 32px;
+}
+
+.ComboRating.rating_3 .ComboRatingActive {
+  width: 48px;
+}
+
+.ComboRating.rating_4 .ComboRatingActive {
+  width: 64px;
+}
+
+.ComboRating.rating_5 .ComboRatingActive {
+  width: 80px;
+}
+
+.RatingsContainer .AttackDamageIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url("s2r://panorama/images/hud/reborn/icon_damage_psd.vtex");
+  background-size: 100%;
+}
+
+.RatingsContainer .DifficultyIcon {
+  width: 16px;
+  height: 16px;
+  background-image: url("s2r://panorama/images/hud/reborn/icon_speed_psd.vtex");
+  background-size: 100%;
+}
+
+.HeroCombo .PlayButton {
+  width: 100%;
+  height: 0;
+  margin-top: 10px;
+  transition-property: height;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+}
+
+.HeroCombo:hover .PlayButton {
+  height: 24px;
+}
+
+.HeroCombo .PlayButton .PlayLabel {
+  horizontal-align: center;
+}

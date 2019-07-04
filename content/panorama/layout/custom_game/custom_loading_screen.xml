@@ -1,0 +1,15 @@
+<root>
+  <styles>
+    <include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
+  </styles>
+
+  <Panel class="root">
+    <Panel id="bg">
+      <Image id="bg-img" src="file://{images}/custom_game/loading_screen/invokation.png" />
+    </Panel>
+
+    <Panel id="title-panel">
+      <Label id="title" text="#addon_game_name" />
+    </Panel>
+  </Panel>
+</root>

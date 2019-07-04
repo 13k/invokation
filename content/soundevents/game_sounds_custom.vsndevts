@@ -1,0 +1,45 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+  combo_start_1 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_begin_01.vsnd",
+    ]
+  }
+  combo_start_2 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_move_08.vsnd",
+    ]
+  }
+  combo_start_3 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_move_09.vsnd",
+    ]
+  }
+  combo_start_4 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_move_13.vsnd",
+    ]
+  }
+  combo_start_5 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_attack_05.vsnd",
+    ]
+  }
+  combo_start_6 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_ability_invoke_01.vsnd",
+    ]
+  }
+  combo_stop_1 = {
+    type = "dota_update_vo_switch"
+    vsnd_files = [
+      "sounds/vo/invoker/invo_failure_04.vsnd",
+    ]
+  }
+}
