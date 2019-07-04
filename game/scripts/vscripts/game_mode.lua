@@ -20,7 +20,7 @@ local NetTable = require("dota2.net_table")
 local NET_TABLE_NAME = "invokation"
 
 function GameMode:_init()
-  self.logger = Logger(Logger.DEBUG, "invokation")
+  self.logger = Logger(IsInToolsMode() and Logger.DEBUG or Logger.INFO, "invokation")
   self.netTable = NetTable(NET_TABLE_NAME)
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
 end
