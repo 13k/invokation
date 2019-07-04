@@ -178,7 +178,7 @@
       }
       "2"
       {
-        "name" "invoker_sunstrike"
+        "name" "invoker_sun_strike"
         "required" "1"
       }
       "3"
