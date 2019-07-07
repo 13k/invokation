@@ -31,16 +31,21 @@ function onAbilityUsed(payload) {
     return;
   }
 
-  if (isFilteringOrbs() && isOrbAbility(payload.name)) {
+  if (isFilteringOrbs() && isOrbAbility(payload.ability)) {
     return;
   }
 
-  addColumn(payload.name);
+  addColumn(payload.ability);
 }
 
 function onComboStarted() {
   L("onComboStarted()");
   start();
+}
+
+function onComboStopped() {
+  L("onComboStopped()");
+  stop();
 }
 
 function addRow(idx) {
@@ -114,7 +119,7 @@ function isFilteringOrbs() {
 }
 
 function isOrbAbility(abilityName) {
-  return (abilityName in ORB_ABILITIES);
+  return abilityName in ORB_ABILITIES;
 }
 
 function start() {
@@ -156,6 +161,7 @@ function Clear() {
   CustomEvents.Subscribe(EVENT_COMBAT_LOG_ABILITY_USED, onAbilityUsed);
   CustomEvents.Subscribe(EVENT_COMBAT_LOG_CLEAR, onClear);
   CustomEvents.Subscribe(EVENT_COMBO_STARTED, onComboStarted);
+  CustomEvents.Subscribe(EVENT_COMBO_STOPPED, onComboStopped);
 
   L("init");
 })();

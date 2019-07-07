@@ -1,31 +1,27 @@
-function GameMode:OnComboStart(playerEntIdx, keys)
-  self:d("OnComboStart()", playerEntIdx, keys)
+function GameMode:OnComboStart(player, payload)
+  self:d("OnComboStart()", player:GetPlayerID(), payload)
 
-  local combo = self.combos:Find(keys.name)
-  local player = EntIndexToHScript(playerEntIdx)
+  local combo = self.combos:Find(payload.combo)
 
   if combo == nil then
-    self:d("  could not find combo", keys.name)
+    self:d("  could not find combo", payload.combo)
     return
   end
 
   self.combos:Start(player, combo)
 end
 
-function GameMode:OnComboStop(playerEntIdx, keys)
-  self:d("OnComboStop()", playerEntIdx, keys)
-  local player = EntIndexToHScript(playerEntIdx)
+function GameMode:OnComboStop(player, payload)
+  self:d("OnComboStop()", player:GetPlayerID(), payload)
   self.combos:Stop(player)
 end
 
-function GameMode:OnCombatLogCaptureStart(playerEntIdx, keys)
-  self:d("OnCombatLogCaptureStart()", playerEntIdx, keys)
-  local player = EntIndexToHScript(playerEntIdx)
+function GameMode:OnCombatLogCaptureStart(player, payload)
+  self:d("OnCombatLogCaptureStart()", player:GetPlayerID(), payload)
   self.combos:StartCapturingAbilities(player)
 end
 
-function GameMode:OnCombatLogCaptureStop(playerEntIdx, keys)
-  self:d("OnCombatLogCaptureStop()", playerEntIdx, keys)
-  local player = EntIndexToHScript(playerEntIdx)
+function GameMode:OnCombatLogCaptureStop(player, payload)
+  self:d("OnCombatLogCaptureStop()", player:GetPlayerID(), payload)
   self.combos:StopCapturingAbilities(player)
 end

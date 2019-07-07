@@ -1,39 +1,92 @@
-local module = require("pl.class")()
+local M = require("pl.class")()
 
+-- local pp = require('pl.pretty')
 local fsm = require("vendor.fsm")
-local ltable = require("lang.table")
+local tablex = require("pl.tablex")
 
-local function createFSM(sequence)
+local INITIAL_STATE = "start"
+local FINISH_STATE = "finish"
+local RESET_EVENT = "reset"
+local FINISH_EVENT = "finish"
+
+local function statename(step)
+  return string.format("%d:%s", step.id, step.name)
+end
+
+local function eventname(step)
+  return step.name
+end
+
+function M:_init(name, config)
+  tablex.update(self, config)
+
+  self:_createFSM()
+
+  -- print('Combo:_init()', name)
+  -- pp.dump(self)
+end
+
+function M:_createFSM()
+  self.nextSteps = {}
+
+  local steps = {{name = INITIAL_STATE, next = {self.sequence[1].id}}}
+  local states = {FINISH_STATE}
   local events = {}
-  local prevState = "start"
 
-  for _, action in ipairs(sequence) do
-    local nextState = action.name
-    local event = {name = nextState, from = prevState, to = nextState}
-    table.insert(events, event)
-    prevState = nextState
+  tablex.insertvalues(steps, self.sequence)
+
+  for _, step in ipairs(steps) do
+    local state = step.name == INITIAL_STATE and INITIAL_STATE or statename(step)
+
+    table.insert(states, state)
+    self.nextSteps[state] = {}
+
+    if step.next == nil then
+      break
+    end
+
+    for _, nextId in ipairs(step.next) do
+      local nextStep = self.sequence[nextId]
+      local nextState = statename(nextStep)
+      local event = {name = eventname(nextStep), from = state, to = nextState}
+
+      table.insert(events, event)
+      table.insert(self.nextSteps[state], nextStep)
+    end
   end
 
-  local event = {name = "finish", from = prevState, to = "complete"}
-  table.insert(events, event)
+  table.insert(events, {name = FINISH_EVENT, from = states[#states], to = FINISH_STATE})
+  table.insert(events, {name = RESET_EVENT, from = states, to = INITIAL_STATE})
 
-  return fsm.create(
-    {
-      initial = "start",
-      events = events
-    }
-  )
+  self.fsm = fsm.create({initial = INITIAL_STATE, events = events})
 end
 
-function module:_init(name, config)
-  self.id = "invokation_combo_" .. name
-  self.name = name
+function M:Reset()
+  return self.fsm:reset()
+end
 
-  for k, v in pairs(ltable.except(config, "sequence")) do
-    self[k] = v
+function M:Progress(ability)
+  local eventFn = self.fsm[ability.name]
+
+  if eventFn == nil then
+    return nil
   end
 
-  self.fsm = createFSM(config.sequence)
+  local progressed = eventFn(self.fsm)
+
+  if progressed and self.fsm:can(FINISH_EVENT) then
+    return self.fsm:finish()
+  end
+
+  return progressed
 end
 
-return module
+function M:IsFinished()
+  return self.fsm:is(FINISH_STATE)
+end
+
+function M:NextSteps()
+  return self.nextSteps[self.fsm.current]
+end
+
+return M

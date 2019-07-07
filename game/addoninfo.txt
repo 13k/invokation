@@ -1,9 +1,9 @@
-"AddonInfo"
+"Invokation"
 {
-  "TeamCount" "1"
   "maps" "invokation"
-  "IsPlayable"  "1"
-  "template_map"
+  "IsPlayable" "1"
+  "TeamCount" "1"
+  "invokation"
   {
     "MaxPlayers" "1"
   }

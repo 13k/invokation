@@ -1,129 +1,128 @@
-local module = require("pl.class")()
+-- TODO: use combo IDs instead of names
+local M = require("pl.class")()
 
 local tablex = require("pl.tablex")
-local ltable = require("lang.table")
 local Combo = require("combos.combo")
-local SoundEvents = require("dota2.sound_events")
-local CustomEvents = require("dota2.custom_events")
+local COMBOS = require("const.combos")
+local CombosComm = require("combos.communication")
 
-local KV_FILE = "scripts/kv/combos.txt"
 local NET_TABLE_KEY = "combos"
 
-local function loadKV()
-  return LoadKeyValues(KV_FILE)
-end
-
-local function normalizeKV(kv)
-  for _, config in pairs(kv) do
-    config.sequence = ltable.tolist(config.sequence)
-  end
-
-  return kv
-end
-
-local function createCombos(kv)
-  local combos = {}
-
-  for name, config in pairs(kv) do
-    local combo = Combo(name, config)
-    table.insert(combos, combo)
-  end
-
-  return combos
-end
-
-function module:_init(args)
+function M:_init(args)
   self.logger = args.logger
   self.netTable = args.netTable
-  self.kv = {}
   self.combos = {}
   self.active = {}
   self.capturing = {}
 end
 
-function module:d(...)
+function M:d(...)
   return self.logger:Debug(...)
 end
 
-function module:setNetTable()
-  return self.netTable:Set(NET_TABLE_KEY, self.kv)
+function M:err(...)
+  return self.logger:Error(...)
 end
 
-function module:loadKV()
-  self.kv = normalizeKV(loadKV())
+function M:errf(...)
+  return self.logger:Errorf(...)
 end
 
-function module:createCombos()
-  self.combos = createCombos(self.kv)
-  self.combosByName =
-    tablex.pairmap(
-    function(_, v)
-      return v, v.name
-    end,
-    self.combos
-  )
+function M:Load()
+  self:d("Combos:Load() - loading combos")
+
+  self.combos = {}
+  self.combosByName = {}
+
+  for name, config in pairs(COMBOS) do
+    config.id = "invokation_combo_" .. name
+    config.name = name
+
+    for id, step in pairs(config.sequence) do
+      step.id = id
+    end
+
+    local combo = Combo(name, config)
+
+    table.insert(self.combos, combo)
+
+    self.combosByName[name] = combo
+  end
+
+  self.netTable:Set(NET_TABLE_KEY, COMBOS)
+
+  self:d("Combos:Load() - finished loading combos")
 end
 
-function module:Load()
-  self:d("loading combos")
-
-  self:loadKV()
-  self:createCombos()
-  self:setNetTable()
-
-  self:d("finished loading combos")
-end
-
-function module:Find(name)
+function M:Find(name)
   return self.combosByName[name]
 end
 
-function module:Start(player, combo)
-  self.active[player:GetPlayerID()] = combo
+-- TODO: implement countdown
+-- TODO: implement completion timer comparing against ideal time
+-- TODO: setup dummy target + hero (level, abilities, prepared invokations, mana, cds) + items
+function M:Start(player, combo)
+  self:d("Combos:Start()", player:GetPlayerID(), combo.name)
 
-  local sndEvent = "combo_start_" .. tostring(RandomInt(1, 6))
-
-  SoundEvents.EmitOnPlayer(player, sndEvent)
-  CustomEvents.SendPlayer(player, CustomEvents.EVENT_COMBO_STARTED, {name = combo.name})
-end
-
-function module:Stop(player)
-  self.active[player:GetPlayerID()] = nil
-
-  SoundEvents.EmitOnPlayer(player, "combo_stop_1")
-  CustomEvents.SendPlayer(player, CustomEvents.EVENT_COMBO_STOPPED)
-end
-
-function module:StartCapturingAbilities(player)
-  self:d("[combos] StartCapturingAbilities()", player:GetPlayerID())
-  self.capturing[player:GetPlayerID()] = true
-  -- TODO: timer logic
-end
-
-function module:StopCapturingAbilities(player)
-  self:d("[combos] StopCapturingAbilities()", player:GetPlayerID())
-  self.capturing[player:GetPlayerID()] = nil
-  -- TODO: timer logic
-end
-
-function module:OnAbilityUsed(player, abilityName)
-  self:d("[combos] OnAbilityUsed()", abilityName)
-
-  if self.capturing[player:GetPlayerID()] then
-    CustomEvents.SendPlayer(player, CustomEvents.EVENT_COMBAT_LOG_ABILITY_USED, {name = abilityName})
+  if not combo:Reset() then
+    self:errf("Could not reset combo '%s'", combo.name)
+    return
   end
 
-  local combo = self.active[player:GetPlayerID()]
+  self.active[player:GetPlayerID()] = combo
+
+  CombosComm.emitSound(player, "combo_start")
+  CombosComm.sendStarted(player, combo)
+end
+
+function M:Stop(player)
+  self:d("Combos:Stop()", player:GetPlayerID())
+
+  self.active[player:GetPlayerID()] = nil
+
+  CombosComm.emitSound(player, "combo_stop")
+  CombosComm.sendStopped(player)
+end
+
+function M:StartCapturingAbilities(player)
+  self:d("Combos:StartCapturingAbilities()", player:GetPlayerID())
+  self.capturing[player:GetPlayerID()] = true
+end
+
+function M:StopCapturingAbilities(player)
+  self:d("Combos:StopCapturingAbilities()", player:GetPlayerID())
+  self.capturing[player:GetPlayerID()] = nil
+end
+
+-- TODO: check for finished combo and give reward (<difficulty> gold?)
+function M:OnAbilityUsed(player, unit, ability)
+  self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
+
+  local playerId = player:GetPlayerID()
+
+  if self.capturing[playerId] then
+    CombosComm.sendAbilityUsed(player, ability)
+  end
+
+  local combo = self.active[playerId]
 
   if combo == nil then
     return
   end
 
-  -- TODO: check combo's FSM for transitions and dispatch events
+  if combo:Progress(ability) then
+    if combo:IsFinished() then
+      CombosComm.sendFinished(player, combo)
+    else
+      CombosComm.sendProgress(player, combo)
+    end
+  elseif not ability:IsInvokationAbility() then
+    CombosComm.sendStepError(player, combo, ability)
+  end
 end
 
-function module.ShowPicker()
-  CustomEvents.SendAll(CustomEvents.EVENT_PICKER_SHOW)
+function M.ShowPicker()
+  CombosComm.sendPickerShow()
 end
 
-return module
+return M

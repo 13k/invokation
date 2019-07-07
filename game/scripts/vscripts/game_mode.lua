@@ -29,6 +29,10 @@ function GameMode:d(...)
   return self.logger:Debug(...)
 end
 
+function GameMode:err(...)
+  return self.logger:Error(...)
+end
+
 --[[
   Precache() precaches resources/units/items/abilities that will be needed
   for sure in your game and that will not be precached by hero selection.
@@ -39,7 +43,7 @@ end
   the precache{} block for any equipped abilities.
 ]]
 function GameMode:Precache(context)
-  self:d("Performing pre-load precache", context)
+  self:d("Performing pre-load precache")
 
   PrecacheUnitByNameSync("npc_dota_hero_invoker", context)
 

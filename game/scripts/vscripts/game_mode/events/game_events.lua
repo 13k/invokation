@@ -1,3 +1,6 @@
+local Unit = require("dota2.unit")
+local Ability = require("dota2.ability")
+
 -- The overall game state has changed
 function GameMode:OnGameRulesStateChange(keys)
   self:d("GameRules State Changed", keys)
@@ -151,7 +154,15 @@ function GameMode:OnAbilityUsed(keys)
   self:d("AbilityUsed", keys)
 
   local player = PlayerResource:GetPlayer(keys.PlayerID)
-  self.combos:OnAbilityUsed(player, keys.abilityname)
+  local caster = Unit(EntIndexToHScript(keys.caster_entindex))
+  local abilityEnt = caster:FindAbilityOrItem(keys.abilityname)
+
+  local err = string.format("could not find ability or item '%q' on unit '%s'", keys.abilityname, caster.name)
+  DoScriptAssert(abilityEnt ~= nil, err)
+
+  local ability = Ability(abilityEnt)
+
+  self.combos:OnAbilityUsed(player, caster, ability)
 end
 
 -- A non-player entity (necro-book, chen creep, etc) used an ability

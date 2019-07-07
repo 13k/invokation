@@ -19,7 +19,10 @@ function loadFromNetTable() {
 }
 
 function listenToNetTableChange() {
-  return _netTable.OnKeyChange(NET_TABLE_KEY, CombosCollection._onNetTableChange.bind(CombosCollection));
+  return _netTable.OnKeyChange(
+    NET_TABLE_KEY,
+    CombosCollection._onNetTableChange.bind(CombosCollection)
+  );
 }
 
 function sendReloadToServer() {
@@ -46,15 +49,14 @@ var CombosCollection = {
   },
 
   _normalize: function() {
-    $.Each(this.combos, function(combo, name) {
-      combo.id = "invokation_combo_" + name;
-      combo.name = name;
+    $.Each(this.combos, function(combo) {
       combo.name_l10n = $.Localize("#" + combo.id);
       combo.sequence = LuaListTableToArray(combo.sequence);
       combo.specialty_l10n = SPECIALTIES[combo.specialty];
       combo.stance_l10n = STANCES[combo.stance];
       combo.damage_rating_l10n = DAMAGE_RATINGS[combo.damage_rating];
-      combo.difficulty_rating_l10n = DIFFICULTY_RATINGS[combo.difficulty_rating];
+      combo.difficulty_rating_l10n =
+        DIFFICULTY_RATINGS[combo.difficulty_rating];
     });
   },
 
@@ -102,11 +104,15 @@ var CombosCollection = {
   });
 
   $.Each(DAMAGE_RATINGS_KEYS, function(key) {
-    DAMAGE_RATINGS[key] = $.Localize("#invokation_combo_tooltip_damage_rating_" + key);
+    DAMAGE_RATINGS[key] = $.Localize(
+      "#invokation_combo_tooltip_damage_rating_" + key
+    );
   });
 
   $.Each(DIFFICULTY_RATINGS_KEYS, function(key) {
-    DIFFICULTY_RATINGS[key] = $.Localize("#invokation_combo_tooltip_difficulty_rating_" + key);
+    DIFFICULTY_RATINGS[key] = $.Localize(
+      "#invokation_combo_tooltip_difficulty_rating_" + key
+    );
   });
 
   listenToNetTableChange();

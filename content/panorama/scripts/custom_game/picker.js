@@ -1,8 +1,14 @@
 "use strict";
 
-var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
+var PICKER_COLUMNS = [
+  "laning_phase",
+  "ganking_solo_pick",
+  "teamfight",
+  "late_game",
+];
 
-var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
+var COMBO_PANEL_LAYOUT =
+  "file://{resources}/layout/custom_game/picker_combo.xml";
 
 var _groupedCombos;
 
@@ -43,7 +49,7 @@ function onComboStopped() {
 
 function startCombo(combo) {
   L("startCombo() ", combo.name);
-  CustomEvents.SendServer(EVENT_COMBO_START, { name: combo.name });
+  CustomEvents.SendServer(EVENT_COMBO_START, { combo: combo.name });
 }
 
 function beginCombo(comboName) {
@@ -61,7 +67,7 @@ function groupCombos() {
   _groupedCombos = {};
 
   // group by category
-  $.Each(CombosCollection.combos, function (combo, _name) {
+  $.Each(CombosCollection.combos, function(combo, _name) {
     if (!_groupedCombos[combo.category]) {
       _groupedCombos[combo.category] = [];
     }
@@ -70,8 +76,8 @@ function groupCombos() {
   });
 
   // sort each group by (hero_level, name)
-  $.Each(_groupedCombos, function (group, _category) {
-    group.sort(function (left, right) {
+  $.Each(_groupedCombos, function(group, _category) {
+    group.sort(function(left, right) {
       if (left.hero_level === right.hero_level) {
         return StringLexicalCompare(left.name, right.name);
       }
@@ -86,21 +92,27 @@ function renderCombos() {
 
   _combosContainer.RemoveAndDeleteChildren();
 
-  $.Each(PICKER_COLUMNS, function (category) {
+  $.Each(PICKER_COLUMNS, function(category) {
     var group = _groupedCombos[category];
 
-    if (!group) { return; }
+    if (!group) {
+      return;
+    }
 
     var columnPanel = createCombosColumnPanel(category);
 
-    $.Each(group, function (combo) {
+    $.Each(group, function(combo) {
       createComboPanel(columnPanel, combo);
     });
   });
 }
 
 function createCombosColumnPanel(category) {
-  var panel = $.CreatePanel("Panel", _combosContainer, "combos_column_" + category);
+  var panel = $.CreatePanel(
+    "Panel",
+    _combosContainer,
+    "combos_column_" + category
+  );
 
   panel.BLoadLayoutSnippet("CombosColumn");
   panel.AddClass(category);
@@ -115,7 +127,10 @@ function createComboPanel(parent, combo) {
   var panel = $.CreatePanel("Panel", parent, combo.name);
 
   panel.BLoadLayout(COMBO_PANEL_LAYOUT, false, false);
-  panel.data.Callbacks.Update({ onShowDetails: onComboDetailsShow, onPlay: onComboPlay });
+  panel.data.Callbacks.Update({
+    onShowDetails: onComboDetailsShow,
+    onPlay: onComboPlay,
+  });
   panel.data.SetCombo(combo);
 
   return panel;
@@ -132,9 +147,9 @@ function hidePicker() {
 }
 
 function renderViewer(combo) {
-  // CustomEvents.SendServer(EVENT_VIEWER_RENDER, { name: combo.name });
+  // CustomEvents.SendServer(EVENT_VIEWER_RENDER, { combo: combo.name });
   // FIXME: this should send only to the local player
-  CustomEvents.SendAll(EVENT_VIEWER_RENDER, combo);
+  CustomEvents.SendAll(EVENT_VIEWER_RENDER, { combo: combo });
 }
 
 function TogglePicker() {
@@ -150,7 +165,7 @@ function Reload() {
   CombosCollection.Reload();
 }
 
-(function () {
+(function() {
   _slideout = $("#CombosSlideout");
   _combosContainer = $("#CombosContainer");
 

@@ -1,8 +1,7 @@
 "use strict";
 
-var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
-
-var _combo = {};
+var COMBO_STEP_LAYOUT =
+  "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
 var _titleLabel;
 var _sequenceContainer;
@@ -12,9 +11,9 @@ function onComboStarted() {
   close();
 }
 
-function onViewerRender(combo) {
-  L("onViewerRender() ", combo);
-  SetContextData("_combo", combo);
+function onViewerRender(payload) {
+  L("onViewerRender() ", payload.combo);
+  SetContextData("_combo", payload.combo);
   render();
   open();
 }
@@ -36,7 +35,7 @@ function renderSequence() {
 
   _sequenceContainer.RemoveAndDeleteChildren();
 
-  $.Each(combo.sequence, function (step) {
+  $.Each(combo.sequence, function(step) {
     createStepPanel(_sequenceContainer, step);
   });
 }
@@ -61,7 +60,7 @@ function close() {
 function startCombo() {
   var combo = GetContextData("_combo");
   L("startCombo() ", combo.name);
-  CustomEvents.SendServer(EVENT_COMBO_START, { name: combo.name });
+  CustomEvents.SendServer(EVENT_COMBO_START, { combo: combo.name });
 }
 
 function Play() {
@@ -78,7 +77,7 @@ function Reload() {
   render();
 }
 
-(function () {
+(function() {
   _titleLabel = $("#Title");
   _sequenceContainer = $("#SequenceContainer");
 

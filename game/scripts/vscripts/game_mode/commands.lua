@@ -1,5 +1,5 @@
-local lfunc = require("lang.function")
 local Logger = require("lib.logger")
+local lfunc = require("lang.function")
 
 function GameMode:registerCommands()
   --[[

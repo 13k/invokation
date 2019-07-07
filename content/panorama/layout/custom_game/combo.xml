@@ -1,0 +1,32 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/internal/util.js" />
+    <include src="file://{resources}/scripts/internal/context_data.js" />
+    <include src="file://{resources}/scripts/internal/context_logging.js" />
+    <include src="file://{resources}/scripts/internal/custom_events.js" />
+    <include src="file://{resources}/scripts/internal/net_table.js" />
+    <include src="file://{resources}/scripts/internal/combos_collection.js" />
+    <include src="file://{resources}/scripts/custom_game/combo.js" />
+  </scripts>
+
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/shared/panelstyles.css" />
+    <include src="file://{resources}/styles/shared/colors.css" />
+    <include src="file://{resources}/styles/custom_game/combo.css" />
+  </styles>
+
+  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel id="Combo" class="Hide" hittest="false">
+      <Panel id="Sequence" hittest="false">
+        <Panel class="FillHeight" hittest="false" />
+        <Panel id="SequenceContainer" hittest="false" />
+        <Panel class="FillHeight" hittest="false" />
+      </Panel>
+
+      <Button id="StopButton" class="PopupButton Red" onactivate="Stop()">
+        <Label text="Stop" hittest="false" />
+      </Button>
+    </Panel>
+  </Panel>
+</root>

@@ -30,13 +30,7 @@ function M:Log(level, ...)
     return
   end
 
-  local values =
-    tablex.imap(
-    function(v)
-      return type(v) == "table" and pretty.write(v) or tostring(v)
-    end,
-    {...}
-  )
+  local values = tablex.imap(pretty.write, {...})
 
   local keymap = {
     timestamp = GetSystemDate() .. " " .. GetSystemTime(),
@@ -45,27 +39,37 @@ function M:Log(level, ...)
     message = stringx.join(" ", values)
   }
 
-  print(self.format:substitute(keymap))
+  return print(self.format:substitute(keymap))
 end
 
-function M:Debug(...)
-  self:Log(LEVEL.DEBUG, ...)
+function M:Logf(level, format, ...)
+  if level < self.level then
+    return
+  end
+
+  return self:Log(level, format:format(...))
 end
 
-function M:Info(...)
-  self:Log(LEVEL.INFO, ...)
+local function createLevelMethods(levelName)
+  if levelName == "UNKNOWN" then
+    return
+  end
+
+  local title = stringx.title(levelName)
+
+  -- function M:Debug(...) ... end
+  M[title] = function(self, ...)
+    return self:Log(LEVEL[levelName], ...)
+  end
+
+  -- function M:Debugf(...) ... end
+  M[title .. "f"] = function(self, ...)
+    return self:Logf(LEVEL[levelName], ...)
+  end
 end
 
-function M:Warning(...)
-  self:Log(LEVEL.WARNING, ...)
-end
-
-function M:Error(...)
-  self:Log(LEVEL.ERROR, ...)
-end
-
-function M:Critical(...)
-  self:Log(LEVEL.CRITICAL, ...)
+for level, _ in pairs(LEVEL) do
+  createLevelMethods(level)
 end
 
 tablex.update(M, LEVEL)

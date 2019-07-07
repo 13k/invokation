@@ -1,0 +1,41 @@
+.Root {
+  flow-children: right;
+  width: 100%;
+  height: 100%;
+}
+
+#Combo {
+  /* border-left: 1px solid red; */
+  flow-children: down;
+  align: right center;
+  /* width: 150px; */
+  height: 100%;
+  background-color: gradient(
+    linear,
+    0% 50%,
+    100% 50%,
+    from(#00000000),
+    to(#000000ee)
+  );
+}
+
+#Sequence {
+  /* border: 1px solid blue; */
+  flow-children: down;
+  width: 100%;
+  height: fill-parent-flow(2);
+  margin-top: 70px;
+  overflow: clip scroll;
+}
+
+#SequenceContainer {
+  /* border: 1px solid green; */
+  flow-children: down;
+  horizontal-align: center;
+}
+
+#StopButton {
+  align: center bottom;
+  min-width: 130px;
+  margin: 12px;
+}
