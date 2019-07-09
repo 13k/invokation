@@ -9,6 +9,7 @@ var EVENT_COMBO_START = "invokation_combo_start";
 var EVENT_COMBO_STARTED = "invokation_combo_started";
 var EVENT_COMBO_STOP = "invokation_combo_stop";
 var EVENT_COMBO_STOPPED = "invokation_combo_stopped";
+var EVENT_COMBO_RESTART = "invokation_combo_restart";
 var EVENT_COMBO_PROGRESS = "invokation_combo_progress";
 var EVENT_COMBO_STEP_ERROR = "invokation_combo_step_error";
 var EVENT_COMBO_FINISHED = "invokation_combo_finished";

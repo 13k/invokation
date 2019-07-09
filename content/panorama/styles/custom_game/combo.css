@@ -34,8 +34,14 @@
   horizontal-align: center;
 }
 
-#StopButton {
+#RestartButton {
   align: center bottom;
   min-width: 130px;
   margin: 12px;
+}
+
+#StopButton {
+  align: center bottom;
+  min-width: 130px;
+  margin: 0 12px 12px 12px;
 }

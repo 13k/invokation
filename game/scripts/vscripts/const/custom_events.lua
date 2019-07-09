@@ -7,6 +7,7 @@ return {
   EVENT_COMBO_STARTED = "invokation_combo_started",
   EVENT_COMBO_STOP = "invokation_combo_stop",
   EVENT_COMBO_STOPPED = "invokation_combo_stopped",
+  EVENT_COMBO_RESTART = "invokation_combo_restart",
   EVENT_COMBO_PROGRESS = "invokation_combo_progress",
   EVENT_COMBO_STEP_ERROR = "invokation_combo_step_error",
   EVENT_COMBO_FINISHED = "invokation_combo_finished",

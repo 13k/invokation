@@ -24,8 +24,12 @@
         <Panel class="FillHeight" hittest="false" />
       </Panel>
 
+      <Button id="RestartButton" class="PopupButton Blue" onactivate="Restart()">
+        <Label text="#invokation_combo_restart" hittest="false" />
+      </Button>
+
       <Button id="StopButton" class="PopupButton Red" onactivate="Stop()">
-        <Label text="Stop" hittest="false" />
+        <Label text="#invokation_combo_stop" hittest="false" />
       </Button>
     </Panel>
   </Panel>

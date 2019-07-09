@@ -11,12 +11,15 @@
     "invokation_combat_log_clear" "Clear"
 
     "invokation_combos_picker_title" "Select combo"
-    "invokation_combo_play" "Play"
 
     "invokation_combo_category_laning_phase" "Laning Phase"
     "invokation_combo_category_ganking_solo_pick" "Ganking/Solo Pick"
     "invokation_combo_category_teamfight" "Teamfight"
     "invokation_combo_category_late_game" "Late Game"
+
+    "invokation_combo_play" "Play"
+    "invokation_combo_restart" "Restart"
+    "invokation_combo_stop" "Stop"
 
     "invokation_combo_tooltip_details" "Details"
     "invokation_combo_tooltip_specialty" "Specialty: {s:specialty}"

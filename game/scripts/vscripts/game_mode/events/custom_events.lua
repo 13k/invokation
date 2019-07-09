@@ -16,6 +16,19 @@ function GameMode:OnComboStop(player, payload)
   self.combos:Stop(player)
 end
 
+function GameMode:OnComboRestart(player, payload)
+  self:d("OnComboRestart()", player:GetPlayerID(), payload)
+
+  local combo = self.combos:Find(payload.combo)
+
+  if combo == nil then
+    self:d("  could not find combo", payload.combo)
+    return
+  end
+
+  self.combos:Restart(player, combo)
+end
+
 function GameMode:OnCombatLogCaptureStart(player, payload)
   self:d("OnCombatLogCaptureStart()", player:GetPlayerID(), payload)
   self.combos:StartCapturingAbilities(player)

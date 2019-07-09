@@ -75,6 +75,11 @@ function M:Start(player, combo)
   CombosComm.sendStarted(player, combo)
 end
 
+function M:Restart(player, combo)
+  self:d("Combos:Restart()", player:GetPlayerID(), combo.name)
+  return self:Start(player, combo)
+end
+
 function M:Stop(player)
   self:d("Combos:Stop()", player:GetPlayerID())
 

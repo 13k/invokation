@@ -141,6 +141,16 @@ function sendStop() {
   CustomEvents.SendServer(EVENT_COMBO_STOP);
 }
 
+function sendRestart() {
+  var combo = GetContextData("_combo");
+  CustomEvents.SendServer(EVENT_COMBO_RESTART, { combo: combo.name });
+}
+
+function Restart() {
+  L("Restart()");
+  sendRestart();
+}
+
 function Stop() {
   L("Stop()");
   sendStop();
