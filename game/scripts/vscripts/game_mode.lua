@@ -11,10 +11,11 @@ require("game_mode.events")
 require("game_mode.commands")
 require("game_mode.convars")
 
+local Units = require("dota2.units")
 local Combos = require("combos")
 local Logger = require("lib.logger")
-local lrandom = require("lang.random")
 local Timers = require("dota2.timers")
+local lrandom = require("lang.random")
 local NetTable = require("dota2.net_table")
 
 local NET_TABLE_NAME = "invokation"
@@ -45,7 +46,8 @@ end
 function GameMode:Precache(context)
   self:d("Performing pre-load precache")
 
-  PrecacheUnitByNameSync("npc_dota_hero_invoker", context)
+  PrecacheUnitByNameSync(Units.INVOKER, context)
+  PrecacheUnitByNameSync(Units.DUMMY_TARGET, context)
 
   self.combos:Load()
 end

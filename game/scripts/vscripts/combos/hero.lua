@@ -1,46 +1,34 @@
 local M = {}
 
-local stringx = require("pl.stringx")
+local Unit = require("dota2.unit")
 
 -- TODO: setup abilities, prepared invokations, items
 function M.setup(player, combo)
-  local hero = player:GetAssignedHero()
-  local level = hero:GetLevel()
+  local hero = Unit(player:GetAssignedHero())
 
-  while level < combo.hero_level do
+  while hero:GetLevel() < combo.hero_level do
     hero:HeroLevelUp(true)
-    level = hero:GetLevel()
   end
 
   if not hero:IsAlive() then
-    hero:RespawnUnit()
+    hero:Respawn({isFirst = true})
   end
+
+  hero:Purge({
+    buffs = true,
+    debuffs = true,
+    frameOnly = false,
+    stuns = true,
+    exceptions = true,
+  })
 
   hero:Interrupt()
-  hero:Purge(true, true, false, true, true)
-  hero:Heal(hero:GetMaxHealth(), nil)
-  hero:GiveMana(hero:GetMaxMana())
-
-  for i = 0, hero:GetAbilityCount() do
-    local ability = hero:GetAbilityByIndex(i)
-
-    if ability ~= nil then
-      ability:EndCooldown()
-    end
-  end
-
-  for i = 0, 5 do
-    local item = hero:GetItemInSlot(i)
-
-    if item ~= nil then
-      item:EndCooldown()
-      hero:RemoveItem(item)
-    end
-  end
-
-  for _, itemName in ipairs(combo.items or {}) do
-    hero:AddItemByName(itemName)
-  end
+  hero:HealMax(nil)
+  hero:GiveMaxMana()
+  hero:EndAbilitiesCooldowns()
+  hero:RemoveItems({includeStash = true, endCooldown = true})
+  hero:AddItemsByName(combo.items or {})
+  hero:Hold()
 end
 
 return M

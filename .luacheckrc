@@ -266,5 +266,18 @@ new_read_globals = {
   "DOTA_TEAM_CUSTOM_7",
   "DOTA_TEAM_CUSTOM_8",
   "DOTA_TEAM_CUSTOM_MAX",
-  "DOTA_TEAM_COUNT"
+  "DOTA_TEAM_COUNT",
+  -- DOTAScriptInventorySlot_t
+  "DOTA_ITEM_SLOT_1", -- (0)
+  "DOTA_ITEM_SLOT_2", -- (1)
+  "DOTA_ITEM_SLOT_3", -- (2)
+  "DOTA_ITEM_SLOT_4", -- (3)
+  "DOTA_ITEM_SLOT_5", -- (4)
+  "DOTA_ITEM_SLOT_6", -- (5)
+  "DOTA_STASH_SLOT_1", -- (6)
+  "DOTA_STASH_SLOT_2", -- (7)
+  "DOTA_STASH_SLOT_3", -- (8)
+  "DOTA_STASH_SLOT_4", -- (9)
+  "DOTA_STASH_SLOT_5", -- (10)
+  "DOTA_STASH_SLOT_6", -- (11)
 }

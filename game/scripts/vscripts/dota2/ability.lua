@@ -1,5 +1,6 @@
 local M = require("pl.class")()
 
+local types = require("pl.types")
 local tablex = require("pl.tablex")
 local Invoker = require("const.invoker")
 
@@ -18,7 +19,7 @@ function M:IsItem()
 end
 
 function M:IsOrbAbility()
-  return ORB_ABILITIES[self.name] or false
+  return types.to_bool(ORB_ABILITIES[self.name])
 end
 
 function M:IsInvokationAbility()

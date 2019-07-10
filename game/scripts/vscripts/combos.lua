@@ -1,11 +1,11 @@
 -- TODO: use combo IDs instead of names
 local M = require("pl.class")()
 
-local tablex = require("pl.tablex")
 local Combo = require("combos.combo")
 local COMBOS = require("const.combos")
 local CombosHero = require("combos.hero")
 local CombosComm = require("combos.communication")
+local DummyTarget = require("combos.dummy_target")
 
 local NET_TABLE_KEY = "combos"
 
@@ -43,10 +43,9 @@ function M:Load()
       step.id = id
     end
 
-    local combo = Combo(name, config)
+    local combo = Combo(config)
 
     table.insert(self.combos, combo)
-
     self.combosByName[name] = combo
   end
 
@@ -61,7 +60,6 @@ end
 
 -- TODO: implement countdown
 -- TODO: implement completion timer comparing against ideal time
--- TODO: setup dummy target
 function M:Start(player, combo)
   self:d("Combos:Start()", player:GetPlayerID(), combo.name)
 
@@ -71,6 +69,12 @@ function M:Start(player, combo)
   end
 
   self.active[player:GetPlayerID()] = combo
+
+  if self.dummy == nil then
+    self.dummy = DummyTarget()
+  end
+
+  self.dummy:Reset()
 
   CombosHero.setup(player, combo)
   CombosComm.emitSound(player, "combo_start")

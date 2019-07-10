@@ -1,3 +1,5 @@
+local Units = require("const.units")
+
 local M = {
   -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
   ENABLE_HERO_RESPAWN = true,
@@ -82,7 +84,7 @@ local M = {
   DISABLE_ANNOUNCER = true,
   -- What hero should we force all players to spawn as? (e.g. "npc_dota_hero_axe").
   -- Use nil to allow players to pick their own hero.
-  FORCE_PICKED_HERO = "npc_dota_hero_invoker",
+  FORCE_PICKED_HERO = Units.INVOKER,
   -- What time should we use for a fixed respawn timer?  Use -1 to keep the default dota behavior.
   FIXED_RESPAWN_TIME = 1,
   -- What should we use for the constant fountain mana regen?  Use -1 to keep the default dota behavior.

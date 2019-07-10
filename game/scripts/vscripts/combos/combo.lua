@@ -17,7 +17,7 @@ local function eventname(step)
   return step.name
 end
 
-function M:_init(name, config)
+function M:_init(config)
   tablex.update(self, config)
 
   self:_createFSM()
