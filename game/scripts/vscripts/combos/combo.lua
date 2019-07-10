@@ -21,6 +21,7 @@ function M:_init(name, config)
   tablex.update(self, config)
 
   self:_createFSM()
+  self.count = 0
 
   -- print('Combo:_init()', name)
   -- pp.dump(self)
@@ -62,7 +63,12 @@ function M:_createFSM()
 end
 
 function M:Reset()
-  return self.fsm:reset()
+  if self.fsm:reset() then
+    self.count = 0
+    return true
+  end
+
+  return false
 end
 
 function M:Progress(ability)
@@ -74,15 +80,15 @@ function M:Progress(ability)
 
   local progressed = eventFn(self.fsm)
 
-  if progressed and self.fsm:can(FINISH_EVENT) then
-    return self.fsm:finish()
+  if progressed then
+    self.count = self.count + 1
   end
 
   return progressed
 end
 
-function M:IsFinished()
-  return self.fsm:is(FINISH_STATE)
+function M:Finish()
+  return self.fsm:finish()
 end
 
 function M:NextSteps()

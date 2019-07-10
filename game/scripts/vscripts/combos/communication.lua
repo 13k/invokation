@@ -37,7 +37,7 @@ function M.sendStopped(player)
 end
 
 function M.sendProgress(player, combo)
-  local payload = {combo = combo.name, next = combo:NextSteps()}
+  local payload = {combo = combo.name, next = combo:NextSteps(), count = combo.count}
   return CustomEvents.SendPlayer(player, CustomEvents.EVENT_COMBO_PROGRESS, payload)
 end
 
@@ -47,7 +47,7 @@ function M.sendStepError(player, combo, ability)
 end
 
 function M.sendFinished(player, combo)
-  local payload = {combo = combo.name}
+  local payload = {combo = combo.name, count = combo.count, damage = 12345}
   return CustomEvents.SendPlayer(player, CustomEvents.EVENT_COMBO_FINISHED, payload)
 end
 

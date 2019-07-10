@@ -4,6 +4,7 @@ local M = require("pl.class")()
 local tablex = require("pl.tablex")
 local Combo = require("combos.combo")
 local COMBOS = require("const.combos")
+local CombosHero = require("combos.hero")
 local CombosComm = require("combos.communication")
 
 local NET_TABLE_KEY = "combos"
@@ -60,7 +61,7 @@ end
 
 -- TODO: implement countdown
 -- TODO: implement completion timer comparing against ideal time
--- TODO: setup dummy target + hero (level, abilities, prepared invokations, mana, cds) + items
+-- TODO: setup dummy target
 function M:Start(player, combo)
   self:d("Combos:Start()", player:GetPlayerID(), combo.name)
 
@@ -71,6 +72,7 @@ function M:Start(player, combo)
 
   self.active[player:GetPlayerID()] = combo
 
+  CombosHero.setup(player, combo)
   CombosComm.emitSound(player, "combo_start")
   CombosComm.sendStarted(player, combo)
 end
@@ -99,7 +101,10 @@ function M:StopCapturingAbilities(player)
   self.capturing[player:GetPlayerID()] = nil
 end
 
--- TODO: check for finished combo and give reward (<difficulty> gold?)
+-- TODO: implement wait/delay steps
+-- TODO: check for finished combo
+--        * give reward (<difficulty> gold?)
+--        * send summary (total damage)
 function M:OnAbilityUsed(player, unit, ability)
   self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
 
@@ -116,10 +121,10 @@ function M:OnAbilityUsed(player, unit, ability)
   end
 
   if combo:Progress(ability) then
-    if combo:IsFinished() then
+    CombosComm.sendProgress(player, combo)
+
+    if combo:Finish() then
       CombosComm.sendFinished(player, combo)
-    else
-      CombosComm.sendProgress(player, combo)
     end
   elseif not ability:IsInvokationAbility() then
     CombosComm.sendStepError(player, combo, ability)

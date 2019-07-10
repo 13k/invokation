@@ -1,5 +1,7 @@
 <root>
   <scripts>
+    <include src="s2r://panorama/scripts/sequence_actions.vjs_c" />
+
     <include src="file://{resources}/scripts/internal/util.js" />
     <include src="file://{resources}/scripts/internal/context_data.js" />
     <include src="file://{resources}/scripts/internal/context_logging.js" />
@@ -11,12 +13,65 @@
 
   <styles>
     <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+
     <include src="file://{resources}/styles/shared/panelstyles.css" />
     <include src="file://{resources}/styles/shared/colors.css" />
     <include src="file://{resources}/styles/custom_game/combo.css" />
   </styles>
 
   <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <!-- <DOTAScenePanel id="Invoker" unit="npc_dota_hero_invoker" particleonly="false" drawbackground="true" antialias="true" allowrotation="false" hittest="false" /> -->
+    <!-- <DOTAScenePanel id="TitleFX" map="scenes/es_arcana_title" camera="camera" renderdeferred="false" particleonly="false" hittest="false" /> -->
+    <!-- <DOTAScenePanel id="StartFX" map="scenes/wintercompendium2016/queststart" camera="shot_camera" particleonly="true" /> -->
+    <!-- <DOTAScenePanel id="ReminderFX" map="backgrounds/accept_popup_test.vmap" camera="shot_camera" particleonly="true" /> -->
+
+    <Panel id="ComboCount" class="ArcanaLevel2" hittest="false" hittestchildren="false">
+      <Panel id="ComboCountContainer">
+        <Panel id="ComboDetail">
+          <DOTAScenePanel id="ComboAmbientFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
+        </Panel>
+
+        <Panel id="ComboCountContents">
+          <Panel id="ComboCounter" class="ComboDigits DigitContainer">
+            <Panel class="ComboX ComboCountX ComboCountValue" />
+            <Panel id="ComboCounterDigit0" class="ComboCountDigit ESDigit ComboCountValue" />
+            <Panel id="ComboCounterDigit1" class="ComboCountDigit ESDigit ComboCountValue" />
+            <Panel id="ComboCounterDigit2" class="ComboCountDigit ESDigit ComboCountValue" />
+          </Panel>
+          <Label class="ComboCountLabel" text="#invokation_combo_counter_title" />
+        </Panel>
+      </Panel>
+
+      <Panel id="ComboSummaryContainer">
+        <DOTAScenePanel id="ComboSummaryFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
+
+        <Panel id="ComboDetail2" />
+
+        <Panel id="ComboSummaryContents">
+          <Panel class="ComboSummary">
+            <Panel id="ComboSummaryCounter" class="DigitContainer">
+              <Panel class="ComboX ComboSummaryX" />
+              <Panel id="ComboSummaryCounterDigit0" class="ComboSummaryDigit ESDigit" />
+              <Panel id="ComboSummaryCounterDigit1" class="ComboSummaryDigit ESDigit" />
+              <Panel id="ComboSummaryCounterDigit2" class="ComboSummaryDigit ESDigit" />
+            </Panel>
+            <Label class="SummaryComboLabel" text="#invokation_combo_counter_title" />
+          </Panel>
+
+          <Panel class="DamageSummary">
+            <Panel id="ComboDamage" class="DigitContainer">
+              <Panel id="ComboDamageDigit0" class="DamageSummaryDigit ESDigit" />
+              <Panel id="ComboDamageDigit1" class="DamageSummaryDigit ESDigit" />
+              <Panel id="ComboDamageDigit2" class="DamageSummaryDigit ESDigit" />
+              <Panel id="ComboDamageDigit3" class="DamageSummaryDigit ESDigit" />
+              <Panel id="ComboDamageDigit4" class="DamageSummaryDigit ESDigit" />
+            </Panel>
+            <Label class="SummaryDamageLabel" text="#invokation_combo_counter_damage_label" />
+          </Panel>
+        </Panel>
+      </Panel>
+    </Panel>
+
     <Panel id="Combo" class="Hide" hittest="false">
       <Panel id="Sequence" hittest="false">
         <Panel class="FillHeight" hittest="false" />

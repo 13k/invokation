@@ -1,4 +1,4 @@
-@keyframes 'ComboStepBoink' {
+@keyframes 'ComboStepBump' {
   0% {
     pre-transform-scale2d: 0;
   }
@@ -17,9 +17,9 @@
   horizontal-align: center;
 }
 
-.ComboStep.Boink {
+.ComboStep.Bump {
   pre-transform-scale2d: 1;
-  animation-name: ComboStepBoink;
+  animation-name: ComboStepBump;
   animation-duration: 0.25s;
   animation-delay: 0s;
   animation-timing-function: ease-in;

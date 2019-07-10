@@ -31,8 +31,9 @@ function onUnsetError() {
   button.RemoveClass("Error");
 }
 
-function Boink() {
-  $.GetContextPanel().AddClass("Boink");
+function bump() {
+  $.GetContextPanel().RemoveClass("Bump");
+  $.GetContextPanel().AddClass("Bump");
 }
 
 (function() {
@@ -41,6 +42,6 @@ function Boink() {
     UnsetStepActive: onUnsetActive,
     SetStepError: onSetError,
     UnsetStepError: onUnsetError,
-    Boink: Boink,
+    StepBump: bump,
   });
 })();

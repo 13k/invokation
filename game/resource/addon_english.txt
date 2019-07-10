@@ -65,5 +65,8 @@
     "invokation_combo_solo_control_physical_damage1" "Control & Physical Damage 1 - Blast Snap"
     "invokation_combo_tf_control_magic_damage1" "Control & Magic Damage 1 - Shock Wall"
     "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Double Blast"
+
+    "invokation_combo_counter_title" "Combo"
+    "invokation_combo_counter_damage_label" "Damage"
   }
 }
