@@ -13,6 +13,7 @@ return {
     hero_level = 2,
     damage_rating = 0,
     difficulty_rating = 1,
+    items = {"item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_cold_snap",
@@ -33,6 +34,7 @@ return {
     hero_level = 2,
     damage_rating = 0,
     difficulty_rating = 1,
+    items = {"item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_tornado",
@@ -88,6 +90,7 @@ return {
     hero_level = 2,
     damage_rating = 1,
     difficulty_rating = 1,
+    items = {"item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_emp",
@@ -108,6 +111,7 @@ return {
     hero_level = 2,
     damage_rating = 1,
     difficulty_rating = 1,
+    items = {"item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_forge_spirit",
@@ -128,6 +132,7 @@ return {
     hero_level = 2,
     damage_rating = 1,
     difficulty_rating = 1,
+    items = {"item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_forge_spirit",
@@ -152,6 +157,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 2,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_tornado",
@@ -177,6 +183,7 @@ return {
     hero_level = 6,
     damage_rating = 3,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_tornado",
@@ -202,6 +209,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 2,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_deafening_blast",
@@ -227,6 +235,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_ice_wall",
@@ -252,6 +261,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_ice_wall",
@@ -277,6 +287,7 @@ return {
     hero_level = 6,
     damage_rating = 3,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_ice_wall",
@@ -302,6 +313,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_ice_wall",
@@ -327,6 +339,7 @@ return {
     hero_level = 6,
     damage_rating = 2,
     difficulty_rating = 2,
+    items = {"item_null_talisman", "item_null_talisman"},
     sequence = {
       [1] = {
         name = "invoker_cold_snap",
@@ -356,6 +369,7 @@ return {
     hero_level = 12,
     damage_rating = 2,
     difficulty_rating = 3,
+    items = {"item_null_talisman", "item_null_talisman", "item_ultimate_scepter"},
     sequence = {
       [1] = {
         name = "invoker_tornado",
@@ -390,44 +404,39 @@ return {
     damage_rating = 4,
     difficulty_rating = 4,
     hero_level = 18,
-    items = {"item_refresher", "item_ultimate_scepter"},
+    items = {"item_null_talisman", "item_null_talisman", "item_null_talisman", "item_refresher", "item_ultimate_scepter"},
     sequence = {
       [1] = {
-        name = "invoker_ghost_walk",
+        name = "invoker_tornado",
         required = true,
         next = {2},
       },
       [2] = {
-        name = "invoker_tornado",
+        name = "invoker_chaos_meteor",
         required = true,
         next = {3},
       },
       [3] = {
-        name = "invoker_chaos_meteor",
+        name = "invoker_deafening_blast",
         required = true,
         next = {4},
       },
       [4] = {
-        name = "invoker_deafening_blast",
+        name = "item_refresher",
         required = true,
         next = {5},
       },
       [5] = {
-        name = "item_refresher",
+        name = "invoker_chaos_meteor",
         required = true,
         next = {6},
       },
       [6] = {
-        name = "invoker_chaos_meteor",
+        name = "invoker_deafening_blast",
         required = true,
         next = {7},
       },
       [7] = {
-        name = "invoker_deafening_blast",
-        required = true,
-        next = {8},
-      },
-      [8] = {
         name = "invoker_sun_strike",
         required = true,
       },
