@@ -1,17 +1,3 @@
-@keyframes 'ComboStepBump' {
-  0% {
-    pre-transform-scale2d: 0;
-  }
-
-  50% {
-    pre-transform-scale2d: 1.25;
-  }
-
-  100% {
-    pre-transform-scale2d: 1;
-  }
-}
-
 .ComboStep {
   pre-transform-scale2d: 0;
   horizontal-align: center;
@@ -59,4 +45,18 @@
 
 .StepIcon DOTAItemImage {
   vertical-align: middle;
+}
+
+@keyframes 'ComboStepBump' {
+  0% {
+    pre-transform-scale2d: 0;
+  }
+
+  50% {
+    pre-transform-scale2d: 1.25;
+  }
+
+  100% {
+    pre-transform-scale2d: 1;
+  }
 }

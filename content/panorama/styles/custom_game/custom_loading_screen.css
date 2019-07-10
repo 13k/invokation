@@ -1,58 +1,113 @@
-@define TotalLength: 40s;
-@define TimingFunc: linear;
-@define IterationCount: 1;
-@define AnimationDelay: 0s;
-
-.root {
+.Root {
   width: 100%;
   height: 100%;
-  background-color: black;
-  overflow: clip;
-}
-
-#bg {
-  margin-top: 350px;
-  overflow: clip;
-  pre-transform-scale2d: 1.0;
-  animation-name: bg-animation;
-  animation-delay: AnimationDelay;
-  animation-duration: TotalLength;
-  animation-timing-function: TimingFunc;
-  animation-iteration-count: IterationCount;
-}
-
-#bg-img {
+  background-image: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
+  background-position: -150px 0%;
+  background-size: 110% 110%;
   background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: 100% 100%;
-  margin-left: 160px;
-  /*margin-bottom: 0px;*/
+  background-color: black;
 }
 
-#title-panel {
-  horizontal-align: left;
-  vertical-align: bottom;
-  margin-bottom: 150px;
+#TitleFX {
+  width: 1000px;
+  height: 600px;
+  transform: translateX(100px) translateY(100px) translateZ(-40px);
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+}
+
+#TitleFX.SceneLoaded {
+  opacity: 1;
+}
+
+.TitlePanel {
+  width: 500px;
+  height: 500px;
+  margin-top: 100px;
   margin-left: 100px;
-  flow-children: right;
+
+  background-color: gradient(
+    radial,
+    50% 50%,
+    0% 0%,
+    50% 50%,
+    from(#2b1d10f1),
+    color-stop(0.6, #ff9100c2),
+    to(#00000000)
+  );
+
+  animation-name: OrbColors;
+  animation-iteration-count: infinite;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
 }
 
-#title {
-  margin-bottom: -15px;
-  vertical-align: center;
-  text-transform: uppercase;
+.Title {
+  width: 100%;
+  align: center center;
   font-size: 80px;
-  color: #cccccc;
-  text-shadow: 2px 2px 2px #000000;
+  letter-spacing: -2px;
+  color: #000;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: -8px 8px 6px #333;
+  text-overflow: shrink;
+
+  animation-name: TextGlow;
+  animation-iteration-count: infinite;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
 }
 
-@keyframes 'bg-animation' {
+@keyframes 'OrbColors' {
   0% {
-    transform: translateX(0px) translateY(0px);
-    pre-transform-scale2d: 0.8;
+    background-color: gradient(
+      radial,
+      50% 50%,
+      0% 0%,
+      50% 50%,
+      from(#2b1d10f1),
+      color-stop(0.6, #ff9100c2),
+      to(#00000000)
+    );
   }
-
+  50% {
+    background-color: gradient(
+      radial,
+      50% 50%,
+      0% 0%,
+      50% 50%,
+      from(#2b1d10f1),
+      color-stop(0.6, #ce7909c2),
+      to(#00000000)
+    );
+  }
   100% {
-    transform: translateX(0px) translateY(-200px);
+    background-color: gradient(
+      radial,
+      50% 50%,
+      0% 0%,
+      50% 50%,
+      from(#2b1d10f1),
+      color-stop(0.6, #ff9100c2),
+      to(#00000000)
+    );
+  }
+}
+
+@keyframes 'TextGlow' {
+  0% {
+    color: #000;
+    text-shadow: -8px 8px 6px #333;
+  }
+  50% {
+    color: #222;
+    text-shadow: -6px 8px 8px #333;
+  }
+  100% {
+    color: #000;
+    text-shadow: -8px 8px 6px #333;
   }
 }

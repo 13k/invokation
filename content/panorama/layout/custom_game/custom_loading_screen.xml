@@ -1,15 +1,15 @@
 <root>
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss" />
+
     <include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
   </styles>
 
-  <Panel class="root">
-    <Panel id="bg">
-      <Image id="bg-img" src="file://{images}/custom_game/loading_screen/invokation.png" />
-    </Panel>
+  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <DOTAScenePanel id="TitleFX" map="backgrounds/dashboard_parallax_plus" camera="camera" renderdeferred="false" particleonly="true" hittest="false" />
 
-    <Panel id="title-panel">
-      <Label id="title" text="#addon_game_name" />
+    <Panel class="TitlePanel" hittest="false">
+      <Label class="Title TitleFont" text="#addon_game_name" hittest="false" />
     </Panel>
   </Panel>
 </root>

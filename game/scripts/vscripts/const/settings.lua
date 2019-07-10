@@ -116,7 +116,7 @@ local M = {
   ENABLE_AUTO_LAUNCH = true,
   -- How long should the default team selection launch timer be?
   -- The default for custom games is 30. Setting to 0 will skip team selection.
-  AUTO_LAUNCH_DELAY = 0, -- IsInToolsMode() and 0 or 5,
+  AUTO_LAUNCH_DELAY = 10, -- IsInToolsMode() and 0 or 5,
   -- Should we lock the teams initially?  Note that the host can still unlock the teams
   LOCK_TEAM_SETUP = true,
   -- Which runes should be enabled to spawn in our game mode?

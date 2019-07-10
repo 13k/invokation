@@ -1,6 +1,6 @@
 <root>
   <scripts>
-    <include src="s2r://panorama/scripts/sequence_actions.vjs_c" />
+    <include src="s2r://panorama/scripts/sequence_actions.vjs" />
 
     <include src="file://{resources}/scripts/internal/util.js" />
     <include src="file://{resources}/scripts/internal/context_data.js" />
@@ -12,7 +12,7 @@
   </scripts>
 
   <styles>
-    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="s2r://panorama/styles/dotastyles.vcss" />
 
     <include src="file://{resources}/styles/shared/panelstyles.css" />
     <include src="file://{resources}/styles/shared/colors.css" />
@@ -20,11 +20,6 @@
   </styles>
 
   <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
-    <!-- <DOTAScenePanel id="Invoker" unit="npc_dota_hero_invoker" particleonly="false" drawbackground="true" antialias="true" allowrotation="false" hittest="false" /> -->
-    <!-- <DOTAScenePanel id="TitleFX" map="scenes/es_arcana_title" camera="camera" renderdeferred="false" particleonly="false" hittest="false" /> -->
-    <!-- <DOTAScenePanel id="StartFX" map="scenes/wintercompendium2016/queststart" camera="shot_camera" particleonly="true" /> -->
-    <!-- <DOTAScenePanel id="ReminderFX" map="backgrounds/accept_popup_test.vmap" camera="shot_camera" particleonly="true" /> -->
-
     <Panel id="ComboCount" class="ArcanaLevel2" hittest="false" hittestchildren="false">
       <Panel id="ComboCountContainer">
         <Panel id="ComboDetail">
