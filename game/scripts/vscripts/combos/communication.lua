@@ -3,19 +3,8 @@ local M = {}
 local SoundEvents = require("dota2.sound_events")
 local CustomEvents = require("dota2.custom_events")
 
-local SOUND_EVENTS = {
-  combo_start = 6,
-  combo_stop = 1,
-  combo_error = 1,
-}
-
-local function randomSoundEvent(stage)
-  local max = SOUND_EVENTS[stage]
-  return stage .. "_" .. tostring(RandomInt(1, max))
-end
-
-function M.emitSound(player, stage)
-  return SoundEvents.EmitOnPlayer(player, randomSoundEvent(stage))
+function M.emitSound(player, sndEvent)
+  return SoundEvents.EmitOnPlayer(player, sndEvent)
 end
 
 function M.sendPickerShow()

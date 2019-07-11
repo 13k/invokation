@@ -99,10 +99,9 @@ function GameMode:OnNPCSpawned(keys)
   --local npc = EntIndexToHScript(keys.entindex)
 end
 
--- An entity somewhere has been hurt.  This event fires very often with many units so don't do too many expensive
--- operations here
+-- An entity somewhere has been hurt.
 function GameMode:OnEntityHurt(keys)
-  self:d("Entity Hurt", keys)
+  self:d("OnEntityHurt", keys)
 
   --local damagebits = keys.damagebits -- This might always be 0 and therefore useless
   --if keys.entindex_attacker ~= nil and keys.entindex_killed ~= nil then
@@ -151,7 +150,7 @@ end
 
 -- An ability was used by a player
 function GameMode:OnAbilityUsed(keys)
-  self:d("AbilityUsed", keys)
+  self:d("OnAbilityUsed", keys)
 
   local player = PlayerResource:GetPlayer(keys.PlayerID)
   local caster = Unit(EntIndexToHScript(keys.caster_entindex))

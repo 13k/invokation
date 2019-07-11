@@ -8,6 +8,27 @@ local CombosComm = require("combos.communication")
 local DummyTarget = require("combos.dummy_target")
 
 local NET_TABLE_KEY = "combos"
+local SOUND_EVENTS = {
+  dummy_create = {
+    "Hero_ShadowShaman.Hex.Target"
+  },
+  combo_start = {
+    "invoker_invo_begin_01",
+    "invoker_invo_move_08",
+    "invoker_invo_move_09",
+    "invoker_invo_move_13",
+    "invoker_invo_attack_05",
+    "invoker_invo_ability_invoke_01",
+  },
+  combo_stop = {
+    "invoker_invo_failure_04",
+  }
+}
+
+local function randomSoundEvent(stage)
+  local events = SOUND_EVENTS[stage]
+  return events[RandomInt(1, #events)]
+end
 
 function M:_init(args)
   self.logger = args.logger
@@ -72,12 +93,13 @@ function M:Start(player, combo)
 
   if self.dummy == nil then
     self.dummy = DummyTarget()
+    CombosComm.emitSound(player, randomSoundEvent("dummy_create"))
   end
 
   self.dummy:Reset()
 
   CombosHero.setup(player, combo)
-  CombosComm.emitSound(player, "combo_start")
+  CombosComm.emitSound(player, randomSoundEvent("combo_start"))
   CombosComm.sendStarted(player, combo)
 end
 
@@ -91,7 +113,7 @@ function M:Stop(player)
 
   self.active[player:GetPlayerID()] = nil
 
-  CombosComm.emitSound(player, "combo_stop")
+  CombosComm.emitSound(player, randomSoundEvent("combo_stop"))
   CombosComm.sendStopped(player)
 end
 
