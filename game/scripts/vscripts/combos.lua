@@ -8,6 +8,7 @@ local CombosComm = require("combos.communication")
 local DummyTarget = require("combos.dummy_target")
 
 local NET_TABLE_KEY = "combos"
+
 local SOUND_EVENTS = {
   dummy_create = {
     "Hero_ShadowShaman.Hex.Target"
@@ -23,6 +24,21 @@ local SOUND_EVENTS = {
   combo_stop = {
     "invoker_invo_failure_04",
   }
+}
+
+local MUSIC = {
+  IDLE = {
+    STATUS = DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION,
+    INTENSITY = 1.0,
+  },
+  BATTLE = {
+    STATUS = DOTA_MUSIC_STATUS_BATTLE,
+    INTENSITY = 1.0,
+  },
+  VICTORY = {
+    STATUS = DOTA_MUSIC_STATUS_EXPLORATION,
+    INTENSITY = 1.0,
+  },
 }
 
 local function randomSoundEvent(stage)
@@ -120,7 +136,7 @@ function M:Start(player, combo)
   end
 
   dummy:Reset()
-
+  player:SetMusicStatus(MUSIC.BATTLE.STATUS, MUSIC.BATTLE.INTENSITY)
   CombosHero.setup(player, combo)
   CombosComm.emitSound(player, randomSoundEvent("combo_start"))
   CombosComm.sendStarted(player, combo)
@@ -137,15 +153,18 @@ function M:Stop(player)
   self:getPlayerState(player, "dummy"):Kill()
   self:setPlayerState(player, "combo", nil)
 
+  player:SetMusicStatus(MUSIC.IDLE.STATUS, MUSIC.IDLE.INTENSITY)
   CombosComm.emitSound(player, randomSoundEvent("combo_stop"))
   CombosComm.sendStopped(player)
 end
 
 function M:Finish(player, combo)
+  self:d("Combos:Finish()", player:GetPlayerID(), combo.name)
+
   local hero = player:GetAssignedHero()
 
   hero:PerformTaunt()
-
+  player:SetMusicStatus(MUSIC.VICTORY.STATUS, MUSIC.VICTORY.INTENSITY)
   CombosComm.sendFinished(player, combo, self:playerState(player))
 end
 
