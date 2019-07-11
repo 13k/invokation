@@ -1,4 +1,6 @@
-require("lang/stub")
+if not IsInToolsMode() then
+  require("lang/stub")
+end
 
 local GameMode = require("game_mode")
 
