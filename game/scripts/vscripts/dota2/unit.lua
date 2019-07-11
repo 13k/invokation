@@ -6,7 +6,6 @@ local Inventory = require("const.inventory")
 local UNIT_NO_INVENTORY_ERROR = "Unit '%s' does not have an inventory"
 local UNIT_CANNOT_RESPAWN_ERROR = "Unit '%s' cannot respawn"
 
-local MAX_ABILITIES = 16
 local DELEGATES = {
   "AddItemByName",
   "FindAbilityByName",
@@ -135,8 +134,8 @@ function M:FindAbilityOrItem(name)
   return nil
 end
 
-function M:EndAbilitiesCooldowns()
-  for i = 0, MAX_ABILITIES - 1 do
+function M:EndAbilityCooldowns()
+  for i = 0, self.entity:GetAbilityCount() - 1 do
     local ability = self:GetAbilityByIndex(i)
 
     if ability ~= nil then

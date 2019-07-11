@@ -12,6 +12,7 @@ local ORB_ABILITIES = tablex.pairmap(
 function M:_init(abilityEntity)
   self.entity = abilityEntity
   self.name = self.entity:GetAbilityName()
+  self.index = self.entity:GetAbilityIndex()
 end
 
 function M:IsItem()

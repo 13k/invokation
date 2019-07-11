@@ -1,20 +1,23 @@
 local M = {}
 
 local Unit = require("dota2.unit")
+local Invoker = require("dota2.invoker")
 
--- TODO: setup abilities, prepared invokations, items
+-- TODO: setup prepared invokations and orb levels
 function M.setup(player, combo)
-  local hero = Unit(player:GetAssignedHero())
+  local hero = player:GetAssignedHero()
+  local unit = Unit(hero)
+  local invoker = Invoker(hero)
 
-  while hero:GetLevel() < combo.hero_level do
-    hero:HeroLevelUp(true)
+  while unit:GetLevel() < combo.hero_level do
+    unit:HeroLevelUp(false)
   end
 
-  if not hero:IsAlive() then
-    hero:Respawn({isFirst = true})
+  if not unit:IsAlive() then
+    unit:Respawn({isFirst = true})
   end
 
-  hero:Purge({
+  unit:Purge({
     buffs = true,
     debuffs = true,
     frameOnly = false,
@@ -22,13 +25,20 @@ function M.setup(player, combo)
     exceptions = true,
   })
 
-  hero:Interrupt()
-  hero:HealMax(nil)
-  hero:GiveMaxMana()
-  hero:EndAbilitiesCooldowns()
-  hero:RemoveItems({includeStash = true, endCooldown = true})
-  hero:AddItemsByName(combo.items or {})
-  hero:Hold()
+  unit:Interrupt()
+  unit:HealMax(nil)
+  unit:GiveMaxMana()
+  unit:EndAbilityCooldowns()
+  unit:RemoveItems({includeStash = true, endCooldown = true})
+  unit:AddItemsByName(combo.items or {})
+  unit:Hold()
+
+  invoker:Invoke(Invoker.ABILITY_EMPTY2)
+  invoker:Invoke(Invoker.ABILITY_EMPTY1)
+
+  local points = invoker:ResetOrbAbilities()
+
+  hero:SetAbilityPoints(hero:GetAbilityPoints() + points)
 end
 
 return M
