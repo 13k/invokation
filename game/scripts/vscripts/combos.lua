@@ -205,14 +205,12 @@ end
 
 -- FIXME: abilities can still be producing damage instances after the combo has finished
 function M:OnEntityHurt(instance)
-  self:d("Combos:OnEntityHurt()", instance)
-  --[[
+  self:d("Combos:OnEntityHurt()")
   self:d("  attacker:", instance:AttackerName())
   self:d("  inflictor:", instance:InflictorName())
   self:d("  victim:", instance:VictimName())
-  self:d("  cause:", instance.cause)
+  self:d("  category:", instance.category)
   self:d("  damage:", instance.damage)
-  ]]
 
   if instance.attacker == nil then
     return

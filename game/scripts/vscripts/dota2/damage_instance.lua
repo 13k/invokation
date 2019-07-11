@@ -1,14 +1,11 @@
 local M = require("pl.class")()
 
-M.CAUSE_ATTACK = "attack_damage"
-M.CAUSE_ABILITY = "ability_damage"
-
 function M:_init(attacker, inflictor, victim, damage)
   self.attacker = attacker
   self.inflictor = inflictor
   self.victim = victim
   self.damage = damage
-  self.cause = inflictor and M.CAUSE_ABILITY or M.CAUSE_ATTACK
+  self.category = inflictor and DOTA_DAMAGE_CATEGORY_SPELL or DOTA_DAMAGE_CATEGORY_ATTACK
 end
 
 function M:AttackerName()
