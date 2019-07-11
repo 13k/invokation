@@ -1,9 +1,9 @@
 local M = require("pl.class")()
 
-local pretty = require("pl.pretty")
-local stringx = require("pl.stringx")
-local tablex = require("pl.tablex")
-local text = require("pl.text")
+local pp = require("pl.pretty")
+local sx = require("pl.stringx")
+local tx = require("pl.tablex")
+local tt = require("pl.text")
 
 local LEVEL = {
   UNKNOWN = 0,
@@ -14,15 +14,15 @@ local LEVEL = {
   CRITICAL = 50
 }
 
-local LEVEL_NAMES = tablex.index_map(LEVEL)
+local LEVEL_NAMES = tx.index_map(LEVEL)
 
 M.DEFAULT_LEVEL = LEVEL.INFO
-M.DEFAULT_FORMAT = text.Template("$timestamp ($severity) $progname: $message")
+M.DEFAULT_FORMAT = tt.Template("$timestamp ($severity) $progname: $message")
 
 function M:_init(level, progname, format)
   self.level = level or M.DEFAULT_LEVEL
   self.progname = progname and (progname .. " ") or ""
-  self.format = format and text.Template(format) or M.DEFAULT_FORMAT
+  self.format = format and tt.Template(format) or M.DEFAULT_FORMAT
 end
 
 function M:Log(level, ...)
@@ -30,13 +30,20 @@ function M:Log(level, ...)
     return
   end
 
-  local values = tablex.imap(pretty.write, {...})
+  local len = select("#", ...)
+  local values = {...}
+  local formatted = {}
+
+  for i = 1, len do
+    local s = pp.write(values[i])
+    table.insert(formatted, s)
+  end
 
   local keymap = {
     timestamp = GetSystemDate() .. " " .. GetSystemTime(),
     severity = LEVEL_NAMES[level],
     progname = self.progname,
-    message = stringx.join(" ", values)
+    message = sx.join(" ", formatted)
   }
 
   return print(self.format:substitute(keymap))
@@ -55,7 +62,7 @@ local function createLevelMethods(levelName)
     return
   end
 
-  local title = stringx.title(levelName)
+  local title = sx.title(levelName)
 
   -- function M:Debug(...) ... end
   M[title] = function(self, ...)
@@ -72,6 +79,6 @@ for level, _ in pairs(LEVEL) do
   createLevelMethods(level)
 end
 
-tablex.update(M, LEVEL)
+tx.update(M, LEVEL)
 
 return M
