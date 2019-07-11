@@ -81,7 +81,7 @@ local function GetAPI(t, sub, done)
   return ret
 end
 
-function M.openGithub(msg)
+function M.openGithub(_entIdx, msg)
   local search = msg.search
   local language = msg.language
 
