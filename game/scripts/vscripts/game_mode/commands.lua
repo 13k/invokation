@@ -59,6 +59,20 @@ function GameMode:registerCommands()
     FCVAR_CHEAT
   )
 
+  Convars:RegisterCommand(
+    "inv_dump_ability_specials",
+    lfunc.bindbyname(self, "dumpAbilitySpecials"),
+    "Dump Invoker ability specials (empty - all specials, 1 - scaling per level specials only)",
+    FCVAR_CHEAT
+  )
+
+  Convars:RegisterCommand(
+    "inv_reinsert_ability",
+    lfunc.bindbyname(self, "reinsertAbility"),
+    "Reinsert Invoker ability (<name:string>)",
+    FCVAR_CHEAT
+  )
+
   self:d("  register commands")
 end
 
@@ -192,4 +206,63 @@ function GameMode:findGlobal(_, pattern)
   end
 
   print("---")
+end
+
+function GameMode:dumpAbilitySpecials(_, onlyScaling)
+  local player = Convars:GetDOTACommandClient()
+  local hero = player:GetAssignedHero()
+  local specials
+
+  if onlyScaling then
+    specials = {
+      [Invoker.ABILITY_COLD_SNAP] = {"duration", "freeze_cooldown", "freeze_damage"},
+      [Invoker.ABILITY_GHOST_WALK] = {"enemy_slow", "self_slow"},
+      [Invoker.ABILITY_ICE_WALL] = {"duration", "slow", "damage_per_second"},
+      [Invoker.ABILITY_EMP] = {"mana_burned"},
+      [Invoker.ABILITY_TORNADO] = {"travel_distance", "lift_duration", "quas_damage", "wex_damage"},
+      [Invoker.ABILITY_ALACRITY] = {"bonus_attack_speed", "bonus_damage"},
+      [Invoker.ABILITY_SUN_STRIKE] = {"damage"},
+      [Invoker.ABILITY_FORGE_SPIRIT] = {"spirit_damage", "spirit_mana", "spirit_armor", "spirit_attack_range", "spirit_hp", "spirit_duration"},
+      [Invoker.ABILITY_CHAOS_METEOR] = {"travel_distance", "main_damage", "burn_dps"},
+      [Invoker.ABILITY_DEAFENING_BLAST] = {"damage", "knockback_duration", "disarm_duration"},
+    }
+  else
+    specials = {
+      [Invoker.ABILITY_COLD_SNAP] = {"duration", "freeze_duration", "freeze_cooldown", "freeze_damage", "damage_trigger"},
+      [Invoker.ABILITY_GHOST_WALK] = {"duration", "area_of_effect", "enemy_slow", "self_slow", "aura_fade_time"},
+      [Invoker.ABILITY_ICE_WALL] = {"duration", "slow", "slow_duration", "damage_per_second", "wall_place_distance", "num_wall_elements", "wall_element_spacing", "wall_element_radius"},
+      [Invoker.ABILITY_EMP] = {"delay", "area_of_effect", "mana_burned", "damage_per_mana_pct"},
+      [Invoker.ABILITY_TORNADO] = {"travel_distance", "travel_speed", "area_of_effect", "vision_distance", "end_vision_duration", "lift_duration", "base_damage", "quas_damage", "wex_damage"},
+      [Invoker.ABILITY_ALACRITY] = {"bonus_attack_speed", "bonus_damage", "duration"},
+      [Invoker.ABILITY_SUN_STRIKE] = {"delay", "area_of_effect", "damage", "vision_distance", "vision_duration"},
+      [Invoker.ABILITY_FORGE_SPIRIT] = {"spirit_damage", "spirit_mana", "spirit_armor", "spirit_attack_range", "spirit_hp", "spirit_duration"},
+      [Invoker.ABILITY_CHAOS_METEOR] = {"land_time", "area_of_effect", "travel_distance", "travel_speed", "damage_interval", "vision_distance", "end_vision_duration", "main_damage", "burn_duration", "burn_dps"},
+      [Invoker.ABILITY_DEAFENING_BLAST] = {"travel_distance", "travel_speed", "radius_start", "radius_end", "end_vision_duration", "damage", "knockback_duration", "disarm_duration"},
+    }
+  end
+
+  for aName, sNames in pairs(specials) do
+    local ability = hero:FindAbilityByName(aName)
+
+    for _, sName in ipairs(sNames) do
+      local t = ability:GetSpecialValueFor(sName)
+      self:d(aName, sName, t)
+    end
+  end
+end
+
+function GameMode:reinsertAbility(_, name)
+  self:d("reinsertAbility()", name)
+
+  local player = Convars:GetDOTACommandClient()
+  local hero = player:GetAssignedHero()
+  local ability = hero:FindAbilityByName(name)
+  local index = ability:GetAbilityIndex()
+  local level = ability:GetLevel()
+
+  hero:RemoveAbility(name)
+
+  ability = hero:AddAbility(name)
+  ability:SetAbilityIndex(index)
+  ability:SetLevel(level)
 end
