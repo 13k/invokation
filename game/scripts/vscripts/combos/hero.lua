@@ -36,7 +36,7 @@ function M.setup(player, combo)
   invoker:Invoke(Invoker.ABILITY_EMPTY2)
   invoker:Invoke(Invoker.ABILITY_EMPTY1)
 
-  local points = invoker:ResetOrbAbilities()
+  local points = invoker:ResetAbilities()
 
   hero:SetAbilityPoints(hero:GetAbilityPoints() + points)
 end
