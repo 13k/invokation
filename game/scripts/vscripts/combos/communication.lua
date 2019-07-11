@@ -1,11 +1,6 @@
 local M = {}
 
-local SoundEvents = require("dota2.sound_events")
 local CustomEvents = require("dota2.custom_events")
-
-function M.emitSound(player, sndEvent)
-  return SoundEvents.EmitOnPlayer(player, sndEvent)
-end
 
 function M.sendPickerShow()
   return CustomEvents.SendAll(CustomEvents.EVENT_PICKER_SHOW)

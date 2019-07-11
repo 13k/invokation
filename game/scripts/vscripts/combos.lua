@@ -6,6 +6,7 @@ local COMBOS = require("const.combos")
 local CombosHero = require("combos.hero")
 local CombosComm = require("combos.communication")
 local DummyTarget = require("combos.dummy_target")
+local SoundEvents = require("dota2.sound_events")
 
 local NET_TABLE_KEY = "combos"
 
@@ -132,13 +133,13 @@ function M:Start(player, combo)
 
   if dummy == nil then
     dummy = self:setPlayerState(player, "dummy", DummyTarget())
-    CombosComm.emitSound(player, randomSoundEvent("dummy_create"))
+    SoundEvents.EmitOnEntity(randomSoundEvent("dummy_create"), dummy.entity)
   end
 
   dummy:Reset()
   player:SetMusicStatus(MUSIC.BATTLE.STATUS, MUSIC.BATTLE.INTENSITY)
   CombosHero.setup(player, combo)
-  CombosComm.emitSound(player, randomSoundEvent("combo_start"))
+  SoundEvents.EmitOnPlayer(randomSoundEvent("combo_start"), player)
   CombosComm.sendStarted(player, combo)
 end
 
@@ -154,7 +155,7 @@ function M:Stop(player)
   self:setPlayerState(player, "combo", nil)
 
   player:SetMusicStatus(MUSIC.IDLE.STATUS, MUSIC.IDLE.INTENSITY)
-  CombosComm.emitSound(player, randomSoundEvent("combo_stop"))
+  SoundEvents.EmitOnPlayer(randomSoundEvent("combo_stop"), player)
   CombosComm.sendStopped(player)
 end
 
