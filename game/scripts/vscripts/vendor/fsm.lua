@@ -124,12 +124,13 @@ function machine:cannot(e)
   return not self:can(e)
 end
 
-function machine:todot(filename)
-  local dotfile = io.open(filename, "w")
-  dotfile:write("digraph {\n")
-  local transition = function(event, from, to)
-    dotfile:write(string.format("%s -> %s [label=%s];\n", from, to, event))
+function machine:todot()
+  local dot = {"digraph {"}
+
+  local function transition(event, from, to)
+    table.insert(dot, string.format('"%s" -> "%s" [label="%s"];', from, to, event))
   end
+
   for _, event in pairs(self.options.events) do
     if type(event.from) == "table" then
       for _, from in ipairs(event.from) do
@@ -139,8 +140,10 @@ function machine:todot(filename)
       transition(event.name, event.from, event.to)
     end
   end
-  dotfile:write("}\n")
-  dotfile:close()
+
+  table.insert(dot, "}")
+
+  return table.concat(dot, "\n")
 end
 
 function machine:transition(event)
