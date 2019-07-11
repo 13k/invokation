@@ -10,6 +10,8 @@ local MAX_ABILITIES = 16
 local DELEGATES = {
   "AddItemByName",
   "FindAbilityByName",
+  "GetPlayerOwner",
+  "GetPlayerOwnerID",
   "GetAbilityByIndex",
   "GetItemInSlot",
   "GetLevel",

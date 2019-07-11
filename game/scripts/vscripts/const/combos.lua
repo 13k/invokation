@@ -404,7 +404,13 @@ return {
     damage_rating = 4,
     difficulty_rating = 4,
     hero_level = 18,
-    items = {"item_null_talisman", "item_null_talisman", "item_null_talisman", "item_refresher", "item_ultimate_scepter"},
+    items = {
+      "item_null_talisman",
+      "item_null_talisman",
+      "item_null_talisman",
+      "item_refresher",
+      "item_ultimate_scepter",
+    },
     sequence = {
       [1] = {
         name = "invoker_tornado",

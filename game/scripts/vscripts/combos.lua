@@ -34,8 +34,7 @@ function M:_init(args)
   self.logger = args.logger
   self.netTable = args.netTable
   self.combos = {}
-  self.active = {}
-  self.capturing = {}
+  self.players = {}
 end
 
 function M:d(...)
@@ -48,6 +47,27 @@ end
 
 function M:errf(...)
   return self.logger:Errorf(...)
+end
+
+function M:playerState(player)
+  local playerID = player:GetPlayerID()
+
+  if self.players[playerID] == nil then
+    self.players[playerID] = {}
+  end
+
+  return self.players[playerID]
+end
+
+function M:setPlayerState(player, key, value)
+  self:playerState(player)[key] = value
+  return value
+end
+
+function M:getPlayerState(player, key, default)
+  local value = self:playerState(player)[key]
+  -- Explicit nil check to avoid returning the default when value is boolean `false`
+  return value == nil and default or value
 end
 
 function M:Load()
@@ -85,18 +105,21 @@ function M:Start(player, combo)
   self:d("Combos:Start()", player:GetPlayerID(), combo.name)
 
   if not combo:Reset() then
-    self:errf("Could not reset combo '%s'", combo.name)
+    self:errf("Could not reset combo '%s' for player %d", combo.name, player:GetPlayerID())
     return
   end
 
-  self.active[player:GetPlayerID()] = combo
+  self:setPlayerState(player, "combo", combo)
+  self:setPlayerState(player, "damage", 0)
 
-  if self.dummy == nil then
-    self.dummy = DummyTarget()
+  local dummy = self:getPlayerState(player, "dummy")
+
+  if dummy == nil then
+    dummy = self:setPlayerState(player, "dummy", DummyTarget())
     CombosComm.emitSound(player, randomSoundEvent("dummy_create"))
   end
 
-  self.dummy:Reset()
+  dummy:Reset()
 
   CombosHero.setup(player, combo)
   CombosComm.emitSound(player, randomSoundEvent("combo_start"))
@@ -111,36 +134,40 @@ end
 function M:Stop(player)
   self:d("Combos:Stop()", player:GetPlayerID())
 
-  self.active[player:GetPlayerID()] = nil
+  self:getPlayerState(player, "dummy"):Kill()
+  self:setPlayerState(player, "combo", nil)
 
   CombosComm.emitSound(player, randomSoundEvent("combo_stop"))
   CombosComm.sendStopped(player)
 end
 
+function M:Finish(player, combo)
+  local hero = player:GetAssignedHero()
+
+  hero:PerformTaunt()
+
+  CombosComm.sendFinished(player, combo, self:playerState(player))
+end
+
 function M:StartCapturingAbilities(player)
   self:d("Combos:StartCapturingAbilities()", player:GetPlayerID())
-  self.capturing[player:GetPlayerID()] = true
+  self:setPlayerState(player, "capturing", true)
 end
 
 function M:StopCapturingAbilities(player)
   self:d("Combos:StopCapturingAbilities()", player:GetPlayerID())
-  self.capturing[player:GetPlayerID()] = nil
+  self:setPlayerState(player, "capturing", nil)
 end
 
 -- TODO: implement wait/delay steps
--- TODO: check for finished combo
---        * give reward (<difficulty> gold?)
---        * send summary (total damage)
 function M:OnAbilityUsed(player, unit, ability)
   self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
 
-  local playerId = player:GetPlayerID()
-
-  if self.capturing[playerId] then
+  if self:getPlayerState(player, "capturing") then
     CombosComm.sendAbilityUsed(player, ability)
   end
 
-  local combo = self.active[playerId]
+  local combo = self:getPlayerState(player, "combo")
 
   if combo == nil then
     return
@@ -150,11 +177,37 @@ function M:OnAbilityUsed(player, unit, ability)
     CombosComm.sendProgress(player, combo)
 
     if combo:Finish() then
-      CombosComm.sendFinished(player, combo)
+      self:Finish(player, combo)
     end
   elseif not ability:IsInvokationAbility() then
     CombosComm.sendStepError(player, combo, ability)
   end
+end
+
+-- FIXME: abilities can still be producing damage instances after the combo has finished
+function M:OnEntityHurt(instance)
+  self:d("Combos:OnEntityHurt()", instance)
+  --[[
+  self:d("  attacker:", instance:AttackerName())
+  self:d("  inflictor:", instance:InflictorName())
+  self:d("  victim:", instance:VictimName())
+  self:d("  cause:", instance.cause)
+  self:d("  damage:", instance.damage)
+  ]]
+
+  if instance.attacker == nil then
+    return
+  end
+
+  local player = instance.attacker:GetPlayerOwner()
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo == nil then
+    return
+  end
+
+  local damage = self:getPlayerState(player, "damage", 0)
+  self:setPlayerState(player, "damage", damage + instance.damage)
 end
 
 function M.ShowPicker()

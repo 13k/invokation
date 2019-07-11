@@ -1,5 +1,8 @@
 local Unit = require("dota2.unit")
 local Ability = require("dota2.ability")
+local DamageInstance = require("dota2.damage_instance")
+
+local ABILITY_OR_ITEM_NOT_FOUND_ERROR = "Could not find ability or item named '%q' on unit '%s'"
 
 -- The overall game state has changed
 function GameMode:OnGameRulesStateChange(keys)
@@ -103,18 +106,25 @@ end
 function GameMode:OnEntityHurt(keys)
   self:d("OnEntityHurt", keys)
 
-  --local damagebits = keys.damagebits -- This might always be 0 and therefore useless
-  --if keys.entindex_attacker ~= nil and keys.entindex_killed ~= nil then
-  --  local entCause = EntIndexToHScript(keys.entindex_attacker)
-  --  local entVictim = EntIndexToHScript(keys.entindex_killed)
+  local attacker
+  local victim
+  local inflictor
 
-  --  -- The ability/item used to damage, or nil if not damaged by an item/ability
-  --  local damagingAbility = nil
+  if keys.entindex_attacker ~= nil then
+    attacker = Unit(EntIndexToHScript(keys.entindex_attacker))
+  end
 
-  --  if keys.entindex_inflictor ~= nil then
-  --    damagingAbility = EntIndexToHScript(keys.entindex_inflictor)
-  --  end
-  --end
+  if keys.entindex_killed ~= nil then
+    victim = Unit(EntIndexToHScript(keys.entindex_killed))
+  end
+
+  if keys.entindex_inflictor ~= nil then
+    inflictor = Ability(EntIndexToHScript(keys.entindex_inflictor))
+  end
+
+  local damageInstance = DamageInstance(attacker, inflictor, victim, keys.damage)
+
+  self.combos:OnEntityHurt(damageInstance)
 end
 
 -- An item was picked up off the ground
@@ -156,8 +166,10 @@ function GameMode:OnAbilityUsed(keys)
   local caster = Unit(EntIndexToHScript(keys.caster_entindex))
   local abilityEnt = caster:FindAbilityOrItem(keys.abilityname)
 
-  local err = string.format("could not find ability or item '%q' on unit '%s'", keys.abilityname, caster.name)
-  DoScriptAssert(abilityEnt ~= nil, err)
+  if abilityEnt == nil then
+    local err = ABILITY_OR_ITEM_NOT_FOUND_ERROR:format(keys.abilityname, caster.name)
+    error(err)
+  end
 
   local ability = Ability(abilityEnt)
 
