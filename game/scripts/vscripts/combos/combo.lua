@@ -62,6 +62,10 @@ function M:_createFSM()
   self.fsm = fsm.create({initial = INITIAL_STATE, events = events})
 end
 
+function M:todot()
+  return self.fsm:todot()
+end
+
 function M:Reset()
   if self.fsm:reset() then
     self.count = 0

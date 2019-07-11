@@ -56,6 +56,13 @@ function GameMode:registerCommands()
     FCVAR_CHEAT
   )
 
+  Convars:RegisterCommand(
+    "inv_combo_graph_dump",
+    lfunc.bindbyname(self, "dumpComboGraph"),
+    "Dumps a combo's finite state machine in DOT format",
+    FCVAR_CHEAT
+  )
+
   self:d("  register commands")
 end
 
@@ -123,4 +130,17 @@ function GameMode:invokeAbility(_, ability)
   local invoker = Invoker(hero)
 
   invoker:Invoke(ability)
+end
+
+function GameMode:dumpComboGraph(_, comboName)
+  self:d("dumpComboGraph()", comboName)
+
+  local combo = self.combos:Find(comboName)
+
+  if combo == nil then
+    self:d("Could not find combo", comboName)
+    return
+  end
+
+  print(combo:todot())
 end
