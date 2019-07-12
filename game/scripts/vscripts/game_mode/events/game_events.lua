@@ -6,7 +6,7 @@ local ABILITY_OR_ITEM_NOT_FOUND_ERROR = "Could not find ability or item named '%
 
 -- The overall game state has changed
 function GameMode:OnGameRulesStateChange(keys)
-  self:d("GameRules State Changed", keys)
+  self:d("OnGameRulesStateChange", keys)
 
   --local newState = GameRules:State_Get()
 end
@@ -19,7 +19,7 @@ end
   InitGameMode() but needs to be done before everyone loads in.
 ]]
 function GameMode:OnFirstPlayerLoaded()
-  self:d("First Player has loaded")
+  self:d("OnFirstPlayerLoaded")
 end
 
 --[[
@@ -30,12 +30,12 @@ end
   selection (i.e. force random etc)
 ]]
 function GameMode:OnAllPlayersLoaded()
-  self:d("All Players have loaded into the game")
+  self:d("OnAllPlayersLoaded")
 end
 
 -- Cleanup a player when they leave
 function GameMode:OnDisconnect(keys)
-  self:d("Player Disconnected " .. tostring(keys.userid), keys)
+  self:d("OnDisconnect", keys)
 
   --local name = keys.name
   --local networkid = keys.networkid
@@ -61,7 +61,7 @@ end
   The hero parameter is the hero entity that just spawned in.
 ]]
 function GameMode:OnHeroInGame(hero)
-  self:d("Hero spawned in game for first time -- " .. hero:GetUnitName())
+  self:d("OnHeroInGame", hero:GetUnitName())
 
   -- Set the starting gold of every hero to 500 unreliable gold
   --[[
@@ -91,13 +91,13 @@ end
   starting any game logic timers/thinkers, beginning the first round, etc.
 ]]
 function GameMode:OnGameInProgress()
-  self:d("The game has officially begun")
+  self:d("OnGameInProgress")
   self.combos.ShowPicker()
 end
 
 -- An NPC has spawned somewhere in game.  This includes heroes
 function GameMode:OnNPCSpawned(keys)
-  self:d("NPC Spawned", keys)
+  self:d("OnNPCSpawned", keys)
 
   --local npc = EntIndexToHScript(keys.entindex)
 end

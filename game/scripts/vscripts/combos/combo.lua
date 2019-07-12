@@ -1,6 +1,6 @@
 local M = require("pl.class")()
 
--- local pp = require('pl.pretty')
+-- local pp = require("pl.pretty")
 local fsm = require("vendor.fsm")
 local tablex = require("pl.tablex")
 
@@ -23,7 +23,7 @@ function M:_init(config)
   self:_createFSM()
   self.count = 0
 
-  -- print('Combo:_init()', name)
+  -- print("Combo:_init()", name)
   -- pp.dump(self)
 end
 
