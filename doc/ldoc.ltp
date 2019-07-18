@@ -1,0 +1,329 @@
+# local no_spaces = ldoc.no_spaces
+# local use_li = ldoc.use_li
+# local display_name = ldoc.display_name
+# local mod_iter = ldoc.modules.iter
+# local nowrap = ldoc.wrap and '' or 'nowrap'
+# local function M(txt, item) return ldoc.markup(txt, item, ldoc.plain) end
+
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="$(ldoc.doc_charset)">
+    <title>$(ldoc.title)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="$(ldoc.css)" type="text/css">
+#   if ldoc.custom_css then -- add custom CSS file if configured.
+      <link rel="stylesheet" href="$(ldoc.custom_css)" type="text/css">
+#   end
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="main">
+        <div id="navigation">
+          <h1>$(ldoc.project)</h1>
+
+#         if not ldoc.single and module then -- reference back to project index
+            <ul>
+              <li><a href="../$(ldoc.output).html">Index</a></li>
+            </ul>
+#         end
+
+#         -- module contents
+#         if module and not ldoc.no_summary and #module.items > 0 then
+            <h2>Contents</h2>
+            <ul>
+#             for kind, items in module.kinds() do
+                <li><a href="#$(no_spaces(kind))">$(kind)</a></li>
+#             end
+            </ul>
+#         end
+
+#         -- bang out the functions on the side
+#         if ldoc.no_summary and module and not ldoc.one then
+#           for kind, items in module.kinds() do
+              <h2>$(kind)</h2>
+              <ul class="nowrap">
+#               for item in items() do
+                  <li><a href="#$(item.name)">$(display_name(item))</a></li>
+#               end
+              </ul>
+#           end
+#         end
+
+#         -- project contents
+#         local this_mod = module and module.name
+#         for kind, mods, type in ldoc.kinds() do
+#           if ldoc.allowed_in_contents(type, module) then
+              <h2>$(kind)</h2>
+
+              <ul class="$(kind == 'Topics' and '' or 'nowrap')">
+#               for mod in mods() do
+#                 local name = display_name(mod)
+#                 if mod.name == this_mod then
+                    <li><strong>$(name)</strong></li>
+#                 else
+                    <li><a href="$(ldoc.ref_to_module(mod))">$(name)</a></li>
+#                 end
+#               end
+              </ul>
+#           end
+#         end
+        </div> <!-- #navigation -->
+
+        <div id="content">
+#         if ldoc.body then -- verbatim HTML as contents; 'non-code' entries
+            $(ldoc.body)
+#         elseif module then -- module documentation
+            <h1>$(ldoc.module_typename(module)) <code>$(module.name)</code></h1>
+            <p>$(M(module.summary, module))</p>
+            <p>$(M(module.description, module))</p>
+
+#           if module.tags.include then
+              $(M(ldoc.include_file(module.tags.include)))
+#           end
+
+#           if module.see then
+              <h3>See also:</h3>
+              <ul class="see-also">
+#               for see in mod_iter(module.see) do
+                  <li><a href="$(ldoc.href(see))">$(see.label)</a></li>
+#               end
+              </ul>
+#           end
+
+#           if module.usage then
+              <h3>Usage:</h3>
+              <ul class="usage">
+#               for usage in mod_iter(module.usage) do
+                  <li><pre class="example">$(ldoc.escape(usage))</pre></li>
+#               end
+              </ul>
+#           end
+
+#           if module.info then
+              <h3>Info:</h3>
+              <ul class="info">
+#               for tag, value in module.info:iter() do
+                  <li><strong>$(tag)</strong>: $(M(value, module))</li>
+#               end
+              </ul>
+#           end
+
+#           if not ldoc.no_summary then
+#             -- bang out the tables of item types for this module (e.g Functions, Tables, etc)
+#             for kind, items in module.kinds() do
+                <h2><a href="#$(no_spaces(kind))">$(kind)</a></h2>
+                <table class="function_list">
+#                 for item in items() do
+                    <tr>
+                      <td class="name $(nowrap)"><a href="#$(item.name)">$(display_name(item))</a></td>
+                      <td class="summary">$(M(item.summary, item))</td>
+                    </tr>
+#                 end
+                </table>
+#             end
+#           end
+
+#           -- Currently works for both Functions and Tables.
+#           -- The params field either contains function parameters or table fields.
+#           local show_return = not ldoc.no_return_or_parms
+#           local show_parms = show_return
+
+#           for kind, items in module.kinds() do
+#             local kitem = module.kinds:get_item(kind)
+#             local has_description = kitem and ldoc.descript(kitem) ~= ""
+              <h2 class="section-header $(has_description and 'has-description')">
+                <a name="$(no_spaces(kind))"></a>$(kind)
+              </h2>
+
+              $(M(module.kinds:get_section_description(kind),nil))
+
+#             if kitem then
+#               if has_description then
+                  <div class="section-description">
+                    $(M(ldoc.descript(kitem), kitem))
+                  </div>
+#               end
+
+#               if kitem.usage then
+                  <h3>Usage:</h3>
+                  <pre class="example">$(ldoc.prettify(kitem.usage[1]))</pre>
+#               end
+#             end
+
+              <dl class="function">
+#               for item in items() do
+                  <dt>
+                    <h4 id="$(item.name)">
+                      $(display_name(item))
+#                     if ldoc.prettify_files and ldoc.is_file_prettified[item.module.file.filename] then
+                        <a style="float:right;" href="$(ldoc.source_ref(item))">line $(item.lineno)</a>
+#                     end
+                    </h4>
+                  </dt>
+
+                  <dd>
+                    $(M(ldoc.descript(item), item))
+
+#                   if ldoc.custom_tags then
+#                     for custom in mod_iter(ldoc.custom_tags) do
+#                       local tag = item.tags[custom[1]]
+#                       if tag and not custom.hidden then
+#                         local li, il = use_li(tag)
+                          <h3>$(custom.title or custom[1]):</h3>
+                          <ul>
+#                           for value in mod_iter(tag) do
+                              $(li)$(custom.format and custom.format(value) or M(value))$(il)
+#                           end
+                          </ul>
+#                       end
+#                     end
+#                   end
+
+#                   if show_parms and item.params and #item.params > 0 then
+#                     local subnames = module.kinds:type_of(item).subnames
+#                     if subnames then
+                        <h3>$(subnames):</h3>
+#                     end
+
+                      <ul>
+#                       for parm in mod_iter(item.params) do
+#                         local param, sublist = item:subparam(parm)
+#                         if sublist then
+                            <li>
+                              <span class="parameter">$(sublist)</span>
+
+                              $(M(item.params.map[sublist],item))
+
+                              <ul>
+#                         end
+
+#                         for p in mod_iter(param) do
+#                           local name, tp, def = item:display_name_of(p), ldoc.typename(item:type_of_param(p)), item:default_of_param(p)
+                            <li>
+                              <span class="parameter">$(name)</span>
+
+#                             if tp ~= '' then
+                                <span class="types">$(tp)</span>
+#                             end
+
+                              $(M(item.params.map[p], item))
+
+#                             if def == true then
+                                (<em>optional</em>)
+#                             elseif def then
+                                (<em>default</em> $(def))
+#                             end
+
+#                             if item:readonly(p) then
+                                <em>readonly</em>
+#                             end
+                            </li>
+#                         end
+
+#                         if sublist then
+                            </li></ul>
+#                         end
+#                       end
+                      </ul>
+#                   end
+
+#                   if show_return and item.retgroups then local groups = item.retgroups
+                      <h3>Returns:</h3>
+
+#                     for i, group in ldoc.ipairs(groups) do
+#                       local li, il = use_li(group)
+                        <ol>
+#                         for r in group:iter() do
+#                           local type, ctypes = item:return_type(r)
+#                           local rt = ldoc.typename(type)
+
+                            $(li)
+#                             if rt ~= '' then
+                                <span class="types">$(rt)</span>
+#                             end
+
+                              $(M(r.text,item))
+                            $(il)
+
+#                           if ctypes then
+                              <ul>
+#                               for c in ctypes:iter() do
+                                  <li>
+                                    <span class="parameter">$(c.name)</span>
+                                    <span class="types">$(ldoc.typename(c.type))</span>
+                                    $(M(c.comment, item))
+                                  </li>
+#                               end
+                              </ul>
+#                           end
+#                         end
+                        </ol>
+
+#                       if i < #groups then
+                          <strong>or</strong>
+#                       end
+#                     end
+#                   end
+
+#                   if show_return and item.raise then
+                      <h3>Raises:</h3>
+                      $(M(item.raise, item))
+#                   end
+
+#                   if item.see then
+                      <h3>See also:</h3>
+                      <ul class="see-also">
+#                       for see in mod_iter(item.see) do
+                          <li><a href="$(ldoc.href(see))">$(see.label)</a></li>
+#                       end
+                      </ul>
+#                   end
+
+#                   if item.usage then
+                      <h3>Usage:</h3>
+                      <ul class="usage">
+#                       for usage in mod_iter(item.usage) do
+                          <li><pre class="example">$(ldoc.prettify(usage))</pre></li>
+#                       end
+                      </ul>
+#                   end
+                  </dd>
+#               end
+              </dl>
+#           end
+#         else -- project-level contents
+#           if ldoc.description then
+              <h2>$(M(ldoc.description, nil))</h2>
+#           end
+
+#           if ldoc.full_description then
+              <p>$(M(ldoc.full_description, nil))</p>
+#           end
+
+#           for kind, mods in ldoc.kinds() do
+#             local kind_low = kind:lower()
+              <h2>$(kind)</h2>
+              <table class="module_list">
+#               for mod in mods() do
+                  <tr>
+                    <td class="name $(nowrap)"><a href="$(no_spaces(kind_low))/$(mod.name).html">$(mod.name)</a></td>
+                    <td class="summary">$(M(ldoc.strip_header(mod.summary), mod))</td>
+                  </tr>
+#               end
+              </table>
+#           end
+#         end
+        </div> <!-- #content -->
+      </div> <!-- #main -->
+
+      <div id="about">
+        <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc $(ldoc.version)</a></i>
+        <i style="float:right;">Last updated $(ldoc.updatetime)</i>
+      </div> <!-- #about -->
+    </div> <!-- #container -->
+  </body>
+</html>

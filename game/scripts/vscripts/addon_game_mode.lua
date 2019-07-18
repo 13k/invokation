@@ -1,15 +1,12 @@
-if not IsInToolsMode() then
-  require("lang/stub")
-end
+require("invokation.lang.stub")
 
-local GameMode = require("game_mode")
-
-local _gameMode = GameMode()
+local GameMode = require("invokation.GameMode")
+local gameMode = GameMode()
 
 function Precache(context)
-  _gameMode:Precache(context)
+  gameMode:Precache(context)
 end
 
 function Activate()
-  _gameMode:Activate()
+  gameMode:Activate()
 end

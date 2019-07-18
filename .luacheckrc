@@ -1,12 +1,11 @@
 exclude_files = {
-  "game/scripts/vscripts/pl/**",
-  "game/scripts/vscripts/vendor/**"
+  "game/scripts/vscripts/pl/**/*.lua",
 }
 
 new_globals = {
   "Precache",
   "Activate",
-  "GameMode"
+  "GameMode",
 }
 
 -- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
@@ -49,11 +48,10 @@ new_read_globals = {
   "DebugDrawText",
   "DebugScreenTextPretty",
   "DoCleaveAttack",
-  "DoEntFire",
-  "DoEntFireByInstanceHandle",
-  "DoIncludeScript",
-  "DoScriptAssert",
-  "DoUniqueString",
+  "EntFire",
+  "EntFireByHandle",
+  "ScriptAssert",
+  "UniqueString",
   "Dynamic_Wrap",
   "EmitAnnouncerSound",
   "EmitAnnouncerSoundForPlayer",

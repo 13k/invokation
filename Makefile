@@ -1,5 +1,10 @@
+LUA_SOURCE := game/scripts/vscripts
+
 luacheck:
-	@luacheck game/scripts/vscripts
+	@luacheck "$(LUA_SOURCE)"
+
+ldoc:
+	@ldoc --unqualified .
 
 install:
 	@bash install.sh

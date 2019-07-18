@@ -1,0 +1,14 @@
+project = 'Invokation'
+description = 'Invokation Dota 2 custom game'
+title = 'Invokation Lua Documentation'
+package = 'invokation'
+file = 'game/scripts/vscripts/invokation'
+dir = 'doc/ldoc'
+format = 'discount'
+style = 'doc'
+template = 'doc'
+pretty = 'lxsh'
+readme = 'README.md'
+use_markdown_titles = true
+sort_modules = true
+wrap = true
