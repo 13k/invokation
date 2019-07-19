@@ -68,8 +68,8 @@ function M:Load()
   for id, spec in pairs(COMBOS) do
     spec.id = id
 
-    for id, step in pairs(spec.sequence) do
-      step.id = id
+    for stepId, step in pairs(spec.sequence) do
+      step.id = stepId
     end
 
     local combo = Combo(spec)
@@ -103,7 +103,7 @@ function M:setup(player, combo)
   dummy:Spawn()
 end
 
-function M:teardown(player, _combo)
+function M:teardown(player, _)
   self:setPlayerState(player, "combo", nil)
 
   local dummy = self:getPlayerState(player, "dummy")

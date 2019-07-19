@@ -5,7 +5,6 @@ local M = require("pl.class")()
 
 local pp = require("pl.pretty")
 local text = require("pl.text")
-local Date = require("pl.Date")
 local stringx = require("pl.stringx")
 
 --- Logger Levels
