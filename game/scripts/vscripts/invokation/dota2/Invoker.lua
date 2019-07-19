@@ -77,9 +77,17 @@ local function reinsertSpellAbility(hero, ability)
   ability:SetLevel(level)
 end
 
---- Resets ability levels to zero.
--- @treturn int The number of ability points gained by downgrading abilities
-function M:ResetAbilities()
+--- Resets orb abilities levels to zero.
+-- @tparam table options Options table
+-- @tparam[opt=false] bool options.reinsertSpells Reinsert (reset) spell abilities
+--   This is a workaround to fix spells not scaling back (special values that
+--   depend on orb levels). Another way to fix this is to completely replace the
+--   player's hero with `PlayerResource:ReplaceHeroWith`. If hero replacement is
+--   being used, this option is not needed.
+-- @treturn int The number of ability points gained by downgrading orb abilities
+function M:ResetAbilities(options)
+  options = options or {}
+
   local points = 0
 
   for _, name in ipairs(Invoker.ORB_ABILITIES) do
@@ -88,12 +96,14 @@ function M:ResetAbilities()
     ability:SetLevel(0)
   end
 
-  self:Invoke(Invoker.ABILITY_EMPTY2)
-  self:Invoke(Invoker.ABILITY_EMPTY1)
+  if options.reinsertSpells then
+    self:Invoke(Invoker.ABILITY_EMPTY2)
+    self:Invoke(Invoker.ABILITY_EMPTY1)
 
-  for _, name in ipairs(Invoker.SPELL_ABILITIES) do
-    local ability = self.hero:FindAbilityByName(name)
-    reinsertSpellAbility(self.hero, ability)
+    for _, name in ipairs(Invoker.SPELL_ABILITIES) do
+      local ability = self.hero:FindAbilityByName(name)
+      reinsertSpellAbility(self.hero, ability)
+    end
   end
 
   return points
