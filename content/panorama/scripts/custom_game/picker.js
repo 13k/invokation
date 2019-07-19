@@ -163,9 +163,7 @@ var Picker = CreateComponent({
   },
 
   renderViewer: function(combo) {
-    // this.sendServer(EVENTS.VIEWER_RENDER, { combo: combo.id });
-    // FIXME: this should send only to the local player
-    this.sendAll(EVENTS.VIEWER_RENDER, { combo: combo });
+    this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
   },
 
   Toggle: function() {
