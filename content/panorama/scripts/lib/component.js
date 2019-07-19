@@ -18,11 +18,20 @@
   var Component = Class({
     constructor: function Component(ctx) {
       this.$ctx = ctx;
-      this.$ctx.component = this;
       this.logger = new Logger(extractHeading(this.$ctx));
       this.data = {};
       this.inputs = {};
       this.outputs = new Callbacks();
+      this.isInToolsMode = Game.IsInToolsMode();
+      this.setupContextPanel();
+    },
+
+    setupContextPanel: function() {
+      this.$ctx.component = this;
+
+      if (this.isInToolsMode) {
+        this.$ctx.AddClass("ToolsMode");
+      }
     },
 
     log: function() {

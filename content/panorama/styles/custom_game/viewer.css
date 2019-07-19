@@ -23,7 +23,7 @@
 }
 
 #Title {
-  width: fill-parent-flow(1.0);
+  width: fill-parent-flow(1);
 }
 
 .DetailsTitleContainer .CloseButton {
@@ -38,6 +38,11 @@
   height: 22px;
   margin-right: 6px;
   background-size: 100%;
+  visibility: collapse;
+}
+
+.ToolsMode .DetailsTitleContainer .RefreshButton {
+  visibility: visible;
 }
 
 #SequenceContainer {
@@ -49,7 +54,7 @@
 
 #Contents {
   width: 100%;
-  height: fill-parent-flow(1.0);
+  height: fill-parent-flow(1);
   overflow: scroll scroll;
 }
 

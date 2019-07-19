@@ -87,6 +87,11 @@
   width: 24px;
   height: 24px;
   background-size: 100%;
+  visibility: collapse;
+}
+
+.ToolsMode .PickerTitleContainer .RefreshButton {
+  visibility: visible;
 }
 
 #CombosContainer {
