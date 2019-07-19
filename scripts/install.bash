@@ -26,13 +26,20 @@ if [[ ! -e "$target_content_path" ]]; then
   mklink "$src_content_path" "$target_content_path"
 fi
 
-for src in "$src_game_path"/*; do
-  dest="$target_game_path/$path"
+while read rel_path; do
+  src="$src_game_path/$rel_path"
+  dest="$target_game_path/$rel_path"
 
-  [[ -e "$dest" ]] && continue
+  echo -n "$src -> $dest "
 
+  if [[ -e "$dest" ]]; then
+    echo "skip"
+    continue
+  fi
+
+  echo "link"
   mkdir -vp "$(dirname "$dest")"
   mklink "$src" "$dest" || break
-done
+done < <(find "$src_game_path" -mindepth 1 -maxdepth 1 -printf "%P\\n")
 
 echo "Done"

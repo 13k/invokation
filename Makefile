@@ -6,6 +6,9 @@ luacheck:
 ldoc:
 	@ldoc --unqualified .
 
+clean:
+	@bash scripts/clean.bash
+
 install:
 	@bash scripts/install.bash
 
