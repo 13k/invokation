@@ -34,14 +34,14 @@
 
       <Panel class="CombatLogBar">
         <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="combatLog.Toggle()">
-          <Label class="CombatLogTitle" text="#invokation_combat_log_title" />
+          <Label class="CombatLogTitle" text="#invokation_combat_log_title" hittest="false" />
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
           <ToggleButton id="FilterOrbs" class="BarItem Checkbox" text="#invokation_combat_log_filter_orbs" />
 
           <Button class="BarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
-            <Label hittest="false" text="#invokation_combat_log_clear" />
+            <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>
       </Panel>

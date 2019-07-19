@@ -20,7 +20,7 @@
   height: 100%;
   transform: translateY(0);
   transition-property: transform;
-  transition-delay: 0.0s;
+  transition-delay: 0s;
   transition-duration: 0.25s;
   transition-timing-function: ease-in-out;
 }
@@ -89,12 +89,6 @@
   margin-right: 8px;
 }
 
-.CombatLogBarActions > ToggleButton > Label {
-  margin-left: 5px;
-  margin-top: 3px;
-  text-shadow: 1px 1px 0px 2px #00000066;
-}
-
 .CombatLogBarActions .ClearButton {
   margin: 0;
 }
@@ -102,7 +96,7 @@
 #CombatLogContents {
   flow-children: down;
   width: 100%;
-  height: fill-parent-flow(1.0);
+  height: fill-parent-flow(1);
   padding-top: 5px;
   padding-right: 5px;
   padding-left: 5px;

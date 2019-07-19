@@ -23,7 +23,7 @@
 
       <Panel class="Footer">
         <Button class="PlayGameButton" onactivate="viewer.Play()">
-          <Label text="#invokation_combo_play" hittest="false" />
+          <Label class="PlayGameLabel" text="#invokation_combo_play" hittest="false" />
         </Button>
       </Panel>
     </Panel>
