@@ -18,75 +18,77 @@ function GameMode:registerCommands()
     FCVAR_CHEAT
   )
 
-  Convars:RegisterCommand(
-    "inv_debug_misc",
-    lfunc.bindbyname(self, "CommandDebugMiscellanea"),
-    "Run miscellaneous debug code (use script_reload to reload)",
-    FCVAR_CHEAT
-  )
+  if IsInToolsMode() then
+    Convars:RegisterCommand(
+      "inv_dump_lua_version",
+      lfunc.bindbyname(self, "CommandDumpLuaVersion"),
+      "Dump Lua version",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_dump_abilities",
-    lfunc.bindbyname(self, "CommandDumpAbilities"),
-    "Dump current hero abilities (empty - verbose, 1 - simplified)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_dump_global",
+      lfunc.bindbyname(self, "CommandDumpGlobal"),
+      "Dump global value (<name:string>)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_invoke",
-    lfunc.bindbyname(self, "CommandInvokeAbility"),
-    "Invoke an ability (<name:string>)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_find_global",
+      lfunc.bindbyname(self, "CommandFindGlobal"),
+      "Find global name (<pattern:regex>)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_dump_combo_graph",
-    lfunc.bindbyname(self, "CommandDumpComboGraph"),
-    "Dumps a combo's finite state machine in DOT format",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_debug_misc",
+      lfunc.bindbyname(self, "CommandDebugMiscellanea"),
+      "Run miscellaneous debug code (use script_reload to reload)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_music_status",
-    lfunc.bindbyname(self, "CommandChangeMusicStatus"),
-    "Change music status (<status:int> <intensity:float>)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_dump_abilities",
+      lfunc.bindbyname(self, "CommandDumpAbilities"),
+      "Dump current hero abilities (empty - verbose, 1 - simplified)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_dump_lua_version",
-    lfunc.bindbyname(self, "CommandDumpLuaVersion"),
-    "Dump Lua version",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_invoke",
+      lfunc.bindbyname(self, "CommandInvokeAbility"),
+      "Invoke an ability (<name:string>)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_dump_global",
-    lfunc.bindbyname(self, "CommandDumpGlobal"),
-    "Dump global value (<name:string>)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_dump_combo_graph",
+      lfunc.bindbyname(self, "CommandDumpComboGraph"),
+      "Dumps a combo's finite state machine in DOT format",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_find_global",
-    lfunc.bindbyname(self, "CommandFindGlobal"),
-    "Find global name (<pattern:regex>)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_music_status",
+      lfunc.bindbyname(self, "CommandChangeMusicStatus"),
+      "Change music status (<status:int> <intensity:float>)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_dump_ability_specials",
-    lfunc.bindbyname(self, "CommandDumpAbilitySpecials"),
-    "Dump Invoker ability specials (empty - all specials, 1 - scaling per level specials only)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_dump_ability_specials",
+      lfunc.bindbyname(self, "CommandDumpAbilitySpecials"),
+      "Dump Invoker ability specials (empty - all specials, 1 - scaling per level specials only)",
+      FCVAR_CHEAT
+    )
 
-  Convars:RegisterCommand(
-    "inv_reinsert_ability",
-    lfunc.bindbyname(self, "CommandReinsertAbility"),
-    "Reinsert Invoker ability (<name:string>)",
-    FCVAR_CHEAT
-  )
+    Convars:RegisterCommand(
+      "inv_reinsert_ability",
+      lfunc.bindbyname(self, "CommandReinsertAbility"),
+      "Reinsert Invoker ability (<name:string>)",
+      FCVAR_CHEAT
+    )
+  end
 
   self:d("  register commands")
 end
