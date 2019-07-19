@@ -89,6 +89,30 @@ function M:Find(id)
   return self.combosById[id]
 end
 
+function M:setup(player, combo)
+  self:setPlayerState(player, "combo", combo)
+  self:setPlayerState(player, "damage", 0)
+
+  local dummy = self:getPlayerState(player, "dummy")
+
+  if dummy == nil then
+    dummy = self:setPlayerState(player, "dummy", DummyTarget())
+    CombosSound.onDummyCreate(dummy)
+  end
+
+  dummy:Spawn()
+end
+
+function M:teardown(player, _combo)
+  self:setPlayerState(player, "combo", nil)
+
+  local dummy = self:getPlayerState(player, "dummy")
+
+  if dummy ~= nil then
+    dummy:Kill()
+  end
+end
+
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam invokation.combos.Combo combo Combo instance
@@ -102,17 +126,8 @@ function M:Start(player, combo)
     return
   end
 
-  self:setPlayerState(player, "combo", combo)
-  self:setPlayerState(player, "damage", 0)
+  self:setup(player, combo)
 
-  local dummy = self:getPlayerState(player, "dummy")
-
-  if dummy == nil then
-    dummy = self:setPlayerState(player, "dummy", DummyTarget())
-    CombosSound.onDummyCreate(dummy)
-  end
-
-  dummy:Reset()
   CombosHero.setup(player, combo)
   CombosSound.onComboStart(player)
   CombosComm.sendStarted(player, combo)
@@ -123,7 +138,9 @@ end
 -- @tparam invokation.combos.Combo combo Combo instance
 function M:Restart(player, combo)
   self:d("Combos:Restart()", player:GetPlayerID(), combo.id)
-  return self:Start(player, combo)
+
+  self:teardown(player, combo)
+  self:Start(player, combo)
 end
 
 --- Stops currently active combo for the given player.
@@ -137,8 +154,7 @@ function M:Stop(player)
     return
   end
 
-  self:getPlayerState(player, "dummy"):Kill()
-  self:setPlayerState(player, "combo", nil)
+  self:teardown(player, combo)
 
   CombosSound.onComboStop(player)
   CombosComm.sendStopped(player)

@@ -4,6 +4,13 @@
 local M = require("pl.class")()
 
 local Units = require("invokation.dota2.units")
+local delegation = require("invokation.lang.delegation")
+
+local DELEGATES = {
+  "Hold",
+}
+
+delegation.delegate(M, "entity", DELEGATES)
 
 local function createDummy(location)
   local unit = Units.Create(Units.DUMMY_TARGET, {
@@ -11,9 +18,7 @@ local function createDummy(location)
     team = DOTA_TEAM_BADGUYS,
   })
 
-  -- unit:Hold()
   unit:SetIdleAcquire(false)
-  -- unit:StartGesture(ACT_DOTA_FLAIL)
 
   return unit
 end
@@ -28,7 +33,12 @@ end
 
 --- Spawns the dummy unit.
 function M:Spawn()
+  if self:IsAlive() then
+    return
+  end
+
   self.entity = createDummy(self.spawn:GetAbsOrigin())
+  self:Hold()
 end
 
 --- Purges the dummy unit.
@@ -43,21 +53,15 @@ function M:MoveToSpawn()
 end
 
 --- Reset the dummy unit.
---
--- If it's alive, purges and move it to spawn. If it's dead, spawns it.
 function M:Reset()
-  if self:IsAlive() then
-    self:Purge()
-    self:MoveToSpawn()
-  else
-    self:Spawn()
-  end
+  self:Kill()
+  self:Spawn()
 end
 
 --- Checks if dummy unit is alive.
 -- @treturn bool
 function M:IsAlive()
-  return (not self.entity:IsNull()) and self.entity:IsAlive()
+  return self.entity and (not self.entity:IsNull()) and self.entity:IsAlive()
 end
 
 --- Checks if the dummy unit is dead.
