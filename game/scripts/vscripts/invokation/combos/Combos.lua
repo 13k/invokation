@@ -1,6 +1,5 @@
 --- Combos manager.
 -- @classmod invokation.combos.Combos
--- @todo Use combo IDs instead of names
 
 local M = require("pl.class")()
 
@@ -64,20 +63,18 @@ function M:Load()
   self:d("Combos:Load() - loading combos")
 
   self.combos = {}
-  self.combosByName = {}
+  self.combosById = {}
 
-  for name, spec in pairs(COMBOS) do
-    spec.id = "invokation_combo_" .. name
-    spec.name = name
+  for id, spec in pairs(COMBOS) do
+    spec.id = id
 
     for id, step in pairs(spec.sequence) do
       step.id = id
     end
 
     local combo = Combo(spec)
-
+    self.combosById[combo.id] = combo
     table.insert(self.combos, combo)
-    self.combosByName[name] = combo
   end
 
   self.netTable:Set(NET_TABLE_KEY, COMBOS)
@@ -85,11 +82,11 @@ function M:Load()
   self:d("Combos:Load() - finished loading combos")
 end
 
---- Finds a combo by name.
--- @tparam string name Combo name
+--- Finds a combo by id.
+-- @tparam string id Combo ID
 -- @treturn invokation.combos.Combo|nil Combo instance if found, `nil` otherwise
-function M:Find(name)
-  return self.combosByName[name]
+function M:Find(id)
+  return self.combosById[id]
 end
 
 --- Starts a combo for the given player.
@@ -98,10 +95,10 @@ end
 -- @todo implement countdown
 -- @todo implement completion timer comparing against ideal time
 function M:Start(player, combo)
-  self:d("Combos:Start()", player:GetPlayerID(), combo.name)
+  self:d("Combos:Start()", player:GetPlayerID(), combo.id)
 
   if not combo:Reset() then
-    self:errf("Could not reset combo '%s' for player %d", combo.name, player:GetPlayerID())
+    self:errf("Could not reset combo '%s' for player %d", combo.id, player:GetPlayerID())
     return
   end
 
@@ -125,7 +122,7 @@ end
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam invokation.combos.Combo combo Combo instance
 function M:Restart(player, combo)
-  self:d("Combos:Restart()", player:GetPlayerID(), combo.name)
+  self:d("Combos:Restart()", player:GetPlayerID(), combo.id)
   return self:Start(player, combo)
 end
 
@@ -151,7 +148,7 @@ end
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam invokation.combos.Combo combo Combo instance
 function M:Finish(player, combo)
-  self:d("Combos:Finish()", player:GetPlayerID(), combo.name)
+  self:d("Combos:Finish()", player:GetPlayerID(), combo.id)
 
   local hero = player:GetAssignedHero()
 

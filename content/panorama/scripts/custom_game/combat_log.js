@@ -1,63 +1,11 @@
 "use strict";
 
-var ORB_ABILITIES = {
-  invoker_quas: true,
-  invoker_wex: true,
-  invoker_exort: true,
-};
-
-var _grid = new Grid(15);
-var _capturing;
-
-var _combatLog;
-var _filterOrbs;
-var _contents;
-var _row;
-
-function onClear() {
-  L("onClear()");
-  clear();
-}
-
-function onGridRowChange(idx) {
-  L("onGridRowChange() ", idx);
-  addRow(idx);
-}
-
-function onAbilityUsed(payload) {
-  L("onAbilityUsed() ", payload);
-
-  if (!_capturing) {
-    return;
-  }
-
-  if (isFilteringOrbs() && isOrbAbility(payload.ability)) {
-    return;
-  }
-
-  addColumn(payload.ability);
-}
-
-function onComboStarted() {
-  L("onComboStarted()");
-  start();
-}
-
-function onComboStopped() {
-  L("onComboStopped()");
-  stop();
-}
-
-function addRow(idx) {
-  _row = createRow(_contents, idx);
-  scrollToBottom();
-}
-
-function addColumn(abilityName) {
-  _grid.Add(abilityName);
-  createAbilityIcon(_row, abilityName);
-  scrollToBottom();
-}
+var C = GameUI.CustomUIConfig(),
+  CreateComponent = C.CreateComponent,
+  Grid = C.Grid,
+  IsOrbAbility = C.Util.IsOrbAbility,
+  IsItemAbility = C.Util.IsItemAbility,
+  EVENTS = C.EVENTS;
 
 function createRow(parent, idx) {
   var panel = $.CreatePanel("Panel", parent, "row_" + idx);
@@ -69,7 +17,7 @@ function createAbilityIcon(parent, abilityName) {
   var snippetName;
   var imageProperty;
 
-  if (abilityName.match(/^item_/)) {
+  if (IsItemAbility(abilityName)) {
     snippetName = "CombatLogItem";
     imageProperty = "itemname";
   } else {
@@ -86,82 +34,134 @@ function createAbilityIcon(parent, abilityName) {
   return panel;
 }
 
-function clear() {
-  _row = null;
-  _grid.Clear();
-  _contents.RemoveAndDeleteChildren();
-}
+var CombatLog = CreateComponent({
+  constructor: function CombatLog() {
+    CombatLog.super.call(this, $.GetContextPanel());
 
-function scrollToBottom() {
-  _contents.ScrollToBottom();
-}
+    this.capturing = false;
+    this.grid = new Grid(15);
 
-function startCapturing() {
-  _capturing = true;
-  CustomEvents.SendServer(EVENT_COMBAT_LOG_CAPTURE_START);
-}
+    this.bindElements();
+    this.bindEvents();
+    this.Stop();
 
-function stopCapturing() {
-  _capturing = false;
-  CustomEvents.SendServer(EVENT_COMBAT_LOG_CAPTURE_STOP);
-}
+    this.log("init");
+  },
 
-function showCombatLog() {
-  _combatLog.RemoveClass("Closed");
-}
+  bindElements: function() {
+    this.$combatLog = $("#CombatLog");
+    this.$contents = $("#CombatLogContents");
+    this.$filterOrbs = $("#FilterOrbs");
+    this.$row = null;
+  },
 
-function hideCombatLog() {
-  _combatLog.AddClass("Closed");
-}
+  bindEvents: function() {
+    this.grid.OnRowChange(this.onGridRowChange.bind(this));
 
-function isFilteringOrbs() {
-  return _filterOrbs.checked;
-}
+    this.subscribe(EVENTS.COMBAT_LOG_ABILITY_USED, this.onAbilityUsed);
+    this.subscribe(EVENTS.COMBAT_LOG_CLEAR, this.onClear);
+    this.subscribe(EVENTS.COMBO_STARTED, this.onComboStarted);
+    this.subscribe(EVENTS.COMBO_STOPPED, this.onComboStopped);
+  },
 
-function isOrbAbility(abilityName) {
-  return abilityName in ORB_ABILITIES;
-}
+  onClear: function() {
+    this.log("onClear()");
+    this.Clear();
+  },
 
-function start() {
-  L("start()");
-  clear();
-  startCapturing();
-  showCombatLog();
-}
+  onGridRowChange: function(idx) {
+    this.log("onGridRowChange() ", idx);
+    this.addRow(idx);
+  },
 
-function stop() {
-  L("stop()");
-  clear();
-  stopCapturing();
-  hideCombatLog();
-}
+  onAbilityUsed: function(payload) {
+    this.log("onAbilityUsed() ", payload);
 
-function ToggleCombatLog() {
-  if (_capturing) {
-    stop();
-  } else {
-    start();
-  }
-}
+    if (!this.capturing) {
+      return;
+    }
 
-function Clear() {
-  return clear();
-}
+    if (this.isFilteringOrbs() && IsOrbAbility(payload.ability)) {
+      return;
+    }
 
-(function() {
-  _combatLog = $("#CombatLog");
-  _contents = $("#CombatLogContents");
-  _filterOrbs = $("#FilterOrbs");
-  _filterOrbs.checked = true;
+    this.addColumn(payload.ability);
+  },
 
-  _grid.OnRowChange(onGridRowChange);
+  onComboStarted: function() {
+    this.log("onComboStarted()");
+    this.Start();
+  },
 
-  stop();
+  onComboStopped: function() {
+    this.log("onComboStopped()");
+    this.Stop();
+  },
 
-  CustomEvents.Subscribe(EVENT_COMBAT_LOG_ABILITY_USED, onAbilityUsed);
-  CustomEvents.Subscribe(EVENT_COMBAT_LOG_CLEAR, onClear);
-  CustomEvents.Subscribe(EVENT_COMBO_STARTED, onComboStarted);
-  CustomEvents.Subscribe(EVENT_COMBO_STOPPED, onComboStopped);
+  addRow: function(idx) {
+    this.$row = createRow(this.$contents, idx);
+    this.scrollToBottom();
+  },
 
-  L("init");
-})();
+  addColumn: function(abilityName) {
+    this.grid.Add(abilityName);
+    createAbilityIcon(this.$row, abilityName);
+    this.scrollToBottom();
+  },
+
+  scrollToBottom: function() {
+    this.$contents.ScrollToBottom();
+  },
+
+  startCapturing: function() {
+    this.capturing = true;
+    this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_START);
+  },
+
+  stopCapturing: function() {
+    this.capturing = false;
+    this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
+  },
+
+  showCombatLog: function() {
+    this.$combatLog.RemoveClass("Closed");
+  },
+
+  hideCombatLog: function() {
+    this.$combatLog.AddClass("Closed");
+  },
+
+  isFilteringOrbs: function() {
+    return this.$filterOrbs.checked;
+  },
+
+  Start: function() {
+    this.log("Start()");
+    this.Clear();
+    this.startCapturing();
+    this.showCombatLog();
+  },
+
+  Stop: function() {
+    this.log("Stop()");
+    this.Clear();
+    this.stopCapturing();
+    this.hideCombatLog();
+  },
+
+  Toggle: function() {
+    if (this.capturing) {
+      this.Stop();
+    } else {
+      this.Start();
+    }
+  },
+
+  Clear: function() {
+    this.grid.Clear();
+    this.$row = null;
+    this.$contents.RemoveAndDeleteChildren();
+  },
+});
+
+var combatLog = new CombatLog();

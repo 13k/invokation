@@ -1,11 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/internal/util.js" />
-    <include src="file://{resources}/scripts/internal/context_data.js" />
-    <include src="file://{resources}/scripts/internal/context_logging.js" />
-    <include src="file://{resources}/scripts/internal/custom_events.js" />
-    <include src="file://{resources}/scripts/internal/net_table.js" />
-    <include src="file://{resources}/scripts/internal/combos_collection.js" />
     <include src="file://{resources}/scripts/custom_game/picker.js" />
   </scripts>
 
@@ -30,13 +24,13 @@
     <Panel id="CombosSlideout" class="DrawerClosed">
       <Panel id="CombosContents" class="TranslucentPanel">
         <Panel class="PickerTitleContainer PanelTitleContainer">
-          <Button class="RefreshButton" onactivate="Reload()" />
+          <Button class="RefreshButton" onactivate="picker.Reload()" />
           <Label class="PickerTitle PanelTitle" text="#invokation_combos_picker_title" hittest="false" />
         </Panel>
         <Panel id="CombosContainer" />
       </Panel>
 
-      <Button id="CombosThumb" class="PanelSlideThumb" onactivate="TogglePicker()">
+      <Button id="CombosThumb" class="PanelSlideThumb" onactivate="picker.Toggle()">
         <Panel class="PanelSlideThumbArrow" />
       </Button>
     </Panel>

@@ -1,10 +1,16 @@
 <root>
   <scripts>
+    <include src="file://{resources}/scripts/lib/util.js" />
+    <include src="file://{resources}/scripts/lib/class.js" />
+    <include src="file://{resources}/scripts/lib/logger.js" />
+    <include src="file://{resources}/scripts/lib/callbacks.js" />
+    <include src="file://{resources}/scripts/lib/net_table.js" />
+    <include src="file://{resources}/scripts/lib/grid.js" />
+    <include src="file://{resources}/scripts/lib/custom_events.js" />
+    <include src="file://{resources}/scripts/lib/combos_collection.js" />
+    <include src="file://{resources}/scripts/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.js" />
   </scripts>
-
-  <script>
-  </script>
 
   <Panel>
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />

@@ -1,88 +1,96 @@
 "use strict";
 
+var C = GameUI.CustomUIConfig(),
+  CreateComponent = C.CreateComponent,
+  EVENTS = C.EVENTS;
+
 var COMBO_STEP_LAYOUT =
   "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
-var _titleLabel;
-var _sequenceContainer;
-
-function onComboStarted() {
-  L("onComboStarted()");
-  close();
-}
-
-function onViewerRender(payload) {
-  L("onViewerRender() ", payload.combo);
-  SetContextData("_combo", payload.combo);
-  render();
-  open();
-}
-
-function render() {
-  L("render()");
-  renderInfo();
-  renderSequence();
-}
-
-function renderInfo() {
-  var combo = GetContextData("_combo");
-
-  _titleLabel.text = combo.name_l10n;
-}
-
-function renderSequence() {
-  var combo = GetContextData("_combo");
-
-  _sequenceContainer.RemoveAndDeleteChildren();
-
-  $.Each(combo.sequence, function(step) {
-    createStepPanel(_sequenceContainer, step);
-  });
-}
-
 function createStepPanel(parent, step) {
-  var panel = $.CreatePanel("Panel", parent, "combo_step_" + step.name);
+  var panelID = "combo_step_" + step.id + "_" + step.name;
+  var panel = $.CreatePanel("Panel", parent, panelID);
 
   panel.BLoadLayout(COMBO_STEP_LAYOUT, false, false);
-  panel.data.SetStep(step);
+  panel.component.Input("SetStep", step);
 
   return panel;
 }
 
-function open() {
-  $.GetContextPanel().RemoveClass("Closed");
-}
+var Viewer = CreateComponent({
+  constructor: function Viewer() {
+    Viewer.super.call(this, $.GetContextPanel());
 
-function close() {
-  $.GetContextPanel().AddClass("Closed");
-}
+    this.bindElements();
+    this.bindEvents();
 
-function startCombo() {
-  var combo = GetContextData("_combo");
-  L("startCombo() ", combo.name);
-  CustomEvents.SendServer(EVENT_COMBO_START, { combo: combo.name });
-}
+    this.log("init");
+  },
 
-function Play() {
-  L("Play()");
-  startCombo();
-}
+  bindElements: function() {
+    this.$titleLabel = $("#Title");
+    this.$sequenceContainer = $("#SequenceContainer");
+  },
 
-function Close() {
-  close();
-}
+  bindEvents: function() {
+    this.subscribe(EVENTS.VIEWER_RENDER, this.onViewerRender);
+    this.subscribe(EVENTS.COMBO_STARTED, this.onComboStarted);
+  },
 
-function Reload() {
-  L("Reload()");
-  render();
-}
+  onComboStarted: function() {
+    this.log("onComboStarted()");
+    this.Close();
+  },
 
-(function() {
-  _titleLabel = $("#Title");
-  _sequenceContainer = $("#SequenceContainer");
+  onViewerRender: function(payload) {
+    this.log("onViewerRender() ", payload.combo);
+    this.combo = payload.combo;
+    this.render();
+    this.Open();
+  },
 
-  CustomEvents.Subscribe(EVENT_VIEWER_RENDER, onViewerRender);
-  CustomEvents.Subscribe(EVENT_COMBO_STARTED, onComboStarted);
+  render: function() {
+    this.log("render()");
+    this.renderInfo();
+    this.renderSequence();
+  },
 
-  L("init");
-})();
+  renderInfo: function() {
+    this.$titleLabel.text = this.combo.l10n.name;
+  },
+
+  renderSequence: function() {
+    var self = this;
+
+    this.$sequenceContainer.RemoveAndDeleteChildren();
+
+    $.Each(this.combo.sequence, function(step) {
+      createStepPanel(self.$sequenceContainer, step);
+    });
+  },
+
+  Open: function() {
+    this.$ctx.RemoveClass("Closed");
+  },
+
+  Close: function() {
+    this.$ctx.AddClass("Closed");
+  },
+
+  startCombo: function() {
+    this.log("startCombo() ", this.combo.id);
+    this.sendServer(EVENTS.COMBO_START, { combo: this.combo.id });
+  },
+
+  Play: function() {
+    this.log("Play()");
+    this.startCombo();
+  },
+
+  Reload: function() {
+    this.log("Reload()");
+    this.render();
+  },
+});
+
+var viewer = new Viewer();

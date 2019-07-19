@@ -10,14 +10,14 @@ local M = {}
 --- Laning Phase
 -- @section laning_phase
 
---- @table lane_anti_gank1
-M.lane_anti_gank1 = {
+--- @table invokation_combo_lane_anti_gank1
+M.invokation_combo_lane_anti_gank1 = {
   specialty = "qw",
   category = "laning_phase",
   stance = "defensive",
-  hero_level = 2,
-  damage_rating = 0,
-  difficulty_rating = 1,
+  heroLevel = 2,
+  damageRating = 0,
+  difficultyRating = 1,
   items = {"item_null_talisman"},
   sequence = {
     [1] = {
@@ -32,14 +32,14 @@ M.lane_anti_gank1 = {
   },
 }
 
---- @table lane_anti_gank2
-M.lane_anti_gank2 = {
+--- @table invokation_combo_lane_anti_gank2
+M.invokation_combo_lane_anti_gank2 = {
   specialty = "qw",
   category = "laning_phase",
   stance = "defensive",
-  hero_level = 2,
-  damage_rating = 0,
-  difficulty_rating = 1,
+  heroLevel = 2,
+  damageRating = 0,
+  difficultyRating = 1,
   items = {"item_null_talisman"},
   sequence = {
     [1] = {
@@ -89,14 +89,14 @@ M.lane_anti_gank2 = {
   },
 }
 
---- @table lane_harass_emp
-M.lane_harass_emp = {
+--- @table invokation_combo_lane_harass_emp
+M.invokation_combo_lane_harass_emp = {
   specialty = "qw",
   category = "laning_phase",
   stance = "offensive",
-  hero_level = 2,
-  damage_rating = 1,
-  difficulty_rating = 1,
+  heroLevel = 2,
+  damageRating = 1,
+  difficultyRating = 1,
   items = {"item_null_talisman"},
   sequence = {
     [1] = {
@@ -111,14 +111,14 @@ M.lane_harass_emp = {
   },
 }
 
---- @table lane_harass_forge_spirit1
-M.lane_harass_forge_spirit1 = {
+--- @table invokation_combo_lane_harass_forge_spirit1
+M.invokation_combo_lane_harass_forge_spirit1 = {
   specialty = "qe",
   category = "laning_phase",
   stance = "offensive",
-  hero_level = 2,
-  damage_rating = 1,
-  difficulty_rating = 1,
+  heroLevel = 2,
+  damageRating = 1,
+  difficultyRating = 1,
   items = {"item_null_talisman"},
   sequence = {
     [1] = {
@@ -133,14 +133,14 @@ M.lane_harass_forge_spirit1 = {
   },
 }
 
---- @table lane_harass_forge_spirit2
-M.lane_harass_forge_spirit2 = {
+--- @table invokation_combo_lane_harass_forge_spirit2
+M.invokation_combo_lane_harass_forge_spirit2 = {
   specialty = "qe",
   category = "laning_phase",
   stance = "offensive",
-  hero_level = 2,
-  damage_rating = 1,
-  difficulty_rating = 1,
+  heroLevel = 2,
+  damageRating = 1,
+  difficultyRating = 1,
   items = {"item_null_talisman"},
   sequence = {
     [1] = {
@@ -158,14 +158,14 @@ M.lane_harass_forge_spirit2 = {
 --- Ganking / Solo Pick
 -- @section ganking_solo_pick
 
---- @table solo_control_magic_damage1
-M.solo_control_magic_damage1 = {
+--- @table invokation_combo_solo_control_magic_damage1
+M.invokation_combo_solo_control_magic_damage1 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 2,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 2,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -185,14 +185,14 @@ M.solo_control_magic_damage1 = {
   },
 }
 
---- @table solo_control_magic_damage2
-M.solo_control_magic_damage2 = {
+--- @table invokation_combo_solo_control_magic_damage2
+M.invokation_combo_solo_control_magic_damage2 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 3,
-  difficulty_rating = 3,
+  heroLevel = 6,
+  damageRating = 3,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -212,14 +212,14 @@ M.solo_control_magic_damage2 = {
   },
 }
 
---- @table solo_control_magic_damage3
-M.solo_control_magic_damage3 = {
+--- @table invokation_combo_solo_control_magic_damage3
+M.invokation_combo_solo_control_magic_damage3 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 2,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 2,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -239,14 +239,14 @@ M.solo_control_magic_damage3 = {
   },
 }
 
---- @table solo_control_magic_damage4
-M.solo_control_magic_damage4 = {
+--- @table invokation_combo_solo_control_magic_damage4
+M.invokation_combo_solo_control_magic_damage4 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 3,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -266,14 +266,14 @@ M.solo_control_magic_damage4 = {
   },
 }
 
---- @table solo_control_magic_damage5
-M.solo_control_magic_damage5 = {
+--- @table invokation_combo_solo_control_magic_damage5
+M.invokation_combo_solo_control_magic_damage5 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 3,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -293,14 +293,14 @@ M.solo_control_magic_damage5 = {
   },
 }
 
---- @table solo_control_magic_damage6
-M.solo_control_magic_damage6 = {
+--- @table invokation_combo_solo_control_magic_damage6
+M.invokation_combo_solo_control_magic_damage6 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 3,
-  difficulty_rating = 3,
+  heroLevel = 6,
+  damageRating = 3,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -320,14 +320,14 @@ M.solo_control_magic_damage6 = {
   },
 }
 
---- @table solo_control_magic_damage7
-M.solo_control_magic_damage7 = {
+--- @table invokation_combo_solo_control_magic_damage7
+M.invokation_combo_solo_control_magic_damage7 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 3,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -347,14 +347,14 @@ M.solo_control_magic_damage7 = {
   },
 }
 
---- @table solo_control_physical_damage1
-M.solo_control_physical_damage1 = {
+--- @table invokation_combo_solo_control_physical_damage1
+M.invokation_combo_solo_control_physical_damage1 = {
   specialty = "qe",
   category = "ganking_solo_pick",
   stance = "offensive",
-  hero_level = 6,
-  damage_rating = 2,
-  difficulty_rating = 2,
+  heroLevel = 6,
+  damageRating = 2,
+  difficultyRating = 2,
   items = {"item_null_talisman", "item_null_talisman"},
   sequence = {
     [1] = {
@@ -377,14 +377,14 @@ M.solo_control_physical_damage1 = {
 --- Teamfight
 -- @section teamfight
 
---- @table tf_control_magic_damage1
-M.tf_control_magic_damage1 = {
+--- @table invokation_combo_tf_control_magic_damage1
+M.invokation_combo_tf_control_magic_damage1 = {
   specialty = "qw",
   category = "teamfight",
   stance = "offensive",
-  hero_level = 12,
-  damage_rating = 2,
-  difficulty_rating = 3,
+  heroLevel = 12,
+  damageRating = 2,
+  difficultyRating = 3,
   items = {"item_null_talisman", "item_null_talisman", "item_ultimate_scepter"},
   sequence = {
     [1] = {
@@ -412,14 +412,14 @@ M.tf_control_magic_damage1 = {
 --- Late Game
 -- @section late_game
 
---- @table late_control_magic_damage1
-M.late_control_magic_damage1 = {
+--- @table invokation_combo_late_control_magic_damage1
+M.invokation_combo_late_control_magic_damage1 = {
   specialty = "qe",
   category = "late_game",
   stance = "offensive",
-  damage_rating = 4,
-  difficulty_rating = 4,
-  hero_level = 18,
+  damageRating = 4,
+  difficultyRating = 4,
+  heroLevel = 18,
   items = {
     "item_null_talisman",
     "item_null_talisman",

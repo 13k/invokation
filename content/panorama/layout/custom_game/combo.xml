@@ -1,13 +1,5 @@
 <root>
   <scripts>
-    <include src="s2r://panorama/scripts/sequence_actions.vjs" />
-
-    <include src="file://{resources}/scripts/internal/util.js" />
-    <include src="file://{resources}/scripts/internal/context_data.js" />
-    <include src="file://{resources}/scripts/internal/context_logging.js" />
-    <include src="file://{resources}/scripts/internal/custom_events.js" />
-    <include src="file://{resources}/scripts/internal/net_table.js" />
-    <include src="file://{resources}/scripts/internal/combos_collection.js" />
     <include src="file://{resources}/scripts/custom_game/combo.js" />
   </scripts>
 
@@ -74,11 +66,11 @@
         <Panel class="FillHeight" hittest="false" />
       </Panel>
 
-      <Button id="RestartButton" class="PopupButton Blue" onactivate="Restart()">
+      <Button id="RestartButton" class="PopupButton Blue" onactivate="combo.Restart()">
         <Label text="#invokation_combo_restart" hittest="false" />
       </Button>
 
-      <Button id="StopButton" class="PopupButton Red" onactivate="Stop()">
+      <Button id="StopButton" class="PopupButton Red" onactivate="combo.Stop()">
         <Label text="#invokation_combo_stop" hittest="false" />
       </Button>
     </Panel>

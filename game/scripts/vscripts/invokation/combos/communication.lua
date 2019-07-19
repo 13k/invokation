@@ -15,7 +15,7 @@ function M.sendAbilityUsed(player, ability)
 end
 
 function M.sendStarted(player, combo)
-  local payload = {combo = combo.name, next = combo:NextSteps()}
+  local payload = {combo = combo.id, next = combo:NextSteps()}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STARTED, player, payload)
 end
 
@@ -24,17 +24,17 @@ function M.sendStopped(player)
 end
 
 function M.sendProgress(player, combo)
-  local payload = {combo = combo.name, next = combo:NextSteps(), count = combo.count}
+  local payload = {combo = combo.id, next = combo:NextSteps(), count = combo.count}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_PROGRESS, player, payload)
 end
 
 function M.sendStepError(player, combo, ability)
-  local payload = {combo = combo.name, expected = combo:NextSteps(), ability = ability.name}
+  local payload = {combo = combo.id, expected = combo:NextSteps(), ability = ability.name}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STEP_ERROR, player, payload)
 end
 
 function M.sendFinished(player, combo, playerState)
-  local payload = {combo = combo.name, count = combo.count, damage = playerState.damage}
+  local payload = {combo = combo.id, count = combo.count, damage = playerState.damage}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_FINISHED, player, payload)
 end
 

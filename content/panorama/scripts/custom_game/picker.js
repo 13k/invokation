@@ -1,5 +1,11 @@
 "use strict";
 
+var C = GameUI.CustomUIConfig(),
+  CreateComponent = C.CreateComponent,
+  StringLexicalCompare = C.Util.StringLexicalCompare,
+  EVENTS = C.EVENTS,
+  COMBOS = C.COMBOS;
+
 var PICKER_COLUMNS = [
   "laning_phase",
   "ganking_solo_pick",
@@ -10,109 +16,8 @@ var PICKER_COLUMNS = [
 var COMBO_PANEL_LAYOUT =
   "file://{resources}/layout/custom_game/picker_combo.xml";
 
-var _groupedCombos;
-
-var _slideout;
-var _combosContainer;
-
-function onCombosChange() {
-  L("onCombosChange()");
-  groupCombos();
-  renderCombos();
-}
-
-function onPickerShow() {
-  L("onPickerShow()");
-  showPicker();
-}
-
-function onComboDetailsShow(combo) {
-  L("onComboDetailsShow()");
-  hidePicker();
-  renderViewer(combo);
-}
-
-function onComboPlay(combo) {
-  L("onComboPlay()");
-  startCombo(combo);
-}
-
-function onComboStarted() {
-  L("onComboStarted()");
-  hidePicker();
-}
-
-function onComboStopped() {
-  L("onComboStopped()");
-  showPicker();
-}
-
-function startCombo(combo) {
-  L("startCombo() ", combo.name);
-  CustomEvents.SendServer(EVENT_COMBO_START, { combo: combo.name });
-}
-
-function beginCombo(comboName) {
-  var combo = CombosCollection.Get(comboName);
-  L("beginCombo() ", comboName, " ", combo);
-  SetContextData("_combo", combo);
-}
-
-function endCombo() {
-  var combo = GetContextData("_combo");
-  L("endCombo() ", combo.name);
-}
-
-function groupCombos() {
-  _groupedCombos = {};
-
-  // group by category
-  $.Each(CombosCollection.combos, function(combo, _name) {
-    if (!_groupedCombos[combo.category]) {
-      _groupedCombos[combo.category] = [];
-    }
-
-    _groupedCombos[combo.category].push(combo);
-  });
-
-  // sort each group by (hero_level, name)
-  $.Each(_groupedCombos, function(group, _category) {
-    group.sort(function(left, right) {
-      if (left.hero_level === right.hero_level) {
-        return StringLexicalCompare(left.name, right.name);
-      }
-
-      return left.hero_level - right.hero_level;
-    });
-  });
-}
-
-function renderCombos() {
-  L("renderCombos()");
-
-  _combosContainer.RemoveAndDeleteChildren();
-
-  $.Each(PICKER_COLUMNS, function(category) {
-    var group = _groupedCombos[category];
-
-    if (!group) {
-      return;
-    }
-
-    var columnPanel = createCombosColumnPanel(category);
-
-    $.Each(group, function(combo) {
-      createComboPanel(columnPanel, combo);
-    });
-  });
-}
-
-function createCombosColumnPanel(category) {
-  var panel = $.CreatePanel(
-    "Panel",
-    _combosContainer,
-    "combos_column_" + category
-  );
+function createCombosColumnPanel(parent, category) {
+  var panel = $.CreatePanel("Panel", parent, "combos_column_" + category);
 
   panel.BLoadLayoutSnippet("CombosColumn");
   panel.AddClass(category);
@@ -123,58 +28,158 @@ function createCombosColumnPanel(category) {
   return panel;
 }
 
-function createComboPanel(parent, combo) {
-  var panel = $.CreatePanel("Panel", parent, combo.name);
+var Picker = CreateComponent({
+  constructor: function Picker() {
+    Picker.super.call(this, $.GetContextPanel());
 
-  panel.BLoadLayout(COMBO_PANEL_LAYOUT, false, false);
-  panel.data.Callbacks.Update({
-    onShowDetails: onComboDetailsShow,
-    onPlay: onComboPlay,
-  });
-  panel.data.SetCombo(combo);
+    this.bindElements();
+    this.bindEvents();
 
-  return panel;
-}
+    this.log("init");
+  },
 
-function showPicker() {
-  $.DispatchEvent("PlaySoundEffect", "Shop.PanelUp");
-  _slideout.RemoveClass("DrawerClosed");
-}
+  bindElements: function() {
+    this.$slideout = $("#CombosSlideout");
+    this.$combosContainer = $("#CombosContainer");
+  },
 
-function hidePicker() {
-  $.DispatchEvent("PlaySoundEffect", "Shop.PanelDown");
-  _slideout.AddClass("DrawerClosed");
-}
+  bindEvents: function() {
+    COMBOS.OnChange(this.onCombosChange.bind(this));
 
-function renderViewer(combo) {
-  // CustomEvents.SendServer(EVENT_VIEWER_RENDER, { combo: combo.name });
-  // FIXME: this should send only to the local player
-  CustomEvents.SendAll(EVENT_VIEWER_RENDER, { combo: combo });
-}
+    this.subscribe(EVENTS.PICKER_SHOW, this.onPickerShow);
+    this.subscribe(EVENTS.COMBO_STARTED, this.onComboStarted);
+    this.subscribe(EVENTS.COMBO_STOPPED, this.onComboStopped);
+  },
 
-function TogglePicker() {
-  if (_slideout.BHasClass("DrawerClosed")) {
-    showPicker();
-  } else {
-    hidePicker();
-  }
-}
+  onCombosChange: function() {
+    this.log("onCombosChange()");
+    this.groupCombos();
+    this.renderCombos();
+  },
 
-function Reload() {
-  L("Reload()");
-  CombosCollection.Reload();
-}
+  onPickerShow: function() {
+    this.log("onPickerShow()");
+    this.showPicker();
+  },
 
-(function() {
-  _slideout = $("#CombosSlideout");
-  _combosContainer = $("#CombosContainer");
+  onComboDetailsShow: function(payload) {
+    this.log("onComboDetailsShow() ", payload);
+    this.hidePicker();
+    this.renderViewer(payload.combo);
+  },
 
-  CombosCollection.OnChange(onCombosChange);
-  CombosCollection.Load();
+  onComboPlay: function(payload) {
+    this.log("onComboPlay() ", payload);
+    this.startCombo(payload.combo);
+  },
 
-  CustomEvents.Subscribe(EVENT_PICKER_SHOW, onPickerShow);
-  CustomEvents.Subscribe(EVENT_COMBO_STARTED, onComboStarted);
-  CustomEvents.Subscribe(EVENT_COMBO_STOPPED, onComboStopped);
+  onComboStarted: function() {
+    this.log("onComboStarted()");
+    this.hidePicker();
+  },
 
-  L("init");
-})();
+  onComboStopped: function() {
+    this.log("onComboStopped()");
+    this.showPicker();
+  },
+
+  startCombo: function(combo) {
+    this.log("startCombo() ", combo.id);
+    this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
+  },
+
+  groupCombos: function() {
+    var self = this;
+    this.groupedCombos = {};
+
+    // group by category
+    COMBOS.forEach(function(combo, _id) {
+      if (!self.groupedCombos[combo.category]) {
+        self.groupedCombos[combo.category] = [];
+      }
+
+      self.groupedCombos[combo.category].push(combo);
+    });
+
+    // sort each group by (heroLevel, id)
+    $.Each(this.groupedCombos, function(group, _category) {
+      group.sort(function(left, right) {
+        if (left.heroLevel === right.heroLevel) {
+          return StringLexicalCompare(left.id, right.id);
+        }
+
+        return left.heroLevel - right.heroLevel;
+      });
+    });
+  },
+
+  renderCombos: function() {
+    this.log("renderCombos()");
+
+    var self = this;
+    this.$combosContainer.RemoveAndDeleteChildren();
+
+    $.Each(PICKER_COLUMNS, function(category) {
+      var group = self.groupedCombos[category];
+
+      if (!group) {
+        return;
+      }
+
+      var columnPanel = createCombosColumnPanel(
+        self.$combosContainer,
+        category
+      );
+
+      $.Each(group, function(combo) {
+        self.createComboPanel(columnPanel, combo);
+      });
+    });
+  },
+
+  createComboPanel: function(parent, combo) {
+    var panel = $.CreatePanel("Panel", parent, combo.id);
+
+    panel.BLoadLayout(COMBO_PANEL_LAYOUT, false, false);
+
+    panel.component.Outputs({
+      OnShowDetails: this.onComboDetailsShow.bind(this),
+      OnPlay: this.onComboPlay.bind(this),
+    });
+
+    panel.component.Input("SetCombo", combo);
+
+    return panel;
+  },
+
+  showPicker: function() {
+    $.DispatchEvent("PlaySoundEffect", "Shop.PanelUp");
+    this.$slideout.RemoveClass("DrawerClosed");
+  },
+
+  hidePicker: function() {
+    $.DispatchEvent("PlaySoundEffect", "Shop.PanelDown");
+    this.$slideout.AddClass("DrawerClosed");
+  },
+
+  renderViewer: function(combo) {
+    // this.sendServer(EVENTS.VIEWER_RENDER, { combo: combo.id });
+    // FIXME: this should send only to the local player
+    this.sendAll(EVENTS.VIEWER_RENDER, { combo: combo });
+  },
+
+  Toggle: function() {
+    if (this.$slideout.BHasClass("DrawerClosed")) {
+      this.showPicker();
+    } else {
+      this.hidePicker();
+    }
+  },
+
+  Reload: function() {
+    this.log("Reload()");
+    COMBOS.Reload();
+  },
+});
+
+var picker = new Picker();

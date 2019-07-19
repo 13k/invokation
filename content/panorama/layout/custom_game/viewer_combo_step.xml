@@ -1,7 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/internal/context_data.js" />
-    <include src="file://{resources}/scripts/internal/context_logging.js" />
     <include src="file://{resources}/scripts/custom_game/combo_step.js" />
     <include src="file://{resources}/scripts/custom_game/viewer_combo_step.js" />
   </scripts>
@@ -13,6 +11,6 @@
   </styles>
 
   <Panel class="ComboStep">
-    <Button id="StepIconButton" class="StepIcon" onmouseover="ShowTooltip()" onmouseout="HideTooltip()" />
+    <Button id="StepIconButton" class="StepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
   </Panel>
 </root>

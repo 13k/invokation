@@ -1,9 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/internal/context_callbacks.js" />
-    <include src="file://{resources}/scripts/internal/context_data.js" />
-    <include src="file://{resources}/scripts/internal/context_logging.js" />
-    <include src="file://{resources}/scripts/internal/custom_events.js" />
     <include src="file://{resources}/scripts/custom_game/picker_combo.js" />
   </scripts>
 
@@ -19,7 +15,7 @@
     <Label id="Title" class="PanelTitle" hittest="false" />
 
     <Panel class="InfoContainer">
-      <Button class="ComboIcon InfoIcon" onactivate="ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ComboIcon InfoIcon" onactivate="pickerCombo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
       <Button class="ComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
       <Button class="ComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
       <Button class="ComboIcon HeroLevelIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
@@ -43,7 +39,7 @@
       </Panel>
     </Panel>
 
-    <Button class="PlayButton FlatButton" onactivate="Play()">
+    <Button class="PlayButton FlatButton" onactivate="pickerCombo.Play()">
       <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
     </Button>
   </Panel>

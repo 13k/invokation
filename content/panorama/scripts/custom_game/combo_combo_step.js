@@ -1,47 +1,49 @@
 "use strict";
 
-function onStepChange() {
-  var button = GetContextData("_button");
-  var step = GetContextData("_step");
+var C = GameUI.CustomUIConfig(),
+  Class = C.Class;
 
-  if (step.name.match(/_(quas|wex|exort)$/)) {
-    button.AddClass("Orb");
-  } else {
-    button.RemoveClass("Orb");
-  }
-}
+var ComboComboStep = Class(ComboStep, {
+  constructor: function ComboComboStep() {
+    ComboComboStep.super.call(this, $.GetContextPanel());
 
-function onSetActive() {
-  var button = GetContextData("_button");
-  button.AddClass("Active");
-}
+    this.registerInputs({
+      SetStepActive: this.onSetActive.bind(this),
+      UnsetStepActive: this.onUnsetActive.bind(this),
+      SetStepError: this.onSetError.bind(this),
+      UnsetStepError: this.onUnsetError.bind(this),
+      StepBump: this.bump.bind(this),
+    });
+  },
 
-function onUnsetActive() {
-  var button = GetContextData("_button");
-  button.RemoveClass("Active");
-}
+  onStepChange: function() {
+    if (this.step.isOrbAbility) {
+      this.$button.AddClass("Orb");
+    } else {
+      this.$button.RemoveClass("Orb");
+    }
+  },
 
-function onSetError() {
-  var button = GetContextData("_button");
-  button.AddClass("Error");
-}
+  onSetActive: function() {
+    this.$button.AddClass("Active");
+  },
 
-function onUnsetError() {
-  var button = GetContextData("_button");
-  button.RemoveClass("Error");
-}
+  onUnsetActive: function() {
+    this.$button.RemoveClass("Active");
+  },
 
-function bump() {
-  $.GetContextPanel().RemoveClass("Bump");
-  $.GetContextPanel().AddClass("Bump");
-}
+  onSetError: function() {
+    this.$button.AddClass("Error");
+  },
 
-(function() {
-  UpdateContextData({
-    SetStepActive: onSetActive,
-    UnsetStepActive: onUnsetActive,
-    SetStepError: onSetError,
-    UnsetStepError: onUnsetError,
-    StepBump: bump,
-  });
-})();
+  onUnsetError: function() {
+    this.$button.RemoveClass("Error");
+  },
+
+  bump: function() {
+    this.$ctx.RemoveClass("Bump");
+    this.$ctx.AddClass("Bump");
+  },
+});
+
+var comboStep = new ComboComboStep();

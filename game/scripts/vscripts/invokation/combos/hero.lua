@@ -12,7 +12,7 @@ function M.setup(player, combo)
   local unit = Unit(hero)
   local invoker = Invoker(hero)
 
-  while unit:GetLevel() < combo.hero_level do
+  while unit:GetLevel() < combo.heroLevel do
     unit:HeroLevelUp(false)
   end
 

@@ -1,53 +1,60 @@
+// Abstract ComboStep component.
+// Should be included in actual component layout and subclassed.
+
 "use strict";
 
-// "client" code can override this function
-function onStepChange() {}
+var C = GameUI.CustomUIConfig(),
+  CreateComponent = C.CreateComponent;
 
-function setStep(step) {
-  SetContextData("_step", step);
+var ComboStep = CreateComponent({
+  constructor: function ComboStep() {
+    ComboStep.super.call(this, $.GetContextPanel());
 
-  var button = GetContextData("_button");
+    this.registerInput("SetStep", this.setStep.bind(this));
+    this.bindElements();
+  },
 
-  button.RemoveAndDeleteChildren();
+  bindElements: function() {
+    this.$button = $("#StepIconButton");
+  },
 
-  if (!step.required) {
-    button.AddClass("Optional");
-  } else {
-    button.RemoveClass("Optional");
-  }
+  // child components code can override this function
+  onStepChange: function() {},
 
-  var imageType;
-  var imageProperty;
+  setStep: function(step) {
+    this.step = step;
 
-  if (step.name.match(/^item_/)) {
-    imageType = "DOTAItemImage";
-    imageProperty = "itemname";
-  } else {
-    imageType = "DOTAAbilityImage";
-    imageProperty = "abilityname";
-  }
+    this.$button.RemoveAndDeleteChildren();
 
-  var image = $.CreatePanel(imageType, button, "StepImage");
-  image[imageProperty] = step.name;
-  image.hittest = false;
+    if (!step.required) {
+      this.$button.AddClass("Optional");
+    } else {
+      this.$button.RemoveClass("Optional");
+    }
 
-  if (onStepChange) {
-    onStepChange();
-  }
-}
+    var imageType;
+    var imageProperty;
 
-function ShowTooltip() {
-  var step = GetContextData("_step");
-  $.DispatchEvent("DOTAShowAbilityTooltip", $.GetContextPanel(), step.name);
-}
+    if (step.isItem) {
+      imageType = "DOTAItemImage";
+      imageProperty = "itemname";
+    } else {
+      imageType = "DOTAAbilityImage";
+      imageProperty = "abilityname";
+    }
 
-function HideTooltip() {
-  $.DispatchEvent("DOTAHideAbilityTooltip", $.GetContextPanel());
-}
+    var image = $.CreatePanel(imageType, this.$button, "StepImage");
+    image[imageProperty] = step.name;
+    image.hittest = false;
 
-(function() {
-  UpdateContextData({
-    SetStep: setStep,
-    _button: $("#StepIconButton"),
-  });
-})();
+    this.onStepChange();
+  },
+
+  ShowTooltip: function() {
+    $.DispatchEvent("DOTAShowAbilityTooltip", this.$ctx, this.step.name);
+  },
+
+  HideTooltip: function() {
+    $.DispatchEvent("DOTAHideAbilityTooltip", this.$ctx);
+  },
+});

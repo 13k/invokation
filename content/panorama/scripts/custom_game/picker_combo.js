@@ -1,42 +1,58 @@
 "use strict";
 
-var _callbacks = new ContextCallbacks();
+var C = GameUI.CustomUIConfig(),
+  CreateComponent = C.CreateComponent;
 
-function setCombo(combo) {
-  SetContextData("_combo", combo);
+var PickerCombo = CreateComponent({
+  constructor: function PickerCombo() {
+    PickerCombo.super.call(this, $.GetContextPanel());
 
-  var ctxPanel = $.GetContextPanel();
-  var titleLabel = $("#Title");
-  var heroLevelLabel = $("#HeroLevelLabel");
-  var damageRatingButton = $("#DamageRating");
-  var difficultyRatingButton = $("#DifficultyRating");
+    this.registerInput("SetCombo", this.setCombo.bind(this));
+    this.bindElements();
+  },
 
-  ctxPanel.AddClass("specialty_" + combo.specialty);
-  ctxPanel.AddClass("stance_" + combo.stance);
+  bindElements: function() {
+    this.$titleLabel = $("#Title");
+    this.$heroLevelLabel = $("#HeroLevelLabel");
+    this.$damageRatingButton = $("#DamageRating");
+    this.$difficultyRatingButton = $("#DifficultyRating");
+  },
 
-  ctxPanel.SetDialogVariable("specialty", combo.specialty_l10n);
-  ctxPanel.SetDialogVariable("stance", combo.stance_l10n);
-  ctxPanel.SetDialogVariable("damage_rating", combo.damage_rating_l10n);
-  ctxPanel.SetDialogVariable("difficulty_rating", combo.difficulty_rating_l10n);
+  setCombo: function(combo) {
+    this.log("setCombo() ", combo.id);
+    this.combo = combo;
 
-  titleLabel.text = combo.name_l10n;
-  heroLevelLabel.text = combo.hero_level;
-  damageRatingButton.AddClass("rating_" + combo.damage_rating);
-  difficultyRatingButton.AddClass("rating_" + combo.difficulty_rating);
-}
+    var specialtyClass = "specialty_" + combo.specialty;
+    var stanceClass = "stance_" + combo.stance;
+    var damageClass = "rating_" + combo.damageRating.toString();
+    var difficultyClass = "rating_" + combo.difficultyRating.toString();
 
-function ShowDetails() {
-  var combo = GetContextData("_combo");
-  L("ShowDetails() ", combo.name);
-  _callbacks.Run("onShowDetails", combo);
-}
+    this.$ctx.AddClass(specialtyClass);
+    this.$ctx.AddClass(stanceClass);
 
-function Play() {
-  var combo = GetContextData("_combo");
-  L("Play() ", combo.name);
-  _callbacks.Run("onPlay", combo);
-}
+    this.$ctx.SetDialogVariable("specialty", combo.l10n.specialty);
+    this.$ctx.SetDialogVariable("stance", combo.l10n.stance);
+    this.$ctx.SetDialogVariable("damage_rating", combo.l10n.damageRating);
+    this.$ctx.SetDialogVariable(
+      "difficulty_rating",
+      combo.l10n.difficultyRating
+    );
 
-(function() {
-  UpdateContextData({ SetCombo: setCombo, Callbacks: _callbacks });
-})();
+    this.$titleLabel.text = combo.l10n.name;
+    this.$heroLevelLabel.text = combo.heroLevel.toString();
+    this.$damageRatingButton.AddClass(damageClass);
+    this.$difficultyRatingButton.AddClass(difficultyClass);
+  },
+
+  ShowDetails: function() {
+    this.log("ShowDetails() ", this.combo.id);
+    this.runOutput("OnShowDetails", { combo: this.combo });
+  },
+
+  Play: function() {
+    this.log("Play() ", this.combo.id);
+    this.runOutput("OnPlay", { combo: this.combo });
+  },
+});
+
+var pickerCombo = new PickerCombo();
