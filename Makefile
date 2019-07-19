@@ -7,7 +7,13 @@ ldoc:
 	@ldoc --unqualified .
 
 install:
-	@bash install.sh
+	@bash scripts/install.bash
 
 build:
-	@bash build.sh
+	@bash scripts/build.bash
+
+launch_game:
+	@bash scripts/launch_game.bash
+
+launch_tools:
+	@bash scripts/launch_tools.bash

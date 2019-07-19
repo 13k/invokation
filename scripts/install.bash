@@ -1,37 +1,23 @@
 #!/bin/bash
-
 # This script is intended to be run within WSL
-
-translate_path() {
-  echo "$1" | \sed -re 's#^/mnt/([a-z])#\1:#' -e 's#/#\\#g'
-}
-
-mklink() {
-  local src="$1" dest="$2" src_t dest_t
-  local args=()
-
-  src_t="$(translate_path "$src")" || return $?
-  dest_t="$(translate_path "$dest")" || return $?
-
-  [[ -d "$src" ]] && args=("${args[@]}" "/j")
-
-  cmd.exe /c mklink "${args[@]}" "$dest_t" "$src_t"
-}
 
 set -e
 
-ADDON="${ADDON:-invokation}"
-DOTA_PATH="${DOTA_PATH:-"/mnt/f/SteamLibrary/steamapps/common/dota 2 beta"}"
+SCRIPT_PATH="$(dirname "$(realpath "$0")")"
+SRC_PATH="$(dirname "$SCRIPT_PATH")"
 
-src_path="$(dirname "$(realpath "$0")")"
-src_content_path="$src_path/content"
-src_game_path="$src_path/game"
+source "$SCRIPT_PATH/common.bash"
+
+src_content_path="$SRC_PATH/content"
+src_game_path="$SRC_PATH/game"
 
 dota_addons_content_path="$DOTA_PATH/content/dota_addons"
 dota_addons_game_path="$DOTA_PATH/game/dota_addons"
 
 target_content_path="$dota_addons_content_path/$ADDON"
 target_game_path="$dota_addons_game_path/$ADDON"
+
+echo "Linking addon from $SRC_PATH to $DOTA_PATH"
 
 mkdir -vp "$dota_addons_content_path"
 mkdir -vp "$target_game_path"
@@ -48,3 +34,5 @@ for src in "$src_game_path"/*; do
   mkdir -vp "$(dirname "$dest")"
   mklink "$src" "$dest" || break
 done
+
+echo "Done"
