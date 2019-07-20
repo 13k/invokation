@@ -1,7 +1,11 @@
+.ComboStep {
+  flow-children: right;
+  padding: 8px;
+}
+
 .StepIcon {
   width: 48px;
   height: 48px;
-  margin: 0 8px;
   box-shadow: goldColor -2px -2px 4px 4px;
   background-color: #000000dd;
 }
@@ -12,4 +16,13 @@
 
 .StepIcon DOTAItemImage {
   vertical-align: middle;
+}
+
+#StepDescription {
+  width: fill-parent-flow(1);
+  margin-left: 8px;
+  color: #3c1b18;
+  font-size: 18px;
+  font-weight: semi-bold;
+  vertical-align: center;
 }

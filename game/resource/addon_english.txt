@@ -15,7 +15,7 @@
     "invokation_combos_picker_title" "Select combo"
 
     "invokation_combo_category_laning_phase" "Laning Phase"
-    "invokation_combo_category_ganking_solo_pick" "Ganking/Solo Pick"
+    "invokation_combo_category_ganking_solo_pick" "Ganking & Solo Pick"
     "invokation_combo_category_teamfight" "Teamfight"
     "invokation_combo_category_late_game" "Late Game"
 
@@ -52,6 +52,9 @@
     "invokation_combo_group_striker" "Striker (Burst Damage)"
     "invokation_combo_group_puncher" "Puncher (Physical Damage)"
 
+    "invokation_viewer_sequence_title" "Sequence"
+    "invokation_viewer_sequence_disclaimer" "(Golden steps are required, others are optional)"
+
     "invokation_combo_lane_anti_gank1" "Anti-gank 1"
     "invokation_combo_lane_anti_gank2" "Anti-gank 2"
     "invokation_combo_lane_harass_emp" "Harass - EMP"
@@ -70,5 +73,11 @@
 
     "invokation_combo_counter_title" "Combo"
     "invokation_combo_counter_damage_label" "Damage"
+
+    "invokation_viewer_description_lorem" "<span class='intro-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                                     <br><br>Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Velit sed ullamcorper morbi tincidunt ornare. Neque convallis a cras semper auctor neque. Facilisi cras fermentum odio eu.
+                                     <br><br>Eleifend donec pretium vulputate sapien nec sagittis. Ac auctor augue mauris augue neque gravida in. Ut tellus elementum sagittis vitae et leo. Metus dictum at tempor commodo ullamcorper. At tempor commodo ullamcorper a."
+
+    "invokation_viewer_step_description_lorem" "Lorem ipsum dolor sit amet"
   }
 }

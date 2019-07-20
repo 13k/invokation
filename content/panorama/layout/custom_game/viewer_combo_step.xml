@@ -12,5 +12,6 @@
 
   <Panel class="ComboStep">
     <Button id="StepIconButton" class="StepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
+    <Label id="StepDescription" html="true" hittest="false" />
   </Panel>
 </root>

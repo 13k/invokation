@@ -7,15 +7,9 @@ var C = GameUI.CustomUIConfig(),
 var COMBO_STEP_LAYOUT =
   "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
-function createStepPanel(parent, step) {
-  var panelID = "combo_step_" + step.id + "_" + step.name;
-  var panel = $.CreatePanel("Panel", parent, panelID);
-
-  panel.BLoadLayout(COMBO_STEP_LAYOUT, false, false);
-  panel.component.Input("SetStep", step);
-
-  return panel;
-}
+var L10N_FALLBACK_IDS = {
+  description: "invokation_viewer_description_lorem",
+};
 
 var Viewer = CreateComponent({
   constructor: function Viewer() {
@@ -28,8 +22,12 @@ var Viewer = CreateComponent({
   },
 
   bindElements: function() {
+    this.$container = $("#Container");
     this.$titleLabel = $("#Title");
+    this.$scrollPanel = $("#ScrollPanel");
+    this.$descriptionLabel = $("#Description");
     this.$sequenceContainer = $("#SequenceContainer");
+    // this.$sequenceInfoLabel = $("#SequenceInfoLabel");
   },
 
   bindEvents: function() {
@@ -53,10 +51,22 @@ var Viewer = CreateComponent({
     this.log("render()");
     this.renderInfo();
     this.renderSequence();
+    this.$scrollPanel.ScrollToTop();
   },
 
   renderInfo: function() {
-    this.$titleLabel.text = this.combo.l10n.name;
+    var lines = this.combo.l10n.name.split(" - ").map(function(line, i) {
+      var heading = i === 0 ? "h1" : "h3";
+      return "<" + heading + ">" + line + "</" + heading + ">";
+    });
+
+    this.$titleLabel.text = lines.join("");
+
+    var descriptionL10nID = this.combo.id + "__description";
+    this.$descriptionLabel.text = this.localizeFallback(
+      descriptionL10nID,
+      L10N_FALLBACK_IDS.description
+    );
   },
 
   renderSequence: function() {
@@ -65,15 +75,27 @@ var Viewer = CreateComponent({
     this.$sequenceContainer.RemoveAndDeleteChildren();
 
     $.Each(this.combo.sequence, function(step) {
-      createStepPanel(self.$sequenceContainer, step);
+      self.createStepPanel(self.$sequenceContainer, step);
     });
+  },
+
+  createStepPanel: function(parent, step) {
+    var panelID = "combo_step_" + step.id + "_" + step.name;
+    var panel = $.CreatePanel("Panel", parent, panelID);
+
+    panel.BLoadLayout(COMBO_STEP_LAYOUT, false, false);
+    panel.component.Input("SetStep", { combo: this.combo, step: step });
+
+    return panel;
   },
 
   Open: function() {
     this.$ctx.RemoveClass("Closed");
+    this.$container.AddClass("Initialize");
   },
 
   Close: function() {
+    this.$container.RemoveClass("Initialize");
     this.$ctx.AddClass("Closed");
   },
 

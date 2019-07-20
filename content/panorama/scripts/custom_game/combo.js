@@ -16,16 +16,6 @@ var DAMAGE_DIGITS = 5;
 var DAMAGE_SPIN_ITERATIONS = 30;
 var SPIN_DIGITS_INTERVAL = 0.05;
 
-function createStepPanel(parent, step) {
-  var id = "combo_step_" + step.name + "_" + step.id.toString();
-  var panel = $.CreatePanel("Panel", parent, id);
-
-  panel.BLoadLayout(COMBO_STEP_LAYOUT, false, false);
-  panel.component.Input("SetStep", step);
-
-  return panel;
-}
-
 function updateDigits(container, value, length) {
   var valueStr = value
     .toString()
@@ -202,7 +192,7 @@ var Combo = CreateComponent({
     this.$sequenceContainer.RemoveAndDeleteChildren();
 
     $.Each(this.combo.sequence, function(step, i) {
-      var panel = createStepPanel(self.$sequenceContainer, step);
+      var panel = self.createStepPanel(self.$sequenceContainer, step);
 
       self.stepsPanels[step.id] = panel;
 
@@ -210,6 +200,16 @@ var Combo = CreateComponent({
         panel.component.Input("StepBump");
       });
     });
+  },
+
+  createStepPanel: function(parent, step) {
+    var id = "combo_step_" + step.name + "_" + step.id.toString();
+    var panel = $.CreatePanel("Panel", parent, id);
+
+    panel.BLoadLayout(COMBO_STEP_LAYOUT, false, false);
+    panel.component.Input("SetStep", { combo: this.combo, step: step });
+
+    return panel;
   },
 
   activateStepPanels: function(steps) {

@@ -129,6 +129,18 @@
     sendClientSide: function() {
       return CustomEvents.SendClientSide.apply(CustomEvents, arguments);
     },
+
+    localizeFallback: function(id1, id2) {
+      var key1 = "#" + id1;
+      var l10n = $.Localize(key1);
+
+      if (l10n === id1) {
+        var key2 = "#" + id2;
+        l10n = $.Localize(key2);
+      }
+
+      return l10n;
+    },
   });
 
   C.CreateComponent = function(body) {

@@ -11,20 +11,36 @@
   </styles>
 
   <Panel class="Root Closed" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
-    <Panel class="ComboDetails TranslucentPanel">
-      <Panel class="DetailsTitleContainer PanelTitleContainer">
-        <Button class="CloseButton" onactivate="viewer.Close()" />
-        <Label id="Title" class="PanelTitle" hittest="false" />
-        <Button class="RefreshButton" onactivate="viewer.Reload()" />
+    <Panel id="Container" hittest="false">
+      <Panel id="InformationBackground" hittest="false" />
+      <Panel id="InformationBody">
+        <Label id="Title" html="true" hittest="false" />
+
+        <Panel id="ScrollPanel" class="TopBottomFlow">
+          <Label id="Description" text="#invokation_viewer_lorem_ipsum" html="true" hittest="false" />
+
+          <Panel class="Section SequenceSection" hittest="false">
+            <Panel class="SectionHeader">
+              <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
+              <Button class="RefreshButton" onactivate="viewer.Reload()" />
+            </Panel>
+
+            <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
+            <!-- <Label id="SequenceInfoLabel" class="SectionLabel" html="true" hittest="false" /> -->
+
+            <Panel id="SequenceContainer" hittest="false" />
+          </Panel>
+        </Panel>
       </Panel>
 
-      <Panel id="SequenceContainer" />
-      <Panel id="Contents" />
+      <Button id="CloseButton" class="CloseButton" onactivate="viewer.Close()" />
 
-      <Panel class="Footer">
-        <Button class="PlayGameButton" onactivate="viewer.Play()">
-          <Label class="PlayGameLabel" text="#invokation_combo_play" hittest="false" />
-        </Button>
+      <Panel id="FooterPanel" hittest="false">
+        <Panel id="Buttons" class="LeftRightFlow" hittest="false">
+          <Button class="PlayButton" onactivate="viewer.Play()">
+            <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
+          </Button>
+        </Panel>
       </Panel>
     </Panel>
   </Panel>

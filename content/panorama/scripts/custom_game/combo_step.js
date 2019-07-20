@@ -16,17 +16,19 @@ var ComboStep = CreateComponent({
 
   bindElements: function() {
     this.$button = $("#StepIconButton");
+    this.$descriptionLabel = $("#StepDescription");
   },
 
   // child components code can override this function
   onStepChange: function() {},
 
-  setStep: function(step) {
-    this.step = step;
+  setStep: function(payload) {
+    this.combo = payload.combo;
+    this.step = payload.step;
 
     this.$button.RemoveAndDeleteChildren();
 
-    if (!step.required) {
+    if (!this.step.required) {
       this.$button.AddClass("Optional");
     } else {
       this.$button.RemoveClass("Optional");
@@ -35,7 +37,7 @@ var ComboStep = CreateComponent({
     var imageType;
     var imageProperty;
 
-    if (step.isItem) {
+    if (this.step.isItem) {
       imageType = "DOTAItemImage";
       imageProperty = "itemname";
     } else {
@@ -44,7 +46,7 @@ var ComboStep = CreateComponent({
     }
 
     var image = $.CreatePanel(imageType, this.$button, "StepImage");
-    image[imageProperty] = step.name;
+    image[imageProperty] = this.step.name;
     image.hittest = false;
 
     this.onStepChange();
