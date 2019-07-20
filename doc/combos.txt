@@ -1,23 +1,26 @@
+[x] invoker_cold_snap,       invoker_tornado
+[x] invoker_tornado,         invoker_ghost_walk
 [x] invoker_emp,             invoker_tornado
 [x] invoker_forge_spirit,    invoker_alacrity
 [x] invoker_forge_spirit,    invoker_cold_snap
+
 [x] invoker_tornado,         invoker_chaos_meteor, invoker_deafening_blast
 [x] invoker_tornado,         invoker_sun_strike,   invoker_deafening_blast
 [x] invoker_deafening_blast, invoker_cold_snap,    invoker_chaos_meteor
-[x] invoker_ice_wall,        invoker_chaos_meteor, (invoker_cold_snap | invoker_deafening_blast | invoker_sun_strike | invoker_emp)
 [x] invoker_cold_snap,       invoker_alacrity,     invoker_deafening_blast
+[x] invoker_ice_wall,        invoker_chaos_meteor, (invoker_cold_snap | invoker_deafening_blast | invoker_sun_strike | invoker_emp)
 [ ] invoker_ice_wall,        invoker_alacrity,     (invoker_cold_snap | invoker_deafening_blast | invoker_sun_strike | invoker_emp)
 
-[x] invoker_tornado,                  invoker_cold_snap,    invoker_ice_wall,        invoker_emp
-[ ] invoker_tornado,                  invoker_chaos_meteor, invoker_deafening_blast, invoker_cold_snap,    invoker_ice_wall
-[ ] invoker_forge_spirit,             invoker_alacrity,     invoker_ice_wall,        invoker_cold_snap,    invoker_sun_strike
-[ ] (item_cyclone | invoker_tornado), invoker_sun_strike,   invoker_emp,             invoker_chaos_meteor, invoker_deafening_blast
+[x] invoker_tornado,                  invoker_ice_wall,     invoker_cold_snap,       invoker_emp
+[x] invoker_tornado,                  invoker_chaos_meteor, invoker_deafening_blast, invoker_cold_snap,    invoker_ice_wall
+[x] invoker_forge_spirit,             invoker_alacrity,     invoker_ice_wall,        invoker_cold_snap,    invoker_sun_strike
+[x] (item_cyclone | invoker_tornado), invoker_sun_strike,   invoker_emp,             invoker_chaos_meteor, invoker_deafening_blast
 
 [x] invoker_ghost_walk,  invoker_tornado,      invoker_chaos_meteor, invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike
-[ ] invoker_tornado,     invoker_emp,          invoker_sun_strike,   invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike
+[x] invoker_tornado,     invoker_emp,          invoker_sun_strike,   invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike
 [ ] invoker_tornado,     invoker_emp,          invoker_sun_strike,   invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_cold_snap,       invoker_ice_wall
 [ ] invoker_tornado,     invoker_emp,          invoker_sun_strike,   invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_emp,             invoker_sun_strike
-[ ] item_sheepstick,     invoker_tornado,      item_black_king_bar,  invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike,      item_black_king_bar,     item_sheepstick
+[x] item_sheepstick,     invoker_tornado,      item_black_king_bar,  invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike,      item_black_king_bar,     item_sheepstick
 [ ] invoker_alacrity,    invoker_forge_spirit, item_black_king_bar,  invoker_tornado,         invoker_emp,             invoker_sun_strike,      invoker_chaos_meteor,    item_shivas_guard,       invoker_deafening_blast, invoker_ice_wall,        invoker_emp,          invoker_sun_strike
 [ ] invoker_alacrity,    item_necronomicon,    item_black_king_bar,  invoker_tornado,         invoker_emp,             invoker_sun_strike,      invoker_chaos_meteor,    item_shivas_guard,       invoker_deafening_blast, invoker_ice_wall,        invoker_emp,          invoker_sun_strike
 [ ] item_blink,          item_sheepstick,      invoker_tornado,      item_black_king_bar,     invoker_chaos_meteor,    invoker_deafening_blast, item_refresher,          invoker_chaos_meteor,    invoker_deafening_blast, invoker_sun_strike,      item_black_king_bar,  item_sheepstick

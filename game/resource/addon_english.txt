@@ -55,11 +55,20 @@
     "invokation_viewer_sequence_title" "Sequence"
     "invokation_viewer_sequence_disclaimer" "(Golden steps are required, others are optional)"
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Combos
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Laning phase
+
     "invokation_combo_lane_anti_gank1" "Anti-gank 1"
     "invokation_combo_lane_anti_gank2" "Anti-gank 2"
     "invokation_combo_lane_harass_emp" "Harass - EMP"
     "invokation_combo_lane_harass_forge_spirit1" "Harass - Forge Spirit 1"
     "invokation_combo_lane_harass_forge_spirit2" "Harass - Forge Spirit 2"
+
+    // Solo/Gank
+
     "invokation_combo_solo_control_magic_damage1" "Control & Magic Damage 1 - Blast"
     "invokation_combo_solo_control_magic_damage2" "Control & Magic Damage 2 - Strike"
     "invokation_combo_solo_control_magic_damage3" "Control & Magic Damage 3 - Snap"
@@ -68,8 +77,60 @@
     "invokation_combo_solo_control_magic_damage6" "Control & Magic Damage 6 - Strike Wall"
     "invokation_combo_solo_control_magic_damage7" "Control & Magic Damage 7 - Shock Wall"
     "invokation_combo_solo_control_physical_damage1" "Control & Physical Damage 1 - Blast Snap"
+
+    // Teamfight
+
     "invokation_combo_tf_control_magic_damage1" "Control & Magic Damage 1 - Shock Wall"
-    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Double Blast"
+    "invokation_combo_tf_control_magic_damage2" "Control & Magic Damage 2 - Blast Wall"
+    "invokation_combo_tf_control_magic_damage3" "Control & Magic Damage 3 - Eul's Strike Shock"
+    "invokation_combo_tf_control_physical_damage1" "Control & Physical Damage 1 - Forge Wall"
+
+    // Late game
+
+    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Double Ball Blast"
+    "invokation_combo_late_control_magic_damage1__description" "<span class='intro-text'>This is Invoker's run-of-the-mill combo with a Refresher.</span>
+                                                                <br><br>The Meteor+Blast, refresh, Meteor+Blast is the most basic refreshed combo. Since it offers a decent amount of damage and movement impairment, it's often used as the &ldquo;bridge&rdquo; of a refreshed combo, connecting the before and after Refresher parts.
+                                                                <br><br>This combo begins with lifting the enemy with Tornado, casting the bridge then ending with a Sun Strike.
+                                                                <br><br>Start the combo invoking Tornado then Meteor."
+    "invokation_combo_late_control_magic_damage1__1" "Lift the enemy and invoke Deafening Blast."
+    "invokation_combo_late_control_magic_damage1__2" "Time correctly and cast to hit the enemy when he's about to fall."
+    "invokation_combo_late_control_magic_damage1__3" "When Meteor is almost touching the ground, cast it."
+    "invokation_combo_late_control_magic_damage1__4" "Refresh."
+    "invokation_combo_late_control_magic_damage1__5" "Cast immediately."
+    "invokation_combo_late_control_magic_damage1__6" "Cast immediately."
+    "invokation_combo_late_control_magic_damage1__7" "Invoke and cast immediately."
+
+    "invokation_combo_late_control_magic_damage2" "Control & Magic Damage 2 - Double Strike"
+    "invokation_combo_late_control_magic_damage2__description" "<span class='intro-text'>A regular combo that deals huge amounts of damage with double Sun Strike.</span>
+                                                                <br><br>It depends heavily on the enemy not having magic immunity and abuses the Tornado lift time to cast 3 damage dealing spells while the enemy is flying.
+                                                                <br><br>The trick is to invoke Tornado then EMP and as soon as you cast Tornado, immediately invoke Sun Strike then time the casting of both EMP and Sun Strike properly."
+    "invokation_combo_late_control_magic_damage2__1" "Lift the enemy and invoke Sun Strike."
+    "invokation_combo_late_control_magic_damage2__2" "Cast immediately (EMP's charge time is higher than Tornado lift)"
+    "invokation_combo_late_control_magic_damage2__3" "Time correctly and cast."
+    "invokation_combo_late_control_magic_damage2__4" "Wait Invoke cooldown, invoke and cast."
+    "invokation_combo_late_control_magic_damage2__5" "Wait Invoke cooldown, invoke and cast."
+    "invokation_combo_late_control_magic_damage2__6" "Refresh."
+    "invokation_combo_late_control_magic_damage2__7" "Cast immediately."
+    "invokation_combo_late_control_magic_damage2__8" "Cast immediately."
+    "invokation_combo_late_control_magic_damage2__9" "Invoke and cast immediately."
+
+    "invokation_combo_late_control_magic_damage3" "Control & Magic Damage 3 - Double BKB/Hex/Strike"
+    "invokation_combo_late_control_magic_damage3__description" "<span class='intro-text'>A safe combo with magic immunity and hex that deals huge amounts of damage with double Sun Strike.</span>
+                                                                <br><br>The idea is to catch an enemy and instantly disable with hex, so he cannot use magic immunity by himself.
+                                                                <br><br>Perfect flow of the combo should grant a full execution under the effect of BKB, while disabling the enemy."
+    "invokation_combo_late_control_magic_damage3__1" "Use as soon as possible to avoid magic immunity. A linkens breaker may be needed before."
+    "invokation_combo_late_control_magic_damage3__2" "Lift the enemy."
+    "invokation_combo_late_control_magic_damage3__3" "Activate your own magic immunity to avoid being stopped by the enemy's allies."
+    "invokation_combo_late_control_magic_damage3__4" "Cast immediately."
+    "invokation_combo_late_control_magic_damage3__5" "Cast immediately."
+    "invokation_combo_late_control_magic_damage3__6" "Refresh."
+    "invokation_combo_late_control_magic_damage3__7" "Cast immediately."
+    "invokation_combo_late_control_magic_damage3__8" "Cast immediately."
+    "invokation_combo_late_control_magic_damage3__9" "Invoke and cast immediately. Previous disable should give enough time."
+    "invokation_combo_late_control_magic_damage3__10" "First BKB duration should be ending, reactivate."
+    "invokation_combo_late_control_magic_damage3__11" "Disable the enemy again."
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_combo_counter_title" "Combo"
     "invokation_combo_counter_damage_label" "Damage"
