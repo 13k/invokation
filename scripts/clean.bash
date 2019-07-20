@@ -1,21 +1,30 @@
 #!/bin/bash
-# This script is intended to be run within WSL
+
+if [ -z "$BASH_VERSION" ]; then
+  echo >&2 "This script must be run with bash."
+  exit 1
+fi
+
+if [[ -z "$WSL_DISTRO_NAME" ]]; then
+  echo >&2 "This script must be run within WSL."
+  exit 1
+fi
 
 set -e
 
-SCRIPT_PATH="$(dirname "$(realpath "$0")")"
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+source "$SCRIPT_DIR/common.bash"
 
-source "$SCRIPT_PATH/common.bash"
+paths=(
+  "$ADDON_CONTENT_PATH"
+  "$ADDON_GAME_PATH"
+)
 
-dota_addons_content_path="$DOTA_PATH/content/dota_addons"
-dota_addons_game_path="$DOTA_PATH/game/dota_addons"
+echo "Removing addon from $DOTA2_PATH"
 
-target_content_path="$dota_addons_content_path/$ADDON"
-target_game_path="$dota_addons_game_path/$ADDON"
-
-echo "Removing addon from $DOTA_PATH"
-
-rm -vrf "$target_content_path"
-rm -vrf "$target_game_path"
+for path in "${paths[@]}"; do
+  echo " * $path"
+  rm -rf "$path" || abort "Error removing '$path'"
+done
 
 echo "Done"
