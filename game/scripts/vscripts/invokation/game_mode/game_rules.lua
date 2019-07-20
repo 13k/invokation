@@ -1,10 +1,10 @@
 --- GameRules Setup
 -- @submodule invokation.GameMode
 
+local Settings = require("invokation.const.settings")
+
 --- GameRules Setup
 -- @section game_rules
-
-local Settings = require("invokation.const.settings")
 
 function GameMode:setupGameRules()
   GameRules:SetHeroRespawnEnabled(Settings.ENABLE_HERO_RESPAWN)

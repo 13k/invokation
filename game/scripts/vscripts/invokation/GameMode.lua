@@ -10,6 +10,7 @@ if IsInToolsMode() then
 end
 
 require("invokation.game_mode.game_rules")
+require("invokation.game_mode.game_mode")
 require("invokation.game_mode.events")
 require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
@@ -74,6 +75,7 @@ function GameMode:Activate()
   self.users = {}
 
   self:setupGameRules()
+  self:setupGameMode()
   self:registerListeners()
   self:registerCustomListeners()
   self:registerCommands()
