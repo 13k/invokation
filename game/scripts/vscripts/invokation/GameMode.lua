@@ -24,6 +24,9 @@ local Precache = require("invokation.const.precache")
 
 local NET_TABLE_NAME = "invokation"
 
+GameMode.META = require("invokation.const.metadata")
+GameMode._VERSION = GameMode.META.version
+
 --- Constructor.
 function GameMode:_init()
   self.logger = Logger(IsInToolsMode() and Logger.DEBUG or Logger.INFO, "invokation")
