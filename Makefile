@@ -1,4 +1,5 @@
 LUA_SOURCE := game/scripts/vscripts
+STYLES_SOURCE := content/panorama/styles
 
 luacheck:
 	@luacheck "$(LUA_SOURCE)"
@@ -20,3 +21,9 @@ launch_game:
 
 launch_tools:
 	@bash scripts/launch_tools.bash
+
+stylelint:
+	@yarn stylelint "$(STYLES_SOURCE)"
+
+stylelint_fix:
+	@yarn stylelint --fix "$(STYLES_SOURCE)"
