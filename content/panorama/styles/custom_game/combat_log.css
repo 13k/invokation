@@ -13,8 +13,8 @@
 
 .Root {
   flow-children: right;
-  height: combatLogHeight;
   width: combatLogWidth;
+  height: combatLogHeight;
   align: center top;
 }
 
@@ -22,11 +22,11 @@
   flow-children: down;
   width: 100%;
   height: 100%;
-  transform: translateY(0);
-  transition-property: transform;
   transition-delay: 0s;
-  transition-duration: 0.25s;
   transition-timing-function: ease-in-out;
+  transition-duration: 0.25s;
+  transition-property: transform;
+  transform: translateY(0);
 }
 
 #CombatLog.Closed {
@@ -38,8 +38,8 @@
   width: 100%;
   height: barHeight;
   padding: 0 8px;
-  background-color: #00000033;
   border-top: 1px solid #222;
+  background-color: #0003;
 }
 
 .CombatLogThumb {
@@ -50,15 +50,15 @@
 .CombatLogThumb .TickBox {
   width: thumbWidth;
   height: thumbHeight;
-  wash-color: #d8d8d8;
   transform: rotateZ(180deg) translateY(-2px);
+  wash-color: #d8d8d8;
 }
 
 .CombatLogThumb:selected .TickBox {
   width: thumbWidth;
   height: thumbHeight;
-  wash-color: #d8d8d8;
   transform: rotateZ(0deg) translateY(2px);
+  wash-color: #d8d8d8;
 }
 
 .CombatLogThumb .TickBox:hover {
@@ -66,21 +66,21 @@
 }
 
 .CombatLogTitle {
+  font-family: defaultFont;
+  font-size: 16px;
+  font-weight: bold;
   horizontal-align: left;
   vertical-align: center;
+  letter-spacing: 2px;
   text-transform: uppercase;
   text-overflow: shrink;
   color: white;
-  font-family: defaultFont;
-  font-weight: bold;
-  font-size: 16px;
-  text-shadow: 1px 1px 0px 3 #00000066;
-  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 3 #0006;
 }
 
 .CombatLogBarActions {
-  height: 100%;
   flow-children: right;
+  height: 100%;
   horizontal-align: right;
 }
 
@@ -89,8 +89,8 @@
 }
 
 .CombatLogBarActions .BarItem {
-  vertical-align: center;
   margin-right: 8px;
+  vertical-align: center;
 }
 
 .CombatLogBarActions .ClearButton {
@@ -98,13 +98,13 @@
 }
 
 #CombatLogContents {
+  overflow: clip scroll;
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(1);
   padding-top: 5px;
   padding-right: 5px;
   padding-left: 5px;
-  overflow: clip scroll;
 }
 
 .CombatLogRow {
@@ -115,7 +115,7 @@
   width: abilityIconWidth;
   height: abilityIconHeight;
   margin: 2px;
-  background-color: #000000dd;
+  background-color: #000d;
   box-shadow: #222 -2px -2px 4px 4px;
 }
 

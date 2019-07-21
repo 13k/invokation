@@ -8,8 +8,8 @@
 .StepIcon {
   width: 48px;
   height: 48px;
+  background-color: #000d;
   box-shadow: goldColor -2px -2px 4px 4px;
-  background-color: #000000dd;
 }
 
 .StepIcon.Optional {
@@ -21,10 +21,10 @@
 }
 
 #StepDescription {
-  width: fill-parent-flow(1);
-  margin-left: 8px;
-  color: #3c1b18;
   font-size: 18px;
   font-weight: semi-bold;
+  width: fill-parent-flow(1);
+  margin-left: 8px;
   vertical-align: center;
+  color: #3c1b18;
 }

@@ -9,8 +9,8 @@
   pre-transform-scale2d: 1;
   animation-name: ComboStepBump;
   animation-duration: 0.25s;
-  animation-delay: 0s;
   animation-timing-function: ease-in;
+  animation-delay: 0s;
   animation-iteration-count: 1;
 }
 
@@ -18,12 +18,12 @@
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  box-shadow: goldColor -2px -2px 4px 4px;
-  background-color: #000000dd;
-  wash-color: #000000cc;
-  transition-property: width, height, wash-color;
-  transition-duration: 0.3s;
   transition-timing-function: ease-in;
+  transition-duration: 0.3s;
+  transition-property: width, height, wash-color;
+  wash-color: #000c;
+  background-color: #000d;
+  box-shadow: goldColor -2px -2px 4px 4px;
 }
 
 .StepIcon.Orb {
@@ -38,11 +38,11 @@
 .StepIcon.Active {
   width: 72px;
   height: 72px;
-  wash-color: #ffffffff;
+  wash-color: #ffff;
 }
 
 .StepIcon.Error {
-  wash-color: #ff0000ee;
+  wash-color: #f00e;
 }
 
 .StepIcon DOTAItemImage {

@@ -9,16 +9,16 @@
 }
 
 .PanelTitle {
-  width: 100%;
-  color: white;
   font-family: defaultFont;
   font-size: 16px;
   font-weight: bold;
-  letter-spacing: 2px;
+  width: 100%;
   text-align: center;
-  text-overflow: shrink;
-  text-shadow: 1px 1px 0px 3 #00000066;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  text-overflow: shrink;
+  color: white;
+  text-shadow: 1px 1px 0 3 #0006;
 }
 
 .PanelTitleContainer {
@@ -27,12 +27,12 @@
   height: 32px;
   padding-top: 6px;
   padding-left: 5px;
-  background-color: #00000033;
   border-bottom: 1px solid #222;
+  background-color: #0003;
 }
 
 .PanelTitleContainer .PanelTitle {
+  width: fill-parent-flow(1);
   padding-top: 0;
   padding-left: 0;
-  width: fill-parent-flow(1);
 }

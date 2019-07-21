@@ -1,225 +1,204 @@
-.ModmakerBase
-{
-  width:100%;
-  height:100%;
+.ModmakerBase {
+  width: 100%;
+  height: 100%;
 }
 
-#APIWindow
-{
-  align: center center;
-  min-width:800px;
-  min-height:800px;
-  flow-children: down;
+#APIWindow {
   visibility: collapse;
+  flow-children: down;
+  min-width: 800px;
+  min-height: 800px;
+  align: center center;
 }
 
-#TitleSearch
-{
-  height:50px;
-  background-color: #222222;
-  width:100%;
-  flow-children:right;
+#TitleSearch {
+  flow-children: right;
+  width: 100%;
+  height: 50px;
+  background-color: #222;
 }
 
-#Title
-{
-  vertical-align: center;
+#Title {
   font-size: 40px;
   font-weight: bold;
-  color: white;
   margin-left: 20px;
+  vertical-align: center;
+  color: white;
 }
 
-#Search
-{
-  align: center center;
-  margin-left: 50px;
-  margin-right:10px;
-  margin-bottom: 2px;
+#Search {
   width: 450px;
+  margin-right: 10px;
+  margin-bottom: 2px;
+  margin-left: 50px;
+  align: center center;
 }
 
-#Search Label
-{
+#Search Label {
   padding-top: 3px;
 }
 
-#SearchButton
-{
-  margin-top:-1px;
-  margin-bottom: 0px;
-  margin-right: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  vertical-align: center;
+#SearchButton {
   width: fit-children;
+  margin-top: -1px;
+  margin-right: 15px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-right: 15px;
+  padding-bottom: 0;
+  padding-left: 15px;
   horizontal-align: right;
+  vertical-align: center;
 }
 
-#SearchButton Label
-{
+#SearchButton Label {
   font-size: 26px;
   font-weight: bold;
-  margin: 0px;
-  padding: 0px;
-  color: lightblue;
+  margin: 0;
+  padding: 0;
   align: center center;
+  color: lightblue;
 }
 
-
-#API
-{
-  height:750px;
-  border: 1px solid black;
+#API {
   overflow: scroll scroll;
-  background-color: #000000FE;
-  min-width: 800px;
   flow-children: down;
+  min-width: 800px;
+  height: 750px;
+  border: 1px solid black;
+  background-color: #000000fe;
 }
 
-.FileLine
-{
+.FileLine {
   font-size: 16px;
   font-weight: thin;
   height: 16px;
 }
 
-.CategoryRoot
-{
+.CategoryRoot {
   flow-children: down;
 }
 
-.CategoryBase
-{
-  background-color: #11006666;
-  margin-left: 5px;
+.CategoryBase {
   margin-right: 5px;
+  margin-left: 5px;
+  transition: background-color 0.1s ease-in-out 0s;
   border: 1px solid black;
   border-radius: 15px;
-  transition: background-color 0.1s ease-in-out 0.0s;
+  background-color: #1066;
 }
 
-.CategoryBase:hover
-{
-  background-color: #110066FF;
+.CategoryBase:hover {
   flow-children: down;
+  background-color: #106f;
 }
 
-.CategoryBase:hover #CategoryName
-{
-  color: white; 
-}
-
-.Category
-{
-  margin-left: 10px; 
+.Category {
   flow-children: right;
-  //background-color: gradient( linear, 0% 0%, 100% 100%, from( #110066AA ), to( #11006600 ) );
-  
-  border-radius: 3px;
   min-width: 800px;
+  margin-left: 10px;
+  padding-top: 1px;
+  padding-bottom: -20px;
   padding-left: 10px;
-  padding-top:1px;
-  padding-bottom:-20px;
+  border-radius: 3px;
 }
 
-
-
-#PlusMinus
-{
-  margin-right: 15px;
-  margin-top: -3px;
+#PlusMinus {
   font-size: 32px;
   font-weight: bold;
+  margin-top: -3px;
+  margin-right: 15px;
   vertical-align: center;
   color: gold;
 }
 
-#CategoryName
-{
+#CategoryName {
   font-size: 18px;
   vertical-align: center;
 }
 
-#Properties
-{
+.CategoryBase:hover #CategoryName {
+  color: white;
+}
+
+#Properties {
   flow-children: down;
 }
 
-
-.Property
-{
+.Property {
   flow-children: down;
-  margin-left: 20px;
   width: 800px;
+  margin-left: 20px;
 }
 
-.PropNameLink
-{
-  flow-children:right;
-  width:100%;
-  background-color: #111111;
-  margin-right:20px;
+.PropNameLink {
+  flow-children: right;
+  width: 100%;
+  margin-right: 20px;
+  background-color: #111;
 }
 
-#PropertyName
-{
+#PropertyName {
   font-size: 18px;
-  color: #CCCCCC;
   font-weight: bold;
+  min-width: 500px;
   margin-left: 20px;
   horizontal-align: left;
   vertical-align: center;
-  min-width:500px;
+  color: #ccc;
 }
 
-#Github
-{
-  margin-bottom: 0px;
-  padding-left: 35px;
-  padding-right: 35px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+#Github {
   width: fit-children;
+  margin-bottom: 0;
   margin-left: 50px;
-  vertical-align: center;
-  background-color: gradient( linear, 0% 0%, 0% 100%, from( #434b4b55 ), to( #636f6f55 ) );
-  transition-property: background-color, opacity;
+  padding-top: 0;
+  padding-right: 35px;
+  padding-bottom: 0;
+  padding-left: 35px;
   transition-duration: 0.2s;
+  transition-property: background-color, opacity;
+  vertical-align: center;
+  background-color: gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#434b4b55),
+    to(#636f6f55)
+  );
 }
 
-#Github:hover
-{
-  background-color: gradient( linear, 0% 0%, 0% 100%, from( #434b4b ), to( #636f6f ) );
+#Github:hover {
+  background-color: gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#434b4b),
+    to(#636f6f)
+  );
 }
 
-#Github Label
-{
+#Github Label {
   font-size: 14px;
   font-weight: bold;
-  margin: 0px;
-  padding: 0px;
-  color: lightblue;
+  margin: 0;
+  padding: 0;
   align: center center;
+  color: lightblue;
 }
 
-#PropertyFunction
-{
+#PropertyFunction {
   font-size: 14px;
-  color: red;
   margin-left: 40px;
-  transition: color 0.1s ease-in-out 0.0s;
+  transition: color 0.1s ease-in-out 0s;
+  color: red;
 }
 
-#PropertyFunction:hover
-{
+#PropertyFunction:hover {
   color: pink;
 }
 
-#PropertyDescription
-{
+#PropertyDescription {
   font-size: 14px;
   margin-left: 40px;
 }

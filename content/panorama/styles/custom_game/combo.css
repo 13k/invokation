@@ -9,19 +9,19 @@
 
 #Combo {
   flow-children: down;
-  align: right center;
   width: 154px;
   height: 100%;
   margin-left: -154px;
+  align: right center;
   background-color: comboPanelGradient;
 }
 
 #Sequence {
+  overflow: clip scroll;
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(2);
   margin-top: 70px;
-  overflow: clip scroll;
 }
 
 #SequenceContainer {
@@ -30,21 +30,21 @@
 }
 
 #RestartButton {
-  align: center bottom;
   min-width: 130px;
   margin: 12px;
+  align: center bottom;
 }
 
 #StopButton {
-  align: center bottom;
   min-width: 130px;
   margin: 0 12px 12px 12px;
+  align: center bottom;
 }
 
 #ComboCount {
-  vertical-align: bottom;
   width: 100%;
   margin-bottom: 230px;
+  vertical-align: bottom;
 }
 
 #ComboCount.Hidden {
@@ -52,13 +52,13 @@
 }
 
 #ComboCountContainer {
-  align: center top;
   width: 250px;
   height: 119px;
-  opacity: 0;
-  transition-property: opacity;
-  transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  align: center top;
+  opacity: 0;
 }
 
 .ShowComboCount #ComboCountContainer {
@@ -70,33 +70,33 @@
 }
 
 #ComboCountContents {
-  horizontal-align: center;
-  vertical-align: bottom;
   width: 100%;
   height: 90px;
-  margin-left: 0px;
   margin-bottom: 10px;
+  margin-left: 0;
+  horizontal-align: center;
+  vertical-align: bottom;
 }
 
 .ComboCountText {
-  color: #fefefe;
   font-size: 46px;
   font-weight: bolder;
-  text-align: left;
   z-index: 10;
   margin-bottom: 10px;
   margin-left: 5px;
+  text-align: left;
+  color: #fefefe;
   text-shadow: 2px 2px 3px #1b4c44;
 }
 
 #ComboCounter {
-  horizontal-align: center;
   height: 100%;
+  horizontal-align: center;
 }
 
 #ComboDamage {
-  horizontal-align: right;
   margin-right: 60px;
+  horizontal-align: right;
 }
 
 .ComboDigits {
@@ -105,11 +105,11 @@
 }
 
 .DigitContainer {
-  width: 100%;
-  vertical-align: center;
   flow-children: left;
-  horizontal-align: center;
+  width: 100%;
   margin-left: 20px;
+  horizontal-align: center;
+  vertical-align: center;
 }
 
 .ComboSummary > .DigitContainer {
@@ -125,10 +125,10 @@
 .ESDigit {
   width: 38px;
   height: 59px;
+  background-image: arcanaShakerChar1;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-image: arcanaShakerChar1;
 }
 
 .ArcanaLevel2 .ESDigit {
@@ -148,54 +148,54 @@
 }
 
 .ESDigit.digit_0 {
-  background-image: arcanaShakerChar0;
   width: 28px;
+  background-image: arcanaShakerChar0;
 }
 
 .ESDigit.digit_1 {
-  background-image: arcanaShakerChar1;
   width: 25px;
+  background-image: arcanaShakerChar1;
 }
 
 .ESDigit.digit_2 {
-  background-image: arcanaShakerChar2;
   width: 34px;
+  background-image: arcanaShakerChar2;
 }
 
 .ESDigit.digit_3 {
-  background-image: arcanaShakerChar3;
   width: 38px;
+  background-image: arcanaShakerChar3;
 }
 
 .ESDigit.digit_4 {
-  background-image: arcanaShakerChar4;
   width: 34px;
+  background-image: arcanaShakerChar4;
 }
 
 .ESDigit.digit_5 {
-  background-image: arcanaShakerChar5;
   width: 40px;
   margin-left: -2px;
+  background-image: arcanaShakerChar5;
 }
 
 .ESDigit.digit_6 {
-  background-image: arcanaShakerChar6;
   width: 33px;
+  background-image: arcanaShakerChar6;
 }
 
 .ESDigit.digit_7 {
-  background-image: arcanaShakerChar7;
   width: 35px;
+  background-image: arcanaShakerChar7;
 }
 
 .ESDigit.digit_8 {
-  background-image: arcanaShakerChar8;
   width: 30px;
+  background-image: arcanaShakerChar8;
 }
 
 .ESDigit.digit_9 {
-  background-image: arcanaShakerChar9;
   width: 30px;
+  background-image: arcanaShakerChar9;
 }
 
 .ArcanaLevel2 .ESDigit.digit_0 {
@@ -280,11 +280,11 @@
 }
 
 .ComboX {
+  width: 22px;
+  background-image: arcanaShakerCharX;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-image: arcanaShakerCharX;
-  width: 22px;
 }
 
 .ArcanaLevel2 .ComboX {
@@ -292,31 +292,31 @@
 }
 
 .ComboCountX {
-  vertical-align: bottom;
-  margin-left: -2px;
-  margin-bottom: 0px;
   width: 29px;
   height: 44.25px;
+  margin-bottom: 0;
+  margin-left: -2px;
+  vertical-align: bottom;
 }
 
 .ComboSummaryX {
-  vertical-align: bottom;
-  margin-left: 0px;
-  margin-bottom: 0px;
   width: 10px;
   height: 22.125px;
+  margin-bottom: 0;
+  margin-left: 0;
+  vertical-align: bottom;
 }
 
 .ComboCountValue {
-  vertical-align: center;
   horizontal-align: left;
+  vertical-align: center;
 }
 
 .ComboCountDigit {
-  pre-transform-scale2d: 0.9;
-  transition-property: pre-transform-scale2d, background-image;
-  transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
+  transition-duration: 0.1s;
+  transition-property: pre-transform-scale2d, background-image;
+  pre-transform-scale2d: 0.9;
 }
 
 .CounterBump .ComboCountDigit {
@@ -325,34 +325,34 @@
 
 .ComboCountLabel {
   font-size: 13px;
-  horizontal-align: center;
-  vertical-align: bottom;
-  margin-top: 65px;
-  color: #d5f9fe;
-  letter-spacing: 2.5px;
   font-weight: bold;
   font-style: italic;
-  z-index: 10;
-  text-shadow: 2px 2px 0px #1b4c44;
-  text-align: center;
   line-height: 13px;
+  z-index: 10;
+  margin-top: 65px;
+  text-align: center;
+  horizontal-align: center;
+  vertical-align: bottom;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
+  color: #d5f9fe;
+  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 .ComboSummaryText {
   font-size: 30px;
-  text-transform: uppercase;
   letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 #ComboSummaryContainer {
   width: 275px;
   height: 120px;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
+  transition-property: opacity;
   align: center top;
   opacity: 0;
-  transition-property: opacity;
-  transition-duration: 0.3s;
-  transition-timing-function: ease-in-out;
 }
 
 .SplashBackground {
@@ -379,64 +379,64 @@
 
 .ComboDamageContainer {
   horizontal-align: center;
-  color: #ffffff;
+  color: #fff;
 }
 
 .ESDamageCount {
   font-size: 46px;
-  line-height: 30px;
   font-weight: bolder;
-  letter-spacing: -0.2px;
+  line-height: 30px;
   height: 50px;
   horizontal-align: center;
-  color: #ffffff;
-  text-shadow: 2px 2px 3px #000000;
+  letter-spacing: -0.2px;
+  color: #fff;
+  text-shadow: 2px 2px 3px #000;
 }
 
 .SummaryComboLabel {
-  color: #ffffff;
   font-size: 13px;
   font-weight: bolder;
-  letter-spacing: 2px;
   margin-left: 5px;
-  opacity: 1;
   text-align: center;
-  text-shadow: 2px 2px 0px #1b4c44;
-  text-transform: uppercase;
   vertical-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 1;
+  color: #fff;
+  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 .SummaryDamageLabel {
-  align: center center;
-  color: #ffffff;
   font-size: 13px;
   font-weight: bolder;
-  letter-spacing: 2px;
-  margin-left: 0px;
   margin-top: -5px;
-  opacity: 1;
+  margin-left: 0;
   text-align: center;
-  text-shadow: 2px 2px 0px #1b4c44;
+  align: center center;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  opacity: 1;
+  color: #fff;
+  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 .ESComboCount {
-  align: center top;
-  color: #ffffff;
   font-size: 12px;
-  font-style: italic;
   font-weight: bolder;
-  letter-spacing: 2px;
-  margin-top: 0px;
-  text-shadow: 2px 2px 0px #1b4c44;
-  text-transform: uppercase;
+  font-style: italic;
+  margin-top: 0;
   transform: translateY(10px);
+  align: center top;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 #ComboSummaryFX {
+  z-index: 100;
   width: 100%;
   height: 100%;
-  z-index: 100;
   opacity-mask: softEdgeBoxMask;
 }
 

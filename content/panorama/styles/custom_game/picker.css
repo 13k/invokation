@@ -21,11 +21,11 @@
   flow-children: right;
   width: slideoutWidth;
   height: slideoutHeight;
-  align: left top;
   margin-top: contentTopMargin;
-  transition-property: width;
-  transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
+  transition-property: width;
+  align: left top;
 }
 
 #CombosSlideout.DrawerClosed {
@@ -33,9 +33,9 @@
 }
 
 #CombosContents {
+  flow-children: down;
   width: fill-parent-flow(1);
   height: 100%;
-  flow-children: down;
   background-image: pickerBackground;
   background-size: 100%;
 }
@@ -44,9 +44,9 @@
   width: thumbWidth;
   height: thumbHeight;
   vertical-align: center;
-  background-color: pickerThumbGradient;
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
+  background-color: pickerThumbGradient;
   box-shadow: none;
 }
 
@@ -55,9 +55,9 @@
 }
 
 #CombosThumb .PanelSlideThumbArrow {
+  transform: translateX(-9px);
   horizontal-align: right;
   wash-color: #666;
-  transform: translateX(-9px);
 }
 
 #CombosThumb:hover .PanelSlideThumbArrow {
@@ -74,10 +74,10 @@
 }
 
 .PickerTitleContainer .RefreshButton {
+  visibility: collapse;
   width: 24px;
   height: 24px;
   background-size: 100%;
-  visibility: collapse;
 }
 
 .ToolsMode .PickerTitleContainer .RefreshButton {
@@ -85,10 +85,10 @@
 }
 
 #CombosContainer {
+  overflow: clip scroll;
   flow-children: right;
   width: 100%;
   height: 100%;
-  overflow: clip scroll;
 }
 
 .CombosColumn {
