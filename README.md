@@ -1,4 +1,6 @@
-![Invokation Poster](https://raw.githubusercontent.com/13k/invokation/master/images/invokation.png)
+<p align="center">
+  <img alt="Invokation Poster" src="./images/invokation.png"/>
+</p>
 
 <h2 align="center">Invokation School of Arcane Arts</h2>
 
