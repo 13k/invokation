@@ -1,0 +1,172 @@
+/******************************************************************************
+ * Colors
+ ******************************************************************************/
+
+@define baseText: #a5ada2ff;
+@define baseBorder: #444444ff;
+@define offWhite: #ccccccff;
+@define selectedTextBackgroundColor: #66666633;
+@define goldColor: #ffcc33;
+
+@define dotalevelgradient: gradient(linear, 0% 0%, 0% 100%, from(#bbcaea), color-stop(0.5, #ffffff), color-stop(0.5, #d9dfec), to(#bbcaea));
+@define dotaplaytimegradient: gradient(linear, 0% 0%, 0% 100%, from(#3db451), color-stop(0.5, #beffc7), color-stop(0.5, #91d69a), to(#3db451));
+
+@define HeroSlot0Color: #3375ffff;
+@define HeroSlot1Color: #66ffbfff;
+@define HeroSlot2Color: #bf00bfff;
+@define HeroSlot3Color: #f3f00bff;
+@define HeroSlot4Color: #ff6b00ff;
+@define HeroSlot5Color: #fe86c2ff;
+@define HeroSlot6Color: #a1b447ff;
+@define HeroSlot7Color: #65d9f7ff;
+@define HeroSlot8Color: #008321ff;
+@define HeroSlot9Color: #a46900ff;
+
+@define HeroSlot0ColorHalf: #3375ff33;
+@define HeroSlot1ColorHalf: #66ffbf44;
+@define HeroSlot2ColorHalf: #bf00bf88;
+@define HeroSlot3ColorHalf: #f3f00b33;
+@define HeroSlot4ColorHalf: #ff6b0033;
+@define HeroSlot5ColorHalf: #fe86c244;
+@define HeroSlot6ColorHalf: #a1b44766;
+@define HeroSlot7ColorHalf: #65d9f733;
+@define HeroSlot8ColorHalf: #00832133;
+@define HeroSlot9ColorHalf: #a4690033;
+
+@define RuneDDColor: #82caff;
+@define RuneHasteColor: #f62817;
+@define RuneIllusionColor: #ffd700;
+@define RuneInvisColor: #8b008b;
+@define RuneRegenColor: #7fff00;
+@define RuneArcaneColor: #fd3afb;
+@define RuneBountyColor: #ff7800;
+
+@define winnerGreen: #88ff88;
+@define loserRed: #ff4433;
+
+@define dotaPlusGold: #B78946;
+@define dotaPlusLightGold: #DCD086;
+@define dotaPlusBrown: #433620;
+@define dotaPlusGoldGradient: gradient(linear, 0% 0%, 0% 100%, from(#B78946), to(#DCD086));
+@define dotaPlusGoldGradientHover: gradient(linear, 0% 0%, 0% 100%, from(#d8a253), to(#ecdf90));
+@define dotaPlusGoldGradientActive: gradient(linear, 0% 0%, 0% 100%, from(#ca974d), to(#dfd388));
+@define dotaPlusBgGradient: gradient(linear, 0% 0%, 0% 100%, from(dotaPlusBrown), color-stop(0.5, #141b21EF), to(#141b21EF));
+
+@define proVerifiedColor: #ffcc33;
+
+@define rarity_color_common: #b0c3d9;
+@define rarity_color_uncommon: #5e98d9;
+@define rarity_color_rare: #4b69ff;
+@define rarity_color_mythical: #8847ff;
+@define rarity_color_legendary: #d32ce6;
+@define rarity_color_ancient: #eb4b4b;
+@define rarity_color_immortal: #e4ae39;
+@define rarity_color_arcana: #ade55c;
+@define rarity_color_seasonal: #fff34f;
+
+@define PhysicalDamageColor: #ae2f28;
+@define MagicalDamageColor: #5b93d1;
+@define PureDamageColor: #d8ae53;
+
+/***** invokation *****/
+
+@define quasAccentColor: #33a7e9;
+@define wexAccentColor: #eb07e1;
+@define exortAccentColor: #e7ac10;
+@define quasTextColor: #88c5e9;
+@define wexTextColor: #c284bf;
+@define exortTextColor: #c69a25;
+
+@define invokationSunGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ff9100c2), to(#00000000));
+@define invokationSunFadingGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ce7909c2), to(#00000000));
+
+@define panelTranslucentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2ef7), to(#191e1eff));
+@define panelTransparentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2e80), to(#191e1edd));
+
+@define pickerThumbGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor), color-stop(0.33, wexTextColor), to(exortTextColor));
+@define pickerThumbHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor&dd), color-stop(0.33, wexTextColor&dd), to(exortTextColor&dd));
+
+@define specialtyQuasWexGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, wexAccentColor), to(wexAccentColor&44));
+@define specialtyQuasExortGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, exortAccentColor), to(exortAccentColor&44));
+
+@define viewerPlayButtonGradient: gradient(linear, 0% 100%, 0% 0%, from(#af5417cc), to(#af5417cc));
+@define viewerPlayButtonHoverGradient: gradient(linear, 0% 100%, 0% 0%, from(#af5417), to(#af5417));
+
+@define comboPanelGradient: gradient(linear, 0% 50%, 100% 50%, from(#00000000), to(#000000ee));
+
+/******************************************************************************
+ * Fonts
+ ******************************************************************************/
+
+/* Default sans-serif font, with fallbacks for other languages */
+@define defaultFont: Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
+
+/* Default sans-serif font, but with monospace numbers. Useful for things like countdowns or numbers that need to line up in columns. */
+@define monospaceNumbersFont: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
+
+/* Default serif font, with fallbacks for other languages */
+@define titleFont: Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
+
+/* Full monospace font. Used mostly for debugging things. */
+@define monospaceFont: Courier New,Courier;
+
+/******************************************************************************
+ * Icons
+ ******************************************************************************/
+
+@define dotaPlusCurrencyIcon: url("s2r://panorama/images/dota_plus/currency_icon_png.vtex");
+@define dotaPlusCurrencySmallIcon: url("s2r://panorama/images/dota_plus/currency_icon_small_png.vtex");
+@define dotaPlusLogo: url("s2r://panorama/images/dota_plus/dotaplus_logo_png.vtex");
+@define dotaPlusLogoSmall: url("s2r://panorama/images/dota_plus/dotaplus_logo_small_png.vtex");
+@define dotaPlusChallengeIcon: url("s2r://panorama/images/dota_plus/challanges_icon_png.vtex");
+@define dotaPlusChatWheelIcon: url("s2r://panorama/images/dota_plus/icon_chatwheel_plus_reward_png.vtex");
+@define dotaPlusRelicIcon: url("s2r://panorama/images/dota_plus/relic_icon_png.vtex");
+
+@define arcanaShakerChar0: url("s2r://panorama/images/hud/arcana/es/numbers/combo_0_png.vtex");
+@define arcanaShakerChar1: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_png.vtex");
+@define arcanaShakerChar2: url("s2r://panorama/images/hud/arcana/es/numbers/combo_2_png.vtex");
+@define arcanaShakerChar3: url("s2r://panorama/images/hud/arcana/es/numbers/combo_3_png.vtex");
+@define arcanaShakerChar4: url("s2r://panorama/images/hud/arcana/es/numbers/combo_4_png.vtex");
+@define arcanaShakerChar5: url("s2r://panorama/images/hud/arcana/es/numbers/combo_5_png.vtex");
+@define arcanaShakerChar6: url("s2r://panorama/images/hud/arcana/es/numbers/combo_6_png.vtex");
+@define arcanaShakerChar7: url("s2r://panorama/images/hud/arcana/es/numbers/combo_7_png.vtex");
+@define arcanaShakerChar8: url("s2r://panorama/images/hud/arcana/es/numbers/combo_8_png.vtex");
+@define arcanaShakerChar9: url("s2r://panorama/images/hud/arcana/es/numbers/combo_9_png.vtex");
+@define arcanaShakerCharX: url("s2r://panorama/images/hud/arcana/es/numbers/combo_x_png.vtex");
+@define arcanaShakerV2Char0: url("s2r://panorama/images/hud/arcana/es/numbers/combo_0_v2_png.vtex");
+@define arcanaShakerV2Char1: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_v2_png.vtex");
+@define arcanaShakerV2Char2: url("s2r://panorama/images/hud/arcana/es/numbers/combo_2_v2_png.vtex");
+@define arcanaShakerV2Char3: url("s2r://panorama/images/hud/arcana/es/numbers/combo_3_v2_png.vtex");
+@define arcanaShakerV2Char4: url("s2r://panorama/images/hud/arcana/es/numbers/combo_4_v2_png.vtex");
+@define arcanaShakerV2Char5: url("s2r://panorama/images/hud/arcana/es/numbers/combo_5_v2_png.vtex");
+@define arcanaShakerV2Char6: url("s2r://panorama/images/hud/arcana/es/numbers/combo_6_v2_png.vtex");
+@define arcanaShakerV2Char7: url("s2r://panorama/images/hud/arcana/es/numbers/combo_7_v2_png.vtex");
+@define arcanaShakerV2Char8: url("s2r://panorama/images/hud/arcana/es/numbers/combo_8_v2_png.vtex");
+@define arcanaShakerV2Char9: url("s2r://panorama/images/hud/arcana/es/numbers/combo_9_v2_png.vtex");
+@define arcanaShakerV2CharX: url("s2r://panorama/images/hud/arcana/es/numbers/combo_x_v2_png.vtex");
+@define arcanaShakerSummaryBackground: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_png.vtex");
+@define arcanaShakerV2SummaryBackground: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_v2_png.vtex");
+
+/***** invokation *****/
+
+@define stanceOffensiveIcon: url("s2r://panorama/images/status_icons/modifier_kill_effect_psd.vtex");
+@define stanceDefensiveIcon: url("s2r://panorama/images/hud/reborn/icon_armor_psd.vtex");
+@define damageRatingIcon: url("s2r://panorama/images/hud/reborn/icon_damage_psd.vtex");
+@define difficultyRatingIcon: url("s2r://panorama/images/hud/reborn/icon_speed_psd.vtex");
+
+/******************************************************************************
+ * Backgrounds
+ ******************************************************************************/
+
+@define loadingScreenBackground: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
+@define pickerBackground: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
+@define comboRatingBackground: url("s2r://panorama/images/custom_game/ulti_base.png");
+@define comboRatingActiveBackground: url("s2r://panorama/images/custom_game/ulti_achieved.png");
+@define viewerBackground: url("file://{resources}/images/custom_game/viewer/paper-bg.png");
+
+/******************************************************************************
+ * Masks
+ ******************************************************************************/
+
+@define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
+@define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");

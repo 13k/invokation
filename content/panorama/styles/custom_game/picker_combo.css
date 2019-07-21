@@ -1,3 +1,7 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/panelstyles.css");
+
 .HeroCombo {
   flow-children: down;
   width: 100%;
@@ -22,8 +26,8 @@
 .HeroCombo .ComboIcon {
   width: 28px;
   height: 28px;
-  vertical-align: middle;
   margin: 3px;
+  vertical-align: center;
   tooltip-position: right;
   tooltip-body-position: 50% 10%;
 }
@@ -42,11 +46,11 @@
 }
 
 .HeroCombo.specialty_qw .SpecialtyIcon {
-  background-color: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.50, #000), color-stop(0.51, wexAccentColor), to(wexAccentColor&44));
+  background-color: specialtyQuasWexGradient;
 }
 
 .HeroCombo.specialty_qe .SpecialtyIcon {
-  background-color: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.50, #000), color-stop(0.51, exortAccentColor), to(exortAccentColor&44));
+  background-color: specialtyQuasExortGradient;
 }
 
 .HeroCombo .StanceIcon {
@@ -60,11 +64,11 @@
 }
 
 .HeroCombo.stance_offensive .StanceIcon {
-  background-image: url("s2r://panorama/images/status_icons/modifier_kill_effect_psd.vtex");
+  background-image: stanceOffensiveIcon;
 }
 
 .HeroCombo.stance_defensive .StanceIcon {
-  background-image: url("s2r://panorama/images/hud/reborn/icon_armor_psd.vtex");
+  background-image: stanceDefensiveIcon;
 }
 
 .HeroCombo .HeroLevelIcon {
@@ -78,15 +82,14 @@
 
 .HeroCombo .HeroLevelLabel {
   width: 14px;
-  horizontal-align: center;
-  vertical-align: middle;
-  text-align: center;
-  font-weight: normal;
-  font-size: 14px;
   margin-top: 3px;
-  text-shadow: 0px 0px 3px 3.7 #EC780E24;
-  color: #E7D291;
+  align: center center;
+  color: #e7d291;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
   text-overflow: shrink;
+  text-shadow: 0px 0px 3px 3.7 #ec780e24;
 }
 
 .HeroCombo .RatingsContainer {
@@ -100,7 +103,7 @@
 .HeroCombo .ComboRating {
   width: 80px;
   height: 16px;
-  background-image: url("s2r://panorama/images/custom_game/ulti_base.png");
+  background-image: comboRatingBackground;
   background-position: 0% 0%;
   background-repeat: repeat-x;
   background-size: contain;
@@ -110,7 +113,7 @@
 .HeroCombo .ComboRatingActive {
   width: 0;
   height: 100%;
-  background-image: url("s2r://panorama/images/custom_game/ulti_achieved.png");
+  background-image: comboRatingActiveBackground;
   background-position: 0% 0%;
   background-repeat: repeat-x;
   background-size: contain;
@@ -140,14 +143,14 @@
 .RatingsContainer .AttackDamageIcon {
   width: 16px;
   height: 16px;
-  background-image: url("s2r://panorama/images/hud/reborn/icon_damage_psd.vtex");
+  background-image: damageRatingIcon;
   background-size: 100%;
 }
 
 .RatingsContainer .DifficultyIcon {
   width: 16px;
   height: 16px;
-  background-image: url("s2r://panorama/images/hud/reborn/icon_speed_psd.vtex");
+  background-image: difficultyRatingIcon;
   background-size: 100%;
 }
 

@@ -4,17 +4,13 @@
   </scripts>
 
   <styles>
-    <include src="s2r://panorama/styles/dotastyles.vcss" />
-
-    <include src="file://{resources}/styles/shared/panelstyles.css" />
-    <include src="file://{resources}/styles/shared/colors.css" />
     <include src="file://{resources}/styles/custom_game/combo.css" />
   </styles>
 
   <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
     <Panel id="ComboCount" class="ArcanaLevel2" hittest="false" hittestchildren="false">
       <Panel id="ComboCountContainer">
-        <Panel id="ComboDetail">
+        <Panel class="SplashBackground CounterBackground">
           <DOTAScenePanel id="ComboAmbientFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
         </Panel>
 
@@ -32,7 +28,7 @@
       <Panel id="ComboSummaryContainer">
         <DOTAScenePanel id="ComboSummaryFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
 
-        <Panel id="ComboDetail2" />
+        <Panel class="SplashBackground SummaryBackground" />
 
         <Panel id="ComboSummaryContents">
           <Panel class="ComboSummary">

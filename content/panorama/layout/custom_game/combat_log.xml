@@ -4,9 +4,6 @@
   </scripts>
 
   <styles>
-    <include src="s2r://panorama/styles/dotastyles.vcss" />
-
-    <include src="file://{resources}/styles/shared/panelstyles.css" />
     <include src="file://{resources}/styles/custom_game/combat_log.css" />
   </styles>
 

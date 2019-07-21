@@ -1,3 +1,7 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/panelstyles.css");
+
 @define combatLogWidth: 560px;
 @define combatLogHeight: 200px;
 @define combatLogTranslate: -150px;
@@ -9,9 +13,9 @@
 
 .Root {
   flow-children: right;
-  align: center top;
-  width: combatLogWidth;
   height: combatLogHeight;
+  width: combatLogWidth;
+  align: center top;
 }
 
 #CombatLog {
@@ -40,7 +44,7 @@
 
 .CombatLogThumb {
   horizontal-align: left;
-  vertical-align: middle;
+  vertical-align: center;
 }
 
 .CombatLogThumb .TickBox {
@@ -63,11 +67,11 @@
 
 .CombatLogTitle {
   horizontal-align: left;
-  vertical-align: middle;
+  vertical-align: center;
   text-transform: uppercase;
   text-overflow: shrink;
   color: white;
-  font-family: panelTitleFont;
+  font-family: defaultFont;
   font-weight: bold;
   font-size: 16px;
   text-shadow: 1px 1px 0px 3 #00000066;
@@ -85,7 +89,7 @@
 }
 
 .CombatLogBarActions .BarItem {
-  vertical-align: middle;
+  vertical-align: center;
   margin-right: 8px;
 }
 
@@ -116,5 +120,5 @@
 }
 
 .CombatLogAbility DOTAItemImage {
-  vertical-align: middle;
+  vertical-align: center;
 }

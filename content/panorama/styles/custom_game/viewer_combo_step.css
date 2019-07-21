@@ -1,3 +1,5 @@
+@import url("file://{resources}/styles/shared/variables.css");
+
 .ComboStep {
   flow-children: right;
   padding: 8px;
@@ -14,8 +16,8 @@
   box-shadow: #666 -2px -2px 4px 4px;
 }
 
-.StepIcon DOTAItemImage {
-  vertical-align: middle;
+#StepImage {
+  vertical-align: center;
 }
 
 #StepDescription {

@@ -1,3 +1,6 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+
 .Root {
   flow-children: right;
   width: 100%;
@@ -5,23 +8,15 @@
 }
 
 #Combo {
-  /* border-left: 1px solid red; */
   flow-children: down;
   align: right center;
   width: 154px;
   height: 100%;
   margin-left: -154px;
-  background-color: gradient(
-    linear,
-    0% 50%,
-    100% 50%,
-    from(#00000000),
-    to(#000000ee)
-  );
+  background-color: comboPanelGradient;
 }
 
 #Sequence {
-  /* border: 1px solid blue; */
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(2);
@@ -30,7 +25,6 @@
 }
 
 #SequenceContainer {
-  /* border: 1px solid green; */
   flow-children: down;
   horizontal-align: center;
 }
@@ -67,12 +61,12 @@
   transition-timing-function: ease-in-out;
 }
 
-.ShowComboCount.ShowComboSummary #ComboCountContainer {
-  opacity: 0;
-}
-
 .ShowComboCount #ComboCountContainer {
   opacity: 1;
+}
+
+.ShowComboCount.ShowComboSummary #ComboCountContainer {
+  opacity: 0;
 }
 
 #ComboCountContents {
@@ -134,11 +128,11 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_png.vtex");
+  background-image: arcanaShakerChar1;
 }
 
 .ArcanaLevel2 .ESDigit {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_v2_png.vtex");
+  background-image: arcanaShakerV2Char1;
 }
 
 .ESDigitHidden {
@@ -146,7 +140,6 @@
 }
 
 .ComboSummaryDigit {
-  /*width: 19px;*/
   height: 28px;
 }
 
@@ -155,83 +148,94 @@
 }
 
 .ESDigit.digit_0 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_0_png.vtex");
+  background-image: arcanaShakerChar0;
   width: 28px;
 }
+
 .ESDigit.digit_1 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_png.vtex");
+  background-image: arcanaShakerChar1;
   width: 25px;
 }
+
 .ESDigit.digit_2 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_2_png.vtex");
+  background-image: arcanaShakerChar2;
   width: 34px;
 }
 
 .ESDigit.digit_3 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_3_png.vtex");
+  background-image: arcanaShakerChar3;
   width: 38px;
 }
 
 .ESDigit.digit_4 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_4_png.vtex");
+  background-image: arcanaShakerChar4;
   width: 34px;
 }
 
 .ESDigit.digit_5 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_5_png.vtex");
+  background-image: arcanaShakerChar5;
   width: 40px;
   margin-left: -2px;
 }
 
 .ESDigit.digit_6 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_6_png.vtex");
+  background-image: arcanaShakerChar6;
   width: 33px;
 }
 
 .ESDigit.digit_7 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_7_png.vtex");
+  background-image: arcanaShakerChar7;
   width: 35px;
 }
 
 .ESDigit.digit_8 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_8_png.vtex");
+  background-image: arcanaShakerChar8;
   width: 30px;
 }
 
 .ESDigit.digit_9 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_9_png.vtex");
+  background-image: arcanaShakerChar9;
   width: 30px;
 }
 
 .ArcanaLevel2 .ESDigit.digit_0 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_0_v2_png.vtex");
+  background-image: arcanaShakerV2Char0;
 }
+
 .ArcanaLevel2 .ESDigit.digit_1 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_1_v2_png.vtex");
+  background-image: arcanaShakerV2Char1;
 }
+
 .ArcanaLevel2 .ESDigit.digit_2 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_2_v2_png.vtex");
+  background-image: arcanaShakerV2Char2;
 }
+
 .ArcanaLevel2 .ESDigit.digit_3 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_3_v2_png.vtex");
+  background-image: arcanaShakerV2Char3;
 }
+
 .ArcanaLevel2 .ESDigit.digit_4 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_4_v2_png.vtex");
+  background-image: arcanaShakerV2Char4;
 }
+
 .ArcanaLevel2 .ESDigit.digit_5 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_5_v2_png.vtex");
+  background-image: arcanaShakerV2Char5;
 }
+
 .ArcanaLevel2 .ESDigit.digit_6 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_6_v2_png.vtex");
+  background-image: arcanaShakerV2Char6;
 }
+
 .ArcanaLevel2 .ESDigit.digit_7 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_7_v2_png.vtex");
+  background-image: arcanaShakerV2Char7;
 }
+
 .ArcanaLevel2 .ESDigit.digit_8 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_8_v2_png.vtex");
+  background-image: arcanaShakerV2Char8;
 }
+
 .ArcanaLevel2 .ESDigit.digit_9 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_9_v2_png.vtex");
+  background-image: arcanaShakerV2Char9;
 }
 
 .ComboSummaryDigit.digit_0 {
@@ -279,12 +283,12 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_x_png.vtex");
+  background-image: arcanaShakerCharX;
   width: 22px;
 }
 
 .ArcanaLevel2 .ComboX {
-  background-image: url("s2r://panorama/images/hud/arcana/es/numbers/combo_x_v2_png.vtex");
+  background-image: arcanaShakerV2CharX;
 }
 
 .ComboCountX {
@@ -310,7 +314,6 @@
 
 .ComboCountDigit {
   pre-transform-scale2d: 0.9;
-
   transition-property: pre-transform-scale2d, background-image;
   transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
@@ -343,28 +346,30 @@
 }
 
 #ComboSummaryContainer {
-  vertical-align: top;
   width: 275px;
-
-  horizontal-align: center;
-  opacity: 0;
   height: 120px;
+  align: center top;
+  opacity: 0;
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
 
-#ComboDetail {
-  background-size: 100%;
+.SplashBackground {
+  z-index: 0;
   width: 191px;
   height: 129px;
   horizontal-align: center;
-  z-index: 0;
-  background-image: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_png.vtex");
+  background-image: arcanaShakerSummaryBackground;
+  background-size: 100%;
 }
 
-.ArcanaLevel2 #ComboDetail {
-  background-image: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_v2_png.vtex");
+.ArcanaLevel2 .SplashBackground {
+  background-image: arcanaShakerV2SummaryBackground;
+}
+
+.SplashBackground.SummaryBackground {
+  vertical-align: top;
 }
 
 #ComboAmbientFX {
@@ -389,72 +394,56 @@
 }
 
 .SummaryComboLabel {
-  font-size: 13px;
-  text-shadow: 2px 2px 0px #1b4c44;
   color: #ffffff;
-  opacity: 1;
-  margin-left: 5px;
-  vertical-align: center;
-  text-align: center;
+  font-size: 13px;
   font-weight: bolder;
   letter-spacing: 2px;
+  margin-left: 5px;
+  opacity: 1;
+  text-align: center;
+  text-shadow: 2px 2px 0px #1b4c44;
   text-transform: uppercase;
+  vertical-align: center;
 }
 
 .SummaryDamageLabel {
-  font-size: 13px;
-  text-shadow: 2px 2px 0px #1b4c44;
+  align: center center;
   color: #ffffff;
-  opacity: 1;
-  margin-left: 0px;
-  margin-top: -5px;
-  vertical-align: center;
-  text-align: center;
+  font-size: 13px;
   font-weight: bolder;
   letter-spacing: 2px;
+  margin-left: 0px;
+  margin-top: -5px;
+  opacity: 1;
+  text-align: center;
+  text-shadow: 2px 2px 0px #1b4c44;
   text-transform: uppercase;
-  horizontal-align: center;
 }
 
 .ESComboCount {
+  align: center top;
+  color: #ffffff;
   font-size: 12px;
   font-style: italic;
-  color: #ffffff;
-  horizontal-align: center;
-  vertical-align: top;
-  margin-top: 0px;
   font-weight: bolder;
   letter-spacing: 2px;
+  margin-top: 0px;
+  text-shadow: 2px 2px 0px #1b4c44;
   text-transform: uppercase;
   transform: translateY(10px);
-  text-shadow: 2px 2px 0px #1b4c44;
-}
-
-#ComboDetail2 {
-  width: 191px;
-  height: 129px;
-  background-size: 100%;
-  horizontal-align: center;
-  vertical-align: top;
-  z-index: 0;
-  background-image: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_png.vtex");
-}
-
-.ArcanaLevel2 #ComboDetail2 {
-  background-image: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_v2_png.vtex");
 }
 
 #ComboSummaryFX {
-  opacity-mask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
   width: 100%;
   height: 100%;
   z-index: 100;
+  opacity-mask: softEdgeBoxMask;
 }
 
 .ComboSummary {
   flow-children: right;
-  horizontal-align: center;
   width: 100%;
+  horizontal-align: center;
 }
 
 .DamageSummary {
@@ -463,10 +452,9 @@
 }
 
 #ComboSummaryContents {
-  width: 100%;
-  horizontal-align: center;
-  vertical-align: middle;
   flow-children: down;
+  width: 100%;
+  align: center center;
 }
 
 .ShowComboSummary #ComboSummaryContainer {

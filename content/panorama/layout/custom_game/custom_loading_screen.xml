@@ -1,7 +1,5 @@
 <root>
   <styles>
-    <include src="s2r://panorama/styles/dotastyles.vcss" />
-
     <include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
   </styles>
 
@@ -9,7 +7,7 @@
     <DOTAScenePanel id="TitleFX" map="backgrounds/dashboard_parallax_plus" camera="camera" renderdeferred="false" particleonly="true" hittest="false" />
 
     <Panel class="TitlePanel" hittest="false">
-      <Label class="Title TitleFont" text="#addon_game_name" hittest="false" />
+      <Label class="Title" text="#addon_game_name" hittest="false" />
     </Panel>
   </Panel>
 </root>

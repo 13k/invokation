@@ -1,3 +1,7 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/panelstyles.css");
+
 @define contentTopMargin: 180px;
 @define slideoutWidth: 1136px;
 @define slideoutHeight: 60%;
@@ -32,7 +36,7 @@
   width: fill-parent-flow(1);
   height: 100%;
   flow-children: down;
-  background-image: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
+  background-image: pickerBackground;
   background-size: 100%;
 }
 
@@ -40,28 +44,14 @@
   width: thumbWidth;
   height: thumbHeight;
   vertical-align: center;
-  background-color: gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(quasTextColor),
-    color-stop(0.33, wexTextColor),
-    to(exortTextColor)
-  );
+  background-color: pickerThumbGradient;
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
   box-shadow: none;
 }
 
 #CombosThumb:hover {
-  background-color: gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(quasTextColor&dd),
-    color-stop(0.33, wexTextColor&dd),
-    to(exortTextColor&dd)
-  );
+  background-color: pickerThumbHoverGradient;
 }
 
 #CombosThumb .PanelSlideThumbArrow {

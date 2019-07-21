@@ -1,3 +1,5 @@
+@import url("file://{resources}/styles/shared/variables.css");
+
 .ComboStep {
   pre-transform-scale2d: 0;
   horizontal-align: center;
@@ -44,7 +46,7 @@
 }
 
 .StepIcon DOTAItemImage {
-  vertical-align: middle;
+  vertical-align: center;
 }
 
 @keyframes 'ComboStepBump' {

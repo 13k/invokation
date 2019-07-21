@@ -1,30 +1,27 @@
-@define panelTitleFont: Radiance,FZKai-Z03,TH Sarabun New,YDYGO 540;
-@define panelTranslucentBgGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2ef7), to(#191e1eff));
-@define panelTransparentBgGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2e80), to(#191e1edd));
+@import url("file://{resources}/styles/shared/variables.css");
 
 .TranslucentPanel {
-  background-color: panelTranslucentBgGradient;
+  background-color: panelTranslucentGradient;
 }
 
 .TransparentPanel {
-  background-color: panelTransparentBgGradient;
+  background-color: panelTransparentGradient;
 }
 
 .PanelTitle {
   width: 100%;
-  text-align: center;
-  text-transform: uppercase;
-  text-overflow: shrink;
   color: white;
-  font-family: panelTitleFont;
-  font-weight: bold;
+  font-family: defaultFont;
   font-size: 16px;
-  text-shadow: 1px 1px 0px 3 #00000066;
+  font-weight: bold;
   letter-spacing: 2px;
+  text-align: center;
+  text-overflow: shrink;
+  text-shadow: 1px 1px 0px 3 #00000066;
+  text-transform: uppercase;
 }
 
 .PanelTitleContainer {
-  /* border: 1px solid green; */
   flow-children: right;
   width: 100%;
   height: 32px;
@@ -35,8 +32,7 @@
 }
 
 .PanelTitleContainer .PanelTitle {
-  /* border: 1px solid orange; */
   padding-top: 0;
   padding-left: 0;
-  width: fill-parent-flow(1.0);
+  width: fill-parent-flow(1);
 }
