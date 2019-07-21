@@ -4,22 +4,23 @@
 local M = {}
 
 local Unit = require("invokation.dota2.Unit")
+local Player = require("invokation.dota2.Player")
 local Invoker = require("invokation.dota2.Invoker")
 
 function M.setup(player, combo)
-  local hero = player:GetAssignedHero()
-  local unit = Unit(hero)
-  local invoker = Invoker(hero)
-  local resetXP = 0
-  local resetGold = 0
+  player = Player(player)
+
+  local unit = Unit(player.hero)
+  local invoker = Invoker(player.hero)
   local resetLevel = 1
 
   unit:RemoveItems({includeStash = true, endCooldown = true})
   -- Orbs reset must come before hero replacement
   invoker:ResetAbilities()
-  hero:SetAbilityPoints(resetLevel)
-  hero = PlayerResource:ReplaceHeroWith(player:GetPlayerID(), hero:GetUnitName(), resetGold, resetXP)
-  unit = Unit(hero)
+  player.hero:SetAbilityPoints(resetLevel)
+  player:ReplaceHero(player.hero:GetUnitName())
+  -- player.hero is a new instance referencing a new entity
+  unit = Unit(player.hero)
 
   while unit:GetLevel() < combo.heroLevel do
     unit:HeroLevelUp(false)
