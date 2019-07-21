@@ -22,15 +22,19 @@ Thank you for showing interest in our school. You can [fill the subscription for
 
 Although the school owner (and current curator, maintainer, ward, accountant, public relations officer, janitor, security chief, valet... among other things) shows to be proud about the school's opening, the estimated proprietor is not completely satisfied with its simplicity. His future plans for this enterprise include (but not limited to), (also not in any particular order), (he makes no promises):
 
-* [ ] Facilitate the access of information in the curated collection of combos, by providing mechanisms to search for specific content.
-* [ ] Gather and file students preferences, so every practice session is prepared with their individual tastes observed. We take care of things like where to place magical items, the student concentrates on the lesson.
-* [ ] Improve the cleaning up after each session. We don't want to risk having invoked creatures or discarded magical items lying around.
-* [ ] Create a space to give total freedom to students and let them practice and learn without the bounds and limits of lessons.
-* [ ] Incorporate recommended orb recipes for each lesson to the learning material.
-* [ ] Make lessons more challenging by introducing a time factor besides the already present sequence factor.
-* [ ] Implement procedures to accept material suggestions and curatorship from experts in an automated way, with the aim to create a robust library of combos made by the community.
-* [ ] Allow practitioners to record their own experiences during practice sessions, give them tools to organize, editorialize and publish their findings to the community library.
-* [ ] Allow attendants access to the community library, see each other's work, test, practice and judge it.
+- [ ] Facilitate the access of information in the curated collection of combos, by providing mechanisms to search for specific content.
+- [ ] Gather and file students preferences, so every practice session is prepared with their individual tastes observed. We take care of things like where to place magical items, the student concentrates on the lesson.
+- [ ] Improve the cleaning up after each session. We don't want to risk having invoked creatures or discarded magical items lying around.
+- [ ] Create a space to give total freedom to students and let them practice and learn without the bounds and limits of lessons.
+- [ ] Incorporate recommended orb recipes for each lesson to the learning material.
+- [ ] Make lessons more challenging by introducing a time factor besides the already present sequence factor.
+- [ ] Implement procedures to accept material suggestions and curatorship from experts in an automated way, with the aim to create a robust library of combos made by the community.
+- [ ] Allow practitioners to record their own experiences during practice sessions, give them tools to organize, editorialize and publish their findings to the community library.
+- [ ] Allow attendants access to the community library, see each other's work, test, practice and judge it.
+
+## Release Notes
+
+See the [CHANGELOG][changelog].
 
 ---
 
@@ -41,3 +45,4 @@ Although the school owner (and current curator, maintainer, ward, accountant, pu
 [dota2]: https://dota2.com
 [invoker]: https://dota2.gamepedia.com/Invoker
 [workshop]: https://steamcommunity.com/sharedfiles/filedetails/?id=1809587874
+[changelog]: ./CHANGELOG.md
