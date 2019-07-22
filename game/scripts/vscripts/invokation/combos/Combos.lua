@@ -247,9 +247,4 @@ function M:OnEntityHurt(damage)
   self:setPlayerState(player, "damage", damageTotal)
 end
 
---- Communicates to player clients to open the combo picker.
-function M.ShowPicker()
-  CombosComm.sendPickerShow()
-end
-
 return M

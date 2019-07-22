@@ -46,7 +46,6 @@ var Picker = CreateComponent({
   bindEvents: function() {
     COMBOS.OnChange(this.onCombosChange.bind(this));
 
-    this.subscribe(EVENTS.PICKER_SHOW, this.onPickerShow);
     this.subscribe(EVENTS.COMBO_STARTED, this.onComboStarted);
     this.subscribe(EVENTS.COMBO_STOPPED, this.onComboStopped);
   },
@@ -57,14 +56,9 @@ var Picker = CreateComponent({
     this.renderCombos();
   },
 
-  onPickerShow: function() {
-    this.log("onPickerShow()");
-    this.showPicker();
-  },
-
   onComboDetailsShow: function(payload) {
     this.log("onComboDetailsShow() ", payload);
-    this.hidePicker();
+    this.Close();
     this.renderViewer(payload.combo);
   },
 
@@ -75,12 +69,12 @@ var Picker = CreateComponent({
 
   onComboStarted: function() {
     this.log("onComboStarted()");
-    this.hidePicker();
+    this.Close();
   },
 
   onComboStopped: function() {
     this.log("onComboStopped()");
-    this.showPicker();
+    this.Open();
   },
 
   startCombo: function(combo) {
@@ -152,14 +146,34 @@ var Picker = CreateComponent({
     return panel;
   },
 
-  showPicker: function() {
-    $.DispatchEvent("PlaySoundEffect", "Shop.PanelUp");
-    this.$slideout.RemoveClass("DrawerClosed");
+  isClosed: function() {
+    return this.$slideout.BHasClass("DrawerClosed");
   },
 
-  hidePicker: function() {
-    $.DispatchEvent("PlaySoundEffect", "Shop.PanelDown");
-    this.$slideout.AddClass("DrawerClosed");
+  Open: function() {
+    if (!this.isClosed()) {
+      return;
+    }
+
+    var seq = new RunParallelActions();
+
+    seq.actions.push(new PlaySoundEffectAction("Shop.PanelUp"));
+    seq.actions.push(new RemoveClassAction(this.$slideout, "DrawerClosed"));
+
+    RunSingleAction(seq);
+  },
+
+  Close: function() {
+    if (this.isClosed()) {
+      return;
+    }
+
+    var seq = new RunParallelActions();
+
+    seq.actions.push(new PlaySoundEffectAction("Shop.PanelDown"));
+    seq.actions.push(new AddClassAction(this.$slideout, "DrawerClosed"));
+
+    RunSingleAction(seq);
   },
 
   renderViewer: function(combo) {
@@ -167,10 +181,10 @@ var Picker = CreateComponent({
   },
 
   Toggle: function() {
-    if (this.$slideout.BHasClass("DrawerClosed")) {
-      this.showPicker();
+    if (this.isClosed()) {
+      this.Open();
     } else {
-      this.hidePicker();
+      this.Close();
     }
   },
 
@@ -181,3 +195,5 @@ var Picker = CreateComponent({
 });
 
 var picker = new Picker();
+
+picker.Open();

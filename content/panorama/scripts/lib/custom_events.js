@@ -2,8 +2,6 @@
 
 (function(C) {
   C.EVENTS = {
-    // combo picker
-    PICKER_SHOW: "invokation_picker_show",
     // combo viewer
     VIEWER_RENDER: "invokation_viewer_render",
     // combos

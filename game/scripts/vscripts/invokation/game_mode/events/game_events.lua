@@ -100,7 +100,6 @@ beginning the first round, etc.
 ]]
 function GameMode:OnGameInProgress()
   self:d("OnGameInProgress")
-  self.combos.ShowPicker()
 end
 
 --- An entity has been hurt.

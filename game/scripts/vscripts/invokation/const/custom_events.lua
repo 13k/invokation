@@ -3,12 +3,6 @@
 
 local M = {}
 
---- Combo Picker
--- @section picker
-
---- show combo picker
-M.EVENT_PICKER_SHOW = "invokation_picker_show"
-
 --- Combos
 -- @section combos
 

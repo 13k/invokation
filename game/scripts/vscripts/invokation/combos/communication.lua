@@ -5,10 +5,6 @@ local M = {}
 
 local CustomEvents = require("invokation.dota2.custom_events")
 
-function M.sendPickerShow()
-  return CustomEvents.SendAll(CustomEvents.EVENT_PICKER_SHOW)
-end
-
 function M.sendAbilityUsed(player, ability)
   local payload = {ability = ability.name}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBAT_LOG_ABILITY_USED, player, payload)
