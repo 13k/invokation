@@ -1,3 +1,15 @@
+---
+__panorama_types__: &panorama_types
+  - "/^DOTA/"
+  - "Button"
+  - "DropDown"
+  - "Image"
+  - "Label"
+  - "Panel"
+  - "RadioButton"
+  - "TextEntry"
+  - "ToggleButton"
+
 plugins:
   - "stylelint-order"
 extends:
@@ -6,21 +18,6 @@ extends:
 rules:
   order/properties-order:
     - - properties:
-          - "font"
-          - "font-family"
-          - "font-size"
-          - "font-weight"
-          - "font-style"
-          - "font-variant"
-          - "font-size-adjust"
-          - "font-stretch"
-          - "font-effect"
-          - "font-emphasize"
-          - "font-emphasize-position"
-          - "font-emphasize-style"
-          - "font-smooth"
-          - "line-height"
-      - properties:
           - "position"
           - "z-index"
           - "top"
@@ -69,6 +66,13 @@ rules:
           - "padding-bottom"
           - "padding-left"
       - properties:
+          - "align"
+          - "horizontal-align"
+          - "vertical-align"
+          - "pre-transform-scale2d"
+          - "transform"
+          - "transform-origin"
+      - properties:
           - "table-layout"
           - "empty-cells"
           - "caption-side"
@@ -93,27 +97,8 @@ rules:
           - "nav-left"
           - "tooltip-position"
           - "tooltip-body-position"
-          - "transition"
-          - "transition-delay"
-          - "transition-timing-function"
-          - "transition-duration"
-          - "transition-property"
-          - "pre-transform-scale2d"
-          - "transform"
-          - "transform-origin"
-          - "animation"
-          - "animation-name"
-          - "animation-duration"
-          - "animation-play-state"
-          - "animation-timing-function"
-          - "animation-delay"
-          - "animation-iteration-count"
-          - "animation-direction"
           - "text-align"
           - "text-align-last"
-          - "align"
-          - "horizontal-align"
-          - "vertical-align"
           - "white-space"
           - "text-decoration"
           - "text-emphasis"
@@ -136,10 +121,31 @@ rules:
           - "hyphens"
           - "pointer-events"
       - properties:
+          - "font"
+          - "font-family"
+          - "font-size"
+          - "font-weight"
+          - "font-style"
+          - "font-variant"
+          - "font-size-adjust"
+          - "font-stretch"
+          - "font-effect"
+          - "font-emphasize"
+          - "font-emphasize-position"
+          - "font-emphasize-style"
+          - "font-smooth"
+          - "line-height"
+      - properties:
           - "opacity"
           - "opacity-mask"
           - "color"
           - "wash-color"
+          - "outline"
+          - "outline-width"
+          - "outline-style"
+          - "box-decoration-break"
+          - "box-shadow"
+          - "text-shadow"
           - "border"
           - "border-width"
           - "border-style"
@@ -171,9 +177,6 @@ rules:
           - "border-image-width"
           - "border-image-outset"
           - "border-image-repeat"
-          - "outline"
-          - "outline-width"
-          - "outline-style"
           - "background"
           - "background-color"
           - "background-image"
@@ -185,9 +188,20 @@ rules:
           - "background-clip"
           - "background-origin"
           - "background-size"
-          - "box-decoration-break"
-          - "box-shadow"
-          - "text-shadow"
+      - properties:
+          - "transition"
+          - "transition-delay"
+          - "transition-timing-function"
+          - "transition-duration"
+          - "transition-property"
+          - "animation"
+          - "animation-name"
+          - "animation-duration"
+          - "animation-play-state"
+          - "animation-timing-function"
+          - "animation-delay"
+          - "animation-iteration-count"
+          - "animation-direction"
     - unspecified: "bottomAlphabetical"
   at-rule-no-unknown:
     - true
@@ -210,16 +224,9 @@ rules:
     - true
     - ignorePseudoClasses:
         - "selected"
-  selector-type-case: null
+  selector-type-case:
+    - "lower"
+    - ignoreTypes: *panorama_types
   selector-type-no-unknown:
     - true
-    - ignoreTypes:
-        - "/^DOTA/"
-        - "Button"
-        - "DropDown"
-        - "Image"
-        - "Label"
-        - "Panel"
-        - "RadioButton"
-        - "TextEntry"
-        - "ToggleButton"
+    - ignoreTypes: *panorama_types
