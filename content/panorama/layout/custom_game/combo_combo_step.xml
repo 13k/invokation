@@ -9,6 +9,6 @@
   </styles>
 
   <Panel class="ComboStep">
-    <Button id="StepIconButton" class="StepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
+    <Button id="StepIconButton" class="StepIcon" />
   </Panel>
 </root>
