@@ -42,7 +42,7 @@ function GameMode:registerCommands()
 
     Convars:RegisterCommand(
       "inv_debug_misc",
-      lfunc.bindbyname(self, "CommandDebugMiscellanea"),
+      lfunc.bindbyname(self, "CommandDebugMisc"),
       "Run miscellaneous debug code (use script_reload to reload)",
       FCVAR_CHEAT
     )
@@ -113,10 +113,12 @@ end
 -- Use `script_reload` to reload after changes.
 -- @tparam "inv_debug_misc" _ Command name (ignored)
 -- @param[opt] ... varargs
-function GameMode:CommandDebugMiscellanea(_, ...)
-  self:d("CommandDebugMiscellanea()", ...)
+function GameMode:CommandDebugMisc(_, damage)
+  self:d("CommandDebugMisc()", damage)
+
   -- local player = Convars:GetDOTACommandClient()
   -- local hero = player:GetAssignedHero()
+
 end
 
 local function debugAbility(a, simple)

@@ -1,5 +1,7 @@
 <root>
   <scripts>
+    <include src="s2r://panorama/scripts/sequence_actions.vjs" />
+
     <include src="file://{resources}/scripts/custom_game/combo.js" />
   </scripts>
 
@@ -8,67 +10,66 @@
   </styles>
 
   <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
-    <Panel id="ComboCount" class="ArcanaLevel2" hittest="false" hittestchildren="false">
-      <Panel id="ComboCountContainer">
-        <Panel class="SplashBackground CounterBackground">
-          <DOTAScenePanel id="ComboAmbientFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
-        </Panel>
-
-        <Panel id="ComboCountContents">
-          <Panel id="ComboCounter" class="ComboDigits DigitContainer">
-            <Panel class="ComboX ComboCountX ComboCountValue" />
-            <Panel id="ComboCounterDigit0" class="ComboCountDigit ESDigit ComboCountValue" />
-            <Panel id="ComboCounterDigit1" class="ComboCountDigit ESDigit ComboCountValue" />
-            <Panel id="ComboCounterDigit2" class="ComboCountDigit ESDigit ComboCountValue" />
-          </Panel>
-          <Label class="ComboCountLabel" text="#invokation_combo_counter_title" />
-        </Panel>
-      </Panel>
-
-      <Panel id="ComboSummaryContainer">
-        <DOTAScenePanel id="ComboSummaryFX" hittest="false" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
-
-        <Panel class="SplashBackground SummaryBackground" />
-
-        <Panel id="ComboSummaryContents">
-          <Panel class="ComboSummary">
-            <Panel id="ComboSummaryCounter" class="DigitContainer">
-              <Panel class="ComboX ComboSummaryX" />
-              <Panel id="ComboSummaryCounterDigit0" class="ComboSummaryDigit ESDigit" />
-              <Panel id="ComboSummaryCounterDigit1" class="ComboSummaryDigit ESDigit" />
-              <Panel id="ComboSummaryCounterDigit2" class="ComboSummaryDigit ESDigit" />
-            </Panel>
-            <Label class="SummaryComboLabel" text="#invokation_combo_counter_title" />
-          </Panel>
-
-          <Panel class="DamageSummary">
-            <Panel id="ComboDamage" class="DigitContainer">
-              <Panel id="ComboDamageDigit0" class="DamageSummaryDigit ESDigit" />
-              <Panel id="ComboDamageDigit1" class="DamageSummaryDigit ESDigit" />
-              <Panel id="ComboDamageDigit2" class="DamageSummaryDigit ESDigit" />
-              <Panel id="ComboDamageDigit3" class="DamageSummaryDigit ESDigit" />
-              <Panel id="ComboDamageDigit4" class="DamageSummaryDigit ESDigit" />
-            </Panel>
-            <Label class="SummaryDamageLabel" text="#invokation_combo_counter_damage_label" />
-          </Panel>
-        </Panel>
-      </Panel>
+    <Panel class="Combo" hittest="false">
+      <Panel id="Sequence" hittest="false" />
     </Panel>
 
-    <Panel id="Combo" class="Hide" hittest="false">
-      <Panel id="Sequence" hittest="false">
-        <Panel class="FillHeight" hittest="false" />
-        <Panel id="SequenceContainer" hittest="false" />
-        <Panel class="FillHeight" hittest="false" />
-      </Panel>
-
-      <Button id="RestartButton" class="PopupButton Blue" onactivate="combo.Restart()">
+    <Panel class="Buttons" hittest="false">
+      <Button class="RestartButton PopupButton Blue" onactivate="combo.Restart()">
         <Label text="#invokation_combo_restart" hittest="false" />
       </Button>
 
-      <Button id="StopButton" class="PopupButton Red" onactivate="combo.Stop()">
+      <Button class="StopButton PopupButton Red" onactivate="combo.Stop()">
         <Label text="#invokation_combo_stop" hittest="false" />
       </Button>
+    </Panel>
+
+    <!-- Score (shamelessly rippped from ES arcana) -->
+
+    <Panel id="Score" class="Level2" hittest="false" hittestchildren="false">
+      <Panel class="Counter">
+        <Panel class="SplashBackground">
+          <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
+        </Panel>
+
+        <Panel class="Content">
+          <Panel id="CounterTicker" class="DigitContainer">
+            <Panel class="ESDigitX" />
+            <Panel id="CounterTickerDigit0" class="ESDigit" />
+            <Panel id="CounterTickerDigit1" class="ESDigit" />
+            <Panel id="CounterTickerDigit2" class="ESDigit" />
+          </Panel>
+          <Label class="Label" text="#invokation_combo_counter_title" />
+        </Panel>
+      </Panel>
+
+      <Panel class="Summary">
+        <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
+        <Panel class="SplashBackground" />
+
+        <Panel class="Content">
+          <Panel class="Count">
+            <Panel id="SummaryCountDisplay" class="DigitContainer">
+              <Panel class="ESDigitX" />
+              <Panel id="SummaryCountDisplayDigit0" class="ESDigit" />
+              <Panel id="SummaryCountDisplayDigit1" class="ESDigit" />
+              <Panel id="SummaryCountDisplayDigit2" class="ESDigit" />
+            </Panel>
+            <Label class="Label" text="#invokation_combo_counter_title" />
+          </Panel>
+
+          <Panel class="Damage">
+            <Panel id="SummaryDamageTicker" class="DigitContainer">
+              <Panel id="SummaryDamageTickerDigit0" class="ESDigit" />
+              <Panel id="SummaryDamageTickerDigit1" class="ESDigit" />
+              <Panel id="SummaryDamageTickerDigit2" class="ESDigit" />
+              <Panel id="SummaryDamageTickerDigit3" class="ESDigit" />
+              <Panel id="SummaryDamageTickerDigit4" class="ESDigit" />
+            </Panel>
+            <Label class="Label" text="#invokation_combo_counter_damage_label" />
+          </Panel>
+        </Panel>
+      </Panel>
     </Panel>
   </Panel>
 </root>

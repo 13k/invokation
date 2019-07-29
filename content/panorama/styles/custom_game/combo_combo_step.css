@@ -1,8 +1,17 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
 .ComboStep {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  align: center center;
   pre-transform-scale2d: 0;
-  horizontal-align: center;
+  wash-color: #000c;
+  box-shadow: goldColor -2px -2px 4px 4px;
+  background-color: #2d1600;
+  transition-timing-function: ease-in;
+  transition-duration: 0.3s;
+  transition-property: width, height, wash-color;
 }
 
 .ComboStep.Bump {
@@ -14,38 +23,31 @@
   animation-iteration-count: 1;
 }
 
-.StepIcon {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 16px;
-  transition-timing-function: ease-in;
-  transition-duration: 0.3s;
-  transition-property: width, height, wash-color;
-  wash-color: #000c;
-  background-color: #000d;
-  box-shadow: goldColor -2px -2px 4px 4px;
-}
-
-.StepIcon.Orb {
+.ComboStep.Orb {
   width: 40px;
   height: 40px;
 }
 
-.StepIcon.Optional {
+.ComboStep.Optional {
   box-shadow: #666 -2px -2px 4px 4px;
 }
 
-.StepIcon.Active {
+.ComboStep.Active {
   width: 72px;
   height: 72px;
   wash-color: #ffff;
 }
 
-.StepIcon.Error {
+.ComboStep.Error {
   wash-color: #f00e;
 }
 
-.StepIcon DOTAItemImage {
+.StepIcon {
+  width: 100%;
+  height: 100%;
+}
+
+#StepImage {
   vertical-align: center;
 }
 

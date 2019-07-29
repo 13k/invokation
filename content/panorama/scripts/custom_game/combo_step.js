@@ -29,9 +29,9 @@ var ComboStep = CreateComponent({
     this.$button.RemoveAndDeleteChildren();
 
     if (!this.step.required) {
-      this.$button.AddClass("Optional");
+      this.$ctx.AddClass("Optional");
     } else {
-      this.$button.RemoveClass("Optional");
+      this.$ctx.RemoveClass("Optional");
     }
 
     var imageType;

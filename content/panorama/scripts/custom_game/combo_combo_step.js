@@ -18,26 +18,28 @@ var ComboComboStep = Class(ComboStep, {
 
   onStepChange: function() {
     if (this.step.isOrbAbility) {
-      this.$button.AddClass("Orb");
+      this.$ctx.AddClass("Orb");
     } else {
-      this.$button.RemoveClass("Orb");
+      this.$ctx.RemoveClass("Orb");
     }
+
+    this.log("onStepChange() ", this.step.id, " ", this.step.name);
   },
 
   onSetActive: function() {
-    this.$button.AddClass("Active");
+    this.$ctx.AddClass("Active");
   },
 
   onUnsetActive: function() {
-    this.$button.RemoveClass("Active");
+    this.$ctx.RemoveClass("Active");
   },
 
   onSetError: function() {
-    this.$button.AddClass("Error");
+    this.$ctx.AddClass("Error");
   },
 
   onUnsetError: function() {
-    this.$button.RemoveClass("Error");
+    this.$ctx.RemoveClass("Error");
   },
 
   bump: function() {

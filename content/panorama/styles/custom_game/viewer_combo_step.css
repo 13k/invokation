@@ -12,7 +12,7 @@
   box-shadow: goldColor -2px -2px 4px 4px;
 }
 
-.StepIcon.Optional {
+.Optional .StepIcon {
   box-shadow: #666 -2px -2px 4px 4px;
 }
 
