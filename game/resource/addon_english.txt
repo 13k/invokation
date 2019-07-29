@@ -3,8 +3,8 @@
   "Language" "English"
   "Tokens"
   {
-    "game_mode_15" "Invokation"
     "addon_game_name" "Invokation"
+    "game_mode_15" "Invokation"
 
     "npc_invokation_dummy_target" "Dummy"
 
@@ -76,7 +76,48 @@
     "invokation_combo_solo_control_magic_damage5" "Control & Magic Damage 5 - Blast Wall"
     "invokation_combo_solo_control_magic_damage6" "Control & Magic Damage 6 - Strike Wall"
     "invokation_combo_solo_control_magic_damage7" "Control & Magic Damage 7 - Shock Wall"
+
     "invokation_combo_solo_control_physical_damage1" "Control & Physical Damage 1 - Blast Snap"
+
+    "invokation_combo_solo_control_physical_damage2" "Control & Physical Damage 2 - Alacrity Wall Snap"
+    // "invokation_combo_solo_control_physical_damage2__1" "invoker_ice_wall"
+    // "invokation_combo_solo_control_physical_damage2__2" "invoker_alacrity"
+    // "invokation_combo_solo_control_physical_damage2__3" "invoker_cold_snap"
+    // "invokation_combo_solo_control_physical_damage2__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo_solo_control_physical_damage3" "Control & Physical Damage 3 - Alacrity Wall Blast"
+    // "invokation_combo_solo_control_physical_damage3__1" "invoker_ice_wall"
+    // "invokation_combo_solo_control_physical_damage3__2" "invoker_alacrity"
+    // "invokation_combo_solo_control_physical_damage3__3" "invoker_deafening_blast"
+    // "invokation_combo_solo_control_physical_damage3__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo_solo_control_physical_damage4" "Control & Physical Damage 4 - Alacrity Wall Strike"
+    // "invokation_combo_solo_control_physical_damage4__1" "invoker_ice_wall"
+    // "invokation_combo_solo_control_physical_damage4__2" "invoker_alacrity"
+    // "invokation_combo_solo_control_physical_damage4__3" "invoker_sun_strike"
+    // "invokation_combo_solo_control_physical_damage4__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo_solo_control_physical_damage5" "Control & Physical Damage 5 - Alacrity Wall Shock"
+    // "invokation_combo_solo_control_physical_damage5__1" "invoker_ice_wall"
+    // "invokation_combo_solo_control_physical_damage5__2" "invoker_alacrity"
+    // "invokation_combo_solo_control_physical_damage5__3" "invoker_emp"
+    // "invokation_combo_solo_control_physical_damage5__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
 
     // Teamfight
 
@@ -87,11 +128,7 @@
 
     // Late game
 
-    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Double Ball Blast"
-    "invokation_combo_late_control_magic_damage1__description" "<span class='intro-text'>This is Invoker's run-of-the-mill combo with a Refresher.</span>
-                                                                <br><br>The Meteor+Blast, refresh, Meteor+Blast is the most basic refreshed combo. Since it offers a decent amount of damage and movement impairment, it's often used as the &ldquo;bridge&rdquo; of a refreshed combo, connecting the before and after Refresher parts.
-                                                                <br><br>This combo begins with lifting the enemy with Tornado, casting the bridge then ending with a Sun Strike.
-                                                                <br><br>Start the combo invoking Tornado then Meteor."
+    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Classic Refresher Bridge"
     "invokation_combo_late_control_magic_damage1__1" "Lift the enemy and invoke Deafening Blast."
     "invokation_combo_late_control_magic_damage1__2" "Time correctly and cast to hit the enemy when he's about to fall."
     "invokation_combo_late_control_magic_damage1__3" "When Meteor is almost touching the ground, cast it."
@@ -99,11 +136,14 @@
     "invokation_combo_late_control_magic_damage1__5" "Cast immediately."
     "invokation_combo_late_control_magic_damage1__6" "Cast immediately."
     "invokation_combo_late_control_magic_damage1__7" "Invoke and cast immediately."
+    "invokation_combo_late_control_magic_damage1__description" "
+      <span class='intro-text'>This is Invoker's run-of-the-mill combo with a Refresher.</span>
+      <br><br>The Meteor+Blast, refresh, Meteor+Blast is the most popular refresher combo. Since it offers a decent amount of damage and movement impairment, it's often used as the &ldquo;bridge&rdquo; of a refresher combo, connecting the before and after refresher parts.
+      <br><br>This combo begins with lifting the enemy with Tornado, casting the bridge then ending with a Sun Strike.
+      <br><br>Start the combo invoking Tornado then Meteor.
+      "
 
     "invokation_combo_late_control_magic_damage2" "Control & Magic Damage 2 - Double Strike"
-    "invokation_combo_late_control_magic_damage2__description" "<span class='intro-text'>A regular combo that deals huge amounts of damage with double Sun Strike.</span>
-                                                                <br><br>It depends heavily on the enemy not having magic immunity and abuses the Tornado lift time to cast 3 damage dealing spells while the enemy is flying.
-                                                                <br><br>The trick is to invoke Tornado then EMP and as soon as you cast Tornado, immediately invoke Sun Strike then time the casting of both EMP and Sun Strike properly."
     "invokation_combo_late_control_magic_damage2__1" "Lift the enemy and invoke Sun Strike."
     "invokation_combo_late_control_magic_damage2__2" "Cast immediately (EMP's charge time is higher than Tornado lift)"
     "invokation_combo_late_control_magic_damage2__3" "Time correctly and cast."
@@ -113,11 +153,13 @@
     "invokation_combo_late_control_magic_damage2__7" "Cast immediately."
     "invokation_combo_late_control_magic_damage2__8" "Cast immediately."
     "invokation_combo_late_control_magic_damage2__9" "Invoke and cast immediately."
+    "invokation_combo_late_control_magic_damage2__description" "
+      <span class='intro-text'>A regular combo that deals huge amounts of damage with double Sun Strike.</span>
+      <br><br>It depends heavily on the enemy not having magic immunity and abuses the Tornado lift time to cast 3 damage dealing spells while the enemy is flying.
+      <br><br>The trick is to invoke Tornado then EMP and as soon as you cast Tornado, immediately invoke Sun Strike then time the casting of both EMP and Sun Strike properly.
+      "
 
     "invokation_combo_late_control_magic_damage3" "Control & Magic Damage 3 - Double BKB/Hex/Strike"
-    "invokation_combo_late_control_magic_damage3__description" "<span class='intro-text'>A safe combo with magic immunity and hex that deals huge amounts of damage with double Sun Strike.</span>
-                                                                <br><br>The idea is to catch an enemy and instantly disable with hex, so he cannot use magic immunity by himself.
-                                                                <br><br>Perfect flow of the combo should grant a full execution under the effect of BKB, while disabling the enemy."
     "invokation_combo_late_control_magic_damage3__1" "Use as soon as possible to avoid magic immunity. A linkens breaker may be needed before."
     "invokation_combo_late_control_magic_damage3__2" "Lift the enemy."
     "invokation_combo_late_control_magic_damage3__3" "Activate your own magic immunity to avoid being stopped by the enemy's allies."
@@ -129,15 +171,64 @@
     "invokation_combo_late_control_magic_damage3__9" "Invoke and cast immediately. Previous disable should give enough time."
     "invokation_combo_late_control_magic_damage3__10" "First BKB duration should be ending, reactivate."
     "invokation_combo_late_control_magic_damage3__11" "Disable the enemy again."
+    "invokation_combo_late_control_magic_damage3__description" "
+      <span class='intro-text'>A safe combo with magic immunity and hex that deals huge amounts of damage with double Sun Strike.</span>
+      <br><br>The idea is to catch an enemy and instantly disable with hex, so he cannot use magic immunity by himself.
+      <br><br>Perfect flow of the combo should grant a full execution under the effect of BKB, while disabling the enemy.
+      "
+
+    "invokation_combo_late_control_magic_damage4" "Control & Magic Damage 4 - Blink Double BKB/Hex/Strike"
+    // "invokation_combo_late_control_magic_damage4__1" "item_black_king_bar"
+    // "invokation_combo_late_control_magic_damage4__2" "item_blink"
+    // "invokation_combo_late_control_magic_damage4__3" "item_sheepstick"
+    // "invokation_combo_late_control_magic_damage4__4" "invoker_tornado"
+    // "invokation_combo_late_control_magic_damage4__5" "invoker_chaos_meteor"
+    // "invokation_combo_late_control_magic_damage4__6" "invoker_deafening_blast"
+    // "invokation_combo_late_control_magic_damage4__7" "item_refresher"
+    // "invokation_combo_late_control_magic_damage4__8" "item_black_king_bar"
+    // "invokation_combo_late_control_magic_damage4__9" "invoker_chaos_meteor"
+    // "invokation_combo_late_control_magic_damage4__10" "invoker_deafening_blast"
+    // "invokation_combo_late_control_magic_damage4__11" "invoker_sun_strike"
+    // "invokation_combo_late_control_magic_damage4__12" "item_sheepstick"
+    // "invokation_combo_late_control_magic_damage4__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo_late_mixed_damage1" "Control & Mixed Damage 1 - BKB Double Shivas Blast"
+    // "invokation_combo_late_mixed_damage1__1" "invoker_alacrity"
+    // "invokation_combo_late_mixed_damage1__2" "invoker_forge_spirit"
+    // "invokation_combo_late_mixed_damage1__3" "item_black_king_bar"
+    // "invokation_combo_late_mixed_damage1__4" "invoker_tornado"
+    // "invokation_combo_late_mixed_damage1__5" "invoker_emp"
+    // "invokation_combo_late_mixed_damage1__6" "invoker_sun_strike"
+    // "invokation_combo_late_mixed_damage1__7" "invoker_chaos_meteor"
+    // "invokation_combo_late_mixed_damage1__8" "item_shivas_guard"
+    // "invokation_combo_late_mixed_damage1__9" "invoker_deafening_blast"
+    // "invokation_combo_late_mixed_damage1__10" "item_refresher"
+    // "invokation_combo_late_mixed_damage1__11" "item_shivas_guard"
+    // "invokation_combo_late_mixed_damage1__12" "invoker_chaos_meteor"
+    // "invokation_combo_late_mixed_damage1__13" "invoker_deafening_blast"
+    // "invokation_combo_late_mixed_damage1__14" "invoker_emp"
+    // "invokation_combo_late_mixed_damage1__15" "invoker_sun_strike"
+    // "invokation_combo_late_mixed_damage1__16" "invoker_ice_wall"
+    // "invokation_combo_late_mixed_damage1__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_combo_counter_title" "Combo"
     "invokation_combo_counter_damage_label" "Damage"
 
-    "invokation_viewer_description_lorem" "<span class='intro-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                                     <br><br>Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Velit sed ullamcorper morbi tincidunt ornare. Neque convallis a cras semper auctor neque. Facilisi cras fermentum odio eu.
-                                     <br><br>Eleifend donec pretium vulputate sapien nec sagittis. Ac auctor augue mauris augue neque gravida in. Ut tellus elementum sagittis vitae et leo. Metus dictum at tempor commodo ullamcorper. At tempor commodo ullamcorper a."
+    "invokation_viewer_description_lorem" "
+      <span class='intro-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+      <br><br>Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Velit sed ullamcorper morbi tincidunt ornare. Neque convallis a cras semper auctor neque. Facilisi cras fermentum odio eu.
+      <br><br>Eleifend donec pretium vulputate sapien nec sagittis. Ac auctor augue mauris augue neque gravida in. Ut tellus elementum sagittis vitae et leo. Metus dictum at tempor commodo ullamcorper. At tempor commodo ullamcorper a.
+      "
 
     "invokation_viewer_step_description_lorem" "Lorem ipsum dolor sit amet"
   }
