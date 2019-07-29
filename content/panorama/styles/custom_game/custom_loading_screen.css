@@ -14,11 +14,11 @@
 #TitleFX {
   width: 1000px;
   height: 600px;
+  transform: translateX(100px) translateY(100px) translateZ(-40px);
+  opacity: 0;
   transition-timing-function: ease-in-out;
   transition-duration: 0.4s;
   transition-property: opacity;
-  transform: translateX(100px) translateY(100px) translateZ(-40px);
-  opacity: 0;
 }
 
 #TitleFX.SceneLoaded {
@@ -30,28 +30,28 @@
   height: 500px;
   margin-top: 100px;
   margin-left: 100px;
+  background-color: invokationSunGradient;
   animation-name: OrbColors;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  background-color: invokationSunGradient;
 }
 
 .Title {
+  width: 100%;
+  align: center center;
+  text-align: center;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  text-overflow: shrink;
   font-family: titleFont;
   font-size: 80px;
-  width: 100%;
+  color: #000;
+  text-shadow: -8px 8px 6px #333;
   animation-name: TextGlow;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  text-align: center;
-  align: center center;
-  letter-spacing: -2px;
-  text-transform: uppercase;
-  text-overflow: shrink;
-  color: #000;
-  text-shadow: -8px 8px 6px #333;
 }
 
 @keyframes 'OrbColors' {

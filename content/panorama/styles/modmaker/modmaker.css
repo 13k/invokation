@@ -19,10 +19,10 @@
 }
 
 #Title {
-  font-size: 40px;
-  font-weight: bold;
   margin-left: 20px;
   vertical-align: center;
+  font-size: 40px;
+  font-weight: bold;
   color: white;
 }
 
@@ -52,11 +52,11 @@
 }
 
 #SearchButton Label {
-  font-size: 26px;
-  font-weight: bold;
   margin: 0;
   padding: 0;
   align: center center;
+  font-size: 26px;
+  font-weight: bold;
   color: lightblue;
 }
 
@@ -70,9 +70,9 @@
 }
 
 .FileLine {
+  height: 16px;
   font-size: 16px;
   font-weight: thin;
-  height: 16px;
 }
 
 .CategoryRoot {
@@ -82,10 +82,10 @@
 .CategoryBase {
   margin-right: 5px;
   margin-left: 5px;
-  transition: background-color 0.1s ease-in-out 0s;
   border: 1px solid black;
   border-radius: 15px;
   background-color: #1066;
+  transition: background-color 0.1s ease-in-out 0s;
 }
 
 .CategoryBase:hover {
@@ -104,17 +104,17 @@
 }
 
 #PlusMinus {
-  font-size: 32px;
-  font-weight: bold;
   margin-top: -3px;
   margin-right: 15px;
   vertical-align: center;
+  font-size: 32px;
+  font-weight: bold;
   color: gold;
 }
 
 #CategoryName {
-  font-size: 18px;
   vertical-align: center;
+  font-size: 18px;
 }
 
 .CategoryBase:hover #CategoryName {
@@ -139,12 +139,12 @@
 }
 
 #PropertyName {
-  font-size: 18px;
-  font-weight: bold;
   min-width: 500px;
   margin-left: 20px;
   horizontal-align: left;
   vertical-align: center;
+  font-size: 18px;
+  font-weight: bold;
   color: #ccc;
 }
 
@@ -156,8 +156,6 @@
   padding-right: 35px;
   padding-bottom: 0;
   padding-left: 35px;
-  transition-duration: 0.2s;
-  transition-property: background-color, opacity;
   vertical-align: center;
   background-color: gradient(
     linear,
@@ -166,6 +164,8 @@
     from(#434b4b55),
     to(#636f6f55)
   );
+  transition-duration: 0.2s;
+  transition-property: background-color, opacity;
 }
 
 #Github:hover {
@@ -179,19 +179,19 @@
 }
 
 #Github Label {
-  font-size: 14px;
-  font-weight: bold;
   margin: 0;
   padding: 0;
   align: center center;
+  font-size: 14px;
+  font-weight: bold;
   color: lightblue;
 }
 
 #PropertyFunction {
-  font-size: 14px;
   margin-left: 40px;
-  transition: color 0.1s ease-in-out 0s;
+  font-size: 14px;
   color: red;
+  transition: color 0.1s ease-in-out 0s;
 }
 
 #PropertyFunction:hover {
@@ -199,6 +199,6 @@
 }
 
 #PropertyDescription {
-  font-size: 14px;
   margin-left: 40px;
+  font-size: 14px;
 }

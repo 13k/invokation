@@ -15,8 +15,8 @@
 }
 
 .HeroCombo .PanelTitle {
-  font-size: 12px;
   text-align: left;
+  font-size: 12px;
 }
 
 .HeroCombo .InfoContainer {
@@ -27,9 +27,9 @@
   width: 28px;
   height: 28px;
   margin: 3px;
+  vertical-align: center;
   tooltip-position: right;
   tooltip-body-position: 50% 10%;
-  vertical-align: center;
 }
 
 .HeroCombo .InfoIcon {
@@ -54,13 +54,13 @@
 }
 
 .HeroCombo .StanceIcon {
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.2s;
-  transition-property: wash-color;
   wash-color: #888;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+  transition-property: wash-color;
 }
 
 .HeroCombo.stance_offensive .StanceIcon {
@@ -81,13 +81,13 @@
 }
 
 .HeroCombo .HeroLevelLabel {
-  font-size: 14px;
-  font-weight: normal;
   width: 14px;
   margin-top: 3px;
-  text-align: center;
   align: center center;
+  text-align: center;
   text-overflow: shrink;
+  font-size: 14px;
+  font-weight: normal;
   color: #e7d291;
   text-shadow: 0 0 3px 3.7 #ec780e24;
 }

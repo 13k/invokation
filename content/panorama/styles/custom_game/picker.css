@@ -22,10 +22,10 @@
   width: slideoutWidth;
   height: slideoutHeight;
   margin-top: contentTopMargin;
+  align: left top;
   transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
   transition-property: width;
-  align: left top;
 }
 
 #CombosSlideout.DrawerClosed {
@@ -44,10 +44,10 @@
   width: thumbWidth;
   height: thumbHeight;
   vertical-align: center;
+  box-shadow: none;
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
   background-color: pickerThumbGradient;
-  box-shadow: none;
 }
 
 #CombosThumb:hover {
@@ -55,8 +55,8 @@
 }
 
 #CombosThumb .PanelSlideThumbArrow {
-  transform: translateX(-9px);
   horizontal-align: right;
+  transform: translateX(-9px);
   wash-color: #666;
 }
 
