@@ -87,7 +87,7 @@
       "label": "Launch Game",
       "type": "process",
       "command": "${config:dota2.path}\\game\\bin\\win64\\dota2.exe",
-      "args": ["+dota_launch_custom_game", "invokation", "invokation"],
+      "args": ["-dx11", "+dota_launch_custom_game", "invokation", "invokation"],
       "isBackground": true,
       "options": {
         "cwd": "${config:dota2.path}"
@@ -105,8 +105,8 @@
     {
       "label": "Launch Tools",
       "type": "process",
-      "command": "${config:dota2.path}\\game\\bin\\win64\\dota2cfg.exe",
-      "args": ["-addon", "invokation"],
+      "command": "${config:dota2.path}\\game\\bin\\win64\\dota2.exe",
+      "args": ["-tools", "-addon", "invokation", "-dx11", "-1080", "-border"],
       "isBackground": true,
       "options": {
         "cwd": "${config:dota2.path}"
