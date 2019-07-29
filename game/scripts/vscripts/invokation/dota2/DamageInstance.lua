@@ -28,6 +28,12 @@ function M:AttackerName()
   return self.attacker and self.attacker.name
 end
 
+--- Returns the player owner of the attacker unit if it exists.
+-- @treturn CDOTAPlayer|nil Attacker player owner
+function M:AttackerPlayerOwner()
+  return self.attacker and self.attacker:GetPlayerOwner()
+end
+
 --- Returns the inflictor ability name if it exists.
 -- @treturn string|nil Inflictor ability name
 function M:InflictorName()

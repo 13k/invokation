@@ -29,8 +29,8 @@ function M.sendStepError(player, combo, ability)
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STEP_ERROR, player, payload)
 end
 
-function M.sendFinished(player, combo, playerState)
-  local payload = {combo = combo.id, count = combo.count, damage = playerState.damage}
+function M.sendFinished(player, combo)
+  local payload = {combo = combo.id, count = combo.count, damage = combo.damage}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_FINISHED, player, payload)
 end
 

@@ -4,13 +4,26 @@
 local M = require("pl.class")()
 
 local Combo = require("invokation.combos.Combo")
-local COMBOS = require("invokation.const.combos")
 local CombosHero = require("invokation.combos.hero")
 local CombosComm = require("invokation.combos.communication")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
 
 local NET_TABLE_KEY = "combos"
+
+local function loadSpecs()
+  local specs = require("invokation.const.combos")
+
+  for id, spec in pairs(specs) do
+    spec.id = id
+
+    for stepId, step in pairs(spec.sequence) do
+      step.id = stepId
+    end
+  end
+
+  return specs
+end
 
 --- Constructor.
 -- @tparam table options Options table
@@ -62,36 +75,26 @@ end
 function M:Load()
   self:d("Combos:Load() - loading combos")
 
-  self.combos = {}
-  self.combosById = {}
-
-  for id, spec in pairs(COMBOS) do
-    spec.id = id
-
-    for stepId, step in pairs(spec.sequence) do
-      step.id = stepId
-    end
-
-    local combo = Combo(spec)
-    self.combosById[combo.id] = combo
-    table.insert(self.combos, combo)
-  end
-
-  self.netTable:Set(NET_TABLE_KEY, COMBOS)
+  self.specs = loadSpecs()
+  self.netTable:Set(NET_TABLE_KEY, self.specs)
 
   self:d("Combos:Load() - finished loading combos")
 end
 
---- Finds a combo by id.
--- @tparam string id Combo ID
--- @treturn invokation.combos.Combo|nil Combo instance if found, `nil` otherwise
-function M:Find(id)
-  return self.combosById[id]
+function M:createCombo(comboID)
+  local spec = self.specs[comboID]
+
+  if spec == nil then
+    return nil
+  end
+
+  return Combo(spec)
 end
 
 function M:setup(player, combo)
   self:setPlayerState(player, "combo", combo)
-  self:setPlayerState(player, "damage", 0)
+
+  CombosHero.setup(player, combo)
 
   local dummy = self:getPlayerState(player, "dummy")
 
@@ -115,32 +118,37 @@ end
 
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.combos.Combo combo Combo instance
--- @todo implement countdown
--- @todo implement completion timer comparing against ideal time
-function M:Start(player, combo)
-  self:d("Combos:Start()", player:GetPlayerID(), combo.id)
+-- @tparam string comboID Combo ID
+function M:Start(player, comboID)
+  self:d("Combos:Start()", player:GetPlayerID(), comboID)
 
-  if not combo:Reset() then
-    self:errf("Could not reset combo '%s' for player %d", combo.id, player:GetPlayerID())
+  local combo = self:createCombo(comboID)
+
+  if combo == nil then
+    self:errf("Could not find combo %q", comboID)
     return
   end
 
   self:setup(player, combo)
 
-  CombosHero.setup(player, combo)
   CombosSound.onComboStart(player)
   CombosComm.sendStarted(player, combo)
 end
 
 --- Restarts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.combos.Combo combo Combo instance
-function M:Restart(player, combo)
-  self:d("Combos:Restart()", player:GetPlayerID(), combo.id)
+function M:Restart(player)
+  self:d("Combos:Restart()", player:GetPlayerID())
+
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo == nil then
+    self:errf("Player %d has no active combo", player:GetPlayerID())
+    return
+  end
 
   self:teardown(player, combo)
-  self:Start(player, combo)
+  self:Start(player, combo.id)
 end
 
 --- Stops currently active combo for the given player.
@@ -151,6 +159,7 @@ function M:Stop(player)
   local combo = self:getPlayerState(player, "combo")
 
   if combo == nil then
+    self:errf("Player %d has no active combo", player:GetPlayerID())
     return
   end
 
@@ -162,15 +171,20 @@ end
 
 --- Finishes a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.combos.Combo combo Combo instance
-function M:Finish(player, combo)
-  self:d("Combos:Finish()", player:GetPlayerID(), combo.id)
+function M:Finish(player)
+  self:d("Combos:Finish()", player:GetPlayerID())
+
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo == nil then
+    self:errf("Player %d has no active combo", player:GetPlayerID())
+    return
+  end
 
   local hero = player:GetAssignedHero()
 
-  hero:PerformTaunt()
   CombosSound.onComboFinished(player)
-  CombosComm.sendFinished(player, combo, self:playerState(player))
+  CombosComm.sendFinished(player, combo)
 end
 
 --- Starts capturing ability usage for the given player.
@@ -209,7 +223,7 @@ function M:OnAbilityUsed(player, unit, ability)
     CombosComm.sendProgress(player, combo)
 
     if combo:Finish() then
-      self:Finish(player, combo)
+      self:Finish(player)
     end
   elseif not ability:IsInvocationAbility() then
     CombosComm.sendStepError(player, combo, ability)
@@ -218,7 +232,6 @@ end
 
 --- Handles damage instances being dealt to entities.
 -- @tparam invokation.dota2.DamageInstance damage DamageInstance instance
--- @fixme Abilities can still be producing damage instances after the combo has finished
 function M:OnEntityHurt(damage)
   self:d("Combos:OnEntityHurt()")
   self:d("  category:", damage.category)
@@ -227,11 +240,7 @@ function M:OnEntityHurt(damage)
   self:d("  attacker:", damage:AttackerName())
   self:d("  inflictor:", damage:InflictorName())
 
-  if damage.attacker == nil then
-    return
-  end
-
-  local player = damage.attacker:GetPlayerOwner()
+  local player = damage:AttackerPlayerOwner()
 
   if player == nil then
     return
@@ -243,8 +252,7 @@ function M:OnEntityHurt(damage)
     return
   end
 
-  local damageTotal = self:getPlayerState(player, "damage", 0) + damage.amount
-  self:setPlayerState(player, "damage", damageTotal)
+  combo:IncrementDamage(damage.amount)
 end
 
 return M

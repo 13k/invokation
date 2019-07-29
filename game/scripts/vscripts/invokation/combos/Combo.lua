@@ -43,11 +43,13 @@ function M:_init(spec)
 
   self:_createFSM()
   self.count = 0
+  self.damage = 0
 
   -- print("Combo:_init()", self.name)
   -- pp.dump(self)
 end
 
+-- @todo Cache fsms?
 function M:_createFSM()
   self.nextSteps = {}
 
@@ -89,17 +91,6 @@ function M:todot()
   return self.fsm:todot()
 end
 
---- Resets the combo to the initial state if possible.
--- @treturn bool
-function M:Reset()
-  if self.fsm:reset() then
-    self.count = 0
-    return true
-  end
-
-  return false
-end
-
 --- Progresses the combo with the given ability if possible.
 -- @tparam invokation.dota2.Ability ability Ability instance
 -- @treturn bool `true` if combo progressed, `false` otherwise
@@ -130,6 +121,14 @@ end
 -- @treturn array(ComboStep)|nil List of next @{ComboStep} or `nil` if the combo is at the last step
 function M:NextSteps()
   return self.nextSteps[self.fsm.current]
+end
+
+--- Increments the total amount of damage dealt during this combo session.
+-- @tparam int amount Damage amount
+-- @treturn int Accumulated damage amount
+function M:IncrementDamage(amount)
+  self.damage = self.damage + amount
+  return self.damage
 end
 
 return M

@@ -182,13 +182,13 @@ function GameMode:CommandInvokeAbility(_, ability)
   invoker:Invoke(ability)
 end
 
-function GameMode:CommandDumpComboGraph(_, comboName)
-  self:d("CommandDumpComboGraph()", comboName)
+function GameMode:CommandDumpComboGraph(_, comboID)
+  self:d("CommandDumpComboGraph()", comboID)
 
-  local combo = self.combos:Find(comboName)
+  local combo = self.combos:createCombo(comboID)
 
   if combo == nil then
-    self:d("Could not find combo", comboName)
+    self:errf("Could not find combo %q", comboID)
     return
   end
 

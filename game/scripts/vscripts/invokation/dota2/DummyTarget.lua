@@ -41,15 +41,15 @@ function M:Spawn()
   self:Hold()
 end
 
---- Purges the dummy unit.
-function M:Purge()
-  self.entity:Purge(true, true, false, true, true)
-end
+--- Kills the dummy unit.
+function M:Kill()
+  if not self:IsAlive() then
+    return
+  end
 
---- Orders a `move-to-position` action to the dummy unit, with target position
--- being the spawn location.
-function M:MoveToSpawn()
-  self.entity:MoveToPosition(self.spawn:GetAbsOrigin())
+  self.entity:ForceKill(false)
+  self.entity:RemoveSelf()
+  self.entity = nil
 end
 
 --- Reset the dummy unit.
@@ -68,13 +68,6 @@ end
 -- @treturn bool
 function M:IsDead()
   return not self:IsAlive()
-end
-
---- Kills the dummy unit.
-function M:Kill()
-  if self:IsAlive() then
-    return self.entity:ForceKill(false)
-  end
 end
 
 return M

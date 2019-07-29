@@ -7,18 +7,10 @@
 --- Handles combo start events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload
--- @tparam string payload.combo Combo name
+-- @tparam string payload.combo Combo ID
 function GameMode:OnComboStart(player, payload)
   self:d("OnComboStart()", player:GetPlayerID(), payload)
-
-  local combo = self.combos:Find(payload.combo)
-
-  if combo == nil then
-    self:d("  could not find combo", payload.combo)
-    return
-  end
-
-  self.combos:Start(player, combo)
+  self.combos:Start(player, payload.combo)
 end
 
 --- Handles combo stop events.
@@ -32,18 +24,9 @@ end
 --- Handles combo restart events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload
--- @tparam string payload.combo Combo name
 function GameMode:OnComboRestart(player, payload)
   self:d("OnComboRestart()", player:GetPlayerID(), payload)
-
-  local combo = self.combos:Find(payload.combo)
-
-  if combo == nil then
-    self:d("  could not find combo", payload.combo)
-    return
-  end
-
-  self.combos:Restart(player, combo)
+  self.combos:Restart(player)
 end
 
 --- Handles combat log capture start events.
