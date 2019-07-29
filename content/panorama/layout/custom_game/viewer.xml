@@ -14,7 +14,7 @@
         <Label id="Title" html="true" hittest="false" />
 
         <Panel id="ScrollPanel" class="TopBottomFlow">
-          <Label id="Description" text="#invokation_viewer_lorem_ipsum" html="true" hittest="false" />
+          <Label id="Description" html="true" hittest="false" />
 
           <Panel class="Section SequenceSection" hittest="false">
             <Panel class="SectionHeader">

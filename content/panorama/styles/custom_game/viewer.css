@@ -20,15 +20,15 @@
   height: 840px;
   margin-top: 150px;
   margin-left: 790px;
-  transition-duration: 1s;
-  transition-property: opacity;
   horizontal-align: center;
   opacity: 0;
+  transition-duration: 1s;
+  transition-property: opacity;
 }
 
 #Container.Initialize {
-  transition-duration: 0s;
   opacity: 1;
+  transition-duration: 0s;
 }
 
 #InformationBackground {
@@ -46,8 +46,6 @@
 }
 
 #Title {
-  font-size: 21px;
-  font-weight: black;
   width: 555px;
   margin-left: 45px;
   padding: 0 25px;
@@ -55,17 +53,19 @@
   letter-spacing: 2px;
   text-transform: uppercase;
   text-overflow: shrink;
+  font-size: 21px;
+  font-weight: black;
   color: #3c1b18;
   text-shadow: 0 0 5px 1px #000;
 }
 
 #Description {
-  font-size: 18px;
-  font-weight: semi-bold;
-  line-height: 21px;
   width: 100%;
   margin-top: 18px;
   text-align: left;
+  font-size: 18px;
+  font-weight: semi-bold;
+  line-height: 21px;
   color: #3c1b18;
 }
 
@@ -82,6 +82,7 @@
 .Section {
   flow-children: down;
   width: 100%;
+  margin-top: 20px;
 }
 
 .Section .SectionLabel {
@@ -161,13 +162,13 @@
 .PlayButton {
   width: 206px;
   height: 49px;
-  transition-duration: 0.2s;
-  transition-property: background-color;
   opacity: 0.9;
   wash-color: #9992;
+  box-shadow: #27110250 0 0 12px;
   border-top: 1px solid #faa46a;
   background-color: viewerPlayButtonGradient;
-  box-shadow: #27110250 0 0 12px;
+  transition-duration: 0.2s;
+  transition-property: background-color;
 }
 
 .PlayButton:hover {
@@ -179,13 +180,13 @@
 }
 
 .PlayButton .PlayLabel {
-  font-size: 24px;
-  font-weight: bold;
   width: 100%;
-  text-align: center;
   vertical-align: center;
+  text-align: center;
   letter-spacing: 2px;
   text-transform: uppercase;
+  font-size: 24px;
+  font-weight: bold;
   color: #d5d7d7;
 }
 
