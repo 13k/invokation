@@ -10,34 +10,28 @@ abort() {
   exit 1
 }
 
-windows_path() {
-  echo "$1" | \sed -re 's#^/mnt/([a-z])#\1:#' -e 's#/#\\#g'
-}
-
-wsl_path() {
-  echo "$1" | \sed -re 's#^([a-zA-Z]):#/mnt/\L\1\E#' -e 's#\\#/#g'
-}
-
 mklink() {
   local src="$1" dest="$2" src_t dest_t
   local args=()
 
-  src_t="$(windows_path "$src")" || return $?
-  dest_t="$(windows_path "$dest")" || return $?
+  src_t="$(wslpath -w "$src")" || return $?
+  dest_t="$(wslpath -w "$dest")" || return $?
 
   [[ -d "$src" ]] && args=("${args[@]}" "/j")
 
   cmd.exe /c mklink "${args[@]}" "$dest_t" "$src_t"
 }
 
-SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 ROOT_PATH="$(dirname "$SCRIPT_DIR")"
 
 ADDON="invokation"
 ADDON_MAP="invokation"
 
+# All paths below are unix. Convert using `wslpath`.
+
 DOTA2_PATH="${DOTA2_PATH:-"/mnt/f/SteamLibrary/steamapps/common/dota 2 beta"}"
-DOTA2_PATH="$(wsl_path "$DOTA2_PATH")"
+[[ "$DOTA2_PATH" == [[:alpha:]]:[/\\]* ]] && DOTA2_PATH="$(wslpath -u "$DOTA2_PATH")"
 DOTA2_BIN_PATH="$DOTA2_PATH/game/bin/win64/dota2.exe"
 DOTA2_TOOLS_BIN_PATH="$DOTA2_PATH/game/bin/win64/dota2cfg.exe"
 RSRCC_BIN_PATH="$DOTA2_PATH/game/bin/win64/resourcecompiler.exe"
