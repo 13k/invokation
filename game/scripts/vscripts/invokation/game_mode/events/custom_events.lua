@@ -24,9 +24,11 @@ end
 --- Handles combo restart events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload
+-- @tparam[opt=false] bool payload.hardReset Hard reset
 function GameMode:OnComboRestart(player, payload)
   self:d("OnComboRestart()", player:GetPlayerID(), payload)
-  self.combos:Restart(player)
+  local hardReset = payload.hardReset == 1
+  self.combos:Restart(player, {hardReset = hardReset})
 end
 
 --- Handles combat log capture start events.

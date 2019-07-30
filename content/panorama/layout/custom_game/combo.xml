@@ -15,11 +15,15 @@
     </Panel>
 
     <Panel class="Buttons" hittest="false">
-      <Button class="RestartButton PopupButton Blue" onactivate="combo.Restart()">
+      <Button class="ComboButton ButtonBevel" onactivate="combo.Restart()">
         <Label text="#invokation_combo_restart" hittest="false" />
       </Button>
 
-      <Button class="StopButton PopupButton Red" onactivate="combo.Stop()">
+      <Button class="ComboButton ButtonBevel Bronze" onactivate="combo.Restart(true)">
+        <Label text="Reset Hero" hittest="false" />
+      </Button>
+
+      <Button class="ComboButton ButtonBevel Red" onactivate="combo.Stop()">
         <Label text="#invokation_combo_stop" hittest="false" />
       </Button>
     </Panel>

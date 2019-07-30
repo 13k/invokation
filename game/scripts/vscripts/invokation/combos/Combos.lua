@@ -106,8 +106,10 @@ function M:setup(player, combo)
   dummy:Spawn()
 end
 
-function M:teardown(player, _)
+function M:teardown(player, options)
   self:setPlayerState(player, "combo", nil)
+
+  CombosHero.teardown(player, options)
 
   local dummy = self:getPlayerState(player, "dummy")
 
@@ -122,7 +124,13 @@ end
 function M:Start(player, comboID)
   self:d("Combos:Start()", player:GetPlayerID(), comboID)
 
-  local combo = self:createCombo(comboID)
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo ~= nil then
+    self:teardown(player, {hardReset = true})
+  end
+
+  combo = self:createCombo(comboID)
 
   if combo == nil then
     self:errf("Could not find combo %q", comboID)
@@ -137,7 +145,9 @@ end
 
 --- Restarts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
-function M:Restart(player)
+-- @tparam table options Options table
+-- @tparam[opt=false] bool options.hardReset Hard reset
+function M:Restart(player, options)
   self:d("Combos:Restart()", player:GetPlayerID())
 
   local combo = self:getPlayerState(player, "combo")
@@ -147,7 +157,7 @@ function M:Restart(player)
     return
   end
 
-  self:teardown(player, combo)
+  self:teardown(player, options)
   self:Start(player, combo.id)
 end
 
@@ -163,7 +173,7 @@ function M:Stop(player)
     return
   end
 
-  self:teardown(player, combo)
+  self:teardown(player, {hardReset = true})
 
   CombosSound.onComboStop(player)
   CombosComm.sendStopped(player)
@@ -180,8 +190,6 @@ function M:Finish(player)
     self:errf("Player %d has no active combo", player:GetPlayerID())
     return
   end
-
-  local hero = player:GetAssignedHero()
 
   CombosSound.onComboFinished(player)
   CombosComm.sendFinished(player, combo)

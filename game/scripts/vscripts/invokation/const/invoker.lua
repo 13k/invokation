@@ -3,6 +3,18 @@
 
 local M = {}
 
+local UNITS = require("invokation.const.units")
+local HEROES = require("invokation.const.heroes")
+local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
+
+--- Unit name
+-- @field[type=string] UNIT_NAME
+M.UNIT_NAME = UNITS.INVOKER
+
+--- Hero's KeyValues
+-- @table KEY_VALUES
+M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]
+
 --- Quas ability name
 -- @field[type=string] ABILITY_QUAS
 M.ABILITY_QUAS = "invoker_quas"
@@ -51,6 +63,58 @@ M.ABILITY_CHAOS_METEOR = "invoker_chaos_meteor"
 --- Deafening Blast ability name
 -- @field[type=string] ABILITY_DEAFENING_BLAST
 M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
+
+--- Level 10 right talent ability name
+-- @field[type=string] ABILITY_TALENT_1
+
+--- Level 10 left talent ability name
+-- @field[type=string] ABILITY_TALENT_2
+
+--- Level 15 right talent ability name
+-- @field[type=string] ABILITY_TALENT_3
+
+--- Level 15 left talent ability name
+-- @field[type=string] ABILITY_TALENT_4
+
+--- Level 20 right talent ability name
+-- @field[type=string] ABILITY_TALENT_5
+
+--- Level 20 left talent ability name
+-- @field[type=string] ABILITY_TALENT_6
+
+--- Level 25 right talent ability name
+-- @field[type=string] ABILITY_TALENT_7
+
+--- Level 25 left talent ability name
+-- @field[type=string] ABILITY_TALENT_8
+
+-- special_bonus_unique_invoker_10
+-- special_bonus_unique_invoker_6
+-- special_bonus_unique_invoker_1
+-- special_bonus_unique_invoker_9
+-- special_bonus_unique_invoker_4
+-- special_bonus_unique_invoker_5
+-- special_bonus_unique_invoker_2
+-- special_bonus_unique_invoker_3
+
+--- List of talent abilities names.
+-- @table TALENT_ABILITIES
+-- @field[type=string] 1 Level 10 right
+-- @field[type=string] 2 Level 10 left
+-- @field[type=string] 3 Level 15 right
+-- @field[type=string] 4 Level 15 left
+-- @field[type=string] 5 Level 20 right
+-- @field[type=string] 6 Level 20 left
+-- @field[type=string] 7 Level 25 right
+-- @field[type=string] 8 Level 25 left
+M.TALENT_ABILITIES = {}
+
+local heroKV = HeroKeyValues(M.KEY_VALUES)
+for i, abilityName in ipairs(heroKV:Talents()) do
+  local constName = ("ABILITY_TALENT_%d"):format(i)
+  M[constName] = abilityName
+  M.TALENT_ABILITIES[i] = abilityName
+end
 
 --- List of orb abilities names.
 -- @table ORB_ABILITIES

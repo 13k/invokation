@@ -72,7 +72,7 @@ end
 --- An NPC has spawned (including heroes).
 -- @tparam CDOTA_BaseNPC unit Spawned unit
 function GameMode:OnNPCSpawned(unit)
-  self:d("OnNPCSpawned", unit:GetUnitName())
+  self:d("OnNPCSpawned", unit:GetName(), unit:GetClassname(), unit:GetOwner() and unit:GetOwner():GetName())
 end
 
 --- Called once and only once for every player when they spawn into the game

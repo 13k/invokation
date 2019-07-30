@@ -377,13 +377,13 @@ var Combo = CreateComponent({
     this.sendServer(EVENTS.COMBO_STOP);
   },
 
-  sendRestart: function() {
-    this.sendServer(EVENTS.COMBO_RESTART, { combo: this.combo.id });
+  sendRestart: function(isHardReset) {
+    this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
   },
 
-  Restart: function() {
+  Restart: function(isHardReset) {
     this.log("Restart()");
-    this.sendRestart();
+    this.sendRestart(!!isHardReset);
   },
 
   Stop: function() {

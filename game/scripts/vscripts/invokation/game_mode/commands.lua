@@ -113,12 +113,11 @@ end
 -- Use `script_reload` to reload after changes.
 -- @tparam "inv_debug_misc" _ Command name (ignored)
 -- @param[opt] ... varargs
-function GameMode:CommandDebugMisc(_, damage)
-  self:d("CommandDebugMisc()", damage)
+function GameMode:CommandDebugMisc(_, ...)
+  self:d("CommandDebugMisc()", ...)
 
   -- local player = Convars:GetDOTACommandClient()
   -- local hero = player:GetAssignedHero()
-
 end
 
 local function debugAbility(a, simple)

@@ -51,4 +51,30 @@ function M:ReplaceHero(heroName, options)
   return self.hero
 end
 
+--- Remove the player's owned units with given name.
+-- @tparam string unitName Unit name
+-- @treturn int The number of units removed
+function M:RemoveOwnedUnitsByName(unitName)
+  local toRemove = {}
+  local ent = Entities:FindByName(nil, unitName)
+
+  while ent ~= nil do
+    if ent.GetPlayerOwner ~= nil then
+      local owner = ent:GetPlayerOwner()
+
+      if owner:GetPlayerID() == self.id then
+        table.insert(toRemove, ent)
+      end
+    end
+
+    ent = Entities:FindByName(ent, unitName)
+  end
+
+  for _, entToRemove in ipairs(toRemove) do
+    entToRemove:RemoveSelf()
+  end
+
+  return #toRemove
+end
+
 return M
