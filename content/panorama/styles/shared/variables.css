@@ -82,6 +82,7 @@
 
 @define panelTranslucentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2ef7), to(#191e1eff));
 @define panelTransparentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2e80), to(#191e1edd));
+@define panelTranslucentHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(#3f4646f7), to(#191e1eff));
 
 @define pickerThumbGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor), color-stop(0.33, wexTextColor), to(exortTextColor));
 @define pickerThumbHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor&dd), color-stop(0.33, wexTextColor&dd), to(exortTextColor&dd));
@@ -113,6 +114,8 @@
 /******************************************************************************
  * Icons
  ******************************************************************************/
+
+@define loadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
 
 @define dotaPlusCurrencyIcon: url("s2r://panorama/images/dota_plus/currency_icon_png.vtex");
 @define dotaPlusCurrencySmallIcon: url("s2r://panorama/images/dota_plus/currency_icon_small_png.vtex");

@@ -381,6 +381,10 @@ var Combo = CreateComponent({
     this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
   },
 
+  sendRenderViewer: function(combo) {
+    this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
+  },
+
   Restart: function(isHardReset) {
     this.log("Restart()");
     this.sendRestart(!!isHardReset);
@@ -389,6 +393,11 @@ var Combo = CreateComponent({
   Stop: function() {
     this.log("Stop()");
     this.sendStop();
+  },
+
+  ShowDetails: function() {
+    this.log("ShowDetails()");
+    this.sendRenderViewer(this.combo);
   },
 });
 

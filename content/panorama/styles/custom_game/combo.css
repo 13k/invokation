@@ -1,5 +1,9 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/panelstyles.css");
+
+@define sequenceWidth: 150px;
+@define controlsMarginRight: 200px;
 
 .Root {
   visibility: collapse;
@@ -16,10 +20,10 @@
 }
 
 .Combo {
-  width: 200px;
+  width: sequenceWidth;
   height: 100%;
   padding-top: 80px;
-  padding-bottom: 120px;
+  padding-bottom: 20px;
   horizontal-align: right;
   background-color: comboPanelGradient;
 }
@@ -33,18 +37,92 @@
   opacity-mask: softEdgeVScrollMask;
 }
 
-.Buttons {
+.Controls {
   flow-children: right;
-  margin-bottom: 12px;
+  margin-right: controlsMarginRight;
   align: right bottom;
 }
 
-.Buttons .ComboButton {
-  min-width: 130px;
-  margin-right: 12px;
+.Controls .ControlIcon {
+  width: 64px;
+  height: 64px;
+  transition-duration: 0.2s;
+  transition-property: background-color;
 }
 
-.Buttons .ButtonBevel.Red {
+.Controls .ControlIcon:hover {
+  border-right: 1px solid #444b;
+  border-left: 1px solid #444b;
+  background-color: panelTranslucentHoverGradient;
+}
+
+.Controls .IconButton {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  vertical-align: center;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.Controls .IconButton.Activated {
+  sound: "ui_quit_menu_fadeout";
+}
+
+.Controls .InfoIcon {
+  background-size: 30px 30px;
+}
+
+.Controls .FullRefreshIcon {
+  background-image: loadingThrobberRoundIcon;
+  background-size: 28px 28px;
+}
+
+.Controls .FullRefreshIcon.Activated {
+  animation-name: SpinnerRotate;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+
+.Controls .CloseButton {
+  background-size: 34px 34px;
+}
+
+.Controls .ControlIcon .Grey {
+  wash-color: #aaa;
+}
+
+.Controls .ControlIcon .Grey:hover {
+  wash-color: #fff;
+}
+
+.Controls .ControlIcon .Blue {
+  wash-color: #65a9db;
+}
+
+.Controls .ControlIcon .Blue:hover {
+  wash-color: #acc6d8;
+}
+
+.Controls .ControlIcon .Bronze {
+  wash-color: #dca157;
+}
+
+.Controls .ControlIcon .Bronze:hover {
+  wash-color: #dca157;
+}
+
+.Controls .ControlIcon .Red {
+  wash-color: #db6565;
+}
+
+.Controls .ControlIcon .Red:hover {
+  wash-color: #db6565;
+}
+
+/*
+.Controls .ControlIcon.Red {
   border-top: 1px solid #eb807f;
   border-right: 1px solid #945150;
   border-bottom: 1px solid #472727;
@@ -52,7 +130,7 @@
   background-color: gradient(linear, 0% 0%, 0% 100%, from(#75362b), to(#db6565));
 }
 
-.Buttons .ButtonBevel.Red:active {
+.Controls .ControlIcon.Red:active {
   border-top: 1px solid #472727;
   border-right: 1px solid #692721;
   border-bottom: 1px solid #9e5855;
@@ -60,9 +138,10 @@
   background-color: gradient(linear, 0% 0%, 0% 100%, from(#db6565), to(#75362b));
 }
 
-.Buttons .ButtonBevel.Red:enabled:hover {
+.Controls .ControlIcon.Red:enabled:hover {
   background-color: gradient(linear, 0% 0%, 0% 100%, from(#75362b), to(#f5a39d));
 }
+*/
 
 /******************************************************************************
  * Score (shamelessly rippped from ES arcana)

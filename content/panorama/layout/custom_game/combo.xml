@@ -14,18 +14,22 @@
       <Panel id="Sequence" hittest="false" />
     </Panel>
 
-    <Panel class="Buttons" hittest="false">
-      <Button class="ComboButton ButtonBevel" onactivate="combo.Restart()">
-        <Label text="#invokation_combo_restart" hittest="false" />
-      </Button>
+    <Panel class="Controls TranslucentPanel" hittest="false">
+      <Panel class="ControlIcon">
+        <Button class="InfoIcon IconButton Grey" onactivate="combo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
 
-      <Button class="ComboButton ButtonBevel Bronze" onactivate="combo.Restart(true)">
-        <Label text="Reset Hero" hittest="false" />
-      </Button>
+      <Panel class="ControlIcon">
+        <Button class="RefreshButton IconButton Blue" onactivate="combo.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
 
-      <Button class="ComboButton ButtonBevel Red" onactivate="combo.Stop()">
-        <Label text="#invokation_combo_stop" hittest="false" />
-      </Button>
+      <Panel class="ControlIcon">
+        <Button class="FullRefreshIcon IconButton Bronze" onactivate="combo.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ControlIcon">
+        <Button class="CloseButton IconButton Red" onactivate="combo.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
     </Panel>
 
     <!-- Score (shamelessly rippped from ES arcana) -->

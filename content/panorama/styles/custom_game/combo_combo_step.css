@@ -7,6 +7,7 @@
   align: center center;
   pre-transform-scale2d: 0;
   opacity-mask: softEdgeBoxMask;
+  wash-color: #666e;
   border: 3px solid goldColor;
   background-color: #241200;
   transition-timing-function: ease-in-out;

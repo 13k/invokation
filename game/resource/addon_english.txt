@@ -21,6 +21,7 @@
 
     "invokation_combo_play" "Play"
     "invokation_combo_restart" "Restart"
+    "invokation_combo_full_restart" "Reset hero"
     "invokation_combo_stop" "Stop"
 
     "invokation_combo_tooltip_details" "Details"
