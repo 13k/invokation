@@ -35,6 +35,7 @@ var ComboComboStep = Class(ComboStep, {
   },
 
   onSetError: function() {
+    this.$ctx.RemoveClass("Error");
     this.$ctx.AddClass("Error");
   },
 

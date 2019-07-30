@@ -6,21 +6,23 @@
   margin-bottom: 16px;
   align: center center;
   pre-transform-scale2d: 0;
-  wash-color: #000c;
-  box-shadow: goldColor -2px -2px 4px 4px;
-  background-color: #2d1600;
-  transition-timing-function: ease-in;
+  opacity-mask: softEdgeBoxMask;
+  border: 3px solid goldColor;
+  background-color: #241200;
+  transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
-  transition-property: width, height, wash-color;
+  transition-property: width, height, wash-color, opacity, pre-transform-scale2d;
+  animation-duration: 0.31s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
 }
 
 .ComboStep.Bump {
   pre-transform-scale2d: 1;
+  transition-delay: 0s;
+  transition-duration: 0.175s, 0.12s;
   animation-name: ComboStepBump;
-  animation-duration: 0.25s;
-  animation-timing-function: ease-in;
   animation-delay: 0s;
-  animation-iteration-count: 1;
 }
 
 .ComboStep.Orb {
@@ -29,7 +31,7 @@
 }
 
 .ComboStep.Optional {
-  box-shadow: #666 -2px -2px 4px 4px;
+  border: 3px solid #666;
 }
 
 .ComboStep.Active {
@@ -42,7 +44,7 @@
   wash-color: #f00e;
 }
 
-.StepIcon {
+#StepIconButton {
   width: 100%;
   height: 100%;
 }
@@ -54,13 +56,16 @@
 @keyframes 'ComboStepBump' {
   0% {
     pre-transform-scale2d: 0;
+    opacity: 0;
   }
 
   50% {
     pre-transform-scale2d: 1.25;
+    opacity: 1;
   }
 
   100% {
     pre-transform-scale2d: 1;
+    opacity: 1;
   }
 }
