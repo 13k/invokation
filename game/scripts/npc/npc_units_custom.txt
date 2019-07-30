@@ -6,13 +6,14 @@
   {
     // General
     //----------------------------------------------------------------
-    "BaseClass" "npc_dota_creep_neutral" // Class of entity of link to.
+    "BaseClass" "npc_dota_hero_wisp" // Class of entity of link to.
     "Model" "models/props_gameplay/chicken.vmdl" // Model.
     "SoundSet" "" // Name of sound set.
-    "Level" "1000"
-    "ModelScale" "1.5"
-    // "ConsideredHero" "1"
-    "IsNeutralUnitType" "1"
+    "Level" "25"
+    "ModelScale" "1.25"
+    "ConsideredHero" "1"
+    "IsNeutralUnitType" "0"
+    "IsAncient" "0"
 
     // Abilities
     //----------------------------------------------------------------
@@ -35,15 +36,15 @@
 
     // Armor
     //----------------------------------------------------------------
-    "ArmorPhysical" "0" // Physical protection.
+    "ArmorPhysical" "3" // Physical protection.
     "MagicalResistance" "25" // Magical protection.
 
     // Status
     //----------------------------------------------------------------
     "StatusHealth" "5000" // Base health.
-    "StatusHealthRegen" "1000" // Health regeneration rate.
-    "StatusMana" "0" // Base mana.
-    "StatusManaRegen" "0" // Mana regeneration rate.
+    "StatusHealthRegen" "500" // Health regeneration rate.
+    "StatusMana" "5000" // Base mana.
+    "StatusManaRegen" "500" // Mana regeneration rate.
 
     // Attributes
     //----------------------------------------------------------------
@@ -73,7 +74,7 @@
     "TeamName" "DOTA_TEAM_NEUTRALS" // Team name.
     "CombatClassAttack" "DOTA_COMBAT_CLASS_ATTACK_HERO"
     "CombatClassDefend" "DOTA_COMBAT_CLASS_DEFEND_HERO"
-    "UnitRelationshipClass" "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
+    "UnitRelationshipClass" "DOTA_NPC_UNIT_RELATIONSHIP_TYPE_HERO"
 
     // Vision
     //----------------------------------------------------------------
