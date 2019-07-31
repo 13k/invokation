@@ -49,10 +49,7 @@ function GameMode:_OnConnectFull(payload)
 
   local player = PlayerResource:GetPlayer(payload.PlayerID)
 
-  self.users = self.users or {}
   self.users[payload.userid] = player
-
-  self.players = self.players or {}
   self.players[player:GetPlayerID()] = player
 
   GameMode._reentrantCheck = true

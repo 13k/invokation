@@ -45,6 +45,7 @@ function M:_init(options)
   self.netTable = options.netTable
   self.combos = {}
   self.players = {}
+  self:load()
 end
 
 function M:d(...)
@@ -57,6 +58,12 @@ end
 
 function M:errf(...)
   return self.logger:Errorf(...)
+end
+
+function M:load()
+  self:d("loading combos")
+  self.specs = loadSpecs()
+  self.netTable:Set(NET_TABLE_KEY, self.specs)
 end
 
 function M:playerState(player)
@@ -115,18 +122,6 @@ function M:teardown(player, options)
   if dummy ~= nil then
     dummy:Kill()
   end
-end
-
---- Loads combo definitions.
---
--- It should be called in the `Precache()` function.
-function M:Load()
-  self:d("Combos:Load() - loading combos")
-
-  self.specs = loadSpecs()
-  self.netTable:Set(NET_TABLE_KEY, self.specs)
-
-  self:d("Combos:Load() - finished loading combos")
 end
 
 --- Starts a combo for the given player.
@@ -229,7 +224,6 @@ function M:OnAbilityUsed(player, unit, ability)
   self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
 
   if isIgnoredAbility(ability) then
-    self:d("  ignored")
     return
   end
 

@@ -45,6 +45,8 @@ function GameMode:_init()
   self.logger = Logger(IsInToolsMode() and Logger.DEBUG or Logger.INFO, "invokation")
   self.netTable = NetTable(NET_TABLE_NAME)
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
+  self.users = {}
+  self.players = {}
 end
 
 function GameMode:d(...)
@@ -105,8 +107,6 @@ end
 -- This function should generally only be used if @{Precache} is not working.
 function GameMode:PostLoadPrecache()
   self:d("Performing Post-Load precache")
-
-  self.combos:Load()
 end
 
 return GameMode

@@ -55,7 +55,7 @@ function GameMode:registerListeners()
 end
 
 function GameMode:registerCustomListeners()
-  CustomEvents.Subscribe(CustomEvents.EVENT_COMBOS_RELOAD, lfn.bindbyname(self.combos, "Load"))
+  CustomEvents.Subscribe(CustomEvents.EVENT_COMBOS_RELOAD, lfn.bindbyname(self.combos, "load"))
   CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_START, lfn.bindbyname(self, "OnComboStart"))
   CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_STOP, lfn.bindbyname(self, "OnComboStop"))
   CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_RESTART, lfn.bindbyname(self, "OnComboRestart"))
