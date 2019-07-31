@@ -23,6 +23,8 @@
     "invokation_combo_restart" "Restart"
     "invokation_combo_full_restart" "Reset hero"
     "invokation_combo_stop" "Stop"
+    "invokation_combo_splash" "Get ready!"
+    "invokation_combo_splash_disclaimer" "Combo starts on first spell casted"
 
     "invokation_combo_tooltip_details" "Details"
     "invokation_combo_tooltip_specialty" "Specialty: {s:specialty}"

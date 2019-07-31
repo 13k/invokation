@@ -14,6 +14,13 @@
       <Panel id="Sequence" hittest="false" />
     </Panel>
 
+    <Panel id="Splash" hittest="false" hittestchildren="false">
+      <Panel class="Box">
+        <Label text="#invokation_combo_splash" class="Title" />
+        <Label text="#invokation_combo_splash_disclaimer" class="Disclaimer" />
+      </Panel>
+    </Panel>
+
     <Panel class="Controls TranslucentPanel" hittest="false">
       <Panel class="ControlIcon">
         <Button class="InfoIcon IconButton Grey" onactivate="combo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />

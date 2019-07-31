@@ -56,6 +56,7 @@ var Combo = CreateComponent({
 
   bindElements: function() {
     this.$sequence = $("#Sequence");
+    this.$splash = $("#Splash");
     this.$score = $("#Score");
     this.$counterTicker = $("#CounterTicker");
     this.$summaryCountDisplay = $("#SummaryCountDisplay");
@@ -105,14 +106,7 @@ var Combo = CreateComponent({
   onComboProgress: function(payload) {
     this.log("onComboProgress() - ", payload);
 
-    var nextSteps = LuaListTableToArray(payload.next);
-
-    this.log("onComboProgress() - next: ", nextSteps);
-
-    this.clearFailedStepPanels();
-    this.deactivateStepPanels();
-    this.activateStepPanels(nextSteps);
-    this.updateCounter(payload.count || 0);
+    this.progress(payload);
   },
 
   onComboStepError: function(payload) {
@@ -343,11 +337,20 @@ var Combo = CreateComponent({
 
   hide: function() {
     this.log("hide()");
-    this.hideCounterRoot();
+    this.hideSplash();
+    this.hideScore();
     this.$ctx.RemoveClass("Open");
   },
 
-  hideCounterRoot: function() {
+  showSplash: function() {
+    this.$splash.AddClass("Show");
+  },
+
+  hideSplash: function() {
+    this.$splash.RemoveClass("Show");
+  },
+
+  hideScore: function() {
     this.$score.RemoveClass("ShowCounter");
     this.$score.RemoveClass("ShowSummary");
   },
@@ -358,10 +361,12 @@ var Combo = CreateComponent({
 
     var seq = new RunSequentialActions();
 
-    seq.actions.push(new RunFunctionAction(this.hideCounterRoot.bind(this)));
+    seq.actions.push(new RunFunctionAction(this.hideScore.bind(this)));
     seq.actions.push(new WaitAction(START_DELAY));
     seq.actions.push(new RunFunctionAction(this.show.bind(this)));
     seq.actions.push(new RunFunctionAction(this.renderSequence.bind(this)));
+    seq.actions.push(new WaitAction(0.5));
+    seq.actions.push(new RunFunctionAction(this.showSplash.bind(this)));
     seq.actions.push(new RunFunctionAction(this.onComboProgress.bind(this), payload));
 
     return RunSingleAction(seq);
@@ -371,6 +376,20 @@ var Combo = CreateComponent({
     this.log("stop()");
     this.combo = null;
     this.hide();
+  },
+
+  progress: function(payload) {
+    var nextSteps = LuaListTableToArray(payload.next);
+    var count = payload.count || 0;
+
+    if (count > 0) {
+      this.hideSplash();
+    }
+
+    this.clearFailedStepPanels();
+    this.deactivateStepPanels();
+    this.activateStepPanels(nextSteps);
+    this.updateCounter(count);
   },
 
   sendStop: function() {

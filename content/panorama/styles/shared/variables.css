@@ -174,3 +174,4 @@
 @define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
 @define softEdgeVScrollMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_psd.vtex");
 @define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
+@define brushHorizontalMask: url("s2r://panorama/images/masks/brush_horizontal_psd.vtex");

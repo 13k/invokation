@@ -37,6 +37,60 @@
   opacity-mask: softEdgeVScrollMask;
 }
 
+#Splash {
+  visibility: collapse;
+  overflow: clip clip;
+  flow-children: right;
+  width: 0;
+  max-width: 0;
+  height: 200px;
+  margin-top: 200px;
+  margin-left: 100px;
+  align: left top;
+  transition-timing-function: ease-out;
+  transition-duration: 0.15s;
+  transition-property: max-width, width;
+}
+
+#Splash.Show {
+  visibility: visible;
+  width: 800px;
+  max-width: 800px;
+}
+
+#Splash .Box {
+  flow-children: down;
+  min-width: 800px;
+  height: 100%;
+  opacity-mask: brushHorizontalMask;
+  background-color: #000000ef;
+}
+
+#Splash .Title {
+  width: 100%;
+  margin-top: 70px;
+  margin-left: -50px;
+  text-align: center;
+  letter-spacing: 20px;
+  text-transform: uppercase;
+  text-overflow: clip;
+  font-size: 48px;
+  font-weight: black;
+  font-style: italic;
+  color: #bd42cf;
+  text-shadow: 3px 3px 6px #035c68;
+}
+
+#Splash .Disclaimer {
+  margin-top: 10px;
+  margin-left: 280px;
+  horizontal-align: left;
+  text-align: left;
+  text-transform: lowercase;
+  color: #999;
+  text-shadow: 1px 1px 2px #000c;
+}
+
 .Controls {
   flow-children: right;
   margin-right: controlsMarginRight;
@@ -120,28 +174,6 @@
 .Controls .ControlIcon .Red:hover {
   wash-color: #db6565;
 }
-
-/*
-.Controls .ControlIcon.Red {
-  border-top: 1px solid #eb807f;
-  border-right: 1px solid #945150;
-  border-bottom: 1px solid #472727;
-  border-left: 1px solid #945150;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#75362b), to(#db6565));
-}
-
-.Controls .ControlIcon.Red:active {
-  border-top: 1px solid #472727;
-  border-right: 1px solid #692721;
-  border-bottom: 1px solid #9e5855;
-  border-left: 1px solid #692721;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#db6565), to(#75362b));
-}
-
-.Controls .ControlIcon.Red:enabled:hover {
-  background-color: gradient(linear, 0% 0%, 0% 100%, from(#75362b), to(#f5a39d));
-}
-*/
 
 /******************************************************************************
  * Score (shamelessly rippped from ES arcana)
