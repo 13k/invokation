@@ -8,6 +8,7 @@ local CombosHero = require("invokation.combos.hero")
 local CombosComm = require("invokation.combos.communication")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
+local ABILITY_LIST = require("invokation.const.ability_list")
 
 local NET_TABLE_KEY = "combos"
 
@@ -23,6 +24,10 @@ local function loadSpecs()
   end
 
   return specs
+end
+
+local function isIgnoredAbility(ability)
+  return ABILITY_LIST[ability.name] == nil and false or not ABILITY_LIST[ability.name]
 end
 
 --- Constructor.
@@ -69,18 +74,6 @@ function M:getPlayerState(player, key, default)
   return value == nil and default or value
 end
 
---- Loads combo definitions.
---
--- It should be called in the `Precache()` function.
-function M:Load()
-  self:d("Combos:Load() - loading combos")
-
-  self.specs = loadSpecs()
-  self.netTable:Set(NET_TABLE_KEY, self.specs)
-
-  self:d("Combos:Load() - finished loading combos")
-end
-
 function M:createCombo(comboID)
   local spec = self.specs[comboID]
 
@@ -116,6 +109,18 @@ function M:teardown(player, options)
   if dummy ~= nil then
     dummy:Kill()
   end
+end
+
+--- Loads combo definitions.
+--
+-- It should be called in the `Precache()` function.
+function M:Load()
+  self:d("Combos:Load() - loading combos")
+
+  self.specs = loadSpecs()
+  self.netTable:Set(NET_TABLE_KEY, self.specs)
+
+  self:d("Combos:Load() - finished loading combos")
 end
 
 --- Starts a combo for the given player.
@@ -216,6 +221,10 @@ end
 -- @todo Implement wait/delay steps
 function M:OnAbilityUsed(player, unit, ability)
   self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
+
+  if isIgnoredAbility(ability) then
+    return
+  end
 
   if self:getPlayerState(player, "capturing") then
     CombosComm.sendAbilityUsed(player, ability)

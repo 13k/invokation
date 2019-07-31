@@ -1,7 +1,11 @@
+--- Combo specifications.
+-- @module invokation.const.combos
+
 local M = {}
 
 -------------------------------------------------------------------------------
 -- Laning Phase
+-- @section laning_phase
 
 M.invokation_combo_lane_anti_gank1 = {
   specialty = "qw",
@@ -155,6 +159,7 @@ M.invokation_combo_lane_harass_forge_spirit2 = {
 
 -------------------------------------------------------------------------------
 -- Ganking / Solo Pick
+-- @section ganking_solo_pick
 
 M.invokation_combo_solo_control_magic_damage1 = {
   specialty = "qe",
@@ -507,6 +512,7 @@ M.invokation_combo_solo_control_physical_damage5 = {
 
 -------------------------------------------------------------------------------
 -- Teamfight
+-- @section teamfight
 
 M.invokation_combo_tf_control_magic_damage1 = {
   specialty = "qw",
@@ -670,6 +676,7 @@ M.invokation_combo_tf_control_physical_damage1 = {
 
 -------------------------------------------------------------------------------
 -- Late Game
+-- @section late_game
 
 M.invokation_combo_late_control_magic_damage1 = {
   specialty = "qe",
