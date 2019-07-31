@@ -29,6 +29,7 @@ function M.teardown(player, options)
   local unit = Unit(player.hero)
 
   unit:EndItemCooldowns()
+  unit:EndAbilityCooldowns()
 
   for _, unitName in pairs(UNITS.INVOKER_SPAWNED) do
     player:RemoveOwnedUnitsByName(unitName)
