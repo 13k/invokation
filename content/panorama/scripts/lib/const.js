@@ -16,6 +16,4 @@
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_EXORT] = true;
 
   C.Const = module;
-
-  $.Msg("[const.js] init -- ", C.Const);
 })(GameUI.CustomUIConfig());

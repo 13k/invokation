@@ -1,14 +1,14 @@
 --- Precache constants.
 -- @module invokation.const.precache
 
-local Units = require("invokation.const.units")
-
 local M = {}
+
+local UNITS = require("invokation.const.units")
 
 --- Precached units.
 M.UNITS = {
-  Units.INVOKER,
-  Units.DUMMY_TARGET,
+  UNITS.INVOKER,
+  UNITS.DUMMY_TARGET,
 }
 
 --- Precached resources.

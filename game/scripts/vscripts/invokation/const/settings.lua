@@ -1,7 +1,7 @@
 --- Game settings.
 -- @module invokation.const.settings
 
-local Units = require("invokation.const.units")
+local UNITS = require("invokation.const.units")
 
 local M = {}
 
@@ -130,7 +130,7 @@ M.DISABLE_ANNOUNCER = true
 --- What hero should we force all players to spawn as? (e.g. `"npc_dota_hero_axe"`).
 --
 -- Use `nil` to allow players to pick their own hero.
-M.FORCE_PICKED_HERO = Units.INVOKER
+M.FORCE_PICKED_HERO = UNITS.INVOKER
 
 --- What time should we use for a fixed respawn timer?
 --

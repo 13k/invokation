@@ -3,11 +3,11 @@
 
 local M = {}
 
-local Names = require("invokation.const.units")
+local NAMES = require("invokation.const.units")
 local tablex = require("pl.tablex")
 local types = require("pl.types")
 
-tablex.update(M, Names)
+tablex.update(M, NAMES)
 
 --- Creates an unit by name.
 -- @tparam string name Unit name

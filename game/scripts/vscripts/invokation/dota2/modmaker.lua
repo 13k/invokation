@@ -3,8 +3,7 @@ ModMaker Library by BMD.
 
 ### Installation
 
-- `require` this file inside your code in order to make the ModMaker API
-  available in game
+- `require` this module and call @{Start}.
 - Ensure that you have the `modmaker/modmaker.xml`,
   `modmaker/modmaker_api_category.xml`, and
   `modmaker/modmaker_api_property.xml` in your panorama content layout
@@ -40,6 +39,7 @@ Original code: [https://github.com/bmddota/barebones](https://github.com/bmddota
 @license Apache License 2.0
 @copyright bmddota
 ]]
+
 local M = {_VERSION = "0.80"}
 
 local function GetAPI(t, sub, done)
@@ -127,7 +127,8 @@ function M.buildAPI()
   end
 end
 
-function M.start()
+--- Initializes ModMaker.
+function M.Start()
   M.api = {__GLOBAL__ = {}}
   M.initialized = true
 
@@ -137,11 +138,8 @@ function M.start()
     "Show the ModMaker lua API for a searchable listing of the server lua vscript.",
     FCVAR_CHEAT
   )
-  CustomGameEventManager:RegisterListener("ModMaker_OpenGithub", Dynamic_Wrap(M, "openGithub"))
-end
 
-if not M.initialized and IsInToolsMode() then
-  M.start()
+  CustomGameEventManager:RegisterListener("ModMaker_OpenGithub", Dynamic_Wrap(M, "openGithub"))
 end
 
 return M

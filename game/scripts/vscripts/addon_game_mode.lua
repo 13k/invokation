@@ -1,12 +1,12 @@
 require("invokation.lang.stub")
 
 local GameMode = require("invokation.GameMode")
-local gameMode = GameMode()
 
 function Precache(context)
-  gameMode:Precache(context)
+  GameMode.Precache(context)
 end
 
 function Activate()
-  gameMode:Activate()
+  GameRules.Invokation = GameMode()
+  GameRules.Invokation:Activate()
 end

@@ -48,6 +48,11 @@
   };
 
   module.prototype._setCombos = function(value) {
+    if (!value) {
+      this.log("WARN: tried to set combos to an undefined value");
+      return;
+    }
+
     this.combos = value;
     this._onCombosChange();
   };

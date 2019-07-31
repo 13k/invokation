@@ -5,12 +5,12 @@ local M = require("pl.class")()
 
 local types = require("pl.types")
 local tablex = require("pl.tablex")
-local Invoker = require("invokation.const.invoker")
+local INVOKER = require("invokation.const.invoker")
 local delegation = require("invokation.lang.delegation")
 
 local ORB_ABILITIES = tablex.pairmap(
   function(_, ability) return true, ability end,
-  Invoker.ORB_ABILITIES
+  INVOKER.ORB_ABILITIES
 )
 
 local DELEGATES = {
@@ -36,7 +36,7 @@ end
 --- Checks if this ability is an Invoker "invocation" ability (quas, wex, exort or invoke).
 -- @treturn bool `true` if it's an invocation ability, `false` otherwise
 function M:IsInvocationAbility()
-  return self:IsOrbAbility() or self.name == Invoker.ABILITY_INVOKE
+  return self:IsOrbAbility() or self.name == INVOKER.ABILITY_INVOKE
 end
 
 return M

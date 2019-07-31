@@ -4,9 +4,9 @@
 local M = {}
 
 local tablex = require("pl.tablex")
-local events = require("invokation.const.custom_events")
+local EVENTS = require("invokation.const.custom_events")
 
-tablex.update(M, events)
+tablex.update(M, EVENTS)
 
 local function createHandler(callback)
   return function(playerEntIdx, ...)

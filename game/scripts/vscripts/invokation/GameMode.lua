@@ -5,10 +5,6 @@ if _G.GameMode == nil then
   _G.GameMode = require("pl.class")()
 end
 
-if IsInToolsMode() then
-  require("invokation.dota2.modmaker")
-end
-
 require("invokation.game_mode.game_rules")
 require("invokation.game_mode.game_mode")
 require("invokation.game_mode.events")
@@ -20,12 +16,29 @@ local Logger = require("invokation.Logger")
 local Timers = require("invokation.dota2.timers")
 local lrandom = require("invokation.lang.random")
 local NetTable = require("invokation.dota2.NetTable")
-local Precache = require("invokation.const.precache")
+local PRECACHE = require("invokation.const.precache")
 
 local NET_TABLE_NAME = "invokation"
 
 GameMode.META = require("invokation.const.metadata")
 GameMode._VERSION = GameMode.META.version
+
+--- Precaches resources/units/items/abilities that will be needed for sure in
+-- your game and that will not be precached by hero selection.
+--
+-- When a hero is selected from the hero selection screen, the game will
+-- precache that hero's assets, any equipped cosmetics, and perform the
+-- data-driven precaching defined in that hero's `precache{}` block, as well as
+-- the `precache{}` block for any equipped abilities.
+function GameMode.Precache(context)
+  for _, name in ipairs(PRECACHE.UNITS) do
+    PrecacheUnitByNameSync(name, context)
+  end
+
+  for path, resType in pairs(PRECACHE.RESOURCES) do
+    PrecacheResource(resType, path, context)
+  end
+end
 
 --- Constructor.
 function GameMode:_init()
@@ -42,27 +55,6 @@ function GameMode:err(...)
   return self.logger:Error(...)
 end
 
---- Precaches resources/units/items/abilities that will be needed for sure in
--- your game and that will not be precached by hero selection.
---
--- When a hero is selected from the hero selection screen, the game will
--- precache that hero's assets, any equipped cosmetics, and perform the
--- data-driven precaching defined in that hero's `precache{}` block, as well as
--- the `precache{}` block for any equipped abilities.
-function GameMode:Precache(context)
-  self:d("Performing pre-load precache")
-
-  for _, name in ipairs(Precache.UNITS) do
-    PrecacheUnitByNameSync(name, context)
-  end
-
-  for path, resType in pairs(Precache.RESOURCES) do
-    PrecacheResource(resType, path, context)
-  end
-
-  self.combos:Load()
-end
-
 --- Entry-point for the game initialization.
 function GameMode:Activate()
   if GameMode._reentrantCheck then
@@ -71,12 +63,7 @@ function GameMode:Activate()
 
   self:d("Loading GameMode...")
 
-  Timers:Start()
-  lrandom.randomseed()
-
-  self.seenWaitForPlayers = false
-  self.users = {}
-
+  self:setupModules()
   self:setupGameRules()
   self:setupGameMode()
   self:registerListeners()
@@ -85,6 +72,19 @@ function GameMode:Activate()
   self:registerConVars()
 
   self:d("Done loading GameMode!")
+end
+
+function GameMode:setupModules()
+  Timers:Start()
+  self:d("  setup Timers")
+  lrandom.randomseed()
+  self:d("  setup random")
+
+  if IsInToolsMode() then
+    local ModMaker = require("invokation.dota2.modmaker")
+    ModMaker.Start()
+    self:d("  setup ModMaker")
+  end
 end
 
 --- Used to set up async precache calls at the beginning of the gameplay.
@@ -105,6 +105,8 @@ end
 -- This function should generally only be used if @{Precache} is not working.
 function GameMode:PostLoadPrecache()
   self:d("Performing Post-Load precache")
+
+  self.combos:Load()
 end
 
 return GameMode

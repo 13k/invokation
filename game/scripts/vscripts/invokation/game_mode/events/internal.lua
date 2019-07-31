@@ -4,7 +4,7 @@
 --- Internal Game Events Listeners
 -- @section internal_game_events
 
-local Settings = require("invokation.const.settings")
+local S = require("invokation.const.settings")
 
 --- Called when the overall game state has changed.
 -- @tparam table payload
@@ -19,16 +19,14 @@ function GameMode:_OnGameRulesStateChange(payload)
   self:OnGameRulesStateChange(payload)
   GameMode._reentrantCheck = false
 
-  if state == DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
-    self.seenWaitForPlayers = true
-  elseif state == DOTA_GAMERULES_STATE_HERO_SELECTION then
+  if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
     self:PostLoadPrecache()
     self:OnAllPlayersLoaded()
 
-    if Settings.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS then
+    if S.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS then
       for i = 0, 9 do
         if PlayerResource:IsValidPlayer(i) then
-          local color = Settings.TEAM_COLORS[PlayerResource:GetTeam(i)]
+          local color = S.TEAM_COLORS[PlayerResource:GetTeam(i)]
           PlayerResource:SetCustomPlayerColor(i, color[1], color[2], color[3])
         end
       end
@@ -114,15 +112,15 @@ function GameMode:_OnEntityKilled(payload)
   end
 
   if killed:IsRealHero() then
-    if Settings.END_GAME_ON_KILLS and attacker ~= nil then
+    if S.END_GAME_ON_KILLS and attacker ~= nil then
       local attackerTeam = attacker:GetTeam()
-      if GetTeamHeroKills(attackerTeam) >= Settings.KILLS_TO_END_GAME_FOR_TEAM then
+      if GetTeamHeroKills(attackerTeam) >= S.KILLS_TO_END_GAME_FOR_TEAM then
         GameRules:SetSafeToLeave(true)
         GameRules:SetGameWinner(attackerTeam)
       end
     end
 
-    if Settings.SHOW_KILLS_ON_TOPBAR then
+    if S.SHOW_KILLS_ON_TOPBAR then
       GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_BADGUYS, GetTeamHeroKills(DOTA_TEAM_BADGUYS))
       GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_GOODGUYS, GetTeamHeroKills(DOTA_TEAM_GOODGUYS))
     end
