@@ -33,17 +33,15 @@
     return 0;
   };
 
-  var ORB_ABILITIES = {
-    invoker_quas: true,
-    invoker_wex: true,
-    invoker_exort: true,
-  };
-
   module.IsOrbAbility = function(abilityName) {
-    return abilityName in ORB_ABILITIES;
+    return abilityName in C.Const.INVOKER.ORB_ABILITIES;
   };
 
-  var ITEM_NAME_PATTERN = /^item_[a-z_]+$/;
+  module.IsInvocationAbility = function(abilityName) {
+    return module.IsOrbAbility(abilityName) || abilityName == C.Const.INVOKER.ABILITY_INVOKE;
+  };
+
+  var ITEM_NAME_PATTERN = /^item_\w+$/;
 
   module.IsItemAbility = function(abilityName) {
     return !!abilityName.match(ITEM_NAME_PATTERN);

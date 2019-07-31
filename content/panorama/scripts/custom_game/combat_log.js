@@ -3,7 +3,7 @@
 var C = GameUI.CustomUIConfig(),
   CreateComponent = C.CreateComponent,
   Grid = C.Grid,
-  IsOrbAbility = C.Util.IsOrbAbility,
+  IsInvocationAbility = C.Util.IsInvocationAbility,
   IsItemAbility = C.Util.IsItemAbility,
   EVENTS = C.EVENTS;
 
@@ -38,12 +38,11 @@ var CombatLog = CreateComponent({
   constructor: function CombatLog() {
     CombatLog.super.call(this, $.GetContextPanel());
 
-    this.capturing = false;
     this.grid = new Grid(15);
 
     this.bindElements();
     this.bindEvents();
-    this.Stop();
+    this.start();
 
     this.log("init");
   },
@@ -51,7 +50,7 @@ var CombatLog = CreateComponent({
   bindElements: function() {
     this.$combatLog = $("#CombatLog");
     this.$contents = $("#CombatLogContents");
-    this.$filterOrbs = $("#FilterOrbs");
+    this.$filterInvocations = $("#FilterInvocations");
     this.$row = null;
   },
 
@@ -60,8 +59,6 @@ var CombatLog = CreateComponent({
 
     this.subscribe(EVENTS.COMBAT_LOG_ABILITY_USED, this.onAbilityUsed);
     this.subscribe(EVENTS.COMBAT_LOG_CLEAR, this.onClear);
-    this.subscribe(EVENTS.COMBO_STARTED, this.onComboStarted);
-    this.subscribe(EVENTS.COMBO_STOPPED, this.onComboStopped);
   },
 
   onClear: function() {
@@ -77,25 +74,11 @@ var CombatLog = CreateComponent({
   onAbilityUsed: function(payload) {
     this.log("onAbilityUsed() ", payload);
 
-    if (!this.capturing) {
-      return;
-    }
-
-    if (this.isFilteringOrbs() && IsOrbAbility(payload.ability)) {
+    if (this.isFilteringInvocations() && IsInvocationAbility(payload.ability)) {
       return;
     }
 
     this.addColumn(payload.ability);
-  },
-
-  onComboStarted: function() {
-    this.log("onComboStarted()");
-    this.Start();
-  },
-
-  onComboStopped: function() {
-    this.log("onComboStopped()");
-    this.Stop();
   },
 
   addRow: function(idx) {
@@ -114,46 +97,44 @@ var CombatLog = CreateComponent({
   },
 
   startCapturing: function() {
-    this.capturing = true;
     this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_START);
   },
 
   stopCapturing: function() {
-    this.capturing = false;
     this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
   },
 
-  showCombatLog: function() {
+  open: function() {
     this.$combatLog.RemoveClass("Closed");
   },
 
-  hideCombatLog: function() {
+  close: function() {
     this.$combatLog.AddClass("Closed");
   },
 
-  isFilteringOrbs: function() {
-    return this.$filterOrbs.checked;
+  isOpen: function() {
+    return !this.$combatLog.BHasClass("Closed");
   },
 
-  Start: function() {
-    this.log("Start()");
-    this.Clear();
+  isFilteringInvocations: function() {
+    return this.$filterInvocations.checked;
+  },
+
+  start: function() {
+    this.log("start()");
     this.startCapturing();
-    this.showCombatLog();
   },
 
-  Stop: function() {
-    this.log("Stop()");
-    this.Clear();
+  stop: function() {
+    this.log("stop()");
     this.stopCapturing();
-    this.hideCombatLog();
   },
 
   Toggle: function() {
-    if (this.capturing) {
-      this.Stop();
+    if (this.isOpen()) {
+      this.close();
     } else {
-      this.Start();
+      this.open();
     }
   },
 

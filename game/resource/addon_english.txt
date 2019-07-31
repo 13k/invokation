@@ -9,7 +9,7 @@
     "npc_invokation_dummy_target" "Dummy"
 
     "invokation_combat_log_title" "Combat Log"
-    "invokation_combat_log_filter_orbs" "Hide Orbs"
+    "invokation_combat_log_filter_invocations" "Hide Invocations"
     "invokation_combat_log_clear" "Clear"
 
     "invokation_combos_picker_title" "Select combo"

@@ -1,5 +1,6 @@
 <root>
   <scripts>
+    <include src="file://{resources}/scripts/lib/const.js" />
     <include src="file://{resources}/scripts/lib/util.js" />
     <include src="file://{resources}/scripts/lib/class.js" />
     <include src="file://{resources}/scripts/lib/logger.js" />

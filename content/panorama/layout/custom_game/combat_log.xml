@@ -26,7 +26,7 @@
   </snippets>
 
   <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
-    <Panel id="CombatLog" class="TransparentPanel">
+    <Panel id="CombatLog" class="TransparentPanel Closed">
       <Panel id="CombatLogContents" />
 
       <Panel class="CombatLogBar">
@@ -35,7 +35,7 @@
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
-          <ToggleButton id="FilterOrbs" class="BarItem Checkbox" text="#invokation_combat_log_filter_orbs" />
+          <ToggleButton id="FilterInvocations" class="BarItem Checkbox" text="#invokation_combat_log_filter_invocations" />
 
           <Button class="BarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />

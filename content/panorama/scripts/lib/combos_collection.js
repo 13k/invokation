@@ -6,6 +6,7 @@
     CustomEvents = C.CustomEvents,
     LuaListTableToArray = C.Util.LuaListTableToArray,
     IsOrbAbility = C.Util.IsOrbAbility,
+    IsInvocationAbility = C.Util.IsInvocationAbility,
     IsItemAbility = C.Util.IsItemAbility,
     EVENTS = C.EVENTS;
 
@@ -39,10 +40,7 @@
   };
 
   module.prototype._listenToNetTableChange = function() {
-    return this.netTable.OnKeyChange(
-      NET_TABLE_KEY,
-      this._onNetTableChange.bind(this)
-    );
+    return this.netTable.OnKeyChange(NET_TABLE_KEY, this._onNetTableChange.bind(this));
   };
 
   module.prototype._sendReloadToServer = function() {
@@ -78,6 +76,7 @@
 
       $.Each(combo.sequence, function(step) {
         step.isOrbAbility = IsOrbAbility(step.name);
+        step.isInvocationAbility = IsInvocationAbility(step.name);
         step.isItem = IsItemAbility(step.name);
         step.next = LuaListTableToArray(step.next);
       });
@@ -139,15 +138,11 @@
   });
 
   $.Each(DAMAGE_RATINGS_KEYS, function(key) {
-    DAMAGE_RATINGS[key] = $.Localize(
-      "#invokation_combo_tooltip_damage_rating_" + key
-    );
+    DAMAGE_RATINGS[key] = $.Localize("#invokation_combo_tooltip_damage_rating_" + key);
   });
 
   $.Each(DIFFICULTY_RATINGS_KEYS, function(key) {
-    DIFFICULTY_RATINGS[key] = $.Localize(
-      "#invokation_combo_tooltip_difficulty_rating_" + key
-    );
+    DIFFICULTY_RATINGS[key] = $.Localize("#invokation_combo_tooltip_difficulty_rating_" + key);
   });
 
   C.CombosCollection = module;
