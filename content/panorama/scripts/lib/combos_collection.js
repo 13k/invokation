@@ -25,14 +25,10 @@
   var module = function CombosCollection() {
     this.combos = null;
     this.onChangeCallbacks = [];
-    this.logger = new Logger("[combos_collection] ");
+    this.logger = new Logger({ progname: "combos_collection" });
     this.netTable = new NetTable();
 
     this._listenToNetTableChange();
-  };
-
-  module.prototype.log = function() {
-    this.logger.Log.apply(this.logger, arguments);
   };
 
   module.prototype._loadFromNetTable = function() {
@@ -49,7 +45,7 @@
 
   module.prototype._setCombos = function(value) {
     if (!value) {
-      this.log("WARN: tried to set combos to an undefined value");
+      this.logger.warning("Tried to set combos to an undefined value");
       return;
     }
 
@@ -93,13 +89,13 @@
       return;
     }
 
-    this.log("_onNetTableChange()");
+    this.logger.debug("_onNetTableChange()");
 
     this._setCombos(value);
   };
 
   module.prototype.Load = function() {
-    this.log("Load()");
+    this.logger.debug("Load()");
 
     if (!this.combos) {
       this._setCombos(this._loadFromNetTable());
@@ -110,7 +106,7 @@
   };
 
   module.prototype.Reload = function() {
-    this.log("Reload()");
+    this.logger.debug("Reload()");
     this.combos = null;
     this._sendReloadToServer();
     return this.Load();

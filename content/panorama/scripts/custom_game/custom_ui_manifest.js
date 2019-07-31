@@ -74,7 +74,7 @@ var CustomUIManifest = CreateComponent({
     C.COMBOS = new CombosCollection();
     C.COMBOS.Load();
 
-    this.log("init");
+    this.debug("init");
   },
 });
 

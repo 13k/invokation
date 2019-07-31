@@ -1,24 +1,23 @@
 "use strict";
 
 (function(C) {
-  var Class = C.Class,
+  var _ = C.lodash,
+    Class = C.Class,
     Logger = C.Logger,
     Callbacks = C.Callbacks,
     CustomEvents = C.CustomEvents;
 
-  function extractHeading(ctx) {
-    var heading = ctx.layoutfile
+  function extractComponentName(ctx) {
+    return ctx.layoutfile
       .replace(/\\/g, "/")
       .replace("panorama/layout/custom_game/", "")
       .replace(".xml", "");
-
-    return "[" + heading + "] ";
   }
 
   var Component = Class({
     constructor: function Component(ctx) {
       this.$ctx = ctx;
-      this.logger = new Logger(extractHeading(this.$ctx));
+      this.logger = new Logger({ progname: extractComponentName(this.$ctx) });
       this.data = {};
       this.inputs = {};
       this.outputs = new Callbacks();
@@ -34,8 +33,30 @@
       }
     },
 
+    _log: function(levelName, args) {
+      args = _.map(args);
+      args.unshift(Logger.LEVELS[levelName]);
+      return this.logger.log.apply(this.logger, args);
+    },
+
     log: function() {
-      this.logger.Log.apply(this.logger, arguments);
+      return this.logger.log.apply(this.logger, arguments);
+    },
+
+    debug: function() {
+      return this._log("DEBUG", arguments);
+    },
+
+    info: function() {
+      return this._log("INFO", arguments);
+    },
+
+    warn: function() {
+      return this._log("WARNING", arguments);
+    },
+
+    error: function() {
+      return this._log("ERROR", arguments);
     },
 
     set: function(key, value) {
@@ -44,13 +65,8 @@
     },
 
     update: function(data) {
-      var self = this;
-
-      $.Each(data, function(value, key) {
-        self.data[key] = value;
-      });
-
-      return data;
+      _.assign(this.data, data);
+      return this.data;
     },
 
     Get: function(key) {

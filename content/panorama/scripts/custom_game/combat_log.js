@@ -44,7 +44,7 @@ var CombatLog = CreateComponent({
     this.bindEvents();
     this.start();
 
-    this.log("init");
+    this.debug("init");
   },
 
   bindElements: function() {
@@ -62,17 +62,17 @@ var CombatLog = CreateComponent({
   },
 
   onClear: function() {
-    this.log("onClear()");
+    this.debug("onClear()");
     this.Clear();
   },
 
   onGridRowChange: function(idx) {
-    this.log("onGridRowChange() ", idx);
+    this.debug("onGridRowChange() ", idx);
     this.addRow(idx);
   },
 
   onAbilityUsed: function(payload) {
-    this.log("onAbilityUsed() ", payload);
+    this.debug("onAbilityUsed() ", payload);
 
     if (this.isFilteringInvocations() && IsInvocationAbility(payload.ability)) {
       return;
@@ -121,12 +121,12 @@ var CombatLog = CreateComponent({
   },
 
   start: function() {
-    this.log("start()");
+    this.debug("start()");
     this.startCapturing();
   },
 
   stop: function() {
-    this.log("stop()");
+    this.debug("stop()");
     this.stopCapturing();
   },
 

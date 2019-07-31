@@ -51,7 +51,7 @@ var Combo = CreateComponent({
     this.bindElements();
     this.bindEvents();
 
-    this.log("init");
+    this.debug("init");
   },
 
   bindElements: function() {
@@ -94,33 +94,33 @@ var Combo = CreateComponent({
   },
 
   onComboStarted: function(payload) {
-    this.log("onComboStarted() - ", payload);
+    this.debug("onComboStarted() - ", payload);
     this.start(payload);
   },
 
   onComboStopped: function(payload) {
-    this.log("onComboStopped() - ", payload);
+    this.debug("onComboStopped() - ", payload);
     this.stop();
   },
 
   onComboProgress: function(payload) {
-    this.log("onComboProgress() - ", payload);
+    this.debug("onComboProgress() - ", payload);
 
     this.progress(payload);
   },
 
   onComboStepError: function(payload) {
-    this.log("onComboStepError() - ", payload);
+    this.debug("onComboStepError() - ", payload);
 
     var expectedSteps = LuaListTableToArray(payload.expected);
 
-    this.log("onComboStepError() - expected: ", expectedSteps);
+    this.debug("onComboStepError() - expected: ", expectedSteps);
 
     this.failStepPanels(expectedSteps);
   },
 
   onComboFinished: function(payload) {
-    this.log("onComboFinished() - ", payload);
+    this.debug("onComboFinished() - ", payload);
 
     this.playFinishedSound();
     this.deactivateStepPanels();
@@ -331,12 +331,12 @@ var Combo = CreateComponent({
   },
 
   show: function() {
-    this.log("show()");
+    this.debug("show()");
     this.$ctx.AddClass("Open");
   },
 
   hide: function() {
-    this.log("hide()");
+    this.debug("hide()");
     this.hideSplash();
     this.hideScore();
     this.$ctx.RemoveClass("Open");
@@ -357,7 +357,7 @@ var Combo = CreateComponent({
 
   start: function(payload) {
     this.combo = COMBOS.Get(payload.combo);
-    this.log("start() ", this.combo);
+    this.debug("start() ", this.combo);
 
     var seq = new RunSequentialActions();
 
@@ -373,7 +373,7 @@ var Combo = CreateComponent({
   },
 
   stop: function() {
-    this.log("stop()");
+    this.debug("stop()");
     this.combo = null;
     this.hide();
   },
@@ -405,17 +405,17 @@ var Combo = CreateComponent({
   },
 
   Restart: function(isHardReset) {
-    this.log("Restart()");
+    this.debug("Restart()");
     this.sendRestart(!!isHardReset);
   },
 
   Stop: function() {
-    this.log("Stop()");
+    this.debug("Stop()");
     this.sendStop();
   },
 
   ShowDetails: function() {
-    this.log("ShowDetails()");
+    this.debug("ShowDetails()");
     this.sendRenderViewer(this.combo);
   },
 });

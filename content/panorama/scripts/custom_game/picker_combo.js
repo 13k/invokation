@@ -19,7 +19,6 @@ var PickerCombo = CreateComponent({
   },
 
   setCombo: function(combo) {
-    this.log("setCombo() ", combo.id);
     this.combo = combo;
 
     var specialtyClass = "specialty_" + combo.specialty;
@@ -33,10 +32,7 @@ var PickerCombo = CreateComponent({
     this.$ctx.SetDialogVariable("specialty", combo.l10n.specialty);
     this.$ctx.SetDialogVariable("stance", combo.l10n.stance);
     this.$ctx.SetDialogVariable("damage_rating", combo.l10n.damageRating);
-    this.$ctx.SetDialogVariable(
-      "difficulty_rating",
-      combo.l10n.difficultyRating
-    );
+    this.$ctx.SetDialogVariable("difficulty_rating", combo.l10n.difficultyRating);
 
     this.$titleLabel.text = combo.l10n.name;
     this.$heroLevelLabel.text = combo.heroLevel.toString();
@@ -45,12 +41,12 @@ var PickerCombo = CreateComponent({
   },
 
   ShowDetails: function() {
-    this.log("ShowDetails() ", this.combo.id);
+    this.debug("ShowDetails() ", this.combo.id);
     this.runOutput("OnShowDetails", { combo: this.combo });
   },
 
   Play: function() {
-    this.log("Play() ", this.combo.id);
+    this.debug("Play() ", this.combo.id);
     this.runOutput("OnPlay", { combo: this.combo });
   },
 });

@@ -4,8 +4,7 @@ var C = GameUI.CustomUIConfig(),
   CreateComponent = C.CreateComponent,
   EVENTS = C.EVENTS;
 
-var COMBO_STEP_LAYOUT =
-  "file://{resources}/layout/custom_game/viewer_combo_step.xml";
+var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
 var L10N_FALLBACK_IDS = {
   description: "invokation_viewer_description_lorem",
@@ -18,7 +17,7 @@ var Viewer = CreateComponent({
     this.bindElements();
     this.bindEvents();
 
-    this.log("init");
+    this.debug("init");
   },
 
   bindElements: function() {
@@ -36,19 +35,19 @@ var Viewer = CreateComponent({
   },
 
   onComboStarted: function() {
-    this.log("onComboStarted()");
+    this.debug("onComboStarted()");
     this.Close();
   },
 
   onViewerRender: function(payload) {
-    this.log("onViewerRender() ", payload.combo);
+    this.debug("onViewerRender() ", payload.combo);
     this.combo = payload.combo;
     this.render();
     this.Open();
   },
 
   render: function() {
-    this.log("render()");
+    this.debug("render()");
     this.renderInfo();
     this.renderSequence();
     this.$scrollPanel.ScrollToTop();
@@ -100,17 +99,17 @@ var Viewer = CreateComponent({
   },
 
   startCombo: function() {
-    this.log("startCombo() ", this.combo.id);
+    this.debug("startCombo() ", this.combo.id);
     this.sendServer(EVENTS.COMBO_START, { combo: this.combo.id });
   },
 
   Play: function() {
-    this.log("Play()");
+    this.debug("Play()");
     this.startCombo();
   },
 
   Reload: function() {
-    this.log("Reload()");
+    this.debug("Reload()");
     this.render();
   },
 });

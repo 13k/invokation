@@ -22,8 +22,6 @@ var ComboComboStep = Class(ComboStep, {
     } else {
       this.$ctx.RemoveClass("Invocation");
     }
-
-    this.log("onStepChange() ", this.step.id, " ", this.step.name);
   },
 
   onSetActive: function() {

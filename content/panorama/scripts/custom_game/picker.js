@@ -6,15 +6,9 @@ var C = GameUI.CustomUIConfig(),
   EVENTS = C.EVENTS,
   COMBOS = C.COMBOS;
 
-var PICKER_COLUMNS = [
-  "laning_phase",
-  "ganking_solo_pick",
-  "teamfight",
-  "late_game",
-];
+var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
 
-var COMBO_PANEL_LAYOUT =
-  "file://{resources}/layout/custom_game/picker_combo.xml";
+var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
 
 function createCombosColumnPanel(parent, category) {
   var panel = $.CreatePanel("Panel", parent, "combos_column_" + category);
@@ -35,7 +29,7 @@ var Picker = CreateComponent({
     this.bindElements();
     this.bindEvents();
 
-    this.log("init");
+    this.debug("init");
   },
 
   bindElements: function() {
@@ -51,34 +45,34 @@ var Picker = CreateComponent({
   },
 
   onCombosChange: function() {
-    this.log("onCombosChange()");
+    this.debug("onCombosChange()");
     this.groupCombos();
     this.renderCombos();
   },
 
   onComboDetailsShow: function(payload) {
-    this.log("onComboDetailsShow() ", payload);
+    this.debug("onComboDetailsShow() ", payload);
     this.Close();
     this.renderViewer(payload.combo);
   },
 
   onComboPlay: function(payload) {
-    this.log("onComboPlay() ", payload);
+    this.debug("onComboPlay() ", payload);
     this.startCombo(payload.combo);
   },
 
   onComboStarted: function() {
-    this.log("onComboStarted()");
+    this.debug("onComboStarted()");
     this.Close();
   },
 
   onComboStopped: function() {
-    this.log("onComboStopped()");
+    this.debug("onComboStopped()");
     this.Open();
   },
 
   startCombo: function(combo) {
-    this.log("startCombo() ", combo.id);
+    this.debug("startCombo() ", combo.id);
     this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
   },
 
@@ -108,7 +102,7 @@ var Picker = CreateComponent({
   },
 
   renderCombos: function() {
-    this.log("renderCombos()");
+    this.debug("renderCombos()");
 
     var self = this;
     this.$combosContainer.RemoveAndDeleteChildren();
@@ -120,10 +114,7 @@ var Picker = CreateComponent({
         return;
       }
 
-      var columnPanel = createCombosColumnPanel(
-        self.$combosContainer,
-        category
-      );
+      var columnPanel = createCombosColumnPanel(self.$combosContainer, category);
 
       $.Each(group, function(combo) {
         self.createComboPanel(columnPanel, combo);
@@ -189,7 +180,7 @@ var Picker = CreateComponent({
   },
 
   Reload: function() {
-    this.log("Reload()");
+    this.debug("Reload()");
     COMBOS.Reload();
   },
 });
