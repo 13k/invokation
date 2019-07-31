@@ -17,10 +17,10 @@ var ComboComboStep = Class(ComboStep, {
   },
 
   onStepChange: function() {
-    if (this.step.isOrbAbility) {
-      this.$ctx.AddClass("Orb");
+    if (this.step.isInvocationAbility) {
+      this.$ctx.AddClass("Invocation");
     } else {
-      this.$ctx.RemoveClass("Orb");
+      this.$ctx.RemoveClass("Invocation");
     }
 
     this.log("onStepChange() ", this.step.id, " ", this.step.name);
