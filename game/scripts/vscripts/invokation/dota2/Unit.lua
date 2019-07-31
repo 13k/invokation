@@ -85,7 +85,6 @@ function M:Purge(options)
   options.debuffs = options.debuffs == nil and true or options.debuffs
   options.stuns = options.stuns == nil and true or options.stuns
   options.exceptions = options.exceptions == nil and true or options.exceptions
-  options.frameOnly = options.frameOnly == nil and false or options.frameOnly
 
   return self.entity:Purge(
     types.to_bool(options.buffs),
@@ -114,7 +113,6 @@ function M:forEachItem(callback, options)
 
   options = options or {}
   options.includeStash = options.includeStash == nil and true or options.includeStash
-  options.onlyStash = options.onlyStash == nil and false or options.onlyStash
 
   local slots
 

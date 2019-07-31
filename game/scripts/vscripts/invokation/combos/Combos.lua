@@ -27,7 +27,13 @@ local function loadSpecs()
 end
 
 local function isIgnoredAbility(ability)
-  return ABILITY_LIST[ability.name] == nil and false or not ABILITY_LIST[ability.name]
+  local switch = ABILITY_LIST[ability.name]
+
+  if switch == nil then
+    return false
+  end
+
+  return not ABILITY_LIST[ability.name]
 end
 
 --- Constructor.
@@ -223,6 +229,7 @@ function M:OnAbilityUsed(player, unit, ability)
   self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
 
   if isIgnoredAbility(ability) then
+    self:d("  ignored")
     return
   end
 
