@@ -1,14 +1,15 @@
 "use strict";
 
-(function(C) {
-  var Logger = C.Logger,
-    NetTable = C.NetTable,
-    CustomEvents = C.CustomEvents,
-    LuaListTableToArray = C.Util.LuaListTableToArray,
-    IsOrbAbility = C.Util.IsOrbAbility,
-    IsInvocationAbility = C.Util.IsInvocationAbility,
-    IsItemAbility = C.Util.IsItemAbility,
-    EVENTS = C.EVENTS;
+(function(global /*, context */) {
+  var _ = global.lodash;
+  var EVENTS = global.Const.EVENTS;
+  var Logger = global.Logger;
+  var NetTable = global.NetTable;
+  var CustomEvents = global.CustomEvents;
+  var IsOrbAbility = global.Util.IsOrbAbility;
+  var IsInvocationAbility = global.Util.IsInvocationAbility;
+  var IsItemAbility = global.Util.IsItemAbility;
+  var LuaListTableToArray = global.Util.LuaListTableToArray;
 
   var NET_TABLE_KEY = "combos";
 
@@ -54,17 +55,12 @@
   };
 
   module.prototype._onCombosChange = function() {
-    var self = this;
-
     this._normalize();
-
-    $.Each(this.onChangeCallbacks, function(fn) {
-      fn(self.combos);
-    });
+    _.over(this.onChangeCallbacks)(this.combos);
   };
 
   module.prototype._normalize = function() {
-    $.Each(this.combos, function(combo) {
+    _.forEach(this.combos, function(combo) {
       combo.l10n = {};
       combo.l10n.name = $.Localize("#" + combo.id);
       combo.l10n.specialty = SPECIALTIES[combo.specialty];
@@ -75,7 +71,7 @@
       combo.items = LuaListTableToArray(combo.items);
       combo.sequence = LuaListTableToArray(combo.sequence);
 
-      $.Each(combo.sequence, function(step) {
+      _.forEach(combo.sequence, function(step) {
         step.isOrbAbility = IsOrbAbility(step.name);
         step.isInvocationAbility = IsInvocationAbility(step.name);
         step.isItem = IsItemAbility(step.name);
@@ -90,7 +86,6 @@
     }
 
     this.logger.debug("_onNetTableChange()");
-
     this._setCombos(value);
   };
 
@@ -123,7 +118,7 @@
   };
 
   module.prototype.forEach = function(fn) {
-    return $.Each(this.combos, fn);
+    return _.forEach(this.combos, fn);
   };
 
   module.prototype.Get = function(id) {
@@ -146,5 +141,5 @@
     DIFFICULTY_RATINGS[key] = $.Localize("#invokation_combo_tooltip_difficulty_rating_" + key);
   });
 
-  C.CombosCollection = module;
-})(GameUI.CustomUIConfig());
+  global.CombosCollection = module;
+})(GameUI.CustomUIConfig(), this);

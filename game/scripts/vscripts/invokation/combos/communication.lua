@@ -15,8 +15,9 @@ function M.sendStarted(player, combo)
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STARTED, player, payload)
 end
 
-function M.sendStopped(player)
-  return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STOPPED, player)
+function M.sendStopped(player, combo)
+  local payload = {combo = combo.id}
+  return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STOPPED, player, payload)
 end
 
 function M.sendProgress(player, combo)

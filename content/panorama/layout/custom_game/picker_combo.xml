@@ -1,5 +1,8 @@
 <root>
   <scripts>
+    <include src="s2r://panorama/scripts/sequence_actions.vjs" />
+
+    <include src="file://{resources}/scripts/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/picker_combo.js" />
   </scripts>
 

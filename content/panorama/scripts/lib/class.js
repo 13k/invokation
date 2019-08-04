@@ -1,37 +1,35 @@
 "use strict";
 
-(function(C) {
-  C.Class = function() {
-    var len = arguments.length;
-    var body = arguments[len - 1];
-    var klass;
-    var uber = len > 1 ? arguments[0] : Object;
-    var properties = {};
+(function(global /*, context */) {
+  var _ = global.lodash;
 
-    if (body.hasOwnProperty("constructor")) {
+  global.Class = function() {
+    var args, body, base, mixins, klass;
+
+    args = _.toArray(arguments);
+    body = _.last(args);
+    args = _.dropRight(args);
+    base = _.first(args);
+    args = _.drop(args);
+    mixins = args;
+
+    if (_.has(body, "constructor")) {
       klass = body.constructor;
-      delete body.constructor;
     } else {
       klass = function() {};
+      body.constructor = klass;
     }
 
-    for (var key in body) {
-      if (!body.hasOwnProperty(key)) {
-        continue;
-      }
+    klass.super = base || Object;
+    klass.prototype = _.create(klass.super.prototype);
 
-      properties[key] = {
-        value: body[key],
-        configurable: true,
-        enumerable: true,
-        writable: true,
-      };
-    }
+    var assignArgs = _.chain([klass.prototype])
+      .concat(mixins)
+      .push(body)
+      .value();
 
-    klass.prototype = Object.create(uber.prototype, properties);
-    klass.prototype.constructor = klass;
-    klass.super = uber;
+    _.assign.apply(_, assignArgs);
 
     return klass;
   };
-})(GameUI.CustomUIConfig());
+})(GameUI.CustomUIConfig(), this);

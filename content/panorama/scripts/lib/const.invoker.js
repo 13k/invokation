@@ -1,9 +1,7 @@
 "use strict";
 
-(function(C) {
-  var module = {};
-
-  var INVOKER = (module.INVOKER = {});
+(function(global /*, context */) {
+  var INVOKER = {};
 
   INVOKER.ABILITY_QUAS = "invoker_quas";
   INVOKER.ABILITY_WEX = "invoker_wex";
@@ -15,5 +13,6 @@
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_WEX] = true;
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_EXORT] = true;
 
-  C.Const = module;
-})(GameUI.CustomUIConfig());
+  global.Const = global.Const || {};
+  global.Const.INVOKER = INVOKER;
+})(GameUI.CustomUIConfig(), this);

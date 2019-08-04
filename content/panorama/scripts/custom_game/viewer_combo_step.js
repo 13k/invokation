@@ -1,24 +1,26 @@
 "use strict";
 
-var C = GameUI.CustomUIConfig(),
-  Class = C.Class;
+(function(global, context) {
+  var Class = global.Class;
+  var ComboStep = context.ComboStep;
 
-var L10N_FALLBACK_IDS = {
-  description: "invokation_viewer_step_description_lorem",
-};
+  var L10N_FALLBACK_IDS = {
+    description: "invokation_viewer_step_description_lorem",
+  };
 
-var ViewerComboStep = Class(ComboStep, {
-  constructor: function ViewerComboStep() {
-    ViewerComboStep.super.call(this, $.GetContextPanel());
-  },
+  var ViewerComboStep = Class(ComboStep, {
+    constructor: function ViewerComboStep() {
+      ViewerComboStep.super.call(this);
+    },
 
-  onStepChange: function() {
-    var descriptionL10nID = this.combo.id + "__" + this.step.id.toString();
-    this.$descriptionLabel.text = this.localizeFallback(
-      descriptionL10nID,
-      L10N_FALLBACK_IDS.description
-    );
-  },
-});
+    onStepChange: function() {
+      var descriptionL10nID = this.combo.id + "__" + this.step.id.toString();
+      this.$descriptionLabel.text = this.localizeFallback(
+        descriptionL10nID,
+        L10N_FALLBACK_IDS.description
+      );
+    },
+  });
 
-var comboStep = new ViewerComboStep();
+  context.comboStep = new ViewerComboStep();
+})(GameUI.CustomUIConfig(), this);

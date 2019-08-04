@@ -1,26 +1,13 @@
 "use strict";
 
-(function(C) {
-  function idxFloor(i) {
-    return i < 0 ? 0 : i;
-  }
+(function(global /*, context */) {
+  var _ = global.lodash;
 
-  function idxMod(len, i) {
-    if (len === 0) {
-      return 0;
-    }
-
-    if (i < 0) {
-      return len + i;
-    }
-
-    return i;
-  }
+  var idxFloor = _.partial(Math.max, 0);
 
   var module = function Grid(width, height) {
     this.width = width;
     this.height = height;
-
     this._grid = [];
     this._callbacks = { rowChange: [] };
   };
@@ -34,10 +21,7 @@
 
   module.prototype.onRowChange = function() {
     var rowIdx = this.Row();
-
-    $.Each(this._callbacks.rowChange, function(fn) {
-      fn(rowIdx);
-    });
+    _.over(this._callbacks.rowChange)(rowIdx);
   };
 
   module.prototype.OnRowChange = function(fn) {
@@ -73,18 +57,18 @@
   };
 
   module.prototype.Get = function(i, j) {
-    var row = this._grid[idxMod(this._grid.length, i)];
+    var row = _.nth(this._grid, i);
 
     if (!row || !j) {
       return row;
     }
 
-    return row[idxMod(row.length, j)];
+    return _.nth(row, j);
   };
 
   module.prototype.Clear = function() {
     this._grid = [];
   };
 
-  C.Grid = module;
-})(GameUI.CustomUIConfig());
+  global.Grid = module;
+})(GameUI.CustomUIConfig(), this);

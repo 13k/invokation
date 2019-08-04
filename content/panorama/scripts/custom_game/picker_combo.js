@@ -1,54 +1,73 @@
 "use strict";
 
-var C = GameUI.CustomUIConfig(),
-  CreateComponent = C.CreateComponent;
+(function(_global, context) {
+  var CreateComponent = context.CreateComponent;
+  var RunSequentialActions = context.RunSequentialActions;
+  var RunFunctionAction = context.RunFunctionAction;
+  var AddClassAction = context.AddClassAction;
+  var RunSingleAction = context.RunSingleAction;
 
-var PickerCombo = CreateComponent({
-  constructor: function PickerCombo() {
-    PickerCombo.super.call(this, $.GetContextPanel());
+  var PickerCombo = CreateComponent({
+    constructor: function PickerCombo() {
+      PickerCombo.super.call(this, {
+        elements: {
+          titleLabel: "Title",
+          heroLevelLabel: "HeroLevelLabel",
+          damageRatingButton: "DamageRating",
+          difficultyRatingButton: "DifficultyRating",
+        },
+        inputs: {
+          SetCombo: "setCombo",
+        },
+      });
+    },
 
-    this.registerInput("SetCombo", this.setCombo.bind(this));
-    this.bindElements();
-  },
+    setTitle: function(combo) {
+      this.$titleLabel.text = combo.l10n.name;
+    },
 
-  bindElements: function() {
-    this.$titleLabel = $("#Title");
-    this.$heroLevelLabel = $("#HeroLevelLabel");
-    this.$damageRatingButton = $("#DamageRating");
-    this.$difficultyRatingButton = $("#DifficultyRating");
-  },
+    setHeroLevel: function(combo) {
+      this.$heroLevelLabel.text = combo.heroLevel.toString();
+    },
 
-  setCombo: function(combo) {
-    this.combo = combo;
+    setDialogVariables: function(combo) {
+      this.$ctx.SetDialogVariable("specialty", combo.l10n.specialty);
+      this.$ctx.SetDialogVariable("stance", combo.l10n.stance);
+      this.$ctx.SetDialogVariable("damage_rating", combo.l10n.damageRating);
+      this.$ctx.SetDialogVariable("difficulty_rating", combo.l10n.difficultyRating);
+    },
 
-    var specialtyClass = "specialty_" + combo.specialty;
-    var stanceClass = "stance_" + combo.stance;
-    var damageClass = "rating_" + combo.damageRating.toString();
-    var difficultyClass = "rating_" + combo.difficultyRating.toString();
+    setCombo: function(combo) {
+      this.combo = combo;
 
-    this.$ctx.AddClass(specialtyClass);
-    this.$ctx.AddClass(stanceClass);
+      var specialtyClass = "specialty_" + combo.specialty;
+      var stanceClass = "stance_" + combo.stance;
+      var damageClass = "rating_" + combo.damageRating.toString();
+      var difficultyClass = "rating_" + combo.difficultyRating.toString();
 
-    this.$ctx.SetDialogVariable("specialty", combo.l10n.specialty);
-    this.$ctx.SetDialogVariable("stance", combo.l10n.stance);
-    this.$ctx.SetDialogVariable("damage_rating", combo.l10n.damageRating);
-    this.$ctx.SetDialogVariable("difficulty_rating", combo.l10n.difficultyRating);
+      var seq = new RunSequentialActions();
 
-    this.$titleLabel.text = combo.l10n.name;
-    this.$heroLevelLabel.text = combo.heroLevel.toString();
-    this.$damageRatingButton.AddClass(damageClass);
-    this.$difficultyRatingButton.AddClass(difficultyClass);
-  },
+      seq.actions.push(new RunFunctionAction(this.setDialogVariables.bind(this), combo));
+      seq.actions.push(new RunFunctionAction(this.setTitle.bind(this), combo));
+      seq.actions.push(new RunFunctionAction(this.setHeroLevel.bind(this), combo));
+      seq.actions.push(new AddClassAction(this.$ctx, specialtyClass));
+      seq.actions.push(new AddClassAction(this.$ctx, stanceClass));
+      seq.actions.push(new AddClassAction(this.$damageRatingButton, damageClass));
+      seq.actions.push(new AddClassAction(this.$difficultyRatingButton, difficultyClass));
 
-  ShowDetails: function() {
-    this.debug("ShowDetails() ", this.combo.id);
-    this.runOutput("OnShowDetails", { combo: this.combo });
-  },
+      return RunSingleAction(seq);
+    },
 
-  Play: function() {
-    this.debug("Play() ", this.combo.id);
-    this.runOutput("OnPlay", { combo: this.combo });
-  },
-});
+    ShowDetails: function() {
+      this.debug("ShowDetails()", this.combo.id);
+      this.runOutput("OnShowDetails", { combo: this.combo });
+    },
 
-var pickerCombo = new PickerCombo();
+    Play: function() {
+      this.debug("Play()", this.combo.id);
+      this.runOutput("OnPlay", { combo: this.combo });
+    },
+  });
+
+  context.pickerCombo = new PickerCombo();
+})(GameUI.CustomUIConfig(), this);

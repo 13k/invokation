@@ -182,7 +182,7 @@ function M:Stop(player)
   self:teardown(player, {hardReset = true})
 
   CombosSound.onComboStop(player)
-  CombosComm.sendStopped(player)
+  CombosComm.sendStopped(player, combo)
 end
 
 --- Finishes a combo for the given player.

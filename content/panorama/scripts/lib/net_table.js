@@ -1,10 +1,11 @@
 "use strict";
 
-(function(C) {
-  var MASTER_TABLE_NAME = "invokation";
+(function(global /*, context */) {
+  var _ = global.lodash;
+  var NET_TABLES = global.Const.NET_TABLES;
 
   var module = function NetTable(name) {
-    this.name = name || MASTER_TABLE_NAME;
+    this.name = name || NET_TABLES.DEFAULT;
     this._onChangeCallbacks = [];
     this._onKeyChangeCallbacks = {};
     this.subscribe(this.onChange.bind(this));
@@ -15,15 +16,8 @@
       return;
     }
 
-    $.Each(this._onChangeCallbacks, function(fn) {
-      fn(key, value);
-    });
-
-    var keyChangeFns = this._onKeyChangeCallbacks[key] || [];
-
-    $.Each(keyChangeFns, function(fn) {
-      fn(key, value);
-    });
+    _.over(this._onChangeCallbacks)(key, value);
+    _.over(_.get(this._onKeyChangeCallbacks, key, []))(key, value);
   };
 
   module.prototype.subscribe = function(fn) {
@@ -47,5 +41,5 @@
     this._onKeyChangeCallbacks[key].push(fn);
   };
 
-  C.NetTable = module;
-})(GameUI.CustomUIConfig());
+  global.NetTable = module;
+})(GameUI.CustomUIConfig(), this);

@@ -1,11 +1,13 @@
 "use strict";
 
-(function(C) {
-  var _ = C.lodash,
-    Class = C.Class,
-    Logger = C.Logger,
-    Callbacks = C.Callbacks,
-    CustomEvents = C.CustomEvents;
+(function(global, context) {
+  var _ = global.lodash;
+  var EVENTS = global.Const.EVENTS;
+  var Class = global.Class;
+  var Logger = global.Logger;
+  var Callbacks = global.Callbacks;
+  var CustomEvents = global.CustomEvents;
+  var Prefixer = global.Util.Prefixer;
 
   function extractComponentName(ctx) {
     return ctx.layoutfile
@@ -14,16 +16,28 @@
       .replace(".xml", "");
   }
 
+  var elemAttrNamer = _.partialRight(Prefixer, "$");
+  var elemIDing = _.partialRight(Prefixer, "#");
+
   var Component = Class({
-    constructor: function Component(ctx) {
-      this.$ctx = ctx;
+    constructor: function Component(options) {
+      options = options || {};
+
+      this.$ctx = $.GetContextPanel();
       this.logger = new Logger({ progname: extractComponentName(this.$ctx) });
       this.data = {};
       this.inputs = {};
       this.outputs = new Callbacks();
       this.isInToolsMode = Game.IsInToolsMode();
+
       this.setupContextPanel();
+      this.findElements(options.elements);
+      this.registerInputs(options.inputs);
+      this.subscribeAll(options.customEvents);
+      this.listenAll(options.elementEvents);
     },
+
+    // ----- Internal -----
 
     setupContextPanel: function() {
       this.$ctx.component = this;
@@ -33,8 +47,34 @@
       }
     },
 
+    // getHandler("fn") -> this["fn"].bind(this)
+    // getHandler(Function) -> Function
+    getHandler: function(fn) {
+      if (_.isString(fn)) {
+        fn = _.bindKey(this, fn);
+      }
+
+      return fn;
+    },
+
+    // ----- Localization -----
+
+    localizeFallback: function(id1, id2) {
+      var key1 = "#" + id1;
+      var l10n = $.Localize(key1);
+
+      if (l10n === id1) {
+        var key2 = "#" + id2;
+        l10n = $.Localize(key2);
+      }
+
+      return l10n;
+    },
+
+    // ----- Component logging -----
+
     _log: function(levelName, args) {
-      args = _.map(args);
+      args = _.toArray(args);
       args.unshift(Logger.LEVELS[levelName]);
       return this.logger.log.apply(this.logger, args);
     },
@@ -45,6 +85,10 @@
 
     debug: function() {
       return this._log("DEBUG", arguments);
+    },
+
+    debugFn: function(fn) {
+      return this.logger.debugFn(fn.bind(this));
     },
 
     info: function() {
@@ -58,6 +102,8 @@
     error: function() {
       return this._log("ERROR", arguments);
     },
+
+    // ----- Component Data ------
 
     set: function(key, value) {
       this.data[key] = value;
@@ -73,57 +119,63 @@
       return this.data[key];
     },
 
+    // ----- Component I/O -----
+
     runOutput: function(name, payload) {
+      this.debug("output.run", name);
       return this.outputs.Run(name, payload);
     },
 
     Output: function(name, fn) {
+      this.debug("output.register", name);
       return this.outputs.On(name, fn);
     },
 
     Outputs: function(outputs) {
-      var self = this;
-
-      $.Each(outputs, function(fn, name) {
-        self.Output(name, fn);
-      });
-
-      return outputs;
+      return _.map(outputs, _.rearg(this.Output.bind(this), [1, 0]));
     },
 
     registerInput: function(name, fn) {
-      this.inputs[name] = fn.bind(this);
+      this.debug("input.register", name);
+
+      if (_.isString(fn)) {
+        fn = _.bindKey(this, fn);
+      }
+
+      this.inputs[name] = fn;
       return name;
     },
 
     registerInputs: function(inputs) {
-      var self = this;
-
-      $.Each(inputs, function(fn, name) {
-        self.registerInput(name, fn);
-      });
+      return _.map(inputs, _.rearg(this.registerInput.bind(this), [1, 0]));
     },
 
     Input: function(name, payload) {
-      if (!name in this.inputs) {
-        return;
-      }
-
-      return this.inputs[name](payload);
+      this.debug("input.run", name);
+      return _.invoke(this.inputs, name, payload);
     },
 
     Inputs: function(inputs) {
-      var self = this;
-
-      $.Each(inputs, function(payload, name) {
-        self.Input(name, payload);
-      });
-
-      return inputs;
+      return _.mapValues(inputs, _.rearg(this.Input.bind(this), [1, 0]));
     },
 
+    // ----- Custom Events -----
+
     subscribe: function(event, fn) {
-      return CustomEvents.Subscribe(event, fn.bind(this));
+      if (_.isString(fn)) {
+        fn = _.bindKey(this, fn);
+      }
+
+      if (_.startsWith(event, "!")) {
+        event = EVENTS[_.trimStart(event, "!")];
+      }
+
+      this.debug("subscribe", event);
+      return CustomEvents.Subscribe(event, fn);
+    },
+
+    subscribeAll: function(events) {
+      return _.mapValues(events, _.rearg(this.subscribe.bind(this), [1, 0]));
     },
 
     unsubscribe: function() {
@@ -146,20 +198,111 @@
       return CustomEvents.SendClientSide.apply(CustomEvents, arguments);
     },
 
-    localizeFallback: function(id1, id2) {
-      var key1 = "#" + id1;
-      var l10n = $.Localize(key1);
+    // ----- Element (Panel) Utils & Events -----
 
-      if (l10n === id1) {
-        var key2 = "#" + id2;
-        l10n = $.Localize(key2);
+    // findElements([ "ElementID1", "#ElementID2", ... ])
+    //   -> this.$elementId1 = $("#ElementID1")
+    //   -> this.$elementId2 = $("#ElementID2")
+    // findElements({ elemAttr1: "ElementID1", $elemAttr2: "#ElementID2", ... })
+    //   -> this.$elemAttr1 = $("#ElementID1")
+    //   -> this.$elemAttr2 = $("#ElementID2")
+    findElements: function(elements) {
+      if (!elements) {
+        return;
       }
 
-      return l10n;
+      var map = _.chain(elements);
+
+      if (_.isArray(elements)) {
+        map = map
+          .map(function(elemID) {
+            return [_.camelCase(_.trimStart(elemID, "#")), elemID];
+          })
+          .fromPairs();
+      }
+
+      map = map.transform(function(result, elemID, attrName) {
+        result[elemAttrNamer(attrName)] = $(elemIDing(elemID));
+      });
+
+      _.assign(this, map.value());
+    },
+
+    // getElement("#ID") -> $("#ID")
+    // getElement("$attr") -> this.$attr
+    // getElement("attr") -> this.$attr
+    // getElement(Panel) -> Panel
+    getElement: function(element) {
+      if (_.isString(element)) {
+        if (_.startsWith(element, "#")) {
+          element = $(element);
+        } else {
+          element = _.get(this, elemAttrNamer(element));
+        }
+      }
+
+      return element;
+    },
+
+    listen: function(element, event, fn) {
+      element = this.getElement(element);
+      fn = this.getHandler(fn);
+
+      this.debug("listen", element && element.id, event);
+      return $.RegisterEventHandler(event, element, fn);
+    },
+
+    // listenAll({ elemAttr: { eventName1: "fn"|Function, eventName2: "fn"|Function, ... }, ... })
+    // listenAll([ { element: "elemAttr"|"#ElementID"|Panel, event: "eventName", handler: "fn"|Function }, ... ])
+    listenAll: function(events) {
+      if (!events) {
+        return;
+      }
+
+      var list = _.chain(events);
+
+      if (_.isPlainObject(events)) {
+        list = list.flatMap(function(elemEvents, attrName) {
+          return _.map(elemEvents, function(fn, eventName) {
+            return { element: attrName, event: eventName, handler: fn };
+          });
+        });
+      }
+
+      var applyListen = function(spec) {
+        return this.listen(spec.element, spec.event, spec.handler);
+      };
+
+      return list.map(applyListen.bind(this)).value();
+    },
+
+    dispatch: function(element, event, payload) {
+      element = this.getElement(element);
+      return $.DispatchEvent(event, element, payload);
+    },
+
+    playSound: function(soundEvent) {
+      return $.DispatchEvent("PlaySoundEffect", soundEvent);
+    },
+
+    showTooltip: function(element, text) {
+      return this.dispatch(element, "UIShowTextTooltip", text);
+    },
+
+    hideTooltip: function(element) {
+      return this.dispatch(element, "UIHideTextTooltip");
+    },
+
+    showAbilityTooltip: function(element, abilityName) {
+      return this.dispatch(element, "DOTAShowAbilityTooltip", abilityName);
+    },
+
+    hideAbilityTooltip: function(element) {
+      return this.dispatch(element, "DOTAHideAbilityTooltip");
     },
   });
 
-  C.CreateComponent = function(body) {
+  context.CreateComponent = function(body) {
     return Class(Component, body);
   };
-})(GameUI.CustomUIConfig());
+})(GameUI.CustomUIConfig(), this);

@@ -17479,11 +17479,8 @@
 
   /*--------------------------------------------------------------------------*/
 
-  // Export lodash.
-  var _ = runInContext();
-
-  // Export to the global object.
-  root._ = _;
+  // Export to game's global context.
+  root.lodash = runInContext();
 }.call(this));
 
-GameUI.CustomUIConfig().lodash = _.noConflict();
+GameUI.CustomUIConfig().lodash = lodash;

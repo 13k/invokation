@@ -2,7 +2,9 @@
   <scripts>
     <include src="file://{resources}/scripts/vendor/lodash.js" />
 
-    <include src="file://{resources}/scripts/lib/const.js" />
+    <include src="file://{resources}/scripts/lib/const.events.js" />
+    <include src="file://{resources}/scripts/lib/const.invoker.js" />
+    <include src="file://{resources}/scripts/lib/const.net_tables.js" />
     <include src="file://{resources}/scripts/lib/util.js" />
     <include src="file://{resources}/scripts/lib/class.js" />
     <include src="file://{resources}/scripts/lib/logger.js" />

@@ -1,51 +1,73 @@
 "use strict";
 
-(function(C) {
+(function(global /*, context */) {
+  var _ = global.lodash;
+  var INVOKER = global.Const.INVOKER;
+
+  var ITEM_NAME_PATTERN = /^item_\w+$/;
+
   var module = {};
 
   module.LuaListTableToArray = function(table) {
-    var result = [];
-
-    for (var key in table) {
-      var i = parseInt(key);
-
-      if (i) {
-        result[i] = table[key];
-      }
-    }
-
-    result = result.filter(function(elem) {
-      return elem !== undefined && elem != null;
-    });
-
-    return result;
+    return _.chain(table)
+      .map(function(v, k) {
+        return parseInt(k) && v;
+      })
+      .compact()
+      .value();
   };
 
   module.StringLexicalCompare = function(left, right) {
-    if (left < right) {
-      return -1;
+    return left < right ? -1 : left > right ? 1 : 0;
+  };
+
+  module.Prefixer = function(string, prefix) {
+    if (!_.startsWith(string, prefix)) {
+      string = prefix + string;
     }
 
-    if (left > right) {
-      return 1;
-    }
-
-    return 0;
+    return string;
   };
 
   module.IsOrbAbility = function(abilityName) {
-    return abilityName in C.Const.INVOKER.ORB_ABILITIES;
+    return abilityName in INVOKER.ORB_ABILITIES;
   };
 
   module.IsInvocationAbility = function(abilityName) {
-    return module.IsOrbAbility(abilityName) || abilityName == C.Const.INVOKER.ABILITY_INVOKE;
+    return module.IsOrbAbility(abilityName) || abilityName == INVOKER.ABILITY_INVOKE;
   };
-
-  var ITEM_NAME_PATTERN = /^item_\w+$/;
 
   module.IsItemAbility = function(abilityName) {
     return !!abilityName.match(ITEM_NAME_PATTERN);
   };
 
-  C.Util = module;
-})(GameUI.CustomUIConfig());
+  // TODO: handle errors
+  module.CreatePanelWithLayout = function(parent, id, layout) {
+    var panel = $.CreatePanel("Panel", parent, id);
+    panel.BLoadLayout(layout, false, false);
+    return panel;
+  };
+
+  // TODO: handle errors
+  module.CreatePanelWithLayoutSnippet = function(parent, id, snippet) {
+    var panel = $.CreatePanel("Panel", parent, id);
+    panel.BLoadLayoutSnippet(snippet);
+    return panel;
+  };
+
+  // TODO: handle errors
+  module.CreateAbilityImage = function(parent, id, abilityName) {
+    var image = $.CreatePanel("DOTAAbilityImage", parent, id);
+    image.abilityname = abilityName;
+    return image;
+  };
+
+  // TODO: handle errors
+  module.CreateItemImage = function(parent, id, itemName) {
+    var image = $.CreatePanel("DOTAItemImage", parent, id);
+    image.itemname = itemName;
+    return image;
+  };
+
+  global.Util = module;
+})(GameUI.CustomUIConfig(), this);

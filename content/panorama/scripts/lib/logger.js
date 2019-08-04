@@ -1,7 +1,7 @@
 "use strict";
 
-(function(C) {
-  var _ = C.lodash;
+(function(global /*, context */) {
+  var _ = global.lodash;
 
   var LEVELS = {
     UNKNOWN: 0,
@@ -27,6 +27,10 @@
       return;
     }
 
+    if (arguments.length < 2) {
+      return;
+    }
+
     var args = _.chain([_.padStart(LEVEL_NAMES[level], MAX_LEVEL_NAME_LEN)]);
 
     if (this.progname) {
@@ -44,16 +48,38 @@
     return $.Msg.apply(null, args);
   };
 
+  module.prototype.logFn = function(level, fn) {
+    if (level < this.level) {
+      return;
+    }
+
+    var values = fn();
+
+    if (!_.isArray(values)) {
+      values = [values];
+    }
+
+    var args = _.concat([level], values);
+    return this.log.apply(this, args);
+  };
+
   _.forEach(LEVELS, function(value, name) {
     if (name === "UNKNOWN") return;
 
-    module.prototype[_.lowerCase(name)] = function() {
+    var baseName = _.lowerCase(name);
+
+    module.prototype[baseName] = function() {
       var args = _.concat([value], arguments);
       return this.log.apply(this, args);
+    };
+
+    module.prototype[baseName + "Fn"] = function() {
+      var args = _.concat([value], arguments);
+      return this.logFn.apply(this, args);
     };
   });
 
   module.LEVELS = LEVELS;
 
-  C.Logger = module;
-})(GameUI.CustomUIConfig());
+  global.Logger = module;
+})(GameUI.CustomUIConfig(), this);
