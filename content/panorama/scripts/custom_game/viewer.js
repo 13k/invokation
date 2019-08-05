@@ -103,10 +103,13 @@
     view: function(combo) {
       this.combo = combo;
 
-      return new Sequence()
-        .Action(this.renderAction())
-        .Action(this.openAction())
-        .Start();
+      var seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
+
+      this.debugFn(function() {
+        return ["view()", { id: this.combo.id, actions: seq.size() }];
+      });
+
+      return seq.Start();
     },
 
     openAction: function() {

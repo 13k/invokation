@@ -44,6 +44,7 @@ function M:_init(spec)
   self:_createFSM()
   self.count = 0
   self.damage = 0
+  self.failed = false
 
   -- print("Combo:_init()", self.name)
   -- pp.dump(self)
@@ -109,6 +110,11 @@ function M:Progress(ability)
   end
 
   return progressed
+end
+
+--- Marks the combo as failed.
+function M:Fail()
+  self.failed = true
 end
 
 --- Finishes the combo if possible.

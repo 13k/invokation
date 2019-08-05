@@ -73,7 +73,7 @@
   text-align: center;
   letter-spacing: 20px;
   text-transform: uppercase;
-  text-overflow: clip;
+  text-overflow: shrink;
   font-size: 48px;
   font-weight: black;
   font-style: italic;
@@ -81,7 +81,17 @@
   text-shadow: 3px 3px 6px #035c68;
 }
 
-#Splash .Disclaimer {
+#Splash.success .Title {
+  color: #42cf49;
+  text-shadow: 3px 3px 6px #162c5a;
+}
+
+#Splash.failure .Title {
+  color: #d44b21;
+  text-shadow: 3px 3px 6px #474303;
+}
+
+#Splash .Help {
   margin-top: 10px;
   margin-left: 280px;
   horizontal-align: left;
@@ -182,6 +192,14 @@
 #Score {
   margin-bottom: 230px;
   align: center bottom;
+}
+
+#Score.Failed {
+  wash-color: #000c;
+  animation-name: StunPortrait;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
 }
 
 #Score .SplashBackground {

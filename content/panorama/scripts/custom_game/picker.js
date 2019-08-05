@@ -38,8 +38,7 @@
 
     onCombosChange: function() {
       this.debug("onCombosChange()");
-      this.groupCombos();
-      this.renderCombos();
+      this.render();
     },
 
     onComboDetailsShow: function(payload) {
@@ -84,13 +83,8 @@
         .value();
     },
 
-    renderCombos: function() {
-      this.debug("renderCombos()");
-
-      return new Sequence()
-        .Action(this.resetCombosAction())
-        .Action(this.createComboPanelsAction())
-        .Start();
+    renderCombosAction: function() {
+      return new Sequence().Action(this.resetCombosAction()).Action(this.createComboPanelsAction());
     },
 
     resetCombos: function() {
@@ -161,15 +155,32 @@
       return this.$slideout.BHasClass("DrawerClosed");
     },
 
+    render: function() {
+      this.groupCombos();
+
+      var seq = this.renderCombosAction();
+
+      this.debugFn(function() {
+        return ["render()", { combos: COMBOS.combos.length, actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
     Open: function() {
       if (!this.isClosed()) {
         return;
       }
 
-      return new ParallelSequence()
+      var seq = new ParallelSequence()
         .PlaySoundEffect("Shop.PanelUp")
-        .RemoveClass(this.$slideout, "DrawerClosed")
-        .Start();
+        .RemoveClass(this.$slideout, "DrawerClosed");
+
+      this.debugFn(function() {
+        return ["Open()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
     },
 
     Close: function() {
@@ -177,10 +188,15 @@
         return;
       }
 
-      return new ParallelSequence()
+      var seq = new ParallelSequence()
         .PlaySoundEffect("Shop.PanelDown")
-        .AddClass(this.$slideout, "DrawerClosed")
-        .Start();
+        .AddClass(this.$slideout, "DrawerClosed");
+
+      this.debugFn(function() {
+        return ["Close()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
     },
 
     Toggle: function() {

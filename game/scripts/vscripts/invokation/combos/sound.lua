@@ -29,11 +29,15 @@ local MUSIC = {
   },
   BATTLE = {
     STATUS = DOTA_MUSIC_STATUS_BATTLE,
-    INTENSITY = 1.0,
+    INTENSITY = 5.0,
   },
   VICTORY = {
     STATUS = DOTA_MUSIC_STATUS_EXPLORATION,
-    INTENSITY = 1.0,
+    INTENSITY = 10.0,
+  },
+  DEFEAT = {
+    STATUS = DOTA_MUSIC_STATUS_DEAD,
+    INTENSITY = 10.0,
   },
 }
 
@@ -56,12 +60,14 @@ end
 
 function M.onComboStart(player)
   player:SetMusicStatus(MUSIC.BATTLE.STATUS, MUSIC.BATTLE.INTENSITY)
-  M.emitRandomEventOnPlayer(player, "combo_start")
 end
 
 function M.onComboStop(player)
   player:SetMusicStatus(MUSIC.IDLE.STATUS, MUSIC.IDLE.INTENSITY)
-  M.emitRandomEventOnPlayer(player, "combo_stop")
+end
+
+function M.onComboStepError(player)
+  player:SetMusicStatus(MUSIC.DEFEAT.STATUS, MUSIC.DEFEAT.INTENSITY)
 end
 
 function M.onComboFinished(player)

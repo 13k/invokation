@@ -135,7 +135,25 @@
     },
   });
 
+  var isSequence = function(object) {
+    return (
+      object instanceof Sequence ||
+      object instanceof ParallelSequence ||
+      object instanceof ParallelAnySequence ||
+      object instanceof StaggeredSequence
+    );
+  };
+
+  var actionSize = function(action) {
+    return isSequence(action) ? action.size() : 1;
+  };
+
   var SequenceMixin = {
+    size: function() {
+      var aggregate = _.overArgs(_.add, [_, actionSize]);
+      return _.reduce(this.actions, aggregate, 1);
+    },
+
     Action: function(action) {
       if (_.isArray(action)) {
         this.actions.push.apply(this.actions, action);

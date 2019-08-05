@@ -185,6 +185,23 @@ function M:Stop(player)
   CombosComm.sendStopped(player, combo)
 end
 
+--- Fails and stops currently active combo for the given player.
+-- @tparam CDOTAPlayer player Player instance
+function M:Fail(player, ability)
+  self:d("Combos:Fail()", player:GetPlayerID())
+
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo == nil then
+    self:errf("Player %d has no active combo", player:GetPlayerID())
+    return
+  end
+
+  combo:Fail()
+  CombosSound.onComboStepError(player)
+  CombosComm.sendStepError(player, combo, ability)
+end
+
 --- Finishes a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:Finish(player)
@@ -237,6 +254,10 @@ function M:OnAbilityUsed(player, unit, ability)
     return
   end
 
+  if combo.failed then
+    return
+  end
+
   if combo:Progress(ability) then
     CombosComm.sendProgress(player, combo)
 
@@ -244,7 +265,7 @@ function M:OnAbilityUsed(player, unit, ability)
       self:Finish(player)
     end
   elseif not ability:IsInvocationAbility() then
-    CombosComm.sendStepError(player, combo, ability)
+    self:Fail(player, ability)
   end
 end
 

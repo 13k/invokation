@@ -122,12 +122,10 @@
     // ----- Component I/O -----
 
     runOutput: function(name, payload) {
-      this.debug("output.run", name);
       return this.outputs.Run(name, payload);
     },
 
     Output: function(name, fn) {
-      this.debug("output.register", name);
       return this.outputs.On(name, fn);
     },
 
@@ -136,8 +134,6 @@
     },
 
     registerInput: function(name, fn) {
-      this.debug("input.register", name);
-
       if (_.isString(fn)) {
         fn = _.bindKey(this, fn);
       }
@@ -151,7 +147,6 @@
     },
 
     Input: function(name, payload) {
-      this.debug("input.run", name);
       return _.invoke(this.inputs, name, payload);
     },
 
@@ -170,7 +165,6 @@
         event = EVENTS[_.trimStart(event, "!")];
       }
 
-      this.debug("subscribe", event);
       return CustomEvents.Subscribe(event, fn);
     },
 
@@ -248,7 +242,6 @@
       element = this.getElement(element);
       fn = this.getHandler(fn);
 
-      this.debug("listen", element && element.id, event);
       return $.RegisterEventHandler(event, element, fn);
     },
 

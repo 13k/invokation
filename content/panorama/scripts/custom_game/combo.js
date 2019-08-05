@@ -10,7 +10,6 @@
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var AddClassAction = global.Sequence.AddClassAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
-  var PlaySoundEffectAction = global.Sequence.PlaySoundEffectAction;
   var LuaListTableToArray = global.Util.LuaListTableToArray;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
@@ -53,12 +52,26 @@
     },
   };
 
+  var SOUND_EVENTS = {
+    success: "kidvoker_takeover_stinger",
+    // failure: "General.InvalidTarget_Invulnerable",
+    failure: "ui.death_stinger",
+  };
+
+  var SPLASH_MAX_INDICES = {
+    start: { title: 1, help: 1 },
+    success: { title: 2, help: 7 },
+    failure: { title: 3, help: 9 },
+  };
+
   var Combo = CreateComponent({
     constructor: function Combo() {
       Combo.super.call(this, {
         elements: [
           "Sequence",
           "Splash",
+          "SplashTitle",
+          "SplashHelp",
           "Score",
           "CounterTicker",
           "SummaryCountDisplay",
@@ -311,10 +324,6 @@
         .Action(spinAction);
     },
 
-    playFinishedSoundAction: function() {
-      return new PlaySoundEffectAction("kidvoker_takeover_stinger");
-    },
-
     showAction: function() {
       return new AddClassAction(this.$ctx, "Open");
     },
@@ -326,8 +335,23 @@
         .RemoveClass(this.$ctx, "Open");
     },
 
-    showSplashAction: function() {
-      return new AddClassAction(this.$splash, "Show");
+    showSplashAction: function(state) {
+      var titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
+      var helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
+      var titleKey = "#invokation_combo_splash_" + state + "_title__" + titleIndex.toString();
+      var helpKey = "#invokation_combo_splash_" + state + "_help__" + helpIndex.toString();
+      var title = $.Localize(titleKey);
+      var help = $.Localize(helpKey);
+
+      var setupActions = new ParallelSequence()
+        .SetAttribute(this.$splashTitle, "text", title)
+        .SetAttribute(this.$splashHelp, "text", help)
+        .RemoveClass(this.$splash, "start")
+        .RemoveClass(this.$splash, "success")
+        .RemoveClass(this.$splash, "failure")
+        .AddClass(this.$splash, state);
+
+      return new Sequence().Action(setupActions).AddClass(this.$splash, "Show");
     },
 
     hideSplashAction: function() {
@@ -344,6 +368,7 @@
 
     hideScoreAction: function() {
       return new ParallelSequence()
+        .RemoveClass(this.$score, "Failed")
         .RemoveClass(this.$score, "ShowCounter")
         .RemoveClass(this.$score, "ShowSummary");
     },
@@ -361,15 +386,16 @@
 
       var seq = new Sequence()
         .Action(this.hideScoreAction())
+        .Action(this.hideSplashAction())
         .Wait(START_DELAY)
         .Action(this.showAction())
         .Action(this.renderSequenceAction())
+        .Action(this.showSplashAction("start"))
         .Wait(0.5)
-        .Action(this.showSplashAction())
         .RunFunction(this, this.progress, this.combo.id, 0, next);
 
       this.debugFn(function() {
-        return ["start()", { id: this.combo.id }];
+        return ["start()", { id: this.combo.id, actions: seq.size() }];
       });
 
       return seq.Start();
@@ -381,7 +407,7 @@
       var seq = new Sequence().Action(this.hideAction());
 
       this.debugFn(function() {
-        return ["stop()", { id: id }];
+        return ["stop()", { id: id, actions: seq.size() }];
       });
 
       return seq.Start();
@@ -404,7 +430,7 @@
         .Action(this.updateCounterAction(count));
 
       this.debugFn(function() {
-        return ["progress()", { id: id, count: count, next: next }];
+        return ["progress()", { id: id, count: count, next: next, actions: seq.size() }];
       });
 
       return seq.Start();
@@ -415,25 +441,31 @@
       damage = damage || 0;
 
       var seq = new Sequence()
-        .Action(this.playFinishedSoundAction())
+        .PlaySoundEffect(SOUND_EVENTS.success)
+        .Action(this.showSplashAction("success"))
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.bumpStepPanelsAction(this.combo.sequence))
         .Action(this.updateSummaryAction(count, damage));
 
       this.debugFn(function() {
-        return ["finish()", { id: id, count: count, damage: damage }];
+        return ["finish()", { id: id, count: count, damage: damage, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    fail: function(id, expected /*, ability*/) {
+    fail: function(id, expected, ability) {
       expected = LuaListTableToArray(expected);
 
-      var seq = new Sequence().Action(this.failStepPanelsAction(expected));
+      var seq = new Sequence()
+        .PlaySoundEffect(SOUND_EVENTS.failure)
+        .Action(this.showSplashAction("failure"))
+        .AddClass(this.$score, "Failed")
+        .Action(this.failStepPanelsAction(expected))
+        .Action(this.bumpStepPanelsAction(expected));
 
       this.debugFn(function() {
-        return ["fail()", { id: id, expected: expected }];
+        return ["fail()", { id: id, ability: ability, expected: expected, actions: seq.size() }];
       });
 
       return seq.Start();
