@@ -5,6 +5,7 @@ exclude_files = {
 new_globals = {
   "Precache",
   "Activate",
+  "GameRules",
   "GameMode",
 }
 
@@ -201,7 +202,6 @@ new_read_globals = {
   "CustomNetTables",
   "CustomUI",
   "Entities",
-  "GameRules",
   "HeroList",
   "ParticleManager",
   "PlayerResource",
