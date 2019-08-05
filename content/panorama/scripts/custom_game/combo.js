@@ -4,18 +4,16 @@
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
   var COMBOS = global.COMBOS;
+  var Sequence = global.Sequence.Sequence;
+  var ParallelSequence = global.Sequence.ParallelSequence;
+  var StaggeredSequence = global.Sequence.StaggeredSequence;
+  var RunFunctionAction = global.Sequence.RunFunctionAction;
+  var AddClassAction = global.Sequence.AddClassAction;
+  var RemoveClassAction = global.Sequence.RemoveClassAction;
+  var PlaySoundEffectAction = global.Sequence.PlaySoundEffectAction;
   var LuaListTableToArray = global.Util.LuaListTableToArray;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
-  var RunSequentialActions = context.RunSequentialActions;
-  var RunParallelActions = context.RunParallelActions;
-  var RunStaggeredActions = context.RunStaggeredActions;
-  var RunFunctionAction = context.RunFunctionAction;
-  var WaitAction = context.WaitAction;
-  var AddClassAction = context.AddClassAction;
-  var RemoveClassAction = context.RemoveClassAction;
-  var PlaySoundEffectAction = context.PlaySoundEffectAction;
-  var RunSingleAction = context.RunSingleAction;
 
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/combo_combo_step.xml";
 
@@ -142,37 +140,29 @@
     renderSequenceAction: function() {
       this.stepsPanels = {};
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.resetSequenceAction());
-      seq.actions.push(this.createStepPanelsAction());
-      seq.actions.push(
-        this.staggeredSequenceOnStepPanels(BUMP_DELAY, this.combo.sequence, this.bumpStepPanel)
+      var bumpSeq = this.staggeredSequenceOnStepPanels(
+        BUMP_DELAY,
+        this.combo.sequence,
+        this.bumpStepPanel
       );
 
-      return seq;
+      return new Sequence()
+        .Action(this.resetSequenceAction())
+        .Action(this.createStepPanelsAction())
+        .Action(bumpSeq);
     },
 
     resetSequenceAction: function() {
-      var scrollToTop = this.$sequence.ScrollToTop.bind(this.$sequence);
-      var removeChildren = this.$sequence.RemoveAndDeleteChildren.bind(this.$sequence);
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(new RunFunctionAction(scrollToTop));
-      seq.actions.push(new RunFunctionAction(removeChildren));
-
-      return seq;
+      return new Sequence().ScrollToTop(this.$sequence).RemoveChildren(this.$sequence);
     },
 
     createStepPanelsAction: function() {
-      var seq = new RunSequentialActions();
-
-      seq.actions.push.apply(
-        seq.actions,
-        _.map(this.combo.sequence, _.bind(this.createStepPanelAction, this, this.$sequence))
+      var createActions = _.map(
+        this.combo.sequence,
+        _.bind(this.createStepPanelAction, this, this.$sequence)
       );
 
-      return seq;
+      return new Sequence().Action(createActions);
     },
 
     createStepPanel: function(parent, step) {
@@ -187,7 +177,7 @@
     },
 
     createStepPanelAction: function(parent, step) {
-      return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
+      return new RunFunctionAction(this, this.createStepPanel, parent, step);
     },
 
     scrollToStepPanel: function(step) {
@@ -220,30 +210,24 @@
       return this.stepPanelInput(step, "UnsetStepError");
     },
 
-    pushSequenceActionsOnStepPanels: function(seq, steps, fn) {
+    sequenceActionsOnStepPanels: function(steps, fn) {
       fn = this.getHandler(fn).bind(this);
 
-      _.forEach(steps, function(step) {
-        seq.actions.push(new RunFunctionAction(fn, step));
+      return _.map(steps, function(step) {
+        return new RunFunctionAction(fn, step);
       });
-
-      return seq;
     },
 
     parallelSequenceOnStepPanels: function(steps, fn) {
-      var seq = new RunParallelActions();
-      this.pushSequenceActionsOnStepPanels(seq, steps, fn);
-      return seq;
+      return new ParallelSequence().Action(this.sequenceActionsOnStepPanels(steps, fn));
     },
 
     staggeredSequenceOnStepPanels: function(delay, steps, fn) {
-      var seq = new RunStaggeredActions(delay);
-      this.pushSequenceActionsOnStepPanels(seq, steps, fn);
-      return seq;
+      return new StaggeredSequence(delay).Action(this.sequenceActionsOnStepPanels(steps, fn));
     },
 
     activateStepPanelsAction: function(steps) {
-      var seq = new RunSequentialActions();
+      var seq = new Sequence();
 
       if (_.isEmpty(steps)) {
         return seq;
@@ -251,10 +235,7 @@
 
       var activateSeq = this.parallelSequenceOnStepPanels(steps, this.activateStepPanel);
 
-      seq.actions.push(new RunFunctionAction(this.scrollToStepPanel.bind(this), steps[0]));
-      seq.actions.push(activateSeq);
-
-      return seq;
+      return seq.RunFunction(this, this.scrollToStepPanel, steps[0]).Action(activateSeq);
     },
 
     deactivateStepPanelsAction: function(steps) {
@@ -274,26 +255,25 @@
     },
 
     updateCounterAction: function(count) {
-      var seq = new RunSequentialActions();
+      var seq = new Sequence();
 
       if (count < 1) {
         return seq;
       }
 
-      seq.actions.push(this.showScoreCounterAction());
-      seq.actions.push(new WaitAction(0.15));
-      seq.actions.push(this.scoreTickerBumpAction());
-      seq.actions.push(new RunFunctionAction(this.counterFxBurstStart.bind(this)));
-      seq.actions.push(updateCounterDigitsAction(this.$counterTicker, count));
-      seq.actions.push(new WaitAction(0.15));
-      seq.actions.push(this.scoreTickerUnbumpAction());
-      seq.actions.push(new RunFunctionAction(this.counterFxBurstStop.bind(this)));
-
-      return seq;
+      return seq
+        .Action(this.showScoreCounterAction())
+        .Wait(0.15)
+        .Action(this.scoreTickerBumpAction())
+        .RunFunction(this, this.counterFxBurstStart)
+        .Action(updateCounterDigitsAction(this.$counterTicker, count))
+        .Wait(0.15)
+        .Action(this.scoreTickerUnbumpAction())
+        .RunFunction(this, this.counterFxBurstStop);
     },
 
     updateSummaryAction: function(count, damage) {
-      var seq = new RunSequentialActions();
+      var seq = new Sequence();
 
       if (count < 1) {
         return seq;
@@ -316,15 +296,19 @@
       };
 
       var callbacks = { onSpin: onSpin.bind(this), onEnd: onSpinEnd.bind(this) };
-
-      seq.actions.push(updateCounterDigitsAction(this.$summaryCountDisplay, count));
-      seq.actions.push(this.showScoreSummaryAction());
-      seq.actions.push(new WaitAction(0.15));
-      seq.actions.push(
-        spinDamageDigitsAction(this.$summaryDamageTicker, damage, increment, callbacks)
+      var updateCounterAction = updateCounterDigitsAction(this.$summaryCountDisplay, count);
+      var spinAction = spinDamageDigitsAction(
+        this.$summaryDamageTicker,
+        damage,
+        increment,
+        callbacks
       );
 
-      return seq;
+      return seq
+        .Action(updateCounterAction)
+        .Action(this.showScoreSummaryAction())
+        .Wait(0.15)
+        .Action(spinAction);
     },
 
     playFinishedSoundAction: function() {
@@ -336,11 +320,10 @@
     },
 
     hideAction: function() {
-      var seq = new RunParallelActions();
-      seq.actions.push(this.hideSplashAction());
-      seq.actions.push(this.hideScoreAction());
-      seq.actions.push(new RemoveClassAction(this.$ctx, "Open"));
-      return seq;
+      return new ParallelSequence()
+        .Action(this.hideSplashAction())
+        .Action(this.hideScoreAction())
+        .RemoveClass(this.$ctx, "Open");
     },
 
     showSplashAction: function() {
@@ -360,10 +343,9 @@
     },
 
     hideScoreAction: function() {
-      var seq = new RunParallelActions();
-      seq.actions.push(new RemoveClassAction(this.$score, "ShowCounter"));
-      seq.actions.push(new RemoveClassAction(this.$score, "ShowSummary"));
-      return seq;
+      return new ParallelSequence()
+        .RemoveClass(this.$score, "ShowCounter")
+        .RemoveClass(this.$score, "ShowSummary");
     },
 
     scoreTickerBumpAction: function() {
@@ -376,88 +358,85 @@
 
     start: function(id, next) {
       this.combo = COMBOS.Get(id);
-      var seq = new RunSequentialActions();
 
-      seq.actions.push(this.hideScoreAction());
-      seq.actions.push(new WaitAction(START_DELAY));
-      seq.actions.push(this.showAction());
-      seq.actions.push(this.renderSequenceAction());
-      seq.actions.push(new WaitAction(0.5));
-      seq.actions.push(this.showSplashAction());
-      seq.actions.push(new RunFunctionAction(this.progress.bind(this), this.combo.id, 0, next));
+      var seq = new Sequence()
+        .Action(this.hideScoreAction())
+        .Wait(START_DELAY)
+        .Action(this.showAction())
+        .Action(this.renderSequenceAction())
+        .Wait(0.5)
+        .Action(this.showSplashAction())
+        .RunFunction(this, this.progress, this.combo.id, 0, next);
 
       this.debugFn(function() {
         return ["start()", { id: this.combo.id }];
       });
 
-      return RunSingleAction(seq);
+      return seq.Start();
     },
 
     stop: function(id) {
       this.combo = null;
-      var seq = new RunSequentialActions();
 
-      seq.actions.push(this.hideAction());
+      var seq = new Sequence().Action(this.hideAction());
 
       this.debugFn(function() {
         return ["stop()", { id: id }];
       });
 
-      return RunSingleAction(seq);
+      return seq.Start();
     },
 
     progress: function(id, count, next) {
       count = count || 0;
       next = LuaListTableToArray(next);
 
-      var seq = new RunSequentialActions();
+      var seq = new Sequence();
 
       if (count > 0) {
-        seq.actions.push(this.hideSplashAction());
+        seq.Action(this.hideSplashAction());
       }
 
-      seq.actions.push(this.clearFailedStepPanelsAction(this.combo.sequence));
-      seq.actions.push(this.deactivateStepPanelsAction(this.combo.sequence));
-      seq.actions.push(this.activateStepPanelsAction(next));
-      seq.actions.push(this.updateCounterAction(count));
+      seq
+        .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
+        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
+        .Action(this.activateStepPanelsAction(next))
+        .Action(this.updateCounterAction(count));
 
       this.debugFn(function() {
         return ["progress()", { id: id, count: count, next: next }];
       });
 
-      return RunSingleAction(seq);
+      return seq.Start();
     },
 
     finish: function(id, count, damage) {
       count = count || 0;
       damage = damage || 0;
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.playFinishedSoundAction());
-      seq.actions.push(this.deactivateStepPanelsAction(this.combo.sequence));
-      seq.actions.push(this.bumpStepPanelsAction(this.combo.sequence));
-      seq.actions.push(this.updateSummaryAction(count, damage));
+      var seq = new Sequence()
+        .Action(this.playFinishedSoundAction())
+        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
+        .Action(this.bumpStepPanelsAction(this.combo.sequence))
+        .Action(this.updateSummaryAction(count, damage));
 
       this.debugFn(function() {
         return ["finish()", { id: id, count: count, damage: damage }];
       });
 
-      return RunSingleAction(seq);
+      return seq.Start();
     },
 
     fail: function(id, expected /*, ability*/) {
       expected = LuaListTableToArray(expected);
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.failStepPanelsAction(expected));
+      var seq = new Sequence().Action(this.failStepPanelsAction(expected));
 
       this.debugFn(function() {
         return ["fail()", { id: id, expected: expected }];
       });
 
-      return RunSingleAction(seq);
+      return seq.Start();
     },
 
     sendStop: function() {
@@ -495,7 +474,7 @@
       .reverse()
       .join("");
 
-    var seq = new RunSequentialActions();
+    var seq = new Sequence();
 
     for (var i = 0; i < length; i++) {
       (function() {
@@ -507,10 +486,10 @@
 
         if (panel.__esdigit__ != null) {
           digitClass = "digit_" + panel.__esdigit__;
-          seq.actions.push(new RemoveClassAction(panel, digitClass));
+          seq.RemoveClass(panel, digitClass);
         }
 
-        seq.actions.push(new RemoveClassAction(panel, "ESDigitHidden"));
+        seq.RemoveClass(panel, "ESDigitHidden");
         panel.__esdigit__ = digit;
 
         if (digit == null) {
@@ -519,7 +498,7 @@
           digitClass = "digit_" + digit;
         }
 
-        seq.actions.push(new AddClassAction(panel, digitClass));
+        seq.AddClass(panel, digitClass);
       })();
     }
 
@@ -527,10 +506,10 @@
   }
 
   function spinDigitsAction(container, value, length, increment, callbacks) {
-    var seq = new RunSequentialActions();
-
     increment = increment || 1;
     callbacks = callbacks || {};
+
+    var seq = new Sequence();
 
     for (var n = 0; ; n += increment) {
       if (n > value) n = value;
@@ -538,20 +517,20 @@
       (function() {
         var nn = Math.ceil(n);
 
-        seq.actions.push(updateDigitsAction(container, nn, length));
+        seq.Action(updateDigitsAction(container, nn, length));
 
         if (callbacks.onSpin) {
-          seq.actions.push(new RunFunctionAction(callbacks.onSpin, nn));
+          seq.RunFunction(callbacks.onSpin, nn);
         }
 
-        seq.actions.push(new WaitAction(SPIN_DIGITS_INTERVAL));
+        seq.Wait(SPIN_DIGITS_INTERVAL);
       })();
 
       if (n === value) break;
     }
 
     if (callbacks.onEnd) {
-      seq.actions.push(new RunFunctionAction(callbacks.onEnd));
+      seq.RunFunction(callbacks.onEnd);
     }
 
     return seq;

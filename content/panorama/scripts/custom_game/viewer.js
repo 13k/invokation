@@ -3,13 +3,10 @@
 (function(global, context) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var Sequence = global.Sequence.Sequence;
+  var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
-  var RunSequentialActions = context.RunSequentialActions;
-  var RunFunctionAction = context.RunFunctionAction;
-  var AddClassAction = context.AddClassAction;
-  var RemoveClassAction = context.RemoveClassAction;
-  var RunSingleAction = context.RunSingleAction;
 
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
@@ -46,14 +43,6 @@
       this.view(payload.combo);
     },
 
-    setTitle: function(title) {
-      this.$titleLabel.text = title;
-    },
-
-    setDescription: function(description) {
-      this.$descriptionLabel.text = description;
-    },
-
     createStepPanel: function(parent, step) {
       var id = "combo_step_" + step.id + "_" + step.name;
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
@@ -63,25 +52,16 @@
       return panel;
     },
 
-    scrollToTop: function() {
-      return this.$scrollPanel.ScrollToTop();
-    },
-
     renderAction: function() {
       this.debug("render()");
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.renderInfoAction());
-      seq.actions.push(this.renderSequenceAction());
-      seq.actions.push(this.scrollToTopAction());
-
-      return seq;
+      return new Sequence()
+        .Action(this.renderInfoAction())
+        .Action(this.renderSequenceAction())
+        .ScrollToTop(this.$scrollPanel);
     },
 
     renderInfoAction: function() {
-      var seq = new RunSequentialActions();
-
       var title = _.chain(this.combo.l10n.name)
         .split(" - ")
         .map(function(line, i) {
@@ -94,10 +74,9 @@
       var descriptionL10nID = this.combo.id + "__description";
       var description = this.localizeFallback(descriptionL10nID, L10N_FALLBACK_IDS.description);
 
-      seq.actions.push(new RunFunctionAction(this.setTitle.bind(this), title));
-      seq.actions.push(new RunFunctionAction(this.setDescription.bind(this), description));
-
-      return seq;
+      return new Sequence()
+        .SetAttribute(this.$titleLabel, "text", title)
+        .SetAttribute(this.$descriptionLabel, "text", description);
     },
 
     resetSequenceAction: function() {
@@ -109,55 +88,37 @@
     },
 
     renderSequenceAction: function() {
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.resetSequenceAction());
-      seq.actions.push.apply(
-        seq.actions,
-        _.map(
-          this.combo.sequence,
-          _.bind(this.createStepPanelAction, this, this.$sequenceContainer)
-        )
+      var actions = _.map(
+        this.combo.sequence,
+        _.bind(this.createStepPanelAction, this, this.$sequenceContainer)
       );
 
-      return seq;
+      return new Sequence().RemoveChildren(this.$sequenceContainer).Action(actions);
     },
 
     createStepPanelAction: function(parent, step) {
       return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
     },
 
-    scrollToTopAction: function() {
-      return new RunFunctionAction(this.scrollToTop.bind(this));
-    },
-
     view: function(combo) {
       this.combo = combo;
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.renderAction());
-      seq.actions.push(this.openAction());
-
-      return RunSingleAction(seq);
+      return new Sequence()
+        .Action(this.renderAction())
+        .Action(this.openAction())
+        .Start();
     },
 
     openAction: function() {
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(new RemoveClassAction(this.$ctx, "Closed"));
-      seq.actions.push(new AddClassAction(this.$container, "Initialize"));
-
-      return seq;
+      return new Sequence()
+        .RemoveClass(this.$ctx, "Closed")
+        .AddClass(this.$container, "Initialize");
     },
 
     closeAction: function() {
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(new RemoveClassAction(this.$container, "Initialize"));
-      seq.actions.push(new AddClassAction(this.$ctx, "Closed"));
-
-      return seq;
+      return new Sequence()
+        .RemoveClass(this.$container, "Initialize")
+        .AddClass(this.$ctx, "Closed");
     },
 
     startCombo: function() {
@@ -166,7 +127,7 @@
     },
 
     Close: function() {
-      return RunSingleAction(this.closeAction());
+      return this.closeAction().Start();
     },
 
     Play: function() {
@@ -176,7 +137,7 @@
 
     Reload: function() {
       this.debug("Reload()");
-      return RunSingleAction(this.renderAction());
+      return this.renderAction().Start();
     },
   });
 

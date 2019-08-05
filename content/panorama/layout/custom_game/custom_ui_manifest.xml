@@ -2,6 +2,8 @@
   <scripts>
     <include src="file://{resources}/scripts/vendor/lodash.js" />
 
+    <include src="file://{resources}/scripts/valve/sequence_actions.js" />
+
     <include src="file://{resources}/scripts/lib/const.events.js" />
     <include src="file://{resources}/scripts/lib/const.invoker.js" />
     <include src="file://{resources}/scripts/lib/const.net_tables.js" />
@@ -13,6 +15,7 @@
     <include src="file://{resources}/scripts/lib/grid.js" />
     <include src="file://{resources}/scripts/lib/custom_events.js" />
     <include src="file://{resources}/scripts/lib/combos_collection.js" />
+    <include src="file://{resources}/scripts/lib/sequence.js" />
     <include src="file://{resources}/scripts/lib/component.js" />
 
     <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.js" />

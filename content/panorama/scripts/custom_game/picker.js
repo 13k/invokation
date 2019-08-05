@@ -4,16 +4,12 @@
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
   var COMBOS = global.COMBOS;
+  var Sequence = global.Sequence.Sequence;
+  var ParallelSequence = global.Sequence.ParallelSequence;
+  var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var CreateComponent = context.CreateComponent;
-  var RunSequentialActions = context.RunSequentialActions;
-  var RunParallelActions = context.RunParallelActions;
-  var RunFunctionAction = context.RunFunctionAction;
-  var AddClassAction = context.AddClassAction;
-  var RemoveClassAction = context.RemoveClassAction;
-  var PlaySoundEffectAction = context.PlaySoundEffectAction;
-  var RunSingleAction = context.RunSingleAction;
 
   var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
 
@@ -91,35 +87,29 @@
     renderCombos: function() {
       this.debug("renderCombos()");
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(this.resetCombosAction());
-      seq.actions.push(this.createComboPanelsAction());
-
-      return RunSingleAction(seq);
+      return new Sequence()
+        .Action(this.resetCombosAction())
+        .Action(this.createComboPanelsAction())
+        .Start();
     },
 
     resetCombos: function() {
-      this.$combosContainer.RemoveAndDeleteChildren();
       this.comboColumns = {};
     },
 
     resetCombosAction: function() {
-      return new RunFunctionAction(this.resetCombos.bind(this));
+      return new Sequence()
+        .RemoveChildren(this.$combosContainer)
+        .RunFunction(this, this.resetCombos);
     },
 
     createComboPanelsAction: function() {
-      var seq = new RunSequentialActions();
-
-      seq.actions.push.apply(
-        seq.actions,
-        _.map(
-          this.groupedCombos,
-          _.bind(this.createCombosColumnAction, this, this.$combosContainer)
-        )
+      var actions = _.map(
+        this.groupedCombos,
+        _.bind(this.createCombosColumnAction, this, this.$combosContainer)
       );
 
-      return seq;
+      return new Sequence().Action(actions);
     },
 
     createCombosColumn: function(parent, category) {
@@ -138,16 +128,11 @@
     createCombosColumnAction: function(parent, pair) {
       var category = pair[0];
       var combos = pair[1];
-      var seq = new RunSequentialActions();
+      var actions = _.map(combos, _.bind(this.createComboPanelAction, this, category));
 
-      seq.actions.push(new RunFunctionAction(this.createCombosColumn.bind(this), parent, category));
-
-      seq.actions.push.apply(
-        seq.actions,
-        _.map(combos, _.bind(this.createComboPanelAction, this, category))
-      );
-
-      return seq;
+      return new Sequence()
+        .RunFunction(this, this.createCombosColumn, parent, category)
+        .Action(actions);
     },
 
     createComboPanel: function(category, combo) {
@@ -165,7 +150,7 @@
     },
 
     createComboPanelAction: function(category, combo) {
-      return new RunFunctionAction(this.createComboPanel.bind(this), category, combo);
+      return new RunFunctionAction(this, this.createComboPanel, category, combo);
     },
 
     renderViewer: function(combo) {
@@ -181,12 +166,10 @@
         return;
       }
 
-      var seq = new RunParallelActions();
-
-      seq.actions.push(new PlaySoundEffectAction("Shop.PanelUp"));
-      seq.actions.push(new RemoveClassAction(this.$slideout, "DrawerClosed"));
-
-      RunSingleAction(seq);
+      return new ParallelSequence()
+        .PlaySoundEffect("Shop.PanelUp")
+        .RemoveClass(this.$slideout, "DrawerClosed")
+        .Start();
     },
 
     Close: function() {
@@ -194,12 +177,10 @@
         return;
       }
 
-      var seq = new RunParallelActions();
-
-      seq.actions.push(new PlaySoundEffectAction("Shop.PanelDown"));
-      seq.actions.push(new AddClassAction(this.$slideout, "DrawerClosed"));
-
-      RunSingleAction(seq);
+      return new ParallelSequence()
+        .PlaySoundEffect("Shop.PanelDown")
+        .AddClass(this.$slideout, "DrawerClosed")
+        .Start();
     },
 
     Toggle: function() {

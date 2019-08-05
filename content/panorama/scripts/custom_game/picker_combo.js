@@ -1,11 +1,8 @@
 "use strict";
 
-(function(_global, context) {
+(function(global, context) {
+  var Sequence = global.Sequence.Sequence;
   var CreateComponent = context.CreateComponent;
-  var RunSequentialActions = context.RunSequentialActions;
-  var RunFunctionAction = context.RunFunctionAction;
-  var AddClassAction = context.AddClassAction;
-  var RunSingleAction = context.RunSingleAction;
 
   var PickerCombo = CreateComponent({
     constructor: function PickerCombo() {
@@ -22,21 +19,6 @@
       });
     },
 
-    setTitle: function(combo) {
-      this.$titleLabel.text = combo.l10n.name;
-    },
-
-    setHeroLevel: function(combo) {
-      this.$heroLevelLabel.text = combo.heroLevel.toString();
-    },
-
-    setDialogVariables: function(combo) {
-      this.$ctx.SetDialogVariable("specialty", combo.l10n.specialty);
-      this.$ctx.SetDialogVariable("stance", combo.l10n.stance);
-      this.$ctx.SetDialogVariable("damage_rating", combo.l10n.damageRating);
-      this.$ctx.SetDialogVariable("difficulty_rating", combo.l10n.difficultyRating);
-    },
-
     setCombo: function(combo) {
       this.combo = combo;
 
@@ -45,17 +27,18 @@
       var damageClass = "rating_" + combo.damageRating.toString();
       var difficultyClass = "rating_" + combo.difficultyRating.toString();
 
-      var seq = new RunSequentialActions();
-
-      seq.actions.push(new RunFunctionAction(this.setDialogVariables.bind(this), combo));
-      seq.actions.push(new RunFunctionAction(this.setTitle.bind(this), combo));
-      seq.actions.push(new RunFunctionAction(this.setHeroLevel.bind(this), combo));
-      seq.actions.push(new AddClassAction(this.$ctx, specialtyClass));
-      seq.actions.push(new AddClassAction(this.$ctx, stanceClass));
-      seq.actions.push(new AddClassAction(this.$damageRatingButton, damageClass));
-      seq.actions.push(new AddClassAction(this.$difficultyRatingButton, difficultyClass));
-
-      return RunSingleAction(seq);
+      return new Sequence()
+        .SetDialogVariable(this.$ctx, "specialty", combo.l10n.specialty)
+        .SetDialogVariable(this.$ctx, "stance", combo.l10n.stance)
+        .SetDialogVariable(this.$ctx, "damage_rating", combo.l10n.damageRating)
+        .SetDialogVariable(this.$ctx, "difficulty_rating", combo.l10n.difficultyRating)
+        .SetAttribute(this.$titleLabel, "text", combo.l10n.name)
+        .SetAttribute(this.$heroLevelLabel, "text", combo.heroLevel)
+        .AddClass(this.$ctx, specialtyClass)
+        .AddClass(this.$ctx, stanceClass)
+        .AddClass(this.$damageRatingButton, damageClass)
+        .AddClass(this.$difficultyRatingButton, difficultyClass)
+        .Start();
     },
 
     ShowDetails: function() {
