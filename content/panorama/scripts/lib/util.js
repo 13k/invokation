@@ -29,6 +29,24 @@
     return string;
   };
 
+  module.FlattenObjectWith = function(object, path, fn) {
+    path = path || [];
+    fn = fn || _.identity;
+
+    var transform = function(result, value, key) {
+      var subPath = _.concat(path, [key]);
+      var fullKey = _.join(subPath, ".");
+
+      if (_.isPlainObject(value)) {
+        _.assign(result, module.FlattenObjectWith(value, subPath, fn));
+      } else {
+        result[fullKey] = fn(value);
+      }
+    };
+
+    return _.transform(object, transform, {});
+  };
+
   module.IsOrbAbility = function(abilityName) {
     return abilityName in INVOKER.ORB_ABILITIES;
   };

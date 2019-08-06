@@ -20,8 +20,9 @@
       body.constructor = klass;
     }
 
+    klass.id = _.uniqueId(klass.name + ".");
     klass.super = base || Object;
-    klass.prototype = _.create(klass.super.prototype);
+    klass.prototype = _.create(klass.super.prototype, { classid: klass.id });
 
     var assignArgs = _.chain([klass.prototype])
       .concat(mixins)

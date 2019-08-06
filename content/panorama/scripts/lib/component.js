@@ -9,13 +9,6 @@
   var CustomEvents = global.CustomEvents;
   var Prefixer = global.Util.Prefixer;
 
-  function extractComponentName(ctx) {
-    return ctx.layoutfile
-      .replace(/\\/g, "/")
-      .replace("panorama/layout/custom_game/", "")
-      .replace(".xml", "");
-  }
-
   var elemAttrNamer = _.partialRight(Prefixer, "$");
   var elemIDing = _.partialRight(Prefixer, "#");
 
@@ -23,8 +16,8 @@
     constructor: function Component(options) {
       options = options || {};
 
+      this.logger = new Logger({ progname: this.classid });
       this.$ctx = $.GetContextPanel();
-      this.logger = new Logger({ progname: extractComponentName(this.$ctx) });
       this.data = {};
       this.inputs = {};
       this.outputs = new Callbacks();
@@ -33,6 +26,7 @@
       this.setupContextPanel();
       this.findElements(options.elements);
       this.registerInputs(options.inputs);
+      this.unsubscribeAllSiblings();
       this.subscribeAll(options.customEvents);
       this.listenAll(options.elementEvents);
     },
@@ -165,7 +159,7 @@
         event = EVENTS[_.trimStart(event, "!")];
       }
 
-      return CustomEvents.Subscribe(event, fn);
+      return CustomEvents.Subscribe(this.classid, event, fn);
     },
 
     subscribeAll: function(events) {
@@ -174,6 +168,16 @@
 
     unsubscribe: function() {
       return CustomEvents.Unsubscribe.apply(CustomEvents, arguments);
+    },
+
+    unsubscribeAllSiblings: function() {
+      var subscriptions = CustomEvents.UnsubscribeAllSiblings(this.classid);
+
+      this.debugFn(function() {
+        return ["unsubscribeAll", subscriptions];
+      });
+
+      return subscriptions;
     },
 
     sendServer: function() {

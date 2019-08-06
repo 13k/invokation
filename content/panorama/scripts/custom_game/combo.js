@@ -335,6 +335,13 @@
         .RemoveClass(this.$ctx, "Open");
     },
 
+    clearSplashAction: function() {
+      return new ParallelSequence()
+        .RemoveClass(this.$splash, "start")
+        .RemoveClass(this.$splash, "success")
+        .RemoveClass(this.$splash, "failure");
+    },
+
     showSplashAction: function(state) {
       var titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
       var helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
@@ -343,19 +350,19 @@
       var title = $.Localize(titleKey);
       var help = $.Localize(helpKey);
 
-      var setupActions = new ParallelSequence()
+      var actions = new ParallelSequence()
+        .Action(this.clearSplashAction())
         .SetAttribute(this.$splashTitle, "text", title)
         .SetAttribute(this.$splashHelp, "text", help)
-        .RemoveClass(this.$splash, "start")
-        .RemoveClass(this.$splash, "success")
-        .RemoveClass(this.$splash, "failure")
         .AddClass(this.$splash, state);
 
-      return new Sequence().Action(setupActions).AddClass(this.$splash, "Show");
+      return new Sequence().Action(actions).AddClass(this.$splash, "Show");
     },
 
     hideSplashAction: function() {
-      return new RemoveClassAction(this.$splash, "Show");
+      return new ParallelSequence()
+        .Action(this.clearSplashAction())
+        .RemoveClass(this.$splash, "Show");
     },
 
     showScoreCounterAction: function() {
