@@ -15,8 +15,8 @@
 
     <Panel id="Splash" hittest="false" hittestchildren="false">
       <Panel class="Box">
-        <Label id="SplashTitle" text="#invokation_combo_splash_start_1" class="Title" />
-        <Label id="SplashHelp" text="#invokation_combo_splash_start_help" class="Help" />
+        <Label id="SplashTitle" text="#invokation_combo_splash_start_title__1" class="Title" />
+        <Label id="SplashHelp" text="#invokation_combo_splash_start_help__1" class="Help" />
       </Panel>
     </Panel>
 
