@@ -4,9 +4,9 @@
   var Class = global.Class;
   var ComboStep = context.ComboStep;
 
-  var ComboComboStep = Class(ComboStep, {
-    constructor: function ComboComboStep() {
-      ComboComboStep.super.call(this, {
+  var ChallengeComboStep = Class(ComboStep, {
+    constructor: function ChallengeComboStep() {
+      ChallengeComboStep.super.call(this, {
         inputs: {
           SetStepActive: "onSetActive",
           UnsetStepActive: "onUnsetActive",
@@ -48,5 +48,5 @@
     },
   });
 
-  context.comboStep = new ComboComboStep();
+  context.comboStep = new ChallengeComboStep();
 })(GameUI.CustomUIConfig(), this);

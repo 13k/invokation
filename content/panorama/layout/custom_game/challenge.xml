@@ -1,11 +1,11 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/combo.js" />
+    <include src="file://{resources}/scripts/custom_game/challenge.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/combo.css" />
+    <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
   <Panel class="Root HudVisible" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
@@ -22,23 +22,23 @@
 
     <Panel class="Controls TranslucentPanel" hittest="false">
       <Panel class="ControlIcon">
-        <Button class="InfoIcon IconButton Grey" onactivate="combo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+        <Button class="InfoIcon IconButton Grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ControlIcon">
-        <Button class="EyeIcon IconButton Grey" onactivate="combo.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
+        <Button class="EyeIcon IconButton Grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ControlIcon">
-        <Button class="RefreshButton IconButton Blue" onactivate="combo.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="RefreshButton IconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ControlIcon">
-        <Button class="FullRefreshIcon IconButton Bronze" onactivate="combo.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="FullRefreshIcon IconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ControlIcon">
-        <Button class="CloseButton IconButton Red" onactivate="combo.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button class="CloseButton IconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

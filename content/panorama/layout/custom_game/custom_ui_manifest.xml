@@ -26,6 +26,6 @@
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combat_log.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/picker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/viewer.xml" />
-    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combo.xml" />
+    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/challenge.xml" />
   </Panel>
 </root>

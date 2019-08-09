@@ -15,7 +15,7 @@
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
-  var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/combo_combo_step.xml";
+  var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/challenge_combo_step.xml";
 
   var START_DELAY = 0.5;
   var BUMP_DELAY = 0.2;
@@ -70,9 +70,9 @@
     no_hands: "HudNoHands",
   };
 
-  var Combo = CreateComponent({
-    constructor: function Combo() {
-      Combo.super.call(this, {
+  var Challenge = CreateComponent({
+    constructor: function Challenge() {
+      Challenge.super.call(this, {
         elements: [
           "Sequence",
           "Splash",
@@ -666,5 +666,5 @@
     return burstSize;
   }
 
-  context.combo = new Combo();
+  context.challenge = new Challenge();
 })(GameUI.CustomUIConfig(), this);

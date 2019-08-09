@@ -2,11 +2,11 @@
   <scripts>
     <include src="file://{resources}/scripts/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/combo_step.js" />
-    <include src="file://{resources}/scripts/custom_game/combo_combo_step.js" />
+    <include src="file://{resources}/scripts/custom_game/challenge_combo_step.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/combo_combo_step.css" />
+    <include src="file://{resources}/styles/custom_game/challenge_combo_step.css" />
   </styles>
 
   <Panel class="ComboStep">
