@@ -174,6 +174,10 @@
       var subscriptions = CustomEvents.UnsubscribeAllSiblings(this.classid);
 
       this.debugFn(function() {
+        if (!subscriptions) {
+          return null;
+        }
+
         return ["unsubscribeAll", subscriptions];
       });
 

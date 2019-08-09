@@ -67,6 +67,7 @@
     "invokation_combo_tooltip_difficulty_rating_3" "Medium"
     "invokation_combo_tooltip_difficulty_rating_4" "Hard"
     "invokation_combo_tooltip_difficulty_rating_5" "Very hard"
+    "invokation_combo_tooltip_hud" "HUD: {s:hud_visibility}"
 
     "invokation_combo_specialty_qw" "Quas/Wex"
     "invokation_combo_specialty_qe" "Quas/Exort"
@@ -74,6 +75,10 @@
 
     "invokation_combo_stance_defensive" "Defensive"
     "invokation_combo_stance_offensive" "Offensive"
+
+    "invokation_combo_hud_visibility_visible" "Visible"
+    "invokation_combo_hud_visibility_hide_sequence" "Hidden sequence"
+    "invokation_combo_hud_visibility_no_hands" "Look ma, no hands!"
 
     "invokation_combo_group_baller" "Baller (Damage over time)"
     "invokation_combo_group_striker" "Striker (Burst Damage)"

@@ -10,6 +10,7 @@
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var AddClassAction = global.Sequence.AddClassAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
+  var SetDialogVariableAction = global.Sequence.SetDialogVariableAction;
   var LuaListTableToArray = global.Util.LuaListTableToArray;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
@@ -54,7 +55,6 @@
 
   var SOUND_EVENTS = {
     success: "kidvoker_takeover_stinger",
-    // failure: "General.InvalidTarget_Invulnerable",
     failure: "ui.death_stinger",
   };
 
@@ -62,6 +62,12 @@
     start: { title: 1, help: 1 },
     success: { title: 2, help: 7 },
     failure: { title: 3, help: 9 },
+  };
+
+  var HUD_VISIBILITY_CLASSES = {
+    visible: "HudVisible",
+    hide_sequence: "HudHideSequence",
+    no_hands: "HudNoHands",
   };
 
   var Combo = CreateComponent({
@@ -96,6 +102,8 @@
         },
       });
 
+      this.hudMode = "visible";
+      this.initHudVisibility(this.hudMode);
       this.debug("init");
     },
 
@@ -324,6 +332,10 @@
         .Action(spinAction);
     },
 
+    hudErrorAction: function(message) {
+      return new RunFunctionAction(this.hudError.bind(this), message);
+    },
+
     showAction: function() {
       return new AddClassAction(this.$ctx, "Open");
     },
@@ -333,6 +345,39 @@
         .Action(this.hideSplashAction())
         .Action(this.hideScoreAction())
         .RemoveClass(this.$ctx, "Open");
+    },
+
+    initHudVisibility: function(mode) {
+      return new Sequence()
+        .Action(this.updateHudVisibilityTooltipAction(mode))
+        .Action(this.resetHudVisibilityActions())
+        .AddClass(this.$ctx, HUD_VISIBILITY_CLASSES[mode])
+        .Start();
+    },
+
+    resetHudVisibilityActions: function() {
+      return _.map(
+        HUD_VISIBILITY_CLASSES,
+        function(cls) {
+          return new RemoveClassAction(this.$ctx, cls);
+        }.bind(this)
+      );
+    },
+
+    updateHudVisibilityTooltipAction: function(mode) {
+      var hudVisibilityTooltip = $.Localize("#invokation_combo_hud_visibility_" + mode);
+      return new SetDialogVariableAction(this.$ctx, "hud_visibility", hudVisibilityTooltip);
+    },
+
+    switchHudAction: function(prevMode, nextMode) {
+      var prevClass = HUD_VISIBILITY_CLASSES[prevMode];
+      var nextClass = HUD_VISIBILITY_CLASSES[nextMode];
+      var heroHudFn = nextMode === "no_hands" ? this.hideActionPanelUI : this.showActionPanelUI;
+
+      return new Sequence()
+        .Action(this.updateHudVisibilityTooltipAction(nextMode))
+        .ReplaceClass(this.$ctx, prevClass, nextClass)
+        .RunFunction(this, heroHudFn);
     },
 
     clearSplashAction: function() {
@@ -503,6 +548,30 @@
     ShowDetails: function() {
       this.debug("ShowDetails()");
       this.sendRenderViewer(this.combo);
+    },
+
+    ToggleHUD: function() {
+      var prevMode = this.hudMode;
+      var nextMode;
+
+      switch (prevMode) {
+        case "visible":
+          nextMode = "hide_sequence";
+          break;
+        case "hide_sequence":
+          nextMode = "no_hands";
+          break;
+        case "no_hands":
+          nextMode = "visible";
+          break;
+      }
+
+      this.hudMode = nextMode;
+      this.switchHudAction(prevMode, nextMode).Start();
+
+      this.debugFn(function() {
+        return ["ToggleHUD()", { prev: prevMode, next: nextMode }];
+      });
     },
   });
 

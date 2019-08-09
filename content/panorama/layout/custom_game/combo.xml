@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/combo.css" />
   </styles>
 
-  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root HudVisible" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
     <Panel class="Combo" hittest="false">
       <Panel id="Sequence" hittest="false" />
     </Panel>
@@ -23,6 +23,10 @@
     <Panel class="Controls TranslucentPanel" hittest="false">
       <Panel class="ControlIcon">
         <Button class="InfoIcon IconButton Grey" onactivate="combo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ControlIcon">
+        <Button class="EyeIcon IconButton Grey" onactivate="combo.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ControlIcon">

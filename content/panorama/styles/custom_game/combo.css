@@ -3,7 +3,7 @@
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
 @define sequenceWidth: 150px;
-@define controlsMarginRight: 200px;
+@define controlsMarginRight: 0;
 
 .Root {
   visibility: collapse;
@@ -23,9 +23,18 @@
   width: sequenceWidth;
   height: 100%;
   padding-top: 80px;
-  padding-bottom: 20px;
+  padding-bottom: 80px;
   horizontal-align: right;
   background-color: comboPanelGradient;
+}
+
+.HudVisible .Combo {
+  visibility: visible;
+}
+
+.HudHideSequence .Combo,
+.HudNoHands .Combo {
+  visibility: collapse;
 }
 
 #Sequence {
@@ -124,6 +133,7 @@
   height: 100%;
   margin: 0;
   vertical-align: center;
+  tooltip-position: top;
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
@@ -134,6 +144,19 @@
 
 .Controls .InfoIcon {
   background-size: 30px 30px;
+}
+
+.Controls .EyeIcon {
+  background-image: controlsEyeIcon;
+  background-size: 32px 32px;
+}
+
+.HudHideSequence .Controls .ControlIcon .EyeIcon {
+  wash-color: #646464;
+}
+
+.HudNoHands .Controls .ControlIcon .EyeIcon {
+  wash-color: #3e3e3e;
 }
 
 .Controls .FullRefreshIcon {

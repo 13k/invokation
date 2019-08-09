@@ -55,6 +55,10 @@
 
     var values = fn();
 
+    if (!values) {
+      return;
+    }
+
     if (!_.isArray(values)) {
       values = [values];
     }
