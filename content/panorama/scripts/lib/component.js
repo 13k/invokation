@@ -196,6 +196,36 @@
       return CustomEvents.SendClientSide.apply(CustomEvents, arguments);
     },
 
+    // ----- Game UI -----
+
+    hudError: function(message, soundEvent) {
+      return GameUI.SendCustomHUDError(message, soundEvent);
+    },
+
+    setUI: function(uiElement, state) {
+      if (_.isString(uiElement)) {
+        uiElement = DotaDefaultUIElement_t[uiElement];
+      }
+
+      return GameUI.SetDefaultUIEnabled(uiElement, state);
+    },
+
+    showUI: function(uiElement) {
+      return this.setUI(uiElement, true);
+    },
+
+    hideUI: function(uiElement) {
+      return this.setUI(uiElement, false);
+    },
+
+    hideActionPanelUI: function() {
+      return this.hideUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+    },
+
+    showActionPanelUI: function() {
+      return this.showUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+    },
+
     // ----- Element (Panel) Utils & Events -----
 
     // findElements([ "ElementID1", "#ElementID2", ... ])
