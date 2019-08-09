@@ -1,0 +1,57 @@
+<!-- Combo Score (shamelessly rippped from ES arcana) -->
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/combo_score.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/combo_score.css" />
+  </styles>
+
+  <Panel class="Root" hittest="false" hittestchildren="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel class="Counter">
+      <Panel class="SplashBackground">
+        <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
+      </Panel>
+
+      <Panel class="Content">
+        <Panel id="CounterTicker" class="DigitContainer">
+          <Panel class="ESDigitX" />
+          <Panel id="CounterTickerDigit0" class="ESDigit" />
+          <Panel id="CounterTickerDigit1" class="ESDigit" />
+          <Panel id="CounterTickerDigit2" class="ESDigit" />
+        </Panel>
+        <Label class="Label" text="#invokation_combo_counter_title" />
+      </Panel>
+    </Panel>
+
+    <Panel class="Summary">
+      <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
+      <Panel class="SplashBackground" />
+
+      <Panel class="Content">
+        <Panel class="Count">
+          <Panel id="SummaryCountDisplay" class="DigitContainer">
+            <Panel class="ESDigitX" />
+            <Panel id="SummaryCountDisplayDigit0" class="ESDigit" />
+            <Panel id="SummaryCountDisplayDigit1" class="ESDigit" />
+            <Panel id="SummaryCountDisplayDigit2" class="ESDigit" />
+          </Panel>
+          <Label class="Label" text="#invokation_combo_counter_title" />
+        </Panel>
+
+        <Panel class="Damage">
+          <Panel id="SummaryDamageTicker" class="DigitContainer">
+            <Panel id="SummaryDamageTickerDigit0" class="ESDigit" />
+            <Panel id="SummaryDamageTickerDigit1" class="ESDigit" />
+            <Panel id="SummaryDamageTickerDigit2" class="ESDigit" />
+            <Panel id="SummaryDamageTickerDigit3" class="ESDigit" />
+            <Panel id="SummaryDamageTickerDigit4" class="ESDigit" />
+          </Panel>
+          <Label class="Label" text="#invokation_combo_counter_damage_label" />
+        </Panel>
+      </Panel>
+    </Panel>
+  </Panel>
+</root>

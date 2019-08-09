@@ -42,52 +42,6 @@
       </Panel>
     </Panel>
 
-    <!-- Score (shamelessly rippped from ES arcana) -->
-
-    <Panel id="Score" class="Level2" hittest="false" hittestchildren="false">
-      <Panel class="Counter">
-        <Panel class="SplashBackground">
-          <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
-        </Panel>
-
-        <Panel class="Content">
-          <Panel id="CounterTicker" class="DigitContainer">
-            <Panel class="ESDigitX" />
-            <Panel id="CounterTickerDigit0" class="ESDigit" />
-            <Panel id="CounterTickerDigit1" class="ESDigit" />
-            <Panel id="CounterTickerDigit2" class="ESDigit" />
-          </Panel>
-          <Label class="Label" text="#invokation_combo_counter_title" />
-        </Panel>
-      </Panel>
-
-      <Panel class="Summary">
-        <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
-        <Panel class="SplashBackground" />
-
-        <Panel class="Content">
-          <Panel class="Count">
-            <Panel id="SummaryCountDisplay" class="DigitContainer">
-              <Panel class="ESDigitX" />
-              <Panel id="SummaryCountDisplayDigit0" class="ESDigit" />
-              <Panel id="SummaryCountDisplayDigit1" class="ESDigit" />
-              <Panel id="SummaryCountDisplayDigit2" class="ESDigit" />
-            </Panel>
-            <Label class="Label" text="#invokation_combo_counter_title" />
-          </Panel>
-
-          <Panel class="Damage">
-            <Panel id="SummaryDamageTicker" class="DigitContainer">
-              <Panel id="SummaryDamageTickerDigit0" class="ESDigit" />
-              <Panel id="SummaryDamageTickerDigit1" class="ESDigit" />
-              <Panel id="SummaryDamageTickerDigit2" class="ESDigit" />
-              <Panel id="SummaryDamageTickerDigit3" class="ESDigit" />
-              <Panel id="SummaryDamageTickerDigit4" class="ESDigit" />
-            </Panel>
-            <Label class="Label" text="#invokation_combo_counter_damage_label" />
-          </Panel>
-        </Panel>
-      </Panel>
-    </Panel>
+    <Panel id="Score" />
   </Panel>
 </root>

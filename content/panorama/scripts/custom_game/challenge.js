@@ -16,42 +16,10 @@
   var CreateComponent = context.CreateComponent;
 
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/challenge_combo_step.xml";
+  var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
 
   var START_DELAY = 0.5;
   var BUMP_DELAY = 0.2;
-  var COUNTER_DIGITS = 3;
-  var DAMAGE_DIGITS = 5;
-  var DAMAGE_SPIN_ITERATIONS = 30;
-  var SPIN_DIGITS_INTERVAL = 0.05;
-
-  var SHAKER_FX_ENTS = {
-    // scenes/hud/ui_es_arcana_combo_ambient
-    counter: {
-      level1: {
-        ambient: "combo_ambient_level_1",
-        burst2: "combo_burst_2_level_1",
-      },
-      level2: {
-        ambient: "combo_ambient_level_2",
-        burst2: "combo_burst_2_level_2",
-      },
-    },
-    // scenes/hud/ui_es_arcana_combo_summary
-    summary: {
-      level1: {
-        ambient: "combo_ambient_level_1",
-        burst2_1: "combo_burst_2_level1", // ?
-        burst2: "combo_burst_2_level_1",
-        burst3: "combo_burst_3_level_1",
-      },
-      level2: {
-        ambient: "combo_ambient_level_2",
-        burst1: "combo_burst_1_level_2",
-        burst2: "combo_burst_2_level_2",
-        burst3: "combo_burst_3_level_2",
-      },
-    },
-  };
 
   var SOUND_EVENTS = {
     success: "kidvoker_takeover_stinger",
@@ -73,18 +41,7 @@
   var Challenge = CreateComponent({
     constructor: function Challenge() {
       Challenge.super.call(this, {
-        elements: [
-          "Sequence",
-          "Splash",
-          "SplashTitle",
-          "SplashHelp",
-          "Score",
-          "CounterTicker",
-          "SummaryCountDisplay",
-          "SummaryDamageTicker",
-          "CounterFX",
-          "SummaryFX",
-        ],
+        elements: ["Sequence", "Splash", "SplashTitle", "SplashHelp", "Score"],
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
           "!COMBO_STOPPED": "onComboStopped",
@@ -92,20 +49,15 @@
           "!COMBO_STEP_ERROR": "onComboStepError",
           "!COMBO_FINISHED": "onComboFinished",
         },
-        elementEvents: {
-          counterFx: {
-            DOTAScenePanelSceneLoaded: "counterFxAmbientStart",
-          },
-          summaryFx: {
-            DOTAScenePanelSceneLoaded: "summaryFxAmbientStart",
-          },
-        },
       });
 
       this.hudMode = "visible";
+      this.$comboScore = this.createComboScorePanel(this.$score);
       this.initHudVisibility(this.hudMode);
       this.debug("init");
     },
+
+    // --- Event handlers -----
 
     onComboStarted: function(payload) {
       this.debug("onComboStarted()", payload);
@@ -132,73 +84,33 @@
       this.finish(payload.combo, payload.count, payload.damage);
     },
 
-    counterFxAmbientStart: function() {
-      this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.ambient, "Start", "0");
+    // ----- Helpers -----
+
+    sendStop: function() {
+      this.sendServer(EVENTS.COMBO_STOP);
     },
 
-    counterFxBurstStart: function() {
-      this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Start", "0");
+    sendRestart: function(isHardReset) {
+      this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
     },
 
-    counterFxBurstStop: function() {
-      this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Stop", "0");
+    sendRenderViewer: function(combo) {
+      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
     },
 
-    summaryFxAmbientStart: function() {
-      this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2.ambient, "Start", "0");
-    },
-
-    summaryFxBurstStart: function(size) {
-      var key = "burst" + size;
-      this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Start", "0");
-    },
-
-    summaryFxBurstStop: function(size) {
-      var key = "burst" + size;
-      this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Stop", "0");
-    },
-
-    renderSequenceAction: function() {
-      this.stepsPanels = {};
-
-      var bumpSeq = this.staggeredSequenceOnStepPanels(
-        BUMP_DELAY,
-        this.combo.sequence,
-        this.bumpStepPanel
-      );
-
-      return new Sequence()
-        .Action(this.resetSequenceAction())
-        .Action(this.createStepPanelsAction())
-        .Action(bumpSeq);
-    },
-
-    resetSequenceAction: function() {
-      return new Sequence().ScrollToTop(this.$sequence).RemoveChildren(this.$sequence);
-    },
-
-    createStepPanelsAction: function() {
-      var createActions = _.map(
-        this.combo.sequence,
-        _.bind(this.createStepPanelAction, this, this.$sequence)
-      );
-
-      return new Sequence().Action(createActions);
+    createComboScorePanel: function(parent) {
+      return CreatePanelWithLayout(parent, "ComboScore", COMBO_SCORE_LAYOUT);
     },
 
     createStepPanel: function(parent, step) {
       var id = "combo_step_" + step.name + "_" + step.id.toString();
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
 
-      panel.component.Input("SetStep", { combo: this.combo, step: step });
-
       this.stepsPanels[step.id] = panel;
 
-      return panel;
-    },
+      panel.component.Input("SetStep", { combo: this.combo, step: step });
 
-    createStepPanelAction: function(parent, step) {
-      return new RunFunctionAction(this, this.createStepPanel, parent, step);
+      return panel;
     },
 
     scrollToStepPanel: function(step) {
@@ -229,6 +141,53 @@
 
     clearFailedStepPanel: function(step) {
       return this.stepPanelInput(step, "UnsetStepError");
+    },
+
+    // ----- Component actions -----
+
+    showAction: function() {
+      return new AddClassAction(this.$ctx, "Open");
+    },
+
+    hideAction: function() {
+      return new ParallelSequence()
+        .Action(this.hideSplashAction())
+        .Action(this.hideScoreAction())
+        .RemoveClass(this.$ctx, "Open");
+    },
+
+    // ----- Sequence actions -----
+
+    renderSequenceAction: function() {
+      this.stepsPanels = {};
+
+      var bumpSeq = this.staggeredSequenceOnStepPanels(
+        BUMP_DELAY,
+        this.combo.sequence,
+        this.bumpStepPanel
+      );
+
+      return new Sequence()
+        .Action(this.resetSequenceAction())
+        .Action(this.createStepPanelsAction())
+        .Action(bumpSeq);
+    },
+
+    resetSequenceAction: function() {
+      return new Sequence().ScrollToTop(this.$sequence).RemoveChildren(this.$sequence);
+    },
+
+    createStepPanelsAction: function() {
+      var createActions = _.map(
+        this.combo.sequence,
+        _.bind(this.createStepPanelAction, this, this.$sequence)
+      );
+
+      return new Sequence().Action(createActions);
+    },
+
+    createStepPanelAction: function(parent, step) {
+      return new RunFunctionAction(this, this.createStepPanel, parent, step);
     },
 
     sequenceActionsOnStepPanels: function(steps, fn) {
@@ -275,85 +234,7 @@
       return this.parallelSequenceOnStepPanels(steps, this.clearFailedStepPanel);
     },
 
-    updateCounterAction: function(count) {
-      var seq = new Sequence();
-
-      if (count < 1) {
-        return seq;
-      }
-
-      return seq
-        .Action(this.showScoreCounterAction())
-        .Wait(0.15)
-        .Action(this.scoreTickerBumpAction())
-        .RunFunction(this, this.counterFxBurstStart)
-        .Action(updateCounterDigitsAction(this.$counterTicker, count))
-        .Wait(0.15)
-        .Action(this.scoreTickerUnbumpAction())
-        .RunFunction(this, this.counterFxBurstStop);
-    },
-
-    updateSummaryAction: function(count, damage) {
-      var seq = new Sequence();
-
-      if (count < 1) {
-        return seq;
-      }
-
-      var increment = damage / DAMAGE_SPIN_ITERATIONS;
-      var appliedFx = {};
-
-      var onSpin = function(damage) {
-        var burstSize = damageBurstSize(damage);
-
-        if (!appliedFx[burstSize]) {
-          this.summaryFxBurstStart(burstSize);
-          appliedFx[burstSize] = true;
-        }
-      };
-
-      var onSpinEnd = function() {
-        _.forOwn(appliedFx, _.rearg(this.summaryFxBurstStop.bind(this), [1]));
-      };
-
-      var callbacks = { onSpin: onSpin.bind(this), onEnd: onSpinEnd.bind(this) };
-      var updateCounterAction = updateCounterDigitsAction(this.$summaryCountDisplay, count);
-      var spinAction = spinDamageDigitsAction(
-        this.$summaryDamageTicker,
-        damage,
-        increment,
-        callbacks
-      );
-
-      return seq
-        .Action(updateCounterAction)
-        .Action(this.showScoreSummaryAction())
-        .Wait(0.15)
-        .Action(spinAction);
-    },
-
-    hudErrorAction: function(message) {
-      return new RunFunctionAction(this.hudError.bind(this), message);
-    },
-
-    showAction: function() {
-      return new AddClassAction(this.$ctx, "Open");
-    },
-
-    hideAction: function() {
-      return new ParallelSequence()
-        .Action(this.hideSplashAction())
-        .Action(this.hideScoreAction())
-        .RemoveClass(this.$ctx, "Open");
-    },
-
-    initHudVisibility: function(mode) {
-      return new Sequence()
-        .Action(this.updateHudVisibilityTooltipAction(mode))
-        .Action(this.resetHudVisibilityActions())
-        .AddClass(this.$ctx, HUD_VISIBILITY_CLASSES[mode])
-        .Start();
-    },
+    // ----- HUD actions -----
 
     resetHudVisibilityActions: function() {
       return _.map(
@@ -379,6 +260,8 @@
         .ReplaceClass(this.$ctx, prevClass, nextClass)
         .RunFunction(this, heroHudFn);
     },
+
+    // ----- Splash actions -----
 
     clearSplashAction: function() {
       return new ParallelSequence()
@@ -410,27 +293,40 @@
         .RemoveClass(this.$splash, "Show");
     },
 
-    showScoreCounterAction: function() {
-      return new AddClassAction(this.$score, "ShowCounter");
+    // ----- Score actions -----
+
+    updateScoreCounterAction: function(count) {
+      return new RunFunctionAction(
+        this.$comboScore.component,
+        this.$comboScore.component.Input,
+        "UpdateCounter",
+        { count: count }
+      );
     },
 
-    showScoreSummaryAction: function() {
-      return new AddClassAction(this.$score, "ShowSummary");
+    updateScoreSummaryAction: function(count, damage) {
+      return new RunFunctionAction(
+        this.$comboScore.component,
+        this.$comboScore.component.Input,
+        "UpdateSummary",
+        { count: count, damage: damage }
+      );
     },
 
     hideScoreAction: function() {
-      return new ParallelSequence()
+      return new Sequence()
         .RemoveClass(this.$score, "Failed")
-        .RemoveClass(this.$score, "ShowCounter")
-        .RemoveClass(this.$score, "ShowSummary");
+        .RunFunction(this.$comboScore.component, this.$comboScore.component.Input, "Hide");
     },
 
-    scoreTickerBumpAction: function() {
-      return new AddClassAction(this.$counterTicker, "CounterBump");
-    },
+    // ----- Action runners -----
 
-    scoreTickerUnbumpAction: function() {
-      return new RemoveClassAction(this.$counterTicker, "CounterBump");
+    initHudVisibility: function(mode) {
+      return new Sequence()
+        .Action(this.updateHudVisibilityTooltipAction(mode))
+        .Action(this.resetHudVisibilityActions())
+        .AddClass(this.$ctx, HUD_VISIBILITY_CLASSES[mode])
+        .Start();
     },
 
     start: function(id, next) {
@@ -443,7 +339,7 @@
         .Action(this.showAction())
         .Action(this.renderSequenceAction())
         .Action(this.showSplashAction("start"))
-        .Wait(0.5)
+        .Wait(0.25)
         .RunFunction(this, this.progress, this.combo.id, 0, next);
 
       this.debugFn(function() {
@@ -479,7 +375,7 @@
         .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.activateStepPanelsAction(next))
-        .Action(this.updateCounterAction(count));
+        .Action(this.updateScoreCounterAction(count));
 
       this.debugFn(function() {
         return ["progress()", { id: id, count: count, next: next, actions: seq.size() }];
@@ -497,7 +393,7 @@
         .Action(this.showSplashAction("success"))
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.bumpStepPanelsAction(this.combo.sequence))
-        .Action(this.updateSummaryAction(count, damage));
+        .Action(this.updateScoreSummaryAction(count, damage));
 
       this.debugFn(function() {
         return ["finish()", { id: id, count: count, damage: damage, actions: seq.size() }];
@@ -523,17 +419,33 @@
       return seq.Start();
     },
 
-    sendStop: function() {
-      this.sendServer(EVENTS.COMBO_STOP);
+    toggleHUD: function() {
+      var prevMode = this.hudMode;
+      var nextMode;
+
+      switch (prevMode) {
+        case "visible":
+          nextMode = "hide_sequence";
+          break;
+        case "hide_sequence":
+          nextMode = "no_hands";
+          break;
+        case "no_hands":
+          nextMode = "visible";
+          break;
+      }
+
+      this.hudMode = nextMode;
+      var seq = this.switchHudAction(prevMode, nextMode);
+
+      this.debugFn(function() {
+        return ["toggleHUD()", { prev: prevMode, next: nextMode, actions: seq.size() }];
+      });
+
+      return seq.Start();
     },
 
-    sendRestart: function(isHardReset) {
-      this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
-    },
-
-    sendRenderViewer: function(combo) {
-      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
-    },
+    // ----- UI methods -----
 
     Restart: function(isHardReset) {
       this.debug("Restart()");
@@ -551,120 +463,9 @@
     },
 
     ToggleHUD: function() {
-      var prevMode = this.hudMode;
-      var nextMode;
-
-      switch (prevMode) {
-        case "visible":
-          nextMode = "hide_sequence";
-          break;
-        case "hide_sequence":
-          nextMode = "no_hands";
-          break;
-        case "no_hands":
-          nextMode = "visible";
-          break;
-      }
-
-      this.hudMode = nextMode;
-      this.switchHudAction(prevMode, nextMode).Start();
-
-      this.debugFn(function() {
-        return ["ToggleHUD()", { prev: prevMode, next: nextMode }];
-      });
+      this.toggleHUD();
     },
   });
-
-  function updateDigitsAction(container, value, length) {
-    var valueRevStr = value
-      .toString()
-      .split("")
-      .reverse()
-      .join("");
-
-    var seq = new Sequence();
-
-    for (var i = 0; i < length; i++) {
-      (function() {
-        var idx = i;
-        var digit = valueRevStr[idx];
-        var panelID = container.id + "Digit" + idx.toString();
-        var panel = container.FindChild(panelID);
-        var digitClass;
-
-        if (panel.__esdigit__ != null) {
-          digitClass = "digit_" + panel.__esdigit__;
-          seq.RemoveClass(panel, digitClass);
-        }
-
-        seq.RemoveClass(panel, "ESDigitHidden");
-        panel.__esdigit__ = digit;
-
-        if (digit == null) {
-          digitClass = "ESDigitHidden";
-        } else {
-          digitClass = "digit_" + digit;
-        }
-
-        seq.AddClass(panel, digitClass);
-      })();
-    }
-
-    return seq;
-  }
-
-  function spinDigitsAction(container, value, length, increment, callbacks) {
-    increment = increment || 1;
-    callbacks = callbacks || {};
-
-    var seq = new Sequence();
-
-    for (var n = 0; ; n += increment) {
-      if (n > value) n = value;
-
-      (function() {
-        var nn = Math.ceil(n);
-
-        seq.Action(updateDigitsAction(container, nn, length));
-
-        if (callbacks.onSpin) {
-          seq.RunFunction(callbacks.onSpin, nn);
-        }
-
-        seq.Wait(SPIN_DIGITS_INTERVAL);
-      })();
-
-      if (n === value) break;
-    }
-
-    if (callbacks.onEnd) {
-      seq.RunFunction(callbacks.onEnd);
-    }
-
-    return seq;
-  }
-
-  function updateCounterDigitsAction(container, value) {
-    return updateDigitsAction(container, value, COUNTER_DIGITS);
-  }
-
-  function spinDamageDigitsAction(container, value, increment, callbacks) {
-    return spinDigitsAction(container, value, DAMAGE_DIGITS, increment, callbacks);
-  }
-
-  function damageBurstSize(damage) {
-    var burstSize;
-
-    if (damage <= 1000) {
-      burstSize = 1;
-    } else if (damage <= 2000) {
-      burstSize = 2;
-    } else {
-      burstSize = 3;
-    }
-
-    return burstSize;
-  }
 
   context.challenge = new Challenge();
 })(GameUI.CustomUIConfig(), this);
