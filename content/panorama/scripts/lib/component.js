@@ -273,9 +273,14 @@
       return list.map(applyListen.bind(this)).value();
     },
 
-    dispatch: function(element, event, payload) {
+    dispatch: function(element, event) {
       element = this.getElement(element);
-      return $.DispatchEvent(event, element, payload);
+
+      var args = [event, element];
+      var eventArgs = _.drop(arguments, 2);
+      args = _.concat(args, eventArgs);
+
+      return $.DispatchEvent.apply($, args);
     },
 
     playSound: function(soundEvent) {
