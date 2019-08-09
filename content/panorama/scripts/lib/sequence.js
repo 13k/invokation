@@ -68,6 +68,22 @@
     },
   });
 
+  var ReplaceClassAction = Class(Action, {
+    constructor: function ReplaceClassAction(panel, className, replacement) {
+      ReplaceClassAction.super.call(this);
+
+      this.panel = panel;
+      this.className = className;
+      this.replacement = replacement;
+    },
+
+    update: function() {
+      this.panel.RemoveClass(this.className);
+      this.panel.AddClass(this.replacement);
+      return false;
+    },
+  });
+
   var SetAttributeAction = Class(Action, {
     constructor: function SetAttributeAction(panel, attribute, value) {
       SetAttributeAction.super.call(this);
@@ -84,27 +100,27 @@
   });
 
   var SetDialogVariableAction = Class(Action, {
-    constructor: function SetDialogVariableAction(panel, dialogVariable, value) {
+    constructor: function SetDialogVariableAction(panel, variable, value) {
       SetDialogVariableAction.super.call(this);
 
       this.panel = panel;
-      this.dialogVariable = dialogVariable;
+      this.variable = variable;
       this.value = value;
     },
 
     update: function() {
-      this.panel.SetDialogVariable(this.dialogVariable, this.value);
+      this.panel.SetDialogVariable(this.variable, this.value);
       return false;
     },
   });
 
   var SetDialogVariableTimeAction = Class(SetDialogVariableAction, {
-    constructor: function SetDialogVariableTimeAction(panel, dialogVariable, value) {
-      SetDialogVariableTimeAction.super.call(this, panel, dialogVariable, value);
+    constructor: function SetDialogVariableTimeAction(panel, variable, value) {
+      SetDialogVariableTimeAction.super.call(this, panel, variable, value);
     },
 
     update: function() {
-      this.panel.SetDialogVariableTime(this.dialogVariable, this.value);
+      this.panel.SetDialogVariableTime(this.variable, this.value);
       return false;
     },
   });
@@ -155,12 +171,11 @@
     },
 
     Action: function(action) {
-      if (_.isArray(action)) {
-        this.actions.push.apply(this.actions, action);
-      } else {
-        this.actions.push(action);
+      if (!_.isArray(action)) {
+        action = [action];
       }
 
+      this.actions.push.apply(this.actions, action);
       return this;
     },
 
@@ -210,6 +225,11 @@
 
     SwitchClass: function(panel, panelSlot, panelClass) {
       this.Action(new SwitchClassAction(panel, panelSlot, panelClass));
+      return this;
+    },
+
+    ReplaceClass: function(panel, className, replacement) {
+      this.Action(new ReplaceClassAction(panel, className, replacement));
       return this;
     },
 
@@ -317,6 +337,7 @@
     AddClassAction: AddClassAction,
     RemoveClassAction: RemoveClassAction,
     SwitchClassAction: SwitchClassAction,
+    ReplaceClassAction: ReplaceClassAction,
     WaitClassAction: WaitClassAction,
     ScrollToTopAction: ScrollToTopAction,
     RemoveChildrenAction: RemoveChildrenAction,
