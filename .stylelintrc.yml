@@ -26,10 +26,12 @@ rules:
     - true
     - ignoreProperties:
         - "align"
+        - "brightness"
         - "flow-children"
         - "horizontal-align"
         - "opacity-mask"
         - "pre-transform-scale2d"
+        - "saturation"
         - "sound"
         - "tooltip-body-position"
         - "tooltip-position"
