@@ -13,6 +13,7 @@
     "invokation_combat_log_clear" "Clear"
 
     "invokation_combos_picker_title" "Select combo"
+    "invokation_combos_picker_freestyle" "Freestyle"
 
     "invokation_combo_category_laning_phase" "Laning Phase"
     "invokation_combo_category_ganking_solo_pick" "Ganking & Solo Pick"

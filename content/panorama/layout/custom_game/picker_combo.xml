@@ -12,12 +12,13 @@
     <Label id="Title" class="PanelTitle" hittest="false" />
 
     <Panel class="InfoContainer">
-      <Button class="ComboIcon InfoIcon" onactivate="pickerCombo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
-      <Button class="ComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
-      <Button class="ComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
       <Button class="ComboIcon HeroLevelIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
         <Label id="HeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
       </Button>
+
+      <Button class="ComboIcon InfoIcon" onactivate="pickerCombo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
 
       <Panel class="RatingsContainer">
         <Panel class="RatingContainer">

@@ -1,0 +1,28 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/freestyle.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/freestyle.css" />
+  </styles>
+
+  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+    <Panel class="Controls TranslucentPanel" hittest="false">
+      <Panel class="ControlIcon">
+        <Button class="RefreshButton IconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ControlIcon">
+        <Button class="FullRefreshIcon IconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ControlIcon">
+        <Button class="CloseButton IconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+    </Panel>
+
+    <Panel id="Score" />
+  </Panel>
+</root>

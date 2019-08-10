@@ -21,6 +21,25 @@
     COMBAT_LOG_CAPTURE_STOP: "invokation_combat_log_capture_stop",
   };
 
-  global.Const = global.Const || {};
+  var INVOKER = {};
+
+  INVOKER.ABILITY_QUAS = "invoker_quas";
+  INVOKER.ABILITY_WEX = "invoker_wex";
+  INVOKER.ABILITY_EXORT = "invoker_exort";
+  INVOKER.ABILITY_INVOKE = "invoker_invoke";
+
+  INVOKER.ORB_ABILITIES = {};
+  INVOKER.ORB_ABILITIES[INVOKER.ABILITY_QUAS] = true;
+  INVOKER.ORB_ABILITIES[INVOKER.ABILITY_WEX] = true;
+  INVOKER.ORB_ABILITIES[INVOKER.ABILITY_EXORT] = true;
+
+  var NET_TABLES = {
+    DEFAULT: "invokation",
+  };
+
+  global.Const = {};
   global.Const.EVENTS = EVENTS;
+  global.Const.INVOKER = INVOKER;
+  global.Const.NET_TABLES = NET_TABLES;
+  global.Const.FREESTYLE_COMBO_ID = "freestyle";
 })(GameUI.CustomUIConfig(), this);

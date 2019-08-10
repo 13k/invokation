@@ -3,6 +3,7 @@
 (function(global, context) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
   var COMBOS = global.COMBOS;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
@@ -60,26 +61,46 @@
     // --- Event handlers -----
 
     onComboStarted: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
       this.debug("onComboStarted()", payload);
       this.start(payload.combo, payload.next);
     },
 
     onComboStopped: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
       this.debug("onComboStopped()", payload);
       this.stop(payload.combo);
     },
 
     onComboProgress: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
       this.debug("onComboProgress()", payload);
       this.progress(payload.combo, payload.count, payload.next);
     },
 
     onComboStepError: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
       this.debug("onComboStepError()", payload);
       this.fail(payload.combo, payload.expected, payload.ability);
     },
 
     onComboFinished: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
       this.debug("onComboFinished()", payload);
       this.finish(payload.combo, payload.count, payload.damage);
     },
@@ -99,7 +120,9 @@
     },
 
     createComboScorePanel: function(parent) {
-      return CreatePanelWithLayout(parent, "ComboScore", COMBO_SCORE_LAYOUT);
+      var panel = CreatePanelWithLayout(parent, "ComboScore", COMBO_SCORE_LAYOUT);
+      panel.AddClass("Level2");
+      return panel;
     },
 
     createStepPanel: function(parent, step) {
@@ -448,7 +471,10 @@
     // ----- UI methods -----
 
     Restart: function(isHardReset) {
-      this.debug("Restart()");
+      this.debugFn(function() {
+        return ["Restart()", { isHardReset: isHardReset }];
+      });
+
       this.sendRestart(!!isHardReset);
     },
 

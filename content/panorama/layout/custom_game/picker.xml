@@ -24,6 +24,11 @@
           <Button class="RefreshButton" onactivate="picker.Reload()" />
           <Label class="PickerTitle PanelTitle" text="#invokation_combos_picker_title" hittest="false" />
         </Panel>
+
+        <Button class="FreestyleButton" onactivate="picker.Freestyle()">
+          <Label class="FreestyleLabel" text="#invokation_combos_picker_freestyle" hittest="false" />
+        </Button>
+
         <Panel id="CombosContainer" />
       </Panel>
 

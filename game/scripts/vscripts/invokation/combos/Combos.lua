@@ -9,6 +9,7 @@ local CombosComm = require("invokation.combos.communication")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
 local ABILITY_LIST = require("invokation.const.ability_list")
+local FreestyleCombo = require("invokation.combos.FreestyleCombo")
 
 local NET_TABLE_KEY = "combos"
 
@@ -88,6 +89,10 @@ function M:getPlayerState(player, key, default)
 end
 
 function M:createCombo(comboID)
+  if comboID == FreestyleCombo.COMBO_ID then
+    return FreestyleCombo()
+  end
+
   local spec = self.specs[comboID]
 
   if spec == nil then
@@ -292,6 +297,7 @@ function M:OnEntityHurt(damage)
   end
 
   combo:IncrementDamage(damage.amount)
+  CombosComm.sendProgress(player, combo)
 end
 
 return M

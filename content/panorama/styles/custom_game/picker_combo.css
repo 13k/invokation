@@ -21,12 +21,13 @@
 
 .HeroCombo .InfoContainer {
   flow-children: right;
+  margin-top: 8px;
 }
 
 .HeroCombo .ComboIcon {
   width: 28px;
   height: 28px;
-  margin: 3px;
+  margin: 6px 8px;
   vertical-align: center;
   tooltip-position: right;
   tooltip-body-position: 50% 10%;
@@ -72,6 +73,8 @@
 }
 
 .HeroCombo .HeroLevelIcon {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: #121212;
 }
@@ -94,6 +97,8 @@
 
 .HeroCombo .RatingsContainer {
   flow-children: down;
+  margin-left: 8px;
+  vertical-align: center;
 }
 
 .HeroCombo .RatingContainer {

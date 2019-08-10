@@ -1,0 +1,105 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/panelstyles.css");
+
+@define controlsMarginRight: 0;
+
+.Root {
+  visibility: collapse;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition-duration: 0.75s;
+  transition-property: opacity;
+}
+
+.Root.Open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.Controls {
+  flow-children: right;
+  margin-right: controlsMarginRight;
+  align: right bottom;
+}
+
+.Controls .ControlIcon {
+  width: 64px;
+  height: 64px;
+  transition-duration: 0.2s;
+  transition-property: background-color;
+}
+
+.Controls .ControlIcon:hover {
+  border-right: 1px solid #444b;
+  border-left: 1px solid #444b;
+  background-color: panelTranslucentHoverGradient;
+}
+
+.Controls .IconButton {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  vertical-align: center;
+  tooltip-position: top;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.Controls .IconButton.Activated {
+  sound: "ui_quit_menu_fadeout";
+}
+
+.Controls .FullRefreshIcon {
+  background-image: loadingThrobberRoundIcon;
+  background-size: 28px 28px;
+}
+
+.Controls .FullRefreshIcon.Activated {
+  animation-name: SpinnerRotate;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+
+.Controls .CloseButton {
+  background-size: 34px 34px;
+}
+
+.Controls .ControlIcon .Grey {
+  wash-color: #aaa;
+}
+
+.Controls .ControlIcon .Grey:hover {
+  wash-color: #fff;
+}
+
+.Controls .ControlIcon .Blue {
+  wash-color: #65a9db;
+}
+
+.Controls .ControlIcon .Blue:hover {
+  wash-color: #acc6d8;
+}
+
+.Controls .ControlIcon .Bronze {
+  wash-color: #dca157;
+}
+
+.Controls .ControlIcon .Bronze:hover {
+  wash-color: #dca157;
+}
+
+.Controls .ControlIcon .Red {
+  wash-color: #db6565;
+}
+
+.Controls .ControlIcon .Red:hover {
+  wash-color: #db6565;
+}
+
+#Score {
+  margin-bottom: 230px;
+  align: center bottom;
+}

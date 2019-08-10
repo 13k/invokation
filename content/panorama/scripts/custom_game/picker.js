@@ -3,6 +3,7 @@
 (function(global, context) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
   var COMBOS = global.COMBOS;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
@@ -11,9 +12,9 @@
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var CreateComponent = context.CreateComponent;
 
-  var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
-
   var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
+
+  var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
 
   var Picker = CreateComponent({
     constructor: function Picker() {
@@ -60,11 +61,6 @@
     onComboStopped: function() {
       this.debug("onComboStopped()");
       this.Open();
-    },
-
-    startCombo: function(combo) {
-      this.debug("startCombo()", combo.id);
-      this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
     },
 
     groupCombos: function() {
@@ -147,6 +143,11 @@
       return new RunFunctionAction(this, this.createComboPanel, category, combo);
     },
 
+    startCombo: function(combo) {
+      this.debug("startCombo()", combo.id);
+      this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
+    },
+
     renderViewer: function(combo) {
       this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
     },
@@ -205,6 +206,11 @@
       } else {
         this.Close();
       }
+    },
+
+    Freestyle: function() {
+      this.debug("Freestyle()");
+      this.startCombo({ id: FREESTYLE_COMBO_ID });
     },
 
     Reload: function() {

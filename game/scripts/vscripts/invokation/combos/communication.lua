@@ -21,7 +21,7 @@ function M.sendStopped(player, combo)
 end
 
 function M.sendProgress(player, combo)
-  local payload = {combo = combo.id, next = combo:NextSteps(), count = combo.count}
+  local payload = {combo = combo.id, next = combo:NextSteps(), count = combo.count, damage = combo.damage}
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_PROGRESS, player, payload)
 end
 

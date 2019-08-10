@@ -4,9 +4,7 @@
 
     <include src="file://{resources}/scripts/valve/sequence_actions.js" />
 
-    <include src="file://{resources}/scripts/lib/const.events.js" />
-    <include src="file://{resources}/scripts/lib/const.invoker.js" />
-    <include src="file://{resources}/scripts/lib/const.net_tables.js" />
+    <include src="file://{resources}/scripts/lib/const.js" />
     <include src="file://{resources}/scripts/lib/util.js" />
     <include src="file://{resources}/scripts/lib/class.js" />
     <include src="file://{resources}/scripts/lib/logger.js" />
@@ -27,5 +25,6 @@
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/picker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/viewer.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/challenge.xml" />
+    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/freestyle.xml" />
   </Panel>
 </root>
