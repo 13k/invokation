@@ -30,6 +30,7 @@ function M.teardown(player, options)
 
   unit:EndItemCooldowns()
   unit:EndAbilityCooldowns()
+  unit:RemoveDroppedItems()
 
   for _, unitName in pairs(UNITS.INVOKER_SPAWNED) do
     player:RemoveOwnedUnitsByName(unitName)

@@ -1,4 +1,5 @@
 require("invokation.lang.stub")
+require("invokation.dota2.classes")
 
 local GameMode = require("invokation.GameMode")
 

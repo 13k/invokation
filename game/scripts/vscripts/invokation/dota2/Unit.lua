@@ -17,6 +17,7 @@ local DELEGATES = {
   "GetPlayerOwner",
   "GetPlayerOwnerID",
   "GetAbilityByIndex",
+  "GetEntityIndex",
   "GetItemInSlot",
   "GetLevel",
   "GetMaxHealth",
@@ -34,6 +35,7 @@ local DELEGATES = {
   "RemoveItem",
   "RespawnHero",
   "RespawnUnit",
+  "SetGold",
 }
 
 delegation.delegate(M, "entity", DELEGATES)
@@ -234,6 +236,27 @@ function M:EndItemCooldowns(options)
   self:forEachItem(function(item)
     item:EndCooldown()
   end, options)
+end
+
+function M:RemoveDroppedItems()
+  local removed = {}
+
+  for i = 0, GameRules:NumDroppedItems() - 1 do
+    local ent = GameRules:GetDroppedItem(i)
+    local item = EntityFramework:CreateEntity("CDOTA_Item", ent)
+    local purchaser = item:GetPurchaser()
+    local purchaserEntIdx = purchaser and purchaser:GetEntityIndex()
+
+    if purchaserEntIdx == self:GetEntityIndex() then
+      table.insert(removed, item)
+    end
+  end
+
+  for _, item in ipairs(removed) do
+    item:RemoveSelf()
+  end
+
+  return removed
 end
 
 --- Finds ability or item by name.
