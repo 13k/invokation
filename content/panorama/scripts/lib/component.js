@@ -222,12 +222,28 @@
       return this.setUI(uiElement, false);
     },
 
+    showActionPanelUI: function() {
+      return this.showUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+    },
+
     hideActionPanelUI: function() {
       return this.hideUI("DOTA_DEFAULT_UI_ACTION_PANEL");
     },
 
-    showActionPanelUI: function() {
-      return this.showUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+    showInventoryShopUI: function() {
+      return this.showUI("DOTA_DEFAULT_UI_INVENTORY_SHOP");
+    },
+
+    hideInventoryShopUI: function() {
+      return this.hideUI("DOTA_DEFAULT_UI_INVENTORY_SHOP");
+    },
+
+    showInventoryGoldUI: function() {
+      return this.showUI("DOTA_DEFAULT_UI_INVENTORY_GOLD");
+    },
+
+    hideInventoryGoldUI: function() {
+      return this.hideUI("DOTA_DEFAULT_UI_INVENTORY_GOLD");
     },
 
     // ----- Element (Panel) Utils & Events -----

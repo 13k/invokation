@@ -9,7 +9,7 @@ local M = {}
 M.ENABLE_HERO_RESPAWN = true
 
 --- Should the main shop contain Secret Shop items as well as regular items?
-M.UNIVERSAL_SHOP_MODE = false
+M.UNIVERSAL_SHOP_MODE = true
 
 --- Should we let people select the same hero as each other?
 M.ALLOW_SAME_HERO_SELECTION = true
@@ -122,7 +122,7 @@ M.LOSE_GOLD_ON_DEATH = false
 M.SHOW_ONLY_PLAYER_INVENTORY = false
 
 --- Should we prevent players from being able to buy items into their stash when not at a shop?
-M.DISABLE_STASH_PURCHASING = false
+M.DISABLE_STASH_PURCHASING = true
 
 --- Should we disable the announcer from working in the game?
 M.DISABLE_ANNOUNCER = true

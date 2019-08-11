@@ -9,6 +9,7 @@ function M:_init()
   self.id = M.COMBO_ID
   self.heroLevel = 1
   self.items = {}
+  self.gold = 99999
 
   self.count = 0
   self.damage = 0

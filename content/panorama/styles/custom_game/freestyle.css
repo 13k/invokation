@@ -2,7 +2,7 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
-@define controlsMarginRight: 0;
+@define controlsMarginRight: 300px;
 
 .Root {
   width: 100%;

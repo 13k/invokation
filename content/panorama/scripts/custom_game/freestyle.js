@@ -87,6 +87,7 @@
     hideAction: function() {
       return new ParallelSequence()
         .Action(this.hideScoreAction())
+        .Action(this.hideShopAction())
         .AddClass(this.$ctx, "Hide");
     },
 
@@ -109,12 +110,27 @@
       );
     },
 
+    // ----- HUD actions -----
+
+    showShopAction: function() {
+      return new ParallelSequence()
+        .RunFunction(this, this.showInventoryShopUI)
+        .RunFunction(this, this.showInventoryGoldUI);
+    },
+
+    hideShopAction: function() {
+      return new ParallelSequence()
+        .RunFunction(this, this.hideInventoryShopUI)
+        .RunFunction(this, this.hideInventoryGoldUI);
+    },
+
     // ----- Action runners -----
 
     start: function() {
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.start)
         .Action(this.hideScoreAction())
+        .Action(this.showShopAction())
         .Wait(START_DELAY)
         .Action(this.showAction());
 

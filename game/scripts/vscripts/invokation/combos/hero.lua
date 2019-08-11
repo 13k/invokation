@@ -18,6 +18,11 @@ function M.setup(player, combo)
   end
 
   unit:AddItemsByName(combo.items or {}, {onlyMissing = true})
+
+  if combo.gold ~= nil then
+    unit:SetGold(combo.gold, true)
+  end
+
   unit:Hold()
 end
 
