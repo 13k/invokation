@@ -17,7 +17,7 @@
     </snippet>
   </snippets>
 
-  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root" hittest="false">
     <Panel id="CombosSlideout" class="DrawerClosed">
       <Panel id="CombosContents" class="TranslucentPanel">
         <Panel class="PickerTitleContainer PanelTitleContainer">

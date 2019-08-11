@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="Root HudVisible" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root HudVisible Hide" hittest="false">
     <Panel class="Combo" hittest="false">
       <Panel id="Sequence" hittest="false" />
     </Panel>

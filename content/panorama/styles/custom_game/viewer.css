@@ -6,13 +6,8 @@
  **/
 
 .Root {
-  visibility: visible;
   width: 100%;
   height: 100%;
-}
-
-.Root.Closed {
-  visibility: collapse;
 }
 
 #Container {
@@ -21,14 +16,14 @@
   margin-top: 150px;
   margin-left: 790px;
   horizontal-align: center;
-  opacity: 0;
-  transition-duration: 1s;
+  opacity: 1;
+  transition-duration: 0s;
   transition-property: opacity;
 }
 
-#Container.Initialize {
-  opacity: 1;
-  transition-duration: 0s;
+.Root.Hide #Container {
+  opacity: 0;
+  transition-duration: 1s;
 }
 
 #InformationBackground {

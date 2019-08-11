@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/freestyle.css" />
   </styles>
 
-  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root Hide" hittest="false">
     <Panel class="Controls TranslucentPanel" hittest="false">
       <Panel class="ControlIcon">
         <Button class="RefreshButton IconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />

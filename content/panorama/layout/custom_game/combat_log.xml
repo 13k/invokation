@@ -26,7 +26,7 @@
     </snippet>
   </snippets>
 
-  <Panel class="Root" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root" hittest="false">
     <Panel id="CombatLog" class="TransparentPanel Closed">
       <Panel id="CombatLogContents" />
 

@@ -113,15 +113,11 @@
     },
 
     openAction: function() {
-      return new Sequence()
-        .RemoveClass(this.$ctx, "Closed")
-        .AddClass(this.$container, "Initialize");
+      return new Sequence().RemoveClass(this.$ctx, "Hide");
     },
 
     closeAction: function() {
-      return new Sequence()
-        .RemoveClass(this.$container, "Initialize")
-        .AddClass(this.$ctx, "Closed");
+      return new Sequence().AddClass(this.$ctx, "Hide");
     },
 
     startCombo: function() {

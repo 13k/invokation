@@ -6,17 +6,8 @@
 @define controlsMarginRight: 0;
 
 .Root {
-  visibility: collapse;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition-duration: 0.75s;
-  transition-property: opacity;
-}
-
-.Root.Open {
-  visibility: visible;
-  opacity: 1;
 }
 
 .Combo {
@@ -25,16 +16,23 @@
   padding-top: 80px;
   padding-bottom: 80px;
   horizontal-align: right;
+  opacity: 1;
   background-color: comboPanelGradient;
+  transition-duration: 0.75s;
+  transition-property: opacity;
 }
 
 .HudVisible .Combo {
-  visibility: visible;
+  opacity: 1;
 }
 
 .HudHideSequence .Combo,
 .HudNoHands .Combo {
-  visibility: collapse;
+  opacity: 0;
+}
+
+.Root.Hide .Combo {
+  opacity: 0;
 }
 
 #Sequence {
@@ -113,6 +111,13 @@
   flow-children: right;
   margin-right: controlsMarginRight;
   align: right bottom;
+  opacity: 1;
+  transition-duration: 0.75s;
+  transition-property: opacity;
+}
+
+.Root.Hide .Controls {
+  opacity: 0;
 }
 
 .Controls .ControlIcon {

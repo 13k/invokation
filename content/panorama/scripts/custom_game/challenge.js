@@ -169,14 +169,14 @@
     // ----- Component actions -----
 
     showAction: function() {
-      return new AddClassAction(this.$ctx, "Open");
+      return new RemoveClassAction(this.$ctx, "Hide");
     },
 
     hideAction: function() {
       return new ParallelSequence()
         .Action(this.hideSplashAction())
         .Action(this.hideScoreAction())
-        .RemoveClass(this.$ctx, "Open");
+        .AddClass(this.$ctx, "Hide");
     },
 
     // ----- Sequence actions -----

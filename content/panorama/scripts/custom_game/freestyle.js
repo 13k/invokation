@@ -5,7 +5,7 @@
   var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
-  var AddClassAction = global.Sequence.AddClassAction;
+  var RemoveClassAction = global.Sequence.RemoveClassAction;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
@@ -81,11 +81,13 @@
     // ----- Component actions -----
 
     showAction: function() {
-      return new AddClassAction(this.$ctx, "Open");
+      return new RemoveClassAction(this.$ctx, "Hide");
     },
 
     hideAction: function() {
-      return new ParallelSequence().Action(this.hideScoreAction()).RemoveClass(this.$ctx, "Open");
+      return new ParallelSequence()
+        .Action(this.hideScoreAction())
+        .AddClass(this.$ctx, "Hide");
     },
 
     // ----- Score actions -----

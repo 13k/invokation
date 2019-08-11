@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="Root Closed" hittest="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root Hide" hittest="false">
     <Panel id="Container" hittest="false">
       <Panel id="InformationBackground" hittest="false" />
       <Panel id="InformationBody">
@@ -24,7 +24,6 @@
             </Panel>
 
             <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
-            <!-- <Label id="SequenceInfoLabel" class="SectionLabel" html="true" hittest="false" /> -->
 
             <Panel id="SequenceContainer" hittest="false" />
           </Panel>

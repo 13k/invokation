@@ -9,10 +9,10 @@
     <include src="file://{resources}/styles/custom_game/combo_score.css" />
   </styles>
 
-  <Panel class="Root" hittest="false" hittestchildren="false" always-cache-composition-layer="true" require-composition-layer="true">
+  <Panel class="Root" hittest="false" hittestchildren="false">
     <Panel class="Counter">
       <Panel class="SplashBackground">
-        <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" />
+        <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" require-composition-layer="true" />
       </Panel>
 
       <Panel class="Content">
@@ -27,7 +27,7 @@
     </Panel>
 
     <Panel class="Summary">
-      <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" />
+      <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
       <Panel class="SplashBackground" />
 
       <Panel class="Content">

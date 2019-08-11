@@ -5,10 +5,8 @@
  *****************************************************************************/
 
 .Root {
-  visibility: visible;
   width: 275px;
   height: 120px;
-  opacity: 1;
 }
 
 .Root .SplashBackground {
