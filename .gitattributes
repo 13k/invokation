@@ -1,2 +1,1 @@
-* text eol=lf
-*.vmap -text
+* text=auto eol=lf

@@ -15,7 +15,7 @@
   var START_DELAY = 0.5;
 
   var SOUND_EVENTS = {
-    start: "kidvoker_takeover_stinger",
+    start: "Invokation.Freestyle.Start",
   };
 
   var Freestyle = CreateComponent({
