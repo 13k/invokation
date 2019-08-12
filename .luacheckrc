@@ -202,6 +202,7 @@ new_read_globals = {
   "CustomNetTables",
   "CustomUI",
   "Entities",
+  "EntityFramework",
   "HeroList",
   "ParticleManager",
   "PlayerResource",
