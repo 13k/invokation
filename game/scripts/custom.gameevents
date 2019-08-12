@@ -15,12 +15,13 @@
 //   local      : if set to 1, event is not networked to clients
 //   unreliable : networked, but unreliable
 //   suppress   : never fire this event
-//   time	: firing server time
-//   eventid	: holds the event ID
+//   time  : firing server time
+//   eventid  : holds the event ID
 
 "CustomEvents"
 {
-	"invokation_viewer_render"
-	{
+  "invokation_viewer_render"
+  {
+    "combo_id" "string"
   }
 }
