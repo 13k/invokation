@@ -11,7 +11,7 @@
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
   var SetDialogVariableAction = global.Sequence.SetDialogVariableAction;
-  var LuaListTableToArray = global.Util.LuaListTableToArray;
+  var LuaList = global.Util.LuaList;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
@@ -385,7 +385,7 @@
 
     progress: function(id, count, next) {
       count = count || 0;
-      next = LuaListTableToArray(next);
+      next = LuaList(next);
 
       var seq = new Sequence();
 
@@ -425,7 +425,7 @@
     },
 
     fail: function(id, expected, ability) {
-      expected = LuaListTableToArray(expected);
+      expected = LuaList(expected);
 
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.failure)

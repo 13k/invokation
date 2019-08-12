@@ -10,7 +10,7 @@
   var IsOrbAbility = global.Util.IsOrbAbility;
   var IsInvocationAbility = global.Util.IsInvocationAbility;
   var IsItemAbility = global.Util.IsItemAbility;
-  var LuaListTableToArray = global.Util.LuaListTableToArray;
+  var LuaListDeep = global.Util.LuaListDeep;
 
   var NET_TABLE_KEY = "combos";
 
@@ -63,6 +63,8 @@
 
     _normalize: function() {
       _.forEach(this.combos, function(combo) {
+        LuaListDeep(combo, { inplace: true });
+
         combo.l10n = {};
         combo.l10n.name = $.Localize("#" + combo.id);
         combo.l10n.specialty = SPECIALTIES[combo.specialty];
@@ -70,14 +72,10 @@
         combo.l10n.damageRating = DAMAGE_RATINGS[combo.damageRating];
         combo.l10n.difficultyRating = DIFFICULTY_RATINGS[combo.difficultyRating];
 
-        combo.items = LuaListTableToArray(combo.items);
-        combo.sequence = LuaListTableToArray(combo.sequence);
-
         _.forEach(combo.sequence, function(step) {
           step.isOrbAbility = IsOrbAbility(step.name);
           step.isInvocationAbility = IsInvocationAbility(step.name);
           step.isItem = IsItemAbility(step.name);
-          step.next = LuaListTableToArray(step.next);
         });
       });
     },
