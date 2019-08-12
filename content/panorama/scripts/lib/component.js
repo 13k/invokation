@@ -41,14 +41,40 @@
       }
     },
 
-    // getHandler("fn") -> this["fn"].bind(this)
-    // getHandler(Function) -> Function
-    getHandler: function(fn) {
+    // eventName("!event") -> EVENTS["event"]
+    // eventName("event") -> "event"
+    eventName: function(event) {
+      if (_.startsWith(event, "!")) {
+        event = EVENTS[_.trimStart(event, "!")];
+      }
+
+      return event;
+    },
+
+    // handler("fn") -> this["fn"].bind(this)
+    // handler(Function) -> Function
+    handler: function(fn) {
       if (_.isString(fn)) {
         fn = _.bindKey(this, fn);
       }
 
       return fn;
+    },
+
+    // element("#elementID") -> $("#elementID")
+    // element("$element") -> _.get(this, "$element")
+    // element("element") -> _.get(this, "$element")
+    // element(Panel) -> Panel
+    element: function(element) {
+      if (_.isString(element)) {
+        if (_.startsWith(element, "#")) {
+          element = $(element);
+        } else {
+          element = _.get(this, elemAttrNamer(element));
+        }
+      }
+
+      return element;
     },
 
     // ----- Localization -----
@@ -120,7 +146,7 @@
     },
 
     Output: function(name, fn) {
-      return this.outputs.On(name, fn);
+      return this.outputs.On(name, this.handler(fn));
     },
 
     Outputs: function(outputs) {
@@ -128,11 +154,7 @@
     },
 
     registerInput: function(name, fn) {
-      if (_.isString(fn)) {
-        fn = _.bindKey(this, fn);
-      }
-
-      this.inputs[name] = fn;
+      this.inputs[name] = this.handler(fn);
       return name;
     },
 
@@ -151,15 +173,7 @@
     // ----- Custom Events -----
 
     subscribe: function(event, fn) {
-      if (_.isString(fn)) {
-        fn = _.bindKey(this, fn);
-      }
-
-      if (_.startsWith(event, "!")) {
-        event = EVENTS[_.trimStart(event, "!")];
-      }
-
-      return CustomEvents.Subscribe(this.classid, event, fn);
+      return CustomEvents.Subscribe(this.classid, this.eventName(event), this.handler(fn));
     },
 
     subscribeAll: function(events) {
@@ -276,27 +290,8 @@
       _.assign(this, map.value());
     },
 
-    // getElement("#ID") -> $("#ID")
-    // getElement("$attr") -> this.$attr
-    // getElement("attr") -> this.$attr
-    // getElement(Panel) -> Panel
-    getElement: function(element) {
-      if (_.isString(element)) {
-        if (_.startsWith(element, "#")) {
-          element = $(element);
-        } else {
-          element = _.get(this, elemAttrNamer(element));
-        }
-      }
-
-      return element;
-    },
-
     listen: function(element, event, fn) {
-      element = this.getElement(element);
-      fn = this.getHandler(fn);
-
-      return $.RegisterEventHandler(event, element, fn);
+      return $.RegisterEventHandler(event, this.element(element), this.handler(fn));
     },
 
     // listenAll({ elemAttr: { eventName1: "fn"|Function, eventName2: "fn"|Function, ... }, ... })
@@ -324,7 +319,7 @@
     },
 
     dispatch: function(element, event) {
-      element = this.getElement(element);
+      element = this.element(element);
 
       var args = [event, element];
       var eventArgs = _.drop(arguments, 2);

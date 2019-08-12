@@ -3,6 +3,7 @@
 (function(global /*, context */) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var Class = global.Class;
   var Logger = global.Logger;
   var NetTable = global.NetTable;
   var CustomEvents = global.CustomEvents;
@@ -23,107 +24,109 @@
   var DAMAGE_RATINGS = {};
   var DIFFICULTY_RATINGS = {};
 
-  var module = function CombosCollection() {
-    this.combos = null;
-    this.onChangeCallbacks = [];
-    this.logger = new Logger({ progname: "combos_collection" });
-    this.netTable = new NetTable();
+  var CombosCollection = Class({
+    constructor: function CombosCollection() {
+      this.combos = null;
+      this.onChangeCallbacks = [];
+      this.logger = new Logger({ progname: "combos_collection" });
+      this.netTable = new NetTable();
 
-    this._listenToNetTableChange();
-  };
+      this._listenToNetTableChange();
+    },
 
-  module.prototype._loadFromNetTable = function() {
-    return this.netTable.Get(NET_TABLE_KEY);
-  };
+    _loadFromNetTable: function() {
+      return this.netTable.Get(NET_TABLE_KEY);
+    },
 
-  module.prototype._listenToNetTableChange = function() {
-    return this.netTable.OnKeyChange(NET_TABLE_KEY, this._onNetTableChange.bind(this));
-  };
+    _listenToNetTableChange: function() {
+      return this.netTable.OnKeyChange(NET_TABLE_KEY, this._onNetTableChange.bind(this));
+    },
 
-  module.prototype._sendReloadToServer = function() {
-    CustomEvents.SendServer(EVENTS.COMBOS_RELOAD);
-  };
+    _sendReloadToServer: function() {
+      CustomEvents.SendServer(EVENTS.COMBOS_RELOAD);
+    },
 
-  module.prototype._setCombos = function(value) {
-    if (!value) {
-      this.logger.warning("Tried to set combos to an undefined value");
-      return;
-    }
+    _setCombos: function(value) {
+      if (!value) {
+        this.logger.warning("Tried to set combos to an undefined value");
+        return;
+      }
 
-    this.combos = value;
-    this._onCombosChange();
-  };
+      this.combos = value;
+      this._onCombosChange();
+    },
 
-  module.prototype._onCombosChange = function() {
-    this._normalize();
-    _.over(this.onChangeCallbacks)(this.combos);
-  };
+    _onCombosChange: function() {
+      this._normalize();
+      _.over(this.onChangeCallbacks)(this.combos);
+    },
 
-  module.prototype._normalize = function() {
-    _.forEach(this.combos, function(combo) {
-      combo.l10n = {};
-      combo.l10n.name = $.Localize("#" + combo.id);
-      combo.l10n.specialty = SPECIALTIES[combo.specialty];
-      combo.l10n.stance = STANCES[combo.stance];
-      combo.l10n.damageRating = DAMAGE_RATINGS[combo.damageRating];
-      combo.l10n.difficultyRating = DIFFICULTY_RATINGS[combo.difficultyRating];
+    _normalize: function() {
+      _.forEach(this.combos, function(combo) {
+        combo.l10n = {};
+        combo.l10n.name = $.Localize("#" + combo.id);
+        combo.l10n.specialty = SPECIALTIES[combo.specialty];
+        combo.l10n.stance = STANCES[combo.stance];
+        combo.l10n.damageRating = DAMAGE_RATINGS[combo.damageRating];
+        combo.l10n.difficultyRating = DIFFICULTY_RATINGS[combo.difficultyRating];
 
-      combo.items = LuaListTableToArray(combo.items);
-      combo.sequence = LuaListTableToArray(combo.sequence);
+        combo.items = LuaListTableToArray(combo.items);
+        combo.sequence = LuaListTableToArray(combo.sequence);
 
-      _.forEach(combo.sequence, function(step) {
-        step.isOrbAbility = IsOrbAbility(step.name);
-        step.isInvocationAbility = IsInvocationAbility(step.name);
-        step.isItem = IsItemAbility(step.name);
-        step.next = LuaListTableToArray(step.next);
+        _.forEach(combo.sequence, function(step) {
+          step.isOrbAbility = IsOrbAbility(step.name);
+          step.isInvocationAbility = IsInvocationAbility(step.name);
+          step.isItem = IsItemAbility(step.name);
+          step.next = LuaListTableToArray(step.next);
+        });
       });
-    });
-  };
+    },
 
-  module.prototype._onNetTableChange = function(key, value) {
-    if (key !== NET_TABLE_KEY) {
-      return;
-    }
+    _onNetTableChange: function(key, value) {
+      if (key !== NET_TABLE_KEY) {
+        return;
+      }
 
-    this.logger.debug("_onNetTableChange()");
-    this._setCombos(value);
-  };
+      this.logger.debug("_onNetTableChange()");
+      this._setCombos(value);
+    },
 
-  module.prototype.Load = function() {
-    this.logger.debug("Load()");
+    Load: function() {
+      this.logger.debug("Load()");
 
-    if (!this.combos) {
-      this._setCombos(this._loadFromNetTable());
-      return true;
-    }
+      if (!this.combos) {
+        this._setCombos(this._loadFromNetTable());
+        return true;
+      }
 
-    return false;
-  };
+      return false;
+    },
 
-  module.prototype.Reload = function() {
-    this.logger.debug("Reload()");
-    this.combos = null;
-    this._sendReloadToServer();
-    return this.Load();
-  };
+    Reload: function() {
+      this.logger.debug("Reload()");
+      this.combos = null;
+      this._sendReloadToServer();
+      return this.Load();
+    },
 
-  module.prototype.OnChange = function(fn) {
-    this.onChangeCallbacks.push(fn);
+    OnChange: function(fn) {
+      this.onChangeCallbacks.push(fn);
 
-    // This is kinda of a hack. When first registering an OnChange callback,
-    // call it immediately if combos are already loaded.
-    if (this.combos) {
-      fn(this.combos);
-    }
-  };
+      // This is kinda of a hack. When first registering an OnChange callback,
+      // call it immediately if combos are already loaded.
+      if (this.combos) {
+        fn(this.combos);
+      }
+    },
 
-  module.prototype.forEach = function(fn) {
-    return _.forEach(this.combos, fn);
-  };
+    forEach: function(fn) {
+      return _.forEach(this.combos, fn);
+    },
 
-  module.prototype.Get = function(id) {
-    return this.combos[id];
-  };
+    Get: function(id) {
+      return this.combos[id];
+    },
+  });
 
   $.Each(SPECIALTIES_KEYS, function(key) {
     SPECIALTIES[key] = $.Localize("#invokation_combo_specialty_" + key);
@@ -141,5 +144,5 @@
     DIFFICULTY_RATINGS[key] = $.Localize("#invokation_combo_tooltip_difficulty_rating_" + key);
   });
 
-  global.CombosCollection = module;
+  global.CombosCollection = CombosCollection;
 })(GameUI.CustomUIConfig(), this);

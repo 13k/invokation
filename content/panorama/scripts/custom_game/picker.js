@@ -44,7 +44,7 @@
 
     onComboDetailsShow: function(payload) {
       this.debug("onComboDetailsShow()", payload);
-      this.Close();
+      this.close();
       this.renderViewer(payload.combo);
     },
 
@@ -55,13 +55,15 @@
 
     onComboStarted: function() {
       this.debug("onComboStarted()");
-      this.Close();
+      this.close();
     },
 
     onComboStopped: function() {
       this.debug("onComboStopped()");
-      this.Open();
+      this.open();
     },
+
+    // ----- Helpers -----
 
     groupCombos: function() {
       var sorter = _.chain(_.sortBy)
@@ -79,12 +81,56 @@
         .value();
     },
 
-    renderCombosAction: function() {
-      return new Sequence().Action(this.resetCombosAction()).Action(this.createComboPanelsAction());
-    },
-
     resetCombos: function() {
       this.comboColumns = {};
+    },
+
+    startCombo: function(combo) {
+      this.debug("startCombo()", combo.id);
+      this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
+    },
+
+    renderViewer: function(combo) {
+      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
+    },
+
+    isClosed: function() {
+      return this.$slideout.BHasClass("DrawerClosed");
+    },
+
+    createCombosColumn: function(parent, category) {
+      var id = "combos_column_" + category;
+      var panel = CreatePanelWithLayoutSnippet(parent, id, "CombosColumn");
+
+      panel.AddClass(category);
+
+      var panelTitle = panel.FindChildTraverse("Title");
+
+      panelTitle.text = $.Localize("#invokation_combo_category_" + category);
+
+      this.comboColumns[category] = panel;
+
+      return panel;
+    },
+
+    createComboPanel: function(category, combo) {
+      var parent = this.comboColumns[category];
+      var panel = CreatePanelWithLayout(parent, combo.id, COMBO_PANEL_LAYOUT);
+
+      panel.component.Outputs({
+        OnShowDetails: this.handler("onComboDetailsShow"),
+        OnPlay: this.handler("onComboPlay"),
+      });
+
+      panel.component.Input("SetCombo", combo);
+
+      return panel;
+    },
+
+    // ----- Actions -----
+
+    renderCombosAction: function() {
+      return new Sequence().Action(this.resetCombosAction()).Action(this.createComboPanelsAction());
     },
 
     resetCombosAction: function() {
@@ -102,19 +148,6 @@
       return new Sequence().Action(actions);
     },
 
-    createCombosColumn: function(parent, category) {
-      var id = "combos_column_" + category;
-      var panel = CreatePanelWithLayoutSnippet(parent, id, "CombosColumn");
-      panel.AddClass(category);
-
-      var panelTitle = panel.FindChildTraverse("Title");
-      panelTitle.text = $.Localize("#invokation_combo_category_" + category);
-
-      this.comboColumns[category] = panel;
-
-      return panel;
-    },
-
     createCombosColumnAction: function(parent, pair) {
       var category = pair[0];
       var combos = pair[1];
@@ -125,36 +158,11 @@
         .Action(actions);
     },
 
-    createComboPanel: function(category, combo) {
-      var parent = this.comboColumns[category];
-      var panel = CreatePanelWithLayout(parent, combo.id, COMBO_PANEL_LAYOUT);
-
-      panel.component.Outputs({
-        OnShowDetails: this.onComboDetailsShow.bind(this),
-        OnPlay: this.onComboPlay.bind(this),
-      });
-
-      panel.component.Input("SetCombo", combo);
-
-      return panel;
-    },
-
     createComboPanelAction: function(category, combo) {
       return new RunFunctionAction(this, this.createComboPanel, category, combo);
     },
 
-    startCombo: function(combo) {
-      this.debug("startCombo()", combo.id);
-      this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
-    },
-
-    renderViewer: function(combo) {
-      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
-    },
-
-    isClosed: function() {
-      return this.$slideout.BHasClass("DrawerClosed");
-    },
+    // ----- Action runners -----
 
     render: function() {
       this.groupCombos();
@@ -168,7 +176,7 @@
       return seq.Start();
     },
 
-    Open: function() {
+    open: function() {
       if (!this.isClosed()) {
         return;
       }
@@ -178,13 +186,13 @@
         .RemoveClass(this.$slideout, "DrawerClosed");
 
       this.debugFn(function() {
-        return ["Open()", { actions: seq.size() }];
+        return ["open()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    Close: function() {
+    close: function() {
       if (this.isClosed()) {
         return;
       }
@@ -194,17 +202,19 @@
         .AddClass(this.$slideout, "DrawerClosed");
 
       this.debugFn(function() {
-        return ["Close()", { actions: seq.size() }];
+        return ["close()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
+    // ----- UI methods -----
+
     Toggle: function() {
       if (this.isClosed()) {
-        this.Open();
+        this.open();
       } else {
-        this.Close();
+        this.close();
       }
     },
 
@@ -220,5 +230,5 @@
   });
 
   context.picker = new Picker();
-  context.picker.Open();
+  context.picker.open();
 })(GameUI.CustomUIConfig(), this);

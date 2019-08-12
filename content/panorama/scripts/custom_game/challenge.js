@@ -9,7 +9,6 @@
   var ParallelSequence = global.Sequence.ParallelSequence;
   var StaggeredSequence = global.Sequence.StaggeredSequence;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var AddClassAction = global.Sequence.AddClassAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
   var SetDialogVariableAction = global.Sequence.SetDialogVariableAction;
   var LuaListTableToArray = global.Util.LuaListTableToArray;
@@ -187,7 +186,7 @@
       var bumpSeq = this.staggeredSequenceOnStepPanels(
         BUMP_DELAY,
         this.combo.sequence,
-        this.bumpStepPanel
+        "bumpStepPanel"
       );
 
       return new Sequence()
@@ -214,7 +213,7 @@
     },
 
     sequenceActionsOnStepPanels: function(steps, fn) {
-      fn = this.getHandler(fn).bind(this);
+      fn = this.handler(fn);
 
       return _.map(steps, function(step) {
         return new RunFunctionAction(fn, step);
@@ -236,25 +235,25 @@
         return seq;
       }
 
-      var activateSeq = this.parallelSequenceOnStepPanels(steps, this.activateStepPanel);
+      var activateSeq = this.parallelSequenceOnStepPanels(steps, "activateStepPanel");
 
       return seq.RunFunction(this, this.scrollToStepPanel, steps[0]).Action(activateSeq);
     },
 
     deactivateStepPanelsAction: function(steps) {
-      return this.parallelSequenceOnStepPanels(steps, this.deactivateStepPanel);
+      return this.parallelSequenceOnStepPanels(steps, "deactivateStepPanel");
     },
 
     bumpStepPanelsAction: function(steps) {
-      return this.parallelSequenceOnStepPanels(steps, this.bumpStepPanel);
+      return this.parallelSequenceOnStepPanels(steps, "bumpStepPanel");
     },
 
     failStepPanelsAction: function(steps) {
-      return this.parallelSequenceOnStepPanels(steps, this.failStepPanel);
+      return this.parallelSequenceOnStepPanels(steps, "failStepPanel");
     },
 
     clearFailedStepPanelsAction: function(steps) {
-      return this.parallelSequenceOnStepPanels(steps, this.clearFailedStepPanel);
+      return this.parallelSequenceOnStepPanels(steps, "clearFailedStepPanel");
     },
 
     // ----- HUD actions -----
