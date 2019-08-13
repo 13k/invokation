@@ -8,9 +8,14 @@
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var CreateComponent = context.CreateComponent;
 
+  var GRID_COLUMNS = 20;
+  var COMBAT_LOG_ROW_SNIPPET = "CombatLogRow";
+  var COMBAT_LOG_ABILITY_SNIPPET = "CombatLogAbility";
+  var COMBAT_LOG_ITEM_SNIPPET = "CombatLogItem";
+
   function createRow(parent, idx) {
     var id = "row_" + idx;
-    var panel = CreatePanelWithLayoutSnippet(parent, id, "CombatLogRow");
+    var panel = CreatePanelWithLayoutSnippet(parent, id, COMBAT_LOG_ROW_SNIPPET);
     return panel;
   }
 
@@ -19,10 +24,10 @@
     var imageProperty;
 
     if (IsItemAbility(abilityName)) {
-      snippetName = "CombatLogItem";
+      snippetName = COMBAT_LOG_ITEM_SNIPPET;
       imageProperty = "itemname";
     } else {
-      snippetName = "CombatLogAbility";
+      snippetName = COMBAT_LOG_ABILITY_SNIPPET;
       imageProperty = "abilityname";
     }
 
@@ -49,7 +54,7 @@
         },
       });
 
-      this.grid = new Grid(15);
+      this.grid = new Grid(GRID_COLUMNS);
       this.$row = null;
 
       this.bindEvents();

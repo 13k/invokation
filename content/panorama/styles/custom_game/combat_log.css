@@ -2,26 +2,29 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
-@define combatLogWidth: 560px;
-@define combatLogHeight: 200px;
-@define combatLogTranslate: -150px;
-@define thumbWidth: 19px;
-@define thumbHeight: 19px;
-@define abilityIconWidth: 32px;
-@define abilityIconHeight: 32px;
-@define barHeight: 50px;
+/* clWidth = ((clCellSize + (2 * clCellMargin)) * clColumns) + (2 * clPadding) + clScrollWidth */
+@define clColumns: 20;
+@define clWidth: 740px;
+@define clHeight: 200px;
+@define clPadding: 5px;
+@define clCellSize: 32px;
+@define clCellMargin: 2px;
+@define clScrollWidth: 10px;
+@define clTranslateY: -150px;
+@define clBarHeight: 50px;
+@define clThumbWidth: 19px;
+@define clThumbHeight: 19px;
 
 .Root {
-  flow-children: right;
-  width: combatLogWidth;
-  height: combatLogHeight;
-  align: center top;
+  width: 100%;
+  height: 100%;
 }
 
 #CombatLog {
   flow-children: down;
-  width: 100%;
-  height: 100%;
+  width: clWidth;
+  height: clHeight;
+  align: center top;
   transform: translateY(0);
   transition-delay: 0s;
   transition-timing-function: ease-in-out;
@@ -30,13 +33,39 @@
 }
 
 #CombatLog.Closed {
-  transform: translateY(combatLogTranslate);
+  transform: translateY(clTranslateY);
+}
+
+#CombatLogContents {
+  overflow: clip scroll;
+  flow-children: down;
+  width: 100%;
+  height: fill-parent-flow(1);
+  padding-top: clPadding;
+  padding-right: clPadding;
+  padding-left: clPadding;
+}
+
+.CombatLogRow {
+  flow-children: right;
+}
+
+.CombatLogAbility {
+  width: clCellSize;
+  height: clCellSize;
+  margin: clCellMargin;
+  box-shadow: #222 -2px -2px 4px 4px;
+  background-color: #000d;
+}
+
+.CombatLogAbility DOTAItemImage {
+  vertical-align: center;
 }
 
 .CombatLogBar {
   flow-children: right;
   width: 100%;
-  height: barHeight;
+  height: clBarHeight;
   padding: 0 8px;
   border-top: 1px solid #222;
   background-color: #0003;
@@ -48,15 +77,15 @@
 }
 
 .CombatLogThumb .TickBox {
-  width: thumbWidth;
-  height: thumbHeight;
+  width: clThumbWidth;
+  height: clThumbHeight;
   transform: rotateZ(180deg) translateY(-2px);
   wash-color: #d8d8d8;
 }
 
 .CombatLogThumb:selected .TickBox {
-  width: thumbWidth;
-  height: thumbHeight;
+  width: clThumbWidth;
+  height: clThumbHeight;
   transform: rotateZ(0deg) translateY(2px);
   wash-color: #d8d8d8;
 }
@@ -95,30 +124,4 @@
 
 .CombatLogBarActions .ClearButton {
   margin: 0;
-}
-
-#CombatLogContents {
-  overflow: clip scroll;
-  flow-children: down;
-  width: 100%;
-  height: fill-parent-flow(1);
-  padding-top: 5px;
-  padding-right: 5px;
-  padding-left: 5px;
-}
-
-.CombatLogRow {
-  flow-children: right;
-}
-
-.CombatLogAbility {
-  width: abilityIconWidth;
-  height: abilityIconHeight;
-  margin: 2px;
-  box-shadow: #222 -2px -2px 4px 4px;
-  background-color: #000d;
-}
-
-.CombatLogAbility DOTAItemImage {
-  vertical-align: center;
 }
