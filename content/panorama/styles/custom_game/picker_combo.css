@@ -1,6 +1,7 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
+@import url("file://{resources}/styles/shared/rating.css");
 
 .Component {
   flow-children: down;
@@ -113,46 +114,6 @@
   height: 16px;
   background-image: difficultyRatingIcon;
   background-size: 100%;
-}
-
-.Rating {
-  width: 80px;
-  height: 16px;
-  vertical-align: center;
-  background-image: comboRatingBackground;
-  background-repeat: repeat-x;
-  background-position: 0% 0%;
-  background-size: contain;
-}
-
-.Rating .RatingActive {
-  z-index: 0;
-  width: 0;
-  height: 100%;
-  background-image: comboRatingActiveBackground;
-  background-repeat: repeat-x;
-  background-position: 0% 0%;
-  background-size: contain;
-}
-
-.Rating.rating_1 .RatingActive {
-  width: 16px;
-}
-
-.Rating.rating_2 .RatingActive {
-  width: 32px;
-}
-
-.Rating.rating_3 .RatingActive {
-  width: 48px;
-}
-
-.Rating.rating_4 .RatingActive {
-  width: 64px;
-}
-
-.Rating.rating_5 .RatingActive {
-  width: 80px;
 }
 
 .Component .PlayButton {

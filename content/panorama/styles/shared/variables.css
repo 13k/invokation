@@ -170,9 +170,9 @@
 
 @define loadingScreenBackground: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
 @define pickerBackground: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
-@define comboRatingBackground: url("s2r://panorama/images/custom_game/ulti_base.png");
-@define comboRatingActiveBackground: url("s2r://panorama/images/custom_game/ulti_achieved.png");
 @define viewerBackground: url("file://{resources}/images/custom_game/viewer/paper-bg.png");
+@define ratingBackground: url("file://{resources}/images/custom_game/rating/base.png");
+@define ratingActiveBackground: url("file://{resources}/images/custom_game/rating/active.png");
 
 /******************************************************************************
  * Masks

@@ -1,5 +1,6 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/shared/rating.css");
 
 @define fgColor: #3c1b18;
 
@@ -95,42 +96,6 @@
   background-size: contain;
 }
 
-.Rating {
-  width: 80px;
-  height: 16px;
-  vertical-align: center;
-  background-image: comboRatingBackground;
-  background-repeat: repeat-x;
-  background-position: 0% 0%;
-  background-size: contain;
-}
-
 .Rating .RatingActive {
-  width: 0;
-  height: 100%;
   wash-color: fgColor&99;
-  background-image: comboRatingActiveBackground;
-  background-repeat: repeat-x;
-  background-position: 0% 0%;
-  background-size: contain;
-}
-
-.Rating.rating_1 .RatingActive {
-  width: 16px;
-}
-
-.Rating.rating_2 .RatingActive {
-  width: 32px;
-}
-
-.Rating.rating_3 .RatingActive {
-  width: 48px;
-}
-
-.Rating.rating_4 .RatingActive {
-  width: 64px;
-}
-
-.Rating.rating_5 .RatingActive {
-  width: 80px;
 }
