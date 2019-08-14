@@ -81,9 +81,9 @@
     "invokation_combo_properties_difficulty_rating__4" "Hard"
     "invokation_combo_properties_difficulty_rating__5" "Literally Unplayable"
 
-    "invokation_combo_hud_visibility_visible" "Visible"
-    "invokation_combo_hud_visibility_hide_sequence" "Hidden sequence"
-    "invokation_combo_hud_visibility_no_hands" "Look ma, no hands!"
+    "invokation_combo_hud_visibility__visible" "Visible"
+    "invokation_combo_hud_visibility__hide_sequence" "Hidden sequence"
+    "invokation_combo_hud_visibility__no_hands" "Look ma, no hands!"
 
     "invokation_combo_group_baller" "Baller (Damage over time)"
     "invokation_combo_group_striker" "Striker (Burst Damage)"

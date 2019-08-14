@@ -268,7 +268,7 @@
     },
 
     updateHudVisibilityTooltipAction: function(mode) {
-      var hudVisibilityTooltip = $.Localize("#invokation_combo_hud_visibility_" + mode);
+      var hudVisibilityTooltip = $.Localize("#invokation_combo_hud_visibility__" + mode);
       return new SetDialogVariableAction(this.$ctx, "hud_visibility", hudVisibilityTooltip);
     },
 
