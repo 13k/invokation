@@ -37,9 +37,17 @@
     DEFAULT: "invokation",
   };
 
+  var COMBO_PROPERTIES = {
+    specialty: ["qw", "qe"],
+    stance: ["offensive", "defensive"],
+    damageRating: [0, 1, 2, 3, 4, 5],
+    difficultyRating: [1, 2, 3, 4, 5],
+  };
+
   global.Const = {};
   global.Const.EVENTS = EVENTS;
   global.Const.INVOKER = INVOKER;
   global.Const.NET_TABLES = NET_TABLES;
   global.Const.FREESTYLE_COMBO_ID = "freestyle";
+  global.Const.COMBO_PROPERTIES = COMBO_PROPERTIES;
 })(GameUI.CustomUIConfig(), this);

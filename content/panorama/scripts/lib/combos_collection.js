@@ -3,6 +3,7 @@
 (function(global /*, context */) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var COMBO_PROPERTIES = global.Const.COMBO_PROPERTIES;
   var Class = global.Class;
   var Logger = global.Logger;
   var NetTable = global.NetTable;
@@ -14,15 +15,18 @@
 
   var NET_TABLE_KEY = "combos";
 
-  var SPECIALTIES_KEYS = ["qw", "qe"];
-  var STANCES_KEYS = ["offensive", "defensive"];
-  var DAMAGE_RATINGS_KEYS = [0, 1, 2, 3, 4, 5];
-  var DIFFICULTY_RATINGS_KEYS = [1, 2, 3, 4, 5];
+  var PROPERTIES_L10N = _.mapValues(COMBO_PROPERTIES, function(values, property) {
+    var propertyL10nKey = function(value) {
+      return "#invokation_combo_properties_" + _.snakeCase(property) + "__" + value;
+    };
 
-  var SPECIALTIES = {};
-  var STANCES = {};
-  var DAMAGE_RATINGS = {};
-  var DIFFICULTY_RATINGS = {};
+    var localize = _.flow(
+      propertyL10nKey,
+      $.Localize
+    );
+
+    return _.zipObject(values, _.map(values, localize));
+  });
 
   var CombosCollection = Class({
     constructor: function CombosCollection() {
@@ -65,12 +69,11 @@
       _.forEach(this.combos, function(combo) {
         LuaListDeep(combo, { inplace: true });
 
-        combo.l10n = {};
+        combo.l10n = _.transform(PROPERTIES_L10N, function(comboL10n, localized, property) {
+          comboL10n[property] = localized[combo[property]];
+        });
+
         combo.l10n.name = $.Localize("#" + combo.id);
-        combo.l10n.specialty = SPECIALTIES[combo.specialty];
-        combo.l10n.stance = STANCES[combo.stance];
-        combo.l10n.damageRating = DAMAGE_RATINGS[combo.damageRating];
-        combo.l10n.difficultyRating = DIFFICULTY_RATINGS[combo.difficultyRating];
 
         _.forEach(combo.sequence, function(step) {
           step.isOrbAbility = IsOrbAbility(step.name);
@@ -124,22 +127,6 @@
     Get: function(id) {
       return this.combos[id];
     },
-  });
-
-  $.Each(SPECIALTIES_KEYS, function(key) {
-    SPECIALTIES[key] = $.Localize("#invokation_combo_specialty_" + key);
-  });
-
-  $.Each(STANCES_KEYS, function(key) {
-    STANCES[key] = $.Localize("#invokation_combo_stance_" + key);
-  });
-
-  $.Each(DAMAGE_RATINGS_KEYS, function(key) {
-    DAMAGE_RATINGS[key] = $.Localize("#invokation_combo_tooltip_damage_rating_" + key);
-  });
-
-  $.Each(DIFFICULTY_RATINGS_KEYS, function(key) {
-    DIFFICULTY_RATINGS[key] = $.Localize("#invokation_combo_tooltip_difficulty_rating_" + key);
   });
 
   global.CombosCollection = CombosCollection;
