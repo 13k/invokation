@@ -50,7 +50,7 @@
 }
 
 .Controls .FullRefreshIcon {
-  background-image: loadingThrobberRoundIcon;
+  background-image: statusLoadingThrobberRoundIcon;
   background-size: 28px 28px;
 }
 
