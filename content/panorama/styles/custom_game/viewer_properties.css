@@ -1,0 +1,136 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+
+@define fgColor: #3c1b18;
+
+.Component {
+  flow-children: down;
+  width: 100%;
+  height: 230px;
+  padding: 15px;
+}
+
+.Row {
+  flow-children: right;
+  width: 100%;
+  height: 40px;
+}
+
+.Label {
+  vertical-align: center;
+  font-size: 18px;
+  font-weight: semi-bold;
+  color: fgColor;
+}
+
+.PropertyIcon {
+  width: 28px;
+  height: 28px;
+  margin: 6px 8px;
+  vertical-align: center;
+  tooltip-position: left;
+  tooltip-body-position: 50% 10%;
+}
+
+.PropertyValue {
+  align: right center;
+}
+
+.HeroLevelIcon {
+  wash-color: fgColor;
+  background-image: controlsEscalationArrowIcon;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.HeroLevelBadge {
+  width: 30px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #121212;
+}
+
+.HeroLevelBadge .HeroLevelLabel {
+  width: 14px;
+  margin-top: 3px;
+  align: center center;
+  text-align: center;
+  text-overflow: shrink;
+  font-size: 14px;
+  font-weight: normal;
+  color: #e7d291;
+  text-shadow: 0 0 3px 3.7 #ec780e24;
+}
+
+.SpecialtyIcon {
+  wash-color: fgColor;
+  background-image: controlsFilterSupportIcon;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.StanceIcon {
+  wash-color: fgColor;
+  background-image: controlsFilterCarryIcon;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.AttackDamageIcon {
+  wash-color: fgColor;
+  background-image: controlsFilterMeleeIcon;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.DifficultyIcon {
+  wash-color: fgColor;
+  background-image: controlsFilterComplexityIcon;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.Rating {
+  width: 80px;
+  height: 16px;
+  vertical-align: center;
+  background-image: comboRatingBackground;
+  background-repeat: repeat-x;
+  background-position: 0% 0%;
+  background-size: contain;
+}
+
+.Rating .RatingActive {
+  width: 0;
+  height: 100%;
+  wash-color: fgColor&99;
+  background-image: comboRatingActiveBackground;
+  background-repeat: repeat-x;
+  background-position: 0% 0%;
+  background-size: contain;
+}
+
+.Rating.rating_1 .RatingActive {
+  width: 16px;
+}
+
+.Rating.rating_2 .RatingActive {
+  width: 32px;
+}
+
+.Rating.rating_3 .RatingActive {
+  width: 48px;
+}
+
+.Rating.rating_4 .RatingActive {
+  width: 64px;
+}
+
+.Rating.rating_5 .RatingActive {
+  width: 80px;
+}

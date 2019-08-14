@@ -4,15 +4,28 @@
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
   var Sequence = global.Sequence.Sequence;
+  var ParallelSequence = global.Sequence.ParallelSequence;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
+  var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
 
   var L10N_FALLBACK_IDS = {
     description: "invokation_viewer_description_lorem",
   };
+
+  function htmlTitle(title) {
+    return _.chain(title)
+      .split(" - ")
+      .map(function(line, i) {
+        var heading = i === 0 ? "h1" : "h3";
+        return "<" + heading + ">" + line + "</" + heading + ">";
+      })
+      .join("")
+      .value();
+  }
 
   var Viewer = CreateComponent({
     constructor: function Viewer() {
@@ -22,6 +35,7 @@
           titleLabel: "Title",
           scrollPanel: "ScrollPanel",
           descriptionLabel: "Description",
+          propertiesSection: "PropertiesSection",
           sequenceContainer: "SequenceContainer",
         },
         customEvents: {
@@ -53,38 +67,35 @@
     },
 
     renderAction: function() {
-      this.debug("render()");
-
       return new Sequence()
         .Action(this.renderInfoAction())
+        .Action(this.renderPropertiesAction())
         .Action(this.renderSequenceAction())
         .ScrollToTop(this.$scrollPanel);
     },
 
     renderInfoAction: function() {
-      var title = _.chain(this.combo.l10n.name)
-        .split(" - ")
-        .map(function(line, i) {
-          var heading = i === 0 ? "h1" : "h3";
-          return "<" + heading + ">" + line + "</" + heading + ">";
-        })
-        .join("")
-        .value();
-
+      var title = htmlTitle(this.combo.l10n.name);
       var descriptionL10nID = this.combo.id + "__description";
       var description = this.localizeFallback(descriptionL10nID, L10N_FALLBACK_IDS.description);
 
-      return new Sequence()
+      return new ParallelSequence()
         .SetAttribute(this.$titleLabel, "text", title)
         .SetAttribute(this.$descriptionLabel, "text", description);
     },
 
-    resetSequenceAction: function() {
-      var removeChildren = this.$sequenceContainer.RemoveAndDeleteChildren.bind(
-        this.$sequenceContainer
-      );
+    renderPropertiesAction: function() {
+      return new Sequence()
+        .RemoveChildren(this.$propertiesSection)
+        .RunFunction(this, this.createPropertiesPanel);
+    },
 
-      return new RunFunctionAction(removeChildren);
+    createPropertiesPanel: function() {
+      var panel = CreatePanelWithLayout(this.$propertiesSection, "Properties", PROPERTIES_LAYOUT);
+
+      panel.component.Input("SetCombo", this.combo);
+
+      return panel;
     },
 
     renderSequenceAction: function() {

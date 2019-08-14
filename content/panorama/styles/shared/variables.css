@@ -116,6 +116,11 @@
  ******************************************************************************/
 
 @define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
+@define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
+@define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
+@define controlsFilterCarryIcon: url("s2r://panorama/images/control_icons/filter_carry_png.vtex");
+@define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
+@define controlsFilterComplexityIcon: url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
 
 @define statusLoadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
 

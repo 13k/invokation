@@ -1,0 +1,48 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/viewer_properties.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/viewer_properties.css" />
+  </styles>
+
+  <Panel class="Component" hittest="false">
+    <Panel class="Row" hittest="false">
+      <Button class="PropertyIcon HeroLevelIcon" />
+      <Label class="Label" text="#invokation_combo_properties_hero_level" hittest="false" />
+      <Button class="PropertyValue HeroLevelBadge">
+        <Label id="HeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
+      </Button>
+    </Panel>
+
+    <Panel class="Row" hittest="false">
+      <Button class="PropertyIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
+      <Label class="Label" text="#invokation_combo_properties_specialty" hittest="false" />
+      <Label id="SpecialtyLabel" class="PropertyValue Label" hittest="false" />
+    </Panel>
+
+    <Panel class="Row" hittest="false">
+      <Button class="PropertyIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
+      <Label class="Label" text="#invokation_combo_properties_stance" hittest="false" />
+      <Label id="StanceLabel" class="PropertyValue Label" hittest="false" />
+    </Panel>
+
+    <Panel class="Row" hittest="false">
+      <Button class="PropertyIcon AttackDamageIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
+      <Label class="Label" text="#invokation_combo_properties_damage_rating" hittest="false" />
+      <Panel id="DamageRating" class="PropertyValue Rating">
+        <Panel class="RatingActive" />
+      </Panel>
+    </Panel>
+
+    <Panel class="Row" hittest="false">
+      <Button class="PropertyIcon DifficultyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
+      <Label class="Label" text="#invokation_combo_properties_difficulty_rating" hittest="false" />
+      <Panel id="DifficultyRating" class="PropertyValue Rating">
+        <Panel class="RatingActive" />
+      </Panel>
+    </Panel>
+  </Panel>
+</root>

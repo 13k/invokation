@@ -8,19 +8,23 @@
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="Root Hide" hittest="false">
+  <Panel class="Component Hide" hittest="false">
     <Panel id="Container" hittest="false">
+      <Button id="CloseButton" class="CloseButton" onactivate="viewer.Close()" />
+      <Button id="RefreshButton" class="RefreshButton" onactivate="viewer.Reload()" />
+
       <Panel id="InformationBackground" hittest="false" />
       <Panel id="InformationBody">
         <Label id="Title" html="true" hittest="false" />
 
         <Panel id="ScrollPanel" class="TopBottomFlow">
+          <Panel id="PropertiesSection" class="Section" hittest="false" />
+
           <Label id="Description" html="true" hittest="false" />
 
           <Panel class="Section SequenceSection" hittest="false">
             <Panel class="SectionHeader">
               <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
-              <Button class="RefreshButton" onactivate="viewer.Reload()" />
             </Panel>
 
             <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
@@ -30,10 +34,8 @@
         </Panel>
       </Panel>
 
-      <Button id="CloseButton" class="CloseButton" onactivate="viewer.Close()" />
-
-      <Panel id="FooterPanel" hittest="false">
-        <Panel id="Buttons" class="LeftRightFlow" hittest="false">
+      <Panel class="Footer" hittest="false">
+        <Panel class="Buttons" hittest="false">
           <Button class="PlayButton" onactivate="viewer.Play()">
             <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
           </Button>
