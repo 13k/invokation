@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/picker_combo.css" />
   </styles>
 
-  <Panel class="HeroCombo">
+  <Panel class="Component">
     <Label id="Title" class="PanelTitle" hittest="false" />
 
     <Panel class="InfoContainer">
@@ -20,18 +20,18 @@
       <Button class="ComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
       <Button class="ComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
 
-      <Panel class="RatingsContainer">
-        <Panel class="RatingContainer">
+      <Panel class="Ratings">
+        <Panel class="LeftRightFlow">
           <Button class="AttackDamageIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
-          <Panel id="DamageRating" class="ComboRating">
-            <Panel class="ComboRatingActive" />
+          <Panel id="DamageRating" class="Rating">
+            <Panel class="RatingActive" />
           </Panel>
         </Panel>
 
-        <Panel class="RatingContainer">
+        <Panel class="LeftRightFlow">
           <Button class="DifficultyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
-          <Panel id="DifficultyRating" class="ComboRating">
-            <Panel class="ComboRatingActive" />
+          <Panel id="DifficultyRating" class="Rating">
+            <Panel class="RatingActive" />
           </Panel>
         </Panel>
       </Panel>
