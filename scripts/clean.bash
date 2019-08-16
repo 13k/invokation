@@ -13,6 +13,8 @@ fi
 set -e
 
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+# shellcheck source="./common.bash"
 source "$SCRIPT_DIR/common.bash"
 
 paths=(

@@ -13,11 +13,13 @@ fi
 set -e
 
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+# shellcheck source="./common.bash"
 source "$SCRIPT_DIR/common.bash"
 
 opts=("-addon" "$ADDON")
 cmd=("$DOTA2_TOOLS_BIN_PATH" "${opts[@]}")
 
-echo "> ${cmd[@]}"
+echo "> ${cmd[*]}"
 cd "$DOTA2_PATH"
 exec "${cmd[@]}"

@@ -13,6 +13,8 @@ fi
 set -e
 
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+# shellcheck source="./common.bash"
 source "$SCRIPT_DIR/common.bash"
 
 echo "Linking addon from $ROOT_PATH to $DOTA2_PATH"
@@ -24,7 +26,7 @@ if [[ ! -e "$ADDON_CONTENT_PATH" ]]; then
   mklink "$SRC_CONTENT_PATH" "$ADDON_CONTENT_PATH"
 fi
 
-while read rel_path; do
+while read -r rel_path; do
   src="$SRC_GAME_PATH/$rel_path"
   dest="$ADDON_GAME_PATH/$rel_path"
 
