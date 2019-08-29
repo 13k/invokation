@@ -150,31 +150,41 @@
       return seq;
     },
 
-    spinDigitsAction: function(container, value, length, increment, interval, callbacks) {
-      increment = increment || 1;
-      callbacks = callbacks || {};
+    spinDigitsAction: function(options) {
+      options = _.assign(
+        {
+          start: 0,
+          end: 0,
+          increment: 1,
+          interval: 100,
+          callbacks: {},
+        },
+        options
+      );
 
-      var seq = new StaggeredSequence(interval);
+      var seq = new StaggeredSequence(options.interval);
 
-      for (var n = 0; ; n += increment) {
-        if (n > value) n = value;
+      for (var n = options.start; ; n += options.increment) {
+        if (n > options.end) n = options.end;
 
         (function() {
           var nn = Math.ceil(n);
-          var updateSeq = new Sequence().Action(this.updateDigitsAction(container, nn, length));
+          var updateSeq = new Sequence().Action(
+            this.updateDigitsAction(options.container, nn, options.length)
+          );
 
-          if (callbacks.onSpin) {
-            updateSeq.RunFunction(callbacks.onSpin, nn);
+          if (_.isFunction(options.callbacks.onSpin)) {
+            updateSeq.RunFunction(options.callbacks.onSpin, nn);
           }
 
           seq.Action(updateSeq);
         }.call(this));
 
-        if (n === value) break;
+        if (n === options.end) break;
       }
 
-      if (callbacks.onEnd) {
-        seq.RunFunction(callbacks.onEnd);
+      if (_.isFunction(options.callbacks.onEnd)) {
+        seq.RunFunction(options.callbacks.onEnd);
       }
 
       return seq;
@@ -188,33 +198,35 @@
       return this.updateDigitsAction(this.$summaryCountDisplay, count, this.counterDigitsLength);
     },
 
-    spinSummaryDamageDigitsAction: function(damage) {
-      var increment = damage / this.damageSpinIterations;
+    spinSummaryDamageDigitsAction: function(options) {
+      options = _.assign(
+        {
+          start: 0,
+          end: 0,
+          iterations: 10,
+          callbacks: {},
+        },
+        options
+      );
+
+      options.increment = options.increment || (options.end - options.start) / options.iterations;
+
       var appliedFx = {};
 
-      var onSpin = function(damage) {
+      options.callbacks.onSpin = function(damage) {
         var intensity = this.burstIntensity(damage);
 
         if (!appliedFx[intensity]) {
           this.summaryFxBurstStart(intensity);
           appliedFx[intensity] = true;
         }
-      };
+      }.bind(this);
 
-      var onSpinEnd = function() {
+      options.callbacks.onSpinEnd = function() {
         _.forOwn(appliedFx, _.rearg(this.summaryFxBurstStop.bind(this), [1]));
-      };
+      }.bind(this);
 
-      var callbacks = { onSpin: onSpin.bind(this), onEnd: onSpinEnd.bind(this) };
-
-      return this.spinDigitsAction(
-        this.$summaryDamageTicker,
-        damage,
-        this.damageDigitsLength,
-        increment,
-        this.spinDigitsInterval,
-        callbacks
-      );
+      return this.spinDigitsAction(options);
     },
 
     bumpCounterTickerAction: function() {
@@ -259,18 +271,28 @@
       return new RemoveClassAction(this.$ctx, "ShowSummary");
     },
 
-    updateSummaryAction: function(count, damage) {
+    updateSummaryAction: function(options) {
+      var count = _.get(options, "count", 0);
       var seq = new Sequence();
 
       if (count < 1) {
         return seq;
       }
 
+      var summaryDamageOptions = {
+        container: this.$summaryDamageTicker,
+        length: this.damageDigitsLength,
+        start: options.startDamage,
+        end: options.endDamage,
+        interval: this.spinDigitsInterval,
+        iterations: this.damageSpinIterations,
+      };
+
       return seq
         .Action(this.updateSummaryCounterDigitsAction(count))
         .Action(this.showSummaryAction())
         .Wait(0.15)
-        .Action(this.spinSummaryDamageDigitsAction(damage));
+        .Action(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
     },
 
     hideAction: function() {
@@ -287,9 +309,7 @@
     },
 
     updateSummary: function(payload) {
-      var count = payload.count || 0;
-      var damage = payload.damage || 0;
-      return this.updateSummaryAction(count, damage).Start();
+      return this.updateSummaryAction(payload).Start();
     },
 
     hide: function() {

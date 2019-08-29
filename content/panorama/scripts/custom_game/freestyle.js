@@ -1,6 +1,7 @@
 "use strict";
 
 (function(global, context) {
+  var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
   var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
   var Sequence = global.Sequence.Sequence;
@@ -93,12 +94,12 @@
 
     // ----- Score actions -----
 
-    updateScoreSummaryAction: function(count, damage) {
+    updateScoreSummaryAction: function(options) {
       return new RunFunctionAction(
         this.$comboScore.component,
         this.$comboScore.component.Input,
         "UpdateSummary",
-        { count: count, damage: damage }
+        options
       );
     },
 
@@ -152,13 +153,18 @@
     },
 
     progress: function(count, damage) {
-      count = count || 0;
-      damage = damage || 0;
+      var options = {
+        count: count || 0,
+        startDamage: this.prevDamage || 0,
+        endDamage: damage || 0,
+      };
 
-      var seq = new Sequence().Action(this.updateScoreSummaryAction(count, damage));
+      this.prevDamage = damage;
+
+      var seq = new Sequence().Action(this.updateScoreSummaryAction(options));
 
       this.debugFn(function() {
-        return ["progress()", { count: count, damage: damage, actions: seq.size() }];
+        return ["progress()", _.assign({ actions: seq.size() }, options)];
       });
 
       return seq.Start();

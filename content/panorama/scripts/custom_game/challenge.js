@@ -326,12 +326,12 @@
       );
     },
 
-    updateScoreSummaryAction: function(count, damage) {
+    updateScoreSummaryAction: function(options) {
       return new RunFunctionAction(
         this.$comboScore.component,
         this.$comboScore.component.Input,
         "UpdateSummary",
-        { count: count, damage: damage }
+        options
       );
     },
 
@@ -407,18 +407,21 @@
     },
 
     finish: function(id, count, damage) {
-      count = count || 0;
-      damage = damage || 0;
+      var options = {
+        count: count || 0,
+        startDamage: 0,
+        endDamage: damage || 0,
+      };
 
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.success)
         .Action(this.showSplashAction("success"))
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.bumpStepPanelsAction(this.combo.sequence))
-        .Action(this.updateScoreSummaryAction(count, damage));
+        .Action(this.updateScoreSummaryAction(options));
 
       this.debugFn(function() {
-        return ["finish()", { id: id, count: count, damage: damage, actions: seq.size() }];
+        return ["finish()", _.assign({ id: id, actions: seq.size() }, options)];
       });
 
       return seq.Start();
