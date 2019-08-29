@@ -16,14 +16,16 @@ M.EVENT_COMBO_STARTED = "invokation_combo_started"
 M.EVENT_COMBO_STOP = "invokation_combo_stop"
 --- combo stopped
 M.EVENT_COMBO_STOPPED = "invokation_combo_stopped"
---- restart combo
-M.EVENT_COMBO_RESTART = "invokation_combo_restart"
+--- combo in progress
+M.EVENT_COMBO_IN_PROGRESS = "invokation_combo_in_progress"
 --- combo progress
 M.EVENT_COMBO_PROGRESS = "invokation_combo_progress"
 --- combo step error
 M.EVENT_COMBO_STEP_ERROR = "invokation_combo_step_error"
 --- combo finished
 M.EVENT_COMBO_FINISHED = "invokation_combo_finished"
+--- restart combo
+M.EVENT_COMBO_RESTART = "invokation_combo_restart"
 
 --- Combat Log
 -- @section combat_log

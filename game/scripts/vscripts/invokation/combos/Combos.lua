@@ -264,6 +264,10 @@ function M:OnAbilityUsed(player, unit, ability)
   end
 
   if combo:Progress(ability) then
+    if combo.count == 1 then
+      CombosComm.sendInProgress(player, combo)
+    end
+
     CombosComm.sendProgress(player, combo)
 
     if combo:Finish() then
