@@ -5,7 +5,7 @@
 @define sequenceWidth: 150px;
 @define controlsMarginRight: 0;
 
-.Root {
+.Component {
   width: 100%;
   height: 100%;
 }
@@ -31,7 +31,7 @@
   opacity: 0;
 }
 
-.Root.Hide .Combo {
+.Component.Hide .Combo {
   opacity: 0;
 }
 
@@ -116,7 +116,7 @@
   transition-property: opacity;
 }
 
-.Root.Hide .Controls {
+.Component.Hide .Controls {
   opacity: 0;
 }
 
@@ -223,4 +223,43 @@
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
+}
+
+#Timer {
+  flow-children: right;
+  width: 100px;
+  height: 44px;
+  margin-right: 220px;
+  margin-bottom: 20px;
+  padding: 6px 8px 2px 8px;
+  align: right bottom;
+  transform: translateY(-40px);
+  border-radius: 4px;
+  transition-duration: 0.2s;
+  transition-property: transform;
+}
+
+#Timer.Hide {
+  transform: translateY(0);
+}
+
+#Timer .ClockIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: center;
+  transform: translateY(-2px);
+  background-image: statusClockIcon;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#TimerLabel {
+  width: fill-parent-flow(1);
+  vertical-align: center;
+  /* text-align: right; */
+  text-overflow: shrink;
+  font-size: 22px;
+  color: white;
 }

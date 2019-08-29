@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="Root HudVisible Hide" hittest="false">
+  <Panel class="Component HudVisible Hide" hittest="false">
     <Panel class="Combo" hittest="false">
       <Panel id="Sequence" hittest="false" />
     </Panel>
@@ -43,5 +43,10 @@
     </Panel>
 
     <Panel id="Score" />
+
+    <Panel id="Timer" class="TransparentPanel Hide">
+      <Button class="ClockIcon" />
+      <Label id="TimerLabel" hittest="false" />
+    </Panel>
   </Panel>
 </root>

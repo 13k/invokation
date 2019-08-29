@@ -10,10 +10,11 @@
     COMBO_STARTED: "invokation_combo_started",
     COMBO_STOP: "invokation_combo_stop",
     COMBO_STOPPED: "invokation_combo_stopped",
-    COMBO_RESTART: "invokation_combo_restart",
+    COMBO_IN_PROGRESS: "invokation_combo_in_progress",
     COMBO_PROGRESS: "invokation_combo_progress",
     COMBO_STEP_ERROR: "invokation_combo_step_error",
     COMBO_FINISHED: "invokation_combo_finished",
+    COMBO_RESTART: "invokation_combo_restart",
     // combat log
     COMBAT_LOG_ABILITY_USED: "invokation_combat_log_ability_used",
     COMBAT_LOG_CLEAR: "invokation_combat_log_clear",

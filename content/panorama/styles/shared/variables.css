@@ -122,6 +122,7 @@
 @define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
 @define controlsFilterComplexityIcon: url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
 
+@define statusClockIcon: url("s2r://panorama/images/status_icons/clock_psd.vtex");
 @define statusLoadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
 
 @define dotaPlusCurrencyIcon: url("s2r://panorama/images/dota_plus/currency_icon_png.vtex");
