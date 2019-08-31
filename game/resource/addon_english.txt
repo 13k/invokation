@@ -8,6 +8,14 @@
 
     "npc_invokation_dummy_target" "Dummy"
 
+    "invokation_game_info_title" "Invokation School of Arcane Arts"
+    "invokation_game_info_home_page" "Homepage"
+    "invokation_game_info_changelog" "Changelog"
+    "invokation_game_info_description" "
+      <span class='intro-text'>Welcome to Invokation, the School of Arcane Arts!</span>
+      <br><br>Training grounds for novices and masters alike, where they learn, practice and master the invocation and casting of spells (and magical items too!).
+      "
+
     "invokation_combat_log_title" "Combat Log"
     "invokation_combat_log_filter_invocations" "Hide Invocations"
     "invokation_combat_log_clear" "Clear"

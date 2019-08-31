@@ -1,0 +1,110 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("s2r://panorama/styles/popups/popups_shared.css");
+@import url("file://{resources}/styles/shared/variables.css");
+
+.Component {
+  flow-children: none;
+  width: 1300px;
+  align: center center;
+  animation-name: none;
+}
+
+.CloseButton {
+  width: 30px;
+  height: 30px;
+  margin-top: -16px;
+  margin-right: -48px;
+  align: right top;
+  wash-color: #ddd;
+}
+
+.Contents {
+  overflow: squish scroll;
+  flow-children: down;
+  width: 100%;
+  padding: 32px;
+}
+
+.PopupTitle {
+  font-weight: semi-bold;
+  color: white;
+}
+
+.PopupDescription {
+  text-align: center;
+}
+
+.Orbs {
+  flow-children: right;
+  horizontal-align: center;
+}
+
+.Orb {
+  width: 256px;
+  height: 256px;
+  align: center center;
+  opacity-mask: heroMovieBlurMask;
+}
+
+.Separator {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-top: 1px solid #444;
+}
+
+.PopupButtonRow {
+  margin-top: 0;
+}
+
+.MetaItem {
+  margin-right: 16px;
+  vertical-align: center;
+}
+
+.LinkButton {
+  flow-children: right;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+
+.LinkButton:hover {
+  border-top: 1px solid #333;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #333;
+  background-color: #222;
+}
+
+.LinkButton:active {
+  border-top: 1px solid #666;
+  border-right: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-left: 1px solid #666;
+  background-color: #444;
+}
+
+.MetaText {
+  height: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: normal;
+  color: linkText;
+}
+
+.ArrowIcon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  margin-left: -2px;
+  vertical-align: center;
+  wash-color: #ddd;
+  background-image: controlsArrowRightIcon;
+  background-size: 16px 16px;
+}
+
+.LinkButton:hover .ArrowIcon {
+  wash-color: #fff;
+}

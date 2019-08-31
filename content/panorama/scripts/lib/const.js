@@ -1,6 +1,12 @@
 "use strict";
 
 (function(global /*, context */) {
+  var META = {
+    VERSION: "v0.1.0-beta1",
+    URL: "https://github.com/13k/invokation",
+    CHANGELOG_URL: "https://github.com/13k/invokation/blob/master/CHANGELOG.md",
+  };
+
   var EVENTS = {
     // combo viewer
     VIEWER_RENDER: "invokation_viewer_render",
@@ -20,6 +26,8 @@
     COMBAT_LOG_CLEAR: "invokation_combat_log_clear",
     COMBAT_LOG_CAPTURE_START: "invokation_combat_log_capture_start",
     COMBAT_LOG_CAPTURE_STOP: "invokation_combat_log_capture_stop",
+    // meta
+    META_GAME_INFO_TOGGLE: "invokation_meta_game_info_toggle",
   };
 
   var INVOKER = {};
@@ -46,6 +54,7 @@
   };
 
   global.Const = {};
+  global.Const.META = META;
   global.Const.EVENTS = EVENTS;
   global.Const.INVOKER = INVOKER;
   global.Const.NET_TABLES = NET_TABLES;

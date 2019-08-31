@@ -70,6 +70,8 @@
 
 /***** invokation *****/
 
+@define linkText: #9862E9;
+
 @define quasAccentColor: #33a7e9;
 @define wexAccentColor: #eb07e1;
 @define exortAccentColor: #e7ac10;
@@ -115,6 +117,7 @@
  * Icons
  ******************************************************************************/
 
+@define controlsArrowRightIcon: url("s2r://panorama/images/control_icons/arrow_right_png.vtex");
 @define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
 @define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
@@ -183,3 +186,4 @@
 @define softEdgeVScrollMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_psd.vtex");
 @define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
 @define brushHorizontalMask: url("s2r://panorama/images/masks/brush_horizontal_psd.vtex");
+@define heroMovieBlurMask: url("s2r://panorama/images/masks/heromovie_blur_mask_psd.vtex");

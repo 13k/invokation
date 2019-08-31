@@ -24,4 +24,8 @@
   {
     "combo_id" "string"
   }
+
+  "invokation_meta_game_info_toggle"
+  {
+  }
 }
