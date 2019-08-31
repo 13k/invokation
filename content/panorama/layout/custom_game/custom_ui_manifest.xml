@@ -21,6 +21,7 @@
 
   <Panel>
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
+    <CustomUIElement type="HudTopBar" layoutfile="file://{resources}/layout/custom_game/top_bar.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/combat_log.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/picker.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/viewer.xml" />

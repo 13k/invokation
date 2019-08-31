@@ -40,8 +40,6 @@
     DOTA_DEFAULT_UI_INVENTORY_GOLD: false,
     // Suggested items shop panel.
     DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS: false,
-    // Top-left menu buttons in the HUD.
-    DOTA_DEFAULT_UI_TOP_MENU_BUTTONS: true,
     // Top-bar HUD.
     DOTA_DEFAULT_UI_TOP_BAR: false,
     // Top-left menu buttons in the HUD.
@@ -52,6 +50,8 @@
     DOTA_DEFAULT_UI_TOP_BAR_DIRE_TEAM: false,
     // Top-bar score.
     DOTA_DEFAULT_UI_TOP_BAR_SCORE: false,
+    // Top-left menu buttons in the HUD.
+    DOTA_DEFAULT_UI_TOP_MENU_BUTTONS: false,
     // Quick stats (KDA/CS) at top-left.
     DOTA_DEFAULT_UI_QUICK_STATS: false,
     // Endgame scoreboard.
