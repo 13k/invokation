@@ -11,17 +11,17 @@
 
   var ComboStep = CreateComponent({
     constructor: function ComboStep(options) {
-      options = _.defaultsDeep(options, {
+      this.options = _.defaultsDeep(options, {
+        imageId: "ComboStepImage",
         elements: {
-          button: "StepIconButton",
-          descriptionLabel: "StepDescription",
+          button: "ComboStepIconButton",
         },
         inputs: {
           SetStep: "setStep",
         },
       });
 
-      ComboStep.super.call(this, options);
+      ComboStep.super.call(this, this.options);
     },
 
     // child components code can override this function
@@ -33,18 +33,24 @@
 
       this.$button.RemoveAndDeleteChildren();
 
-      if (!this.step.required) {
-        this.$ctx.AddClass("Optional");
+      if (this.step.required) {
+        this.$ctx.RemoveClass("ComboOptional");
       } else {
-        this.$ctx.RemoveClass("Optional");
+        this.$ctx.AddClass("ComboOptional");
+      }
+
+      if (this.step.isInvocationAbility) {
+        this.$ctx.AddClass("ComboStepInvocation");
+      } else {
+        this.$ctx.RemoveClass("ComboStepInvocation");
       }
 
       var image;
 
       if (this.step.isItem) {
-        image = CreateItemImage(this.$button, "StepImage", this.step.name);
+        image = CreateItemImage(this.$button, this.options.imageId, this.step.name);
       } else {
-        image = CreateAbilityImage(this.$button, "StepImage", this.step.name);
+        image = CreateAbilityImage(this.$button, this.options.imageId, this.step.name);
       }
 
       image.hittest = false;

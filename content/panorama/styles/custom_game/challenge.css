@@ -5,12 +5,12 @@
 @define sequenceWidth: 150px;
 @define controlsMarginRight: 0;
 
-.Component {
+.ChallengeRoot {
   width: 100%;
   height: 100%;
 }
 
-.Combo {
+.ChallengeCombo {
   width: sequenceWidth;
   height: 100%;
   padding-top: 80px;
@@ -22,20 +22,20 @@
   transition-property: opacity;
 }
 
-.HudVisible .Combo {
+.HudVisible .ChallengeCombo {
   opacity: 1;
 }
 
-.HudHideSequence .Combo,
-.HudNoHands .Combo {
+.HudHideSequence .ChallengeCombo,
+.HudNoHands .ChallengeCombo {
   opacity: 0;
 }
 
-.Component.Hide .Combo {
+.ChallengeRoot.Hide .ChallengeCombo {
   opacity: 0;
 }
 
-#Sequence {
+#ChallengeSequence {
   overflow: clip scroll;
   flow-children: down;
   width: 100%;
@@ -44,7 +44,7 @@
   opacity-mask: softEdgeVScrollMask;
 }
 
-#Splash {
+#ChallengeSplash {
   visibility: collapse;
   overflow: clip clip;
   flow-children: right;
@@ -59,13 +59,13 @@
   transition-property: max-width, width;
 }
 
-#Splash.Show {
+#ChallengeSplash.Show {
   visibility: visible;
   width: 800px;
   max-width: 800px;
 }
 
-#Splash .Box {
+#ChallengeSplash .ChallengeSplashBox {
   flow-children: down;
   min-width: 800px;
   height: 100%;
@@ -73,7 +73,7 @@
   background-color: #000000ef;
 }
 
-#Splash .Title {
+#ChallengeSplash .ChallengeSplashTitle {
   width: 100%;
   margin-top: 70px;
   margin-left: -50px;
@@ -88,17 +88,17 @@
   text-shadow: 3px 3px 6px #035c68;
 }
 
-#Splash.success .Title {
+#ChallengeSplash.success .ChallengeSplashTitle {
   color: #42cf49;
   text-shadow: 3px 3px 6px #162c5a;
 }
 
-#Splash.failure .Title {
+#ChallengeSplash.failure .ChallengeSplashTitle {
   color: #d44b21;
   text-shadow: 3px 3px 6px #474303;
 }
 
-#Splash .Help {
+#ChallengeSplash .ChallengeSplashHelp {
   margin-top: 10px;
   margin-left: 280px;
   horizontal-align: left;
@@ -107,7 +107,7 @@
   text-shadow: 1px 1px 2px #000c;
 }
 
-.Controls {
+.ChallengeControls {
   flow-children: right;
   margin-right: controlsMarginRight;
   align: right bottom;
@@ -116,24 +116,24 @@
   transition-property: opacity;
 }
 
-.Component.Hide .Controls {
+.ChallengeRoot.Hide .ChallengeControls {
   opacity: 0;
 }
 
-.Controls .ControlIcon {
+.ChallengeControls .ChallengeControlIcon {
   width: 64px;
   height: 64px;
   transition-duration: 0.2s;
   transition-property: background-color;
 }
 
-.Controls .ControlIcon:hover {
+.ChallengeControls .ChallengeControlIcon:hover {
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
   background-color: panelTranslucentHoverGradient;
 }
 
-.Controls .IconButton {
+.ChallengeControls .ChallengeIconButton {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -143,81 +143,81 @@
   background-position: 50% 50%;
 }
 
-.Controls .IconButton.Activated {
+.ChallengeControls .ChallengeIconButton.Activated {
   sound: "ui_quit_menu_fadeout";
 }
 
-.Controls .InfoIcon {
+.ChallengeControls .InfoIcon {
   background-size: 30px 30px;
 }
 
-.Controls .EyeIcon {
+.ChallengeControls .EyeIcon {
   background-image: controlsEyeIcon;
   background-size: 32px 32px;
 }
 
-.HudHideSequence .Controls .ControlIcon .EyeIcon {
+.HudHideSequence .ChallengeControls .ChallengeControlIcon .EyeIcon {
   wash-color: #646464;
 }
 
-.HudNoHands .Controls .ControlIcon .EyeIcon {
+.HudNoHands .ChallengeControls .ChallengeControlIcon .EyeIcon {
   wash-color: #3e3e3e;
 }
 
-.Controls .FullRefreshIcon {
+.ChallengeControls .FullRefreshIcon {
   background-image: statusLoadingThrobberRoundIcon;
   background-size: 28px 28px;
 }
 
-.Controls .FullRefreshIcon.Activated {
+.ChallengeControls .FullRefreshIcon.Activated {
   animation-name: SpinnerRotate;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
 }
 
-.Controls .CloseButton {
+.ChallengeControls .CloseButton {
   background-size: 34px 34px;
 }
 
-.Controls .ControlIcon .Grey {
+.ChallengeControls .ChallengeControlIcon .Grey {
   wash-color: #aaa;
 }
 
-.Controls .ControlIcon .Grey:hover {
+.ChallengeControls .ChallengeControlIcon .Grey:hover {
   wash-color: #fff;
 }
 
-.Controls .ControlIcon .Blue {
+.ChallengeControls .ChallengeControlIcon .Blue {
   wash-color: #65a9db;
 }
 
-.Controls .ControlIcon .Blue:hover {
+.ChallengeControls .ChallengeControlIcon .Blue:hover {
   wash-color: #acc6d8;
 }
 
-.Controls .ControlIcon .Bronze {
+.ChallengeControls .ChallengeControlIcon .Bronze {
   wash-color: #dca157;
 }
 
-.Controls .ControlIcon .Bronze:hover {
+.ChallengeControls .ChallengeControlIcon .Bronze:hover {
   wash-color: #dca157;
 }
 
-.Controls .ControlIcon .Red {
+.ChallengeControls .ChallengeControlIcon .Red {
   wash-color: #db6565;
 }
 
-.Controls .ControlIcon .Red:hover {
+.ChallengeControls .ChallengeControlIcon .Red:hover {
   wash-color: #db6565;
 }
 
-#Score {
+#ChallengeScore {
   margin-bottom: 230px;
   align: center bottom;
 }
 
-#Score.Failed {
+#ChallengeScore.Failed {
   wash-color: #000c;
   animation-name: StunPortrait;
   animation-duration: 1s;
@@ -225,7 +225,7 @@
   animation-iteration-count: 1;
 }
 
-#Timer {
+#ChallengeTimer {
   flow-children: right;
   width: 100px;
   height: 44px;
@@ -239,11 +239,11 @@
   transition-property: transform;
 }
 
-#Timer.Hide {
+#ChallengeTimer.Hide {
   transform: translateY(0);
 }
 
-#Timer .ClockIcon {
+#ChallengeTimer .ClockIcon {
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -255,10 +255,9 @@
   background-size: contain;
 }
 
-#TimerLabel {
+#ChallengeTimerLabel {
   width: fill-parent-flow(1);
   vertical-align: center;
-  /* text-align: right; */
   text-overflow: shrink;
   font-size: 22px;
   color: white;

@@ -12,13 +12,13 @@
   var ViewerProperties = CreateComponent({
     constructor: function ViewerProperties() {
       ViewerProperties.super.call(this, {
-        elements: [
-          "HeroLevelLabel",
-          "SpecialtyLabel",
-          "StanceLabel",
-          "DamageRating",
-          "DifficultyRating",
-        ],
+        elements: {
+          heroLevelLabel: "ViewerPropertiesHeroLevelLabel",
+          specialtyLabel: "ViewerPropertiesSpecialtyLabel",
+          stanceLabel: "ViewerPropertiesStanceLabel",
+          damageRating: "ViewerPropertiesDamageRating",
+          difficultyRating: "ViewerPropertiesDifficultyRating",
+        },
         inputs: {
           SetCombo: "setCombo",
         },

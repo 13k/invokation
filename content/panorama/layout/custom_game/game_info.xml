@@ -8,13 +8,13 @@
     <include src="file://{resources}/styles/custom_game/game_info.css" />
   </styles>
 
-  <PopupCustomLayout class="Component PopupPanel Hidden" popupbackground="dim" oncancel="UIPopupButtonClicked()" onload="SetupPopup()">
+  <PopupCustomLayout class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="UIPopupButtonClicked()" onload="SetupPopup()">
     <Button class="CloseButton" onactivate="gameInfo.Close()" />
 
-    <Panel class="Contents">
+    <Panel class="GameInfoContents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
 
-      <Panel class="Orbs">
+      <Panel class="GameInfoOrbs">
         <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_quas" camera="camera" particleonly="true" />
         <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_wex" camera="camera" particleonly="true" />
         <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_exort" camera="camera" particleonly="true" />
@@ -22,21 +22,21 @@
 
       <Label class="PopupDescription" text="#invokation_game_info_description" html="true" hittest="false" />
 
-      <Panel class="Separator" />
+      <Panel class="GameInfoSeparator" />
 
       <Panel class="PopupButtonRow">
-        <Panel class="MetaItem">
-          <Label id="VersionLabel" class="MetaText" />
+        <Panel class="GameInfoMetaItem">
+          <Label id="GameInfoVersionLabel" class="GameInfoMetaText" />
         </Panel>
 
-        <Button class="MetaItem LinkButton" onactivate="gameInfo.OpenURL()">
-          <Label class="MetaText LinkText" text="#invokation_game_info_home_page" />
-          <Panel class="ArrowIcon" />
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="gameInfo.OpenURL()">
+          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_home_page" />
+          <Panel class="GameInfoArrowIcon" />
         </Button>
 
-        <Button class="MetaItem LinkButton" onactivate="gameInfo.OpenChangelogURL()">
-          <Label class="MetaText LinkText" text="#invokation_game_info_changelog" />
-          <Panel class="ArrowIcon" />
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="gameInfo.OpenChangelogURL()">
+          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_changelog" />
+          <Panel class="GameInfoArrowIcon" />
         </Button>
       </Panel>
     </Panel>

@@ -8,34 +8,34 @@
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="Component Hide" hittest="false">
-    <Panel id="Container" hittest="false">
-      <Button id="CloseButton" class="CloseButton" onactivate="viewer.Close()" />
-      <Button id="RefreshButton" class="RefreshButton" onactivate="viewer.Reload()" />
+  <Panel class="ViewerRoot Hide" hittest="false">
+    <Panel class="Viewer" hittest="false">
+      <Button class="CloseButton" onactivate="viewer.Close()" />
+      <Button class="RefreshButton" onactivate="viewer.Reload()" />
 
-      <Panel id="InformationBackground" hittest="false" />
-      <Panel id="InformationBody">
-        <Label id="Title" html="true" hittest="false" />
+      <Panel class="ViewerInformationBackground" hittest="false" />
+      <Panel class="ViewerInformationBody">
+        <Label id="ViewerTitle" html="true" hittest="false" />
 
-        <Panel id="ScrollPanel" class="TopBottomFlow">
-          <Panel id="PropertiesSection" class="Section" hittest="false" />
+        <Panel id="ViewerScrollPanel" class="TopBottomFlow">
+          <Panel id="ViewerPropertiesSection" class="ViewerSection" hittest="false" />
 
-          <Label id="Description" html="true" hittest="false" />
+          <Label id="ViewerDescription" html="true" hittest="false" />
 
-          <Panel class="Section SequenceSection" hittest="false">
+          <Panel class="ViewerSection ViewerSequenceSection" hittest="false">
             <Panel class="SectionHeader">
               <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
             </Panel>
 
             <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
 
-            <Panel id="SequenceContainer" hittest="false" />
+            <Panel id="ViewerSequence" hittest="false" />
           </Panel>
         </Panel>
       </Panel>
 
-      <Panel class="Footer" hittest="false">
-        <Panel class="Buttons" hittest="false">
+      <Panel class="ViewerFooter" hittest="false">
+        <Panel class="ViewerButtons" hittest="false">
           <Button class="PlayButton" onactivate="viewer.Play()">
             <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
           </Button>

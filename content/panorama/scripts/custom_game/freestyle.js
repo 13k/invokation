@@ -12,6 +12,8 @@
   var CreateComponent = context.CreateComponent;
 
   var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
+  var COMBO_SCORE_ID = "ComboScore";
+  var COMBO_SCORE_CLASS = "Level2";
 
   var START_DELAY = 0.5;
 
@@ -22,7 +24,9 @@
   var Freestyle = CreateComponent({
     constructor: function Freestyle() {
       Freestyle.super.call(this, {
-        elements: ["Score"],
+        elements: {
+          score: "FreestyleScore",
+        },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
           "!COMBO_STOPPED": "onComboStopped",
@@ -74,8 +78,8 @@
     },
 
     createComboScorePanel: function(parent) {
-      var panel = CreatePanelWithLayout(parent, "ComboScore", COMBO_SCORE_LAYOUT);
-      panel.AddClass("Level2");
+      var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
+      panel.AddClass(COMBO_SCORE_CLASS);
       return panel;
     },
 

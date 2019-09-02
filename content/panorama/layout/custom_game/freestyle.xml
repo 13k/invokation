@@ -8,21 +8,21 @@
     <include src="file://{resources}/styles/custom_game/freestyle.css" />
   </styles>
 
-  <Panel class="Root Hide" hittest="false">
-    <Panel class="Controls TranslucentPanel" hittest="false">
-      <Panel class="ControlIcon">
-        <Button class="RefreshButton IconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+  <Panel class="FreestyleRoot Hide" hittest="false">
+    <Panel class="FreestyleControls TranslucentPanel" hittest="false">
+      <Panel class="FreestyleControlIcon">
+        <Button class="RefreshButton FreestyleIconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="ControlIcon">
-        <Button class="FullRefreshIcon IconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="FreestyleControlIcon">
+        <Button class="FullRefreshIcon FreestyleIconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="ControlIcon">
-        <Button class="CloseButton IconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="FreestyleControlIcon">
+        <Button class="CloseButton FreestyleIconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 
-    <Panel id="Score" />
+    <Panel id="FreestyleScore" />
   </Panel>
 </root>

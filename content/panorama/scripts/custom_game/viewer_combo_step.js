@@ -10,7 +10,11 @@
 
   var ViewerComboStep = Class(ComboStep, {
     constructor: function ViewerComboStep() {
-      ViewerComboStep.super.call(this);
+      ViewerComboStep.super.call(this, {
+        elements: {
+          descriptionLabel: "ViewerComboStepDescription",
+        },
+      });
     },
 
     onStepChange: function() {

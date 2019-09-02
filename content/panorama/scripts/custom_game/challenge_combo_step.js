@@ -17,34 +17,26 @@
       });
     },
 
-    onStepChange: function() {
-      if (this.step.isInvocationAbility) {
-        this.$ctx.AddClass("Invocation");
-      } else {
-        this.$ctx.RemoveClass("Invocation");
-      }
-    },
-
     onSetActive: function() {
-      this.$ctx.AddClass("Active");
+      this.$ctx.AddClass("ChallengeComboStepActive");
     },
 
     onUnsetActive: function() {
-      this.$ctx.RemoveClass("Active");
+      this.$ctx.RemoveClass("ChallengeComboStepActive");
     },
 
     onSetError: function() {
-      this.$ctx.RemoveClass("Error");
-      this.$ctx.AddClass("Error");
+      this.$ctx.RemoveClass("ChallengeComboStepError");
+      this.$ctx.AddClass("ChallengeComboStepError");
     },
 
     onUnsetError: function() {
-      this.$ctx.RemoveClass("Error");
+      this.$ctx.RemoveClass("ChallengeComboStepError");
     },
 
     onBump: function() {
-      this.$ctx.RemoveClass("Bump");
-      this.$ctx.AddClass("Bump");
+      this.$ctx.RemoveClass("ChallengeComboStepBump");
+      this.$ctx.AddClass("ChallengeComboStepBump");
     },
   });
 

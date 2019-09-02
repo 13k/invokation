@@ -9,47 +9,47 @@
     <include src="file://{resources}/styles/custom_game/combo_score.css" />
   </styles>
 
-  <Panel class="Root" hittest="false" hittestchildren="false">
-    <Panel class="Counter">
-      <Panel class="SplashBackground">
-        <DOTAScenePanel id="CounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" require-composition-layer="true" />
+  <Panel class="ComboScoreRoot" hittest="false" hittestchildren="false">
+    <Panel class="ComboScoreCounter">
+      <Panel class="ComboScoreSplashBackground">
+        <DOTAScenePanel id="ComboScoreCounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" require-composition-layer="true" />
       </Panel>
 
-      <Panel class="Content">
-        <Panel id="CounterTicker" class="DigitContainer">
-          <Panel class="ESDigitX" />
-          <Panel id="CounterTickerDigit0" class="ESDigit" />
-          <Panel id="CounterTickerDigit1" class="ESDigit" />
-          <Panel id="CounterTickerDigit2" class="ESDigit" />
+      <Panel class="ComboScoreContent">
+        <Panel id="ComboScoreCounterTicker" class="ComboScoreDigitContainer">
+          <Panel class="ComboScoreDigitX" />
+          <Panel id="ComboScoreCounterTickerDigit0" class="ComboScoreDigit" />
+          <Panel id="ComboScoreCounterTickerDigit1" class="ComboScoreDigit" />
+          <Panel id="ComboScoreCounterTickerDigit2" class="ComboScoreDigit" />
         </Panel>
-        <Label class="Label" text="#invokation_combo_counter_title" />
+        <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
       </Panel>
     </Panel>
 
-    <Panel class="Summary">
-      <DOTAScenePanel id="SummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
-      <Panel class="SplashBackground" />
+    <Panel class="ComboScoreSummary">
+      <DOTAScenePanel id="ComboScoreSummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
+      <Panel class="ComboScoreSplashBackground" />
 
-      <Panel class="Content">
-        <Panel class="Count">
-          <Panel id="SummaryCountDisplay" class="DigitContainer">
-            <Panel class="ESDigitX" />
-            <Panel id="SummaryCountDisplayDigit0" class="ESDigit" />
-            <Panel id="SummaryCountDisplayDigit1" class="ESDigit" />
-            <Panel id="SummaryCountDisplayDigit2" class="ESDigit" />
+      <Panel class="ComboScoreContent">
+        <Panel class="ComboScoreCount">
+          <Panel id="ComboScoreSummaryCountDisplay" class="ComboScoreDigitContainer">
+            <Panel class="ComboScoreDigitX" />
+            <Panel id="ComboScoreSummaryCountDisplayDigit0" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryCountDisplayDigit1" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryCountDisplayDigit2" class="ComboScoreDigit" />
           </Panel>
-          <Label class="Label" text="#invokation_combo_counter_title" />
+          <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
         </Panel>
 
-        <Panel class="Damage">
-          <Panel id="SummaryDamageTicker" class="DigitContainer">
-            <Panel id="SummaryDamageTickerDigit0" class="ESDigit" />
-            <Panel id="SummaryDamageTickerDigit1" class="ESDigit" />
-            <Panel id="SummaryDamageTickerDigit2" class="ESDigit" />
-            <Panel id="SummaryDamageTickerDigit3" class="ESDigit" />
-            <Panel id="SummaryDamageTickerDigit4" class="ESDigit" />
+        <Panel class="ComboScoreDamage">
+          <Panel id="ComboScoreSummaryDamageTicker" class="ComboScoreDigitContainer">
+            <Panel id="ComboScoreSummaryDamageTickerDigit0" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryDamageTickerDigit1" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryDamageTickerDigit2" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryDamageTickerDigit3" class="ComboScoreDigit" />
+            <Panel id="ComboScoreSummaryDamageTickerDigit4" class="ComboScoreDigit" />
           </Panel>
-          <Label class="Label" text="#invokation_combo_counter_damage_label" />
+          <Label class="ComboScoreLabel" text="#invokation_combo_counter_damage_label" />
         </Panel>
       </Panel>
     </Panel>

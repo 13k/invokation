@@ -15,6 +15,11 @@
   var SPIN_DIGITS_INTERVAL = 0.05;
   var BURST_INTENSITY_THRESHOLDS = [1000, 2000];
 
+  var DIGIT_HIDDEN_CLASS = "ComboScoreDigitHidden";
+  var COUNTER_BUMP_CLASS = "CounterBump";
+  var COUNTER_SHOW_CLASS = "ShowCounter";
+  var SUMMARY_SHOW_CLASS = "ShowSummary";
+
   var SHAKER_FX_ENTS = {
     // scenes/hud/ui_es_arcana_combo_ambient
     counter: {
@@ -47,13 +52,13 @@
   var ComboScore = CreateComponent({
     constructor: function ComboScore() {
       ComboScore.super.call(this, {
-        elements: [
-          "CounterTicker",
-          "SummaryCountDisplay",
-          "SummaryDamageTicker",
-          "CounterFX",
-          "SummaryFX",
-        ],
+        elements: {
+          counterTicker: "ComboScoreCounterTicker",
+          summaryCountDisplay: "ComboScoreSummaryCountDisplay",
+          summaryDamageTicker: "ComboScoreSummaryDamageTicker",
+          counterFx: "ComboScoreCounterFX",
+          summaryFx: "ComboScoreSummaryFX",
+        },
         elementEvents: {
           counterFx: {
             DOTAScenePanelSceneLoaded: "counterFxAmbientStart",
@@ -134,11 +139,11 @@
             seq.RemoveClass(panel, digitClass);
           }
 
-          seq.RemoveClass(panel, "ESDigitHidden");
+          seq.RemoveClass(panel, DIGIT_HIDDEN_CLASS);
           panel.__esdigit__ = digit;
 
           if (digit == null) {
-            digitClass = "ESDigitHidden";
+            digitClass = DIGIT_HIDDEN_CLASS;
           } else {
             digitClass = "digit_" + digit;
           }
@@ -230,19 +235,19 @@
     },
 
     bumpCounterTickerAction: function() {
-      return new AddClassAction(this.$counterTicker, "CounterBump");
+      return new AddClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
     },
 
     unbumpCounterTickerAction: function() {
-      return new RemoveClassAction(this.$counterTicker, "CounterBump");
+      return new RemoveClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
     },
 
     showCounterAction: function() {
-      return new AddClassAction(this.$ctx, "ShowCounter");
+      return new AddClassAction(this.$ctx, COUNTER_SHOW_CLASS);
     },
 
     hideCounterAction: function() {
-      return new RemoveClassAction(this.$ctx, "ShowCounter");
+      return new RemoveClassAction(this.$ctx, COUNTER_SHOW_CLASS);
     },
 
     updateCounterAction: function(count) {
@@ -264,11 +269,11 @@
     },
 
     showSummaryAction: function() {
-      return new AddClassAction(this.$ctx, "ShowSummary");
+      return new AddClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
     },
 
     hideSummaryAction: function() {
-      return new RemoveClassAction(this.$ctx, "ShowSummary");
+      return new RemoveClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
     },
 
     updateSummaryAction: function(options) {

@@ -8,45 +8,45 @@
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="Component HudVisible Hide" hittest="false">
-    <Panel class="Combo" hittest="false">
-      <Panel id="Sequence" hittest="false" />
+  <Panel class="ChallengeRoot HudVisible Hide" hittest="false">
+    <Panel class="ChallengeCombo" hittest="false">
+      <Panel id="ChallengeSequence" hittest="false" />
     </Panel>
 
-    <Panel id="Splash" hittest="false" hittestchildren="false">
-      <Panel class="Box">
-        <Label id="SplashTitle" text="#invokation_combo_splash_start_title__1" class="Title" />
-        <Label id="SplashHelp" text="#invokation_combo_splash_start_help__1" class="Help" />
-      </Panel>
-    </Panel>
-
-    <Panel class="Controls TranslucentPanel" hittest="false">
-      <Panel class="ControlIcon">
-        <Button class="InfoIcon IconButton Grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ControlIcon">
-        <Button class="EyeIcon IconButton Grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ControlIcon">
-        <Button class="RefreshButton IconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ControlIcon">
-        <Button class="FullRefreshIcon IconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ControlIcon">
-        <Button class="CloseButton IconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+    <Panel id="ChallengeSplash" hittest="false" hittestchildren="false">
+      <Panel class="ChallengeSplashBox">
+        <Label id="ChallengeSplashTitle" class="ChallengeSplashTitle" text="#invokation_combo_splash_start_title__1" />
+        <Label id="ChallengeSplashHelp" class="ChallengeSplashHelp" text="#invokation_combo_splash_start_help__1" />
       </Panel>
     </Panel>
 
-    <Panel id="Score" />
+    <Panel id="ChallengeScore" />
 
-    <Panel id="Timer" class="TransparentPanel Hide">
+    <Panel class="ChallengeControls TranslucentPanel" hittest="false">
+      <Panel class="ChallengeControlIcon">
+        <Button class="InfoIcon ChallengeIconButton Grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ChallengeControlIcon">
+        <Button class="EyeIcon ChallengeIconButton Grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ChallengeControlIcon">
+        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ChallengeControlIcon">
+        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="ChallengeControlIcon">
+        <Button class="CloseButton ChallengeIconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+    </Panel>
+
+    <Panel id="ChallengeTimer" class="TransparentPanel Hide">
       <Button class="ClockIcon" />
-      <Label id="TimerLabel" hittest="false" />
+      <Label id="ChallengeTimerLabel" hittest="false" />
     </Panel>
   </Panel>
 </root>

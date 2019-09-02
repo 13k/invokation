@@ -11,6 +11,7 @@
 
   var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
+  var PROPERTIES_ID = "ViewerProperties";
 
   var L10N_FALLBACK_IDS = {
     description: "invokation_viewer_description_lorem",
@@ -31,12 +32,11 @@
     constructor: function Viewer() {
       Viewer.super.call(this, {
         elements: {
-          container: "Container",
-          titleLabel: "Title",
-          scrollPanel: "ScrollPanel",
-          descriptionLabel: "Description",
-          propertiesSection: "PropertiesSection",
-          sequenceContainer: "SequenceContainer",
+          scrollPanel: "ViewerScrollPanel",
+          propertiesSection: "ViewerPropertiesSection",
+          titleLabel: "ViewerTitle",
+          descriptionLabel: "ViewerDescription",
+          sequence: "ViewerSequence",
         },
         customEvents: {
           "!VIEWER_RENDER": "onViewerRender",
@@ -91,7 +91,7 @@
     },
 
     createPropertiesPanel: function() {
-      var panel = CreatePanelWithLayout(this.$propertiesSection, "Properties", PROPERTIES_LAYOUT);
+      var panel = CreatePanelWithLayout(this.$propertiesSection, PROPERTIES_ID, PROPERTIES_LAYOUT);
 
       panel.component.Input("SetCombo", this.combo);
 
@@ -101,10 +101,10 @@
     renderSequenceAction: function() {
       var actions = _.map(
         this.combo.sequence,
-        _.bind(this.createStepPanelAction, this, this.$sequenceContainer)
+        _.bind(this.createStepPanelAction, this, this.$sequence)
       );
 
-      return new Sequence().RemoveChildren(this.$sequenceContainer).Action(actions);
+      return new Sequence().RemoveChildren(this.$sequence).Action(actions);
     },
 
     createStepPanelAction: function(parent, step) {

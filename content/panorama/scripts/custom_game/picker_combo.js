@@ -25,10 +25,10 @@
     constructor: function PickerCombo() {
       PickerCombo.super.call(this, {
         elements: {
-          titleLabel: "Title",
-          heroLevelLabel: "HeroLevelLabel",
-          damageRating: "DamageRating",
-          difficultyRating: "DifficultyRating",
+          titleLabel: "PickerComboTitle",
+          heroLevelLabel: "PickerComboHeroLevelLabel",
+          damageRating: "PickerComboDamageRating",
+          difficultyRating: "PickerComboDifficultyRating",
         },
         inputs: {
           SetCombo: "setCombo",

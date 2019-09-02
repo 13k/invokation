@@ -4,12 +4,12 @@
 
 @define controlsMarginRight: 300px;
 
-.Root {
+.FreestyleRoot {
   width: 100%;
   height: 100%;
 }
 
-.Controls {
+.FreestyleControls {
   flow-children: right;
   margin-right: controlsMarginRight;
   align: right bottom;
@@ -18,24 +18,24 @@
   transition-property: opacity;
 }
 
-.Root.Hide .Controls {
+.FreestyleRoot.Hide .FreestyleControls {
   opacity: 0;
 }
 
-.Controls .ControlIcon {
+.FreestyleControls .FreestyleControlIcon {
   width: 64px;
   height: 64px;
   transition-duration: 0.2s;
   transition-property: background-color;
 }
 
-.Controls .ControlIcon:hover {
+.FreestyleControls .FreestyleControlIcon:hover {
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
   background-color: panelTranslucentHoverGradient;
 }
 
-.Controls .IconButton {
+.FreestyleControls .FreestyleIconButton {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -45,59 +45,59 @@
   background-position: 50% 50%;
 }
 
-.Controls .IconButton.Activated {
+.FreestyleControls .FreestyleIconButton.Activated {
   sound: "ui_quit_menu_fadeout";
 }
 
-.Controls .FullRefreshIcon {
+.FreestyleControls .FullRefreshIcon {
   background-image: statusLoadingThrobberRoundIcon;
   background-size: 28px 28px;
 }
 
-.Controls .FullRefreshIcon.Activated {
+.FreestyleControls .FullRefreshIcon.Activated {
   animation-name: SpinnerRotate;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
 }
 
-.Controls .CloseButton {
+.FreestyleControls .CloseButton {
   background-size: 34px 34px;
 }
 
-.Controls .ControlIcon .Grey {
+.FreestyleControls .FreestyleControlIcon .Grey {
   wash-color: #aaa;
 }
 
-.Controls .ControlIcon .Grey:hover {
+.FreestyleControls .FreestyleControlIcon .Grey:hover {
   wash-color: #fff;
 }
 
-.Controls .ControlIcon .Blue {
+.FreestyleControls .FreestyleControlIcon .Blue {
   wash-color: #65a9db;
 }
 
-.Controls .ControlIcon .Blue:hover {
+.FreestyleControls .FreestyleControlIcon .Blue:hover {
   wash-color: #acc6d8;
 }
 
-.Controls .ControlIcon .Bronze {
+.FreestyleControls .FreestyleControlIcon .Bronze {
   wash-color: #dca157;
 }
 
-.Controls .ControlIcon .Bronze:hover {
+.FreestyleControls .FreestyleControlIcon .Bronze:hover {
   wash-color: #dca157;
 }
 
-.Controls .ControlIcon .Red {
+.FreestyleControls .FreestyleControlIcon .Red {
   wash-color: #db6565;
 }
 
-.Controls .ControlIcon .Red:hover {
+.FreestyleControls .FreestyleControlIcon .Red:hover {
   wash-color: #db6565;
 }
 
-#Score {
+#FreestyleScore {
   margin-bottom: 230px;
   align: center bottom;
 }

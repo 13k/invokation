@@ -7,7 +7,9 @@
   var GameInfo = CreateComponent({
     constructor: function GameInfo() {
       GameInfo.super.call(this, {
-        elements: ["VersionLabel"],
+        elements: {
+          versionLabel: "GameInfoVersionLabel",
+        },
         customEvents: {
           "!META_GAME_INFO_TOGGLE": "onToggle",
         },

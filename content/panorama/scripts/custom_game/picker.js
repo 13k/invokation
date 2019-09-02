@@ -13,6 +13,9 @@
   var CreateComponent = context.CreateComponent;
 
   var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
+  var COMBOS_COLUMN_SNIPPET = "CombosColumn";
+  var COMBOS_COLUMN_TITLE_ID = "PickerCombosColumnTitle";
+  var COMBOS_COLUMN_CONTAINER_ID = "PickerCombosColumnContainer";
 
   var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
 
@@ -20,8 +23,8 @@
     constructor: function Picker() {
       Picker.super.call(this, {
         elements: {
-          slideout: "CombosSlideout",
-          combosContainer: "CombosContainer",
+          slideout: "PickerSlideout",
+          combosContainer: "PickerCombosContainer",
         },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
@@ -100,21 +103,19 @@
 
     createCombosColumn: function(parent, category) {
       var id = "combos_column_" + category;
-      var panel = CreatePanelWithLayoutSnippet(parent, id, "CombosColumn");
+      var panel = CreatePanelWithLayoutSnippet(parent, id, COMBOS_COLUMN_SNIPPET);
+      var panelTitle = panel.FindChildTraverse(COMBOS_COLUMN_TITLE_ID);
 
       panel.AddClass(category);
-
-      var panelTitle = panel.FindChildTraverse("Title");
-
       panelTitle.text = $.Localize("#invokation_combo_category_" + category);
-
       this.comboColumns[category] = panel;
 
       return panel;
     },
 
     createComboPanel: function(category, combo) {
-      var parent = this.comboColumns[category];
+      var columnPanel = this.comboColumns[category];
+      var parent = columnPanel.FindChildTraverse(COMBOS_COLUMN_CONTAINER_ID);
       var panel = CreatePanelWithLayout(parent, combo.id, COMBO_PANEL_LAYOUT);
 
       panel.component.Outputs({

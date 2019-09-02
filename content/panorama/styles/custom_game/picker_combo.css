@@ -3,7 +3,7 @@
 @import url("file://{resources}/styles/shared/panelstyles.css");
 @import url("file://{resources}/styles/shared/rating.css");
 
-.Component {
+.PickerComboRoot {
   flow-children: down;
   width: 100%;
   margin-top: 10px;
@@ -11,21 +11,21 @@
   border-radius: 6px;
 }
 
-.Component:hover {
+.PickerComboRoot:hover {
   background-color: black;
 }
 
-.Component .PanelTitle {
+.PickerComboRoot .PanelTitle {
   text-align: left;
   font-size: 12px;
 }
 
-.Component .InfoContainer {
+.PickerComboRoot .PickerComboInfoContainer {
   flow-children: right;
   margin-top: 8px;
 }
 
-.Component .ComboIcon {
+.PickerComboRoot .PickerComboIcon {
   width: 28px;
   height: 28px;
   margin: 6px 8px;
@@ -34,28 +34,28 @@
   tooltip-body-position: 50% 10%;
 }
 
-.Component .InfoIcon {
+.PickerComboRoot .InfoIcon {
   margin-right: 0;
   margin-left: 0;
 }
 
-.Component .InfoIcon:hover {
+.PickerComboRoot .InfoIcon:hover {
   wash-color: #fff;
 }
 
-.Component .SpecialtyIcon {
+.PickerComboRoot .SpecialtyIcon {
   border-radius: 50%;
 }
 
-.Component.specialty_qw .SpecialtyIcon {
+.PickerComboRoot.specialty_qw .SpecialtyIcon {
   background-color: specialtyQuasWexGradient;
 }
 
-.Component.specialty_qe .SpecialtyIcon {
+.PickerComboRoot.specialty_qe .SpecialtyIcon {
   background-color: specialtyQuasExortGradient;
 }
 
-.Component .StanceIcon {
+.PickerComboRoot .StanceIcon {
   wash-color: #888;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -65,26 +65,26 @@
   transition-property: wash-color;
 }
 
-.Component.stance_offensive .StanceIcon {
+.PickerComboRoot.stance_offensive .StanceIcon {
   background-image: stanceOffensiveIcon;
 }
 
-.Component.stance_defensive .StanceIcon {
+.PickerComboRoot.stance_defensive .StanceIcon {
   background-image: stanceDefensiveIcon;
 }
 
-.Component .HeroLevelIcon {
+.PickerComboRoot .HeroLevelIcon {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background-color: #121212;
 }
 
-.Component:hover .HeroLevelIcon {
+.PickerComboRoot:hover .HeroLevelIcon {
   background-color: #222;
 }
 
-.Component .HeroLevelLabel {
+.PickerComboRoot .HeroLevelLabel {
   width: 14px;
   margin-top: 3px;
   align: center center;
@@ -96,27 +96,27 @@
   text-shadow: 0 0 3px 3.7 #ec780e24;
 }
 
-.Component .Ratings {
+.PickerComboRoot .PickerComboRatings {
   flow-children: down;
   margin-left: 8px;
   vertical-align: center;
 }
 
-.Ratings .AttackDamageIcon {
+.PickerComboRoot .PickerComboRatings .AttackDamageIcon {
   width: 16px;
   height: 16px;
   background-image: damageRatingIcon;
   background-size: 100%;
 }
 
-.Ratings .DifficultyIcon {
+.PickerComboRoot .PickerComboRatings .DifficultyIcon {
   width: 16px;
   height: 16px;
   background-image: difficultyRatingIcon;
   background-size: 100%;
 }
 
-.Component .PlayButton {
+.PickerComboRoot .PlayButton {
   width: 100%;
   height: 0;
   margin-top: 10px;
@@ -125,10 +125,10 @@
   transition-property: height;
 }
 
-.Component:hover .PlayButton {
+.PickerComboRoot:hover .PlayButton {
   height: 24px;
 }
 
-.Component .PlayButton .PlayLabel {
+.PickerComboRoot .PlayButton .PlayLabel {
   horizontal-align: center;
 }

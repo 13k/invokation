@@ -12,6 +12,7 @@
   var COMBAT_LOG_ROW_SNIPPET = "CombatLogRow";
   var COMBAT_LOG_ABILITY_SNIPPET = "CombatLogAbility";
   var COMBAT_LOG_ITEM_SNIPPET = "CombatLogItem";
+  var COMBAT_LOG_ABILITY_IMAGE_ID = "CombatLogAbilityImage";
 
   function createRow(parent, idx) {
     var id = "row_" + idx;
@@ -34,7 +35,7 @@
     var id = "ability_" + abilityName;
     var panel = CreatePanelWithLayoutSnippet(parent, id, snippetName);
 
-    var image = panel.FindChildTraverse("Image");
+    var image = panel.FindChildTraverse(COMBAT_LOG_ABILITY_IMAGE_ID);
     image[imageProperty] = abilityName;
 
     return panel;
@@ -46,7 +47,7 @@
         elements: {
           combatLog: "CombatLog",
           contents: "CombatLogContents",
-          filterInvocations: "FilterInvocations",
+          filterInvocations: "CombatLogFilterInvocations",
         },
         customEvents: {
           "!COMBAT_LOG_ABILITY_USED": "onAbilityUsed",

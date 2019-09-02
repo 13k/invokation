@@ -1,26 +1,26 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
-.ComboStep {
+.ViewerComboStepRoot {
   flow-children: right;
   padding: 8px;
 }
 
-.StepIcon {
+.ViewerComboStepIcon {
   width: 48px;
   height: 48px;
   box-shadow: goldColor -2px -2px 4px 4px;
   background-color: #000d;
 }
 
-.Optional .StepIcon {
+.ViewerComboStepRoot.ComboStepOptional .ViewerComboStepIcon {
   box-shadow: #000 -2px -2px 4px 4px;
 }
 
-#StepImage {
+#ComboStepImage {
   vertical-align: center;
 }
 
-#StepDescription {
+#ViewerComboStepDescription {
   width: fill-parent-flow(1);
   margin-left: 8px;
   vertical-align: center;

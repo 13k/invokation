@@ -9,8 +9,8 @@
     <include src="file://{resources}/styles/custom_game/viewer_combo_step.css" />
   </styles>
 
-  <Panel class="ComboStep">
-    <Button id="StepIconButton" class="StepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
-    <Label id="StepDescription" html="true" hittest="false" />
+  <Panel class="ViewerComboStepRoot">
+    <Button id="ComboStepIconButton" class="ViewerComboStepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
+    <Label id="ViewerComboStepDescription" html="true" hittest="false" />
   </Panel>
 </root>

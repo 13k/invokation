@@ -18,6 +18,8 @@
 
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/challenge_combo_step.xml";
   var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
+  var COMBO_SCORE_ID = "ComboScore";
+  var COMBO_SCORE_CLASS = "Level2";
 
   var START_DELAY = 0.5;
   var BUMP_DELAY = 0.2;
@@ -42,15 +44,15 @@
   var Challenge = CreateComponent({
     constructor: function Challenge() {
       Challenge.super.call(this, {
-        elements: [
-          "Sequence",
-          "Splash",
-          "SplashTitle",
-          "SplashHelp",
-          "Score",
-          "Timer",
-          "TimerLabel",
-        ],
+        elements: {
+          sequence: "ChallengeSequence",
+          splash: "ChallengeSplash",
+          splashTitle: "ChallengeSplashTitle",
+          splashHelp: "ChallengeSplashHelp",
+          score: "ChallengeScore",
+          timer: "ChallengeTimer",
+          timerLabel: "ChallengeTimerLabel",
+        },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
           "!COMBO_STOPPED": "onComboStopped",
@@ -145,8 +147,8 @@
     },
 
     createComboScorePanel: function(parent) {
-      var panel = CreatePanelWithLayout(parent, "ComboScore", COMBO_SCORE_LAYOUT);
-      panel.AddClass("Level2");
+      var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
+      panel.AddClass(COMBO_SCORE_CLASS);
       return panel;
     },
 

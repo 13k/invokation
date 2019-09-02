@@ -15,18 +15,18 @@
 
     <snippet name="CombatLogAbility">
       <Button class="CombatLogAbility">
-        <DOTAAbilityImage id="Image" />
+        <DOTAAbilityImage id="CombatLogAbilityImage" />
       </Button>
     </snippet>
 
     <snippet name="CombatLogItem">
       <Button class="CombatLogAbility">
-        <DOTAItemImage id="Image" />
+        <DOTAItemImage id="CombatLogAbilityImage" />
       </Button>
     </snippet>
   </snippets>
 
-  <Panel class="Root" hittest="false">
+  <Panel class="CombatLogRoot" hittest="false">
     <Panel id="CombatLog" class="TransparentPanel Closed">
       <Panel id="CombatLogContents" />
 
@@ -36,9 +36,9 @@
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
-          <ToggleButton id="FilterInvocations" class="BarItem Checkbox" text="#invokation_combat_log_filter_invocations" />
+          <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" />
 
-          <Button class="BarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
+          <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>

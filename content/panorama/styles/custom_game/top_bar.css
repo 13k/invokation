@@ -1,6 +1,6 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 
-.Component {
+.TopBarRoot {
   width: 100%;
   height: 42px;
 }

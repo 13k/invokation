@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/top_bar.css" />
   </styles>
 
-  <Panel class="Component">
+  <Panel class="TopBarRoot">
     <Panel class="TopBar">
       <Button class="TopBarButton DOTAShowDashboardButton" onactivate="DOTAHUDShowDashboard()" onmouseover="UIShowTextTooltip(DOTA_HUD_BackToDashboard)" onmouseout="UIHideTextTooltip()" />
       <Button class="TopBarButton SettingsButton" onactivate="DOTAShowSettingsPopup()" onmouseover="UIShowTextTooltip(DOTA_HUD_Settings)" onmouseout="UIHideTextTooltip()" />

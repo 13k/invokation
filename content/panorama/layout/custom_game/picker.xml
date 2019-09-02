@@ -10,29 +10,29 @@
 
   <snippets>
     <snippet name="CombosColumn">
-      <Panel class="CombosColumn">
-        <Label id="Title" class="PanelTitle" hittest="false" />
-        <Panel id="Combos" />
+      <Panel class="PickerCombosColumn">
+        <Label id="PickerCombosColumnTitle" class="PanelTitle" hittest="false" />
+        <Panel id="PickerCombosColumnContainer" class="PickerCombosColumnContainer" />
       </Panel>
     </snippet>
   </snippets>
 
-  <Panel class="Root" hittest="false">
-    <Panel id="CombosSlideout" class="DrawerClosed">
-      <Panel id="CombosContents" class="TranslucentPanel">
+  <Panel class="PickerRoot" hittest="false">
+    <Panel id="PickerSlideout" class="DrawerClosed">
+      <Panel id="PickerContents" class="TranslucentPanel">
         <Panel class="PickerTitleContainer PanelTitleContainer">
           <Button class="RefreshButton" onactivate="picker.Reload()" />
           <Label class="PickerTitle PanelTitle" text="#invokation_combos_picker_title" hittest="false" />
         </Panel>
 
-        <Button class="FreestyleButton" onactivate="picker.Freestyle()">
-          <Label class="FreestyleLabel" text="#invokation_combos_picker_freestyle" hittest="false" />
+        <Button class="PickerFreestyleButton" onactivate="picker.Freestyle()">
+          <Label class="PickerFreestyleLabel" text="#invokation_combos_picker_freestyle" hittest="false" />
         </Button>
 
-        <Panel id="CombosContainer" />
+        <Panel id="PickerCombosContainer" />
       </Panel>
 
-      <Button id="CombosThumb" class="PanelSlideThumb" onactivate="picker.Toggle()">
+      <Button id="PickerThumb" class="PanelSlideThumb" onactivate="picker.Toggle()">
         <Panel class="PanelSlideThumbArrow" />
       </Button>
     </Panel>
