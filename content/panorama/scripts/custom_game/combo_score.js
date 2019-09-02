@@ -9,12 +9,11 @@
   var RemoveClassAction = global.Sequence.RemoveClassAction;
   var CreateComponent = context.CreateComponent;
 
-  var COUNTER_DIGITS_LENGTH = 3;
-  var DAMAGE_DIGITS_LENGTH = 5;
   var DAMAGE_SPIN_ITERATIONS = 30;
   var SPIN_DIGITS_INTERVAL = 0.05;
   var BURST_INTENSITY_THRESHOLDS = [1000, 2000];
 
+  var DIGIT_CLASS = "ComboScoreDigit";
   var DIGIT_HIDDEN_CLASS = "ComboScoreDigitHidden";
   var COUNTER_BUMP_CLASS = "CounterBump";
   var COUNTER_SHOW_CLASS = "ShowCounter";
@@ -49,6 +48,10 @@
     },
   };
 
+  function digitClass(digit) {
+    return "digit_" + String(digit);
+  }
+
   var ComboScore = CreateComponent({
     constructor: function ComboScore() {
       ComboScore.super.call(this, {
@@ -74,8 +77,6 @@
         },
       });
 
-      this.counterDigitsLength = COUNTER_DIGITS_LENGTH;
-      this.damageDigitsLength = DAMAGE_DIGITS_LENGTH;
       this.spinDigitsInterval = SPIN_DIGITS_INTERVAL;
       this.damageSpinIterations = DAMAGE_SPIN_ITERATIONS;
       this.burstIntensityThresholds = BURST_INTENSITY_THRESHOLDS.sort();
@@ -117,38 +118,37 @@
 
     // ----- Actions -----
 
-    updateDigitsAction: function(container, value, length) {
+    updateDigitsAction: function(container, value) {
       var valueRevStr = value
         .toString()
         .split("")
         .reverse()
         .join("");
 
+      var panels = container.FindChildrenWithClassTraverse(DIGIT_CLASS);
       var seq = new Sequence();
 
-      for (var i = 0; i < length; i++) {
+      for (var i = 0; i < panels.length; i++) {
         (function() {
           var idx = i;
           var digit = valueRevStr[idx];
-          var panelID = container.id + "Digit" + idx.toString();
-          var panel = container.FindChild(panelID);
-          var digitClass;
+          var panel = panels[idx];
+          var panelClass;
 
-          if (panel.__esdigit__ != null) {
-            digitClass = "digit_" + panel.__esdigit__;
-            seq.RemoveClass(panel, digitClass);
+          if (panel.__digit__ != null) {
+            seq.RemoveClass(panel, digitClass(panel.__digit__));
           }
 
           seq.RemoveClass(panel, DIGIT_HIDDEN_CLASS);
-          panel.__esdigit__ = digit;
+          panel.__digit__ = digit;
 
           if (digit == null) {
-            digitClass = DIGIT_HIDDEN_CLASS;
+            panelClass = DIGIT_HIDDEN_CLASS;
           } else {
-            digitClass = "digit_" + digit;
+            panelClass = digitClass(digit);
           }
 
-          seq.AddClass(panel, digitClass);
+          seq.AddClass(panel, panelClass);
         })();
       }
 
@@ -174,9 +174,7 @@
 
         (function() {
           var nn = Math.ceil(n);
-          var updateSeq = new Sequence().Action(
-            this.updateDigitsAction(options.container, nn, options.length)
-          );
+          var updateSeq = new Sequence().Action(this.updateDigitsAction(options.container, nn));
 
           if (_.isFunction(options.callbacks.onSpin)) {
             updateSeq.RunFunction(options.callbacks.onSpin, nn);
@@ -196,11 +194,11 @@
     },
 
     updateCounterDigitsAction: function(value) {
-      return this.updateDigitsAction(this.$counterTicker, value, this.counterDigitsLength);
+      return this.updateDigitsAction(this.$counterTicker, value);
     },
 
     updateSummaryCounterDigitsAction: function(count) {
-      return this.updateDigitsAction(this.$summaryCountDisplay, count, this.counterDigitsLength);
+      return this.updateDigitsAction(this.$summaryCountDisplay, count);
     },
 
     spinSummaryDamageDigitsAction: function(options) {
@@ -286,7 +284,6 @@
 
       var summaryDamageOptions = {
         container: this.$summaryDamageTicker,
-        length: this.damageDigitsLength,
         start: options.startDamage,
         end: options.endDamage,
         interval: this.spinDigitsInterval,

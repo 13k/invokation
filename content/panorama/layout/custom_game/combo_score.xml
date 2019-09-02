@@ -18,9 +18,9 @@
       <Panel class="ComboScoreContent">
         <Panel id="ComboScoreCounterTicker" class="ComboScoreDigitContainer">
           <Panel class="ComboScoreDigitX" />
-          <Panel id="ComboScoreCounterTickerDigit0" class="ComboScoreDigit" />
-          <Panel id="ComboScoreCounterTickerDigit1" class="ComboScoreDigit" />
-          <Panel id="ComboScoreCounterTickerDigit2" class="ComboScoreDigit" />
+          <Panel class="ComboScoreDigit" />
+          <Panel class="ComboScoreDigit" />
+          <Panel class="ComboScoreDigit" />
         </Panel>
         <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
       </Panel>
@@ -34,20 +34,20 @@
         <Panel class="ComboScoreCount">
           <Panel id="ComboScoreSummaryCountDisplay" class="ComboScoreDigitContainer">
             <Panel class="ComboScoreDigitX" />
-            <Panel id="ComboScoreSummaryCountDisplayDigit0" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryCountDisplayDigit1" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryCountDisplayDigit2" class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
           </Panel>
           <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
         </Panel>
 
         <Panel class="ComboScoreDamage">
           <Panel id="ComboScoreSummaryDamageTicker" class="ComboScoreDigitContainer">
-            <Panel id="ComboScoreSummaryDamageTickerDigit0" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryDamageTickerDigit1" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryDamageTickerDigit2" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryDamageTickerDigit3" class="ComboScoreDigit" />
-            <Panel id="ComboScoreSummaryDamageTickerDigit4" class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
+            <Panel class="ComboScoreDigit" />
           </Panel>
           <Label class="ComboScoreLabel" text="#invokation_combo_counter_damage_label" />
         </Panel>
