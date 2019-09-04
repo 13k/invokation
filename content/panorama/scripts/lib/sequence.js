@@ -37,6 +37,16 @@
     return new A();
   };
 
+  var NoopAction = Class(Action, {
+    constructor: function NoopAction() {
+      NoopAction.super.call(this);
+    },
+
+    update: function() {
+      return false;
+    },
+  });
+
   var PrintAction = Class(Action, {
     constructor: function PrintAction() {
       PrintAction.super.call(this);
@@ -96,6 +106,18 @@
     update: function() {
       this.panel[this.attribute] = this.value;
       return false;
+    },
+  });
+
+  var EnableAction = Class(SetAttributeAction, {
+    constructor: function EnableAction(panel) {
+      EnableAction.super.call(this, panel, "enabled", true);
+    },
+  });
+
+  var DisableAction = Class(SetAttributeAction, {
+    constructor: function DisableAction(panel) {
+      DisableAction.super.call(this, panel, "enabled", false);
     },
   });
 
@@ -170,6 +192,10 @@
       return _.reduce(this.actions, aggregate, 1);
     },
 
+    Start: function() {
+      return RunSingleAction(this);
+    },
+
     Action: function(action) {
       if (!_.isArray(action)) {
         action = [action];
@@ -179,8 +205,9 @@
       return this;
     },
 
-    Start: function() {
-      return RunSingleAction(this);
+    Noop: function() {
+      this.Action(new NoopAction());
+      return this;
     },
 
     RunFunction: function() {
@@ -245,6 +272,16 @@
 
     ScrollToTop: function(panel) {
       this.Action(new ScrollToTopAction(panel));
+      return this;
+    },
+
+    Enable: function(panel) {
+      this.Action(new EnableAction(panel));
+      return this;
+    },
+
+    Disable: function(panel) {
+      this.Action(new DisableAction(panel));
       return this;
     },
 
@@ -328,6 +365,7 @@
     StaggeredSequence: StaggeredSequence,
     // actions
     Action: Action,
+    NoopAction: NoopAction,
     PrintAction: PrintAction,
     RunFunctionAction: RunFunctionAction,
     WaitAction: WaitAction,
@@ -341,6 +379,8 @@
     WaitClassAction: WaitClassAction,
     ScrollToTopAction: ScrollToTopAction,
     RemoveChildrenAction: RemoveChildrenAction,
+    EnableAction: EnableAction,
+    DisableAction: DisableAction,
     SetAttributeAction: SetAttributeAction,
     SetDialogVariableAction: SetDialogVariableAction,
     SetDialogVariableIntAction: SetDialogVariableIntAction,
