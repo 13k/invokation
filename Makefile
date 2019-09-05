@@ -1,21 +1,30 @@
-VSCRIPTS_SOURCE := game/scripts/vscripts
-SCRIPTS_SOURCE := content/panorama/scripts
-STYLES_SOURCE := content/panorama/styles
+LUA_SOURCES_PATH := game/scripts/vscripts
+JS_SOURCES_PATH := content/panorama/scripts
+CSS_SOURCES_PATH := content/panorama/styles
 
-luacheck:
-	@luacheck "$(VSCRIPTS_SOURCE)"
+.PHONY: luacheck ldoc luafmt eslint stylelint stylelint_fix clean install build launch_game launch_tools
 
-ldoc:
+lint_lua:
+	@luacheck "$(LUA_SOURCES_PATH)"
+
+format_lua:
+	@bash scripts/luafmt.bash "$(LUA_SOURCES_PATH)"
+
+doc_lua:
 	@ldoc --unqualified .
 
-eslint:
-	@yarn eslint "$(SCRIPTS_SOURCE)"
+lint_js:
+	@yarn run eslint "$(JS_SOURCES_PATH)"
 
-stylelint:
-	@yarn stylelint "$(STYLES_SOURCE)"
+format_js:
+	@yarn run prettier --config ".prettierrc.yml" --parser babel --write "$(JS_SOURCES_PATH)/**/*.js"
 
-stylelint_fix:
-	@yarn stylelint --fix "$(STYLES_SOURCE)"
+lint_css:
+	@yarn run stylelint "$(CSS_SOURCES_PATH)"
+
+format_css:
+	@yarn run stylelint --fix "$(CSS_SOURCES_PATH)"
+	@yarn run prettier --config ".prettierrc.yml" --parser css --write "$(CSS_SOURCES_PATH)/**/*.css"
 
 clean:
 	@bash scripts/clean.bash

@@ -1,6 +1,31 @@
 {
+  "private": true,
+  "name": "invokation",
+  "version": "0.1.0-beta1",
+  "config": {
+    "vscripts_path": "game/scripts/vscripts",
+    "panorama_scripts_path": "content/panorama/scripts",
+    "panorama_styles_path": "content/panorama/styles"
+  },
+  "scripts": {
+    "lint": "yarn run lint.lua && yarn run lint.js && yarn run lint.css",
+    "lint.lua": "make lint_lua",
+    "lint.js": "make lint_js",
+    "lint.css": "make lint_css",
+    "format": "yarn run format.lua && yarn run format.js && yarn run format.css",
+    "format.lua": "make format_lua",
+    "format.js": "make format_js",
+    "format.css": "make format_css",
+    "reset": "yarn run clean && yarn run install && yarn run build",
+    "clean": "make clean",
+    "install": "make install",
+    "build": "make build",
+    "launch.game": "make launch_game",
+    "launch.tools": "make launch_tools"
+  },
   "devDependencies": {
     "eslint": "^6.1.0",
+    "lua-fmt": "^2.6.0",
     "prettier": "^1.18.2",
     "stylelint": "^10.1.0",
     "stylelint-config-prettier": "^5.2.0",
