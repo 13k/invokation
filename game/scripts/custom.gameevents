@@ -1,4 +1,3 @@
-// No spaces in event names, max length 32
 // All strings are case sensitive
 //
 // valid data key types are:
@@ -25,7 +24,17 @@
     "combo_id" "string"
   }
 
-  "invokation_meta_game_info_toggle"
+  "invokation_meta_game_info_toggle" {}
+
+  "invokation_popup_item_picker_submit"
   {
+    "channel" "string"
+    "item" "string"
+  }
+
+  "invokation_popup_ability_picker_submit"
+  {
+    "channel" "string"
+    "ability" "string"
   }
 }

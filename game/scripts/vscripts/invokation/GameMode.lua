@@ -5,6 +5,7 @@ if _G.GameMode == nil then
   _G.GameMode = require("pl.class")()
 end
 
+require("invokation.game_mode.net_tables")
 require("invokation.game_mode.game_rules")
 require("invokation.game_mode.game_mode")
 require("invokation.game_mode.events")
@@ -17,6 +18,7 @@ local Timers = require("invokation.dota2.timers")
 local lrandom = require("invokation.lang.random")
 local NetTable = require("invokation.dota2.NetTable")
 local PRECACHE = require("invokation.const.precache")
+local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
 
 local NET_TABLE_NAME = "invokation"
 
@@ -44,6 +46,7 @@ end
 function GameMode:_init()
   self.logger = Logger(IsInToolsMode() and Logger.DEBUG or Logger.INFO, "invokation")
   self.netTable = NetTable(NET_TABLE_NAME)
+  self.itemsKV = ItemsKeyValues()
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
   self.users = {}
   self.players = {}
@@ -66,6 +69,7 @@ function GameMode:Activate()
   self:d("Loading GameMode...")
 
   self:setupModules()
+  self:setupNetTables()
   self:setupGameRules()
   self:setupGameMode()
   self:registerListeners()

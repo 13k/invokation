@@ -4,6 +4,8 @@
 --- Custom Events Listeners
 -- @section custom_events
 
+local CustomEvents = require("invokation.dota2.custom_events")
+
 --- Handles combo start events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload
@@ -45,4 +47,21 @@ end
 function GameMode:OnCombatLogCaptureStop(player, payload)
   self:d("OnCombatLogCaptureStop()", player:GetPlayerID(), payload)
   self.combos:StopCapturingAbilities(player)
+end
+
+--- Handles item picker query events.
+-- @tparam CDOTAPlayer player
+-- @tparam table payload
+function GameMode:OnItemPickerQuery(player, payload)
+  self:d("OnItemPickerQuery()", player:GetPlayerID(), payload)
+
+  local items = {}
+
+  for name, kv in self.itemsKV:Entries() do
+    if kv:MatchesQuery(payload.query) then
+      items[name] = kv.kv
+    end
+  end
+
+  CustomEvents.SendPlayer(CustomEvents.EVENT_ITEM_PICKER_QUERY_RESPONSE, player, {items = items})
 end

@@ -118,12 +118,14 @@
  ******************************************************************************/
 
 @define controlsArrowRightIcon: url("s2r://panorama/images/control_icons/arrow_right_png.vtex");
-@define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
-@define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
+@define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsFilterCarryIcon: url("s2r://panorama/images/control_icons/filter_carry_png.vtex");
-@define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
 @define controlsFilterComplexityIcon: url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
+@define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
+@define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
+@define controlsSearchIcon: url("s2r://panorama/images/control_icons/icon_search_png.vtex");
+@define controlsTocIcon: url("s2r://panorama/images/control_icons/toc_psd.vtex");
 
 @define statusClockIcon: url("s2r://panorama/images/status_icons/clock_psd.vtex");
 @define statusLoadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
@@ -167,6 +169,12 @@
 @define stanceDefensiveIcon: url("s2r://panorama/images/hud/reborn/icon_armor_psd.vtex");
 @define damageRatingIcon: url("s2r://panorama/images/hud/reborn/icon_damage_psd.vtex");
 @define difficultyRatingIcon: url("s2r://panorama/images/hud/reborn/icon_speed_psd.vtex");
+
+/******************************************************************************
+ * HUD
+ ******************************************************************************/
+
+@define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
 
 /******************************************************************************
  * Backgrounds

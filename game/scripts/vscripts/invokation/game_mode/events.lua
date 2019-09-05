@@ -63,5 +63,7 @@ function GameMode:registerCustomListeners()
   CustomEvents.Subscribe(CustomEvents.EVENT_COMBAT_LOG_CAPTURE_START, lfn.bindbyname(self, "OnCombatLogCaptureStart"))
   CustomEvents.Subscribe(CustomEvents.EVENT_COMBAT_LOG_CAPTURE_STOP, lfn.bindbyname(self, "OnCombatLogCaptureStop"))
 
+  CustomEvents.Subscribe(CustomEvents.EVENT_ITEM_PICKER_QUERY, lfn.bindbyname(self, "OnItemPickerQuery"))
+
   self:d("  register custom event listeners")
 end

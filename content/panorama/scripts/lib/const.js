@@ -28,6 +28,12 @@
     COMBAT_LOG_CAPTURE_STOP: "invokation_combat_log_capture_stop",
     // meta
     META_GAME_INFO_TOGGLE: "invokation_meta_game_info_toggle",
+    // item picker
+    ITEM_PICKER_QUERY: "invokation_item_picker_query",
+    ITEM_PICKER_QUERY_RESPONSE: "invokation_item_picker_query_response",
+    // popups
+    POPUP_ITEM_PICKER_SUBMIT: "invokation_popup_item_picker_submit",
+    POPUP_ABILITY_PICKER_SUBMIT: "invokation_popup_ability_picker_submit",
   };
 
   var INVOKER = {};
@@ -37,10 +43,33 @@
   INVOKER.ABILITY_EXORT = "invoker_exort";
   INVOKER.ABILITY_INVOKE = "invoker_invoke";
 
+  INVOKER.ABILITY_COLD_SNAP = "invoker_cold_snap";
+  INVOKER.ABILITY_GHOST_WALK = "invoker_ghost_walk";
+  INVOKER.ABILITY_ICE_WALL = "invoker_ice_wall";
+  INVOKER.ABILITY_EMP = "invoker_emp";
+  INVOKER.ABILITY_TORNADO = "invoker_tornado";
+  INVOKER.ABILITY_ALACRITY = "invoker_alacrity";
+  INVOKER.ABILITY_SUN_STRIKE = "invoker_sun_strike";
+  INVOKER.ABILITY_FORGE_SPIRIT = "invoker_forge_spirit";
+  INVOKER.ABILITY_CHAOS_METEOR = "invoker_chaos_meteor";
+  INVOKER.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast";
+
   INVOKER.ORB_ABILITIES = {};
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_QUAS] = true;
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_WEX] = true;
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_EXORT] = true;
+
+  INVOKER.SPELL_ABILITIES = {};
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_COLD_SNAP] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_GHOST_WALK] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_ICE_WALL] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_EMP] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_TORNADO] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_ALACRITY] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_SUN_STRIKE] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_FORGE_SPIRIT] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_CHAOS_METEOR] = true;
+  INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_DEAFENING_BLAST] = true;
 
   var NET_TABLES = {
     DEFAULT: "invokation",

@@ -1,0 +1,24 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup_item_picker.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/popups/popup_item_picker.css" />
+  </styles>
+
+  <Popup class="PopupItemPickerRoot" popupbackground="dim" oncancel="popup.Close()" onload="popup.onLoad()">
+    <Panel id="PopupItemPickerUIItemPickerContainer" />
+
+    <Panel class="PopupButtonRow">
+      <Button class="PopupButton" id="PickerButtonOK" onactivate="popup.Submit()">
+        <Label text="#DOTA_Ok" />
+      </Button>
+
+      <Button class="PopupButton" onactivate="popup.Close()">
+        <Label text="#DOTA_Cancel" />
+      </Button>
+    </Panel>
+  </Popup>
+</root>

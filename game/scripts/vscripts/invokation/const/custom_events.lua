@@ -39,4 +39,12 @@ M.EVENT_COMBAT_LOG_ABILITY_USED = "invokation_combat_log_ability_used"
 --- clear combat log
 M.EVENT_COMBAT_LOG_CLEAR = "invokation_combat_log_clear"
 
+--- Item Picker
+-- @section item_picker
+
+--- item picker query
+M.EVENT_ITEM_PICKER_QUERY = "invokation_item_picker_query"
+--- item picker query response
+M.EVENT_ITEM_PICKER_QUERY_RESPONSE = "invokation_item_picker_query_response"
+
 return M
