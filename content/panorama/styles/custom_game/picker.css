@@ -2,14 +2,23 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
-@define contentTopMargin: 180px;
-@define slideoutWidth: 366px;
-@define slideoutHeight: 80%;
-@define slideoutClosedWidth: 46px;
+/*
+pickerCombosWidth = combosWidth + thumbWidth
+pickerTotalWidth = combosWidth + filtersWidth + thumbWidth
+pickerClosedWidth = thumbWidth
+*/
+
+@define pickerMarginTop: 180px;
+@define combosWidth: 350px;
+@define combosColumnWidth: 320px;
+@define filtersWidth: 220px;
+@define filtersRowWidth: 200px;
+@define pickerCombosWidth: 386px;
+@define pickerTotalWidth: 606px;
+@define pickerHeight: 80%;
+@define pickerClosedWidth: 46px;
 @define thumbWidth: 36px;
 @define thumbHeight: 100%;
-@define contentWidth: 1100px;
-@define contentWidthTranslate: -1100px;
 
 .PickerRoot {
   width: 100%;
@@ -18,20 +27,24 @@
 
 #PickerSlideout {
   flow-children: right;
-  width: slideoutWidth;
-  height: slideoutHeight;
-  margin-top: contentTopMargin;
+  width: pickerTotalWidth;
+  height: pickerHeight;
+  margin-top: pickerMarginTop;
   align: left top;
   transition-timing-function: ease-in-out;
-  transition-duration: 0.3s;
+  transition-duration: 0.2s;
   transition-property: width;
 }
 
-#PickerSlideout.DrawerClosed {
-  width: slideoutClosedWidth;
+#PickerSlideout.FiltersClosed {
+  width: pickerCombosWidth;
 }
 
-#PickerContents {
+#PickerSlideout.DrawerClosed {
+  width: pickerClosedWidth;
+}
+
+.PickerContents {
   flow-children: down;
   width: fill-parent-flow(1);
   height: 100%;
@@ -39,7 +52,7 @@
   background-size: 100%;
 }
 
-#PickerThumb {
+.PickerThumb {
   width: thumbWidth;
   height: thumbHeight;
   vertical-align: center;
@@ -49,26 +62,26 @@
   background-color: pickerThumbGradient;
 }
 
-#PickerThumb:hover {
+.PickerThumb:hover {
   background-color: pickerThumbHoverGradient;
 }
 
-#PickerThumb .PanelSlideThumbArrow {
+.PickerThumb .PanelSlideThumbArrow {
   horizontal-align: right;
   transform: translateX(-9px);
   wash-color: #666;
 }
 
-#PickerThumb:hover .PanelSlideThumbArrow {
+.PickerThumb:hover .PanelSlideThumbArrow {
   transform: translateX(-12px);
   wash-color: black;
 }
 
-#PickerSlideout.DrawerClosed #PickerThumb .PanelSlideThumbArrow {
+#PickerSlideout.DrawerClosed .PickerThumb .PanelSlideThumbArrow {
   transform: rotateZ(180deg) translateX(-9px);
 }
 
-#PickerSlideout.DrawerClosed #PickerThumb:hover .PanelSlideThumbArrow {
+#PickerSlideout.DrawerClosed .PickerThumb:hover .PanelSlideThumbArrow {
   transform: translateX(6px) rotateZ(180deg);
 }
 
@@ -83,12 +96,16 @@
   visibility: visible;
 }
 
+.PickerHeader {
+  width: 100%;
+}
+
 .PickerFreestyleButton {
   width: 170px;
   height: 50px;
   margin-top: 10px;
   horizontal-align: center;
-  background-image: url("s2r://panorama/images/hud/invokercard_psd.vtex");
+  background-image: invokerCardHud;
   background-repeat: no-repeat;
   background-size: 100%;
   transition-timing-function: ease-in-out;
@@ -121,21 +138,142 @@
   color: #ccc;
 }
 
-#PickerCombosContainer {
-  overflow: clip scroll;
-  flow-children: down;
+.PickerFiltersButton.ExpandCollapseToggleButton {
+  margin-right: 12px;
+  align: right center;
+  wash-color: #ccc;
+}
+
+.PickerFiltersButton.ExpandCollapseToggleButton:hover {
+  wash-color: #fff;
+}
+
+.PickerFiltersButton.ExpandCollapseToggleButton:selected {
+  wash-color: #eee;
+}
+
+.PickerFiltersButton.ExpandCollapseToggleButton:selected .TickBox {
+  transform: rotateZ(90deg);
+}
+
+.PickerBody {
+  flow-children: right;
   width: 100%;
   height: 100%;
   border-top: 1px solid #000;
 }
 
+#PickerCombos {
+  overflow: noclip scroll;
+  flow-children: down;
+  width: combosWidth;
+  height: 100%;
+  padding: 10px 10px 10px 20px;
+}
+
+#PickerCombos VerticalScrollBar {
+  horizontal-align: left;
+}
+
 .PickerCombosColumn {
   flow-children: down;
-  width: 320px;
-  padding: 10px;
+  width: combosColumnWidth;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.PickerCombosColumn .PanelTitle {
+  margin-bottom: 8px;
 }
 
 .PickerCombosColumn .PickerCombosColumnContainer {
   flow-children: down;
   width: 100%;
+}
+
+.PickerFilters {
+  overflow: noclip scroll;
+  flow-children: down;
+  width: filtersWidth;
+  height: 100%;
+  padding: 10px;
+}
+
+.PickerFilters .PickerFiltersRow {
+  flow-children: down;
+  width: filtersRowWidth;
+  margin-top: 10px;
+}
+
+.PickerFilters .PickerFiltersRow.PopupPickersRow {
+  flow-children: right;
+  width: fit-children;
+  margin-top: 20px;
+}
+
+.PickerFilters .PopupPickersRow .PopupPickerColumn {
+  flow-children: down;
+  width: 70px;
+}
+
+.PickerFilters .PopupPickerColumn .PopupPickerLabel {
+  margin: 0;
+  padding: 0;
+  vertical-align: center;
+}
+
+.PickerFilters .PopupPickerColumn .PopupPickerResetButton {
+  width: 12px;
+  height: 12px;
+  margin: 0 0 0 6px;
+  padding: 0;
+  vertical-align: center;
+  wash-color: #ff808088;
+}
+
+.PickerFilters .PopupPickerColumn .PopupPickerResetButton:hover {
+  wash-color: #ff8080;
+}
+
+.PickerFilters .PopupPickerColumn .PopupPickerResetButton:disabled {
+  visibility: collapse;
+}
+
+.PickerFilters .PopupPickerColumn .PopupPickerButton {
+  flow-children: down;
+  padding: 1px;
+}
+
+.PickerFilters .PopupPickerColumn .PickerFilterItemButton {
+  min-width: 0;
+  min-height: 0;
+}
+
+#PickerFilterItemImage {
+  width: 40px;
+  height: 40px;
+  align: center center;
+}
+
+.PickerFilters .PopupPickerColumn .PickerFilterAbilityButton {
+  min-width: 0;
+  min-height: 0;
+}
+
+#PickerFilterAbilityImage {
+  width: 40px;
+  height: 40px;
+  align: center center;
+}
+
+.PickerFilters .PickerFiltersRow.ButtonsRow {
+  flow-children: right;
+  width: fit-children;
+  margin-top: 30px;
+  horizontal-align: center;
+}
+
+.PickerFilters .ButtonsRow .PickerFiltersResetButton {
+  min-width: 142px;
 }

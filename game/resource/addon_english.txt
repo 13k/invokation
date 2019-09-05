@@ -8,6 +8,10 @@
 
     "npc_invokation_dummy_target" "Dummy"
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // GameInfo
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     "invokation_game_info_title" "Invokation School of Arcane Arts"
     "invokation_game_info_home_page" "Homepage"
     "invokation_game_info_changelog" "Changelog"
@@ -16,22 +20,40 @@
       <br><br>Training grounds for novices and masters alike, where they learn, practice and master the invocation and casting of spells (and magical items too!).
       "
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // CombatLog
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     "invokation_combat_log_title" "Combat Log"
     "invokation_combat_log_filter_invocations" "Hide Invocations"
     "invokation_combat_log_clear" "Clear"
 
-    "invokation_combos_picker_title" "Select combo"
-    "invokation_combos_picker_freestyle" "Freestyle"
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Picker
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    "invokation_combo_category_laning_phase" "Laning Phase"
-    "invokation_combo_category_ganking_solo_pick" "Ganking & Solo Pick"
-    "invokation_combo_category_teamfight" "Teamfight"
-    "invokation_combo_category_late_game" "Late Game"
+    "invokation_picker_title" "Select combo"
+    "invokation_picker_freestyle" "Freestyle"
+    "invokation_picker_filters_reset" "Clear"
+    "invokation_picker_filter_all" "All"
+    "invokation_picker_filter_item" "Item"
+    "invokation_picker_filter_ability" "Ability"
+    "invokation_picker_tooltip_filters" "Toggle Filters"
+    "invokation_picker_tooltip_filter_item_reset" "Clear Item"
+    "invokation_picker_tooltip_filter_ability_reset" "Clear Ability"
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Combo Controls
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_combo_play" "Play"
     "invokation_combo_restart" "Restart"
     "invokation_combo_full_restart" "Reset hero"
     "invokation_combo_stop" "Stop"
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Combo Splash
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_combo_splash_start_title__1" "Get ready!"
     "invokation_combo_splash_start_help__1" "Combo starts on first spell casted"
@@ -59,6 +81,10 @@
     "invokation_combo_splash_failure_help__8" "Infelicitous!"
     "invokation_combo_splash_failure_help__9" "No matter."
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Tooltips
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     "invokation_combo_tooltip_details" "Details"
     "invokation_combo_tooltip_specialty" "Specialty: {s:specialty}"
     "invokation_combo_tooltip_stance" "Stance: {s:stance}"
@@ -67,35 +93,72 @@
     "invokation_combo_tooltip_difficulty_rating" "Difficulty: {s:difficulty_rating}"
     "invokation_combo_tooltip_hud" "HUD: {s:hud_visibility}"
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Combo Properties
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    "invokation_combo_properties_category" "Category"
+
+    "invokation_combo_category_laning_phase" "Laning Phase"
+    "invokation_combo_category_ganking_solo_pick" "Ganking & Solo Pick"
+    "invokation_combo_category_teamfight" "Teamfight"
+    "invokation_combo_category_late_game" "Late Game"
+
     "invokation_combo_properties_hero_level" "Hero Level"
+
     "invokation_combo_properties_specialty" "Specialty"
+
     "invokation_combo_properties_specialty__qw" "Quas/Wex"
     "invokation_combo_properties_specialty__qe" "Quas/Exort"
-    "invokation_combo_properties_specialty__qwe" "Quas/Wex/Exort"
+
     "invokation_combo_properties_stance" "Stance"
+
     "invokation_combo_properties_stance__defensive" "Defensive"
     "invokation_combo_properties_stance__offensive" "Offensive"
+
     "invokation_combo_properties_damage_rating" "Damage"
+
     "invokation_combo_properties_damage_rating__0" "None"
     "invokation_combo_properties_damage_rating__1" "Light"
     "invokation_combo_properties_damage_rating__2" "Considerable"
     "invokation_combo_properties_damage_rating__3" "Lethal"
     "invokation_combo_properties_damage_rating__4" "Exceptional"
     "invokation_combo_properties_damage_rating__5" "Brutal"
+
     "invokation_combo_properties_difficulty_rating" "Difficulty"
+
     "invokation_combo_properties_difficulty_rating__1" "Very easy"
     "invokation_combo_properties_difficulty_rating__2" "Easy"
     "invokation_combo_properties_difficulty_rating__3" "Medium"
     "invokation_combo_properties_difficulty_rating__4" "Hard"
     "invokation_combo_properties_difficulty_rating__5" "Literally Unplayable"
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Challenge
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     "invokation_combo_hud_visibility__visible" "Visible"
     "invokation_combo_hud_visibility__hide_sequence" "Hidden sequence"
     "invokation_combo_hud_visibility__no_hands" "Look ma, no hands!"
 
-    "invokation_combo_group_baller" "Baller (Damage over time)"
-    "invokation_combo_group_striker" "Striker (Burst Damage)"
-    "invokation_combo_group_puncher" "Puncher (Physical Damage)"
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Combo Score
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    "invokation_combo_counter_title" "Combo"
+    "invokation_combo_counter_damage_label" "Damage"
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Viewer
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    "invokation_viewer_description_lorem" "
+      <span class='intro-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+      <br><br>Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Velit sed ullamcorper morbi tincidunt ornare. Neque convallis a cras semper auctor neque. Facilisi cras fermentum odio eu.
+      <br><br>Eleifend donec pretium vulputate sapien nec sagittis. Ac auctor augue mauris augue neque gravida in. Ut tellus elementum sagittis vitae et leo. Metus dictum at tempor commodo ullamcorper. At tempor commodo ullamcorper a.
+      "
+
+    "invokation_viewer_step_description_lorem" "Lorem ipsum dolor sit amet"
 
     "invokation_viewer_sequence_title" "Sequence"
     "invokation_viewer_sequence_disclaimer" "(Golden steps are required, others are optional)"
@@ -277,16 +340,5 @@
     //   "
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    "invokation_combo_counter_title" "Combo"
-    "invokation_combo_counter_damage_label" "Damage"
-
-    "invokation_viewer_description_lorem" "
-      <span class='intro-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-      <br><br>Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Velit sed ullamcorper morbi tincidunt ornare. Neque convallis a cras semper auctor neque. Facilisi cras fermentum odio eu.
-      <br><br>Eleifend donec pretium vulputate sapien nec sagittis. Ac auctor augue mauris augue neque gravida in. Ut tellus elementum sagittis vitae et leo. Metus dictum at tempor commodo ullamcorper. At tempor commodo ullamcorper a.
-      "
-
-    "invokation_viewer_step_description_lorem" "Lorem ipsum dolor sit amet"
   }
 }

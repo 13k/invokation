@@ -8,30 +8,134 @@
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
+  var SetAttributeAction = global.Sequence.SetAttributeAction;
+  var SelectOptionAction = global.Sequence.SelectOptionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var CreateComponent = context.CreateComponent;
 
   var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
+
+  var POPUP_ITEM_PICKER_LAYOUT =
+    "file://{resources}/layout/custom_game/popups/popup_item_picker.xml";
+
+  var POPUP_INVOKER_ABILITY_PICKER_LAYOUT =
+    "file://{resources}/layout/custom_game/popups/popup_invoker_ability_picker.xml";
+
   var COMBOS_COLUMN_SNIPPET = "CombosColumn";
   var COMBOS_COLUMN_TITLE_ID = "PickerCombosColumnTitle";
   var COMBOS_COLUMN_CONTAINER_ID = "PickerCombosColumnContainer";
 
-  var PICKER_COLUMNS = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
+  var PICKER_CATEGORIES = ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"];
+
+  var DRAWER_CLOSED_CLASS = "DrawerClosed";
+  var FILTERS_CLOSED_CLASS = "FiltersClosed";
+
+  var SOUNDS = {
+    OPEN: "Shop.PanelUp",
+    CLOSE: "Shop.PanelDown",
+    FILTERS_OPEN: "ui_rollover_md_up",
+    FILTERS_CLOSE: "ui_rollover_md_down",
+  };
+
+  var FILTERS = {
+    category: {
+      PickerFilterCategoryAll: null,
+      PickerFilterCategoryLaningPhase: "laning_phase",
+      PickerFilterCategoryGankingSoloPick: "ganking_solo_pick",
+      PickerFilterCategoryTeamfight: "teamfight",
+      PickerFilterCategoryLateGame: "late_game",
+    },
+    specialty: {
+      PickerFilterSpecialtyAll: null,
+      PickerFilterSpecialtyQuasWex: "qw",
+      PickerFilterSpecialtyQuasExort: "qe",
+    },
+    stance: {
+      PickerFilterStanceAll: null,
+      PickerFilterStanceDefensive: "defensive",
+      PickerFilterStanceOffensive: "offensive",
+    },
+    damageRating: {
+      PickerFilterDamageRatingAll: null,
+      PickerFilterDamageRating0: "0",
+      PickerFilterDamageRating1: "1",
+      PickerFilterDamageRating2: "2",
+      PickerFilterDamageRating3: "3",
+      PickerFilterDamageRating4: "4",
+      PickerFilterDamageRating5: "5",
+    },
+    difficultyRating: {
+      PickerFilterDifficultyRatingAll: null,
+      PickerFilterDifficultyRating1: "1",
+      PickerFilterDifficultyRating2: "2",
+      PickerFilterDifficultyRating3: "3",
+      PickerFilterDifficultyRating4: "4",
+      PickerFilterDifficultyRating5: "5",
+    },
+  };
+
+  function filterCombos(combos, filters) {
+    var combosSeq = _.chain(combos);
+
+    _.each(filters, function(value, property) {
+      if (property === "item" || property === "ability" || value == null || value === "") {
+        return;
+      }
+
+      combosSeq = combosSeq.filter(_.matchesProperty(property, value));
+    });
+
+    if (!_.isEmpty(filters.item)) {
+      combosSeq = combosSeq.filter(function(combo) {
+        return _.includes(combo.items, filters.item);
+      });
+    }
+
+    if (!_.isEmpty(filters.ability)) {
+      combosSeq = combosSeq.filter(function(combo) {
+        return _.find(combo.sequence, ["name", filters.ability]);
+      });
+    }
+
+    return combosSeq.value();
+  }
+
+  function filterPropertyElementID(property, value) {
+    return _.chain("picker_filter_" + property + "_" + String(value))
+      .camelCase()
+      .upperFirst()
+      .value();
+  }
 
   var Picker = CreateComponent({
     constructor: function Picker() {
       Picker.super.call(this, {
         elements: {
           slideout: "PickerSlideout",
-          combosContainer: "PickerCombosContainer",
+          combos: "PickerCombos",
+          filterCategory: "PickerFilterCategory",
+          filterSpecialty: "PickerFilterSpecialty",
+          filterStance: "PickerFilterStance",
+          filterDamageRating: "PickerFilterDamageRating",
+          filterDifficultyRating: "PickerFilterDifficultyRating",
+          filterItemImage: "PickerFilterItemImage",
+          filterItemResetButton: "PickerFilterItemResetButton",
+          filterAbilityImage: "PickerFilterAbilityImage",
+          filterAbilityResetButton: "PickerFilterAbilityResetButton",
         },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
           "!COMBO_STOPPED": "onComboStopped",
+          "!POPUP_ITEM_PICKER_SUBMIT": "onPopupItemPickerSubmit",
+          "!POPUP_ABILITY_PICKER_SUBMIT": "onPopupAbilityPickerSubmit",
         },
       });
 
+      this.popupItemPickerChannel = _.uniqueId("popup_item_picker_");
+      this.popupAbilityPickerChannel = _.uniqueId("popup_ability_picker_");
+
+      this.enableFiltering();
       this.bindEvents();
       this.debug("init");
     },
@@ -42,6 +146,7 @@
 
     onCombosChange: function() {
       this.debug("onCombosChange()");
+      this.combos = COMBOS.combos;
       this.render();
     },
 
@@ -66,6 +171,30 @@
       this.open();
     },
 
+    onPopupItemPickerSubmit: function(payload) {
+      if (payload.channel !== this.popupItemPickerChannel) {
+        return;
+      }
+
+      this.debug("onPopupItemPickerSubmit()", payload);
+
+      if (!_.isEmpty(payload.item)) {
+        this.filterByItem(payload.item);
+      }
+    },
+
+    onPopupAbilityPickerSubmit: function(payload) {
+      if (payload.channel !== this.popupAbilityPickerChannel) {
+        return;
+      }
+
+      this.debug("onPopupAbilityPickerSubmit()", payload);
+
+      if (!_.isEmpty(payload.ability)) {
+        this.filterByAbility(payload.ability);
+      }
+    },
+
     // ----- Helpers -----
 
     groupCombos: function() {
@@ -74,12 +203,12 @@
         .unary()
         .value();
 
-      this.groupedCombos = _.chain(COMBOS.combos)
+      this.groupedCombos = _.chain(this.combos)
         .groupBy("category")
         .mapValues(sorter)
         .toPairs()
         .sortBy(function(pair) {
-          return _.indexOf(PICKER_COLUMNS, pair[0]);
+          return _.indexOf(PICKER_CATEGORIES, pair[0]);
         })
         .value();
     },
@@ -98,7 +227,11 @@
     },
 
     isClosed: function() {
-      return this.$slideout.BHasClass("DrawerClosed");
+      return this.$slideout.BHasClass(DRAWER_CLOSED_CLASS);
+    },
+
+    isFiltersPanelClosed: function() {
+      return this.$slideout.BHasClass(FILTERS_CLOSED_CLASS);
     },
 
     createCombosColumn: function(parent, category) {
@@ -128,6 +261,41 @@
       return panel;
     },
 
+    filter: function() {
+      var transformFilters = function(filters, _, property) {
+        filters[property] = this.propertyFilterValue(property);
+      }.bind(this);
+
+      var filters = _.transform(FILTERS, transformFilters);
+
+      if (filters.damageRating != null) {
+        filters.damageRating = parseInt(filters.damageRating);
+      }
+
+      if (filters.difficultyRating != null) {
+        filters.difficultyRating = parseInt(filters.difficultyRating);
+      }
+
+      filters.item = this.getItemFilter();
+      filters.ability = this.getAbilityFilter();
+
+      this.debug("filter()", filters);
+      this.combos = filterCombos(COMBOS.combos, filters);
+    },
+
+    propertyFilterValue: function(property) {
+      var dropDown = this.element(_.camelCase("filter_" + property));
+      return _.get(FILTERS, [property, dropDown.GetSelected().id]);
+    },
+
+    getItemFilter: function() {
+      return this.$filterItemImage.itemname;
+    },
+
+    getAbilityFilter: function() {
+      return this.$filterAbilityImage.abilityname;
+    },
+
     // ----- Actions -----
 
     renderCombosAction: function() {
@@ -135,15 +303,13 @@
     },
 
     resetCombosAction: function() {
-      return new Sequence()
-        .RemoveChildren(this.$combosContainer)
-        .RunFunction(this, this.resetCombos);
+      return new Sequence().RemoveChildren(this.$combos).RunFunction(this, this.resetCombos);
     },
 
     createComboPanelsAction: function() {
       var actions = _.map(
         this.groupedCombos,
-        _.bind(this.createCombosColumnAction, this, this.$combosContainer)
+        _.bind(this.createCombosColumnAction, this, this.$combos)
       );
 
       return new Sequence().Action(actions);
@@ -163,6 +329,52 @@
       return new RunFunctionAction(this, this.createComboPanel, category, combo);
     },
 
+    enableFiltering: function() {
+      this.filtering = true;
+    },
+
+    disableFiltering: function() {
+      this.filtering = false;
+    },
+
+    resetPropertyFilterAction: function(property) {
+      var defaultId = filterPropertyElementID(property, "all");
+      var dropDown = this.element(_.camelCase("filter_" + property));
+      return new SelectOptionAction(dropDown, defaultId);
+    },
+
+    resetPropertyFiltersAction: function() {
+      var resetPropertyFilterAction = _.chain(this.resetPropertyFilterAction)
+        .bind(this)
+        .rearg([1, 0])
+        .ary(2)
+        .value();
+
+      var actions = _.map(FILTERS, resetPropertyFilterAction);
+
+      return new ParallelSequence().Action(actions);
+    },
+
+    setItemFilterAction: function(name) {
+      return new SetAttributeAction(this.$filterItemImage, "itemname", name);
+    },
+
+    resetItemFilterAction: function() {
+      return new ParallelSequence()
+        .Disable(this.$filterItemResetButton)
+        .Action(this.setItemFilterAction(""));
+    },
+
+    setAbilityFilterAction: function(name) {
+      return new SetAttributeAction(this.$filterAbilityImage, "abilityname", name);
+    },
+
+    resetAbilityFilterAction: function() {
+      return new ParallelSequence()
+        .Disable(this.$filterAbilityResetButton)
+        .Action(this.setAbilityFilterAction(""));
+    },
+
     // ----- Action runners -----
 
     render: function() {
@@ -171,7 +383,7 @@
       var seq = this.renderCombosAction();
 
       this.debugFn(function() {
-        return ["render()", { combos: COMBOS.combos.length, actions: seq.size() }];
+        return ["render()", { combos: this.combos.length, actions: seq.size() }];
       });
 
       return seq.Start();
@@ -183,8 +395,8 @@
       }
 
       var seq = new ParallelSequence()
-        .PlaySoundEffect("Shop.PanelUp")
-        .RemoveClass(this.$slideout, "DrawerClosed");
+        .PlaySoundEffect(SOUNDS.OPEN)
+        .RemoveClass(this.$slideout, DRAWER_CLOSED_CLASS);
 
       this.debugFn(function() {
         return ["open()", { actions: seq.size() }];
@@ -199,8 +411,8 @@
       }
 
       var seq = new ParallelSequence()
-        .PlaySoundEffect("Shop.PanelDown")
-        .AddClass(this.$slideout, "DrawerClosed");
+        .PlaySoundEffect(SOUNDS.CLOSE)
+        .AddClass(this.$slideout, DRAWER_CLOSED_CLASS);
 
       this.debugFn(function() {
         return ["close()", { actions: seq.size() }];
@@ -209,7 +421,108 @@
       return seq.Start();
     },
 
+    openFilters: function() {
+      if (!this.isFiltersPanelClosed()) {
+        return;
+      }
+
+      var seq = new ParallelSequence()
+        .PlaySoundEffect(SOUNDS.FILTERS_OPEN)
+        .RemoveClass(this.$slideout, FILTERS_CLOSED_CLASS);
+
+      this.debugFn(function() {
+        return ["openFilters()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    closeFilters: function() {
+      if (this.isFiltersPanelClosed()) {
+        return;
+      }
+
+      var seq = new ParallelSequence()
+        .PlaySoundEffect(SOUNDS.FILTERS_CLOSE)
+        .AddClass(this.$slideout, FILTERS_CLOSED_CLASS);
+
+      this.debugFn(function() {
+        return ["closeFilters()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    filterByItem: function(name) {
+      var seq = new Sequence()
+        .Action(this.setItemFilterAction(name))
+        .Enable(this.$filterItemResetButton)
+        .RunFunction(this, this.Filter);
+
+      this.debugFn(function() {
+        return ["filterByItem()", { item: name, actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    filterByAbility: function(name) {
+      var seq = new Sequence()
+        .Action(this.setAbilityFilterAction(name))
+        .Enable(this.$filterAbilityResetButton)
+        .RunFunction(this, this.Filter);
+
+      this.debugFn(function() {
+        return ["filterByAbility()", { ability: name, actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    resetFilters: function() {
+      var seq = new Sequence()
+        .RunFunction(this, this.disableFiltering)
+        .Action(this.resetPropertyFiltersAction())
+        .Action(this.resetItemFilterAction())
+        .Action(this.resetAbilityFilterAction())
+        .RunFunction(this, this.enableFiltering)
+        .RunFunction(this, this.Filter);
+
+      this.debugFn(function() {
+        return ["resetFilters()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    resetItemFilter: function() {
+      var seq = new Sequence().Action(this.resetItemFilterAction()).RunFunction(this, this.Filter);
+
+      this.debugFn(function() {
+        return ["resetItemFilter()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
+    resetAbilityFilter: function() {
+      var seq = new Sequence()
+        .Action(this.resetAbilityFilterAction())
+        .RunFunction(this, this.Filter);
+
+      this.debugFn(function() {
+        return ["resetAbilityFilter()", { actions: seq.size() }];
+      });
+
+      return seq.Start();
+    },
+
     // ----- UI methods -----
+
+    Reload: function() {
+      this.debug("Reload()");
+      COMBOS.Reload();
+    },
 
     Toggle: function() {
       if (this.isClosed()) {
@@ -224,9 +537,51 @@
       this.startCombo({ id: FREESTYLE_COMBO_ID });
     },
 
-    Reload: function() {
-      this.debug("Reload()");
-      COMBOS.Reload();
+    ToggleFilters: function() {
+      if (this.isFiltersPanelClosed()) {
+        this.openFilters();
+      } else {
+        this.closeFilters();
+      }
+    },
+
+    Filter: function() {
+      if (!this.filtering) {
+        return;
+      }
+
+      this.filter();
+      return this.render();
+    },
+
+    ResetFilters: function() {
+      return this.resetFilters();
+    },
+
+    ShowItemFilter: function() {
+      return this.showPopup(
+        this.$filterItemImage,
+        "PickerPopupItemPicker",
+        POPUP_ITEM_PICKER_LAYOUT,
+        { channel: this.popupItemPickerChannel }
+      );
+    },
+
+    ResetItemFilter: function() {
+      return this.resetItemFilter();
+    },
+
+    ShowAbilityFilter: function() {
+      return this.showPopup(
+        this.$filterAbilityImage,
+        "PickerPopupInvokerAbilityPicker",
+        POPUP_INVOKER_ABILITY_PICKER_LAYOUT,
+        { channel: this.popupAbilityPickerChannel }
+      );
+    },
+
+    ResetAbilityFilter: function() {
+      return this.resetAbilityFilter();
     },
   });
 
