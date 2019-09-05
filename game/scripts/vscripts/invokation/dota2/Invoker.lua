@@ -90,9 +90,7 @@ function M:ResetAbilities(options)
   options = options or {}
 
   local points = 0
-  local resetAbilities =
-    List.new(INVOKER.ORB_ABILITIES) ..
-    List.new(INVOKER.TALENT_ABILITIES)
+  local resetAbilities = List.new(INVOKER.ORB_ABILITIES) .. List.new(INVOKER.TALENT_ABILITIES)
 
   for _, name in ipairs(resetAbilities) do
     local ability = self.hero:FindAbilityByName(name)

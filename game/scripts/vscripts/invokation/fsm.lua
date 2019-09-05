@@ -10,7 +10,6 @@ Repository: [https://github.com/kyleconroy/lua-state-machine][repo]
 @license MIT
 @copyright Kyle Conroy 2012
 ]]
-
 local machine = {}
 machine.__index = machine
 
@@ -70,7 +69,10 @@ local function create_transition(name)
       self.currentTransitioningEvent = nil
       return true
     else
-      if string.find(self.asyncState, "WaitingOnLeave") or string.find(self.asyncState, "WaitingOnEnter") then
+      if
+        string.find(self.asyncState, "WaitingOnLeave") or
+          string.find(self.asyncState, "WaitingOnEnter")
+       then
         self.asyncState = NONE
         transition(self, ...)
         return true

@@ -15,7 +15,7 @@ M.INVENTORY_SLOTS = {
   DOTA_ITEM_SLOT_6,
   DOTA_ITEM_SLOT_7,
   DOTA_ITEM_SLOT_8,
-  DOTA_ITEM_SLOT_9,
+  DOTA_ITEM_SLOT_9
 }
 
 --- List of stash slots indices.
@@ -25,7 +25,7 @@ M.STASH_SLOTS = {
   DOTA_STASH_SLOT_3,
   DOTA_STASH_SLOT_4,
   DOTA_STASH_SLOT_5,
-  DOTA_STASH_SLOT_6,
+  DOTA_STASH_SLOT_6
 }
 
 --- List of all slots indices (union of @{INVENTORY_SLOTS} and @{STASH_SLOTS}).

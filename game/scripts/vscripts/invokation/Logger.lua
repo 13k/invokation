@@ -12,19 +12,19 @@ local stringx = require("pl.stringx")
 
 --- Unknown (outputs everything)
 -- @field[type=int] UNKNOWN
-M.UNKNOWN  =  0
+M.UNKNOWN = 0
 --- Debug
 -- @field[type=int] DEBUG
-M.DEBUG    = 10
+M.DEBUG = 10
 --- Info
 -- @field[type=int] INFO
-M.INFO     = 20
+M.INFO = 20
 --- Warning
 -- @field[type=int] WARNING
-M.WARNING  = 30
+M.WARNING = 30
 --- Error
 -- @field[type=int] ERROR
-M.ERROR    = 40
+M.ERROR = 40
 --- Critical
 -- @field[type=int] CRITICAL
 M.CRITICAL = 50
@@ -38,12 +38,12 @@ M.CRITICAL = 50
 -- @field[type=string] ERROR ERROR
 -- @field[type=string] CRITICAL CRITICAL
 M.LEVEL_NAMES = {
-  [M.UNKNOWN]  = "UNKNOWN",
-  [M.DEBUG]    = "DEBUG",
-  [M.INFO]     = "INFO",
-  [M.WARNING]  = "WARNING",
-  [M.ERROR]    = "ERROR",
-  [M.CRITICAL] = "CRITICAL",
+  [M.UNKNOWN] = "UNKNOWN",
+  [M.DEBUG] = "DEBUG",
+  [M.INFO] = "INFO",
+  [M.WARNING] = "WARNING",
+  [M.ERROR] = "ERROR",
+  [M.CRITICAL] = "CRITICAL"
 }
 
 --- Defaults
@@ -100,7 +100,7 @@ function M:Log(level, ...)
     timestamp = GetSystemDate() .. " " .. GetSystemTime(),
     severity = M.LEVEL_NAMES[level],
     progname = self.progname,
-    message = stringx.join(" ", formatted),
+    message = stringx.join(" ", formatted)
   }
 
   return print(self.template:substitute(tmplValues))

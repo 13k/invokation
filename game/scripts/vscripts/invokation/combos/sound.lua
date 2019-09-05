@@ -15,30 +15,30 @@ local SOUND_EVENTS = {
     "invoker_invo_move_09",
     "invoker_invo_move_13",
     "invoker_invo_attack_05",
-    "invoker_invo_ability_invoke_01",
+    "invoker_invo_ability_invoke_01"
   },
   combo_stop = {
-    "invoker_invo_failure_04",
+    "invoker_invo_failure_04"
   }
 }
 
 local MUSIC = {
   IDLE = {
     STATUS = DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION,
-    INTENSITY = 1.0,
+    INTENSITY = 1.0
   },
   BATTLE = {
     STATUS = DOTA_MUSIC_STATUS_BATTLE,
-    INTENSITY = 5.0,
+    INTENSITY = 5.0
   },
   VICTORY = {
     STATUS = DOTA_MUSIC_STATUS_EXPLORATION,
-    INTENSITY = 10.0,
+    INTENSITY = 10.0
   },
   DEFEAT = {
     STATUS = DOTA_MUSIC_STATUS_DEAD,
-    INTENSITY = 10.0,
-  },
+    INTENSITY = 10.0
+  }
 }
 
 local function randomSoundEvent(stage)

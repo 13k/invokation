@@ -158,7 +158,10 @@ end
 function M:Create(options)
   local timer = Timer(options)
 
-  assert(self.timers[timer.name] == nil, string.format("Invalid timer %q: timer already registered", timer.name))
+  assert(
+    self.timers[timer.name] == nil,
+    string.format("Invalid timer %q: timer already registered", timer.name)
+  )
 
   self.timers[timer.name] = timer
 

@@ -129,7 +129,7 @@ local function debugAbility(a, simple)
     return {
       a:GetAbilityIndex(),
       a:GetAbilityName(),
-      a:GetLevel(),
+      a:GetLevel()
     }
   end
 
@@ -155,7 +155,7 @@ local function debugAbility(a, simple)
     castRange = a:GetCastRange(),
     castPoint = a:GetCastPoint(),
     backswingTime = a:GetBackswingTime(),
-    channelTime = a:GetChannelTime(),
+    channelTime = a:GetChannelTime()
   }
 end
 
@@ -266,32 +266,32 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
       [Invoker.ABILITY_COLD_SNAP] = {
         "duration",
         "freeze_cooldown",
-        "freeze_damage",
+        "freeze_damage"
       },
       [Invoker.ABILITY_GHOST_WALK] = {
         "enemy_slow",
-        "self_slow",
+        "self_slow"
       },
       [Invoker.ABILITY_ICE_WALL] = {
         "duration",
         "slow",
-        "damage_per_second",
+        "damage_per_second"
       },
       [Invoker.ABILITY_EMP] = {
-        "mana_burned",
+        "mana_burned"
       },
       [Invoker.ABILITY_TORNADO] = {
         "travel_distance",
         "lift_duration",
         "quas_damage",
-        "wex_damage",
+        "wex_damage"
       },
       [Invoker.ABILITY_ALACRITY] = {
         "bonus_attack_speed",
-        "bonus_damage",
+        "bonus_damage"
       },
       [Invoker.ABILITY_SUN_STRIKE] = {
-        "damage",
+        "damage"
       },
       [Invoker.ABILITY_FORGE_SPIRIT] = {
         "spirit_damage",
@@ -299,18 +299,18 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "spirit_armor",
         "spirit_attack_range",
         "spirit_hp",
-        "spirit_duration",
+        "spirit_duration"
       },
       [Invoker.ABILITY_CHAOS_METEOR] = {
         "travel_distance",
         "main_damage",
-        "burn_dps",
+        "burn_dps"
       },
       [Invoker.ABILITY_DEAFENING_BLAST] = {
         "damage",
         "knockback_duration",
-        "disarm_duration",
-      },
+        "disarm_duration"
+      }
     }
   else
     specials = {
@@ -319,14 +319,14 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "freeze_duration",
         "freeze_cooldown",
         "freeze_damage",
-        "damage_trigger",
+        "damage_trigger"
       },
       [Invoker.ABILITY_GHOST_WALK] = {
         "duration",
         "area_of_effect",
         "enemy_slow",
         "self_slow",
-        "aura_fade_time",
+        "aura_fade_time"
       },
       [Invoker.ABILITY_ICE_WALL] = {
         "duration",
@@ -336,13 +336,13 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "wall_place_distance",
         "num_wall_elements",
         "wall_element_spacing",
-        "wall_element_radius",
+        "wall_element_radius"
       },
       [Invoker.ABILITY_EMP] = {
         "delay",
         "area_of_effect",
         "mana_burned",
-        "damage_per_mana_pct",
+        "damage_per_mana_pct"
       },
       [Invoker.ABILITY_TORNADO] = {
         "travel_distance",
@@ -353,19 +353,19 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "lift_duration",
         "base_damage",
         "quas_damage",
-        "wex_damage",
+        "wex_damage"
       },
       [Invoker.ABILITY_ALACRITY] = {
         "bonus_attack_speed",
         "bonus_damage",
-        "duration",
+        "duration"
       },
       [Invoker.ABILITY_SUN_STRIKE] = {
         "delay",
         "area_of_effect",
         "damage",
         "vision_distance",
-        "vision_duration",
+        "vision_duration"
       },
       [Invoker.ABILITY_FORGE_SPIRIT] = {
         "spirit_damage",
@@ -373,7 +373,7 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "spirit_armor",
         "spirit_attack_range",
         "spirit_hp",
-        "spirit_duration",
+        "spirit_duration"
       },
       [Invoker.ABILITY_CHAOS_METEOR] = {
         "land_time",
@@ -385,7 +385,7 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "end_vision_duration",
         "main_damage",
         "burn_duration",
-        "burn_dps",
+        "burn_dps"
       },
       [Invoker.ABILITY_DEAFENING_BLAST] = {
         "travel_distance",
@@ -395,8 +395,8 @@ function GameMode:CommandDumpAbilitySpecials(_, onlyScaling)
         "end_vision_duration",
         "damage",
         "knockback_duration",
-        "disarm_duration",
-      },
+        "disarm_duration"
+      }
     }
   end
 

@@ -35,7 +35,7 @@ local DELEGATES = {
   "RemoveItem",
   "RespawnHero",
   "RespawnUnit",
-  "SetGold",
+  "SetGold"
 }
 
 delegation.delegate(M, "entity", DELEGATES)
@@ -155,9 +155,12 @@ end
 function M:ItemNames(options)
   local names = {}
 
-  self:forEachItem(function(item)
-    table.insert(names, item:GetAbilityName())
-  end, options)
+  self:forEachItem(
+    function(item)
+      table.insert(names, item:GetAbilityName())
+    end,
+    options
+  )
 
   return names
 end
@@ -196,11 +199,14 @@ end
 --   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
 -- @treturn CDOTA_Item|nil Item if found, `nil` otherwise
 function M:FindItemInInventory(name, options)
-  return self:forEachItem(function(item)
-    if item:GetAbilityName() == name then
-      return false, item
-    end
-  end, options)
+  return self:forEachItem(
+    function(item)
+      if item:GetAbilityName() == name then
+        return false, item
+      end
+    end,
+    options
+  )
 end
 
 --- Removes all items.
@@ -215,14 +221,17 @@ function M:RemoveItems(options)
 
   local removed = {}
 
-  self:forEachItem(function(item)
-    if options.endCooldown then
-      item:EndCooldown()
-    end
+  self:forEachItem(
+    function(item)
+      if options.endCooldown then
+        item:EndCooldown()
+      end
 
-    self:RemoveItem(item)
-    table.insert(removed, item)
-  end, options)
+      self:RemoveItem(item)
+      table.insert(removed, item)
+    end,
+    options
+  )
 
   return removed
 end
@@ -233,9 +242,12 @@ end
 -- @tparam[opt=false] bool options.onlyStash Only stash
 --   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
 function M:EndItemCooldowns(options)
-  self:forEachItem(function(item)
-    item:EndCooldown()
-  end, options)
+  self:forEachItem(
+    function(item)
+      item:EndCooldown()
+    end,
+    options
+  )
 end
 
 function M:RemoveDroppedItems()

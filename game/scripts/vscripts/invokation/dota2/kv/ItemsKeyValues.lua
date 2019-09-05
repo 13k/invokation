@@ -3,7 +3,6 @@
 
 local M = require("pl.class")()
 
-local stringx = require("pl.stringx")
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
 local pp = require("pl.pretty")
 

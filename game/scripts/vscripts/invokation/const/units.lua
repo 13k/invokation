@@ -16,7 +16,7 @@ M.INVOKER = "npc_dota_hero_invoker"
 -- @table INVOKER_SPAWNED
 -- @field[type=string] FORGED_SPIRIT
 M.INVOKER_SPAWNED = {
-  FORGED_SPIRIT = "npc_dota_invoker_forged_spirit",
+  FORGED_SPIRIT = "npc_dota_invoker_forged_spirit"
 }
 
 return M

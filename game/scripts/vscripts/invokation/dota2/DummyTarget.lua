@@ -7,16 +7,20 @@ local Units = require("invokation.dota2.units")
 local delegation = require("invokation.lang.delegation")
 
 local DELEGATES = {
-  "Hold",
+  "Hold"
 }
 
 delegation.delegate(M, "entity", DELEGATES)
 
 local function createDummy(location)
-  local unit = Units.Create(Units.DUMMY_TARGET, {
-    location = location,
-    team = DOTA_TEAM_BADGUYS,
-  })
+  local unit =
+    Units.Create(
+    Units.DUMMY_TARGET,
+    {
+      location = location,
+      team = DOTA_TEAM_BADGUYS
+    }
+  )
 
   unit:SetIdleAcquire(false)
 

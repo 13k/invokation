@@ -11,7 +11,7 @@ local M = {
   item_travel_boots_2 = false,
   item_phase_boots = false,
   item_power_treads = false,
-  item_moon_shard = false,
+  item_moon_shard = false
 }
 
 return M

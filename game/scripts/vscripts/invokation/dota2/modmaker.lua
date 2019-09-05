@@ -39,7 +39,6 @@ Original code: [https://github.com/bmddota/barebones](https://github.com/bmddota
 @license Apache License 2.0
 @copyright bmddota
 ]]
-
 local M = {_VERSION = "0.80"}
 
 local function GetAPI(t, sub, done)
@@ -109,7 +108,8 @@ function M.openGithub(_, msg)
 
   print("[ModMaker] OpenGithub", search, language)
 
-  local url = "https://github.com/search?utf8=%E2%9C%93&q=" .. search .. "&l=" .. language .. "&type=Code"
+  local url =
+    "https://github.com/search?utf8=%E2%9C%93&q=" .. search .. "&l=" .. language .. "&type=Code"
   local t = io.popen('start "Browser" "' .. url .. '"')
   t:lines()
 end
