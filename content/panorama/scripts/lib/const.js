@@ -26,8 +26,6 @@
     COMBAT_LOG_CLEAR: "invokation_combat_log_clear",
     COMBAT_LOG_CAPTURE_START: "invokation_combat_log_capture_start",
     COMBAT_LOG_CAPTURE_STOP: "invokation_combat_log_capture_stop",
-    // meta
-    META_GAME_INFO_TOGGLE: "invokation_meta_game_info_toggle",
     // item picker
     ITEM_PICKER_QUERY: "invokation_item_picker_query",
     ITEM_PICKER_QUERY_RESPONSE: "invokation_item_picker_query_response",
@@ -37,6 +35,7 @@
   };
 
   var UI_EVENTS = {
+    EXTERNAL_BROWSER_GO_TO_URL: "ExternalBrowserGoToURL",
     PLAY_SOUND: "PlaySoundEffect",
     SHOW_TEXT_TOOLTIP: "UIShowTextTooltip",
     HIDE_TEXT_TOOLTIP: "UIHideTextTooltip",
@@ -44,6 +43,7 @@
     HIDE_ABILITY_TOOLTIP: "DOTAHideAbilityTooltip",
     SHOW_POPUP: "UIShowCustomLayoutPopup",
     SHOW_POPUP_PARAMS: "UIShowCustomLayoutPopupParameters",
+    POPUP_BUTTON_CLICKED: "UIPopupButtonClicked",
   };
 
   var INVOKER = {};

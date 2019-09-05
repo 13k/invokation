@@ -140,9 +140,7 @@
       this.debug("init");
     },
 
-    bindEvents: function() {
-      COMBOS.OnChange(this.onCombosChange.bind(this));
-    },
+    // ----- Event handlers -----
 
     onCombosChange: function() {
       this.debug("onCombosChange()");
@@ -196,6 +194,10 @@
     },
 
     // ----- Helpers -----
+
+    bindEvents: function() {
+      COMBOS.OnChange(this.onCombosChange.bind(this));
+    },
 
     groupCombos: function() {
       var sorter = _.chain(_.sortBy)

@@ -22,7 +22,11 @@
       this.debug("init");
     },
 
+    // ----- Event handlers -----
+
     onLoad: function() {
+      this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
+      this.debug("onLoad()", { channel: this.channel });
       this.render();
     },
 
@@ -30,6 +34,8 @@
       this.debug("onImageActivate()", imagePanel.id);
       this.select(imagePanel);
     },
+
+    // ----- Helpers -----
 
     select: function(imagePanel) {
       var highlighted = this.$abilities.FindChildrenWithClassTraverse(ABILITY_HIGHLIGHT_CLASS);
@@ -44,8 +50,6 @@
     },
 
     render: function() {
-      this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
-
       var createAbilityImage = _.chain(this.createAbilityImage)
         .bind(this, this.$abilities)
         .rearg([1, 0])
@@ -54,7 +58,7 @@
 
       _.each(INVOKER.SPELL_ABILITIES, createAbilityImage);
 
-      this.debug("render() -- channel:", this.channel);
+      this.debug("render()");
     },
 
     createAbilityImage: function(parent, abilityName) {
@@ -75,6 +79,12 @@
       return panel;
     },
 
+    // ----- UI methods -----
+
+    Close: function() {
+      this.closePopup(this.$ctx);
+    },
+
     Submit: function() {
       this.debug("Submit()", this.selected);
 
@@ -84,10 +94,6 @@
       });
 
       this.Close();
-    },
-
-    Close: function() {
-      this.dispatch(this.$ctx, "UIPopupButtonClicked");
     },
   });
 

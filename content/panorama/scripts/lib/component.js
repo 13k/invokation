@@ -330,6 +330,10 @@
       return $.DispatchEvent.apply($, args);
     },
 
+    openExternalURL: function(element, url) {
+      return this.dispatch(element, UI_EVENTS.EXTERNAL_BROWSER_GO_TO_URL, url);
+    },
+
     playSound: function(soundEvent) {
       return $.DispatchEvent(UI_EVENTS.PLAY_SOUND, soundEvent);
     },
@@ -366,6 +370,10 @@
       }
 
       return this.dispatch.apply(this, args);
+    },
+
+    closePopup: function(element) {
+      return this.dispatch(element, UI_EVENTS.POPUP_BUTTON_CLICKED);
     },
   });
 

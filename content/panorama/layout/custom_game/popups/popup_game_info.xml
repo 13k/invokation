@@ -1,15 +1,15 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/game_info.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup_game_info.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/game_info.css" />
+    <include src="file://{resources}/styles/custom_game/popups/popup_game_info.css" />
   </styles>
 
-  <PopupCustomLayout class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="UIPopupButtonClicked()" onload="SetupPopup()">
-    <Button class="CloseButton" onactivate="gameInfo.Close()" />
+  <Popup class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="popup.Close()">
+    <Button class="CloseButton" onactivate="popup.Close()" />
 
     <Panel class="GameInfoContents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
@@ -29,16 +29,16 @@
           <Label id="GameInfoVersionLabel" class="GameInfoMetaText" />
         </Panel>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="gameInfo.OpenURL()">
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="popup.OpenHomepageURL()">
           <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_home_page" />
           <Panel class="GameInfoArrowIcon" />
         </Button>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="gameInfo.OpenChangelogURL()">
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="popup.OpenChangelogURL()">
           <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_changelog" />
           <Panel class="GameInfoArrowIcon" />
         </Button>
       </Panel>
     </Panel>
-  </PopupCustomLayout>
+  </Popup>
 </root>

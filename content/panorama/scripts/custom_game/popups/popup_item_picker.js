@@ -19,18 +19,22 @@
       this.debug("init");
     },
 
+    // ----- Event handlers -----
+
+    onLoad: function() {
+      this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
+      this.debug("onLoad()", { channel: this.channel });
+      this.render();
+    },
+
     onItemSelected: function(payload) {
       this.debug("onItemSelected()", payload);
       this.selected = payload.item;
     },
 
-    onLoad: function() {
-      this.render();
-    },
+    // ----- Helpers -----
 
     render: function() {
-      this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
-
       this.$itemPicker = CreatePanelWithLayout(
         this.$itemPickerContainer,
         ITEM_PICKER_ID,
@@ -41,7 +45,13 @@
         OnSelect: this.handler("onItemSelected"),
       });
 
-      this.debug("render() -- channel:", this.channel);
+      this.debug("render()");
+    },
+
+    // ----- UI methods -----
+
+    Close: function() {
+      this.closePopup(this.$ctx);
     },
 
     Submit: function() {
@@ -53,10 +63,6 @@
       });
 
       this.Close();
-    },
-
-    Close: function() {
-      this.dispatch(this.$ctx, "UIPopupButtonClicked");
     },
   });
 
