@@ -1,39 +1,35 @@
 var name = null;
 var prop = null;
 
-function Show()
-{
+function Show() {
   $.GetContextPanel().visible = true;
 }
 
-function Hide()
-{
+function Hide() {
   $.GetContextPanel().visible = false;
 }
 
-function OpenGitHub()
-{
+function OpenGitHub() {
   $.Msg("OpenGitHub");
 
-  GameEvents.SendCustomGameEventToServer( "ModMaker_OpenGithub", {search:name, language:"lua"});
+  GameEvents.SendCustomGameEventToServer("ModMaker_OpenGithub", { search: name, language: "lua" });
 }
 
-function FuncClicked()
-{
+function FuncClicked() {
   var panel = $.GetContextPanel();
   $("#PropertyFunction").visible = false;
-  var textEntry = $.CreatePanel( "TextEntry", panel, "");
+  var textEntry = $.CreatePanel("TextEntry", panel, "");
   panel.MoveChildBefore(textEntry, $("#PropertyDescription"));
 
-  textEntry.text = $("#PropertyFunction").text
+  textEntry.text = $("#PropertyFunction").text;
   textEntry.style.marginLeft = "40px;";
   textEntry.style.width = "700px";
-  textEntry.SetPanelEvent('onblur', function(){
+  textEntry.SetPanelEvent("onblur", function() {
     $("#PropertyFunction").visible = true;
     textEntry.DeleteAsync(0);
   });
 
-  textEntry.SetPanelEvent('oncancel', function(){
+  textEntry.SetPanelEvent("oncancel", function() {
     $("#PropertyFunction").visible = true;
     textEntry.DeleteAsync(0);
   });
@@ -41,9 +37,7 @@ function FuncClicked()
   textEntry.SetFocus(true);
 }
 
-
-function New(n, p)
-{
+function New(n, p) {
   $("#PropertyName").text = n;
   //$("#PropertyName").SetAcceptsFocus(true);
   $("#PropertyFunction").text = p.f;
@@ -56,8 +50,7 @@ function New(n, p)
   prop = p;
 }
 
-
-(function(){
+(function() {
   $.GetContextPanel().Show = Show;
   $.GetContextPanel().Hide = Hide;
   $.GetContextPanel().New = New;

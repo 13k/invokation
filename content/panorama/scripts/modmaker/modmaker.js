@@ -1,28 +1,21 @@
-var files = {}
+var files = {};
 var lua = null;
 var luaCategories = null;
-var properties = {}
-var categoryPanels = {}
+var properties = {};
+var categoryPanels = {};
 
-function DumpObjectIndented(obj, indent)
-{
+function DumpObjectIndented(obj, indent) {
   var result = "";
   if (indent == null) indent = "";
 
-  for (var property in obj)
-  {
+  for (var property in obj) {
     var value = obj[property];
-    if (typeof value == 'string')
-      value = "'" + value + "'";
-    else if (typeof value == 'object')
-    {
-      if (value instanceof Array)
-      {
+    if (typeof value == "string") value = "'" + value + "'";
+    else if (typeof value == "object") {
+      if (value instanceof Array) {
         // Just let JS convert the Array to a string!
         value = "[ " + value + " ]";
-      }
-      else
-      {
+      } else {
         // Recursive dump
         // (replace "  " by "\t" or something else if you prefer)
         var od = DumpObjectIndented(value, indent + "  ");
@@ -39,19 +32,18 @@ function DumpObjectIndented(obj, indent)
 
 //var a = DumpObjectIndented(this).split('\n')
 //for (var i=0; i<a.length; i++)
-  //$.Msg(a[i]);
+//$.Msg(a[i]);
 
-function LuaAPI(msg)
-{
-  if (!msg.api){
+function LuaAPI(msg) {
+  if (!msg.api) {
     $("#APIWindow").visible = !$("#APIWindow").visible;
     return;
   }
   lua = msg.api;
   luaCategories = Object.keys(lua).sort();
-  for (var i in luaCategories){
+  for (var i in luaCategories) {
     var s = luaCategories[i];
-    if (s == "__GLOBAL__"){
+    if (s == "__GLOBAL__") {
       break;
     }
   }
@@ -62,40 +54,39 @@ function LuaAPI(msg)
   var panel = $("#API");
   panel.RemoveAndDeleteChildren();
 
-  for (var i in luaCategories){
+  for (var i in luaCategories) {
     var s = luaCategories[i];
     var cat = lua[s];
-    var categoryPanel = $.CreatePanel( "Panel", panel, s);
-    categoryPanel.BLoadLayout("file://{resources}/layout/custom_game/modmaker/modmaker_api_category.xml", false, false);
+    var categoryPanel = $.CreatePanel("Panel", panel, s);
+    categoryPanel.BLoadLayout(
+      "file://{resources}/layout/custom_game/modmaker/modmaker_api_category.xml",
+      false,
+      false
+    );
     categoryPanels[s] = categoryPanel;
 
     properties[s] = Object.keys(cat).sort();
 
-    if (s == "__GLOBAL__")
-      categoryPanel.New("GLOBAL", cat, properties[s]);
-    else
-      categoryPanel.New(s, cat, properties[s]);
+    if (s == "__GLOBAL__") categoryPanel.New("GLOBAL", cat, properties[s]);
+    else categoryPanel.New(s, cat, properties[s]);
     //label.SetAcceptsFocus(true);
   }
 
   $("#APIWindow").visible = true;
 }
 
-function SearchAPI()
-{
+function SearchAPI() {
   $.Msg("SearchAPI ", $("#Search").text);
   var text = $("#Search").text;
   //text = "(" + text.replace(/^\s+/g, "").replace(/\s+$/g, "").replace(/\s+/g, ")|(") + ")";
-  var search = new RegExp(text, 'gi');
+  var search = new RegExp(text, "gi");
 
-  for (var category in categoryPanels)
-  {
+  for (var category in categoryPanels) {
     categoryPanels[category].Filter(search, $("#Search").text == "");
   }
 }
 
-function SendFile(msg)
-{
+function SendFile(msg) {
   /*$.Msg("Test: name=", msg.name, " -- m=", msg.max, ' -- c=', msg.count);
   var s = ""
   var total = 0;
@@ -140,11 +131,11 @@ function SendFile(msg)
   panel.RemoveAndDeleteChildren();
 
   var keys = Object.keys(msg.t).sort();
-  for (var i in keys){
+  for (var i in keys) {
     var s = keys[i];
     //$.Msg(i);
     var t = msg.t[s];
-    var label = $.CreatePanel( "Label", panel, "test");
+    var label = $.CreatePanel("Label", panel, "test");
     label.AddClass("FileLine");
     label.text = s;
     label.SetAcceptsFocus(true);
@@ -152,40 +143,38 @@ function SendFile(msg)
     //$.Msg(t);
 
     var keys2 = Object.keys(t).sort();
-    for (j in keys2){
+    for (j in keys2) {
       var s2 = keys2[j];
-      label = $.CreatePanel( "Label", panel, "test");
+      label = $.CreatePanel("Label", panel, "test");
       label.AddClass("FileLine");
-      label.text = '        ' + s2 + ':';
+      label.text = "        " + s2 + ":";
       label.SetAcceptsFocus(true);
 
-      label = $.CreatePanel( "Label", panel, "test");
+      label = $.CreatePanel("Label", panel, "test");
       label.AddClass("FileLine");
-      label.text = '                ' + t[s2].f;
+      label.text = "                " + t[s2].f;
       label.SetAcceptsFocus(true);
 
-      label = $.CreatePanel( "Label", panel, "test");
+      label = $.CreatePanel("Label", panel, "test");
       label.AddClass("FileLine");
-      label.text = '                ' + t[s2].d + '\n';
+      label.text = "                " + t[s2].d + "\n";
       label.SetAcceptsFocus(true);
     }
 
-    label = $.CreatePanel( "Label", panel, "test");
+    label = $.CreatePanel("Label", panel, "test");
     label.AddClass("FileLine");
-    label.text = '\n';
+    label.text = "\n";
     label.SetAcceptsFocus(true);
   }
 }
 
-
-function CloseClicked()
-{
+function CloseClicked() {
   $("#APIWindow").visible = false;
 }
 
-(function(){
-  GameEvents.Subscribe( "modmaker_lua_api", LuaAPI);
-  GameEvents.Subscribe( "modmaker_send_file", SendFile);
+(function() {
+  GameEvents.Subscribe("modmaker_lua_api", LuaAPI);
+  GameEvents.Subscribe("modmaker_send_file", SendFile);
 
   var api = $("#APIWindow");
   var close = $("#CloseButton");

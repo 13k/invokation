@@ -3,25 +3,27 @@ var name = null;
 var cat = null;
 var properties = null;
 
-var propertyPanels = {}
+var propertyPanels = {};
 
 var showing = false;
 
-function Show()
-{
+function Show() {
   showing = true;
   $("#PlusMinus").text = "-";
   $("#Properties").visible = true;
-  if (!loaded){
+  if (!loaded) {
     // load properties
     var panel = $("#Properties");
 
-
-    for (var i in properties){
+    for (var i in properties) {
       var s = properties[i];
       var prop = cat[s];
-      var propertyPanel = $.CreatePanel( "Panel", panel, s);
-      propertyPanel.BLoadLayout("file://{resources}/layout/custom_game/modmaker/modmaker_api_property.xml", false, false);
+      var propertyPanel = $.CreatePanel("Panel", panel, s);
+      propertyPanel.BLoadLayout(
+        "file://{resources}/layout/custom_game/modmaker/modmaker_api_property.xml",
+        false,
+        false
+      );
       propertyPanels[s] = propertyPanel;
       propertyPanel.New(s, prop);
     }
@@ -29,75 +31,63 @@ function Show()
   }
 }
 
-function Hide()
-{
+function Hide() {
   showing = false;
   $("#PlusMinus").text = "+";
   $("#Properties").visible = false;
 }
 
-function Clicked()
-{
-  if (showing)
-    Hide();
-  else
-    Show();
+function Clicked() {
+  if (showing) Hide();
+  else Show();
 }
 
-function Filter(search, clear)
-{
+function Filter(search, clear) {
   $.GetContextPanel().visible = true;
-  if (clear){
+  if (clear) {
     Hide();
-    for (var prop in propertyPanels){
+    for (var prop in propertyPanels) {
       var panel = propertyPanels[prop];
       panel.Show();
     }
     return;
   }
 
-  if (search.test(name)){
+  if (search.test(name)) {
     Show();
-  }
-  else{
+  } else {
     var show = {};
-    for (var prop in properties){
-      var p = properties[prop]
-      if (search.test(p) || search.test(cat[p].d) || search.test(cat[p].f)){
+    for (var prop in properties) {
+      var p = properties[prop];
+      if (search.test(p) || search.test(cat[p].d) || search.test(cat[p].f)) {
         show[p] = true;
       }
     }
 
-    if (Object.keys(show).length !== 0){
+    if (Object.keys(show).length !== 0) {
       Show();
 
-      for (var prop in properties){
-        var p = properties[prop]
-        if (show[p])
-          propertyPanels[p].Show();
-        else
-          propertyPanels[p].Hide();
+      for (var prop in properties) {
+        var p = properties[prop];
+        if (show[p]) propertyPanels[p].Show();
+        else propertyPanels[p].Hide();
       }
-    }
-    else{
+    } else {
       $.GetContextPanel().visible = false;
-    } 
+    }
   }
-
 }
 
-function New(n, t, p)
-{
+function New(n, t, p) {
   $("#PlusMinus").text = "+";
   $("#CategoryName").text = n;
-  
+
   name = n;
   cat = t;
   properties = p;
 }
 
-
-(function(){
+(function() {
   $.GetContextPanel().Show = Show;
   $.GetContextPanel().Hide = Hide;
   $.GetContextPanel().New = New;
