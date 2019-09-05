@@ -3,11 +3,13 @@
 (function(global, context) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
+  var UI_EVENTS = global.Const.UI_EVENTS;
   var Class = global.Class;
   var Logger = global.Logger;
   var Callbacks = global.Callbacks;
   var CustomEvents = global.CustomEvents;
   var Prefixer = global.Util.Prefixer;
+  var PopupParams = global.Util.PopupParams;
 
   var elemAttrNamer = _.partialRight(Prefixer, "$");
   var elemIDing = _.partialRight(Prefixer, "#");
@@ -329,23 +331,41 @@
     },
 
     playSound: function(soundEvent) {
-      return $.DispatchEvent("PlaySoundEffect", soundEvent);
+      return $.DispatchEvent(UI_EVENTS.PLAY_SOUND, soundEvent);
     },
 
     showTooltip: function(element, text) {
-      return this.dispatch(element, "UIShowTextTooltip", text);
+      return this.dispatch(element, UI_EVENTS.SHOW_TEXT_TOOLTIP, text);
     },
 
     hideTooltip: function(element) {
-      return this.dispatch(element, "UIHideTextTooltip");
+      return this.dispatch(element, UI_EVENTS.HIDE_TEXT_TOOLTIP);
     },
 
     showAbilityTooltip: function(element, abilityName) {
-      return this.dispatch(element, "DOTAShowAbilityTooltip", abilityName);
+      return this.dispatch(element, UI_EVENTS.SHOW_ABILITY_TOOLTIP, abilityName);
     },
 
     hideAbilityTooltip: function(element) {
-      return this.dispatch(element, "DOTAHideAbilityTooltip");
+      return this.dispatch(element, UI_EVENTS.HIDE_ABILITY_TOOLTIP);
+    },
+
+    showPopup: function(element, popupId, layout, params) {
+      var args = [element];
+
+      if (params) {
+        args.push(UI_EVENTS.SHOW_POPUP_PARAMS);
+      } else {
+        args.push(UI_EVENTS.SHOW_POPUP);
+      }
+
+      args = _.concat(args, popupId, layout);
+
+      if (params) {
+        args.push(PopupParams(params));
+      }
+
+      return this.dispatch.apply(this, args);
     },
   });
 

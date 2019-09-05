@@ -134,5 +134,18 @@
     return image;
   };
 
+  exports.PopupParams = function(params) {
+    if (_.isPlainObject(params)) {
+      params = _.chain(params)
+        .transform(function(pairs, value, key) {
+          pairs.push(String(key) + "=" + String(value));
+        }, [])
+        .join("&")
+        .value();
+    }
+
+    return params;
+  };
+
   global.Util = module.exports;
 })(GameUI.CustomUIConfig(), this);

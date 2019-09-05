@@ -36,6 +36,16 @@
     POPUP_ABILITY_PICKER_SUBMIT: "invokation_popup_ability_picker_submit",
   };
 
+  var UI_EVENTS = {
+    PLAY_SOUND: "PlaySoundEffect",
+    SHOW_TEXT_TOOLTIP: "UIShowTextTooltip",
+    HIDE_TEXT_TOOLTIP: "UIHideTextTooltip",
+    SHOW_ABILITY_TOOLTIP: "DOTAShowAbilityTooltip",
+    HIDE_ABILITY_TOOLTIP: "DOTAHideAbilityTooltip",
+    SHOW_POPUP: "UIShowCustomLayoutPopup",
+    SHOW_POPUP_PARAMS: "UIShowCustomLayoutPopupParameters",
+  };
+
   var INVOKER = {};
 
   INVOKER.ABILITY_QUAS = "invoker_quas";
@@ -85,6 +95,7 @@
   global.Const = {};
   global.Const.META = META;
   global.Const.EVENTS = EVENTS;
+  global.Const.UI_EVENTS = UI_EVENTS;
   global.Const.INVOKER = INVOKER;
   global.Const.NET_TABLES = NET_TABLES;
   global.Const.FREESTYLE_COMBO_ID = "freestyle";
