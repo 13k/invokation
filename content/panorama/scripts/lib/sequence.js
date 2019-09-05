@@ -173,6 +173,20 @@
     },
   });
 
+  var SelectOptionAction = Class(Action, {
+    constructor: function SelectOptionAction(panel, optionId) {
+      SelectOptionAction.super.call(this);
+
+      this.panel = panel;
+      this.optionId = optionId;
+    },
+
+    update: function() {
+      this.panel.SetSelected(this.optionId);
+      return false;
+    },
+  });
+
   var isSequence = function(object) {
     return (
       object instanceof Sequence ||
@@ -310,6 +324,11 @@
       return this;
     },
 
+    SelectOption: function(panel, optionId) {
+      this.Action(new SelectOptionAction(panel, optionId));
+      return this;
+    },
+
     SetProgressBarValue: function(progressBar, value) {
       this.Action(new SetProgressBarValueAction(progressBar, value));
       return this;
@@ -384,8 +403,9 @@
     SetAttributeAction: SetAttributeAction,
     SetDialogVariableAction: SetDialogVariableAction,
     SetDialogVariableIntAction: SetDialogVariableIntAction,
-    SetDialogVariableTimeAction: SetDialogVariableTimeAction,
     AnimateDialogVariableIntAction: AnimateDialogVariableIntAction,
+    SetDialogVariableTimeAction: SetDialogVariableTimeAction,
+    SelectOptionAction: SelectOptionAction,
     SetProgressBarValueAction: SetProgressBarValueAction,
     AnimateProgressBarAction: AnimateProgressBarAction,
     AnimateProgressBarWithMiddleAction: AnimateProgressBarWithMiddleAction,
