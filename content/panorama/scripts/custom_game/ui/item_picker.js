@@ -2,7 +2,7 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
+  var L10n = global.L10n;
   var NetTable = global.NetTable;
   var LuaListDeep = global.Util.LuaListDeep;
   var CreateItemImage = global.Util.CreateItemImage;
@@ -14,23 +14,33 @@
   var DisableAction = global.Sequence.DisableAction;
   var CreateComponent = context.CreateComponent;
 
+  var EVENTS = global.Const.EVENTS;
+  var CATEGORIES = global.Const.SHOP_CATEGORIES;
+
   var NET_TABLE_SHOP_ITEMS_KEY = "shop_items";
 
   var GROUP_SNIPPET = "UIItemPickerGroup";
+  var GROUP_ID_PREFIX = "UIItemPickerGroup";
   var GROUP_NAME_ATTR = "group_name";
   var GROUP_CATEGORY_LIST_ID = "CategoryList";
 
   var CATEGORY_SNIPPET = "UIItemPickerCategory";
+  var CATEGORY_ID_PREFIX = "UIItemPickerCategory";
   var CATEGORY_NAME_ATTR = "category_name";
   var CATEGORY_ITEM_LIST_ID = "ItemList";
 
+  var ITEM_ID_PREFIX = "UIItemPicker";
   var ITEM_CLASS = "UIItemPickerItem";
   var ITEM_HIGHLIGHT_CLASS = "Highlighted";
 
-  var CATEGORIES = {
-    basics: ["consumables", "attributes", "weapons_armor", "misc", "secretshop"],
-    upgrades: ["basics", "support", "magics", "defense", "weapons", "artifacts"],
-  };
+  function elementId(prefix, name) {
+    var suffix = _.chain(name)
+      .camelCase()
+      .upperFirst()
+      .value();
+
+    return prefix + suffix;
+  }
 
   var UIItemPicker = CreateComponent({
     constructor: function UIItemPicker() {
@@ -160,14 +170,7 @@
     },
 
     createGroup: function(parent, group, categories) {
-      var groupId =
-        "UIItemPickerGroup" +
-        _.chain(group)
-          .camelCase()
-          .upperFirst()
-          .value();
-
-      var groupL10nKey = "#DOTA_" + _.capitalize(group);
+      var groupId = elementId(GROUP_ID_PREFIX, group);
       var panel = CreatePanelWithLayoutSnippet(parent, groupId, GROUP_SNIPPET);
       var categoriesPanel = panel.FindChild(GROUP_CATEGORY_LIST_ID);
       var createCategory = _.chain(this.createCategory)
@@ -175,7 +178,7 @@
         .unary()
         .value();
 
-      panel.SetDialogVariable(GROUP_NAME_ATTR, $.Localize(groupL10nKey));
+      panel.SetDialogVariable(GROUP_NAME_ATTR, L10n.LocalizeShopGroup(group));
 
       _.each(categories, createCategory);
 
@@ -183,14 +186,7 @@
     },
 
     createCategory: function(parent, category) {
-      var categoryId =
-        "UIItemPickerCategory" +
-        _.chain(category)
-          .camelCase()
-          .upperFirst()
-          .value();
-
-      var categoryL10nKey = "#DOTA_SUBSHOP_" + category.toUpperCase();
+      var categoryId = elementId(CATEGORY_ID_PREFIX, category);
       var panel = CreatePanelWithLayoutSnippet(parent, categoryId, CATEGORY_SNIPPET);
       var itemsPanel = panel.FindChild(CATEGORY_ITEM_LIST_ID);
       var items = this.shopItems[category];
@@ -199,7 +195,7 @@
         .unary()
         .value();
 
-      panel.SetDialogVariable(CATEGORY_NAME_ATTR, $.Localize(categoryL10nKey));
+      panel.SetDialogVariable(CATEGORY_NAME_ATTR, L10n.LocalizeShopCategory(category));
 
       _.each(items, createItemImage);
 
@@ -207,13 +203,7 @@
     },
 
     createItemImage: function(parent, itemName) {
-      var itemId =
-        "UIItemPicker" +
-        _.chain(itemName)
-          .camelCase()
-          .upperFirst()
-          .value();
-
+      var itemId = elementId(ITEM_ID_PREFIX, itemName);
       var panel = CreateItemImage(parent, itemId, itemName);
 
       panel.AddClass(ITEM_CLASS);

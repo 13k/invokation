@@ -2,12 +2,14 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
+  var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
+
+  var EVENTS = global.Const.EVENTS;
 
   var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
@@ -76,8 +78,8 @@
 
     renderInfoAction: function() {
       var title = htmlTitle(this.combo.l10n.name);
-      var descriptionL10nID = this.combo.id + "__description";
-      var description = this.localizeFallback(descriptionL10nID, L10N_FALLBACK_IDS.description);
+      var descriptionL10nKey = L10n.ComboKey(this.combo, "description");
+      var description = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
 
       return new ParallelSequence()
         .SetAttribute(this.$titleLabel, "text", title)

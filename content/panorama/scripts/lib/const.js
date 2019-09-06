@@ -86,10 +86,16 @@
   };
 
   var COMBO_PROPERTIES = {
+    category: ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"],
     specialty: ["qw", "qe"],
     stance: ["offensive", "defensive"],
     damageRating: [0, 1, 2, 3, 4, 5],
     difficultyRating: [1, 2, 3, 4, 5],
+  };
+
+  var SHOP_CATEGORIES = {
+    basics: ["consumables", "attributes", "weapons_armor", "misc", "secretshop"],
+    upgrades: ["basics", "support", "magics", "defense", "weapons", "artifacts"],
   };
 
   global.Const = {};
@@ -100,4 +106,5 @@
   global.Const.NET_TABLES = NET_TABLES;
   global.Const.FREESTYLE_COMBO_ID = "freestyle";
   global.Const.COMBO_PROPERTIES = COMBO_PROPERTIES;
+  global.Const.SHOP_CATEGORIES = SHOP_CATEGORIES;
 })(GameUI.CustomUIConfig(), this);

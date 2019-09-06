@@ -15,8 +15,8 @@
 
     <Panel id="ChallengeSplash" hittest="false" hittestchildren="false">
       <Panel class="ChallengeSplashBox">
-        <Label id="ChallengeSplashTitle" class="ChallengeSplashTitle" text="#invokation_combo_splash_start_title__1" />
-        <Label id="ChallengeSplashHelp" class="ChallengeSplashHelp" text="#invokation_combo_splash_start_help__1" />
+        <Label id="ChallengeSplashTitle" class="ChallengeSplashTitle" text="#invokation_combo_splash__start__title__1" />
+        <Label id="ChallengeSplashHelp" class="ChallengeSplashHelp" text="#invokation_combo_splash__start__help__1" />
       </Panel>
     </Panel>
 

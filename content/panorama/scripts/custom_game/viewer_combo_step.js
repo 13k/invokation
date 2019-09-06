@@ -1,6 +1,7 @@
 "use strict";
 
 (function(global, context) {
+  var L10n = global.L10n;
   var Class = global.Class;
   var ComboStep = context.ComboStep;
 
@@ -18,9 +19,9 @@
     },
 
     onStepChange: function() {
-      var descriptionL10nID = this.combo.id + "__" + this.step.id.toString();
-      this.$descriptionLabel.text = this.localizeFallback(
-        descriptionL10nID,
+      var descriptionL10nKey = L10n.ComboKey(this.combo, this.step.id);
+      this.$descriptionLabel.text = L10n.LocalizeFallback(
+        descriptionL10nKey,
         L10N_FALLBACK_IDS.description
       );
     },

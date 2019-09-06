@@ -6,6 +6,7 @@
 
     <include src="file://{resources}/scripts/lib/const.js" />
     <include src="file://{resources}/scripts/lib/util.js" />
+    <include src="file://{resources}/scripts/lib/l10n.js" />
     <include src="file://{resources}/scripts/lib/class.js" />
     <include src="file://{resources}/scripts/lib/logger.js" />
     <include src="file://{resources}/scripts/lib/callbacks.js" />

@@ -55,31 +55,31 @@
     // Combo Splash
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    "invokation_combo_splash_start_title__1" "Get ready!"
-    "invokation_combo_splash_start_help__1" "Combo starts on first spell casted"
+    "invokation_combo_splash__start__title__1" "Get ready!"
+    "invokation_combo_splash__start__help__1" "Combo starts on first spell casted"
 
-    "invokation_combo_splash_success_title__1" "Well played!"
-    "invokation_combo_splash_success_title__2" "Nice"
-    "invokation_combo_splash_success_help__1" "One of my favorites."
-    "invokation_combo_splash_success_help__2" "Spherical sorcery!"
-    "invokation_combo_splash_success_help__3" "Behold!"
-    "invokation_combo_splash_success_help__4" "True Arcanery thrives!"
-    "invokation_combo_splash_success_help__5" "Words of power."
-    "invokation_combo_splash_success_help__6" "Witness true sorcery!"
-    "invokation_combo_splash_success_help__7" "Arcana known only to me!"
+    "invokation_combo_splash__success__title__1" "Well played!"
+    "invokation_combo_splash__success__title__2" "Nice"
+    "invokation_combo_splash__success__help__1" "One of my favorites."
+    "invokation_combo_splash__success__help__2" "Spherical sorcery!"
+    "invokation_combo_splash__success__help__3" "Behold!"
+    "invokation_combo_splash__success__help__4" "True Arcanery thrives!"
+    "invokation_combo_splash__success__help__5" "Words of power."
+    "invokation_combo_splash__success__help__6" "Witness true sorcery!"
+    "invokation_combo_splash__success__help__7" "Arcana known only to me!"
 
-    "invokation_combo_splash_failure_title__1" "Game is hard"
-    "invokation_combo_splash_failure_title__2" "Whoops"
-    "invokation_combo_splash_failure_title__3" "Space created"
-    "invokation_combo_splash_failure_help__1" "This magic… disappoints."
-    "invokation_combo_splash_failure_help__2" "My memory failed me."
-    "invokation_combo_splash_failure_help__3" "Did I miscast?"
-    "invokation_combo_splash_failure_help__4" "Did I mix my magics?"
-    "invokation_combo_splash_failure_help__5" "Words fail me…"
-    "invokation_combo_splash_failure_help__6" "Perturbations!"
-    "invokation_combo_splash_failure_help__7" "Lamentable."
-    "invokation_combo_splash_failure_help__8" "Infelicitous!"
-    "invokation_combo_splash_failure_help__9" "No matter."
+    "invokation_combo_splash__failure__title__1" "Game is hard"
+    "invokation_combo_splash__failure__title__2" "Whoops"
+    "invokation_combo_splash__failure__title__3" "Space created"
+    "invokation_combo_splash__failure__help__1" "This magic… disappoints."
+    "invokation_combo_splash__failure__help__2" "My memory failed me."
+    "invokation_combo_splash__failure__help__3" "Did I miscast?"
+    "invokation_combo_splash__failure__help__4" "Did I mix my magics?"
+    "invokation_combo_splash__failure__help__5" "Words fail me…"
+    "invokation_combo_splash__failure__help__6" "Perturbations!"
+    "invokation_combo_splash__failure__help__7" "Lamentable."
+    "invokation_combo_splash__failure__help__8" "Infelicitous!"
+    "invokation_combo_splash__failure__help__9" "No matter."
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Tooltips
@@ -97,41 +97,36 @@
     // Combo Properties
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    "invokation_combo_properties_category" "Category"
+    "invokation_combo_properties__category" "Category"
+    "invokation_combo_properties__category__laning_phase" "Laning Phase"
+    "invokation_combo_properties__category__ganking_solo_pick" "Ganking & Solo Pick"
+    "invokation_combo_properties__category__teamfight" "Teamfight"
+    "invokation_combo_properties__category__late_game" "Late Game"
 
-    "invokation_combo_category_laning_phase" "Laning Phase"
-    "invokation_combo_category_ganking_solo_pick" "Ganking & Solo Pick"
-    "invokation_combo_category_teamfight" "Teamfight"
-    "invokation_combo_category_late_game" "Late Game"
+    "invokation_combo_properties__hero_level" "Hero Level"
 
-    "invokation_combo_properties_hero_level" "Hero Level"
+    "invokation_combo_properties__specialty" "Specialty"
+    "invokation_combo_properties__specialty__qw" "Quas/Wex"
+    "invokation_combo_properties__specialty__qe" "Quas/Exort"
 
-    "invokation_combo_properties_specialty" "Specialty"
+    "invokation_combo_properties__stance" "Stance"
+    "invokation_combo_properties__stance__defensive" "Defensive"
+    "invokation_combo_properties__stance__offensive" "Offensive"
 
-    "invokation_combo_properties_specialty__qw" "Quas/Wex"
-    "invokation_combo_properties_specialty__qe" "Quas/Exort"
+    "invokation_combo_properties__damage_rating" "Damage"
+    "invokation_combo_properties__damage_rating__0" "None"
+    "invokation_combo_properties__damage_rating__1" "Light"
+    "invokation_combo_properties__damage_rating__2" "Considerable"
+    "invokation_combo_properties__damage_rating__3" "Lethal"
+    "invokation_combo_properties__damage_rating__4" "Exceptional"
+    "invokation_combo_properties__damage_rating__5" "Brutal"
 
-    "invokation_combo_properties_stance" "Stance"
-
-    "invokation_combo_properties_stance__defensive" "Defensive"
-    "invokation_combo_properties_stance__offensive" "Offensive"
-
-    "invokation_combo_properties_damage_rating" "Damage"
-
-    "invokation_combo_properties_damage_rating__0" "None"
-    "invokation_combo_properties_damage_rating__1" "Light"
-    "invokation_combo_properties_damage_rating__2" "Considerable"
-    "invokation_combo_properties_damage_rating__3" "Lethal"
-    "invokation_combo_properties_damage_rating__4" "Exceptional"
-    "invokation_combo_properties_damage_rating__5" "Brutal"
-
-    "invokation_combo_properties_difficulty_rating" "Difficulty"
-
-    "invokation_combo_properties_difficulty_rating__1" "Very easy"
-    "invokation_combo_properties_difficulty_rating__2" "Easy"
-    "invokation_combo_properties_difficulty_rating__3" "Medium"
-    "invokation_combo_properties_difficulty_rating__4" "Hard"
-    "invokation_combo_properties_difficulty_rating__5" "Literally Unplayable"
+    "invokation_combo_properties__difficulty_rating" "Difficulty"
+    "invokation_combo_properties__difficulty_rating__1" "Very easy"
+    "invokation_combo_properties__difficulty_rating__2" "Easy"
+    "invokation_combo_properties__difficulty_rating__3" "Medium"
+    "invokation_combo_properties__difficulty_rating__4" "Hard"
+    "invokation_combo_properties__difficulty_rating__5" "Literally Unplayable"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Challenge
@@ -179,165 +174,257 @@
     // Combos
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Laning phase
-
-    "invokation_combo_lane_anti_gank1" "Anti-gank 1"
-    "invokation_combo_lane_anti_gank2" "Anti-gank 2"
-    "invokation_combo_lane_harass_emp" "Harass - EMP"
-    "invokation_combo_lane_harass_forge_spirit1" "Harass - Forge Spirit 1"
-    "invokation_combo_lane_harass_forge_spirit2" "Harass - Forge Spirit 2"
-
-    // Solo/Gank
-
-    "invokation_combo_solo_control_magic_damage1" "Control & Magic Damage 1 - Blast"
-    "invokation_combo_solo_control_magic_damage2" "Control & Magic Damage 2 - Strike"
-    "invokation_combo_solo_control_magic_damage3" "Control & Magic Damage 3 - Snap"
-    "invokation_combo_solo_control_magic_damage4" "Control & Magic Damage 4 - Snap Wall"
-    "invokation_combo_solo_control_magic_damage5" "Control & Magic Damage 5 - Blast Wall"
-    "invokation_combo_solo_control_magic_damage6" "Control & Magic Damage 6 - Strike Wall"
-    "invokation_combo_solo_control_magic_damage7" "Control & Magic Damage 7 - Shock Wall"
-
-    "invokation_combo_solo_control_physical_damage1" "Control & Physical Damage 1 - Blast Snap"
-
-    "invokation_combo_solo_control_physical_damage2" "Control & Physical Damage 2 - Alacrity Wall Snap"
-    // "invokation_combo_solo_control_physical_damage2__1" "invoker_ice_wall"
-    // "invokation_combo_solo_control_physical_damage2__2" "invoker_alacrity"
-    // "invokation_combo_solo_control_physical_damage2__3" "invoker_cold_snap"
-    // "invokation_combo_solo_control_physical_damage2__description" "
+    "invokation_combo__1__name" "Anti-gank 1"
+    // "invokation_combo__1__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
 
-    "invokation_combo_solo_control_physical_damage3" "Control & Physical Damage 3 - Alacrity Wall Blast"
-    // "invokation_combo_solo_control_physical_damage3__1" "invoker_ice_wall"
-    // "invokation_combo_solo_control_physical_damage3__2" "invoker_alacrity"
-    // "invokation_combo_solo_control_physical_damage3__3" "invoker_deafening_blast"
-    // "invokation_combo_solo_control_physical_damage3__description" "
+    "invokation_combo__2__name" "Anti-gank 2"
+    // "invokation_combo__2__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
 
-    "invokation_combo_solo_control_physical_damage4" "Control & Physical Damage 4 - Alacrity Wall Strike"
-    // "invokation_combo_solo_control_physical_damage4__1" "invoker_ice_wall"
-    // "invokation_combo_solo_control_physical_damage4__2" "invoker_alacrity"
-    // "invokation_combo_solo_control_physical_damage4__3" "invoker_sun_strike"
-    // "invokation_combo_solo_control_physical_damage4__description" "
+    "invokation_combo__3__name" "Harass - EMP"
+    // "invokation_combo__3__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
 
-    "invokation_combo_solo_control_physical_damage5" "Control & Physical Damage 5 - Alacrity Wall Shock"
-    // "invokation_combo_solo_control_physical_damage5__1" "invoker_ice_wall"
-    // "invokation_combo_solo_control_physical_damage5__2" "invoker_alacrity"
-    // "invokation_combo_solo_control_physical_damage5__3" "invoker_emp"
-    // "invokation_combo_solo_control_physical_damage5__description" "
+    "invokation_combo__4__name" "Harass - Forge Spirit 1"
+    // "invokation_combo__4__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
 
-    // Teamfight
+    "invokation_combo__5__name" "Harass - Forge Spirit 2"
+    // "invokation_combo__5__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
 
-    "invokation_combo_tf_control_magic_damage1" "Control & Magic Damage 1 - Shock Wall"
-    "invokation_combo_tf_control_magic_damage2" "Control & Magic Damage 2 - Blast Wall"
-    "invokation_combo_tf_control_magic_damage3" "Control & Magic Damage 3 - Eul's Strike Shock"
-    "invokation_combo_tf_control_physical_damage1" "Control & Physical Damage 1 - Forge Wall"
 
-    // Late game
+    "invokation_combo__6__name" "Control & Magic Damage 1 - Blast"
+    // "invokation_combo__6__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
 
-    "invokation_combo_late_control_magic_damage1" "Control & Magic Damage 1 - Classic Refresher Bridge"
-    "invokation_combo_late_control_magic_damage1__1" "Lift the enemy and invoke Deafening Blast."
-    "invokation_combo_late_control_magic_damage1__2" "Time correctly and cast to hit the enemy when he's about to fall."
-    "invokation_combo_late_control_magic_damage1__3" "When Meteor is almost touching the ground, cast it."
-    "invokation_combo_late_control_magic_damage1__4" "Refresh."
-    "invokation_combo_late_control_magic_damage1__5" "Cast immediately."
-    "invokation_combo_late_control_magic_damage1__6" "Cast immediately."
-    "invokation_combo_late_control_magic_damage1__7" "Invoke and cast immediately."
-    "invokation_combo_late_control_magic_damage1__description" "
+    "invokation_combo__7__name" "Control & Magic Damage 2 - Strike"
+    // "invokation_combo__7__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__8__name" "Control & Magic Damage 3 - Snap"
+    // "invokation_combo__8__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__9__name" "Control & Magic Damage 4 - Snap Wall"
+    // "invokation_combo__9__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__10__name" "Control & Magic Damage 5 - Blast Wall"
+    // "invokation_combo__10__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__11__name" "Control & Magic Damage 6 - Strike Wall"
+    // "invokation_combo__11__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__12__name" "Control & Magic Damage 7 - Shock Wall"
+    // "invokation_combo__12__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__13__name" "Control & Physical Damage 1 - Blast Snap"
+    // "invokation_combo__13__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__14__name" "Control & Physical Damage 2 - Alacrity Wall Snap"
+    // "invokation_combo__14__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+    // "invokation_combo__14__1" "invoker_ice_wall"
+    // "invokation_combo__14__2" "invoker_alacrity"
+    // "invokation_combo__14__3" "invoker_cold_snap"
+
+    "invokation_combo__15__name" "Control & Physical Damage 3 - Alacrity Wall Blast"
+    // "invokation_combo__15__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+    // "invokation_combo__15__1" "invoker_ice_wall"
+    // "invokation_combo__15__2" "invoker_alacrity"
+    // "invokation_combo__15__3" "invoker_deafening_blast"
+
+    "invokation_combo__16__name" "Control & Physical Damage 4 - Alacrity Wall Strike"
+    // "invokation_combo__16__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+    // "invokation_combo__16__1" "invoker_ice_wall"
+    // "invokation_combo__16__2" "invoker_alacrity"
+    // "invokation_combo__16__3" "invoker_sun_strike"
+
+    "invokation_combo__17__name" "Control & Physical Damage 5 - Alacrity Wall Shock"
+    // "invokation_combo__17__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+    // "invokation_combo__17__1" "invoker_ice_wall"
+    // "invokation_combo__17__2" "invoker_alacrity"
+    // "invokation_combo__17__3" "invoker_emp"
+
+    "invokation_combo__18__name" "Control & Magic Damage 1 - Shock Wall"
+    // "invokation_combo__18__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__19__name" "Control & Magic Damage 2 - Blast Wall"
+    // "invokation_combo__19__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__20__name" "Control & Magic Damage 3 - Eul's Strike Shock"
+    // "invokation_combo__20__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+    "invokation_combo__21__name" "Control & Physical Damage 1 - Forge Wall"
+    // "invokation_combo__21__description" "
+    //   <span class='intro-text'>summary.</span>
+    //   <br><br>paragraph1.
+    //   <br><br>paragraph2.
+    //   "
+
+
+    "invokation_combo__22__name" "Control & Magic Damage 1 - Classic Refresher Bridge"
+    "invokation_combo__22__description" "
       <span class='intro-text'>This is Invoker's run-of-the-mill combo with a Refresher.</span>
       <br><br>The Meteor+Blast, refresh, Meteor+Blast is the most popular refresher combo. Since it offers a decent amount of damage and movement impairment, it's often used as the &ldquo;bridge&rdquo; of a refresher combo, connecting the before and after refresher parts.
       <br><br>This combo begins with lifting the enemy with Tornado, casting the bridge then ending with a Sun Strike.
       <br><br>Start the combo invoking Tornado then Meteor.
       "
+    "invokation_combo__22__1" "Lift the enemy and invoke Deafening Blast."
+    "invokation_combo__22__2" "Time correctly and cast to hit the enemy when he's about to fall."
+    "invokation_combo__22__3" "When Meteor is almost touching the ground, cast it."
+    "invokation_combo__22__4" "Refresh."
+    "invokation_combo__22__5" "Cast immediately."
+    "invokation_combo__22__6" "Cast immediately."
+    "invokation_combo__22__7" "Invoke and cast immediately."
 
-    "invokation_combo_late_control_magic_damage2" "Control & Magic Damage 2 - Double Strike"
-    "invokation_combo_late_control_magic_damage2__1" "Lift the enemy and invoke Sun Strike."
-    "invokation_combo_late_control_magic_damage2__2" "Cast immediately (EMP's charge time is higher than Tornado lift)"
-    "invokation_combo_late_control_magic_damage2__3" "Time correctly and cast."
-    "invokation_combo_late_control_magic_damage2__4" "Wait Invoke cooldown, invoke and cast."
-    "invokation_combo_late_control_magic_damage2__5" "Wait Invoke cooldown, invoke and cast."
-    "invokation_combo_late_control_magic_damage2__6" "Refresh."
-    "invokation_combo_late_control_magic_damage2__7" "Cast immediately."
-    "invokation_combo_late_control_magic_damage2__8" "Cast immediately."
-    "invokation_combo_late_control_magic_damage2__9" "Invoke and cast immediately."
-    "invokation_combo_late_control_magic_damage2__description" "
+    "invokation_combo__23__name" "Control & Magic Damage 2 - Double Strike"
+    "invokation_combo__23__description" "
       <span class='intro-text'>A regular combo that deals huge amounts of damage with double Sun Strike.</span>
       <br><br>It depends heavily on the enemy not having magic immunity and abuses the Tornado lift time to cast 3 damage dealing spells while the enemy is flying.
       <br><br>The trick is to invoke Tornado then EMP and as soon as you cast Tornado, immediately invoke Sun Strike then time the casting of both EMP and Sun Strike properly.
       "
+    "invokation_combo__23__1" "Lift the enemy and invoke Sun Strike."
+    "invokation_combo__23__2" "Cast immediately (EMP's charge time is higher than Tornado lift)"
+    "invokation_combo__23__3" "Time correctly and cast."
+    "invokation_combo__23__4" "Wait Invoke cooldown, invoke and cast."
+    "invokation_combo__23__5" "Wait Invoke cooldown, invoke and cast."
+    "invokation_combo__23__6" "Refresh."
+    "invokation_combo__23__7" "Cast immediately."
+    "invokation_combo__23__8" "Cast immediately."
+    "invokation_combo__23__9" "Invoke and cast immediately."
 
-    "invokation_combo_late_control_magic_damage3" "Control & Magic Damage 3 - Double BKB/Hex/Strike"
-    "invokation_combo_late_control_magic_damage3__1" "Use as soon as possible to avoid magic immunity. A linkens breaker may be needed before."
-    "invokation_combo_late_control_magic_damage3__2" "Lift the enemy."
-    "invokation_combo_late_control_magic_damage3__3" "Activate your own magic immunity to avoid being stopped by the enemy's allies."
-    "invokation_combo_late_control_magic_damage3__4" "Cast immediately."
-    "invokation_combo_late_control_magic_damage3__5" "Cast immediately."
-    "invokation_combo_late_control_magic_damage3__6" "Refresh."
-    "invokation_combo_late_control_magic_damage3__7" "Cast immediately."
-    "invokation_combo_late_control_magic_damage3__8" "Cast immediately."
-    "invokation_combo_late_control_magic_damage3__9" "Invoke and cast immediately. Previous disable should give enough time."
-    "invokation_combo_late_control_magic_damage3__10" "First BKB duration should be ending, reactivate."
-    "invokation_combo_late_control_magic_damage3__11" "Disable the enemy again."
-    "invokation_combo_late_control_magic_damage3__description" "
+    "invokation_combo__24__name" "Control & Magic Damage 3 - Double BKB/Hex/Strike"
+    "invokation_combo__24__description" "
       <span class='intro-text'>A safe combo with magic immunity and hex that deals huge amounts of damage with double Sun Strike.</span>
       <br><br>The idea is to catch an enemy and instantly disable with hex, so he cannot use magic immunity by himself.
       <br><br>Perfect flow of the combo should grant a full execution under the effect of BKB, while disabling the enemy.
       "
+    "invokation_combo__24__1" "Use as soon as possible to avoid magic immunity. A linkens breaker may be needed before."
+    "invokation_combo__24__2" "Lift the enemy."
+    "invokation_combo__24__3" "Activate your own magic immunity to avoid being stopped by the enemy's allies."
+    "invokation_combo__24__4" "Cast immediately."
+    "invokation_combo__24__5" "Cast immediately."
+    "invokation_combo__24__6" "Refresh."
+    "invokation_combo__24__7" "Cast immediately."
+    "invokation_combo__24__8" "Cast immediately."
+    "invokation_combo__24__9" "Invoke and cast immediately. Previous disable should give enough time."
+    "invokation_combo__24__10" "First BKB duration should be ending, reactivate."
+    "invokation_combo__24__11" "Disable the enemy again."
 
-    "invokation_combo_late_control_magic_damage4" "Control & Magic Damage 4 - Blink Double BKB/Hex/Strike"
-    // "invokation_combo_late_control_magic_damage4__1" "item_black_king_bar"
-    // "invokation_combo_late_control_magic_damage4__2" "item_blink"
-    // "invokation_combo_late_control_magic_damage4__3" "item_sheepstick"
-    // "invokation_combo_late_control_magic_damage4__4" "invoker_tornado"
-    // "invokation_combo_late_control_magic_damage4__5" "invoker_chaos_meteor"
-    // "invokation_combo_late_control_magic_damage4__6" "invoker_deafening_blast"
-    // "invokation_combo_late_control_magic_damage4__7" "item_refresher"
-    // "invokation_combo_late_control_magic_damage4__8" "item_black_king_bar"
-    // "invokation_combo_late_control_magic_damage4__9" "invoker_chaos_meteor"
-    // "invokation_combo_late_control_magic_damage4__10" "invoker_deafening_blast"
-    // "invokation_combo_late_control_magic_damage4__11" "invoker_sun_strike"
-    // "invokation_combo_late_control_magic_damage4__12" "item_sheepstick"
-    // "invokation_combo_late_control_magic_damage4__description" "
+    "invokation_combo__25__name" "Control & Magic Damage 4 - Blink Double BKB/Hex/Strike"
+    // "invokation_combo__25__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
+    // "invokation_combo__25__1" "item_black_king_bar"
+    // "invokation_combo__25__2" "item_blink"
+    // "invokation_combo__25__3" "item_sheepstick"
+    // "invokation_combo__25__4" "invoker_tornado"
+    // "invokation_combo__25__5" "invoker_chaos_meteor"
+    // "invokation_combo__25__6" "invoker_deafening_blast"
+    // "invokation_combo__25__7" "item_refresher"
+    // "invokation_combo__25__8" "item_black_king_bar"
+    // "invokation_combo__25__9" "invoker_chaos_meteor"
+    // "invokation_combo__25__10" "invoker_deafening_blast"
+    // "invokation_combo__25__11" "invoker_sun_strike"
+    // "invokation_combo__25__12" "item_sheepstick"
 
-    "invokation_combo_late_mixed_damage1" "Control & Mixed Damage 1 - BKB Double Shivas Blast"
-    // "invokation_combo_late_mixed_damage1__1" "invoker_alacrity"
-    // "invokation_combo_late_mixed_damage1__2" "invoker_forge_spirit"
-    // "invokation_combo_late_mixed_damage1__3" "item_black_king_bar"
-    // "invokation_combo_late_mixed_damage1__4" "invoker_tornado"
-    // "invokation_combo_late_mixed_damage1__5" "invoker_emp"
-    // "invokation_combo_late_mixed_damage1__6" "invoker_sun_strike"
-    // "invokation_combo_late_mixed_damage1__7" "invoker_chaos_meteor"
-    // "invokation_combo_late_mixed_damage1__8" "item_shivas_guard"
-    // "invokation_combo_late_mixed_damage1__9" "invoker_deafening_blast"
-    // "invokation_combo_late_mixed_damage1__10" "item_refresher"
-    // "invokation_combo_late_mixed_damage1__11" "item_shivas_guard"
-    // "invokation_combo_late_mixed_damage1__12" "invoker_chaos_meteor"
-    // "invokation_combo_late_mixed_damage1__13" "invoker_deafening_blast"
-    // "invokation_combo_late_mixed_damage1__14" "invoker_emp"
-    // "invokation_combo_late_mixed_damage1__15" "invoker_sun_strike"
-    // "invokation_combo_late_mixed_damage1__16" "invoker_ice_wall"
-    // "invokation_combo_late_mixed_damage1__description" "
+    "invokation_combo__26__name" "Control & Mixed Damage 1 - BKB Double Shivas Blast"
+    // "invokation_combo__26__description" "
     //   <span class='intro-text'>summary.</span>
     //   <br><br>paragraph1.
     //   <br><br>paragraph2.
     //   "
+    // "invokation_combo__26__1" "invoker_alacrity"
+    // "invokation_combo__26__2" "invoker_forge_spirit"
+    // "invokation_combo__26__3" "item_black_king_bar"
+    // "invokation_combo__26__4" "invoker_tornado"
+    // "invokation_combo__26__5" "invoker_emp"
+    // "invokation_combo__26__6" "invoker_sun_strike"
+    // "invokation_combo__26__7" "invoker_chaos_meteor"
+    // "invokation_combo__26__8" "item_shivas_guard"
+    // "invokation_combo__26__9" "invoker_deafening_blast"
+    // "invokation_combo__26__10" "item_refresher"
+    // "invokation_combo__26__11" "item_shivas_guard"
+    // "invokation_combo__26__12" "invoker_chaos_meteor"
+    // "invokation_combo__26__13" "invoker_deafening_blast"
+    // "invokation_combo__26__14" "invoker_emp"
+    // "invokation_combo__26__15" "invoker_sun_strike"
+    // "invokation_combo__26__16" "invoker_ice_wall"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
   }

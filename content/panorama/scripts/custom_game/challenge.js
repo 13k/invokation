@@ -2,9 +2,7 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
-  var COMBOS = global.COMBOS;
+  var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var StaggeredSequence = global.Sequence.StaggeredSequence;
@@ -16,6 +14,10 @@
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
+  var COMBOS = global.COMBOS;
+  var EVENTS = global.Const.EVENTS;
+  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
+
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/challenge_combo_step.xml";
   var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
   var COMBO_SCORE_ID = "ComboScore";
@@ -23,6 +25,11 @@
 
   var START_DELAY = 0.5;
   var BUMP_DELAY = 0.2;
+
+  var L10N_PREFIXES = {
+    HUD_VISIBILITY: "invokation_combo_hud_visibility",
+    SPLASH: "invokation_combo_splash",
+  };
 
   var SOUND_EVENTS = {
     success: "kidvoker_takeover_stinger",
@@ -308,7 +315,7 @@
     },
 
     updateHudVisibilityTooltipAction: function(mode) {
-      var hudVisibilityTooltip = $.Localize("#invokation_combo_hud_visibility__" + mode);
+      var hudVisibilityTooltip = L10n.LocalizeParameterized(L10N_PREFIXES.HUD_VISIBILITY, mode);
       return new SetDialogVariableAction(this.$ctx, "hud_visibility", hudVisibilityTooltip);
     },
 
@@ -335,10 +342,8 @@
     showSplashAction: function(state) {
       var titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
       var helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
-      var titleKey = "#invokation_combo_splash_" + state + "_title__" + titleIndex.toString();
-      var helpKey = "#invokation_combo_splash_" + state + "_help__" + helpIndex.toString();
-      var title = $.Localize(titleKey);
-      var help = $.Localize(helpKey);
+      var title = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "title", titleIndex]);
+      var help = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "help", helpIndex]);
 
       var actions = new ParallelSequence()
         .Action(this.clearSplashAction())

@@ -2,6 +2,7 @@
 
 (function(global /*, context */) {
   var _ = global.lodash;
+
   var INVOKER = global.Const.INVOKER;
 
   var ITEM_NAME_PATTERN = /^item_\w+$/;

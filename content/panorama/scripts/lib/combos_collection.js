@@ -2,8 +2,7 @@
 
 (function(global /*, context */) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var COMBO_PROPERTIES = global.Const.COMBO_PROPERTIES;
+  var L10n = global.L10n;
   var Class = global.Class;
   var Logger = global.Logger;
   var NetTable = global.NetTable;
@@ -13,20 +12,11 @@
   var IsItemAbility = global.Util.IsItemAbility;
   var LuaListDeep = global.Util.LuaListDeep;
 
+  var EVENTS = global.Const.EVENTS;
+
   var NET_TABLE_KEY = "combos";
 
-  var PROPERTIES_L10N = _.mapValues(COMBO_PROPERTIES, function(values, property) {
-    var propertyL10nKey = function(value) {
-      return "#invokation_combo_properties_" + _.snakeCase(property) + "__" + value;
-    };
-
-    var localize = _.flow(
-      propertyL10nKey,
-      $.Localize
-    );
-
-    return _.zipObject(values, _.map(values, localize));
-  });
+  var WARN_UNDEF_COMBOS_VALUE = "Tried to set combos to an undefined value";
 
   var CombosCollection = Class({
     constructor: function CombosCollection() {
@@ -35,45 +25,42 @@
       this.logger = new Logger({ progname: "combos_collection" });
       this.netTable = new NetTable();
 
-      this._listenToNetTableChange();
+      this.listenToNetTableChange();
     },
 
-    _loadFromNetTable: function() {
+    loadFromNetTable: function() {
       return this.netTable.Get(NET_TABLE_KEY);
     },
 
-    _listenToNetTableChange: function() {
-      return this.netTable.OnKeyChange(NET_TABLE_KEY, this._onNetTableChange.bind(this));
+    listenToNetTableChange: function() {
+      return this.netTable.OnKeyChange(NET_TABLE_KEY, this.onNetTableChange.bind(this));
     },
 
-    _sendReloadToServer: function() {
+    sendReloadToServer: function() {
       CustomEvents.SendServer(EVENTS.COMBOS_RELOAD);
     },
 
-    _setCombos: function(value) {
+    setCombos: function(value) {
       if (!value) {
-        this.logger.warning("Tried to set combos to an undefined value");
+        this.logger.warning(WARN_UNDEF_COMBOS_VALUE);
         return;
       }
 
       this.combos = value;
-      this._onCombosChange();
+      this.onCombosChange();
     },
 
-    _onCombosChange: function() {
-      this._normalize();
+    onCombosChange: function() {
+      this.normalize();
       _.over(this.onChangeCallbacks)(this.combos);
     },
 
-    _normalize: function() {
+    normalize: function() {
       _.forEach(this.combos, function(combo) {
         LuaListDeep(combo, { inplace: true });
 
-        combo.l10n = _.transform(PROPERTIES_L10N, function(comboL10n, localized, property) {
-          comboL10n[property] = localized[combo[property]];
-        });
-
-        combo.l10n.name = $.Localize("#" + combo.id);
+        combo.l10n = L10n.LocalizeComboProperties(combo);
+        combo.l10n.name = L10n.LocalizeComboKey(combo, "name");
 
         _.forEach(combo.sequence, function(step) {
           step.isOrbAbility = IsOrbAbility(step.name);
@@ -83,20 +70,20 @@
       });
     },
 
-    _onNetTableChange: function(key, value) {
+    onNetTableChange: function(key, value) {
       if (key !== NET_TABLE_KEY) {
         return;
       }
 
-      this.logger.debug("_onNetTableChange()");
-      this._setCombos(value);
+      this.logger.debug("onNetTableChange()");
+      this.setCombos(value);
     },
 
     Load: function() {
       this.logger.debug("Load()");
 
       if (!this.combos) {
-        this._setCombos(this._loadFromNetTable());
+        this.setCombos(this.loadFromNetTable());
         return true;
       }
 
@@ -106,7 +93,7 @@
     Reload: function() {
       this.logger.debug("Reload()");
       this.combos = null;
-      this._sendReloadToServer();
+      this.sendReloadToServer();
       return this.Load();
     },
 

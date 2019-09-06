@@ -2,14 +2,15 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var UI_EVENTS = global.Const.UI_EVENTS;
   var Class = global.Class;
   var Logger = global.Logger;
   var Callbacks = global.Callbacks;
   var CustomEvents = global.CustomEvents;
   var Prefixer = global.Util.Prefixer;
   var PopupParams = global.Util.PopupParams;
+
+  var EVENTS = global.Const.EVENTS;
+  var UI_EVENTS = global.Const.UI_EVENTS;
 
   var elemAttrNamer = _.partialRight(Prefixer, "$");
   var elemIDing = _.partialRight(Prefixer, "#");
@@ -77,20 +78,6 @@
       }
 
       return element;
-    },
-
-    // ----- Localization -----
-
-    localizeFallback: function(id1, id2) {
-      var key1 = "#" + id1;
-      var l10n = $.Localize(key1);
-
-      if (l10n === id1) {
-        var key2 = "#" + id2;
-        l10n = $.Localize(key2);
-      }
-
-      return l10n;
     },
 
     // ----- Component logging -----

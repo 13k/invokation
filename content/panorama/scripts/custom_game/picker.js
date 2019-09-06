@@ -2,9 +2,7 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
-  var COMBOS = global.COMBOS;
+  var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
@@ -13,6 +11,10 @@
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var CreateComponent = context.CreateComponent;
+
+  var COMBOS = global.COMBOS;
+  var EVENTS = global.Const.EVENTS;
+  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
 
   var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
 
@@ -242,7 +244,7 @@
       var panelTitle = panel.FindChildTraverse(COMBOS_COLUMN_TITLE_ID);
 
       panel.AddClass(category);
-      panelTitle.text = $.Localize("#invokation_combo_category_" + category);
+      panelTitle.text = L10n.LocalizeComboPropertiesKey("category", category);
       this.comboColumns[category] = panel;
 
       return panel;
