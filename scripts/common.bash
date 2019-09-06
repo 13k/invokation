@@ -22,6 +22,21 @@ mklink() {
   cmd.exe /c mklink "${args[@]}" "$dest_t" "$src_t"
 }
 
+find_ignore_options() {
+  local opts=("(" "(")
+
+  while [[ "$1" ]]; do
+    opts=("${opts[@]}" "-path" "$1" "-o")
+    shift
+  done
+
+  opts=("${opts[@]}" "-false" ")" "-a" "-prune" ")")
+
+  for opt in "${opts[@]}"; do
+    echo "$opt"
+  done
+}
+
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 ROOT_PATH="$(dirname "$SCRIPT_DIR")"
 
