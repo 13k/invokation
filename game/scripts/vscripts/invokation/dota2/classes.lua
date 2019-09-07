@@ -1,3 +1,6 @@
+--- Registers C++ proxy classes.
+-- @module invokation.dota2.classes
+
 local ENTITY_CLASSES = {
   "CDOTABaseAbility",
   "CDOTA_Item",

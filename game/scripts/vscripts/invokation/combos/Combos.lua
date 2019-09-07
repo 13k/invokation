@@ -192,6 +192,7 @@ end
 
 --- Fails and stops currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
+-- @tparam invokation.dota2.Ability ability Ability instance
 function M:Fail(player, ability)
   self:d("Combos:Fail()", player:GetPlayerID())
 

@@ -3,6 +3,8 @@
 
 local M = require("pl.class")()
 
+--- Hard-coded combo id.
+-- @field[type=string] COMBO_ID
 M.COMBO_ID = "freestyle"
 
 function M:_init()
@@ -31,22 +33,19 @@ end
 
 --- Freestyle combos never fail.
 -- @treturn bool `false`
--- luacheck: no self
-function M:Fail()
+function M:Fail() -- luacheck: no self
   return false
 end
 
 --- Freestyle combos never finish.
--- @treturn bool `false`.
--- luacheck: no self
-function M:Finish()
+-- @treturn bool `false`
+function M:Finish() -- luacheck: no self
   return false
 end
 
 --- Returns the current next steps.
--- @treturn {} Always returns an empty list.
--- luacheck: no self
-function M:NextSteps()
+-- @treturn table `{}` (always returns an empty list)
+function M:NextSteps() -- luacheck: no self
   return {}
 end
 
