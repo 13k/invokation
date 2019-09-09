@@ -160,6 +160,20 @@
     },
   });
 
+  var DeleteAsyncAction = Class(Action, {
+    constructor: function DeleteAsyncAction(panel, delay) {
+      DeleteAsyncAction.super.call(this);
+
+      this.panel = panel;
+      this.delay = delay;
+    },
+
+    update: function() {
+      this.panel.DeleteAsync(this.delay);
+      return false;
+    },
+  });
+
   var RemoveChildrenAction = Class(Action, {
     constructor: function RemoveChildrenAction(panel) {
       RemoveChildrenAction.super.call(this);
@@ -183,6 +197,61 @@
 
     update: function() {
       this.panel.SetSelected(this.optionId);
+      return false;
+    },
+  });
+
+  var AddOptionAction = Class(Action, {
+    constructor: function AddOptionAction(panel, option) {
+      AddOptionAction.super.call(this);
+
+      this.panel = panel;
+      this.option = option;
+    },
+
+    update: function() {
+      var optionPanel = typeof this.option === "function" ? this.option() : this.option;
+      this.panel.AddOption(optionPanel);
+      return false;
+    },
+  });
+
+  var RemoveOptionAction = Class(Action, {
+    constructor: function RemoveOptionAction(panel, optionId) {
+      RemoveOptionAction.super.call(this);
+
+      this.panel = panel;
+      this.optionId = optionId;
+    },
+
+    update: function() {
+      this.panel.RemoveOption(this.optionId);
+      return false;
+    },
+  });
+
+  var RemoveAllOptionsAction = Class(Action, {
+    constructor: function RemoveAllOptionsAction(panel) {
+      RemoveAllOptionsAction.super.call(this);
+
+      this.panel = panel;
+    },
+
+    update: function() {
+      this.panel.RemoveAllOptions();
+      return false;
+    },
+  });
+
+  var FocusAction = Class(Action, {
+    constructor: function FocusAction(panel) {
+      FocusAction.super.call(this);
+
+      this.panel = panel;
+    },
+
+    update: function() {
+      this.panel.SetFocus();
       return false;
     },
   });
@@ -279,6 +348,11 @@
       return this;
     },
 
+    DeleteAsync: function(panel, delay) {
+      this.Action(new DeleteAsyncAction(panel, delay));
+      return this;
+    },
+
     RemoveChildren: function(panel) {
       this.Action(new RemoveChildrenAction(panel));
       return this;
@@ -296,6 +370,11 @@
 
     Disable: function(panel) {
       this.Action(new DisableAction(panel));
+      return this;
+    },
+
+    Focus: function(panel) {
+      this.Action(new FocusAction(panel));
       return this;
     },
 
@@ -324,11 +403,6 @@
       return this;
     },
 
-    SelectOption: function(panel, optionId) {
-      this.Action(new SelectOptionAction(panel, optionId));
-      return this;
-    },
-
     SetProgressBarValue: function(progressBar, value) {
       this.Action(new SetProgressBarValueAction(progressBar, value));
       return this;
@@ -343,6 +417,26 @@
       this.Action(
         new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds)
       );
+      return this;
+    },
+
+    AddOption: function(panel, option) {
+      this.Action(new AddOptionAction(panel, option));
+      return this;
+    },
+
+    RemoveOption: function(panel, optionId) {
+      this.Action(new RemoveOptionAction(panel, optionId));
+      return this;
+    },
+
+    RemoveAllOptions: function(panel) {
+      this.Action(new RemoveAllOptionsAction(panel));
+      return this;
+    },
+
+    SelectOption: function(panel, optionId) {
+      this.Action(new SelectOptionAction(panel, optionId));
       return this;
     },
 
@@ -397,18 +491,23 @@
     ReplaceClassAction: ReplaceClassAction,
     WaitClassAction: WaitClassAction,
     ScrollToTopAction: ScrollToTopAction,
+    DeleteAsyncAction: DeleteAsyncAction,
     RemoveChildrenAction: RemoveChildrenAction,
     EnableAction: EnableAction,
     DisableAction: DisableAction,
+    FocusAction: FocusAction,
     SetAttributeAction: SetAttributeAction,
     SetDialogVariableAction: SetDialogVariableAction,
     SetDialogVariableIntAction: SetDialogVariableIntAction,
     AnimateDialogVariableIntAction: AnimateDialogVariableIntAction,
     SetDialogVariableTimeAction: SetDialogVariableTimeAction,
-    SelectOptionAction: SelectOptionAction,
     SetProgressBarValueAction: SetProgressBarValueAction,
     AnimateProgressBarAction: AnimateProgressBarAction,
     AnimateProgressBarWithMiddleAction: AnimateProgressBarWithMiddleAction,
+    AddOptionAction: AddOptionAction,
+    RemoveOptionAction: RemoveOptionAction,
+    RemoveAllOptionsAction: RemoveAllOptionsAction,
+    SelectOptionAction: SelectOptionAction,
     PlaySoundEffectAction: PlaySoundEffectAction,
   };
 })(GameUI.CustomUIConfig(), this);
