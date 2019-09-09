@@ -1,0 +1,58 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
+
+@define pillHeight: 36px;
+
+.UITagSelectRoot {
+  flow-children: down;
+  width: 100%;
+}
+
+#UITagSelectOptions {
+  width: 100%;
+}
+
+#UITagSelectOptions .UITagSelectOption {
+  width: 120px;
+}
+
+#UITagSelectTagList {
+  flow-children: right-wrap;
+  width: 100%;
+}
+
+#UITagSelectTagList .UITagSelectTag {
+  flow-children: right;
+  height: pillHeight;
+  margin-top: 8px;
+  margin-left: 8px;
+  padding: 4px 6px 2px 6px;
+  border: 1px solid #666;
+  border-radius: 2px;
+  transition-duration: 0.2s;
+  transition-property: opacity;
+}
+
+#UITagSelectTagList .UITagSelectTag:disabled {
+  opacity: 0;
+}
+
+#UITagSelectTagList .UITagSelectTag .UITagSelectTagLabel {
+  margin-top: 3px;
+  vertical-align: center;
+  font-size: 18px;
+}
+
+#UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton {
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+  vertical-align: center;
+  wash-color: #ccc;
+  background-image: controlsQuitIcon;
+  background-size: 100%;
+}
+
+#UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton:hover {
+  wash-color: #fff;
+}

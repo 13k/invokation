@@ -118,12 +118,17 @@
  ******************************************************************************/
 
 @define controlsArrowRightIcon: url("s2r://panorama/images/control_icons/arrow_right_png.vtex");
+@define controlsCloseIcon: url("s2r://panorama/images/control_icons/x_close_png.vtex");
+@define controlsCloseBoldIcon: url("s2r://panorama/images/control_icons/purgatory_png.vtex");
 @define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
 @define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsFilterCarryIcon: url("s2r://panorama/images/control_icons/filter_carry_png.vtex");
 @define controlsFilterComplexityIcon: url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
 @define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
 @define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
+@define controlsPlusIcon: url("s2r://panorama/images/control_icons/plus_png.vtex");
+@define controlsPlusThinIcon: url("s2r://panorama/images/control_icons/plus_thin_png.vtex");
+@define controlsQuitIcon: url("s2r://panorama/images/control_icons/quit_png.vtex");
 @define controlsSearchIcon: url("s2r://panorama/images/control_icons/icon_search_png.vtex");
 @define controlsTocIcon: url("s2r://panorama/images/control_icons/toc_psd.vtex");
 
