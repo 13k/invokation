@@ -107,12 +107,16 @@
       }
     },
 
-    forEach: function(fn) {
-      return _.forEach(this.combos, fn);
+    Entries: function() {
+      return _.values(this.combos);
     },
 
     Get: function(id) {
       return this.combos[id];
+    },
+
+    Each: function(fn) {
+      return _.forOwn(this.combos, fn);
     },
   });
 
