@@ -20,7 +20,6 @@
   var AnimateProgressBarWithMiddleAction = context.AnimateProgressBarWithMiddleAction;
   var PlaySoundEffectAction = context.PlaySoundEffectAction;
 
-  var RunSequentialActions = context.RunSequentialActions;
   var RunParallelActions = context.RunParallelActions;
   var RunStaggeredActions = context.RunStaggeredActions;
   var RunUntilSingleActionFinishedAction = context.RunUntilSingleActionFinishedAction;
@@ -61,9 +60,8 @@
 
   var RunFunctionAction = Class(context.RunFunctionAction, {
     constructor: function() {
-      var args, ctx;
-
-      args = _.toArray(arguments);
+      var args = _.toArray(arguments);
+      var ctx;
 
       if (!_.isFunction(args[0])) {
         ctx = args[0];
@@ -446,9 +444,76 @@
     },
   };
 
-  var Sequence = Class(RunSequentialActions, SequenceMixin, {
+  var StopSequence = Class();
+
+  var Sequence = Class(Action, SequenceMixin, {
     constructor: function Sequence() {
       Sequence.super.call(this);
+      this.actions = [];
+    },
+
+    start: function() {
+      this.index = 0;
+      this.running = false;
+      this.stop = false;
+    },
+
+    update: function() {
+      while (this.index < this.actions.length) {
+        var action = this.actions[this.index];
+
+        if (!this.running) {
+          action.start();
+          this.running = true;
+        }
+
+        var continueRunning;
+
+        try {
+          continueRunning = action.update();
+        } catch (err) {
+          if (err instanceof StopSequence) {
+            var skipCount = this.actions.length - this.index + 1;
+            $.Msg("StopSequence -- current: ", this.index, ", skipped: ", skipCount);
+            this.stop = true;
+            return false;
+          }
+
+          $.Msg(err.stack);
+          throw err;
+        }
+
+        if (continueRunning) {
+          return true;
+        }
+
+        action.finish();
+        this.running = false;
+        this.index++;
+      }
+
+      return false;
+    },
+
+    finish: function() {
+      if (this.stop) {
+        return;
+      }
+
+      while (this.index < this.actions.length) {
+        var action = this.actions[this.index];
+
+        if (!this.running) {
+          action.start();
+          this.running = true;
+          action.update();
+        }
+
+        action.finish();
+
+        this.index++;
+        this.running = false;
+      }
     },
   });
 
@@ -509,5 +574,7 @@
     RemoveAllOptionsAction: RemoveAllOptionsAction,
     SelectOptionAction: SelectOptionAction,
     PlaySoundEffectAction: PlaySoundEffectAction,
+    // exceptions
+    StopSequence: StopSequence,
   };
 })(GameUI.CustomUIConfig(), this);
