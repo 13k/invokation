@@ -7,9 +7,9 @@
     var args, body, base, mixins, klass;
 
     args = _.toArray(arguments);
-    body = _.last(args);
+    body = _.last(args) || {};
     args = _.dropRight(args);
-    base = _.first(args);
+    base = _.first(args) || Object;
     args = _.drop(args);
     mixins = args;
 
@@ -21,7 +21,7 @@
     }
 
     klass.id = _.uniqueId(klass.name + ".");
-    klass.super = base || Object;
+    klass.super = base;
     klass.prototype = _.create(klass.super.prototype, { classid: klass.id });
 
     var assignArgs = _.chain([klass.prototype])
