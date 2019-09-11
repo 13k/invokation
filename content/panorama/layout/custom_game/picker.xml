@@ -1,21 +1,13 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/lib/combos_view.js" />
     <include src="file://{resources}/scripts/custom_game/picker.js" />
   </scripts>
 
   <styles>
     <include src="file://{resources}/styles/custom_game/picker.css" />
   </styles>
-
-  <snippets>
-    <snippet name="CombosColumn">
-      <Panel class="PickerCombosColumn">
-        <Label id="PickerCombosColumnTitle" class="PanelTitle" hittest="false" />
-        <Panel id="PickerCombosColumnContainer" class="PickerCombosColumnContainer" />
-      </Panel>
-    </snippet>
-  </snippets>
 
   <Panel class="PickerRoot" hittest="false">
     <Panel id="PickerSlideout" class="DrawerClosed FiltersClosed" hittest="false">
@@ -26,10 +18,10 @@
         </Panel>
 
         <Panel class="PickerHeader">
-          <ToggleButton class="PickerFiltersButton ExpandCollapseToggleButton" onactivate="picker.ToggleFilters()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters)" onmouseout="UIHideTextTooltip()" />
+          <ToggleButton class="PickerFiltersButton ExpandCollapseToggleButton" onactivate="picker.ToggleFilters()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)" onmouseout="UIHideTextTooltip()" />
 
           <Button class="PickerFreestyleButton" onactivate="picker.Freestyle()">
-            <Label class="PickerFreestyleLabel" text="#invokation_picker_freestyle" hittest="false" />
+            <Label class="PickerFreestyleLabel" text="#invokation_picker_freestyle_play" hittest="false" />
           </Button>
         </Panel>
 
@@ -38,69 +30,38 @@
 
           <Panel class="PickerFilters" hittest="false">
             <Panel class="PickerFiltersRow" hittest="false">
-              <Label class="PickerFiltersLabel" text="#invokation_combo_properties__category" hittest="false" />
-
-              <DropDown id="PickerFilterCategory" oninputsubmit="picker.Filter()">
-                <Label id="PickerFilterCategoryAll" text="#invokation_picker_filter_all" />
-                <Label id="PickerFilterCategoryLaningPhase" text="#invokation_combo_properties__category__laning_phase" />
-                <Label id="PickerFilterCategoryGankingSoloPick" text="#invokation_combo_properties__category__ganking_solo_pick" />
-                <Label id="PickerFilterCategoryTeamfight" text="#invokation_combo_properties__category__teamfight" />
-                <Label id="PickerFilterCategoryLateGame" text="#invokation_combo_properties__category__late_game" />
-              </DropDown>
+              <Panel class="LeftRightFlow">
+                <Label class="PickerFiltersLabel" text="#invokation_combo_properties__tags" hittest="false" />
+                <Button id="PickerFilterTagsResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="picker.ResetTagsFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)" onmouseout="UIHideTextTooltip()" />
+              </Panel>
+              <Panel id="PickerFilterTagsContainer" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__specialty" hittest="false" />
-
-              <DropDown id="PickerFilterSpecialty" oninputsubmit="picker.Filter()">
-                <Label id="PickerFilterSpecialtyAll" text="#invokation_picker_filter_all" />
-                <Label id="PickerFilterSpecialtyQuasWex" text="#invokation_combo_properties__specialty__qw" />
-                <Label id="PickerFilterSpecialtyQuasExort" text="#invokation_combo_properties__specialty__qe" />
-              </DropDown>
+              <DropDown id="PickerFilterSpecialty" oninputsubmit="picker.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__stance" hittest="false" />
-
-              <DropDown id="PickerFilterStance" oninputsubmit="picker.Filter()">
-                <Label id="PickerFilterStanceAll" text="#invokation_picker_filter_all" />
-                <Label id="PickerFilterStanceDefensive" text="#invokation_combo_properties__stance__defensive" />
-                <Label id="PickerFilterStanceOffensive" text="#invokation_combo_properties__stance__offensive" />
-              </DropDown>
+              <DropDown id="PickerFilterStance" oninputsubmit="picker.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__damage_rating" hittest="false" />
-
-              <DropDown id="PickerFilterDamageRating" oninputsubmit="picker.Filter()">
-                <Label id="PickerFilterDamageRatingAll" text="#invokation_picker_filter_all" />
-                <Label id="PickerFilterDamageRating0" text="#invokation_combo_properties__damage_rating__0" />
-                <Label id="PickerFilterDamageRating1" text="#invokation_combo_properties__damage_rating__1" />
-                <Label id="PickerFilterDamageRating2" text="#invokation_combo_properties__damage_rating__2" />
-                <Label id="PickerFilterDamageRating3" text="#invokation_combo_properties__damage_rating__3" />
-                <Label id="PickerFilterDamageRating4" text="#invokation_combo_properties__damage_rating__4" />
-                <Label id="PickerFilterDamageRating5" text="#invokation_combo_properties__damage_rating__5" />
-              </DropDown>
+              <DropDown id="PickerFilterDamageRating" oninputsubmit="picker.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__difficulty_rating" hittest="false" />
-
-              <DropDown id="PickerFilterDifficultyRating" oninputsubmit="picker.Filter()">
-                <Label id="PickerFilterDifficultyRatingAll" text="#invokation_picker_filter_all" />
-                <Label id="PickerFilterDifficultyRating1" text="#invokation_combo_properties__difficulty_rating__1" />
-                <Label id="PickerFilterDifficultyRating2" text="#invokation_combo_properties__difficulty_rating__2" />
-                <Label id="PickerFilterDifficultyRating3" text="#invokation_combo_properties__difficulty_rating__3" />
-                <Label id="PickerFilterDifficultyRating4" text="#invokation_combo_properties__difficulty_rating__4" />
-                <Label id="PickerFilterDifficultyRating5" text="#invokation_combo_properties__difficulty_rating__5" />
-              </DropDown>
+              <DropDown id="PickerFilterDifficultyRating" oninputsubmit="picker.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow PopupPickersRow" hittest="false">
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
                   <Label class="PopupPickerLabel" text="#invokation_picker_filter_item" hittest="false" />
-                  <Button id="PickerFilterItemResetButton" class="PopupPickerResetButton CloseButton" onactivate="picker.ResetItemFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Button id="PickerFilterItemResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="picker.ResetItemFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)" onmouseout="UIHideTextTooltip()" />
                 </Panel>
 
                 <Button class="PickerFilterItemButton PopupPickerButton ButtonBevel" onactivate="picker.ShowItemFilter()">
@@ -111,7 +72,7 @@
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
                   <Label class="PopupPickerLabel" text="#invokation_picker_filter_ability" hittest="false" />
-                  <Button id="PickerFilterAbilityResetButton" class="PopupPickerResetButton CloseButton" onactivate="picker.ResetAbilityFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Button id="PickerFilterAbilityResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="picker.ResetAbilityFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)" onmouseout="UIHideTextTooltip()" />
                 </Panel>
 
                 <Button class="PickerFilterAbilityButton PopupPickerButton ButtonBevel" onactivate="picker.ShowAbilityFilter()">

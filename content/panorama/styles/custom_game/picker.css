@@ -4,17 +4,17 @@
 
 /*
 pickerCombosWidth = combosWidth + thumbWidth
-pickerTotalWidth = combosWidth + filtersWidth + thumbWidth
+pickerTotalWidth = combosWidth + filtersWidth + thumbWidth + 10
 pickerClosedWidth = thumbWidth
 */
 
 @define pickerMarginTop: 180px;
 @define combosWidth: 350px;
-@define combosColumnWidth: 320px;
-@define filtersWidth: 220px;
-@define filtersRowWidth: 200px;
+@define comboWidth: 320px;
+@define filtersWidth: 240px;
+@define filtersRowWidth: 220px;
 @define pickerCombosWidth: 386px;
-@define pickerTotalWidth: 606px;
+@define pickerTotalWidth: 636px;
 @define pickerHeight: 80%;
 @define pickerClosedWidth: 46px;
 @define thumbWidth: 36px;
@@ -175,21 +175,8 @@ pickerClosedWidth = thumbWidth
   horizontal-align: left;
 }
 
-.PickerCombosColumn {
-  flow-children: down;
-  width: combosColumnWidth;
-  margin-top: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #333;
-}
-
-.PickerCombosColumn .PanelTitle {
-  margin-bottom: 8px;
-}
-
-.PickerCombosColumn .PickerCombosColumnContainer {
-  flow-children: down;
-  width: 100%;
+#PickerCombos .PickerCombo {
+  width: comboWidth;
 }
 
 .PickerFilters {
@@ -206,24 +193,7 @@ pickerClosedWidth = thumbWidth
   margin-top: 10px;
 }
 
-.PickerFilters .PickerFiltersRow.PopupPickersRow {
-  flow-children: right;
-  width: fit-children;
-  margin-top: 20px;
-}
-
-.PickerFilters .PopupPickersRow .PopupPickerColumn {
-  flow-children: down;
-  width: 70px;
-}
-
-.PickerFilters .PopupPickerColumn .PopupPickerLabel {
-  margin: 0;
-  padding: 0;
-  vertical-align: center;
-}
-
-.PickerFilters .PopupPickerColumn .PopupPickerResetButton {
+.PickerFilters .PickerFilterResetButton {
   width: 12px;
   height: 12px;
   margin: 0 0 0 6px;
@@ -232,20 +202,40 @@ pickerClosedWidth = thumbWidth
   wash-color: #ff808088;
 }
 
-.PickerFilters .PopupPickerColumn .PopupPickerResetButton:hover {
+.PickerFilters .PickerFilterResetButton:hover {
   wash-color: #ff8080;
 }
 
-.PickerFilters .PopupPickerColumn .PopupPickerResetButton:disabled {
+.PickerFilters .PickerFilterResetButton:disabled {
   visibility: collapse;
 }
 
-.PickerFilters .PopupPickerColumn .PopupPickerButton {
+#PickerFilterTagsContainer {
+  width: 100%;
+}
+
+.PickerFilters .PickerFiltersRow.PopupPickersRow {
+  flow-children: right;
+  margin-top: 20px;
+}
+
+.PickerFilters .PopupPickerColumn {
+  flow-children: down;
+  margin-right: 10px;
+}
+
+.PickerFilters .PopupPickerLabel {
+  margin: 0;
+  padding: 0;
+  vertical-align: center;
+}
+
+.PickerFilters .PopupPickerButton {
   flow-children: down;
   padding: 1px;
 }
 
-.PickerFilters .PopupPickerColumn .PickerFilterItemButton {
+.PickerFilters .PopupPickerButton.PickerFilterItemButton {
   min-width: 0;
   min-height: 0;
 }
@@ -256,7 +246,7 @@ pickerClosedWidth = thumbWidth
   align: center center;
 }
 
-.PickerFilters .PopupPickerColumn .PickerFilterAbilityButton {
+.PickerFilters .PopupPickerButton.PickerFilterAbilityButton {
   min-width: 0;
   min-height: 0;
 }
@@ -274,6 +264,6 @@ pickerClosedWidth = thumbWidth
   horizontal-align: center;
 }
 
-.PickerFilters .ButtonsRow .PickerFiltersResetButton {
+.PickerFilters .PickerFiltersResetButton {
   min-width: 142px;
 }

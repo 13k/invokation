@@ -87,7 +87,6 @@
   };
 
   var COMBO_PROPERTIES = {
-    category: ["laning_phase", "ganking_solo_pick", "teamfight", "late_game"],
     specialty: ["qw", "qe"],
     stance: ["offensive", "defensive"],
     damageRating: [0, 1, 2, 3, 4, 5],

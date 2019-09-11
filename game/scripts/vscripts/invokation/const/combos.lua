@@ -3,12 +3,14 @@
 
 local M = {
   [1] = {
-    category = "laning_phase",
     specialty = "qw",
     stance = "defensive",
     heroLevel = 2,
     damageRating = 0,
     difficultyRating = 1,
+    tags = {
+      "laning-phase"
+    },
     items = {
       "item_null_talisman"
     },
@@ -25,12 +27,14 @@ local M = {
     }
   },
   [2] = {
-    category = "laning_phase",
     specialty = "qw",
     stance = "defensive",
     heroLevel = 2,
     damageRating = 0,
     difficultyRating = 1,
+    tags = {
+      "laning-phase"
+    },
     items = {
       "item_null_talisman"
     },
@@ -82,12 +86,14 @@ local M = {
     }
   },
   [3] = {
-    category = "laning_phase",
     specialty = "qw",
     stance = "offensive",
     heroLevel = 2,
     damageRating = 1,
     difficultyRating = 1,
+    tags = {
+      "laning-phase"
+    },
     items = {
       "item_null_talisman"
     },
@@ -104,12 +110,14 @@ local M = {
     }
   },
   [4] = {
-    category = "laning_phase",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 2,
     damageRating = 1,
     difficultyRating = 1,
+    tags = {
+      "laning-phase"
+    },
     items = {
       "item_null_talisman"
     },
@@ -126,12 +134,14 @@ local M = {
     }
   },
   [5] = {
-    category = "laning_phase",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 3,
     damageRating = 1,
     difficultyRating = 1,
+    tags = {
+      "laning-phase"
+    },
     items = {
       "item_null_talisman"
     },
@@ -148,12 +158,14 @@ local M = {
     }
   },
   [6] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -176,12 +188,14 @@ local M = {
     }
   },
   [7] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 3,
     difficultyRating = 3,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -204,12 +218,14 @@ local M = {
     }
   },
   [8] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -232,12 +248,14 @@ local M = {
     }
   },
   [9] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -260,12 +278,14 @@ local M = {
     }
   },
   [10] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman",
@@ -289,12 +309,14 @@ local M = {
     }
   },
   [11] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 3,
     difficultyRating = 3,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -317,12 +339,14 @@ local M = {
     }
   },
   [12] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -345,12 +369,14 @@ local M = {
     }
   },
   [13] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -373,12 +399,14 @@ local M = {
     }
   },
   [14] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -401,12 +429,14 @@ local M = {
     }
   },
   [15] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -429,12 +459,14 @@ local M = {
     }
   },
   [16] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -457,12 +489,14 @@ local M = {
     }
   },
   [17] = {
-    category = "ganking_solo_pick",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    tags = {
+      "solo-pick"
+    },
     items = {
       "item_null_talisman",
       "item_null_talisman"
@@ -485,12 +519,14 @@ local M = {
     }
   },
   [18] = {
-    category = "teamfight",
     specialty = "qw",
     stance = "offensive",
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "teamfight"
+    },
     items = {
       "item_boots",
       "item_null_talisman",
@@ -520,12 +556,14 @@ local M = {
     }
   },
   [19] = {
-    category = "teamfight",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "teamfight"
+    },
     items = {
       "item_boots",
       "item_null_talisman",
@@ -560,12 +598,14 @@ local M = {
     }
   },
   [20] = {
-    category = "teamfight",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 12,
     damageRating = 3,
     difficultyRating = 3,
+    tags = {
+      "teamfight"
+    },
     items = {
       "item_boots",
       "item_null_talisman",
@@ -601,12 +641,14 @@ local M = {
     }
   },
   [21] = {
-    category = "teamfight",
     specialty = "qe",
     stance = "offensive",
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    tags = {
+      "teamfight"
+    },
     items = {
       "item_boots",
       "item_null_talisman",
@@ -641,11 +683,13 @@ local M = {
     }
   },
   [22] = {
-    category = "late_game",
     specialty = "qe",
     stance = "offensive",
     damageRating = 4,
     difficultyRating = 4,
+    tags = {
+      "late-game"
+    },
     heroLevel = 20,
     items = {
       "item_travel_boots",
@@ -693,11 +737,13 @@ local M = {
     }
   },
   [23] = {
-    category = "late_game",
     specialty = "qe",
     stance = "offensive",
     damageRating = 4,
     difficultyRating = 4,
+    tags = {
+      "late-game"
+    },
     heroLevel = 20,
     items = {
       "item_travel_boots",
@@ -755,11 +801,13 @@ local M = {
     }
   },
   [24] = {
-    category = "late_game",
     specialty = "qe",
     stance = "offensive",
     damageRating = 4,
     difficultyRating = 4,
+    tags = {
+      "late-game"
+    },
     heroLevel = 20,
     items = {
       "item_travel_boots",
@@ -827,11 +875,13 @@ local M = {
     }
   },
   [25] = {
-    category = "late_game",
     specialty = "qe",
     stance = "offensive",
     damageRating = 4,
     difficultyRating = 4,
+    tags = {
+      "late-game"
+    },
     heroLevel = 20,
     items = {
       "item_travel_boots",
@@ -904,11 +954,13 @@ local M = {
     }
   },
   [26] = {
-    category = "late_game",
     specialty = "qe",
     stance = "offensive",
     damageRating = 5,
     difficultyRating = 5,
+    tags = {
+      "late-game"
+    },
     heroLevel = 25,
     items = {
       "item_travel_boots",

@@ -30,12 +30,12 @@ end
 --- Constructor.
 -- @tparam table spec Combo specification table
 -- @tparam string spec.id ID
--- @tparam string spec.category Category
 -- @tparam string spec.specialty Specialty
 -- @tparam string spec.stance Stance
 -- @tparam int spec.heroLevel Recommended hero level
 -- @tparam int spec.damageRating Damage rating
 -- @tparam int spec.difficultyRating Difficulty rating
+-- @tparam array(string) spec.tags Tags
 -- @tparam array(string) spec.items List of required items names
 -- @tparam array(ComboStep) spec.sequence List of @{ComboStep}
 function M:_init(spec)

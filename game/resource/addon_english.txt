@@ -33,12 +33,13 @@
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_picker_title" "Select combo"
-    "invokation_picker_freestyle" "Freestyle"
+    "invokation_picker_freestyle_play" "Freestyle"
     "invokation_picker_filters_reset" "Clear"
-    "invokation_picker_filter_all" "All"
     "invokation_picker_filter_item" "Item"
     "invokation_picker_filter_ability" "Ability"
-    "invokation_picker_tooltip_filters" "Toggle Filters"
+    "invokation_picker_filter_option_all" "All"
+    "invokation_picker_tooltip_filters_toggle" "Toggle Filters"
+    "invokation_picker_tooltip_filter_tags_reset" "Clear Tags"
     "invokation_picker_tooltip_filter_item_reset" "Clear Item"
     "invokation_picker_tooltip_filter_ability_reset" "Clear Ability"
 
@@ -97,12 +98,7 @@
     // Combo Properties
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    "invokation_combo_properties__category" "Category"
-    "invokation_combo_properties__category__laning_phase" "Laning Phase"
-    "invokation_combo_properties__category__ganking_solo_pick" "Ganking & Solo Pick"
-    "invokation_combo_properties__category__teamfight" "Teamfight"
-    "invokation_combo_properties__category__late_game" "Late Game"
-
+    "invokation_combo_properties__tags" "Tags"
     "invokation_combo_properties__hero_level" "Hero Level"
 
     "invokation_combo_properties__specialty" "Specialty"
