@@ -1,12 +1,12 @@
 exclude_files = {
-  "game/scripts/vscripts/pl/**/*.lua",
+  "game/scripts/vscripts/pl/**/*.lua"
 }
 
 new_globals = {
   "Precache",
   "Activate",
   "GameRules",
-  "GameMode",
+  "GameMode"
 }
 
 -- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
@@ -488,13 +488,13 @@ new_read_globals = {
   "ACT_DOTA_AW_MAGNETIC_FIELD", -- (1707)
   "ACT_DOTA_CAST_GHOST_SHIP", -- (1708)
   -- DOTAUnitAttackCapability_t
-  "DOTA_UNIT_CAP_NO_ATTACK",     -- (0) Unit is unable to attack in any way.
-  "DOTA_UNIT_CAP_MELEE_ATTACK",  -- (1) Unit attacks are classified as melee (no uphill miss chance, attacks on enemies that are 350 over the attack range automatically miss).
+  "DOTA_UNIT_CAP_NO_ATTACK", -- (0) Unit is unable to attack in any way.
+  "DOTA_UNIT_CAP_MELEE_ATTACK", -- (1) Unit attacks are classified as melee (no uphill miss chance, attacks on enemies that are 350 over the attack range automatically miss).
   "DOTA_UNIT_CAP_RANGED_ATTACK", -- (2) Unit attacks are classified as ranged (can miss on uphill, disjointable, has projectile).
   -- DOTAUnitMoveCapability_t
-  "DOTA_UNIT_CAP_MOVE_NONE",   -- (0) Unit cannot move in any way.
+  "DOTA_UNIT_CAP_MOVE_NONE", -- (0) Unit cannot move in any way.
   "DOTA_UNIT_CAP_MOVE_GROUND", -- (1) Unit move while being obstructed by the terrain.
-  "DOTA_UNIT_CAP_MOVE_FLY",    -- (2) Unit ignores terrain.
+  "DOTA_UNIT_CAP_MOVE_FLY", -- (2) Unit ignores terrain.
   -- DamageCategory_t
   "DOTA_DAMAGE_CATEGORY_ATTACK", -- (1)
   "DOTA_DAMAGE_CATEGORY_SPELL", -- (0)
@@ -505,4 +505,27 @@ new_read_globals = {
   "DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION", -- (3)
   "DOTA_MUSIC_STATUS_DEAD", -- (4)
   "DOTA_MUSIC_STATUS_LAST", -- (5)
+  -- EDOTA_ModifyGold_Reason
+  "DOTA_ModifyGold_Unspecified", -- (0)
+  "DOTA_ModifyGold_Death", -- (1)
+  "DOTA_ModifyGold_Buyback", -- (2)
+  "DOTA_ModifyGold_PurchaseConsumable", -- (3)
+  "DOTA_ModifyGold_PurchaseItem", -- (4)
+  "DOTA_ModifyGold_AbandonedRedistribute", -- (5)
+  "DOTA_ModifyGold_SellItem", -- (6)
+  "DOTA_ModifyGold_AbilityCost", -- (7)
+  "DOTA_ModifyGold_CheatCommand", -- (8)
+  "DOTA_ModifyGold_SelectionPenalty", -- (9)
+  "DOTA_ModifyGold_GameTick", -- (10)
+  "DOTA_ModifyGold_Building", -- (11)
+  "DOTA_ModifyGold_HeroKill", -- (12)
+  "DOTA_ModifyGold_CreepKill", -- (13)
+  "DOTA_ModifyGold_RoshanKill", -- (14)
+  "DOTA_ModifyGold_CourierKill", -- (15)
+  "DOTA_ModifyGold_SharedGold", -- (16)
+  -- EDOTA_ModifyXP_Reason
+  "DOTA_ModifyXP_Unspecified", -- (0)
+  "DOTA_ModifyXP_HeroKill", -- (1)
+  "DOTA_ModifyXP_CreepKill", -- (2)
+  "DOTA_ModifyXP_RoshanKill" -- (3)
 }
