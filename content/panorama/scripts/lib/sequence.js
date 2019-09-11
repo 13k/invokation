@@ -158,6 +158,19 @@
     },
   });
 
+  var ScrollToBottomAction = Class(Action, {
+    constructor: function ScrollToBottomAction(panel) {
+      ScrollToBottomAction.super.call(this);
+
+      this.panel = panel;
+    },
+
+    update: function() {
+      this.panel.ScrollToBottom();
+      return false;
+    },
+  });
+
   var DeleteAsyncAction = Class(Action, {
     constructor: function DeleteAsyncAction(panel, delay) {
       DeleteAsyncAction.super.call(this);
@@ -361,6 +374,11 @@
       return this;
     },
 
+    ScrollToBottom: function(panel) {
+      this.Action(new ScrollToBottomAction(panel));
+      return this;
+    },
+
     Enable: function(panel) {
       this.Action(new EnableAction(panel));
       return this;
@@ -556,6 +574,7 @@
     ReplaceClassAction: ReplaceClassAction,
     WaitClassAction: WaitClassAction,
     ScrollToTopAction: ScrollToTopAction,
+    ScrollToBottomAction: ScrollToBottomAction,
     DeleteAsyncAction: DeleteAsyncAction,
     RemoveChildrenAction: RemoveChildrenAction,
     EnableAction: EnableAction,
