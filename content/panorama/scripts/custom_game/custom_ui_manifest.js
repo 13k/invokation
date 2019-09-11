@@ -6,61 +6,63 @@
   var CreateComponent = context.CreateComponent;
 
   var UI_CONFIG = {
-    // Hero selection Radiant and Dire player lists.
-    DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS: false,
-    // Hero selection game mode name display.
-    DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME: false,
-    // Hero selection clock.
-    DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK: false,
-    // No pregame strategy UI.
-    DOTA_DEFAULT_UI_PREGAME_STRATEGYUI: false,
-    // Time of day (clock).
+    // [0] Time of day (clock)
     DOTA_DEFAULT_UI_TOP_TIMEOFDAY: false,
-    // Heroes and team score at the top of the HUD.
+    // [1] Heroes and team score at the top of the HUD
     DOTA_DEFAULT_UI_TOP_HEROES: false,
-    // Lefthand flyout scoreboard.
+    // [2] Flyout scoreboard
     DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD: false,
-    // Hero actions UI.
+    // [3] Hero actions UI
     DOTA_DEFAULT_UI_ACTION_PANEL: true,
-    // Minimap.
+    // [4] Minimap
     DOTA_DEFAULT_UI_ACTION_MINIMAP: false,
-    // Entire Inventory UI
+    // [5] Entire inventory UI
     DOTA_DEFAULT_UI_INVENTORY_PANEL: true,
-    // Shop portion of the Inventory.
+    // [6] Shop portion of the inventory
     DOTA_DEFAULT_UI_INVENTORY_SHOP: false,
-    // Player items.
+    // [7] Inventory items
     DOTA_DEFAULT_UI_INVENTORY_ITEMS: true,
-    // Quickbuy.
-    DOTA_DEFAULT_UI_INVENTORY_QUICKBUY: false,
-    // Courier controls.
+    // [8] Quickbuy (disabling this will cause gold count to bug)
+    DOTA_DEFAULT_UI_INVENTORY_QUICKBUY: true,
+    // [9] Courier controls
     DOTA_DEFAULT_UI_INVENTORY_COURIER: false,
-    // Glyph.
+    // [10] Glyph
     DOTA_DEFAULT_UI_INVENTORY_PROTECT: false,
-    // Gold display.
-    DOTA_DEFAULT_UI_INVENTORY_GOLD: false,
-    // Suggested items shop panel.
-    DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS: false,
-    // Top-bar HUD.
-    DOTA_DEFAULT_UI_TOP_BAR: false,
-    // Top-left menu buttons in the HUD.
-    DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND: false,
-    // Top-bar Radiant players.
-    DOTA_DEFAULT_UI_TOP_BAR_RADIANT_TEAM: false,
-    // Top-bar Dire players.
-    DOTA_DEFAULT_UI_TOP_BAR_DIRE_TEAM: false,
-    // Top-bar score.
-    DOTA_DEFAULT_UI_TOP_BAR_SCORE: false,
-    // Top-left menu buttons in the HUD.
+    // [11] Gold display
+    DOTA_DEFAULT_UI_INVENTORY_GOLD: true,
+    // [12] Suggested items shop panel
+    DOTA_DEFAULT_UI_SHOP_SUGGESTEDITEMS: true,
+    // [13] Hero selection Radiant and Dire player lists
+    DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS: false,
+    // [14] Hero selection game mode name display
+    DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME: false,
+    // [15] Hero selection clock
+    DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK: false,
+    // [16] Top-left menu buttons in the HUD
     DOTA_DEFAULT_UI_TOP_MENU_BUTTONS: false,
-    // Quick stats (KDA/CS) at top-left.
-    DOTA_DEFAULT_UI_QUICK_STATS: false,
-    // Endgame scoreboard.
+    // [17] Top-left menu buttons in the HUD
+    DOTA_DEFAULT_UI_TOP_BAR_BACKGROUND: false,
+    // [18] Top-bar Radiant players
+    DOTA_DEFAULT_UI_TOP_BAR_RADIANT_TEAM: false,
+    // [19] Top-bar Dire players
+    DOTA_DEFAULT_UI_TOP_BAR_DIRE_TEAM: false,
+    // [20] Top-bar score
+    DOTA_DEFAULT_UI_TOP_BAR_SCORE: false,
+    // [21] Endgame scoreboard
     DOTA_DEFAULT_UI_ENDGAME: false,
-    // Endgame chat.
+    // [22] Endgame chat
     DOTA_DEFAULT_UI_ENDGAME_CHAT: false,
-    // Kill-cam
+    // [23] Quick stats (KDA/CS) at top-left
+    DOTA_DEFAULT_UI_QUICK_STATS: false,
+    // [24] Pregame "strategy time" UI
+    DOTA_DEFAULT_UI_PREGAME_STRATEGYUI: false,
+    // [25] Kill-cam
     DOTA_DEFAULT_UI_KILLCAM: false,
-    // ?
+    // [26] Top-bar HUD (?)
+    DOTA_DEFAULT_UI_TOP_BAR: false,
+    // [27] ?
+    DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS: false,
+    // [28] ?
     DOTA_DEFAULT_UI_ELEMENT_COUNT: false,
   };
 

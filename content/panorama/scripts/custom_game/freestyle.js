@@ -118,15 +118,11 @@
     // ----- HUD actions -----
 
     showShopAction: function() {
-      return new ParallelSequence()
-        .RunFunction(this, this.showInventoryShopUI)
-        .RunFunction(this, this.showInventoryGoldUI);
+      return new RunFunctionAction(this, this.showInventoryShopUI);
     },
 
     hideShopAction: function() {
-      return new ParallelSequence()
-        .RunFunction(this, this.hideInventoryShopUI)
-        .RunFunction(this, this.hideInventoryGoldUI);
+      return new RunFunctionAction(this, this.hideInventoryShopUI);
     },
 
     // ----- Action runners -----

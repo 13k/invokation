@@ -209,20 +209,20 @@
       return GameUI.SendCustomHUDError(message, soundEvent);
     },
 
-    setUI: function(uiElement, state) {
-      if (_.isString(uiElement)) {
-        uiElement = DotaDefaultUIElement_t[uiElement];
+    setUI: function(elementType, state) {
+      if (_.isString(elementType)) {
+        elementType = DotaDefaultUIElement_t[elementType];
       }
 
-      return GameUI.SetDefaultUIEnabled(uiElement, state);
+      return GameUI.SetDefaultUIEnabled(elementType, state);
     },
 
-    showUI: function(uiElement) {
-      return this.setUI(uiElement, true);
+    showUI: function(elementType) {
+      return this.setUI(elementType, true);
     },
 
-    hideUI: function(uiElement) {
-      return this.setUI(uiElement, false);
+    hideUI: function(elementType) {
+      return this.setUI(elementType, false);
     },
 
     showActionPanelUI: function() {
@@ -239,14 +239,6 @@
 
     hideInventoryShopUI: function() {
       return this.hideUI("DOTA_DEFAULT_UI_INVENTORY_SHOP");
-    },
-
-    showInventoryGoldUI: function() {
-      return this.showUI("DOTA_DEFAULT_UI_INVENTORY_GOLD");
-    },
-
-    hideInventoryGoldUI: function() {
-      return this.hideUI("DOTA_DEFAULT_UI_INVENTORY_GOLD");
     },
 
     // ----- Element (Panel) Utils & Events -----
