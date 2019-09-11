@@ -24,6 +24,12 @@
     "combo_id" "string"
   }
 
+  "invokation_popup_text_entry_submit"
+  {
+    "channel" "string"
+    "text" "string"
+  }
+
   "invokation_popup_item_picker_submit"
   {
     "channel" "string"

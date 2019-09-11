@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_invoker_ability_picker.css" />
   </styles>
 
-  <Popup class="PopupInvokerAbilityPickerRoot" popupbackground="dim" oncancel="popup.Close()" onload="popup.onLoad()">
+  <Popup class="PopupInvokerAbilityPickerRoot" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
     <Panel class="PopupInvokerAbilityPickerHeader">
       <Label class="PopupInvokerAbilityPickerSelectionChoice" text="#invokation_ability_picker_choose" />
     </Panel>
@@ -16,7 +16,7 @@
     <Panel id="PopupInvokerAbilityPickerAbilityList" />
 
     <Panel class="PopupButtonRow">
-      <Button class="PopupButton" id="PickerButtonOK" onactivate="popup.Submit()">
+      <Button class="PopupButton" onactivate="popup.Submit()">
         <Label text="#DOTA_Ok" />
       </Button>
 

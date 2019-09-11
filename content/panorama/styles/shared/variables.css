@@ -130,12 +130,12 @@
 @define statusClockIcon: url("s2r://panorama/images/status_icons/clock_psd.vtex");
 @define statusLoadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
 
+@define dotaPlusChallengeIcon: url("s2r://panorama/images/dota_plus/challanges_icon_png.vtex");
+@define dotaPlusChatWheelIcon: url("s2r://panorama/images/dota_plus/icon_chatwheel_plus_reward_png.vtex");
 @define dotaPlusCurrencyIcon: url("s2r://panorama/images/dota_plus/currency_icon_png.vtex");
 @define dotaPlusCurrencySmallIcon: url("s2r://panorama/images/dota_plus/currency_icon_small_png.vtex");
 @define dotaPlusLogo: url("s2r://panorama/images/dota_plus/dotaplus_logo_png.vtex");
 @define dotaPlusLogoSmall: url("s2r://panorama/images/dota_plus/dotaplus_logo_small_png.vtex");
-@define dotaPlusChallengeIcon: url("s2r://panorama/images/dota_plus/challanges_icon_png.vtex");
-@define dotaPlusChatWheelIcon: url("s2r://panorama/images/dota_plus/icon_chatwheel_plus_reward_png.vtex");
 @define dotaPlusRelicIcon: url("s2r://panorama/images/dota_plus/relic_icon_png.vtex");
 
 @define arcanaShakerChar0: url("s2r://panorama/images/hud/arcana/es/numbers/combo_0_png.vtex");
@@ -182,9 +182,9 @@
 
 @define loadingScreenBackground: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
 @define pickerBackground: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
-@define viewerBackground: url("file://{resources}/images/custom_game/viewer/paper-bg.png");
-@define ratingBackground: url("file://{resources}/images/custom_game/rating/base.png");
-@define ratingActiveBackground: url("file://{resources}/images/custom_game/rating/active.png");
+@define viewerBackground: url("file://{images}/custom_game/viewer/paper-bg.png");
+@define ratingBackground: url("file://{images}/custom_game/rating/base.png");
+@define ratingActiveBackground: url("file://{images}/custom_game/rating/active.png");
 
 /******************************************************************************
  * Masks

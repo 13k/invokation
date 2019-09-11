@@ -1,0 +1,60 @@
+@import url("s2r://panorama/styles/dotastyles.css");
+@import url("s2r://panorama/styles/popups/popups_shared.css");
+
+.PopupTextEntryBody {
+  flow-children: right;
+  horizontal-align: center;
+}
+
+.PopupTextEntryIconContainer {
+  vertical-align: center;
+}
+
+.PopupTextEntryIconImage {
+  visibility: collapse;
+  width: 80px;
+  margin-right: 15px;
+}
+
+.PopupTextEntryRoot.ImageIconEnabled #PopupTextEntryImage {
+  visibility: visible;
+}
+
+.PopupTextEntryRoot.EconItemIconEnabled #PopupTextEntryEconItemImage {
+  visibility: visible;
+}
+
+.PopupTextEntryRoot.HeroIconEnabled #PopupTextEntryHeroImage {
+  visibility: visible;
+}
+
+.PopupTextEntryRoot.AbilityIconEnabled #PopupTextEntryAbilityImage {
+  visibility: visible;
+}
+
+.PopupTextEntryRoot.ItemIconEnabled #PopupTextEntryItemImage {
+  visibility: visible;
+}
+
+.PopupTextEntryBodyLabel {
+  max-width: 400px;
+  align: center center;
+  text-align: center;
+  font-size: 24px;
+  color: #fff;
+}
+
+.PopupTextEntryRoot.EconItemIconEnabled .PopupTextEntryBodyLabel {
+  text-align: left;
+}
+
+#PopupTextEntryTextEntry {
+  width: 100%;
+  margin-top: 24px;
+  horizontal-align: center;
+}
+
+.PopupTextEntryRoot.Multiline #PopupTextEntryTextEntry {
+  height: 128px;
+  white-space: normal;
+}

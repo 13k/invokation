@@ -1,0 +1,38 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/popups/popup_text_entry.css" />
+  </styles>
+
+  <Popup class="PopupTextEntryRoot PopupPanel Hidden" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
+    <Label class="PopupTitle" text="{s:title}" />
+
+    <Panel class="PopupTextEntryBody" hittest="false">
+      <Panel class="PopupTextEntryIconContainer" hittest="false">
+        <Image id="PopupTextEntryImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
+        <DOTAEconItem id="PopupTextEntryEconItemImage" class="PopupTextEntryIconImage DisableInspect" scaling="stretch-to-fit-y-preserve-aspect" />
+        <DOTAHeroImage id="PopupTextEntryHeroImage" class="PopupTextEntryIconImage" heroimagestyle="landscape" scaling="stretch-to-fit-y-preserve-aspect" />
+        <DOTAAbilityImage id="PopupTextEntryAbilityImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
+        <DOTAItemImage id="PopupTextEntryItemImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
+      </Panel>
+
+      <Label class="PopupTextEntryBodyLabel" text="{s:body}" html="true" hittest="false" />
+    </Panel>
+
+    <TextEntry id="PopupTextEntryTextEntry" oninputsubmit="popup.Submit()" />
+
+    <Panel class="PopupButtonRow">
+      <Button class="PopupButton" onactivate="popup.Submit()">
+        <Label text="#DOTA_Ok" />
+      </Button>
+
+      <Button class="PopupButton" onactivate="popup.Close()">
+        <Label text="#DOTA_Cancel" />
+      </Button>
+    </Panel>
+  </Popup>
+</root>

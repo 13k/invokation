@@ -30,6 +30,7 @@
     ITEM_PICKER_QUERY: "invokation_item_picker_query",
     ITEM_PICKER_QUERY_RESPONSE: "invokation_item_picker_query_response",
     // popups
+    POPUP_TEXT_ENTRY_SUBMIT: "invokation_popup_text_entry_submit",
     POPUP_ITEM_PICKER_SUBMIT: "invokation_popup_item_picker_submit",
     POPUP_ABILITY_PICKER_SUBMIT: "invokation_popup_ability_picker_submit",
   };
