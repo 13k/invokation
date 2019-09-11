@@ -3,6 +3,7 @@
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
 /* clWidth = ((clCellSize + (2 * clCellMargin)) * clColumns) + (2 * clPadding) + clScrollWidth */
+
 @define clColumns: 20;
 @define clWidth: 740px;
 @define clHeight: 200px;
@@ -20,7 +21,7 @@
   height: 100%;
 }
 
-#CombatLog {
+.CombatLog {
   flow-children: down;
   width: clWidth;
   height: clHeight;
@@ -32,7 +33,7 @@
   transition-property: transform;
 }
 
-#CombatLog.Closed {
+.CombatLogRoot.Closed .CombatLog {
   transform: translateY(clTranslateY);
 }
 
@@ -50,7 +51,7 @@
   flow-children: right;
 }
 
-.CombatLogAbility {
+.CombatLogIcon {
   width: clCellSize;
   height: clCellSize;
   margin: clCellMargin;
@@ -58,7 +59,8 @@
   background-color: #000d;
 }
 
-.CombatLogAbility DOTAItemImage {
+.CombatLogIcon .CombatLogIconImage {
+  width: 100%;
   vertical-align: center;
 }
 
@@ -113,7 +115,7 @@
   horizontal-align: right;
 }
 
-#CombatLog.Closed .CombatLogBarActions {
+.CombatLogRoot.Closed .CombatLogBarActions {
   visibility: collapse;
 }
 

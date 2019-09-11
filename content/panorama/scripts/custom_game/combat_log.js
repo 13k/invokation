@@ -1,51 +1,42 @@
 "use strict";
 
 (function(global, context) {
-  var EVENTS = global.Const.EVENTS;
   var Grid = global.Grid;
-  var IsItemAbility = global.Util.IsItemAbility;
+  var Sequence = global.Sequence.Sequence;
   var IsInvocationAbility = global.Util.IsInvocationAbility;
-  var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
+  var CreateAbilityOrItemImage = global.Util.CreateAbilityOrItemImage;
   var CreateComponent = context.CreateComponent;
 
-  var GRID_COLUMNS = 20;
-  var COMBAT_LOG_ROW_SNIPPET = "CombatLogRow";
-  var COMBAT_LOG_ABILITY_SNIPPET = "CombatLogAbility";
-  var COMBAT_LOG_ITEM_SNIPPET = "CombatLogItem";
-  var COMBAT_LOG_ABILITY_IMAGE_ID = "CombatLogAbilityImage";
+  var EVENTS = global.Const.EVENTS;
 
-  function createRow(parent, idx) {
-    var id = "row_" + idx;
-    var panel = CreatePanelWithLayoutSnippet(parent, id, COMBAT_LOG_ROW_SNIPPET);
-    return panel;
+  var ROW_ID_PREFIX = "CombatLogRow";
+  var ROW_CLASS = "CombatLogRow";
+
+  var ICON_ID_PREFIX = "CombatLogIcon";
+  var ICON_CLASS = "CombatLogIcon";
+  var ICON_IMAGE_ID_SUFFIX = "Image";
+  var ICON_IMAGE_CLASS = "CombatLogIconImage";
+  var ICON_IMAGE_SCALING = "stretch-to-fit-y-preserve-aspect";
+
+  var GRID_COLUMNS = 20;
+  var CLOSED_CLASS = "Closed";
+
+  function rowId(index) {
+    return ROW_ID_PREFIX + String(index);
   }
 
-  function createAbilityIcon(parent, abilityName) {
-    var snippetName;
-    var imageProperty;
+  function iconId(row, col) {
+    return [ICON_ID_PREFIX, row, col].join("_");
+  }
 
-    if (IsItemAbility(abilityName)) {
-      snippetName = COMBAT_LOG_ITEM_SNIPPET;
-      imageProperty = "itemname";
-    } else {
-      snippetName = COMBAT_LOG_ABILITY_SNIPPET;
-      imageProperty = "abilityname";
-    }
-
-    var id = "ability_" + abilityName;
-    var panel = CreatePanelWithLayoutSnippet(parent, id, snippetName);
-
-    var image = panel.FindChildTraverse(COMBAT_LOG_ABILITY_IMAGE_ID);
-    image[imageProperty] = abilityName;
-
-    return panel;
+  function iconImageId(iconId) {
+    return iconId + "_" + ICON_IMAGE_ID_SUFFIX;
   }
 
   var CombatLog = CreateComponent({
     constructor: function CombatLog() {
       CombatLog.super.call(this, {
         elements: {
-          combatLog: "CombatLog",
           contents: "CombatLogContents",
           filterInvocations: "CombatLogFilterInvocations",
         },
@@ -64,13 +55,11 @@
       this.debug("init");
     },
 
-    bindEvents: function() {
-      this.grid.OnRowChange(this.onGridRowChange.bind(this));
-    },
+    // ----- Event handlers -----
 
     onClear: function() {
       this.debug("onClear()");
-      this.Clear();
+      this.clear();
     },
 
     onGridRowChange: function(idx) {
@@ -88,19 +77,10 @@
       this.addColumn(payload.ability);
     },
 
-    addRow: function(idx) {
-      this.$row = createRow(this.$contents, idx);
-      this.scrollToBottom();
-    },
+    // ----- Helpers -----
 
-    addColumn: function(abilityName) {
-      this.grid.Add(abilityName);
-      createAbilityIcon(this.$row, abilityName);
-      this.scrollToBottom();
-    },
-
-    scrollToBottom: function() {
-      this.$contents.ScrollToBottom();
+    bindEvents: function() {
+      this.grid.OnRowChange(this.onGridRowChange.bind(this));
     },
 
     startCapturing: function() {
@@ -111,16 +91,8 @@
       this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
     },
 
-    open: function() {
-      this.$combatLog.RemoveClass("Closed");
-    },
-
-    close: function() {
-      this.$combatLog.AddClass("Closed");
-    },
-
     isOpen: function() {
-      return !this.$combatLog.BHasClass("Closed");
+      return !this.$ctx.BHasClass(CLOSED_CLASS);
     },
 
     isFilteringInvocations: function() {
@@ -128,27 +100,102 @@
     },
 
     start: function() {
-      this.debug("start()");
       this.startCapturing();
     },
 
     stop: function() {
-      this.debug("stop()");
       this.stopCapturing();
     },
 
+    appendToGrid: function(abilityName) {
+      this.grid.Add(abilityName);
+    },
+
+    clearGrid: function() {
+      this.grid.Clear();
+    },
+
+    resetRow: function() {
+      this.$row = null;
+    },
+
+    createRow: function(rowIndex) {
+      var id = rowId(rowIndex);
+      var panel = $.CreatePanel("Panel", this.$contents, id);
+
+      panel.AddClass(ROW_CLASS);
+
+      this.$row = panel;
+      return panel;
+    },
+
+    createAbilityIcon: function(abilityName) {
+      var id = iconId(this.grid.Row(), this.grid.Column());
+      var panel = $.CreatePanel("Panel", this.$row, id);
+
+      panel.AddClass(ICON_CLASS);
+
+      var imageId = iconImageId(id);
+      var image = CreateAbilityOrItemImage(panel, imageId, abilityName);
+
+      image.AddClass(ICON_IMAGE_CLASS);
+      image.scaling = ICON_IMAGE_SCALING;
+
+      this.debug("createAbilityIcon()", {
+        ability: abilityName,
+        iconId: panel.id,
+        imageId: image.id,
+        imageType: image.paneltype,
+      });
+
+      return panel;
+    },
+
+    // ----- Action runners -----
+
+    open: function() {
+      return new Sequence().RemoveClass(this.$ctx, CLOSED_CLASS).Start();
+    },
+
+    close: function() {
+      return new Sequence().AddClass(this.$ctx, CLOSED_CLASS).Start();
+    },
+
+    addRow: function(rowIndex) {
+      return new Sequence()
+        .RunFunction(this, this.createRow, rowIndex)
+        .ScrollToBottom(this.$contents)
+        .Start();
+    },
+
+    addColumn: function(abilityName) {
+      return new Sequence()
+        .RunFunction(this, this.appendToGrid, abilityName)
+        .RunFunction(this, this.createAbilityIcon, abilityName)
+        .ScrollToBottom(this.$contents)
+        .Start();
+    },
+
+    clear: function() {
+      return new Sequence()
+        .RunFunction(this, this.clearGrid)
+        .RunFunction(this, this.resetRow)
+        .RemoveChildren(this.$contents)
+        .Start();
+    },
+
+    // ----- UI methods -----
+
     Toggle: function() {
       if (this.isOpen()) {
-        this.close();
-      } else {
-        this.open();
+        return this.close();
       }
+
+      return this.open();
     },
 
     Clear: function() {
-      this.grid.Clear();
-      this.$row = null;
-      this.$contents.RemoveAndDeleteChildren();
+      return this.clear();
     },
   });
 

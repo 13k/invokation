@@ -8,26 +8,8 @@
     <include src="file://{resources}/styles/custom_game/combat_log.css" />
   </styles>
 
-  <snippets>
-    <snippet name="CombatLogRow">
-      <Panel class="CombatLogRow" />
-    </snippet>
-
-    <snippet name="CombatLogAbility">
-      <Button class="CombatLogAbility">
-        <DOTAAbilityImage id="CombatLogAbilityImage" />
-      </Button>
-    </snippet>
-
-    <snippet name="CombatLogItem">
-      <Button class="CombatLogAbility">
-        <DOTAItemImage id="CombatLogAbilityImage" />
-      </Button>
-    </snippet>
-  </snippets>
-
-  <Panel class="CombatLogRoot" hittest="false">
-    <Panel id="CombatLog" class="TransparentPanel Closed">
+  <Panel class="CombatLogRoot Closed" hittest="false">
+    <Panel class="CombatLog TransparentPanel">
       <Panel id="CombatLogContents" />
 
       <Panel class="CombatLogBar">
@@ -36,7 +18,7 @@
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
-          <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" />
+          <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
 
           <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />
