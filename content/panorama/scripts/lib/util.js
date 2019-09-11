@@ -135,6 +135,14 @@
     return image;
   };
 
+  exports.CreateAbilityOrItemImage = function(parent, id, abilityName) {
+    if (exports.IsItemAbility(abilityName)) {
+      return exports.CreateItemImage(parent, id, abilityName);
+    }
+
+    return exports.CreateAbilityImage(parent, id, abilityName);
+  };
+
   exports.PopupParams = function(params) {
     if (_.isPlainObject(params)) {
       params = _.chain(params)
