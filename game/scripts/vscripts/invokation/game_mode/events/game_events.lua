@@ -151,6 +151,10 @@ end
 -- @tparam number payload.itemcost Item cost
 function GameMode:OnItemPurchased(payload)
   self:d("OnItemPurchased", payload)
+
+  local player = PlayerResource:GetPlayer(payload.PlayerID)
+
+  self.combos:OnItemPurchased(player, {item = payload.itemname, cost = payload.itemcost})
 end
 
 --- An ability was used by a player (including items).

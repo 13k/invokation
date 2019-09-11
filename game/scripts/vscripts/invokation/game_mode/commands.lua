@@ -9,6 +9,8 @@
 local lfunc = require("invokation.lang.function")
 local Logger = require("invokation.Logger")
 local Invoker = require("invokation.dota2.Invoker")
+-- local Unit = require("invokation.dota2.Unit")
+-- local Player = require("invokation.dota2.Player")
 
 function GameMode:registerCommands()
   Convars:RegisterCommand(
@@ -116,8 +118,8 @@ end
 function GameMode:CommandDebugMisc(_, ...)
   self:d("CommandDebugMisc()", ...)
 
-  -- local player = Convars:GetDOTACommandClient()
-  -- local hero = player:GetAssignedHero()
+  -- local player = Player(Convars:GetDOTACommandClient())
+  -- local hero = Unit(player.hero)
 end
 
 local function debugAbility(a, simple)

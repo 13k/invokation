@@ -20,13 +20,12 @@ function M.setup(player, combo)
   unit:AddItemsByName(combo.items or {}, {onlyMissing = true})
 
   if combo.gold ~= nil then
-    unit:SetGold(combo.gold, true)
+    unit:GiveGold(combo.gold)
   end
 
   unit:Hold()
 end
 
--- @todo always: remove player owned items on the ground
 function M.teardown(player, options)
   options = options or {}
   player = Player(player)
@@ -54,6 +53,12 @@ function M.teardown(player, options)
     unit:GiveMaxHealth()
     unit:GiveMaxMana()
   end
+end
+
+function M.refundPurchase(player, purchase)
+  player = Player(player)
+  local unit = Unit(player.hero)
+  unit:GiveGold(purchase.cost)
 end
 
 return M

@@ -305,4 +305,21 @@ function M:OnEntityHurt(damage)
   CombosComm.sendProgress(player, combo)
 end
 
+--- Handles item purchases.
+-- @tparam CDOTAPlayer player Player instance
+-- @tparam table purchase Purchase information
+-- @tparam string purchase.item Item name
+-- @tparam number purchase.cost Item cost
+function M:OnItemPurchased(player, purchase)
+  local combo = self:getPlayerState(player, "combo")
+
+  if combo == nil then
+    return
+  end
+
+  if combo.id == FreestyleCombo.COMBO_ID then
+    CombosHero.refundPurchase(player, purchase)
+  end
+end
+
 return M
