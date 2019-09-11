@@ -5,8 +5,7 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var CreateItemImage = global.Util.CreateItemImage;
-  var CreateAbilityImage = global.Util.CreateAbilityImage;
+  var CreateAbilityOrItemImage = global.Util.CreateAbilityOrItemImage;
   var CreateComponent = context.CreateComponent;
 
   var ComboStep = CreateComponent({
@@ -45,13 +44,7 @@
         this.$ctx.RemoveClass("ComboStepInvocation");
       }
 
-      var image;
-
-      if (this.step.isItem) {
-        image = CreateItemImage(this.$button, this.options.imageId, this.step.name);
-      } else {
-        image = CreateAbilityImage(this.$button, this.options.imageId, this.step.name);
-      }
+      var image = CreateAbilityOrItemImage(this.$button, this.options.imageId, this.step.name);
 
       image.hittest = false;
 
