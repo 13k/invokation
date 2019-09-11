@@ -6,6 +6,12 @@
 
 local CustomEvents = require("invokation.dota2.custom_events")
 
+--- Handles combos reload events.
+function GameMode:OnCombosReload()
+  self:d("OnCombosReload()")
+  self.combos:load()
+end
+
 --- Handles combo start events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload

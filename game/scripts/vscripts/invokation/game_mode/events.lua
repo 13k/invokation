@@ -11,104 +11,66 @@ require("invokation.game_mode.events.custom_events")
 local lfn = require("invokation.lang.function")
 local CustomEvents = require("invokation.dota2.custom_events")
 
-function GameMode:registerListeners()
-  ListenToGameEvent(
-    "dota_ability_channel_finished",
-    lfn.lookupbyname(GameMode, "OnAbilityChannelFinished"),
-    self
-  )
-  ListenToGameEvent(
-    "dota_illusions_created",
-    lfn.lookupbyname(GameMode, "OnIllusionsCreated"),
-    self
-  )
-  ListenToGameEvent("dota_item_combined", lfn.lookupbyname(GameMode, "OnItemCombined"), self)
-  ListenToGameEvent("dota_item_picked_up", lfn.lookupbyname(GameMode, "OnItemPickedUp"), self)
-  ListenToGameEvent("dota_item_purchased", lfn.lookupbyname(GameMode, "OnItemPurchased"), self)
-  ListenToGameEvent(
-    "dota_non_player_used_ability",
-    lfn.lookupbyname(GameMode, "OnNonPlayerUsedAbility"),
-    self
-  )
-  ListenToGameEvent("dota_npc_goal_reached", lfn.lookupbyname(GameMode, "OnNPCGoalReached"), self)
-  ListenToGameEvent(
-    "dota_player_begin_cast",
-    lfn.lookupbyname(GameMode, "OnAbilityCastBegins"),
-    self
-  )
-  ListenToGameEvent("dota_player_gained_level", lfn.lookupbyname(GameMode, "OnPlayerLevelUp"), self)
-  ListenToGameEvent(
-    "dota_player_learned_ability",
-    lfn.lookupbyname(GameMode, "OnPlayerLearnedAbility"),
-    self
-  )
-  ListenToGameEvent("dota_player_pick_hero", lfn.lookupbyname(GameMode, "OnPlayerPickHero"), self)
-  ListenToGameEvent(
-    "dota_player_selected_custom_team",
-    lfn.lookupbyname(GameMode, "OnPlayerSelectedCustomTeam"),
-    self
-  )
-  ListenToGameEvent(
-    "dota_player_take_tower_damage",
-    lfn.lookupbyname(GameMode, "OnPlayerTakeTowerDamage"),
-    self
-  )
-  ListenToGameEvent("dota_player_used_ability", lfn.lookupbyname(GameMode, "OnAbilityUsed"), self)
-  ListenToGameEvent(
-    "dota_rune_activated_server",
-    lfn.lookupbyname(GameMode, "OnRuneActivated"),
-    self
-  )
-  ListenToGameEvent("dota_team_kill_credit", lfn.lookupbyname(GameMode, "OnTeamKillCredit"), self)
-  ListenToGameEvent("dota_tower_kill", lfn.lookupbyname(GameMode, "OnTowerKill"), self)
-  ListenToGameEvent("entity_hurt", lfn.lookupbyname(GameMode, "OnEntityHurt"), self)
-  ListenToGameEvent("entity_killed", lfn.lookupbyname(GameMode, "_OnEntityKilled"), self)
-  ListenToGameEvent(
-    "game_rules_state_change",
-    lfn.lookupbyname(GameMode, "_OnGameRulesStateChange"),
-    self
-  )
-  ListenToGameEvent("last_hit", lfn.lookupbyname(GameMode, "OnLastHit"), self)
-  ListenToGameEvent("npc_spawned", lfn.lookupbyname(GameMode, "_OnNPCSpawned"), self)
-  ListenToGameEvent("player_changename", lfn.lookupbyname(GameMode, "OnPlayerChangedName"), self)
-  ListenToGameEvent("player_chat", lfn.lookupbyname(GameMode, "OnPlayerChat"), self)
-  ListenToGameEvent("player_connect_full", lfn.lookupbyname(GameMode, "_OnConnectFull"), self)
-  ListenToGameEvent("player_connect", lfn.lookupbyname(GameMode, "OnPlayerConnect"), self)
-  ListenToGameEvent("player_disconnect", lfn.lookupbyname(GameMode, "OnDisconnect"), self)
-  ListenToGameEvent("player_reconnected", lfn.lookupbyname(GameMode, "OnPlayerReconnect"), self)
-  ListenToGameEvent("tree_cut", lfn.lookupbyname(GameMode, "OnTreeCut"), self)
-  --ListenToGameEvent("dota_combatlog", lfn.lookupbyname(GameMode, "OnCombatLogEvent"), self)
-  --ListenToGameEvent("dota_match_done", lfn.lookupbyname(GameMode, "OnDotaMatchDone"), self)
-  --ListenToGameEvent("dota_player_killed", lfn.lookupbyname(GameMode, "OnPlayerKilled"), self)
-  --ListenToGameEvent("dota_tutorial_shop_toggled", lfn.lookupbyname(GameMode, "OnShopToggled"), self)
-  --ListenToGameEvent("dota_unit_event", lfn.lookupbyname(GameMode, "OnDotaUnitEvent"), self)
-  --ListenToGameEvent("nommed_tree", lfn.lookupbyname(GameMode, "OnPlayerAteTree"), self)
-  --ListenToGameEvent("player_completed_game", lfn.lookupbyname(GameMode, "OnPlayerCompletedGame"), self)
-  --ListenToGameEvent("player_spawn", lfn.lookupbyname(GameMode, "OnPlayerSpawn"), self)
-  --ListenToGameEvent("player_team", lfn.lookupbyname(GameMode, "OnPlayerTeam"), self)
-
-  self:d("  register game event listeners")
+function GameMode:listenToGameEvent(event, methodName)
+  return ListenToGameEvent(event, lfn.lookupbyname(GameMode, methodName), self)
 end
 
-function GameMode:registerCustomListeners()
-  CustomEvents.Subscribe(CustomEvents.EVENT_COMBOS_RELOAD, lfn.bindbyname(self.combos, "load"))
-  CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_START, lfn.bindbyname(self, "OnComboStart"))
-  CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_STOP, lfn.bindbyname(self, "OnComboStop"))
-  CustomEvents.Subscribe(CustomEvents.EVENT_COMBO_RESTART, lfn.bindbyname(self, "OnComboRestart"))
+function GameMode:subscribeToCustomEvent(event, methodName)
+  return CustomEvents.Subscribe(CustomEvents[event], lfn.bindbyname(self, methodName))
+end
 
-  CustomEvents.Subscribe(
-    CustomEvents.EVENT_COMBAT_LOG_CAPTURE_START,
-    lfn.bindbyname(self, "OnCombatLogCaptureStart")
-  )
-  CustomEvents.Subscribe(
-    CustomEvents.EVENT_COMBAT_LOG_CAPTURE_STOP,
-    lfn.bindbyname(self, "OnCombatLogCaptureStop")
-  )
+function GameMode:registerGameEvents()
+  self:listenToGameEvent("dota_ability_channel_finished", "OnAbilityChannelFinished")
+  self:listenToGameEvent("dota_illusions_created", "OnIllusionsCreated")
+  self:listenToGameEvent("dota_item_combined", "OnItemCombined")
+  self:listenToGameEvent("dota_item_picked_up", "OnItemPickedUp")
+  self:listenToGameEvent("dota_item_purchased", "OnItemPurchased")
+  self:listenToGameEvent("dota_non_player_used_ability", "OnNonPlayerUsedAbility")
+  self:listenToGameEvent("dota_npc_goal_reached", "OnNPCGoalReached")
+  self:listenToGameEvent("dota_player_begin_cast", "OnAbilityCastBegins")
+  self:listenToGameEvent("dota_player_gained_level", "OnPlayerLevelUp")
+  self:listenToGameEvent("dota_player_learned_ability", "OnPlayerLearnedAbility")
+  self:listenToGameEvent("dota_player_pick_hero", "OnPlayerPickHero")
+  self:listenToGameEvent("dota_player_selected_custom_team", "OnPlayerSelectedCustomTeam")
+  self:listenToGameEvent("dota_player_take_tower_damage", "OnPlayerTakeTowerDamage")
+  self:listenToGameEvent("dota_player_used_ability", "OnAbilityUsed")
+  self:listenToGameEvent("dota_rune_activated_server", "OnRuneActivated")
+  self:listenToGameEvent("dota_team_kill_credit", "OnTeamKillCredit")
+  self:listenToGameEvent("dota_tower_kill", "OnTowerKill")
+  self:listenToGameEvent("entity_hurt", "OnEntityHurt")
+  self:listenToGameEvent("entity_killed", "_OnEntityKilled")
+  self:listenToGameEvent("game_rules_state_change", "_OnGameRulesStateChange")
+  self:listenToGameEvent("last_hit", "OnLastHit")
+  self:listenToGameEvent("npc_spawned", "_OnNPCSpawned")
+  self:listenToGameEvent("player_changename", "OnPlayerChangedName")
+  self:listenToGameEvent("player_chat", "OnPlayerChat")
+  self:listenToGameEvent("player_connect_full", "_OnConnectFull")
+  self:listenToGameEvent("player_connect", "OnPlayerConnect")
+  self:listenToGameEvent("player_disconnect", "OnDisconnect")
+  self:listenToGameEvent("player_reconnected", "OnPlayerReconnect")
+  self:listenToGameEvent("tree_cut", "OnTreeCut")
 
-  CustomEvents.Subscribe(
-    CustomEvents.EVENT_ITEM_PICKER_QUERY,
-    lfn.bindbyname(self, "OnItemPickerQuery")
-  )
+  --self:listenToGameEvent("dota_combatlog", "OnCombatLogEvent")
+  --self:listenToGameEvent("dota_match_done", "OnDotaMatchDone")
+  --self:listenToGameEvent("dota_player_killed", "OnPlayerKilled")
+  --self:listenToGameEvent("dota_tutorial_shop_toggled", "OnShopToggled")
+  --self:listenToGameEvent("dota_unit_event", "OnDotaUnitEvent")
+  --self:listenToGameEvent("nommed_tree", "OnPlayerAteTree")
+  --self:listenToGameEvent("player_completed_game", "OnPlayerCompletedGame")
+  --self:listenToGameEvent("player_spawn", "OnPlayerSpawn")
+  --self:listenToGameEvent("player_team", "OnPlayerTeam")
 
-  self:d("  register custom event listeners")
+  self:d("  register game events listeners")
+end
+
+function GameMode:registerCustomEvents()
+  self:subscribeToCustomEvent("EVENT_COMBOS_RELOAD", "OnCombosReload")
+  self:subscribeToCustomEvent("EVENT_COMBO_START", "OnComboStart")
+  self:subscribeToCustomEvent("EVENT_COMBO_STOP", "OnComboStop")
+  self:subscribeToCustomEvent("EVENT_COMBO_RESTART", "OnComboRestart")
+  self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_START", "OnCombatLogCaptureStart")
+  self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_STOP", "OnCombatLogCaptureStop")
+  self:subscribeToCustomEvent("EVENT_ITEM_PICKER_QUERY", "OnItemPickerQuery")
+
+  self:d("  register custom events listeners")
 end
