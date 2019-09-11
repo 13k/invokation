@@ -108,6 +108,19 @@ function M:GiveMaxMana()
   return self:GiveMana(self:GetMaxMana())
 end
 
+--- Gives the hero unit a gold amount.
+-- @tparam int amount Gold amount (can be negative)
+-- @tparam table options Options table
+-- @tparam[opt=true] bool options.reliable Is this gold reliable?
+-- @tparam[opt=DOTA_ModifyGold_Unspecified] EDOTA_ModifyGold_Reason options.reason Reason flags
+function M:GiveGold(amount, options)
+  options = options or {}
+  options.reliable = options.reliable == nil and true or options.reliable
+  options.reason = options.reason == nil and DOTA_ModifyGold_Unspecified or options.reason
+
+  return self.entity:ModifyGold(amount, types.to_bool(options.reliable), options.reason)
+end
+
 function M:forEachItem(callback, options)
   if not self:HasInventory() then
     error(UNIT_NO_INVENTORY_ERROR:format(self.name))
