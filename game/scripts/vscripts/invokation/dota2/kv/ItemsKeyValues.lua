@@ -4,7 +4,6 @@
 local M = require("pl.class")()
 
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
-local pp = require("pl.pretty")
 
 local ITEMS_FILE = "scripts/npc/items.txt"
 local ITEM_KEY_PATT = "^item_"
@@ -21,10 +20,6 @@ function M:loadKV()
   for name, kv in pairs(items) do
     if name:match(ITEM_KEY_PATT) and type(kv) == "table" then
       self.kv[name] = ItemKeyValues(name, kv)
-
-      if name == "item_blink" then
-        pp.dump(self.kv[name].kv)
-      end
     end
   end
 end
