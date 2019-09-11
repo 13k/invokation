@@ -26,14 +26,17 @@ M.POST_GAME_TIME = 60.0
 --- How long should it take individual trees to respawn after being cut down/destroyed?
 M.TREE_REGROW_TIME = 300.0
 
+--- How much starting gold should we give to each player?
+M.STARTING_GOLD = 0
+
 --- How much gold should players get per tick?
-M.GOLD_PER_TICK = 100
+M.GOLD_PER_TICK = 0
 
 --- How long should we wait in seconds between gold ticks?
-M.GOLD_TICK_TIME = 5
+M.GOLD_TICK_TIME = 60
 
 --- Should we disable the recommened builds for heroes?
-M.RECOMMENDED_BUILDS_DISABLED = true
+M.RECOMMENDED_BUILDS_DISABLED = false
 
 --- How far out should we allow the camera to go?
 --
@@ -81,7 +84,7 @@ M.USE_STANDARD_HERO_GOLD_BOUNTY = true
 M.USE_CUSTOM_TOP_BAR_VALUES = true
 
 --- Should we display the top bar score/count at all?
-M.TOP_BAR_VISIBLE = true
+M.TOP_BAR_VISIBLE = false
 
 --- Should we display kills only on the top bar? (No denies, suicides, kills by neutrals)
 --
@@ -92,7 +95,7 @@ M.SHOW_KILLS_ON_TOPBAR = false
 M.ENABLE_TOWER_BACKDOOR_PROTECTION = true
 
 --- Should we remove all illusions if the main hero dies?
-M.REMOVE_ILLUSIONS_ON_DEATH = false
+M.REMOVE_ILLUSIONS_ON_DEATH = true
 
 --- Should we disable the gold sound when players get gold?
 M.DISABLE_GOLD_SOUNDS = false
@@ -166,9 +169,6 @@ M.GAME_END_DELAY = -1
 --- How long should we wait after the victory message displays to show the End Screen?
 M.VICTORY_MESSAGE_DURATION = 3
 
---- How much starting gold should we give to each player?
-M.STARTING_GOLD = 500
-
 --- Should we disable the day night cycle from naturally occurring?
 --
 -- (Manual adjustment still possible)
@@ -178,7 +178,7 @@ M.DISABLE_DAY_NIGHT_CYCLE = false
 M.DISABLE_KILLING_SPREE_ANNOUNCER = true
 
 --- Should we disable the sticky item button in the quick buy area?
-M.DISABLE_STICKY_ITEM = false
+M.DISABLE_STICKY_ITEM = true
 
 --- Should we skip the team setup entirely?
 M.SKIP_TEAM_SETUP = false
