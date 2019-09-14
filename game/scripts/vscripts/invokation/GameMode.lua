@@ -56,8 +56,24 @@ function GameMode:d(...)
   return self.logger:Debug(...)
 end
 
+function GameMode:debugf(...)
+  return self.logger:Debugf(...)
+end
+
+function GameMode:warn(...)
+  return self.logger:Warning(...)
+end
+
+function GameMode:warnf(...)
+  return self.logger:Warningf(...)
+end
+
 function GameMode:err(...)
   return self.logger:Error(...)
+end
+
+function GameMode:errf(...)
+  return self.logger:Errorf(...)
 end
 
 --- Entry-point for the game initialization.

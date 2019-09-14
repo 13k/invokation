@@ -6,6 +6,9 @@
 
 local S = require("invokation.const.settings")
 
+local WARNF_MISSING_TEAM_COLOR =
+  "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
+
 --- Called when the overall game state has changed.
 -- @tparam table payload
 function GameMode:_OnGameRulesStateChange(payload)
@@ -24,10 +27,16 @@ function GameMode:_OnGameRulesStateChange(payload)
     self:OnAllPlayersLoaded()
 
     if S.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS then
-      for i = 0, 9 do
+      for i = 0, DOTA_DEFAULT_MAX_TEAM_PLAYERS do
         if PlayerResource:IsValidPlayer(i) then
-          local color = S.TEAM_COLORS[PlayerResource:GetTeam(i)]
-          PlayerResource:SetCustomPlayerColor(i, color[1], color[2], color[3])
+          local team = PlayerResource:GetTeam(i)
+          local color = S.TEAM_COLORS[team]
+
+          if color ~= nil then
+            PlayerResource:SetCustomPlayerColor(i, color[1], color[2], color[3])
+          else
+            self:warnf(WARNF_MISSING_TEAM_COLOR, i, team)
+          end
         end
       end
     end
