@@ -60,8 +60,8 @@
     DOTA_DEFAULT_UI_KILLCAM: false,
     // [26] Top-bar HUD (?)
     DOTA_DEFAULT_UI_TOP_BAR: false,
-    // [27] ?
-    DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS: false,
+    // [27] Render custom UI elements in front of HUD
+    DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS: true,
     // [28] ?
     DOTA_DEFAULT_UI_ELEMENT_COUNT: false,
   };
