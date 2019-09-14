@@ -78,6 +78,47 @@ local function reinsertSpellAbility(hero, ability)
   ability:SetLevel(level)
 end
 
+--- Ability level up option.
+--
+-- If no option is given, level up the ability 1 level.
+--
+-- @table AbilityLevelUpOption
+-- @field[opt,type=int] level Specific level
+-- @field[opt,type=bool] maxLevel Level up to max ability level
+
+--- Levels up orb abilities.
+-- @tparam table options Options table
+-- @tparam[opt=false] bool options.maxLevel Level up abilities to max level
+-- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_QUAS Quas level up option
+-- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_WEX Wex level up option
+-- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_EXORT Exort level up option
+function M:LevelUpAbilities(options)
+  options = options or {}
+
+  for _, name in ipairs(INVOKER.ORB_ABILITIES) do
+    if options.maxLevel or options[name] then
+      local abilityOption = options[name] or {}
+      local ability = self.hero:FindAbilityByName(name)
+
+      if ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED then
+        local targetLevel
+
+        if options.maxLevel or abilityOption.maxLevel then
+          targetLevel = ability:GetMaxLevel()
+        elseif abilityOption.level then
+          targetLevel = abilityOption.level
+        else
+          targetLevel = ability:GetLevel() + 1
+        end
+
+        while ability:GetLevel() < targetLevel do
+          self.hero:UpgradeAbility(ability)
+        end
+      end
+    end
+  end
+end
+
 --- Resets orb abilities levels to zero.
 -- @tparam table options Options table
 -- @tparam[opt=false] bool options.reinsertSpells Reinsert (reset) spell abilities

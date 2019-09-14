@@ -38,7 +38,7 @@
     </Panel>
 
     <Button class="PlayButton FlatButton" onactivate="pickerCombo.Play()">
-      <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
+      <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
     </Button>
   </Panel>
 </root>

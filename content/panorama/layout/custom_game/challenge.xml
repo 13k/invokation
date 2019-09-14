@@ -32,15 +32,15 @@
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="CloseButton ChallengeIconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button class="CloseButton ChallengeIconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

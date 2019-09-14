@@ -4,19 +4,18 @@
 local M = {}
 
 local Unit = require("invokation.dota2.Unit")
-local UNITS = require("invokation.const.units")
 local Player = require("invokation.dota2.Player")
 local Invoker = require("invokation.dota2.Invoker")
+
+local UNITS = require("invokation.const.units")
+local LIMITS = require("invokation.const.limits")
 
 function M.setup(player, combo)
   player = Player(player)
 
   local unit = Unit(player.hero)
 
-  while unit:GetLevel() < combo.heroLevel do
-    unit:HeroLevelUp(false)
-  end
-
+  unit:HeroLevelUpTo(combo.heroLevel)
   unit:AddItemsByName(combo.items or {}, {onlyMissing = true})
 
   if combo.gold ~= nil then
@@ -46,7 +45,7 @@ function M.teardown(player, options)
     unit:RemoveItems()
     -- Orbs reset must come before hero replacement
     invoker:ResetAbilities()
-    player.hero:SetAbilityPoints(1)
+    unit:SetAbilityPoints(1)
     player:ReplaceHero(player.hero:GetUnitName())
   else
     unit:Purge()
@@ -59,6 +58,29 @@ function M.refundPurchase(player, purchase)
   player = Player(player)
   local unit = Unit(player.hero)
   unit:GiveGold(purchase.cost)
+end
+
+function M.levelUp(player, options)
+  options = options or {}
+  player = Player(player)
+
+  local unit = Unit(player.hero)
+  local targetLevel
+
+  if options.level ~= nil then
+    targetLevel = options.level
+  elseif options.maxLevel then
+    targetLevel = LIMITS.MAX_HERO_LEVEL
+  else
+    targetLevel = unit:GetLevel() + 1
+  end
+
+  unit:HeroLevelUpTo(targetLevel, {playEffects = true})
+
+  if targetLevel == LIMITS.MAX_HERO_LEVEL then
+    local invoker = Invoker(player.hero)
+    invoker:LevelUpAbilities({maxLevel = true})
+  end
 end
 
 return M

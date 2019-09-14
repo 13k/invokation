@@ -35,6 +35,7 @@ local DELEGATES = {
   "RemoveItem",
   "RespawnHero",
   "RespawnUnit",
+  "SetAbilityPoints",
   "SetGold"
 }
 
@@ -95,6 +96,18 @@ function M:Purge(options)
     types.to_bool(options.stuns),
     types.to_bool(options.exceptions)
   )
+end
+
+--- Levels up the hero unit.
+-- @tparam int level Target level (if current level is higher, does nothing)
+-- @tparam[opt={}] table options Options table
+-- @tparam[opt=false] bool options.playEffects Play level up effects
+function M:HeroLevelUpTo(level, options)
+  options = options or {}
+
+  while self:GetLevel() < level do
+    self:HeroLevelUp(types.to_bool(options.playEffects))
+  end
 end
 
 --- Heals the unit to the maximum health.

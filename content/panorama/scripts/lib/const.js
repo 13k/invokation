@@ -21,6 +21,8 @@
     COMBO_STEP_ERROR: "invokation_combo_step_error",
     COMBO_FINISHED: "invokation_combo_finished",
     COMBO_RESTART: "invokation_combo_restart",
+    // freestyle
+    FREESTYLE_HERO_LEVEL_UP: "invokation_freestyle_hero_level_up",
     // combat log
     COMBAT_LOG_ABILITY_USED: "invokation_combat_log_ability_used",
     COMBAT_LOG_CLEAR: "invokation_combat_log_clear",

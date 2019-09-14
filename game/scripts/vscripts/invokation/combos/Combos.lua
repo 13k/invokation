@@ -37,6 +37,10 @@ local function isIgnoredAbility(ability)
   return not ABILITY_LIST[ability.name]
 end
 
+local function isFreestyleCombo(combo)
+  return combo ~= nil and combo.id == FreestyleCombo.COMBO_ID
+end
+
 --- Constructor.
 -- @tparam table options Options table
 -- @tparam invokation.Logger options.logger Logger instance
@@ -313,13 +317,29 @@ end
 function M:OnItemPurchased(player, purchase)
   local combo = self:getPlayerState(player, "combo")
 
-  if combo == nil then
+  if not isFreestyleCombo(combo) then
     return
   end
 
-  if combo.id == FreestyleCombo.COMBO_ID then
-    CombosHero.refundPurchase(player, purchase)
+  CombosHero.refundPurchase(player, purchase)
+end
+
+--- Handles freestyle hero level up.
+--
+-- If no options are given, levels hero up one level.
+--
+-- @tparam CDOTAPlayer player Player instance
+-- @tparam table options Options table
+-- @tparam[opt] int options.level Level up to specified level
+-- @tparam[opt=false] bool options.maxLevel Level up to max level
+function M:FreestyleHeroLevelUp(player, options)
+  local combo = self:getPlayerState(player, "combo")
+
+  if not isFreestyleCombo(combo) then
+    return
   end
+
+  CombosHero.levelUp(player, options)
 end
 
 return M

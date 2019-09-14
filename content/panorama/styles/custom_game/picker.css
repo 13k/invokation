@@ -8,7 +8,7 @@ pickerTotalWidth = combosWidth + filtersWidth + thumbWidth + 10
 pickerClosedWidth = thumbWidth
 */
 
-@define pickerMarginTop: 180px;
+@define pickerMarginTop: 100px;
 @define combosWidth: 350px;
 @define comboWidth: 320px;
 @define filtersWidth: 240px;

@@ -118,8 +118,10 @@
  ******************************************************************************/
 
 @define controlsArrowRightIcon: url("s2r://panorama/images/control_icons/arrow_right_png.vtex");
+@define controlsArrowDropdownUpIcon: url("s2r://panorama/images/control_icons/arrow_dropdown_up_png.vtex");
 @define controlsCloseIcon: url("s2r://panorama/images/control_icons/x_close_png.vtex");
 @define controlsCloseBoldIcon: url("s2r://panorama/images/control_icons/purgatory_png.vtex");
+@define controlsDoubleArrowRightIcon: url("s2r://panorama/images/control_icons/double_arrow_right_png.vtex");
 @define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
 @define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsFilterCarryIcon: url("s2r://panorama/images/control_icons/filter_carry_png.vtex");

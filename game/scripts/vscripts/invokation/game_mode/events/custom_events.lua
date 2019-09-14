@@ -39,6 +39,16 @@ function GameMode:OnComboRestart(player, payload)
   self.combos:Restart(player, {hardReset = hardReset})
 end
 
+--- Handles freestyle hero level up events.
+-- @tparam CDOTAPlayer player
+-- @tparam table payload
+-- @tparam[opt] int options.level Level up to specified level
+-- @tparam[opt=false] bool payload.maxLevel Level up to max level
+function GameMode:OnFreestyleHeroLevelUp(player, payload)
+  self:d("OnFreestyleHeroLevelUp()", player:GetPlayerID(), payload)
+  self.combos:FreestyleHeroLevelUp(player, payload)
+end
+
 --- Handles combat log capture start events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload

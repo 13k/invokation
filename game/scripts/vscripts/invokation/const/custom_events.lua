@@ -27,6 +27,12 @@ M.EVENT_COMBO_FINISHED = "invokation_combo_finished"
 --- restart combo
 M.EVENT_COMBO_RESTART = "invokation_combo_restart"
 
+--- Freestyle
+-- @section freestyle
+
+--- hero level up
+M.EVENT_FREESTYLE_HERO_LEVEL_UP = "invokation_freestyle_hero_level_up"
+
 --- Combat Log
 -- @section combat_log
 

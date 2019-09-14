@@ -37,7 +37,7 @@
       <Panel class="ViewerFooter" hittest="false">
         <Panel class="ViewerButtons" hittest="false">
           <Button class="PlayButton" onactivate="viewer.Play()">
-            <Label class="PlayLabel" text="#invokation_combo_play" hittest="false" />
+            <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
           </Button>
         </Panel>
       </Panel>

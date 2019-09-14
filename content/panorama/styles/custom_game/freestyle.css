@@ -2,7 +2,7 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
-@define controlsMarginRight: 300px;
+@define controlsMarginLeft: 100px;
 
 .FreestyleRoot {
   width: 100%;
@@ -11,8 +11,9 @@
 
 .FreestyleControls {
   flow-children: right;
-  margin-right: controlsMarginRight;
-  align: right bottom;
+  margin-top: 13px;
+  margin-left: controlsMarginLeft;
+  align: left bottom;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
@@ -25,6 +26,7 @@
 .FreestyleControls .FreestyleControlIcon {
   width: 64px;
   height: 64px;
+  tooltip-position: top;
   transition-duration: 0.2s;
   transition-property: background-color;
 }
@@ -63,6 +65,17 @@
 
 .FreestyleControls .CloseButton {
   background-size: 34px 34px;
+}
+
+.FreestyleControls .LevelUpButton {
+  background-image: controlsArrowDropdownUpIcon;
+  background-size: 48px 48px;
+}
+
+.FreestyleControls .LevelMaxButton {
+  transform: rotateZ(-90deg);
+  background-image: controlsDoubleArrowRightIcon;
+  background-size: 30px 30px;
 }
 
 .FreestyleControls .FreestyleControlIcon .Grey {

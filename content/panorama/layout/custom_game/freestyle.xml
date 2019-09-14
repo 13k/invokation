@@ -11,15 +11,23 @@
   <Panel class="FreestyleRoot Hide" hittest="false">
     <Panel class="FreestyleControls TranslucentPanel" hittest="false">
       <Panel class="FreestyleControlIcon">
-        <Button class="RefreshButton FreestyleIconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_combo_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="LevelUpButton FreestyleIconButton Grey" onactivate="freestyle.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="FullRefreshIcon FreestyleIconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_combo_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="LevelMaxButton FreestyleIconButton Grey" onactivate="freestyle.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="CloseButton FreestyleIconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_combo_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button class="RefreshButton FreestyleIconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="FreestyleControlIcon">
+        <Button class="FullRefreshIcon FreestyleIconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="FreestyleControlIcon">
+        <Button class="CloseButton FreestyleIconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

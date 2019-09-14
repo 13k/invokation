@@ -2,14 +2,15 @@
 
 (function(global, context) {
   var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
   var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
+
+  var EVENTS = global.Const.EVENTS;
+  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
 
   var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
   var COMBO_SCORE_ID = "ComboScore";
@@ -75,6 +76,10 @@
 
     sendRestart: function(isHardReset) {
       this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
+    },
+
+    sendLevelUp: function(payload) {
+      this.sendServer(EVENTS.FREESTYLE_HERO_LEVEL_UP, payload);
     },
 
     createComboScorePanel: function(parent) {
@@ -183,6 +188,14 @@
     Stop: function() {
       this.debug("Stop()");
       this.sendStop();
+    },
+
+    LevelUp: function() {
+      this.sendLevelUp();
+    },
+
+    LevelMax: function() {
+      this.sendLevelUp({ maxLevel: true });
     },
   });
 

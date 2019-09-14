@@ -21,11 +21,11 @@ local function eventname(step)
 end
 
 --- Combo step.
+-- @table ComboStep
 -- @field[type=int] id Step ID
 -- @field[type=string] name Step name (ability or item name)
 -- @field[type=bool] required Is step required or optional?
 -- @field[type=array(int),opt] next Next steps IDs (`nil` if it's the last step in the sequence)
--- @table ComboStep
 
 --- Constructor.
 -- @tparam table spec Combo specification table
