@@ -9,6 +9,10 @@ local ITEMS_FILE = "scripts/npc/items.txt"
 local ITEM_KEY_PATT = "^item_"
 
 --- Constructor.
+--
+-- Reads all entries in `scripts/npc/items.txt` and convert each valid item
+-- entry into `ItemKeyValues` instances.
+--
 function M:_init()
   self.kv = {}
   self:loadKV()
@@ -24,6 +28,8 @@ function M:loadKV()
   end
 end
 
+--- Returns an iterator function that iterates over the `ItemKeyValues` entries.
+-- @treturn function
 function M:Entries()
   return pairs(self.kv)
 end
