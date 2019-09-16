@@ -37,6 +37,10 @@ local function isIgnoredAbility(ability)
   return not ABILITY_LIST[ability.name]
 end
 
+local function isRunningCombo(combo)
+  return combo ~= nil and not combo.failed
+end
+
 local function isFreestyleCombo(combo)
   return combo ~= nil and combo.id == FreestyleCombo.COMBO_ID
 end
@@ -260,11 +264,7 @@ function M:OnAbilityUsed(player, unit, ability)
 
   local combo = self:getPlayerState(player, "combo")
 
-  if combo == nil then
-    return
-  end
-
-  if combo.failed then
+  if not isRunningCombo(combo) then
     return
   end
 
@@ -301,7 +301,7 @@ function M:OnEntityHurt(damage)
 
   local combo = self:getPlayerState(player, "combo")
 
-  if combo == nil then
+  if not isRunningCombo(combo) then
     return
   end
 
