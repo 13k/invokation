@@ -3,7 +3,7 @@
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
 @define sequenceWidth: 150px;
-@define controlsMarginRight: 0;
+@define controlsMarginLeft: 100px;
 
 .ChallengeRoot {
   width: 100%;
@@ -109,8 +109,8 @@
 
 .ChallengeControls {
   flow-children: right;
-  margin-right: controlsMarginRight;
-  align: right bottom;
+  margin-left: controlsMarginLeft;
+  align: left bottom;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
@@ -227,25 +227,24 @@
 
 #ChallengeTimer {
   flow-children: right;
-  width: 100px;
-  height: 44px;
+  width: 130px;
+  height: 64px;
   margin-right: 220px;
-  margin-bottom: 20px;
-  padding: 6px 8px 2px 8px;
-  align: right bottom;
-  transform: translateY(-40px);
+  padding: 6px 12px 2px 12px;
+  align: right top;
+  transform: translateY(0);
   border-radius: 4px;
   transition-duration: 0.2s;
   transition-property: transform;
 }
 
 #ChallengeTimer.Hide {
-  transform: translateY(0);
+  transform: translateY(-64px);
 }
 
 #ChallengeTimer .ClockIcon {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   margin-right: 8px;
   vertical-align: center;
   transform: translateY(-2px);
@@ -259,6 +258,6 @@
   width: fill-parent-flow(1);
   vertical-align: center;
   text-overflow: shrink;
-  font-size: 22px;
+  font-size: 26px;
   color: white;
 }
