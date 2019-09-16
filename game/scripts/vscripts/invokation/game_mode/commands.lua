@@ -90,6 +90,13 @@ function GameMode:registerCommands()
       "Reinsert Invoker ability (<name:string>)",
       FCVAR_CHEAT
     )
+
+    Convars:RegisterCommand(
+      "inv_item_query",
+      lfunc.bindbyname(self, "CommandItemQuery"),
+      "Query items (<query:string>)",
+      FCVAR_CHEAT
+    )
   end
 
   self:d("  register commands")
@@ -426,4 +433,14 @@ function GameMode:CommandReinsertAbility(_, name)
   ability = hero:AddAbility(name)
   ability:SetAbilityIndex(index)
   ability:SetLevel(level)
+end
+
+function GameMode:CommandItemQuery(_, query)
+  self:d("CommandItemQuery()", query)
+
+  for name, kv in pairs(self.itemsKV:Search(query)) do
+    self:d(name, kv)
+  end
+
+  self:d("CommandItemQuery() ---")
 end
