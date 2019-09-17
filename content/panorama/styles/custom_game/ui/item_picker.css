@@ -1,10 +1,26 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
+/*
+uiItemPickerCategoryWidth = 4 * (uiItemPickerItemWidth + uiItemPickerItemHMargin + 2)
+uiItemPickerGroupWidth = 2 * (uiItemPickerCategoryWidth + uiItemPickerCategoryHMargin) + 20
+uiItemPickerWidth = 2 * (uiItemPickerGroupWidth + uiItemPickerGroupHMargin) + uiItemPickerGroupsPadding.right + uiItemPickerGroupsPadding.left
+*/
+
+@define uiItemPickerWidth: 1032px;
+@define uiItemPickerHeight: 760px;
+@define uiItemPickerGroupsPadding: 16px 8px 0 8px;
+@define uiItemPickerGroupWidth: 500px;
+@define uiItemPickerGroupHMargin: 8px;
+@define uiItemPickerCategoryWidth: 232px;
+@define uiItemPickerCategoryHMargin: 8px;
+@define uiItemPickerItemWidth: 50px;
+@define uiItemPickerItemHMargin: 6px;
+
 .UIItemPickerRoot {
   flow-children: down;
-  width: 970px;
-  height: 710px;
+  width: uiItemPickerWidth;
+  height: uiItemPickerHeight;
 }
 
 .UIItemPickerHeader {
@@ -32,7 +48,7 @@
 
 .UIItemPickerSearchBox .UIItemPickerSearchTextEntry {
   width: fill-parent-flow(1);
-  border: 0 solid transparent;
+  border: 0;
   background-color: none;
 }
 
@@ -66,8 +82,8 @@
   overflow: squish scroll;
   flow-children: right;
   width: 100%;
-  height: 100%;
-  padding: 16px 8px -15px 8px;
+  height: fill-parent-flow(1);
+  padding: uiItemPickerGroupsPadding;
 }
 
 .UIItemPickerGroupName {
@@ -89,21 +105,22 @@
 
 .UIItemPickerGroup {
   flow-children: down;
-  width: 464px;
-  margin-left: 8px;
+  width: uiItemPickerGroupWidth;
+  margin-left: uiItemPickerGroupHMargin;
 }
 
 .UIItemPickerGroupCategories {
   flow-children: right-wrap;
   width: 100%;
+  margin-top: 16px;
   horizontal-align: center;
 }
 
 .UIItemPickerCategory {
   flow-children: down;
-  width: 224px;
+  width: uiItemPickerCategoryWidth;
   margin-bottom: 8px;
-  margin-left: 8px;
+  margin-left: uiItemPickerCategoryHMargin;
 }
 
 .UIItemPickerCategoryItems {
@@ -112,10 +129,10 @@
 }
 
 .UIItemPickerCategoryItems .UIItemPickerItem {
-  width: 50px;
+  width: uiItemPickerItemWidth;
   height: width-percentage(72.7%);
-  margin-right: 4px;
-  margin-bottom: 4px;
+  margin-right: uiItemPickerItemHMargin;
+  margin-bottom: 6px;
   box-shadow: #6ad4 -1px -1px 2px 2px;
 }
 
