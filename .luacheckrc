@@ -527,5 +527,11 @@ new_read_globals = {
   "DOTA_ModifyXP_Unspecified", -- (0)
   "DOTA_ModifyXP_HeroKill", -- (1)
   "DOTA_ModifyXP_CreepKill", -- (2)
-  "DOTA_ModifyXP_RoshanKill" -- (3)
+  "DOTA_ModifyXP_RoshanKill", -- (3)
+  -- AbilityLearnResult_t
+  "ABILITY_CAN_BE_UPGRADED", -- (0)
+  "ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE", -- (1)
+  "ABILITY_CANNOT_BE_UPGRADED_AT_MAX", -- (2)
+  "ABILITY_CANNOT_BE_UPGRADED_REQUIRES_LEVEL", -- (3)
+  "ABILITY_NOT_LEARNABLE" -- (4)
 }
