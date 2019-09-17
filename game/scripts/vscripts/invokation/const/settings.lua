@@ -367,7 +367,8 @@ M.DISABLE_STASH_PURCHASING = true
 -- `GameMode:SetAnnouncerDisabled(bDisabled)`
 M.DISABLE_ANNOUNCER = true
 
---- Force all players to use the specified hero and disable the normal hero selection process (e.g. `"npc_dota_hero_axe"`).
+--- Force all players to use the specified hero and disable the normal hero
+-- selection process (e.g. `"npc_dota_hero_axe"`).
 --
 -- Must be used before hero selection. Set to `nil` to allow players to pick their own hero.
 --

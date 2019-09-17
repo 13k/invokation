@@ -70,6 +70,6 @@ end
 -- @tparam table payload
 function GameMode:OnItemPickerQuery(player, payload)
   self:d("OnItemPickerQuery()", player:GetPlayerID(), payload)
-  response = {items = self.itemsKV:Search(payload.query)}
+  local response = {items = self.itemsKV:Search(payload.query)}
   CustomEvents.SendPlayer(CustomEvents.EVENT_ITEM_PICKER_QUERY_RESPONSE, player, response)
 end

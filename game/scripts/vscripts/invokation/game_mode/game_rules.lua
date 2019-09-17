@@ -58,12 +58,16 @@ function GameMode:setupGameRules()
     end
   end
 
-  -- Sets a callback to handle saving custom game account records (callback is passed a Player ID and should return a flat simple table) [Preview/Unreleased]
+  -- Sets a callback to handle saving custom game account records (callback is
+  -- passed a Player ID and should return a flat simple table) [Preview/Unreleased]
   -- GameRules:SetCustomGameAccountRecordSaveFunction(handle, handle)
+
   -- Set the difficulty level of the custom game mode
   -- GameRules:SetCustomGameDifficulty(int)
+
   -- Event-only (table hMetadataTable)
   -- GameRules:SetEventMetadataCustomTable(handle)
+
   -- Event-only (table hMetadataTable)
   -- GameRules:SetEventSignoutCustomTable(handle)
 
