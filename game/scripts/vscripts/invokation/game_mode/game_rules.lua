@@ -38,7 +38,7 @@ function GameMode:setupGameRules()
   GameRules:SetUseCustomHeroXPValues(S.USE_CUSTOM_XP_VALUES)
   GameRules:SetUseUniversalShopMode(S.UNIVERSAL_SHOP_MODE)
 
-  if S.SKIP_TEAM_SETUP then
+  if self.env.development then
     GameRules:EnableCustomGameSetupAutoLaunch(true)
     GameRules:LockCustomGameSetupTeamAssignment(true)
     GameRules:SetCustomGameSetupAutoLaunchDelay(0)

@@ -12,6 +12,7 @@ require("invokation.game_mode.events")
 require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
 
+local Env = require("invokation.game_mode.Env")
 local Combos = require("invokation.combos.Combos")
 local Logger = require("invokation.Logger")
 local Timers = require("invokation.dota2.timers")
@@ -43,8 +44,14 @@ function GameMode.Precache(context)
 end
 
 --- Constructor.
-function GameMode:_init()
-  self.logger = Logger(IsInToolsMode() and Logger.DEBUG or Logger.INFO, "invokation")
+-- @tparam[opt] table options Options table
+-- @tparam[opt] string options.env Environment
+function GameMode:_init(options)
+  options = options or {}
+  options.env = options.env or (IsInToolsMode() and Env.DEVELOPMENT or Env.PRODUCTION)
+
+  self.env = Env(options.env)
+  self.logger = Logger(self.env.development and Logger.DEBUG or Logger.INFO, "invokation")
   self.netTable = NetTable(NET_TABLE_NAME)
   self.itemsKV = ItemsKeyValues()
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
@@ -102,7 +109,7 @@ function GameMode:setupModules()
   lrandom.randomseed()
   self:d("  setup random")
 
-  if IsInToolsMode() then
+  if self.env.development then
     local ModMaker = require("invokation.dota2.modmaker")
     ModMaker.Start()
     self:d("  setup ModMaker")

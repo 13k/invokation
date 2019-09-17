@@ -9,8 +9,11 @@
   var Prefixer = global.Util.Prefixer;
   var PopupParams = global.Util.PopupParams;
 
+  var ENV = global.ENV;
   var EVENTS = global.Const.EVENTS;
   var UI_EVENTS = global.Const.UI_EVENTS;
+
+  var DEVELOPMENT_CLASS = "Development";
 
   var elemAttrNamer = _.partialRight(Prefixer, "$");
   var elemIDing = _.partialRight(Prefixer, "#");
@@ -19,12 +22,16 @@
     constructor: function Component(options) {
       options = options || {};
 
-      this.logger = new Logger({ progname: this.classid });
+      this.env = ENV;
       this.$ctx = $.GetContextPanel();
       this.data = {};
       this.inputs = {};
       this.outputs = new Callbacks();
-      this.isInToolsMode = Game.IsInToolsMode();
+
+      this.logger = new Logger({
+        level: this.env.development ? Logger.DEBUG : Logger.INFO,
+        progname: this.classid,
+      });
 
       this.setupContextPanel();
       this.findElements(options.elements);
@@ -39,8 +46,8 @@
     setupContextPanel: function() {
       this.$ctx.component = this;
 
-      if (this.isInToolsMode) {
-        this.$ctx.AddClass("ToolsMode");
+      if (this.env.development) {
+        this.$ctx.AddClass(DEVELOPMENT_CLASS);
       }
     },
 
@@ -84,7 +91,7 @@
 
     _log: function(levelName, args) {
       args = _.toArray(args);
-      args.unshift(Logger.LEVELS[levelName]);
+      args.unshift(Logger[levelName]);
       return this.logger.log.apply(this.logger, args);
     },
 

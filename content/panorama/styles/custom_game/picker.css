@@ -92,7 +92,7 @@ pickerClosedWidth = thumbWidth
   background-size: 100%;
 }
 
-.ToolsMode .PickerTitleContainer .RefreshButton {
+.Development .PickerTitleContainer .RefreshButton {
   visibility: visible;
 }
 

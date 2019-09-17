@@ -112,31 +112,17 @@ M.ENABLE_GAME_START_MUSIC = true
 -- `GameRules:SetRuneSpawnTime(float)`
 M.RUNE_SPAWN_TIME = 120
 
---- Should we skip the team setup entirely?
---
--- Setting to true will force:
---
--- * `ENABLE_AUTO_LAUNCH`: true
--- * `AUTO_LAUNCH_DELAY`: 0
--- * `LOCK_TEAM_SETUP`: true
---
-M.SKIP_TEAM_SETUP = true
-
 --- Enabled auto launch for custom game setup.
 --
 -- The game will launch after `AUTO_LAUNCH_DELAY` seconds.
---
--- If `SKIP_TEAM_SETUP` is enabled, this is enabled automatically.
 --
 -- `GameRules:EnableCustomGameSetupAutoLaunch(bool)`
 M.ENABLE_AUTO_LAUNCH = true
 
 --- Set the amount of time to wait for auto launch (default: 30, disable: 0).
 --
--- If `SKIP_TEAM_SETUP` is enabled, this is disabled automatically.
---
 -- `GameRules:SetCustomGameSetupAutoLaunchDelay(float)`
-M.AUTO_LAUNCH_DELAY = IsInToolsMode() and 0 or 10
+M.AUTO_LAUNCH_DELAY = 10
 
 --- Set the amount of remaining time, in seconds, for custom game setup (disable: 0, infinite: -1).
 --
@@ -157,8 +143,6 @@ M.GAME_SETUP_TIMEOUT = 1
 -- If team assignment is locked players cannot change teams.
 --
 -- The host can still unlock the teams.
---
--- If `SKIP_TEAM_SETUP` is enabled, this is enabled automatically.
 --
 -- `GameRules:LockCustomGameSetupTeamAssignment(bool)`
 M.LOCK_TEAM_SETUP = true

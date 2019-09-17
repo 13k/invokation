@@ -20,7 +20,7 @@ function GameMode:registerCommands()
     FCVAR_CHEAT
   )
 
-  if IsInToolsMode() then
+  if self.env.development then
     Convars:RegisterCommand(
       "inv_dump_lua_version",
       lfunc.bindbyname(self, "CommandDumpLuaVersion"),

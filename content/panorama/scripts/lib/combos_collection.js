@@ -12,6 +12,7 @@
   var IsItemAbility = global.Util.IsItemAbility;
   var LuaListDeep = global.Util.LuaListDeep;
 
+  var ENV = global.ENV;
   var EVENTS = global.Const.EVENTS;
 
   var NET_TABLE_KEY = "combos";
@@ -22,8 +23,11 @@
     constructor: function CombosCollection() {
       this.combos = null;
       this.onChangeCallbacks = [];
-      this.logger = new Logger({ progname: "combos_collection" });
       this.netTable = new NetTable();
+      this.logger = new Logger({
+        level: ENV.development ? Logger.DEBUG : Logger.INFO,
+        progname: "combos_collection",
+      });
 
       this.listenToNetTableChange();
     },
