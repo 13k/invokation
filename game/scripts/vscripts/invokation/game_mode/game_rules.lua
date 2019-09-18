@@ -1,10 +1,10 @@
 --- GameRules Setup
 -- @submodule invokation.GameMode
 
-local S = require("invokation.const.settings")
-
 --- GameRules Setup
 -- @section game_rules
+
+local S = require("invokation.const.settings")
 
 function GameMode:setupGameRules()
   GameRules:SetCreepMinimapIconScale(S.MINIMAP_CREEP_ICON_SCALE)

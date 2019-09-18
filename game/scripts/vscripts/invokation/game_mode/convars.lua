@@ -2,7 +2,7 @@
 -- @submodule invokation.GameMode
 
 --- Console Variables
--- @section console_variables
+-- @section convars
 
 function GameMode:registerConVars()
   self:d("  register convars")

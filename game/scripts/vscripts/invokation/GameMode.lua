@@ -1,6 +1,9 @@
 --- Main class for the game.
 -- @classmod invokation.GameMode
 
+--- Initialization
+-- @section init
+
 if _G.GameMode == nil then
   _G.GameMode = require("pl.class")()
 end
@@ -12,6 +15,7 @@ require("invokation.game_mode.events")
 require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
 
+local lfn = require("invokation.lang.function")
 local Env = require("invokation.game_mode.Env")
 local Combos = require("invokation.combos.Combos")
 local Logger = require("invokation.Logger")
@@ -57,6 +61,14 @@ function GameMode:_init(options)
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
   self.users = {}
   self.players = {}
+end
+
+function GameMode:fnHandler(methodName)
+  return self.env.development and lfn.lookupbyname(GameMode, methodName) or GameMode[methodName]
+end
+
+function GameMode:methodHandler(methodName)
+  return lfn.bind(self, self:fnHandler(methodName))
 end
 
 function GameMode:d(...)

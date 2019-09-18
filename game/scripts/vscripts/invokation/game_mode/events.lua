@@ -8,15 +8,14 @@ require("invokation.game_mode.events.internal")
 require("invokation.game_mode.events.game_events")
 require("invokation.game_mode.events.custom_events")
 
-local lfn = require("invokation.lang.function")
 local CustomEvents = require("invokation.dota2.custom_events")
 
 function GameMode:listenToGameEvent(event, methodName)
-  return ListenToGameEvent(event, lfn.lookupbyname(GameMode, methodName), self)
+  return ListenToGameEvent(event, self:fnHandler(methodName), self)
 end
 
 function GameMode:subscribeToCustomEvent(event, methodName)
-  return CustomEvents.Subscribe(CustomEvents[event], lfn.bindbyname(self, methodName))
+  return CustomEvents.Subscribe(CustomEvents[event], self:methodHandler(methodName))
 end
 
 function GameMode:registerGameEvents()

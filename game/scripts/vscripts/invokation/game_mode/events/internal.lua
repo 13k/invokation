@@ -1,4 +1,4 @@
----
+--- Internal Game Events Listeners
 -- @submodule invokation.GameMode
 
 --- Internal Game Events Listeners
