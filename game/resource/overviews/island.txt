@@ -1,0 +1,8 @@
+island
+{
+	material materials/overviews/island.vmat
+	pos_x -7864
+	pos_y 8606
+	scale 16.000
+}
+

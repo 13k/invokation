@@ -1,9 +1,15 @@
 "Invokation"
 {
-  "maps" "invokation"
+  "maps" "cottage"
   "IsPlayable" "1"
   "TeamCount" "1"
-  "invokation"
+
+  "cottage"
+  {
+    "MaxPlayers" "1"
+  }
+
+  "island"
   {
     "MaxPlayers" "1"
   }
