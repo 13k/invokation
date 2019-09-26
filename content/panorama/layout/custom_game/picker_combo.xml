@@ -9,7 +9,10 @@
   </styles>
 
   <Panel class="PickerComboRoot">
-    <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
+    <Panel class="PanelTitleContainer">
+      <Button class="FinishedIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)" onmouseout="UIHideTextTooltip()" />
+      <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
+    </Panel>
 
     <Panel class="PickerComboInfoContainer">
       <Button class="PickerComboIcon HeroLevelIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
@@ -35,6 +38,7 @@
           </Panel>
         </Panel>
       </Panel>
+
     </Panel>
 
     <Button class="PlayButton FlatButton" onactivate="pickerCombo.Play()">

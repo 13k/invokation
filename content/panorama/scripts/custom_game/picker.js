@@ -18,8 +18,13 @@
   var COMBO_PROPERTIES = global.Const.COMBO_PROPERTIES;
   var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
 
+  var CLASSES = {
+    COMBO_PANEL: "PickerCombo",
+    DRAWER_CLOSED: "DrawerClosed",
+    FILTERS_CLOSED: "FiltersClosed",
+  };
+
   var COMBO_PANEL_ID_PREFIX = "PickerCombo";
-  var COMBO_PANEL_CLASS = "PickerCombo";
   var COMBO_PANEL_LAYOUT = "file://{resources}/layout/custom_game/picker_combo.xml";
 
   var TAG_SELECT_ID = "PickerFilterTags";
@@ -32,9 +37,6 @@
   var POPUP_INVOKER_ABILITY_PICKER_ID = "PickerPopupInvokerAbilityPicker";
   var POPUP_INVOKER_ABILITY_PICKER_LAYOUT =
     "file://{resources}/layout/custom_game/popups/popup_invoker_ability_picker.xml";
-
-  var DRAWER_CLOSED_CLASS = "DrawerClosed";
-  var FILTERS_CLOSED_CLASS = "FiltersClosed";
 
   var L10N_KEYS = {
     PROPERTY_FILTER_OPTION_DEFAULT: "#invokation_picker_filter_option_all",
@@ -92,6 +94,7 @@
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
           "!COMBO_STOPPED": "onComboStopped",
+          "!COMBO_FINISHED": "onComboFinished",
           "!POPUP_ITEM_PICKER_SUBMIT": "onPopupItemPickerSubmit",
           "!POPUP_ABILITY_PICKER_SUBMIT": "onPopupAbilityPickerSubmit",
         },
@@ -99,6 +102,7 @@
 
       this.popupItemPickerChannel = _.uniqueId("popup_item_picker_");
       this.popupAbilityPickerChannel = _.uniqueId("popup_ability_picker_");
+      this.finishedCombos = {};
 
       this.enableFiltering();
       this.renderFilters();
@@ -134,6 +138,15 @@
     onComboStopped: function() {
       this.debug("onComboStopped()");
       this.open();
+    },
+
+    onComboFinished: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
+      this.debug("onComboFinished()", payload);
+      this.finishCombo(payload.combo);
     },
 
     onFilterTagsChange: function(payload) {
@@ -176,6 +189,16 @@
       this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
     },
 
+    finishCombo: function(comboId) {
+      this.debug("finishCombo()", comboId);
+      this.finishedCombos[comboId] = true;
+      this.markComboPanelAsFinished(comboId);
+    },
+
+    markComboPanelAsFinished: function(comboId) {
+      this.comboPanels[comboId].component.Input("SetFinished");
+    },
+
     renderViewer: function(combo) {
       this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
     },
@@ -190,18 +213,22 @@
     },
 
     isClosed: function() {
-      return this.$slideout.BHasClass(DRAWER_CLOSED_CLASS);
+      return this.$slideout.BHasClass(CLASSES.DRAWER_CLOSED);
     },
 
     isFiltersPanelClosed: function() {
-      return this.$slideout.BHasClass(FILTERS_CLOSED_CLASS);
+      return this.$slideout.BHasClass(CLASSES.FILTERS_CLOSED);
+    },
+
+    resetComboPanels: function() {
+      this.comboPanels = {};
     },
 
     createComboPanel: function(parent, combo) {
       var id = comboPanelId(combo);
       var panel = CreatePanelWithLayout(parent, id, COMBO_PANEL_LAYOUT);
 
-      panel.AddClass(COMBO_PANEL_CLASS);
+      panel.AddClass(CLASSES.COMBO_PANEL);
 
       panel.component.Outputs({
         OnShowDetails: this.handler("onComboDetailsShow"),
@@ -209,6 +236,12 @@
       });
 
       panel.component.Input("SetCombo", combo);
+
+      this.comboPanels[combo.id] = panel;
+
+      if (this.finishedCombos[combo.id]) {
+        this.markComboPanelAsFinished(combo.id);
+      }
 
       return panel;
     },
@@ -306,8 +339,12 @@
 
     // ----- Actions -----
 
+    resetCombosAction: function() {
+      return new Sequence().RunFunction(this, this.resetComboPanels).RemoveChildren(this.$combos);
+    },
+
     renderCombosAction: function() {
-      return new Sequence().RemoveChildren(this.$combos).Action(this.createComboPanelsAction());
+      return new Sequence().Action(this.resetCombosAction()).Action(this.createComboPanelsAction());
     },
 
     createComboPanelsAction: function() {
@@ -436,7 +473,7 @@
 
       var seq = new ParallelSequence()
         .PlaySoundEffect(SOUNDS.OPEN)
-        .RemoveClass(this.$slideout, DRAWER_CLOSED_CLASS);
+        .RemoveClass(this.$slideout, CLASSES.DRAWER_CLOSED);
 
       this.debugFn(function() {
         return ["open()", { actions: seq.size() }];
@@ -452,7 +489,7 @@
 
       var seq = new ParallelSequence()
         .PlaySoundEffect(SOUNDS.CLOSE)
-        .AddClass(this.$slideout, DRAWER_CLOSED_CLASS);
+        .AddClass(this.$slideout, CLASSES.DRAWER_CLOSED);
 
       this.debugFn(function() {
         return ["close()", { actions: seq.size() }];
@@ -468,7 +505,7 @@
 
       var seq = new ParallelSequence()
         .PlaySoundEffect(SOUNDS.FILTERS_OPEN)
-        .RemoveClass(this.$slideout, FILTERS_CLOSED_CLASS);
+        .RemoveClass(this.$slideout, CLASSES.FILTERS_CLOSED);
 
       this.debugFn(function() {
         return ["openFilters()", { actions: seq.size() }];
@@ -484,7 +521,7 @@
 
       var seq = new ParallelSequence()
         .PlaySoundEffect(SOUNDS.FILTERS_CLOSE)
-        .AddClass(this.$slideout, FILTERS_CLOSED_CLASS);
+        .AddClass(this.$slideout, CLASSES.FILTERS_CLOSED);
 
       this.debugFn(function() {
         return ["closeFilters()", { actions: seq.size() }];

@@ -6,6 +6,10 @@
   var Sequence = global.Sequence.Sequence;
   var CreateComponent = context.CreateComponent;
 
+  var CLASSES = {
+    FINISHED: "PickerComboFinished",
+  };
+
   function propertyCssClass(property, value) {
     var baseClass;
 
@@ -32,13 +36,25 @@
         },
         inputs: {
           SetCombo: "setCombo",
+          SetFinished: "onSetFinished",
+          UnsetFinished: "onUnsetFinished",
         },
       });
     },
 
+    // --- Inputs ---
+
     setCombo: function(combo) {
       this.combo = combo;
       this.render();
+    },
+
+    onSetFinished: function() {
+      this.$ctx.AddClass(CLASSES.FINISHED);
+    },
+
+    onUnsetFinished: function() {
+      this.$ctx.RemoveClass(CLASSES.FINISHED);
     },
 
     // --- Actions ---
