@@ -97,10 +97,10 @@
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  margin-left: -2px;
+  margin-left: 2px;
   vertical-align: center;
   wash-color: #ddd;
-  background-image: controlsArrowRightIcon;
+  background-image: controlsArrowPopoutIcon;
   background-size: 16px 16px;
 }
 
