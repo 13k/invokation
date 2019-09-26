@@ -4,7 +4,7 @@
   width: 80px;
   height: 16px;
   vertical-align: center;
-  background-image: ratingBackground;
+  background-image: ultCooldownHud;
   background-repeat: repeat-x;
   background-position: 0% 0%;
   background-size: contain;
@@ -13,7 +13,7 @@
 .Rating .RatingActive {
   width: 0;
   height: 100%;
-  background-image: ratingActiveBackground;
+  background-image: ultReadyHud;
   background-repeat: repeat-x;
   background-position: 0% 0%;
   background-size: contain;

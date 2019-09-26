@@ -186,6 +186,8 @@
 
 @define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
 @define timerBgHud: url("s2r://panorama/images/hud/reborn/bg_timer_psd.vtex");
+@define ultCooldownHud: url("s2r://panorama/images/hud/reborn/ult_cooldown_psd.vtex");
+@define ultReadyHud: url("s2r://panorama/images/hud/reborn/ult_ready_psd.vtex");
 
 /******************************************************************************
  * Backgrounds
@@ -194,8 +196,6 @@
 @define loadingScreenBackground: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
 @define pickerBackground: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
 @define viewerBackground: url("file://{images}/custom_game/viewer/paper-bg.png");
-@define ratingBackground: url("file://{images}/custom_game/rating/base.png");
-@define ratingActiveBackground: url("file://{images}/custom_game/rating/active.png");
 
 /******************************************************************************
  * Masks
