@@ -27,17 +27,19 @@
       return obj;
     }
 
-    var list = [];
+    return _.reduce(
+      obj,
+      function(list, value, key) {
+        var idx = parseInt(key);
 
-    _.forOwn(obj, function(value, key) {
-      var idx = parseInt(key);
+        if (_.isInteger(idx)) {
+          list[idx - 1] = value;
+        }
 
-      if (idx != null) {
-        list[idx] = value;
-      }
-    });
-
-    return _.compact(list);
+        return list;
+      },
+      []
+    );
   };
 
   exports.LuaListDeep = function(obj, options) {
