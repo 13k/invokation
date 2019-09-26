@@ -227,13 +227,15 @@
 
 #ChallengeTimer {
   flow-children: right;
-  width: 130px;
-  height: 64px;
+  width: 140px;
+  height: 58px;
   margin-right: 220px;
   padding: 6px 12px 2px 12px;
   align: right top;
   transform: translateY(0);
   border-radius: 4px;
+  background-image: timerBgHud;
+  background-size: 100%;
   transition-duration: 0.2s;
   transition-property: transform;
 }
@@ -242,22 +244,12 @@
   transform: translateY(-64px);
 }
 
-#ChallengeTimer .ClockIcon {
-  width: 32px;
-  height: 32px;
-  margin-right: 8px;
-  vertical-align: center;
-  transform: translateY(-2px);
-  background-image: statusClockIcon;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
 #ChallengeTimerLabel {
-  width: fill-parent-flow(1);
-  vertical-align: center;
+  width: 100%;
+  margin-top: 6px;
+  text-align: center;
   text-overflow: shrink;
   font-size: 26px;
   color: white;
+  text-shadow: -1px 2px 1px 2 #333333b0;
 }

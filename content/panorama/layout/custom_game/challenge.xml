@@ -44,8 +44,7 @@
       </Panel>
     </Panel>
 
-    <Panel id="ChallengeTimer" class="TransparentPanel Hide">
-      <Button class="ClockIcon" />
+    <Panel id="ChallengeTimer" class="Hide">
       <Label id="ChallengeTimerLabel" hittest="false" />
     </Panel>
   </Panel>

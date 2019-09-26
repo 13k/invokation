@@ -185,6 +185,7 @@
  ******************************************************************************/
 
 @define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
+@define timerBgHud: url("s2r://panorama/images/hud/reborn/bg_timer_psd.vtex");
 
 /******************************************************************************
  * Backgrounds
