@@ -5,11 +5,6 @@
       "label": "Clean",
       "type": "shell",
       "command": "make clean",
-      "options": {
-        "env": {
-          "DOTA_PATH": "${config:dota2.path}"
-        }
-      },
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -24,11 +19,6 @@
       "label": "Install",
       "type": "shell",
       "command": "make install",
-      "options": {
-        "env": {
-          "DOTA_PATH": "${config:dota2.path}"
-        }
-      },
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -43,11 +33,6 @@
       "label": "Build",
       "type": "shell",
       "command": "make build",
-      "options": {
-        "env": {
-          "DOTA_PATH": "${config:dota2.path}"
-        }
-      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -68,7 +53,6 @@
       "command": "make build",
       "options": {
         "env": {
-          "DOTA_PATH": "${config:dota2.path}",
           "FORCE_BUILD": "1"
         }
       },
@@ -85,13 +69,8 @@
     },
     {
       "label": "Launch Game",
-      "type": "process",
-      "command": "${config:dota2.path}\\game\\bin\\win64\\dota2.exe",
-      "args": ["-dx11", "+dota_launch_custom_game", "invokation", "invokation"],
-      "isBackground": true,
-      "options": {
-        "cwd": "${config:dota2.path}"
-      },
+      "type": "shell",
+      "command": "make launch_game",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -104,13 +83,8 @@
     },
     {
       "label": "Launch Tools",
-      "type": "process",
-      "command": "${config:dota2.path}\\game\\bin\\win64\\dota2.exe",
-      "args": ["-tools", "-addon", "invokation", "-dx11", "-1080", "-border"],
-      "isBackground": true,
-      "options": {
-        "cwd": "${config:dota2.path}"
-      },
+      "type": "shell",
+      "command": "make launch_tools",
       "problemMatcher": [],
       "presentation": {
         "echo": true,

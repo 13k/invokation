@@ -40,6 +40,10 @@ find_ignore_options() {
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 ROOT_PATH="$(dirname "$SCRIPT_DIR")"
 
+if [[ -f "$ROOT_PATH/.env" ]]; then
+  source "$ROOT_PATH/.env"
+fi
+
 # shellcheck disable=SC2034
 VSCRIPTS_PATH="$ROOT_PATH/game/scripts/vscripts"
 # shellcheck disable=SC2034
@@ -49,7 +53,7 @@ PANORAMA_STYLES_PATH="$ROOT_PATH/content/panorama/styles"
 
 ADDON="invokation"
 # shellcheck disable=SC2034
-ADDON_MAP="invokation"
+ADDON_MAP="cottage"
 
 # All paths below are unix. Convert using `wslpath`.
 
