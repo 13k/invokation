@@ -1,2 +1,0 @@
-game\bin\win64\resourcecompiler.exe -fshallow -maxtextureres 256 -dxlevel 110 -quiet -unbufferedio -noassert -r -i "content/dota_addons/invokation/*" -world -phys -vis -gridnav -nompi -nop4
-
