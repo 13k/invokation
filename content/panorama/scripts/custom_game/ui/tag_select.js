@@ -26,8 +26,8 @@
   var OPTION_ID_TEXT_ENTRY = OPTION_ID_PREFIX + OPTION_TEXT_ENTRY;
 
   var L10N_KEYS = {
-    OPTION_TEXT_ENTRY: "#invokation_tag_select_option_text_entry",
-    POPUP_TEXT_ENTRY_TITLE: "#invokation_tag_select_popup_text_entry_title",
+    OPTION_TEXT_ENTRY: "invokation_tag_select_option_text_entry",
+    POPUP_TEXT_ENTRY_TITLE: "invokation_tag_select_popup_text_entry_title",
   };
 
   function normalizeTag(tag) {

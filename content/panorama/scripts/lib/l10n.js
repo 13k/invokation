@@ -2,14 +2,12 @@
 
 (function(global /*, context */) {
   var _ = global.lodash;
-  var Prefixer = global.Util.Prefixer;
 
   var COMBO_PROPERTIES = global.Const.COMBO_PROPERTIES;
 
   var module = module || {};
   var exports = (module.exports = module.exports || {});
 
-  var KEY_PREFIX = "#";
   var KEY_PARAM_SEP = "__";
   var COMBO_KEY_PREFIX = "invokation_combo";
   var COMBO_KEYS = ["name", "description"];
@@ -18,20 +16,17 @@
   var SHOP_GROUP_KEY_PREFIX = "DOTA_";
   var SHOP_CATEGORY_KEY_PREFIX = "DOTA_SUBSHOP_";
 
-  var keyPrefixer = _.partialRight(Prefixer, KEY_PREFIX);
-  var keyUnprefixer = _.partialRight(_.trimStart, KEY_PREFIX);
 
   exports.ShopGroupKey = function(group) {
-    return keyPrefixer(SHOP_GROUP_KEY_PREFIX + _.capitalize(group));
+    return SHOP_GROUP_KEY_PREFIX + _.capitalize(group);
   };
 
   exports.ShopCategoryKey = function(category) {
-    return keyPrefixer(SHOP_CATEGORY_KEY_PREFIX + String(category).toUpperCase());
+    return SHOP_CATEGORY_KEY_PREFIX + _.toUpper(String(category));
   };
 
-  exports.ParameterizedKey = function(prefix, params) {
-    prefix = keyPrefixer(prefix);
 
+  exports.ParameterizedKey = function(prefix, params) {
     return _.chain([prefix])
       .concat(params)
       .join(KEY_PARAM_SEP)
@@ -49,17 +44,8 @@
   };
 
   exports.LocalizeFallback = function(key, fallbackKey) {
-    key = keyPrefixer(key);
-    fallbackKey = keyPrefixer(fallbackKey);
-
-    var id = keyUnprefixer(key);
     var l10n = $.Localize(key);
-
-    if (l10n === id) {
-      l10n = $.Localize(fallbackKey);
-    }
-
-    return l10n;
+    return l10n === key ? $.Localize(fallbackKey) : l10n;
   };
 
   exports.LocalizeParameterized = function(prefix, params) {

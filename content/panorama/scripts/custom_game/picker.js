@@ -39,7 +39,7 @@
     "file://{resources}/layout/custom_game/popups/popup_invoker_ability_picker.xml";
 
   var L10N_KEYS = {
-    PROPERTY_FILTER_OPTION_DEFAULT: "#invokation_picker_filter_option_all",
+    PROPERTY_FILTER_OPTION_DEFAULT: "invokation_picker_filter_option_all",
   };
 
   var COMBO_PROPERTIES_TYPES = _.mapValues(COMBO_PROPERTIES, function(values) {
