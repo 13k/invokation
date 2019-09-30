@@ -14,6 +14,7 @@
     <include src="file://{resources}/scripts/lib/net_table.js" />
     <include src="file://{resources}/scripts/lib/grid.js" />
     <include src="file://{resources}/scripts/lib/custom_events.js" />
+    <include src="file://{resources}/scripts/lib/abilities_key_values.js" />
     <include src="file://{resources}/scripts/lib/combos_collection.js" />
     <include src="file://{resources}/scripts/lib/sequence.js" />
     <include src="file://{resources}/scripts/lib/component.js" />

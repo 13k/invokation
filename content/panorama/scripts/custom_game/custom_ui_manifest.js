@@ -3,6 +3,7 @@
 (function(global, context) {
   var _ = global.lodash;
   var CombosCollection = global.CombosCollection;
+  var AbilitiesKeyValues = global.AbilitiesKeyValues;
   var CreateComponent = context.CreateComponent;
 
   var UI_CONFIG = {
@@ -76,6 +77,9 @@
 
       global.COMBOS = new CombosCollection();
       global.COMBOS.Load();
+
+      global.ABILITIES_KV = new AbilitiesKeyValues();
+      global.ABILITIES_KV.Load();
 
       this.debug("init");
     },
