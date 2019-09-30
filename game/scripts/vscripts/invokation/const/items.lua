@@ -1,4 +1,4 @@
---- Heroes constants.
+--- Items constants.
 -- @module invokation.const.items
 
 local M = {}

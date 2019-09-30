@@ -276,6 +276,7 @@ function M:EndItemCooldowns(options)
   )
 end
 
+--- Removes all dropped items owned by this unit.
 function M:RemoveDroppedItems()
   local removed = {}
 
