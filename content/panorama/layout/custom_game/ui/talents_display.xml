@@ -1,0 +1,42 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/ui/talents_display.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/ui/talents_display.css" />
+  </styles>
+
+  <Panel class="UITalentsDisplayRoot" onmouseover="component.ShowTooltip()" onmouseout="component.HideTooltip()">
+    <Panel class="StatBranchContainer">
+      <Panel id="StatBranchBG" />
+
+      <Panel id="StatBranchGraphics" require-composition-layer="true" always-cache-composition-layer="true">
+        <Panel id="StatBranchChannel">
+          <Panel id="StatPipContainer">
+            <Panel id="StatRow25" class="StatBranchRow">
+              <Panel class="StatBranchPip LeftBranchPip" />
+              <Panel class="StatBranchPip RightBranchPip" />
+            </Panel>
+
+            <Panel id="StatRow20" class="StatBranchRow">
+              <Panel class="StatBranchPip LeftBranchPip" />
+              <Panel class="StatBranchPip RightBranchPip" />
+            </Panel>
+
+            <Panel id="StatRow15" class="StatBranchRow">
+              <Panel class="StatBranchPip LeftBranchPip" />
+              <Panel class="StatBranchPip RightBranchPip" />
+            </Panel>
+
+            <Panel id="StatRow10" class="StatBranchRow">
+              <Panel class="StatBranchPip LeftBranchPip" />
+              <Panel class="StatBranchPip RightBranchPip" />
+            </Panel>
+          </Panel>
+        </Panel>
+      </Panel>
+    </Panel>
+  </Panel>
+</root>
