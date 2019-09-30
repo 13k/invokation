@@ -15,7 +15,9 @@
       _.isPlainObject(obj) &&
       _.chain(obj)
         .keys()
-        .find(parseInt)
+        .find(function(key) {
+          return parseInt(key);
+        })
         .value() != null
     );
   };
@@ -43,9 +45,7 @@
   };
 
   exports.LuaListDeep = function(obj, options) {
-    if (!_.isPlainObject(obj)) {
-      return obj;
-    }
+    options = options || {};
 
     var recurse = _.chain(exports.LuaListDeep)
       .partialRight(options)
@@ -56,19 +56,25 @@
       return _.map(exports.LuaList(obj), recurse);
     }
 
-    options = options || {};
-
-    if (options.inplace) {
-      return _.transform(
-        obj,
-        function(result, value, key) {
-          result[key] = recurse(value);
-        },
-        obj
-      );
+    if (_.isArray(obj)) {
+      return _.map(obj, recurse);
     }
 
-    return _.mapValues(obj, recurse);
+    if (_.isPlainObject(obj)) {
+      if (options.inplace) {
+        return _.transform(
+          obj,
+          function(result, value, key) {
+            result[key] = recurse(value);
+          },
+          obj
+        );
+      }
+
+      return _.mapValues(obj, recurse);
+    }
+
+    return obj;
   };
 
   exports.Prefixer = function(string, prefix) {
