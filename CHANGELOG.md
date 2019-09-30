@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 ## [Unreleased][unreleased]
 
+## [0.4.0-beta1] - 2019-09-30
+
+- Combo picker now marks combos as finished.
+- Added recommended skill build to combos (shown in combo details).
+
 ## [0.3.0-beta1] - 2019-09-24
 
 - Reworked map (added new default map `cottage` and renamed the original map
@@ -43,9 +48,10 @@ Initial open beta release.
 
 Initial closed beta release.
 
-[unreleased]: https://github.com/13k/invokation/compare/v0.2.0-beta1...HEAD
+[unreleased]: https://github.com/13k/invokation/compare/v0.4.0-beta1...HEAD
 [0.1.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.1.0-beta1
 [0.2.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.2.0-beta1
 [0.3.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.3.0-beta1
+[0.4.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.0-beta1
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
