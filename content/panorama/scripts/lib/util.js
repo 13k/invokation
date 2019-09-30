@@ -4,6 +4,7 @@
   var _ = global.lodash;
 
   var INVOKER = global.Const.INVOKER;
+  var TALENTS = global.Const.TALENTS;
 
   var ITEM_NAME_PATTERN = /^item_\w+$/;
 
@@ -162,6 +163,26 @@
     }
 
     return params;
+  };
+
+  exports.TalentConstKey = function(level, side) {
+    return "L" + _.toString(level) + "_" + _.toUpper(side);
+  };
+
+  exports.TalentConstValue = function(level, side) {
+    return TALENTS[exports.TalentConstKey(level, side)];
+  };
+
+  exports.IsTalentSelected = function(level, side, selected) {
+    return (exports.TalentConstValue(level, side) & selected) > 0;
+  };
+
+  exports.TalentArrayIndexToLevel = function(i) {
+    return (Math.floor(i / 2) + 2) * 5;
+  };
+
+  exports.TalentArrayIndexToSide = function(i) {
+    return i % 2 === 0 ? "right" : "left";
   };
 
   global.Util = module.exports;
