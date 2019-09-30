@@ -15,9 +15,8 @@
   var CreateComponent = context.CreateComponent;
 
   var EVENTS = global.Const.EVENTS;
+  var NET_TABLE = global.Const.NET_TABLE;
   var CATEGORIES = global.Const.SHOP_CATEGORIES;
-
-  var NET_TABLE_SHOP_ITEMS_KEY = "shop_items";
 
   var GROUP_SNIPPET = "UIItemPickerGroup";
   var GROUP_ID_PREFIX = "UIItemPickerGroup";
@@ -54,7 +53,7 @@
         },
       });
 
-      this.netTable = new NetTable();
+      this.netTable = new NetTable(NET_TABLE.MAIN);
       this.itemPanels = {};
 
       this.loadItems();
@@ -134,7 +133,7 @@
     },
 
     loadItems: function() {
-      this.shopItems = LuaListDeep(this.netTable.Get(NET_TABLE_SHOP_ITEMS_KEY));
+      this.shopItems = LuaListDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
     },
 
     select: function(imagePanel) {

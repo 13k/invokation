@@ -7,6 +7,17 @@
     CHANGELOG_URL: "https://github.com/13k/invokation/blob/master/CHANGELOG.md",
   };
 
+  var NET_TABLE = {
+    MAIN: "invokation",
+    KEYS: {
+      MAIN: {
+        COMBOS: "combos",
+        ABILITIES_KEY_VALUES: "abilities_kv",
+        SHOP_ITEMS: "shop_items",
+      },
+    },
+  };
+
   var EVENTS = {
     // combo viewer
     VIEWER_RENDER: "invokation_viewer_render",
@@ -84,10 +95,6 @@
   INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_CHAOS_METEOR] = true;
   INVOKER.SPELL_ABILITIES[INVOKER.ABILITY_DEAFENING_BLAST] = true;
 
-  var NET_TABLES = {
-    DEFAULT: "invokation",
-  };
-
   var COMBO_PROPERTIES = {
     specialty: ["qw", "qe"],
     stance: ["offensive", "defensive"],
@@ -102,10 +109,10 @@
 
   global.Const = {};
   global.Const.META = META;
+  global.Const.NET_TABLE = NET_TABLE;
   global.Const.EVENTS = EVENTS;
   global.Const.UI_EVENTS = UI_EVENTS;
   global.Const.INVOKER = INVOKER;
-  global.Const.NET_TABLES = NET_TABLES;
   global.Const.FREESTYLE_COMBO_ID = "freestyle";
   global.Const.COMBO_PROPERTIES = COMBO_PROPERTIES;
   global.Const.SHOP_CATEGORIES = SHOP_CATEGORIES;

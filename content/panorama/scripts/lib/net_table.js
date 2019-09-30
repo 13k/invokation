@@ -2,10 +2,9 @@
 
 (function(global /*, context */) {
   var _ = global.lodash;
-  var NET_TABLES = global.Const.NET_TABLES;
 
   var module = function NetTable(name) {
-    this.name = name || NET_TABLES.DEFAULT;
+    this.name = name;
     this._onChangeCallbacks = [];
     this._onKeyChangeCallbacks = {};
     this.subscribe(this.onChange.bind(this));

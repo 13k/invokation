@@ -6,6 +6,7 @@
   var Class = global.Class;
   var Logger = global.Logger;
   var NetTable = global.NetTable;
+  var Callbacks = global.Callbacks;
   var CustomEvents = global.CustomEvents;
   var IsOrbAbility = global.Util.IsOrbAbility;
   var IsInvocationAbility = global.Util.IsInvocationAbility;
@@ -14,16 +15,15 @@
 
   var ENV = global.ENV;
   var EVENTS = global.Const.EVENTS;
+  var NET_TABLE = global.Const.NET_TABLE;
 
-  var NET_TABLE_KEY = "combos";
-
-  var WARN_UNDEF_COMBOS_VALUE = "Tried to set combos to an undefined value";
+  var WARN_UNDEF_VALUE = "Tried to set data with an undefined value";
 
   var CombosCollection = Class({
     constructor: function CombosCollection() {
-      this.combos = null;
-      this.onChangeCallbacks = [];
-      this.netTable = new NetTable();
+      this.data = null;
+      this.callbacks = new Callbacks();
+      this.netTable = new NetTable(NET_TABLE.MAIN);
       this.logger = new Logger({
         level: ENV.development ? Logger.DEBUG : Logger.INFO,
         progname: "combos_collection",
@@ -32,35 +32,47 @@
       this.listenToNetTableChange();
     },
 
-    loadFromNetTable: function() {
-      return this.netTable.Get(NET_TABLE_KEY);
-    },
-
-    listenToNetTableChange: function() {
-      return this.netTable.OnKeyChange(NET_TABLE_KEY, this.onNetTableChange.bind(this));
-    },
-
     sendReloadToServer: function() {
       CustomEvents.SendServer(EVENTS.COMBOS_RELOAD);
     },
 
-    setCombos: function(value) {
-      if (!value) {
-        this.logger.warning(WARN_UNDEF_COMBOS_VALUE);
+    loadFromNetTable: function() {
+      return this.netTable.Get(NET_TABLE.KEYS.MAIN.COMBOS);
+    },
+
+    listenToNetTableChange: function() {
+      return this.netTable.OnKeyChange(
+        NET_TABLE.KEYS.MAIN.COMBOS,
+        this.onNetTableChange.bind(this)
+      );
+    },
+
+    onNetTableChange: function(key, value) {
+      if (key !== NET_TABLE.KEYS.MAIN.COMBOS) {
         return;
       }
 
-      this.combos = value;
-      this.onCombosChange();
+      this.logger.debug("onNetTableChange()");
+      this.set(value);
     },
 
-    onCombosChange: function() {
+    set: function(value) {
+      if (!value) {
+        this.logger.warning(WARN_UNDEF_VALUE);
+        return;
+      }
+
+      this.data = value;
+      this.onChange();
+    },
+
+    onChange: function() {
       this.normalize();
-      _.over(this.onChangeCallbacks)(this.combos);
+      this.callbacks.Run("change", this.data);
     },
 
     normalize: function() {
-      _.forEach(this.combos, function(combo) {
+      _.forEach(this.data, function(combo) {
         LuaListDeep(combo, { inplace: true });
 
         combo.l10n = L10n.LocalizeComboProperties(combo);
@@ -74,20 +86,11 @@
       });
     },
 
-    onNetTableChange: function(key, value) {
-      if (key !== NET_TABLE_KEY) {
-        return;
-      }
-
-      this.logger.debug("onNetTableChange()");
-      this.setCombos(value);
-    },
-
     Load: function() {
       this.logger.debug("Load()");
 
-      if (!this.combos) {
-        this.setCombos(this.loadFromNetTable());
+      if (!this.data) {
+        this.set(this.loadFromNetTable());
         return true;
       }
 
@@ -96,31 +99,29 @@
 
     Reload: function() {
       this.logger.debug("Reload()");
-      this.combos = null;
+      this.data = null;
       this.sendReloadToServer();
       return this.Load();
     },
 
     OnChange: function(fn) {
-      this.onChangeCallbacks.push(fn);
+      this.callbacks.On("change", fn);
 
-      // This is kinda of a hack. When first registering an OnChange callback,
-      // call it immediately if combos are already loaded.
-      if (this.combos) {
-        fn(this.combos);
+      if (this.data) {
+        fn(this.data);
       }
     },
 
     Entries: function() {
-      return _.values(this.combos);
+      return _.values(this.data);
     },
 
     Get: function(id) {
-      return this.combos[id];
+      return _.get(this.data, id);
     },
 
     Each: function(fn) {
-      return _.forOwn(this.combos, fn);
+      return _.forOwn(this.data, fn);
     },
   });
 
