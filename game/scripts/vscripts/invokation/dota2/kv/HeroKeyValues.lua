@@ -11,6 +11,12 @@ function M:_init(kv)
   self.kv = kv
 end
 
+--- Serialize the KeyValues
+-- @treturn table
+function M:Serialize()
+  return self.kv
+end
+
 --- Returns a list of ability names.
 -- @treturn array(string) List of ability names
 function M:Abilities()

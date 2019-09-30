@@ -8,7 +8,7 @@ local func = require("pl.func")
 local tablex = require("pl.tablex")
 
 local function normalize(kv)
-  kv.AbilitySpecial = KV.Table(kv.AbilitySpecial)
+  kv.AbilitySpecial = KV.List(kv.AbilitySpecial)
   kv.AbilityBehavior = KV.MultiValue(kv.AbilityBehavior, "|")
   kv.ItemDeclarations = KV.MultiValue(kv.ItemDeclarations, "|")
   kv.ItemShopTags = KV.MultiValue(kv.ItemShopTags, ";")
@@ -23,11 +23,11 @@ end
 --
 -- It will normalize the following KeyValues entries:
 --
--- - **AbilitySpecial**: (_list_) convert to numeric indices list (empty list if not present)
--- - **AbilityBehavior**: (_list_) split the original string by `"|"` (empty list if not present)
--- - **ItemDeclarations**: (_list_) split the original string by `"|"` (empty list if not present)
--- - **ItemShopTags**: (_list_) split the original string by `";"` (empty list if not present)
--- - **ItemAliases**: (_list_) split the original string by `";"` (empty list if not present)
+-- - **AbilitySpecial**: (_list_) convert to numeric indices list
+-- - **AbilityBehavior**: (_list_) split the original string by `"|"`
+-- - **ItemDeclarations**: (_list_) split the original string by `"|"`
+-- - **ItemShopTags**: (_list_) split the original string by `";"`
+-- - **ItemAliases**: (_list_) split the original string by `";"`
 -- - **ShouldBeSuggested**: (_bool_) `true` if original value is `1`, `false` otherwise
 -- - **SideShop**: (_bool_) `true` if original value is `1`, `false` otherwise
 --
@@ -36,6 +36,12 @@ end
 function M:_init(id, kv)
   self.id = id
   self.kv = normalize(kv)
+end
+
+--- Serialize the KeyValues
+-- @treturn table
+function M:Serialize()
+  return self.kv
 end
 
 --- Returns an entry value.
