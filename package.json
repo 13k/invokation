@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "invokation",
-  "version": "0.3.0-beta1",
+  "version": "0.4.0-beta1",
   "config": {
     "vscripts_path": "game/scripts/vscripts",
     "panorama_scripts_path": "content/panorama/scripts",
