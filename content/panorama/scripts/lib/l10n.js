@@ -16,6 +16,7 @@
   var SHOP_GROUP_KEY_PREFIX = "DOTA_";
   var SHOP_CATEGORY_KEY_PREFIX = "DOTA_SUBSHOP_";
 
+  var ABILITY_TOOLTIP_KEY_PREFIX = "DOTA_Tooltip_ability_";
 
   exports.ShopGroupKey = function(group) {
     return SHOP_GROUP_KEY_PREFIX + _.capitalize(group);
@@ -25,6 +26,9 @@
     return SHOP_CATEGORY_KEY_PREFIX + _.toUpper(String(category));
   };
 
+  exports.AbilityTooltipKey = function(ability) {
+    return ABILITY_TOOLTIP_KEY_PREFIX + ability;
+  };
 
   exports.ParameterizedKey = function(prefix, params) {
     return _.chain([prefix])
@@ -93,6 +97,10 @@
 
   exports.LocalizeShopCategory = function(category) {
     return $.Localize(exports.ShopCategoryKey(category));
+  };
+
+  exports.LocalizeAbilityTooltip = function(ability, panel) {
+    return $.Localize(exports.AbilityTooltipKey(ability), panel);
   };
 
   global.L10n = module.exports;
