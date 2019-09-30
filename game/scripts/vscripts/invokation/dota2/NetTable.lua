@@ -3,6 +3,11 @@
 
 local M = require("pl.class")()
 
+local tablex = require("pl.tablex")
+local NET_TABLE = require("invokation.const.net_table")
+
+tablex.update(M, NET_TABLE)
+
 --- Constructor.
 -- @tparam string name Net table name
 function M:_init(name)

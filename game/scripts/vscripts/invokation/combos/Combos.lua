@@ -8,10 +8,9 @@ local CombosHero = require("invokation.combos.hero")
 local CombosComm = require("invokation.combos.communication")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
-local ABILITY_LIST = require("invokation.const.ability_list")
 local FreestyleCombo = require("invokation.combos.FreestyleCombo")
-
-local NET_TABLE_KEY = "combos"
+local NET_TABLE = require("invokation.const.net_table")
+local ABILITY_LIST = require("invokation.const.ability_list")
 
 local function loadSpecs()
   local specs = require("invokation.const.combos")
@@ -72,7 +71,7 @@ end
 function M:load()
   self:d("loading combos")
   self.specs = loadSpecs()
-  self.netTable:Set(NET_TABLE_KEY, self.specs)
+  self.netTable:Set(NET_TABLE.MAIN_KEYS.COMBOS, self.specs)
 end
 
 function M:playerState(player)

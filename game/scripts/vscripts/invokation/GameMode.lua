@@ -22,10 +22,8 @@ local Logger = require("invokation.Logger")
 local Timers = require("invokation.dota2.timers")
 local lrandom = require("invokation.lang.random")
 local NetTable = require("invokation.dota2.NetTable")
-local PRECACHE = require("invokation.const.precache")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
-
-local NET_TABLE_NAME = "invokation"
+local PRECACHE = require("invokation.const.precache")
 
 GameMode.META = require("invokation.const.metadata")
 GameMode._VERSION = GameMode.META.version
@@ -56,7 +54,7 @@ function GameMode:_init(options)
 
   self.env = Env(options.env)
   self.logger = Logger(self.env.development and Logger.DEBUG or Logger.INFO, "invokation")
-  self.netTable = NetTable(NET_TABLE_NAME)
+  self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
   self.users = {}
