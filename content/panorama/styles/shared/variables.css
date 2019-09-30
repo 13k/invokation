@@ -185,6 +185,8 @@
  ******************************************************************************/
 
 @define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
+@define statBranchSelectBgHud: url("s2r://panorama/images/hud/reborn/statbranch_select_bg_psd.vtex");
+@define statBranchLevelBgHud: url("s2r://panorama/images/hud/reborn/statbranch_levelbg_psd.vtex");
 @define timerBgHud: url("s2r://panorama/images/hud/reborn/bg_timer_psd.vtex");
 @define ultCooldownHud: url("s2r://panorama/images/hud/reborn/ult_cooldown_psd.vtex");
 @define ultReadyHud: url("s2r://panorama/images/hud/reborn/ult_ready_psd.vtex");
@@ -202,6 +204,10 @@
  ******************************************************************************/
 
 @define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
+@define softEdgeBoxIrregularMask: url("s2r://panorama/images/masks/softedge_box_irregular_png.vtex");
+@define softEdgeCircleMask: url("s2r://panorama/images/masks/softedge_circle_png.vtex");
+@define softEdgeCircleSharpMask: url("s2r://panorama/images/masks/softedge_circle_sharp_png.vtex");
+@define softEdgeCircleSharperMask: url("s2r://panorama/images/masks/softedge_circle_sharper_png.vtex");
 @define softEdgeVScrollMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_psd.vtex");
 @define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
 @define brushHorizontalMask: url("s2r://panorama/images/masks/brush_horizontal_psd.vtex");

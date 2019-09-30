@@ -1,0 +1,39 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/tooltips/tooltip_stat_branch.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/tooltips/tooltip_stat_branch.css" />
+  </styles>
+
+  <snippets>
+    <snippet name="TooltipStatBranchRow">
+      <Panel class="TooltipStatBranchRow">
+        <Panel class="Branch BranchLeft">
+          <Button class="BranchChoice" disabled="true">
+            <Label class="StatBonusLabel" />
+          </Button>
+        </Panel>
+
+        <Panel class="Branch BranchRight">
+          <Button class="BranchChoice" disabled="true">
+            <Label class="StatBonusLabel" />
+          </Button>
+        </Panel>
+
+        <Panel class="CenterNode">
+          <Panel class="LevelBG">
+            <Label text="{s:level}" class="HeroLevelLabel" />
+          </Panel>
+        </Panel>
+      </Panel>
+    </snippet>
+  </snippets>
+
+  <Tooltip class="TooltipStatBranchRoot" onload="component.onLoad()">
+    <Label class="TooltipStatBranchTitle" text="#DOTA_StatBranch_TooltipTitle" />
+    <Panel id="TooltipStatBranchContainer" />
+  </Tooltip>
+</root>
