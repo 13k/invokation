@@ -9,6 +9,7 @@
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
+  var COMBOS = global.COMBOS;
   var EVENTS = global.Const.EVENTS;
 
   var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
@@ -113,8 +114,10 @@
       return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
     },
 
-    view: function(combo) {
-      this.combo = combo;
+    // ----- Action runners -----
+
+    view: function(comboId) {
+      this.combo = COMBOS.Get(comboId);
 
       var seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
 

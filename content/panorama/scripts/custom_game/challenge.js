@@ -150,7 +150,7 @@
     },
 
     sendRenderViewer: function(combo) {
-      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
+      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo.id });
     },
 
     createComboScorePanel: function(parent) {

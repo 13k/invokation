@@ -104,7 +104,7 @@
 
     ShowDetails: function() {
       this.debug("ShowDetails()", this.combo.id);
-      this.runOutput("OnShowDetails", { combo: this.combo });
+      this.runOutput("OnShowDetails", { combo: this.combo.id });
     },
 
     Play: function() {
