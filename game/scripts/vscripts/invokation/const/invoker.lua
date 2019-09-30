@@ -5,7 +5,13 @@ local M = {}
 
 local UNITS = require("invokation.const.units")
 local HEROES = require("invokation.const.heroes")
+local ABILITIES = require("invokation.const.abilities")
 local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
+local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
+
+--- Hero ID
+-- @field[type=int] HERO_ID
+M.HERO_ID = 74
 
 --- Unit name
 -- @field[type=string] UNIT_NAME
@@ -88,34 +94,6 @@ M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
 --- Level 25 left talent ability name
 -- @field[type=string] ABILITY_TALENT_8
 
--- special_bonus_unique_invoker_10
--- special_bonus_unique_invoker_6
--- special_bonus_unique_invoker_1
--- special_bonus_unique_invoker_9
--- special_bonus_unique_invoker_4
--- special_bonus_unique_invoker_5
--- special_bonus_unique_invoker_2
--- special_bonus_unique_invoker_3
-
---- List of talent abilities names.
--- @table TALENT_ABILITIES
--- @field[type=string] 1 Level 10 right
--- @field[type=string] 2 Level 10 left
--- @field[type=string] 3 Level 15 right
--- @field[type=string] 4 Level 15 left
--- @field[type=string] 5 Level 20 right
--- @field[type=string] 6 Level 20 left
--- @field[type=string] 7 Level 25 right
--- @field[type=string] 8 Level 25 left
-M.TALENT_ABILITIES = {}
-
-local heroKV = HeroKeyValues(M.KEY_VALUES)
-for i, abilityName in ipairs(heroKV:Talents()) do
-  local constName = ("ABILITY_TALENT_%d"):format(i)
-  M[constName] = abilityName
-  M.TALENT_ABILITIES[i] = abilityName
-end
-
 --- List of orb abilities names.
 -- @table ORB_ABILITIES
 -- @field[type=string] 1 Quas
@@ -151,6 +129,65 @@ M.SPELL_ABILITIES = {
   M.ABILITY_CHAOS_METEOR,
   M.ABILITY_DEAFENING_BLAST
 }
+
+--- List of talent abilities names.
+-- @table TALENT_ABILITIES
+-- @field[type=string] 1 Level 10 right
+-- @field[type=string] 2 Level 10 left
+-- @field[type=string] 3 Level 15 right
+-- @field[type=string] 4 Level 15 left
+-- @field[type=string] 5 Level 20 right
+-- @field[type=string] 6 Level 20 left
+-- @field[type=string] 7 Level 25 right
+-- @field[type=string] 8 Level 25 left
+M.TALENT_ABILITIES = {}
+
+local heroKV = HeroKeyValues(M.KEY_VALUES)
+for i, abilityName in ipairs(heroKV:Talents()) do
+  local constName = ("ABILITY_TALENT_%d"):format(i)
+  M[constName] = abilityName
+  M.TALENT_ABILITIES[i] = abilityName
+end
+
+--- Abilities KeyValues
+-- @table ABILITIES_KEY_VALUES
+-- @field[type=table] ABILITY_QUAS
+-- @field[type=table] ABILITY_WEX
+-- @field[type=table] ABILITY_EXORT
+-- @field[type=table] ABILITY_COLD_SNAP
+-- @field[type=table] ABILITY_GHOST_WALK
+-- @field[type=table] ABILITY_ICE_WALL
+-- @field[type=table] ABILITY_EMP
+-- @field[type=table] ABILITY_TORNADO
+-- @field[type=table] ABILITY_ALACRITY
+-- @field[type=table] ABILITY_SUN_STRIKE
+-- @field[type=table] ABILITY_FORGE_SPIRIT
+-- @field[type=table] ABILITY_CHAOS_METEOR
+-- @field[type=table] ABILITY_DEAFENING_BLAST
+-- @field[type=table] ABILITY_TALENT_1
+-- @field[type=table] ABILITY_TALENT_2
+-- @field[type=table] ABILITY_TALENT_3
+-- @field[type=table] ABILITY_TALENT_4
+-- @field[type=table] ABILITY_TALENT_5
+-- @field[type=table] ABILITY_TALENT_6
+-- @field[type=table] ABILITY_TALENT_7
+-- @field[type=table] ABILITY_TALENT_8
+M.ABILITIES_KEY_VALUES = {}
+
+for _, abilityName in ipairs(M.ORB_ABILITIES) do
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+end
+
+for _, abilityName in ipairs(M.SPELL_ABILITIES) do
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+end
+
+for _, abilityName in ipairs(M.TALENT_ABILITIES) do
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+end
 
 --- Table of orb abilities composition ("recipes") of spell abilities.
 -- @table SPELL_COMPOSITION
