@@ -10,11 +10,12 @@
 
   <Panel class="ViewerRoot Hide" hittest="false">
     <Panel class="Viewer" hittest="false">
-      <Button class="CloseButton" onactivate="viewer.Close()" />
-      <Button class="RefreshButton" onactivate="viewer.Reload()" />
+      <Button class="CloseButton" onactivate="component.Close()" />
+      <Button class="RefreshButton" onactivate="component.Reload()" />
 
       <Panel class="ViewerInformationBackground" hittest="false" />
-      <Panel class="ViewerInformationBody">
+
+      <Panel class="ViewerInformationBody" hittest="false">
         <Label id="ViewerTitle" html="true" hittest="false" />
 
         <Panel id="ViewerScrollPanel" class="TopBottomFlow">
@@ -22,8 +23,33 @@
 
           <Label id="ViewerDescription" html="true" hittest="false" />
 
+          <Panel class="ViewerSection ViewerAbilitiesBuildSection" hittest="false">
+            <Panel class="SectionHeader" hittest="false">
+              <Label class="SectionLabel" text="#invokation_viewer_abilities_build_title" hittest="false" />
+            </Panel>
+
+            <Panel class="ViewerAbilitiesBuild" hittest="false">
+              <Panel id="ViewerTalents" class="AbilityCircle" hittest="false" />
+
+              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
+              </Panel>
+
+              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseover="component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
+              </Panel>
+
+              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseover="component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
+              </Panel>
+            </Panel>
+          </Panel>
+
           <Panel class="ViewerSection ViewerSequenceSection" hittest="false">
-            <Panel class="SectionHeader">
+            <Panel class="SectionHeader" hittest="false">
               <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
             </Panel>
 
@@ -36,7 +62,7 @@
 
       <Panel class="ViewerFooter" hittest="false">
         <Panel class="ViewerButtons" hittest="false">
-          <Button class="PlayButton" onactivate="viewer.Play()">
+          <Button class="PlayButton" onactivate="component.Play()">
             <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
           </Button>
         </Panel>

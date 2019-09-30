@@ -154,6 +154,8 @@
 
     "invokation_viewer_step_description_lorem" "Lorem ipsum dolor sit amet"
 
+    "invokation_viewer_abilities_build_title" "Recommended skill build"
+
     "invokation_viewer_sequence_title" "Sequence"
     "invokation_viewer_sequence_disclaimer" "(Golden steps are required, others are optional)"
 

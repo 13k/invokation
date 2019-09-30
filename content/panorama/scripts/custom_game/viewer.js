@@ -12,13 +12,24 @@
   var COMBOS = global.COMBOS;
   var EVENTS = global.Const.EVENTS;
 
-  var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
+  var CLASSES = {
+    CLOSED: "Hide",
+  };
+
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
+  var TALENTS_DISPLAY_LAYOUT = "file://{resources}/layout/custom_game/ui/talents_display.xml";
+  var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
   var PROPERTIES_ID = "ViewerProperties";
 
   var L10N_FALLBACK_IDS = {
     description: "invokation_viewer_description_lorem",
   };
+
+  var ORBS = ["quas", "wex", "exort"];
+
+  function stepPanelId(step) {
+    return "combo_step_" + step.id + "_" + step.name;
+  }
 
   function htmlTitle(title) {
     return _.chain(title)
@@ -40,6 +51,13 @@
           titleLabel: "ViewerTitle",
           descriptionLabel: "ViewerDescription",
           sequence: "ViewerSequence",
+          talents: "ViewerTalents",
+          orbQuas: "ViewerOrbQuas",
+          orbQuasLabel: "ViewerOrbQuasLabel",
+          orbWex: "ViewerOrbWex",
+          orbWexLabel: "ViewerOrbWexLabel",
+          orbExort: "ViewerOrbExort",
+          orbExortLabel: "ViewerOrbExortLabel",
         },
         customEvents: {
           "!VIEWER_RENDER": "onViewerRender",
@@ -47,12 +65,15 @@
         },
       });
 
+      this.renderTalents();
       this.debug("init");
     },
 
+    // --- Event handlers -----
+
     onComboStarted: function() {
       this.debug("onComboStarted()");
-      this.Close();
+      this.close();
     },
 
     onViewerRender: function(payload) {
@@ -60,8 +81,27 @@
       this.view(payload.combo);
     },
 
+    // ----- Helpers -----
+
+    renderTalents: function() {
+      this.$talents.BLoadLayout(TALENTS_DISPLAY_LAYOUT, false, false);
+    },
+
+    resetSelectedTalents: function() {
+      this.$talents.component.Input("Reset");
+    },
+
+    selectTalents: function() {
+      this.$talents.component.Input("Select", { talents: this.combo.talents });
+    },
+
+    startCombo: function() {
+      this.debug("startCombo()", this.combo.id);
+      this.sendServer(EVENTS.COMBO_START, { combo: this.combo.id });
+    },
+
     createStepPanel: function(parent, step) {
-      var id = "combo_step_" + step.id + "_" + step.name;
+      var id = stepPanelId(step);
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
 
       panel.component.Input("SetStep", { combo: this.combo, step: step });
@@ -69,10 +109,30 @@
       return panel;
     },
 
+    createPropertiesPanel: function() {
+      var panel = CreatePanelWithLayout(this.$propertiesSection, PROPERTIES_ID, PROPERTIES_LAYOUT);
+
+      panel.component.Input("SetCombo", this.combo);
+
+      return panel;
+    },
+
+    // ----- Actions -----
+
+    openAction: function() {
+      return new Sequence().RemoveClass(this.$ctx, CLASSES.CLOSED);
+    },
+
+    closeAction: function() {
+      return new Sequence().AddClass(this.$ctx, CLASSES.CLOSED);
+    },
+
     renderAction: function() {
       return new Sequence()
         .Action(this.renderInfoAction())
         .Action(this.renderPropertiesAction())
+        .Action(this.renderTalentsAction())
+        .Action(this.renderOrbsAction())
         .Action(this.renderSequenceAction())
         .ScrollToTop(this.$scrollPanel);
     },
@@ -93,12 +153,17 @@
         .RunFunction(this, this.createPropertiesPanel);
     },
 
-    createPropertiesPanel: function() {
-      var panel = CreatePanelWithLayout(this.$propertiesSection, PROPERTIES_ID, PROPERTIES_LAYOUT);
+    renderTalentsAction: function() {
+      return new Sequence()
+        .RunFunction(this, this.resetSelectedTalents)
+        .RunFunction(this, this.selectTalents);
+    },
 
-      panel.component.Input("SetCombo", this.combo);
-
-      return panel;
+    renderOrbsAction: function() {
+      return new ParallelSequence()
+        .SetAttribute(this.$orbQuasLabel, "text", this.combo.orbs[0])
+        .SetAttribute(this.$orbWexLabel, "text", this.combo.orbs[1])
+        .SetAttribute(this.$orbExortLabel, "text", this.combo.orbs[2]);
     },
 
     renderSequenceAction: function() {
@@ -128,33 +193,38 @@
       return seq.Start();
     },
 
-    openAction: function() {
-      return new Sequence().RemoveClass(this.$ctx, "Hide");
-    },
-
-    closeAction: function() {
-      return new Sequence().AddClass(this.$ctx, "Hide");
-    },
-
-    startCombo: function() {
-      this.debug("startCombo()", this.combo.id);
-      this.sendServer(EVENTS.COMBO_START, { combo: this.combo.id });
-    },
-
-    Close: function() {
+    close: function() {
       return this.closeAction().Start();
     },
 
-    Play: function() {
-      this.debug("Play()");
-      this.startCombo();
-    },
+    // ----- UI methods -----
 
     Reload: function() {
       this.debug("Reload()");
       return this.renderAction().Start();
     },
+
+    Close: function() {
+      return this.close();
+    },
+
+    Play: function() {
+      return this.startCombo();
+    },
+
+    ShowOrbTooltip: function(orb) {
+      var index = ORBS.indexOf(orb);
+
+      if (index >= 0) {
+        var attr = _.chain("orb_")
+          .concat(orb)
+          .camelCase()
+          .value();
+        var elem = this.element(attr);
+        this.showAbilityTooltip(elem, elem.abilityname, { level: this.combo.orbs[index] });
+      }
+    },
   });
 
-  context.viewer = new Viewer();
+  context.component = new Viewer();
 })(GameUI.CustomUIConfig(), this);
