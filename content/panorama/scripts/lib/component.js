@@ -7,7 +7,7 @@
   var Callbacks = global.Callbacks;
   var CustomEvents = global.CustomEvents;
   var Prefixer = global.Util.Prefixer;
-  var PopupParams = global.Util.PopupParams;
+  var ElementParams = global.Util.ElementParams;
 
   var ENV = global.ENV;
   var EVENTS = global.Const.EVENTS;
@@ -308,11 +308,9 @@
 
     dispatch: function(element, event) {
       element = this.element(element);
-
-      var args = [event, element];
+      var baseArgs = [event, element];
       var eventArgs = _.drop(arguments, 2);
-      args = _.concat(args, eventArgs);
-
+      var args = _.concat(baseArgs, eventArgs);
       return $.DispatchEvent.apply($, args);
     },
 
@@ -324,16 +322,62 @@
       return $.DispatchEvent(UI_EVENTS.PLAY_SOUND, soundEvent);
     },
 
-    showTooltip: function(element, text) {
+    showTooltip: function(element, id, layout, params) {
+      var args = _.chain([element]);
+
+      if (params) {
+        args = args.concat(UI_EVENTS.SHOW_TOOLTIP_PARAMS);
+      } else {
+        args = args.concat(UI_EVENTS.SHOW_TOOLTIP);
+      }
+
+      args = args.concat(id, layout);
+
+      if (params) {
+        args = args.concat(ElementParams(params));
+      }
+
+      return this.dispatch.apply(this, args.value());
+    },
+
+    hideTooltip: function(element, id) {
+      return this.dispatch(element, UI_EVENTS.HIDE_TOOLTIP, id);
+    },
+
+    showTextTooltip: function(element, text) {
       return this.dispatch(element, UI_EVENTS.SHOW_TEXT_TOOLTIP, text);
     },
 
-    hideTooltip: function(element) {
+    hideTextTooltip: function(element) {
       return this.dispatch(element, UI_EVENTS.HIDE_TEXT_TOOLTIP);
     },
 
-    showAbilityTooltip: function(element, abilityName) {
-      return this.dispatch(element, UI_EVENTS.SHOW_ABILITY_TOOLTIP, abilityName);
+    showAbilityTooltip: function(element, abilityName, params) {
+      var args = _.chain([element]);
+      params = params || {};
+
+      if (_.isInteger(params.entityIndex)) {
+        args = args.concat(
+          UI_EVENTS.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX,
+          abilityName,
+          params.entityIndex
+        );
+      } else if (_.isString(params.guide)) {
+        args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_GUIDE, abilityName, params.guide);
+      } else if (_.isInteger(params.hero)) {
+        args = args.concat(
+          UI_EVENTS.SHOW_ABILITY_TOOLTIP_HERO,
+          abilityName,
+          params.hero,
+          params.flag
+        );
+      } else if (_.isInteger(params.level)) {
+        args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_LEVEL, abilityName, params.level);
+      } else {
+        args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP, abilityName);
+      }
+
+      return this.dispatch.apply(this, args.value());
     },
 
     hideAbilityTooltip: function(element) {
@@ -341,21 +385,21 @@
     },
 
     showPopup: function(element, popupId, layout, params) {
-      var args = [element];
+      var args = _.chain([element]);
 
       if (params) {
-        args.push(UI_EVENTS.SHOW_POPUP_PARAMS);
+        args = args.concat(UI_EVENTS.SHOW_POPUP_PARAMS);
       } else {
-        args.push(UI_EVENTS.SHOW_POPUP);
+        args = args.concat(UI_EVENTS.SHOW_POPUP);
       }
 
-      args = _.concat(args, popupId, layout);
+      args = args.concat(popupId, layout);
 
       if (params) {
-        args.push(PopupParams(params));
+        args = args.concat(ElementParams(params));
       }
 
-      return this.dispatch.apply(this, args);
+      return this.dispatch.apply(this, args.value());
     },
 
     closePopup: function(element) {

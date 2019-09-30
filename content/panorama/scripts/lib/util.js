@@ -152,7 +152,7 @@
     return exports.CreateAbilityImage(parent, id, abilityName);
   };
 
-  exports.PopupParams = function(params) {
+  exports.ElementParams = function(params) {
     if (_.isPlainObject(params)) {
       params = _.chain(params)
         .transform(function(pairs, value, key) {
