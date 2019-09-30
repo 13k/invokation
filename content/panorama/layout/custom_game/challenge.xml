@@ -14,6 +14,8 @@
     </Panel>
 
     <Panel id="ChallengeSplash" hittest="false" hittestchildren="false">
+      <DOTAScenePanel class="ChallengeSplashFX" map="backgrounds/pregame_phase" camera="camera" renderdeferred="false" particleonly="true" hittest="false" require-composition-layer="true" />
+
       <Panel class="ChallengeSplashBox">
         <Label id="ChallengeSplashTitle" class="ChallengeSplashTitle" text="#invokation_combo_splash__start__title__1" />
         <Label id="ChallengeSplashHelp" class="ChallengeSplashHelp" text="#invokation_combo_splash__start__help__1" />
