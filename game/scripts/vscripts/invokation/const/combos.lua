@@ -1,6 +1,8 @@
 --- Combo specifications.
 -- @module invokation.const.combos
 
+local TALENTS = require("invokation.const.talents")
+
 local M = {
   [1] = {
     specialty = "qw",
@@ -8,6 +10,8 @@ local M = {
     heroLevel = 2,
     damageRating = 0,
     difficultyRating = 1,
+    orbs = {1, 1, 0},
+    talents = TALENTS.NONE,
     tags = {
       "laning-phase"
     },
@@ -32,6 +36,8 @@ local M = {
     heroLevel = 2,
     damageRating = 0,
     difficultyRating = 1,
+    orbs = {1, 1, 0},
+    talents = TALENTS.NONE,
     tags = {
       "laning-phase"
     },
@@ -91,6 +97,8 @@ local M = {
     heroLevel = 2,
     damageRating = 1,
     difficultyRating = 1,
+    orbs = {1, 1, 0},
+    talents = TALENTS.NONE,
     tags = {
       "laning-phase"
     },
@@ -115,6 +123,8 @@ local M = {
     heroLevel = 2,
     damageRating = 1,
     difficultyRating = 1,
+    orbs = {1, 0, 1},
+    talents = TALENTS.NONE,
     tags = {
       "laning-phase"
     },
@@ -139,6 +149,8 @@ local M = {
     heroLevel = 3,
     damageRating = 1,
     difficultyRating = 1,
+    orbs = {1, 1, 1},
+    talents = TALENTS.NONE,
     tags = {
       "laning-phase"
     },
@@ -163,6 +175,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -193,6 +207,8 @@ local M = {
     heroLevel = 6,
     damageRating = 3,
     difficultyRating = 3,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -223,6 +239,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -253,6 +271,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -283,6 +303,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -314,6 +336,8 @@ local M = {
     heroLevel = 6,
     damageRating = 3,
     difficultyRating = 3,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -344,6 +368,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {2, 2, 2},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -369,11 +395,13 @@ local M = {
     }
   },
   [13] = {
-    specialty = "qe",
+    specialty = "qw",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {3, 2, 1},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -399,11 +427,13 @@ local M = {
     }
   },
   [14] = {
-    specialty = "qe",
+    specialty = "qw",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {3, 2, 1},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -429,11 +459,13 @@ local M = {
     }
   },
   [15] = {
-    specialty = "qe",
+    specialty = "qw",
     stance = "offensive",
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {3, 2, 1},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -464,6 +496,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {2, 1, 3},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -494,6 +528,8 @@ local M = {
     heroLevel = 6,
     damageRating = 2,
     difficultyRating = 2,
+    orbs = {2, 2, 2},
+    talents = TALENTS.NONE,
     tags = {
       "solo-pick"
     },
@@ -524,6 +560,8 @@ local M = {
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {5, 5, 2},
+    talents = TALENTS.NONE,
     tags = {
       "teamfight"
     },
@@ -561,6 +599,8 @@ local M = {
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {4, 3, 4},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "teamfight"
     },
@@ -603,6 +643,8 @@ local M = {
     heroLevel = 12,
     damageRating = 3,
     difficultyRating = 3,
+    orbs = {4, 3, 4},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "teamfight"
     },
@@ -646,6 +688,8 @@ local M = {
     heroLevel = 12,
     damageRating = 2,
     difficultyRating = 3,
+    orbs = {4, 3, 5},
+    talents = TALENTS.NONE,
     tags = {
       "teamfight"
     },
@@ -685,12 +729,14 @@ local M = {
   [22] = {
     specialty = "qe",
     stance = "offensive",
+    heroLevel = 20,
     damageRating = 4,
     difficultyRating = 4,
+    orbs = {5, 7, 7},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "late-game"
     },
-    heroLevel = 20,
     items = {
       "item_travel_boots",
       "item_null_talisman",
@@ -739,12 +785,14 @@ local M = {
   [23] = {
     specialty = "qe",
     stance = "offensive",
+    heroLevel = 20,
     damageRating = 4,
     difficultyRating = 4,
+    orbs = {5, 7, 7},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "late-game"
     },
-    heroLevel = 20,
     items = {
       "item_travel_boots",
       "item_null_talisman",
@@ -803,12 +851,14 @@ local M = {
   [24] = {
     specialty = "qe",
     stance = "offensive",
+    heroLevel = 20,
     damageRating = 4,
     difficultyRating = 4,
+    orbs = {5, 7, 7},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "late-game"
     },
-    heroLevel = 20,
     items = {
       "item_travel_boots",
       "item_null_talisman",
@@ -877,12 +927,14 @@ local M = {
   [25] = {
     specialty = "qe",
     stance = "offensive",
+    heroLevel = 20,
     damageRating = 4,
     difficultyRating = 4,
+    orbs = {5, 7, 7},
+    talents = TALENTS.L10_LEFT,
     tags = {
       "late-game"
     },
-    heroLevel = 20,
     items = {
       "item_travel_boots",
       "item_black_king_bar",
@@ -956,12 +1008,14 @@ local M = {
   [26] = {
     specialty = "qe",
     stance = "offensive",
+    heroLevel = 25,
     damageRating = 5,
     difficultyRating = 5,
+    orbs = {7, 7, 7},
+    talents = bit.bor(TALENTS.L10_LEFT, TALENTS.L15_RIGHT, TALENTS.L20_RIGHT, TALENTS.L25_RIGHT),
     tags = {
       "late-game"
     },
-    heroLevel = 25,
     items = {
       "item_travel_boots",
       "item_black_king_bar",
