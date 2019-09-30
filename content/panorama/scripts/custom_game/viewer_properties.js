@@ -36,6 +36,7 @@
 
     setVariablesAction: function() {
       return new ParallelSequence()
+        .SetDialogVariable(this.$ctx, "hero_level", this.combo.heroLevel)
         .SetDialogVariable(this.$ctx, "specialty", this.combo.l10n.specialty)
         .SetDialogVariable(this.$ctx, "stance", this.combo.l10n.stance)
         .SetDialogVariable(this.$ctx, "damage_rating", this.combo.l10n.damageRating)

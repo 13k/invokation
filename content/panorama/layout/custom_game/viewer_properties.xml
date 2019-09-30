@@ -10,7 +10,7 @@
 
   <Panel class="ViewerPropertiesRoot" hittest="false">
     <Panel class="ViewerPropertiesRow" hittest="false">
-      <Button class="ViewerPropertiesIcon HeroLevelIcon" />
+      <Button class="ViewerPropertiesIcon HeroLevelIcon" onmouseover="DOTAShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="DOTAHideTextTooltip()" />
       <Label class="ViewerPropertiesLabel" text="#invokation_combo_properties__hero_level" hittest="false" />
       <Button class="ViewerPropertiesValue HeroLevelBadge">
         <Label id="ViewerPropertiesHeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
@@ -18,19 +18,19 @@
     </Panel>
 
     <Panel class="ViewerPropertiesRow" hittest="false">
-      <Button class="ViewerPropertiesIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ViewerPropertiesIcon SpecialtyIcon" onmouseover="DOTAShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="DOTAHideTextTooltip()" />
       <Label class="ViewerPropertiesLabel" text="#invokation_combo_properties__specialty" hittest="false" />
       <Label id="ViewerPropertiesSpecialtyLabel" class="ViewerPropertiesValue ViewerPropertiesLabel" hittest="false" />
     </Panel>
 
     <Panel class="ViewerPropertiesRow" hittest="false">
-      <Button class="ViewerPropertiesIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ViewerPropertiesIcon StanceIcon" onmouseover="DOTAShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="DOTAHideTextTooltip()" />
       <Label class="ViewerPropertiesLabel" text="#invokation_combo_properties__stance" hittest="false" />
       <Label id="ViewerPropertiesStanceLabel" class="ViewerPropertiesValue ViewerPropertiesLabel" hittest="false" />
     </Panel>
 
     <Panel class="ViewerPropertiesRow" hittest="false">
-      <Button class="ViewerPropertiesIcon AttackDamageIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ViewerPropertiesIcon AttackDamageIcon" onmouseover="DOTAShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="DOTAHideTextTooltip()" />
       <Label class="ViewerPropertiesLabel" text="#invokation_combo_properties__damage_rating" hittest="false" />
       <Panel id="ViewerPropertiesDamageRating" class="ViewerPropertiesValue Rating">
         <Panel class="RatingActive" />
@@ -38,7 +38,7 @@
     </Panel>
 
     <Panel class="ViewerPropertiesRow" hittest="false">
-      <Button class="ViewerPropertiesIcon DifficultyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
+      <Button class="ViewerPropertiesIcon DifficultyIcon" onmouseover="DOTAShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="DOTAHideTextTooltip()" />
       <Label class="ViewerPropertiesLabel" text="#invokation_combo_properties__difficulty_rating" hittest="false" />
       <Panel id="ViewerPropertiesDifficultyRating" class="ViewerPropertiesValue Rating">
         <Panel class="RatingActive" />
