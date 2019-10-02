@@ -1,16 +1,23 @@
 --- Combos manager.
 -- @classmod invokation.combos.Combos
 
-local M = require("pl.class")()
-
 local Combo = require("invokation.combos.Combo")
+local Logger = require("invokation.Logger")
+local Timers = require("invokation.dota2.timers")
 local CombosHero = require("invokation.combos.hero")
 local CombosComm = require("invokation.combos.communication")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
+local PlayerStates = require("invokation.combos.PlayerStates")
 local FreestyleCombo = require("invokation.combos.FreestyleCombo")
 local NET_TABLE = require("invokation.const.net_table")
 local ABILITY_LIST = require("invokation.const.ability_list")
+
+local M = require("pl.class")()
+
+local LOGGER_PROGNAME = "combos"
+
+Logger.InstallHelpers(M)
 
 local function loadSpecs()
   local specs = require("invokation.const.combos")
@@ -49,75 +56,43 @@ end
 -- @tparam invokation.Logger options.logger Logger instance
 -- @tparam invokation.dota2.NetTable options.netTable NetTable instance
 function M:_init(options)
-  self.logger = options.logger
+  self.logger = options.logger:Child(LOGGER_PROGNAME)
   self.netTable = options.netTable
   self.combos = {}
-  self.players = {}
+  self.state = PlayerStates()
   self:load()
 end
 
-function M:d(...)
-  return self.logger:Debug(...)
-end
-
-function M:err(...)
-  return self.logger:Error(...)
-end
-
-function M:errf(...)
-  return self.logger:Errorf(...)
-end
-
 function M:load()
-  self:d("loading combos")
+  self:d("Loading")
   self.specs = loadSpecs()
   self.netTable:Set(NET_TABLE.MAIN_KEYS.COMBOS, self.specs)
 end
 
-function M:playerState(player)
-  local playerID = player:GetPlayerID()
-
-  if self.players[playerID] == nil then
-    self.players[playerID] = {}
+function M:createCombo(comboId)
+  if comboId == FreestyleCombo.COMBO_ID then
+    return FreestyleCombo({logger = self.logger})
   end
 
-  return self.players[playerID]
-end
-
-function M:setPlayerState(player, key, value)
-  self:playerState(player)[key] = value
-  return value
-end
-
-function M:getPlayerState(player, key, default)
-  local value = self:playerState(player)[key]
-  -- Explicit nil check to avoid returning the default when value is boolean `false`
-  return value == nil and default or value
-end
-
-function M:createCombo(comboID)
-  if comboID == FreestyleCombo.COMBO_ID then
-    return FreestyleCombo()
-  end
-
-  local spec = self.specs[comboID]
+  local spec = self.specs[comboId]
 
   if spec == nil then
     return nil
   end
 
-  return Combo(spec)
+  return Combo(spec, {logger = self.logger})
 end
 
 function M:setup(player, combo)
-  self:setPlayerState(player, "combo", combo)
+  self.state[player].combo = combo
 
   CombosHero.setup(player, combo)
 
-  local dummy = self:getPlayerState(player, "dummy")
+  local dummy = self.state[player].dummy
 
   if dummy == nil then
-    dummy = self:setPlayerState(player, "dummy", DummyTarget())
+    dummy = DummyTarget()
+    self.state[player].dummy = dummy
     CombosSound.onDummyCreate(dummy)
   end
 
@@ -125,11 +100,11 @@ function M:setup(player, combo)
 end
 
 function M:teardown(player, options)
-  self:setPlayerState(player, "combo", nil)
+  self.state[player].combo = nil
 
   CombosHero.teardown(player, options)
 
-  local dummy = self:getPlayerState(player, "dummy")
+  local dummy = self.state[player].dummy
 
   if dummy ~= nil then
     dummy:Kill()
@@ -138,20 +113,20 @@ end
 
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam string comboID Combo ID
-function M:Start(player, comboID)
-  self:d("Combos:Start()", player:GetPlayerID(), comboID)
+-- @tparam string comboId Combo ID
+function M:Start(player, comboId)
+  self:d("Start()", {player = player:GetPlayerID(), combo = comboId})
 
-  local combo = self:getPlayerState(player, "combo")
+  local combo = self.state[player].combo
 
   if combo ~= nil then
     self:teardown(player, {hardReset = true})
   end
 
-  combo = self:createCombo(comboID)
+  combo = self:createCombo(comboId)
 
   if combo == nil then
-    self:errf("Could not find combo %q", comboID)
+    self:errf("Could not find combo %q", comboId)
     return
   end
 
@@ -166,9 +141,9 @@ end
 -- @tparam table options Options table
 -- @tparam[opt=false] bool options.hardReset Hard reset
 function M:Restart(player, options)
-  self:d("Combos:Restart()", player:GetPlayerID())
+  self:d("Restart()", {player = player:GetPlayerID()})
 
-  local combo = self:getPlayerState(player, "combo")
+  local combo = self.state[player].combo
 
   if combo == nil then
     self:errf("Player %d has no active combo", player:GetPlayerID())
@@ -182,9 +157,9 @@ end
 --- Stops currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:Stop(player)
-  self:d("Combos:Stop()", player:GetPlayerID())
+  self:d("Stop()", {player = player:GetPlayerID()})
 
-  local combo = self:getPlayerState(player, "combo")
+  local combo = self.state[player].combo
 
   if combo == nil then
     self:errf("Player %d has no active combo", player:GetPlayerID())
@@ -197,13 +172,61 @@ function M:Stop(player)
   CombosComm.sendStopped(player, combo)
 end
 
+--- Progresses the currently active combo for the given player.
+-- @tparam CDOTAPlayer player Player instance
+-- @tparam invokation.dota2.Ability ability Ability instance
+function M:Progress(player, ability)
+  self:d("Progress()", {player = player:GetPlayerID(), ability = ability.name})
+
+  local combo = self.state[player].combo
+
+  if not isRunningCombo(combo) then
+    self:d("  ignored")
+    return
+  end
+
+  if combo:Progress(ability) then
+    if combo.count == 1 then
+      self:d("  in progress")
+      CombosComm.sendInProgress(player, combo)
+    end
+
+    CombosComm.sendProgress(player, combo)
+
+    self:d("  progressed")
+
+    if combo:Finish() then
+      self:Finish(player)
+    end
+  elseif not ability:IsInvocationAbility() then
+    self:Fail(player, ability)
+  end
+end
+
+--- Increments the damage amount of the currently active combo for the given player.
+-- @tparam CDOTAPlayer player Player instance
+-- @tparam invokation.dota2.DamageInstance damage DamageInstance instance
+function M:ProgressDamage(player, damage)
+  self:d("ProgressDamage()", {player = player:GetPlayerID()})
+
+  local combo = self.state[player].combo
+
+  if not isRunningCombo(combo) then
+    self:d("  ignored")
+    return
+  end
+
+  combo:IncrementDamage(damage.amount)
+  CombosComm.sendProgress(player, combo)
+end
+
 --- Fails and stops currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam invokation.dota2.Ability ability Ability instance
 function M:Fail(player, ability)
-  self:d("Combos:Fail()", player:GetPlayerID())
+  self:d("Fail()", {player = player:GetPlayerID()})
 
-  local combo = self:getPlayerState(player, "combo")
+  local combo = self.state[player].combo
 
   if combo == nil then
     self:errf("Player %d has no active combo", player:GetPlayerID())
@@ -218,9 +241,9 @@ end
 --- Finishes a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:Finish(player)
-  self:d("Combos:Finish()", player:GetPlayerID())
+  self:d("Finish()", {player = player:GetPlayerID()})
 
-  local combo = self:getPlayerState(player, "combo")
+  local combo = self.state[player].combo
 
   if combo == nil then
     self:errf("Player %d has no active combo", player:GetPlayerID())
@@ -234,78 +257,62 @@ end
 --- Starts capturing ability usage for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:StartCapturingAbilities(player)
-  self:d("Combos:StartCapturingAbilities()", player:GetPlayerID())
-  self:setPlayerState(player, "capturing", true)
+  self:d("StartCapturingAbilities()", {player = player:GetPlayerID()})
+  self.state[player].capturing = true
 end
 
 --- Stops capturing ability usage for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:StopCapturingAbilities(player)
-  self:d("Combos:StopCapturingAbilities()", player:GetPlayerID())
-  self:setPlayerState(player, "capturing", nil)
+  self:d("StopCapturingAbilities()", {player = player:GetPlayerID()})
+  self.state[player].capturing = nil
 end
 
 --- Handles ability usage.
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam invokation.dota2.Unit unit Unit instance
 -- @tparam invokation.dota2.Ability ability Ability instance
--- @todo Implement wait/delay steps
 function M:OnAbilityUsed(player, unit, ability)
-  self:d("Combos:OnAbilityUsed()", player:GetPlayerID(), unit.name, ability.name)
+  self:d(
+    "OnAbilityUsed()",
+    {player = player:GetPlayerID(), unit = unit.name, ability = ability.name}
+  )
 
   if isIgnoredAbility(ability) then
+    self:d("  ignored")
     return
   end
 
-  if self:getPlayerState(player, "capturing") then
+  if self.state[player].capturing then
+    self:d("  captured")
     CombosComm.sendAbilityUsed(player, ability)
   end
 
-  local combo = self:getPlayerState(player, "combo")
-
-  if not isRunningCombo(combo) then
-    return
-  end
-
-  if combo:Progress(ability) then
-    if combo.count == 1 then
-      CombosComm.sendInProgress(player, combo)
-    end
-
-    CombosComm.sendProgress(player, combo)
-
-    if combo:Finish() then
-      self:Finish(player)
-    end
-  elseif not ability:IsInvocationAbility() then
-    self:Fail(player, ability)
-  end
+  self:Progress(player, ability)
 end
 
 --- Handles damage instances being dealt to entities.
 -- @tparam invokation.dota2.DamageInstance damage DamageInstance instance
 function M:OnEntityHurt(damage)
-  self:d("Combos:OnEntityHurt()")
-  self:d("  category:", damage.category)
-  self:d("  damage:", damage.amount)
-  self:d("  victim:", damage:VictimName())
-  self:d("  attacker:", damage:AttackerName())
-  self:d("  inflictor:", damage:InflictorName())
+  self:d(
+    "OnEntityHurt()",
+    {
+      category = damage.category,
+      amount = damage.amount,
+      victim = damage:VictimName(),
+      attacker = damage:AttackerName(),
+      inflictor = damage:InflictorName()
+    }
+  )
 
   local player = damage:AttackerPlayerOwner()
 
   if player == nil then
+    self:d("  ignored")
     return
   end
 
-  local combo = self:getPlayerState(player, "combo")
-
-  if not isRunningCombo(combo) then
-    return
-  end
-
-  combo:IncrementDamage(damage.amount)
-  CombosComm.sendProgress(player, combo)
+  self:ProgressDamage(player, damage)
 end
 
 --- Handles item purchases.
@@ -314,9 +321,12 @@ end
 -- @tparam string purchase.item Item name
 -- @tparam number purchase.cost Item cost
 function M:OnItemPurchased(player, purchase)
-  local combo = self:getPlayerState(player, "combo")
+  self:d("OnItemPurchased()", {player = player:GetPlayerID(), purchase = purchase})
+
+  local combo = self.state[player].combo
 
   if not isFreestyleCombo(combo) then
+    self:d("  ignored")
     return
   end
 
@@ -332,9 +342,12 @@ end
 -- @tparam[opt] int options.level Level up to specified level
 -- @tparam[opt=false] bool options.maxLevel Level up to max level
 function M:FreestyleHeroLevelUp(player, options)
-  local combo = self:getPlayerState(player, "combo")
+  self:d("FreestyleHeroLevelUp()", {player = player:GetPlayerID(), options = options})
+
+  local combo = self.state[player].combo
 
   if not isFreestyleCombo(combo) then
+    self:d("  ignored")
     return
   end
 

@@ -1,21 +1,24 @@
 --- FreestyleCombo is a Combo class that implements a freestyle sequence.
 -- @classmod invokation.combos.FreestyleCombo
 
-local M = require("pl.class")()
+local BaseCombo = require("invokation.combos.BaseCombo")
+
+local M = require("pl.class")(BaseCombo)
 
 --- Hard-coded combo id.
 -- @field[type=string] COMBO_ID
 M.COMBO_ID = "freestyle"
 
-function M:_init()
+--- Constructor.
+-- @tparam[opt] table options Options
+-- @tparam invokation.Logger options.logger Logger instance
+function M:_init(options)
+  self:super(options)
+
   self.id = M.COMBO_ID
   self.heroLevel = 1
   self.items = {}
   self.gold = 99999
-
-  self.count = 0
-  self.damage = 0
-  self.failed = false
 end
 
 --- Always progresses the combo with the given ability.
@@ -32,9 +35,8 @@ function M:Progress(ability)
 end
 
 --- Freestyle combos never fail.
--- @treturn bool `false`
 function M:Fail() -- luacheck: no self
-  return false
+  return
 end
 
 --- Freestyle combos never finish.
@@ -43,18 +45,22 @@ function M:Finish() -- luacheck: no self
   return false
 end
 
---- Returns the current next steps.
+--- Freestyle combos have no steps.
+-- @treturn nil
+function M:CurrentStepId() -- luacheck: no self
+  return nil
+end
+
+--- Freestyle combos have no steps.
+-- @treturn nil
+function M:CurrentStep() -- luacheck: no self
+  return nil
+end
+
+--- Freestyle combos have no steps.
 -- @treturn table `{}` (always returns an empty list)
 function M:NextSteps() -- luacheck: no self
   return {}
-end
-
---- Increments the total amount of damage dealt during this combo session.
--- @tparam int amount Damage amount
--- @treturn int Accumulated damage amount
-function M:IncrementDamage(amount)
-  self.damage = self.damage + amount
-  return self.damage
 end
 
 return M

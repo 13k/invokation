@@ -25,8 +25,12 @@ local NetTable = require("invokation.dota2.NetTable")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
 local PRECACHE = require("invokation.const.precache")
 
+local LOGGER_PROGNAME = "invokation"
+
 GameMode.META = require("invokation.const.metadata")
 GameMode._VERSION = GameMode.META.version
+
+Logger.InstallHelpers(GameMode)
 
 --- Precaches resources/units/items/abilities that will be needed for sure in
 -- your game and that will not be precached by hero selection.
@@ -53,7 +57,7 @@ function GameMode:_init(options)
   options.env = options.env or (IsInToolsMode() and Env.DEVELOPMENT or Env.PRODUCTION)
 
   self.env = Env(options.env)
-  self.logger = Logger(self.env.development and Logger.DEBUG or Logger.INFO, "invokation")
+  self.logger = Logger(LOGGER_PROGNAME, self.env.development and Logger.DEBUG or Logger.INFO)
   self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
   self.combos = Combos({logger = self.logger, netTable = self.netTable})
@@ -67,30 +71,6 @@ end
 
 function GameMode:methodHandler(methodName)
   return lfn.bind(self, self:fnHandler(methodName))
-end
-
-function GameMode:d(...)
-  return self.logger:Debug(...)
-end
-
-function GameMode:debugf(...)
-  return self.logger:Debugf(...)
-end
-
-function GameMode:warn(...)
-  return self.logger:Warning(...)
-end
-
-function GameMode:warnf(...)
-  return self.logger:Warningf(...)
-end
-
-function GameMode:err(...)
-  return self.logger:Error(...)
-end
-
-function GameMode:errf(...)
-  return self.logger:Errorf(...)
 end
 
 --- Entry-point for the game initialization.

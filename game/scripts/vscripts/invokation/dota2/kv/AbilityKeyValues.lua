@@ -1,10 +1,9 @@
 --- AbilityKeyValues class.
 -- @classmod invokation.dota2.kv.AbilityKeyValues
 
-local M = require("pl.class")()
-
 local KV = require("invokation.dota2.kv")
-local func = require("pl.func")
+
+local M = require("pl.class")()
 
 local function normalize(kv)
   kv.AbilitySpecial = KV.List(kv.AbilitySpecial)

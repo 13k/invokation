@@ -1,11 +1,12 @@
 --- Logger class.
 -- @classmod invokation.Logger
 
-local M = require("pl.class")()
-
 local pp = require("pl.pretty")
 local text = require("pl.text")
+local tablex = require("pl.tablex")
 local stringx = require("pl.stringx")
+
+local M = require("pl.class")()
 
 --- Logger Levels
 -- @section levels
@@ -51,21 +52,43 @@ M.LEVEL_NAMES = {
 
 --- Default level. (`INFO`)
 M.DEFAULT_LEVEL = M.INFO
---- Default format. (`"$timestamp ($severity) $progname: $message"`)
-M.DEFAULT_FORMAT = "$timestamp ($severity) $progname: $message"
+--- Default format. (`"$timestamp ($severity) [$progname] $message"`)
+M.DEFAULT_FORMAT = "$timestamp ($severity) [$progname] $message"
+
+local function formatValue(i, value)
+  -- Treat first string argument as the title text for the log message and
+  -- return it as is. All other strings are serialized.
+  if i == 1 and type(value) == "string" then
+    return value
+  end
+
+  -- ignore multi-value return
+  local serialized = pp.write(value)
+
+  return serialized
+end
 
 --- Methods
 -- @section methods
 
 --- Constructor.
+-- @tparam string|array(string) progname Program name
 -- @tparam[opt=DEFAULT_LEVEL] int level One of the logger levels
--- @tparam[opt=""] string progname Program name
 -- @tparam[opt=DEFAULT_FORMAT] string format Log entry format
-function M:_init(level, progname, format)
+function M:_init(progname, level, format)
   self.level = level or M.DEFAULT_LEVEL
-  self.progname = progname and (progname .. " ") or ""
   self.format = format or M.DEFAULT_FORMAT
   self.template = text.Template(self.format)
+
+  if type(progname) == "table" then
+    progname = stringx.join(".", progname)
+  end
+
+  self.progname = progname
+end
+
+function M:Child(progname)
+  return M({self.progname, progname}, self.level, self.format)
 end
 
 --- Logs a message if the current logger level is lower than the given level.
@@ -87,13 +110,13 @@ function M:Log(level, ...)
     return
   end
 
-  local len = select("#", ...)
   local values = {...}
   local formatted = {}
 
-  for i = 1, len do
-    local s = pp.write(values[i])
-    table.insert(formatted, s)
+  -- Explicitly iterate with actual arguments list size to correctly print `nil`
+  -- values at the end of the list which are ignored in `{...}`
+  for i = 1, select("#", ...) do
+    table.insert(formatted, formatValue(i, values[i]))
   end
 
   local tmplValues = {
@@ -184,6 +207,56 @@ end
 
 for _, levelName in pairs(M.LEVEL_NAMES) do
   createLevelMethods(levelName)
+end
+
+--- HelpersMixin
+-- @section helpers_mixin
+
+--- Mixes @{HelpersMixin} into a class.
+-- @function invokation.Logger.InstallHelpers
+-- @tparam table cls Target class
+function M.InstallHelpers(cls)
+  tablex.update(cls, M.HelpersMixin)
+end
+
+--- Helpers Mixin.
+-- Assumes `self.logger` instance attribute holds a `Logger` instance.
+M.HelpersMixin = {}
+
+--- Shortcut for `Logger.Debug`
+-- @function invokation.Logger.HelpersMixin:d
+function M.HelpersMixin:d(...)
+  return self.logger:Debug(...)
+end
+
+--- Shortcut for `Logger.Debugf`
+-- @function invokation.Logger.HelpersMixin:debugf
+function M.HelpersMixin:debugf(...)
+  return self.logger:Debugf(...)
+end
+
+--- Shortcut for `Logger.Warning`
+-- @function invokation.Logger.HelpersMixin:warn
+function M.HelpersMixin:warn(...)
+  return self.logger:Warning(...)
+end
+
+--- Shortcut for `Logger.Warningf`
+-- @function invokation.Logger.HelpersMixin:warnf
+function M.HelpersMixin:warnf(...)
+  return self.logger:Warningf(...)
+end
+
+--- Shortcut for `Logger.Error`
+-- @function invokation.Logger.HelpersMixin:err
+function M.HelpersMixin:err(...)
+  return self.logger:Error(...)
+end
+
+--- Shortcut for `Logger.Errorf`
+-- @function invokation.Logger.HelpersMixin:errf
+function M.HelpersMixin:errf(...)
+  return self.logger:Errorf(...)
 end
 
 return M
