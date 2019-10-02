@@ -19,7 +19,7 @@ function GameMode:_OnGameRulesStateChange(payload)
   local state = GameRules:State_Get()
 
   GameMode._reentrantCheck = true
-  self:OnGameRulesStateChange(payload)
+  self:OnGameRulesStateChange(state, payload)
   GameMode._reentrantCheck = false
 
   if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
@@ -50,7 +50,7 @@ end
 -- @tparam int payload.PlayerID Player ID
 -- @tparam int payload.userid User ID
 function GameMode:_OnConnectFull(payload)
-  self:d("_OnConnectFull", payload)
+  self:d("_OnConnectFull", {payload = payload})
 
   if GameMode._reentrantCheck then
     return
@@ -75,7 +75,7 @@ end
 -- @tparam table payload
 -- @tparam int payload.entindex Unit entity index
 function GameMode:_OnNPCSpawned(payload)
-  self:d("_OnNPCSpawned", payload)
+  self:d("_OnNPCSpawned", {payload = payload})
 
   if GameMode._reentrantCheck then
     return
@@ -99,7 +99,7 @@ end
 -- @tparam[opt] int payload.entindex_attacker Attacker (unit) entity index
 -- @tparam[opt] int payload.entindex_inflictor Inflictor (item, ability, etc) entity index
 function GameMode:_OnEntityKilled(payload)
-  self:d("_OnEntityKilled", payload)
+  self:d("_OnEntityKilled", {payload = payload})
 
   if GameMode._reentrantCheck then
     return
