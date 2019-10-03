@@ -143,6 +143,7 @@ end
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @param[opt] ... varargs
 function GameMode:CommandDebugMisc(player, ...) -- luacheck: no unused args
+  -- player = Player(player)
   -- local hero = Unit(player.hero)
 end
 

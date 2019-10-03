@@ -9,6 +9,7 @@ local Invoker = require("invokation.dota2.Invoker")
 
 local UNITS = require("invokation.const.units")
 local LIMITS = require("invokation.const.limits")
+local SOUND_EVENTS = require("invokation.const.sound_events")
 
 function M.setup(player, combo)
   player = Player(player)
@@ -31,6 +32,7 @@ function M.teardown(player, options)
 
   local unit = Unit(player.hero)
 
+  unit:StopSound(SOUND_EVENTS.SNDEVT_INVOKER_METEOR_LOOP)
   unit:EndItemCooldowns()
   unit:EndAbilityCooldowns()
   unit:RemoveDroppedItems()

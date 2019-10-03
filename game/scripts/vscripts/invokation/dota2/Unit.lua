@@ -14,14 +14,14 @@ local UNIT_CANNOT_RESPAWN_ERROR = "Unit '%s' cannot respawn"
 local DELEGATES = {
   "AddItemByName",
   "FindAbilityByName",
-  "GetPlayerOwner",
-  "GetPlayerOwnerID",
   "GetAbilityByIndex",
   "GetEntityIndex",
   "GetItemInSlot",
   "GetLevel",
   "GetMaxHealth",
   "GetMaxMana",
+  "GetPlayerOwner",
+  "GetPlayerOwnerID",
   "GiveMana",
   "HasAbility",
   "HasInventory",
@@ -36,7 +36,8 @@ local DELEGATES = {
   "RespawnHero",
   "RespawnUnit",
   "SetAbilityPoints",
-  "SetGold"
+  "SetGold",
+  "StopSound"
 }
 
 delegation.delegate(M, "entity", DELEGATES)
