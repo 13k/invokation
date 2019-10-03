@@ -2,7 +2,7 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
-@define controlsMarginLeft: 100px;
+@define controlsMarginLeft: 80px;
 
 .FreestyleRoot {
   width: 100%;
