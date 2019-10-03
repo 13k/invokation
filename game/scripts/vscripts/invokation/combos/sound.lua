@@ -1,26 +1,9 @@
 --- Internal combos sound helpers.
 -- @module invokation.combos.sound
 
-local M = {}
-
 local SoundEvents = require("invokation.dota2.sound_events")
 
-local SOUND_EVENTS = {
-  dummy_create = {
-    "Hero_ShadowShaman.Hex.Target"
-  },
-  combo_start = {
-    "invoker_invo_begin_01",
-    "invoker_invo_move_08",
-    "invoker_invo_move_09",
-    "invoker_invo_move_13",
-    "invoker_invo_attack_05",
-    "invoker_invo_ability_invoke_01"
-  },
-  combo_stop = {
-    "invoker_invo_failure_04"
-  }
-}
+local M = {}
 
 local MUSIC = {
   IDLE = {
@@ -41,21 +24,20 @@ local MUSIC = {
   }
 }
 
-local function randomSoundEvent(stage)
-  local events = SOUND_EVENTS[stage]
+local function randomSoundEvent(events)
   return events[RandomInt(1, #events)]
 end
 
-function M.emitRandomEventOnEntity(entity, group)
-  return SoundEvents.EmitOnEntity(randomSoundEvent(group), entity)
+function M.emitRandomEventOnEntity(entity, events)
+  return SoundEvents.EmitOnEntity(randomSoundEvent(events), entity)
 end
 
-function M.emitRandomEventOnPlayer(player, group)
-  return SoundEvents.EmitOnPlayer(randomSoundEvent(group), player)
+function M.emitRandomEventOnPlayer(player, events)
+  return SoundEvents.EmitOnPlayer(randomSoundEvent(events), player)
 end
 
 function M.onDummyCreate(dummy)
-  M.emitRandomEventOnEntity(dummy.entity, "dummy_create")
+  M.emitRandomEventOnEntity(dummy.entity, SoundEvents.SNDEVTS_DUMMY_CREATE)
 end
 
 function M.onComboStart(player)
