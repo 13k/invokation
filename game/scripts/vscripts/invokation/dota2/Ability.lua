@@ -17,6 +17,8 @@ local ORB_ABILITIES =
 )
 
 local DELEGATES = {
+  "GetDuration",
+  "GetSpecialValueFor",
   "IsItem"
 }
 

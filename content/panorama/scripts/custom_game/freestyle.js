@@ -65,7 +65,7 @@
       }
 
       this.debug("onComboProgress()", payload);
-      this.progress(payload.count, payload.damage);
+      this.progress(payload.metrics);
     },
 
     // ----- Helpers -----
@@ -157,14 +157,11 @@
       return seq.Start();
     },
 
-    progress: function(count, damage) {
+    progress: function(metrics) {
       var options = {
-        count: count || 0,
-        startDamage: this.prevDamage || 0,
-        endDamage: damage || 0,
+        count: metrics.count || 0,
+        endDamage: metrics.damage || 0,
       };
-
-      this.prevDamage = damage;
 
       var seq = new Sequence().Action(this.updateScoreSummaryAction(options));
 

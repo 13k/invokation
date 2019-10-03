@@ -30,6 +30,7 @@
     COMBO_IN_PROGRESS: "invokation_combo_in_progress",
     COMBO_PROGRESS: "invokation_combo_progress",
     COMBO_STEP_ERROR: "invokation_combo_step_error",
+    COMBO_PRE_FINISH: "invokation_combo_pre_finish",
     COMBO_FINISHED: "invokation_combo_finished",
     COMBO_RESTART: "invokation_combo_restart",
     // freestyle

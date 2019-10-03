@@ -282,9 +282,14 @@
         return seq;
       }
 
+      var startDamage =
+        (options.startDamage != null ? options.startDamage : this.currentDamage) || 0;
+
+      this.currentDamage = options.endDamage;
+
       var summaryDamageOptions = {
         container: this.$summaryDamageTicker,
-        start: options.startDamage,
+        start: startDamage,
         end: options.endDamage,
         interval: this.spinDigitsInterval,
         iterations: this.damageSpinIterations,
@@ -293,7 +298,7 @@
       return seq
         .Action(this.updateSummaryCounterDigitsAction(count))
         .Action(this.showSummaryAction())
-        .Wait(0.15)
+        .Wait(0.1)
         .Action(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
     },
 

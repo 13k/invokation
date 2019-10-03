@@ -22,6 +22,8 @@ M.EVENT_COMBO_IN_PROGRESS = "invokation_combo_in_progress"
 M.EVENT_COMBO_PROGRESS = "invokation_combo_progress"
 --- combo step error
 M.EVENT_COMBO_STEP_ERROR = "invokation_combo_step_error"
+--- combo pre finish
+M.EVENT_COMBO_PRE_FINISH = "invokation_combo_pre_finish"
 --- combo finished
 M.EVENT_COMBO_FINISHED = "invokation_combo_finished"
 --- restart combo

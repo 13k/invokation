@@ -16,9 +16,28 @@ function M:_init(options)
   self:super(options)
 
   self.id = M.COMBO_ID
+  self.started = true
   self.heroLevel = 1
   self.items = {}
   self.gold = 99999
+end
+
+--- Freestyle combos have no steps.
+-- @treturn nil
+function M:CurrentStepId() -- luacheck: no self
+  return nil
+end
+
+--- Freestyle combos have no steps.
+-- @treturn nil
+function M:CurrentStep() -- luacheck: no self
+  return nil
+end
+
+--- Freestyle combos have no steps.
+-- @treturn table `{}` (always returns an empty list)
+function M:NextSteps() -- luacheck: no self
+  return {}
 end
 
 --- Always progresses the combo with the given ability.
@@ -39,28 +58,16 @@ function M:Fail() -- luacheck: no self
   return
 end
 
+--- Freestyle combos never pre finish.
+-- @treturn bool `false`
+function M:PreFinish() -- luacheck: no self
+  return false
+end
+
 --- Freestyle combos never finish.
 -- @treturn bool `false`
 function M:Finish() -- luacheck: no self
   return false
-end
-
---- Freestyle combos have no steps.
--- @treturn nil
-function M:CurrentStepId() -- luacheck: no self
-  return nil
-end
-
---- Freestyle combos have no steps.
--- @treturn nil
-function M:CurrentStep() -- luacheck: no self
-  return nil
-end
-
---- Freestyle combos have no steps.
--- @treturn table `{}` (always returns an empty list)
-function M:NextSteps() -- luacheck: no self
-  return {}
 end
 
 return M

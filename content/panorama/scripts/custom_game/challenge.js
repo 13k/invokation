@@ -59,6 +59,8 @@
           score: "ChallengeScore",
           timer: "ChallengeTimer",
           timerLabel: "ChallengeTimerLabel",
+          waitProgress: "ChallengeWaitProgress",
+          waitProgressBar: "ChallengeWaitProgressBar",
         },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
@@ -66,6 +68,7 @@
           "!COMBO_IN_PROGRESS": "onComboInProgress",
           "!COMBO_PROGRESS": "onComboProgress",
           "!COMBO_STEP_ERROR": "onComboStepError",
+          "!COMBO_PRE_FINISH": "onComboPreFinish",
           "!COMBO_FINISHED": "onComboFinished",
         },
       });
@@ -118,7 +121,7 @@
       }
 
       this.debug("onComboProgress()", payload);
-      this.progress(payload.combo, payload.count, payload.next);
+      this.progress(payload.combo, payload.metrics, payload.next);
     },
 
     onComboStepError: function(payload) {
@@ -130,13 +133,22 @@
       this.fail(payload.combo, payload.expected, payload.ability);
     },
 
+    onComboPreFinish: function(payload) {
+      if (payload.combo === FREESTYLE_COMBO_ID) {
+        return;
+      }
+
+      this.debug("onComboPreFinish()", payload);
+      this.preFinish(payload.combo, payload.metrics, payload.wait);
+    },
+
     onComboFinished: function(payload) {
       if (payload.combo === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboFinished()", payload);
-      this.finish(payload.combo, payload.count, payload.damage);
+      this.finish(payload.combo, payload.metrics);
     },
 
     // ----- Helpers -----
@@ -394,6 +406,18 @@
       return new AddClassAction(this.$timer, "Hide");
     },
 
+    countdownWaitAction: function(wait) {
+      var animate = new ParallelSequence()
+        .AnimateDialogVariableInt(this.$waitProgress, "wait_seconds", wait, 0, wait)
+        .AnimateProgressBar(this.$waitProgressBar, wait, 0, wait);
+
+      return new Sequence()
+        .SetAttribute(this.$waitProgressBar, "max", wait)
+        .RemoveClass(this.$waitProgress, "Hide")
+        .Action(animate)
+        .AddClass(this.$waitProgress, "Hide");
+    },
+
     // ----- Action runners -----
 
     initHudVisibility: function(mode) {
@@ -406,6 +430,7 @@
 
     start: function(id, next) {
       this.combo = COMBOS.Get(id);
+      this.finished = false;
 
       var seq = new Sequence()
         .Action(this.hideScoreAction())
@@ -416,7 +441,7 @@
         .Action(this.renderSequenceAction())
         .Action(this.showSplashAction("start"))
         .Wait(0.25)
-        .RunFunction(this, this.progress, this.combo.id, 0, next);
+        .RunFunction(this, this.progress, this.combo.id, {}, next);
 
       this.debugFn(function() {
         return ["start()", { id: this.combo.id, actions: seq.size() }];
@@ -428,6 +453,7 @@
     stop: function(id) {
       this.stopTimer();
       this.combo = null;
+      this.finished = false;
 
       var seq = new Sequence().Action(this.hideAction()).Action(this.hideTimerAction());
 
@@ -450,39 +476,66 @@
       return seq.Start();
     },
 
-    progress: function(id, count, next) {
-      count = count || 0;
-      next = LuaList(next);
-
+    progress: function(id, metrics, next) {
       var seq = new Sequence();
 
-      seq
-        .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
-        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
-        .Action(this.activateStepPanelsAction(next))
-        .Action(this.updateScoreCounterAction(count));
+      if (this.finished) {
+        var scoreSummaryOptions = {
+          count: metrics.count || 0,
+          endDamage: metrics.damage || 0,
+        };
+
+        seq.Action(this.updateScoreSummaryAction(scoreSummaryOptions));
+      } else {
+        next = LuaList(next);
+
+        seq
+          .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
+          .Action(this.deactivateStepPanelsAction(this.combo.sequence))
+          .Action(this.activateStepPanelsAction(next))
+          .Action(this.updateScoreCounterAction(metrics.count));
+      }
 
       this.debugFn(function() {
-        return ["progress()", { id: id, count: count, next: next, actions: seq.size() }];
+        return ["progress()", { id: id, metrics: metrics, next: next, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    finish: function(id, count, damage) {
+    preFinish: function(id, metrics, wait) {
+      var options = {
+        count: metrics.count || 0,
+        startDamage: 0,
+        endDamage: metrics.damage || 0,
+      };
+
+      this.finished = true;
+
+      var seq = new Sequence()
+        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
+        .Action(this.bumpStepPanelsAction(this.combo.sequence))
+        .Action(this.updateScoreSummaryAction(options))
+        .Action(this.countdownWaitAction(wait));
+
+      this.debugFn(function() {
+        return ["preFinish()", _.assign({ id: id, actions: seq.size() }, options)];
+      });
+
+      return seq.Start();
+    },
+
+    finish: function(id, metrics) {
       this.stopTimer();
 
       var options = {
-        count: count || 0,
-        startDamage: 0,
-        endDamage: damage || 0,
+        count: metrics.count || 0,
+        endDamage: metrics.damage || 0,
       };
 
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.success)
         .Action(this.showSplashAction("success"))
-        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
-        .Action(this.bumpStepPanelsAction(this.combo.sequence))
         .Action(this.updateScoreSummaryAction(options));
 
       this.debugFn(function() {

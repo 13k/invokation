@@ -16,29 +16,11 @@ function M:_init(options)
   options = options or {}
 
   self.logger = options.logger:Child(LOGGER_PROGNAME)
+  self.started = false
+  self.failed = false
+  self.finished = false
   self.count = 0
   self.damage = 0
-  self.failed = false
-end
-
---- Progresses the combo with the given ability if possible.
--- @tparam invokation.dota2.Ability ability Ability instance
--- @treturn bool `true` if combo progressed, `false` otherwise
--- @warning Abstract method. Subclasses must override it.
-function M:Progress(ability) -- luacheck: no unused args
-  error("Not implemented.")
-end
-
---- Marks the combo as failed.
-function M:Fail()
-  self.failed = true
-end
-
---- Finishes the combo if possible.
--- @treturn bool `true` if combo finished, `false` otherwise
--- @warning Abstract method. Subclasses must override it.
-function M:Finish() -- luacheck: no self
-  error("Not implemented.")
 end
 
 --- Returns the current step id.
@@ -60,6 +42,33 @@ end
 --   @{invokation.combos.ComboStep} or `nil` if the combo is at the last step
 -- @warning Abstract method. Subclasses must override it.
 function M:NextSteps() -- luacheck: no self
+  error("Not implemented.")
+end
+
+--- Progresses the combo with the given ability if possible.
+-- @tparam invokation.dota2.Ability ability Ability instance
+-- @treturn bool `true` if succeeded, `false` otherwise
+-- @warning Abstract method. Subclasses must override it.
+function M:Progress(ability) -- luacheck: no unused args
+  error("Not implemented.")
+end
+
+--- Marks the combo as failed.
+function M:Fail()
+  self.failed = true
+end
+
+--- Progresses combo to pre finish if possible.
+-- @treturn bool `true` if succeeded, `false` otherwise
+-- @warning Abstract method. Subclasses must override it.
+function M:PreFinish() -- luacheck: no self
+  error("Not implemented.")
+end
+
+--- Finishes the combo if possible.
+-- @treturn bool `true` if succeeded, `false` otherwise
+-- @warning Abstract method. Subclasses must override it.
+function M:Finish() -- luacheck: no self
   error("Not implemented.")
 end
 
