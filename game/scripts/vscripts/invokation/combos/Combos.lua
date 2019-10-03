@@ -108,6 +108,8 @@ function M:setup(player, combo)
 end
 
 function M:teardown(player, options)
+  options = options or {}
+
   self.state[player].combo = nil
 
   CombosHero.teardown(player, options)
@@ -117,6 +119,20 @@ function M:teardown(player, options)
   if dummy ~= nil then
     dummy:Kill()
   end
+end
+
+function M:start(player, combo)
+  self:setup(player, combo)
+
+  CombosSound.onComboStart(player)
+  CombosComm.sendStarted(player, combo)
+end
+
+function M:stop(player, combo)
+  self:teardown(player, {hardReset = true})
+
+  CombosSound.onComboStop(player)
+  CombosComm.sendStopped(player, combo)
 end
 
 --- Handles ability usage.
@@ -184,10 +200,13 @@ function M:Start(player, comboId)
   self:d("Start", {player = player:GetPlayerID(), combo = comboId})
 
   local combo = self.state[player].combo
+  local hardReset = combo == nil
 
-  if combo ~= nil then
-    self:teardown(player, {hardReset = true})
+  if combo ~= nil and combo.id ~= comboId then
+    self:stop(player, combo)
   end
+
+  self:teardown(player, {hardReset = hardReset})
 
   combo = self:createCombo(comboId)
 
@@ -196,10 +215,22 @@ function M:Start(player, comboId)
     return
   end
 
-  self:setup(player, combo)
+  self:start(player, combo)
+end
 
-  CombosSound.onComboStart(player)
-  CombosComm.sendStarted(player, combo)
+--- Stops currently active combo for the given player.
+-- @tparam CDOTAPlayer player Player instance
+function M:Stop(player)
+  self:d("Stop", {player = player:GetPlayerID()})
+
+  local combo = self.state[player].combo
+
+  if combo == nil then
+    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
+    return
+  end
+
+  self:stop(player, combo)
 end
 
 --- Restarts a combo for the given player.
@@ -217,25 +248,7 @@ function M:Restart(player, options)
   end
 
   self:teardown(player, options)
-  self:Start(player, combo.id)
-end
-
---- Stops currently active combo for the given player.
--- @tparam CDOTAPlayer player Player instance
-function M:Stop(player)
-  self:d("Stop", {player = player:GetPlayerID()})
-
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
-
-  self:teardown(player, {hardReset = true})
-
-  CombosSound.onComboStop(player)
-  CombosComm.sendStopped(player, combo)
+  self:start(player, combo)
 end
 
 --- Progresses the currently active combo for the given player.
