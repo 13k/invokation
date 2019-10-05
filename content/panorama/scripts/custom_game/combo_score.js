@@ -7,6 +7,7 @@
   var StaggeredSequence = global.Sequence.StaggeredSequence;
   var AddClassAction = global.Sequence.AddClassAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
+  var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreateComponent = context.CreateComponent;
 
   var DAMAGE_SPIN_ITERATIONS = 30;
@@ -52,6 +53,43 @@
     return "digit_" + String(digit);
   }
 
+  function eachUpdateDigitsOperations(container, value, callback) {
+    var panels = container.FindChildrenWithClassTraverse(DIGIT_CLASS);
+    var valueRevStr = value
+      .toString()
+      .split("")
+      .reverse()
+      .join("");
+
+    for (var i = 0; i < panels.length; i++) {
+      (function() {
+        var idx = i;
+        var digit = valueRevStr[idx];
+        var panel = panels[idx];
+        var ops = {
+          setAttributes: {
+            __digit__: digit,
+          },
+          removeClass: [],
+          addClass: [],
+        };
+
+        if (panel.__digit__ != null) {
+          ops.removeClass.push(digitClass(panel.__digit__));
+        }
+
+        if (digit == null) {
+          ops.addClass.push(DIGIT_HIDDEN_CLASS);
+        } else {
+          ops.removeClass.push(DIGIT_HIDDEN_CLASS);
+          ops.addClass.push(digitClass(digit));
+        }
+
+        callback(panel, ops);
+      })();
+    }
+  }
+
   var ComboScore = CreateComponent({
     constructor: function ComboScore() {
       ComboScore.super.call(this, {
@@ -77,6 +115,9 @@
         },
       });
 
+      this.values = {};
+      this.spinQueues = {};
+      this.spinning = {};
       this.spinDigitsInterval = SPIN_DIGITS_INTERVAL;
       this.damageSpinIterations = DAMAGE_SPIN_ITERATIONS;
       this.burstIntensityThresholds = BURST_INTENSITY_THRESHOLDS.sort();
@@ -116,81 +157,143 @@
       return _.sortedIndex(this.burstIntensityThresholds, value) + 1;
     },
 
+    digitsValue: function(id, value) {
+      if (arguments.length > 1) {
+        this.values[id] = value;
+      }
+
+      return this.values[id];
+    },
+
+    spinQueue: function(id) {
+      this.spinQueues[id] = this.spinQueues[id] || [];
+      return this.spinQueues[id];
+    },
+
+    consumeSpinDigits: function(id) {
+      var queue = this.spinQueue(id);
+      var options = queue.pop();
+
+      while (queue.shift());
+
+      if (options) {
+        this.spinDigits(options);
+      }
+    },
+
+    enqueueSpinDigits: function(options) {
+      var id = options.container.id;
+
+      this.spinQueue(id).push(options);
+
+      if (!this.spinning[id]) {
+        this.consumeSpinDigits(id);
+      }
+    },
+
+    updateDigits: function(container, value) {
+      eachUpdateDigitsOperations(container, value, function(panel, ops) {
+        _.forOwn(ops.setAttributes, function(value, key) {
+          panel[key] = value;
+        });
+
+        _.each(ops.removeClass, function(cssClass) {
+          panel.RemoveClass(cssClass);
+        });
+
+        _.each(ops.addClass, function(cssClass) {
+          panel.AddClass(cssClass);
+        });
+      });
+
+      this.digitsValue(container.id, value);
+    },
+
     // ----- Actions -----
 
     updateDigitsAction: function(container, value) {
-      var valueRevStr = value
-        .toString()
-        .split("")
-        .reverse()
-        .join("");
+      var seq = new ParallelSequence();
 
-      var panels = container.FindChildrenWithClassTraverse(DIGIT_CLASS);
-      var seq = new Sequence();
+      eachUpdateDigitsOperations(container, value, function(panel, ops) {
+        var panelSeq = new ParallelSequence();
 
-      for (var i = 0; i < panels.length; i++) {
-        (function() {
-          var idx = i;
-          var digit = valueRevStr[idx];
-          var panel = panels[idx];
-          var panelClass;
+        _.forOwn(ops.setAttributes, function(value, key) {
+          panelSeq.SetAttribute(panel, key, value);
+        });
 
-          if (panel.__digit__ != null) {
-            seq.RemoveClass(panel, digitClass(panel.__digit__));
-          }
+        _.each(ops.removeClass, function(cssClass) {
+          panelSeq.RemoveClass(panel, cssClass);
+        });
 
-          seq.RemoveClass(panel, DIGIT_HIDDEN_CLASS);
-          panel.__digit__ = digit;
+        _.each(ops.addClass, function(cssClass) {
+          panelSeq.AddClass(panel, cssClass);
+        });
 
-          if (digit == null) {
-            panelClass = DIGIT_HIDDEN_CLASS;
-          } else {
-            panelClass = digitClass(digit);
-          }
+        seq.Action(panelSeq);
+      });
 
-          seq.AddClass(panel, panelClass);
-        })();
-      }
-
-      return seq;
+      return seq.RunFunction(this, this.digitsValue, container.id, value);
     },
 
     spinDigitsAction: function(options) {
       options = _.assign(
         {
-          start: 0,
-          end: 0,
-          increment: 1,
-          interval: 100,
+          iterations: 10,
+          interval: 0.1,
           callbacks: {},
         },
         options
       );
 
+      var id = options.container.id;
+
+      options.start = Math.ceil(
+        (options.start != null ? options.start : this.digitsValue(id)) || 0
+      );
+
+      options.end = Math.ceil(options.end);
+      options.increment = options.increment || (options.end - options.start) / options.iterations;
+
       var seq = new StaggeredSequence(options.interval);
 
-      for (var n = options.start; ; n += options.increment) {
-        if (n > options.end) n = options.end;
+      if (_.isFunction(options.callbacks.onStart)) {
+        seq.RunFunction(options.callbacks.onStart);
+      }
+
+      for (var v = options.start, cond = true; cond; v += options.increment) {
+        var value = v > options.end ? options.end : v < options.start ? options.start : v;
+        cond = options.increment > 0 ? v < options.end : v > options.start;
 
         (function() {
-          var nn = Math.ceil(n);
-          var updateSeq = new Sequence().Action(this.updateDigitsAction(options.container, nn));
+          var boundValue = Math.ceil(value);
+          var updateSeq = new Sequence().RunFunction(
+            this,
+            this.updateDigits,
+            options.container,
+            boundValue
+          );
 
           if (_.isFunction(options.callbacks.onSpin)) {
-            updateSeq.RunFunction(options.callbacks.onSpin, nn);
+            updateSeq.RunFunction(options.callbacks.onSpin, boundValue);
           }
 
           seq.Action(updateSeq);
         }.call(this));
-
-        if (n === options.end) break;
       }
 
       if (_.isFunction(options.callbacks.onEnd)) {
         seq.RunFunction(options.callbacks.onEnd);
       }
 
-      return seq;
+      return new Sequence()
+        .RunFunction(this, function() {
+          this.spinning[id] = true;
+        })
+        .Action(seq)
+        .RunFunction(this, function() {
+          this.spinning[id] = false;
+          this.consumeSpinDigits(id);
+        });
     },
 
     updateCounterDigitsAction: function(value) {
@@ -204,32 +307,27 @@
     spinSummaryDamageDigitsAction: function(options) {
       options = _.assign(
         {
-          start: 0,
-          end: 0,
-          iterations: 10,
           callbacks: {},
         },
         options
       );
-
-      options.increment = options.increment || (options.end - options.start) / options.iterations;
 
       var appliedFx = {};
 
       options.callbacks.onSpin = function(damage) {
         var intensity = this.burstIntensity(damage);
 
-        if (!appliedFx[intensity]) {
+        if (!(intensity in appliedFx)) {
           this.summaryFxBurstStart(intensity);
-          appliedFx[intensity] = true;
+          appliedFx[intensity] = intensity;
         }
       }.bind(this);
 
       options.callbacks.onSpinEnd = function() {
-        _.forOwn(appliedFx, _.rearg(this.summaryFxBurstStop.bind(this), [1]));
+        _.forOwn(appliedFx, this.summaryFxBurstStop.bind(this));
       }.bind(this);
 
-      return this.spinDigitsAction(options);
+      return new RunFunctionAction(this, this.enqueueSpinDigits, options);
     },
 
     bumpCounterTickerAction: function() {
@@ -282,14 +380,9 @@
         return seq;
       }
 
-      var startDamage =
-        (options.startDamage != null ? options.startDamage : this.currentDamage) || 0;
-
-      this.currentDamage = options.endDamage;
-
       var summaryDamageOptions = {
         container: this.$summaryDamageTicker,
-        start: startDamage,
+        start: options.startDamage,
         end: options.endDamage,
         interval: this.spinDigitsInterval,
         iterations: this.damageSpinIterations,
@@ -309,6 +402,10 @@
     },
 
     // ----- Action runners -----
+
+    spinDigits: function(options) {
+      this.spinDigitsAction(options).Start();
+    },
 
     updateCounter: function(payload) {
       var count = payload.count || 0;
