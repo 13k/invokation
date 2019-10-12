@@ -1,4 +1,5 @@
 exclude_files = {
+  "game/scripts/vscripts/moses.lua",
   "game/scripts/vscripts/pl/**/*.lua"
 }
 
@@ -11,7 +12,7 @@ new_globals = {
 
 -- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
 new_read_globals = {
-  -- globals
+  ---- globals
   "AddFOWViewer",
   "AngleDiff",
   "AppendToLogFile",
@@ -196,7 +197,7 @@ new_read_globals = {
   "UTIL_ResetMessageTextAll",
   "VectorToAngles",
   "Warning",
-  -- classes
+  ---- classes
   "Convars",
   "CustomGameEventManager",
   "CustomNetTables",
@@ -208,12 +209,24 @@ new_read_globals = {
   "PlayerResource",
   "Tutorial",
   "Vector",
-  -- constants
-  --   convars flags
+  ---- constants
+  -- AbilityLearnResult_t
+  "ABILITY_CAN_BE_UPGRADED", -- (0)
+  "ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE", -- (1)
+  "ABILITY_CANNOT_BE_UPGRADED_AT_MAX", -- (2)
+  "ABILITY_CANNOT_BE_UPGRADED_REQUIRES_LEVEL", -- (3)
+  "ABILITY_NOT_LEARNABLE", -- (4)
+  -- ABILITY_TYPES
+  "ABILITY_TYPE_ATTRIBUTES",
+  "ABILITY_TYPE_BASIC",
+  "ABILITY_TYPE_HIDDEN",
+  "ABILITY_TYPE_ULTIMATE",
+  -- Convars Flags
   "FCVAR_CHEAT",
-  --   effects
-  "EF_NODRAW",
-  --   DOTA_GameState
+  -- DamageCategory_t
+  "DOTA_DAMAGE_CATEGORY_ATTACK", -- (1)
+  "DOTA_DAMAGE_CATEGORY_SPELL", -- (0)
+  -- DOTA_GameState
   "DOTA_GAMERULES_STATE_INIT", -- (0)
   "DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD", -- (1)
   "DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP", -- (2)
@@ -225,7 +238,7 @@ new_read_globals = {
   "DOTA_GAMERULES_STATE_GAME_IN_PROGRESS", -- (8)
   "DOTA_GAMERULES_STATE_POST_GAME", -- (9)
   "DOTA_GAMERULES_STATE_DISCONNECT", -- (10)
-  --  DOTALimits_t
+  -- DOTALimits_t
   "DOTA_DEFAULT_MAX_TEAM", -- (5) Default number of players per team.
   "DOTA_DEFAULT_MAX_TEAM_PLAYERS", -- (10) Default number of non-spectator players supported.
   "DOTA_MAX_PLAYER_TEAMS", -- (10) Max number of player teams supported.
@@ -233,7 +246,14 @@ new_read_globals = {
   "DOTA_MAX_TEAM_PLAYERS", -- (24) Max number of non-spectator players supported.
   "DOTA_MAX_SPECTATOR_TEAM_SIZE", -- (40) How many spectators can watch.
   "DOTA_MAX_PLAYERS", -- (64) Max number of players connected to the server including spectators.
-  --  DOTA_RUNES
+  -- DOTAMusicStatus_t
+  "DOTA_MUSIC_STATUS_NONE", -- (0)
+  "DOTA_MUSIC_STATUS_EXPLORATION", -- (1)
+  "DOTA_MUSIC_STATUS_BATTLE", -- (2)
+  "DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION", -- (3)
+  "DOTA_MUSIC_STATUS_DEAD", -- (4)
+  "DOTA_MUSIC_STATUS_LAST", -- (5)
+  -- DOTA_RUNES
   "DOTA_RUNE_INVALID", -- (-1)
   "DOTA_RUNE_DOUBLEDAMAGE", -- (0)
   "DOTA_RUNE_HASTE", -- (1)
@@ -243,6 +263,22 @@ new_read_globals = {
   "DOTA_RUNE_BOUNTY", -- (5)
   "DOTA_RUNE_ARCANE", -- (6)
   "DOTA_RUNE_COUNT", -- (7)
+  -- DOTAScriptInventorySlot_t
+  "DOTA_ITEM_SLOT_1", -- (0)
+  "DOTA_ITEM_SLOT_2", -- (1)
+  "DOTA_ITEM_SLOT_3", -- (2)
+  "DOTA_ITEM_SLOT_4", -- (3)
+  "DOTA_ITEM_SLOT_5", -- (4)
+  "DOTA_ITEM_SLOT_6", -- (5)
+  "DOTA_ITEM_SLOT_7", -- (6)
+  "DOTA_ITEM_SLOT_8", -- (7)
+  "DOTA_ITEM_SLOT_9", -- (8)
+  "DOTA_STASH_SLOT_1", -- (9)
+  "DOTA_STASH_SLOT_2", -- (10)
+  "DOTA_STASH_SLOT_3", -- (11)
+  "DOTA_STASH_SLOT_4", -- (12)
+  "DOTA_STASH_SLOT_5", -- (13)
+  "DOTA_STASH_SLOT_6", -- (14)
   -- DOTATeam_t
   "DOTA_TEAM_GOODGUYS", -- (2)
   "DOTA_TEAM_BADGUYS", -- (3)
@@ -261,22 +297,39 @@ new_read_globals = {
   "DOTA_TEAM_CUSTOM_COUNT", -- (8)
   "DOTA_TEAM_CUSTOM_MIN", -- (6)
   "DOTA_TEAM_CUSTOM_MAX", -- (13)
-  -- DOTAScriptInventorySlot_t
-  "DOTA_ITEM_SLOT_1", -- (0)
-  "DOTA_ITEM_SLOT_2", -- (1)
-  "DOTA_ITEM_SLOT_3", -- (2)
-  "DOTA_ITEM_SLOT_4", -- (3)
-  "DOTA_ITEM_SLOT_5", -- (4)
-  "DOTA_ITEM_SLOT_6", -- (5)
-  "DOTA_ITEM_SLOT_7", -- (6)
-  "DOTA_ITEM_SLOT_8", -- (7)
-  "DOTA_ITEM_SLOT_9", -- (8)
-  "DOTA_STASH_SLOT_1", -- (9)
-  "DOTA_STASH_SLOT_2", -- (10)
-  "DOTA_STASH_SLOT_3", -- (11)
-  "DOTA_STASH_SLOT_4", -- (12)
-  "DOTA_STASH_SLOT_5", -- (13)
-  "DOTA_STASH_SLOT_6", -- (14)
+  -- DOTAUnitAttackCapability_t
+  "DOTA_UNIT_CAP_NO_ATTACK", -- (0) Unit is unable to attack in any way.
+  "DOTA_UNIT_CAP_MELEE_ATTACK", -- (1) Unit attacks are classified as melee (no uphill miss chance, attacks on enemies that are 350 over the attack range automatically miss).
+  "DOTA_UNIT_CAP_RANGED_ATTACK", -- (2) Unit attacks are classified as ranged (can miss on uphill, disjointable, has projectile).
+  -- DOTAUnitMoveCapability_t
+  "DOTA_UNIT_CAP_MOVE_NONE", -- (0) Unit cannot move in any way.
+  "DOTA_UNIT_CAP_MOVE_GROUND", -- (1) Unit move while being obstructed by the terrain.
+  "DOTA_UNIT_CAP_MOVE_FLY", -- (2) Unit ignores terrain.
+  -- EDOTA_ModifyGold_Reason
+  "DOTA_ModifyGold_Unspecified", -- (0)
+  "DOTA_ModifyGold_Death", -- (1)
+  "DOTA_ModifyGold_Buyback", -- (2)
+  "DOTA_ModifyGold_PurchaseConsumable", -- (3)
+  "DOTA_ModifyGold_PurchaseItem", -- (4)
+  "DOTA_ModifyGold_AbandonedRedistribute", -- (5)
+  "DOTA_ModifyGold_SellItem", -- (6)
+  "DOTA_ModifyGold_AbilityCost", -- (7)
+  "DOTA_ModifyGold_CheatCommand", -- (8)
+  "DOTA_ModifyGold_SelectionPenalty", -- (9)
+  "DOTA_ModifyGold_GameTick", -- (10)
+  "DOTA_ModifyGold_Building", -- (11)
+  "DOTA_ModifyGold_HeroKill", -- (12)
+  "DOTA_ModifyGold_CreepKill", -- (13)
+  "DOTA_ModifyGold_RoshanKill", -- (14)
+  "DOTA_ModifyGold_CourierKill", -- (15)
+  "DOTA_ModifyGold_SharedGold", -- (16)
+  -- EDOTA_ModifyXP_Reason
+  "DOTA_ModifyXP_Unspecified", -- (0)
+  "DOTA_ModifyXP_HeroKill", -- (1)
+  "DOTA_ModifyXP_CreepKill", -- (2)
+  "DOTA_ModifyXP_RoshanKill", -- (3)
+  -- Effects
+  "EF_NODRAW",
   -- GameActivity_t
   "ACT_DOTA_IDLE", -- (1500)
   "ACT_DOTA_IDLE_RARE", -- (1501)
@@ -486,52 +539,5 @@ new_read_globals = {
   "ACT_DOTA_ATTACK_EVENT_BASH", -- (1705)
   "ACT_DOTA_CAPTURE_RARE", -- (1706)
   "ACT_DOTA_AW_MAGNETIC_FIELD", -- (1707)
-  "ACT_DOTA_CAST_GHOST_SHIP", -- (1708)
-  -- DOTAUnitAttackCapability_t
-  "DOTA_UNIT_CAP_NO_ATTACK", -- (0) Unit is unable to attack in any way.
-  "DOTA_UNIT_CAP_MELEE_ATTACK", -- (1) Unit attacks are classified as melee (no uphill miss chance, attacks on enemies that are 350 over the attack range automatically miss).
-  "DOTA_UNIT_CAP_RANGED_ATTACK", -- (2) Unit attacks are classified as ranged (can miss on uphill, disjointable, has projectile).
-  -- DOTAUnitMoveCapability_t
-  "DOTA_UNIT_CAP_MOVE_NONE", -- (0) Unit cannot move in any way.
-  "DOTA_UNIT_CAP_MOVE_GROUND", -- (1) Unit move while being obstructed by the terrain.
-  "DOTA_UNIT_CAP_MOVE_FLY", -- (2) Unit ignores terrain.
-  -- DamageCategory_t
-  "DOTA_DAMAGE_CATEGORY_ATTACK", -- (1)
-  "DOTA_DAMAGE_CATEGORY_SPELL", -- (0)
-  -- DOTAMusicStatus_t
-  "DOTA_MUSIC_STATUS_NONE", -- (0)
-  "DOTA_MUSIC_STATUS_EXPLORATION", -- (1)
-  "DOTA_MUSIC_STATUS_BATTLE", -- (2)
-  "DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION", -- (3)
-  "DOTA_MUSIC_STATUS_DEAD", -- (4)
-  "DOTA_MUSIC_STATUS_LAST", -- (5)
-  -- EDOTA_ModifyGold_Reason
-  "DOTA_ModifyGold_Unspecified", -- (0)
-  "DOTA_ModifyGold_Death", -- (1)
-  "DOTA_ModifyGold_Buyback", -- (2)
-  "DOTA_ModifyGold_PurchaseConsumable", -- (3)
-  "DOTA_ModifyGold_PurchaseItem", -- (4)
-  "DOTA_ModifyGold_AbandonedRedistribute", -- (5)
-  "DOTA_ModifyGold_SellItem", -- (6)
-  "DOTA_ModifyGold_AbilityCost", -- (7)
-  "DOTA_ModifyGold_CheatCommand", -- (8)
-  "DOTA_ModifyGold_SelectionPenalty", -- (9)
-  "DOTA_ModifyGold_GameTick", -- (10)
-  "DOTA_ModifyGold_Building", -- (11)
-  "DOTA_ModifyGold_HeroKill", -- (12)
-  "DOTA_ModifyGold_CreepKill", -- (13)
-  "DOTA_ModifyGold_RoshanKill", -- (14)
-  "DOTA_ModifyGold_CourierKill", -- (15)
-  "DOTA_ModifyGold_SharedGold", -- (16)
-  -- EDOTA_ModifyXP_Reason
-  "DOTA_ModifyXP_Unspecified", -- (0)
-  "DOTA_ModifyXP_HeroKill", -- (1)
-  "DOTA_ModifyXP_CreepKill", -- (2)
-  "DOTA_ModifyXP_RoshanKill", -- (3)
-  -- AbilityLearnResult_t
-  "ABILITY_CAN_BE_UPGRADED", -- (0)
-  "ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE", -- (1)
-  "ABILITY_CANNOT_BE_UPGRADED_AT_MAX", -- (2)
-  "ABILITY_CANNOT_BE_UPGRADED_REQUIRES_LEVEL", -- (3)
-  "ABILITY_NOT_LEARNABLE" -- (4)
+  "ACT_DOTA_CAST_GHOST_SHIP" -- (1708)
 }
