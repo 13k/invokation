@@ -20,13 +20,9 @@ function GameMode:setupNetTableShopItems()
 end
 
 function GameMode:setupNetTableAbilities()
-  local abilities =
-    tablex.pairmap(
-    function(ability, kv)
-      return kv:Serialize(), ability
-    end,
-    INVOKER.ABILITIES_KEY_VALUES
-  )
+  local abilities = tablex.pairmap(function(ability, kv)
+    return kv:Serialize(), ability
+  end, INVOKER.ABILITIES_KEY_VALUES)
 
   self.netTable:Set(NET_TABLE.MAIN_KEYS.ABILITIES_KEY_VALUES, abilities)
   self:d("  setup abilities NetTable data")

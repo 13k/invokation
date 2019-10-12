@@ -8,19 +8,11 @@ local tablex = require("pl.tablex")
 local INVOKER = require("invokation.const.invoker")
 local delegation = require("invokation.lang.delegation")
 
-local ORB_ABILITIES =
-  tablex.pairmap(
-  function(_, ability)
-    return true, ability
-  end,
-  INVOKER.ORB_ABILITIES
-)
+local ORB_ABILITIES = tablex.pairmap(function(_, ability)
+  return true, ability
+end, INVOKER.ORB_ABILITIES)
 
-local DELEGATES = {
-  "GetDuration",
-  "GetSpecialValueFor",
-  "IsItem"
-}
+local DELEGATES = { "GetDuration", "GetSpecialValueFor", "IsItem" }
 
 delegation.delegate(M, "entity", DELEGATES)
 

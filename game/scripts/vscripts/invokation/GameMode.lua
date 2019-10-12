@@ -56,13 +56,16 @@ function GameMode:_init(options)
   options = options or {}
   options.env = options.env or (IsInToolsMode() and Env.DEVELOPMENT or Env.PRODUCTION)
 
+  self.users = {}
+  self.players = {}
   self.env = Env(options.env)
   self.logger = Logger(LOGGER_PROGNAME, self.env.development and Logger.DEBUG or Logger.INFO)
   self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
-  self.combos = Combos({logger = self.logger, netTable = self.netTable})
-  self.users = {}
-  self.players = {}
+  self.combos = Combos({
+    logger = self.logger,
+    netTable = self.netTable,
+  })
 end
 
 function GameMode:fnHandler(methodName)
@@ -75,9 +78,7 @@ end
 
 --- Entry-point for the game initialization.
 function GameMode:Activate()
-  if GameMode._reentrantCheck then
-    return
-  end
+  if GameMode._reentrantCheck then return end
 
   self:d("Loading GameMode...")
 

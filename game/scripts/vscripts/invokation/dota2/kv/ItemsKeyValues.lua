@@ -23,7 +23,7 @@ end
 -- entry into `ItemKeyValues` instances.
 --
 function M:_init()
-  self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, {2, 1}))
+  self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, { 2, 1 }))
 end
 
 --- Returns an iterator function that iterates over the `ItemKeyValues` entries.

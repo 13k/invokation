@@ -8,20 +8,20 @@ local M = {}
 local MUSIC = {
   IDLE = {
     STATUS = DOTA_MUSIC_STATUS_PRE_GAME_EXPLORATION,
-    INTENSITY = 1.0
+    INTENSITY = 1.0,
   },
   BATTLE = {
     STATUS = DOTA_MUSIC_STATUS_BATTLE,
-    INTENSITY = 5.0
+    INTENSITY = 5.0,
   },
   VICTORY = {
     STATUS = DOTA_MUSIC_STATUS_EXPLORATION,
-    INTENSITY = 10.0
+    INTENSITY = 10.0,
   },
   DEFEAT = {
     STATUS = DOTA_MUSIC_STATUS_DEAD,
-    INTENSITY = 10.0
-  }
+    INTENSITY = 10.0,
+  },
 }
 
 local function randomSoundEvent(events)

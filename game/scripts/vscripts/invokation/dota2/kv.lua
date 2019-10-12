@@ -9,9 +9,7 @@ local ENUMS = require("invokation.const.enums")
 local M = {}
 
 local function warn(fmt, ...)
-  if not IsInToolsMode() then
-    return
-  end
+  if not IsInToolsMode() then return end
 
   print("(WARNING) [kv] " .. fmt:format(...))
 end
@@ -21,12 +19,9 @@ function M.List(value)
     return value
   end
 
-  return m.map(
-    value,
-    function(v, k)
-      return tonumber(k), v
-    end
-  )
+  return m.map(value, function(v, k)
+    return tonumber(k), v
+  end)
 end
 
 function M.Bool(value)
@@ -55,9 +50,7 @@ function M.Numbers(value, sep)
 end
 
 function M.EnumValue(key)
-  if key == nil then
-    return
-  end
+  if key == nil then return end
 
   if not m.isString(key) then
     warn("EnumValue(): invalid key %s [%s]", key, type(key))
@@ -96,12 +89,12 @@ end
 
 local ABILITY_SPECIAL_CAST = {
   FIELD_FLOAT = M.Numbers,
-  FIELD_INTEGER = M.Numbers
+  FIELD_INTEGER = M.Numbers,
 }
 
 local ABILITY_SPECIAL_EXTRA = {
   CalculateSpellDamageTooltip = M.Bool,
-  RequiresScepter = M.Bool
+  RequiresScepter = M.Bool,
 }
 
 local function castAbilitySpecialField(key, value, varType)
@@ -138,7 +131,7 @@ function M.AbilitySpecial(value)
   end
 
   local castField =
-    m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({2, 1}):value()
+    m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({ 2, 1 }):value()
 
   return m.map(value, castField)
 end

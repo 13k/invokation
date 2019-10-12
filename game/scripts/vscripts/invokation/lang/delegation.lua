@@ -46,7 +46,7 @@ local M = {}
 -- @tparam string|array(string) methods Method name or list of names to delegate
 function M.delegate(classObject, delegateTo, methods)
   if type(methods) == "string" then
-    methods = {methods}
+    methods = { methods }
   end
 
   for _, method in ipairs(methods) do

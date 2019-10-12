@@ -2,11 +2,12 @@
 -- @classmod invokation.combos.Combo
 
 local fsm = require("invokation.fsm")
+local class = require("pl.class")
 local tablex = require("pl.tablex")
 local BaseCombo = require("invokation.combos.BaseCombo")
 local ComboStep = require("invokation.combos.ComboStep")
 
-local M = require("pl.class")(BaseCombo)
+local M = class(BaseCombo)
 
 local INITIAL_STATE = "start"
 local DELAYED_FINISH_STATE = "delayed_finish"
@@ -18,25 +19,32 @@ local FINISH_EVENT = "finish"
 local CACHE = {}
 
 local WAIT_ABILITY_SPECIALS = {
-  invoker_alacrity = {"duration"},
-  invoker_chaos_meteor = {"land_time", "burn_duration"},
-  invoker_cold_snap = {"duration"},
-  invoker_deafening_blast = {"disarm_duration"},
-  invoker_emp = {"delay"},
-  invoker_ice_wall = {"duration"},
-  invoker_sun_strike = {"delay"},
-  invoker_tornado = {"lift_duration"},
-  item_black_king_bar = {"duration"},
-  item_cyclone = {"cyclone_duration"},
-  item_sheepstick = {"sheep_duration"},
-  item_shivas_guard = {"blast_debuff_duration"}
+  invoker_alacrity = { "duration" },
+  invoker_chaos_meteor = { "land_time", "burn_duration" },
+  invoker_cold_snap = { "duration" },
+  invoker_deafening_blast = { "disarm_duration" },
+  invoker_emp = { "delay" },
+  invoker_ice_wall = { "duration" },
+  invoker_sun_strike = { "delay" },
+  invoker_tornado = { "lift_duration" },
+  item_black_king_bar = { "duration" },
+  item_cyclone = { "cyclone_duration" },
+  item_sheepstick = { "sheep_duration" },
+  item_shivas_guard = { "blast_debuff_duration" },
 }
 
 local function parseSequence(sequence)
   local nextSteps = {}
-  local steps = {{name = INITIAL_STATE, state = INITIAL_STATE, next = {sequence[1].id}}}
   local events = {}
   local lastState
+
+  local firstStep = {
+    name = INITIAL_STATE,
+    state = INITIAL_STATE,
+    next = { sequence[1].id },
+  }
+
+  local steps = { firstStep }
 
   tablex.insertvalues(steps, sequence)
 
@@ -50,16 +58,33 @@ local function parseSequence(sequence)
 
     for _, nextId in ipairs(step.next) do
       local nextStep = sequence[nextId]
-      local event = {name = nextStep.event, from = step.state, to = nextStep.state}
-      table.insert(events, event)
+
+      table.insert(events, {
+        name = nextStep.event,
+        from = step.state,
+        to = nextStep.state,
+      })
+
       table.insert(nextSteps[step.state], nextStep)
     end
   end
 
-  table.insert(events, {name = DELAYED_FINISH_EVENT, from = lastState, to = DELAYED_FINISH_STATE})
-  table.insert(events, {name = FINISH_EVENT, from = DELAYED_FINISH_STATE, to = FINISH_STATE})
+  table.insert(events, {
+    name = DELAYED_FINISH_EVENT,
+    from = lastState,
+    to = DELAYED_FINISH_STATE,
+  })
 
-  local fsmDef = {initial = INITIAL_STATE, events = events}
+  table.insert(events, {
+    name = FINISH_EVENT,
+    from = DELAYED_FINISH_STATE,
+    to = FINISH_STATE,
+  })
+
+  local fsmDef = {
+    initial = INITIAL_STATE,
+    events = events,
+  }
 
   return fsmDef, nextSteps
 end
@@ -120,7 +145,10 @@ function M:createFSM()
     nextSteps = cached.nextSteps
   else
     fsmDef, nextSteps = parseSequence(self.sequence)
-    CACHE[self.id] = {fsmDef = fsmDef, nextSteps = nextSteps}
+    CACHE[self.id] = {
+      fsmDef = fsmDef,
+      nextSteps = nextSteps,
+    }
   end
 
   self.fsm = fsm.create(fsmDef)

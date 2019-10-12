@@ -8,7 +8,7 @@ local M = require("pl.class")()
 
 --- Constructor.
 -- @tparam string name Item name
--- @tparam table kv KeyValues table for the item
+-- @tparam table kv KeyValues table
 function M:_init(name, kv)
   self.Name = name
 
@@ -51,8 +51,9 @@ end
 function M:MatchesQuery(query)
   local matcher = m.chain(string.match):partialRight(query):unary():value()
 
-  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher)) or
-    (m.isTable(self.ItemAliases) and m.findIndex(self.ItemAliases, matcher))
+  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher)) or (m.isTable(
+    self.ItemAliases
+  ) and m.findIndex(self.ItemAliases, matcher))
 end
 
 return M

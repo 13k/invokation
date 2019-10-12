@@ -49,7 +49,9 @@ end
 -- @tparam invokation.dota2.Ability ability Ability instance
 -- @treturn bool `true` if succeeded, `false` otherwise
 -- @warning Abstract method. Subclasses must override it.
-function M:Progress(ability) -- luacheck: no unused args
+--
+-- luacheck: no unused args
+function M:Progress(ability)
   error("Not implemented.")
 end
 

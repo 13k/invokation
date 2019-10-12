@@ -39,12 +39,10 @@ Original code: [https://github.com/bmddota/barebones](https://github.com/bmddota
 @license Apache License 2.0
 @copyright bmddota
 ]]
-local M = {_VERSION = "0.80"}
+local M = { _VERSION = "0.80" }
 
 local function GetAPI(t, sub, done)
-  if type(t) ~= "table" then
-    return
-  end
+  if type(t) ~= "table" then return end
 
   done = done or {}
   done[t] = true
@@ -89,9 +87,15 @@ local function GetAPI(t, sub, done)
         if t.FDesc and t.FDesc[v] then
           local func, desc = string.match(tostring(t.FDesc[v]), "(.*)\n(.*)")
           if sub == M.api then
-            M.api.__GLOBAL__[v] = {f = func, d = desc}
+            M.api.__GLOBAL__[v] = {
+              f = func,
+              d = desc,
+            }
           else
-            sub[v] = {f = func, d = desc}
+            sub[v] = {
+              f = func,
+              d = desc,
+            }
           end
           ret = true
         end
@@ -116,7 +120,7 @@ end
 
 function M.sendAPI()
   M.buildAPI()
-  CustomGameEventManager:Send_ServerToAllClients("modmaker_lua_api", {api = M.api})
+  CustomGameEventManager:Send_ServerToAllClients("modmaker_lua_api", { api = M.api })
 end
 
 function M.buildAPI()
@@ -129,7 +133,9 @@ end
 
 --- Initializes ModMaker.
 function M.Start()
-  M.api = {__GLOBAL__ = {}}
+  M.api = {
+    __GLOBAL__ = {},
+  }
   M.initialized = true
 
   Convars:RegisterCommand(

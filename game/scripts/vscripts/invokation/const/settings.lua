@@ -496,7 +496,7 @@ M.ENABLED_RUNES = {
   [DOTA_RUNE_INVISIBILITY] = true,
   [DOTA_RUNE_REGENERATION] = true,
   [DOTA_RUNE_BOUNTY] = true,
-  [DOTA_RUNE_ARCANE] = true
+  [DOTA_RUNE_ARCANE] = true,
 }
 
 --- Custom team colors.
@@ -524,16 +524,16 @@ M.ENABLED_RUNES = {
 --
 -- `PlayerResource:SetCustomPlayerColor(playerId, r, g, b)`
 M.TEAM_COLORS = {
-  [DOTA_TEAM_GOODGUYS] = {61, 210, 150}, -- Teal
-  [DOTA_TEAM_BADGUYS] = {243, 201, 9}, -- Yellow
-  [DOTA_TEAM_CUSTOM_1] = {197, 77, 168}, -- Pink
-  [DOTA_TEAM_CUSTOM_2] = {255, 108, 0}, -- Orange
-  [DOTA_TEAM_CUSTOM_3] = {52, 85, 255}, -- Blue
-  [DOTA_TEAM_CUSTOM_4] = {101, 212, 19}, -- Green
-  [DOTA_TEAM_CUSTOM_5] = {129, 83, 54}, -- Brown
-  [DOTA_TEAM_CUSTOM_6] = {27, 192, 216}, -- Cyan
-  [DOTA_TEAM_CUSTOM_7] = {199, 228, 13}, -- Olive
-  [DOTA_TEAM_CUSTOM_8] = {140, 42, 244} -- Purple
+  [DOTA_TEAM_GOODGUYS] = { 61, 210, 150 }, -- Teal
+  [DOTA_TEAM_BADGUYS] = { 243, 201, 9 }, -- Yellow
+  [DOTA_TEAM_CUSTOM_1] = { 197, 77, 168 }, -- Pink
+  [DOTA_TEAM_CUSTOM_2] = { 255, 108, 0 }, -- Orange
+  [DOTA_TEAM_CUSTOM_3] = { 52, 85, 255 }, -- Blue
+  [DOTA_TEAM_CUSTOM_4] = { 101, 212, 19 }, -- Green
+  [DOTA_TEAM_CUSTOM_5] = { 129, 83, 54 }, -- Brown
+  [DOTA_TEAM_CUSTOM_6] = { 27, 192, 216 }, -- Cyan
+  [DOTA_TEAM_CUSTOM_7] = { 199, 228, 13 }, -- Olive
+  [DOTA_TEAM_CUSTOM_8] = { 140, 42, 244 }, -- Purple
 }
 
 --- If we're not automatically setting the number of players per team, use this table.
@@ -561,7 +561,7 @@ M.CUSTOM_TEAM_PLAYER_COUNT = {
   [DOTA_TEAM_CUSTOM_5] = 0,
   [DOTA_TEAM_CUSTOM_6] = 0,
   [DOTA_TEAM_CUSTOM_7] = 0,
-  [DOTA_TEAM_CUSTOM_8] = 0
+  [DOTA_TEAM_CUSTOM_8] = 0,
 }
 
 return M

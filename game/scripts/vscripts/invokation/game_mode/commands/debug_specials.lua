@@ -5,7 +5,7 @@ local ABILITIES = require("invokation.const.abilities")
 local M = {}
 
 local function joinpath(...)
-  local path = {...}
+  local path = { ... }
 
   if #path == 0 then
     return ""
@@ -78,7 +78,7 @@ local function iterSpecials(keys)
     return iterSpecials(keys)
   end
 
-  local path = {keys.ability, "AbilitySpecial", keys.special}
+  local path = { keys.ability, "AbilitySpecial", keys.special }
 
   if type(special) ~= "table" then
     if special ~= nil then

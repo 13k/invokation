@@ -44,7 +44,7 @@ M.LEVEL_NAMES = {
   [M.INFO] = "INFO",
   [M.WARNING] = "WARNING",
   [M.ERROR] = "ERROR",
-  [M.CRITICAL] = "CRITICAL"
+  [M.CRITICAL] = "CRITICAL",
 }
 
 --- Defaults
@@ -88,7 +88,7 @@ function M:_init(progname, level, format)
 end
 
 function M:Child(progname)
-  return M({self.progname, progname}, self.level, self.format)
+  return M({ self.progname, progname }, self.level, self.format)
 end
 
 --- Logs a message if the current logger level is lower than the given level.
@@ -106,11 +106,9 @@ end
 -- @tparam int level One of the logger levels
 -- @param[opt] ... Values
 function M:Log(level, ...)
-  if level < self.level then
-    return
-  end
+  if level < self.level then return end
 
-  local values = {...}
+  local values = { ... }
   local formatted = {}
 
   -- Explicitly iterate with actual arguments list size to correctly print `nil`
@@ -123,7 +121,7 @@ function M:Log(level, ...)
     timestamp = GetSystemDate() .. " " .. GetSystemTime(),
     severity = M.LEVEL_NAMES[level],
     progname = self.progname,
-    message = stringx.join(" ", formatted)
+    message = stringx.join(" ", formatted),
   }
 
   return print(self.template:substitute(tmplValues))
@@ -135,9 +133,7 @@ end
 -- @tparam string format Format string
 -- @param[opt] ... Values
 function M:Logf(level, format, ...)
-  if level < self.level then
-    return
-  end
+  if level < self.level then return end
 
   return self:Log(level, format:format(...))
 end
@@ -188,9 +184,7 @@ end
 -- @param[opt] ... Values
 
 local function createLevelMethods(levelName)
-  if levelName == "UNKNOWN" then
-    return
-  end
+  if levelName == "UNKNOWN" then return end
 
   local title = stringx.title(levelName)
 

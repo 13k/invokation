@@ -31,9 +31,7 @@ function M:Invoke(abilityName)
   local invoked = Ability(self.hero:FindAbilityByName(abilityName))
 
   -- I(i) : [i, s2], [s3, s4, s5] -> [i, s2], [s3, s4, s5]
-  if invoked.index == INVOKER.INDEX_ABILITY_EMPTY1 then
-    return
-  end
+  if invoked.index == INVOKER.INDEX_ABILITY_EMPTY1 then return end
 
   local spell1 = Ability(self.hero:GetAbilityByIndex(INVOKER.INDEX_ABILITY_EMPTY1))
 

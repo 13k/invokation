@@ -29,7 +29,7 @@ local function create_transition(name)
     if self.asyncState == NONE then
       can, to = self:can(name)
       from = self.current
-      params = {self, name, from, to, ...}
+      params = { self, name, from, to, ... }
 
       if not can then
         return false
@@ -69,10 +69,10 @@ local function create_transition(name)
       self.currentTransitioningEvent = nil
       return true
     else
-      if
-        string.find(self.asyncState, "WaitingOnLeave") or
-          string.find(self.asyncState, "WaitingOnEnter")
-       then
+      if string.find(self.asyncState, "WaitingOnLeave") or string.find(
+        self.asyncState,
+        "WaitingOnEnter"
+      ) then
         self.asyncState = NONE
         transition(self, ...)
         return true
@@ -110,7 +110,9 @@ function machine.create(options)
   for _, event in ipairs(options.events or {}) do
     local name = event.name
     fsm[name] = fsm[name] or create_transition(name)
-    fsm.events[name] = fsm.events[name] or {map = {}}
+    fsm.events[name] = fsm.events[name] or {
+      map = {},
+    }
     add_to_map(fsm.events[name].map, event)
   end
 
@@ -136,7 +138,7 @@ function machine:cannot(e)
 end
 
 function machine:todot()
-  local dot = {"digraph {"}
+  local dot = { "digraph {" }
 
   local function transition(event, from, to)
     table.insert(dot, string.format('"%s" -> "%s" [label="%s"];', from, to, event))

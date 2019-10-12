@@ -12,9 +12,7 @@ local WARNF_MISSING_TEAM_COLOR =
 --- Called when the overall game state has changed.
 -- @tparam table payload
 function GameMode:_OnGameRulesStateChange(payload)
-  if GameMode._reentrantCheck then
-    return
-  end
+  if GameMode._reentrantCheck then return end
 
   local state = GameRules:State_Get()
 
@@ -50,11 +48,9 @@ end
 -- @tparam int payload.PlayerID Player ID
 -- @tparam int payload.userid User ID
 function GameMode:_OnConnectFull(payload)
-  self:d("_OnConnectFull", {payload = payload})
+  self:d("_OnConnectFull", { payload = payload })
 
-  if GameMode._reentrantCheck then
-    return
-  end
+  if GameMode._reentrantCheck then return end
 
   local player = PlayerResource:GetPlayer(payload.PlayerID)
 
@@ -75,11 +71,9 @@ end
 -- @tparam table payload
 -- @tparam int payload.entindex Unit entity index
 function GameMode:_OnNPCSpawned(payload)
-  self:d("_OnNPCSpawned", {payload = payload})
+  self:d("_OnNPCSpawned", { payload = payload })
 
-  if GameMode._reentrantCheck then
-    return
-  end
+  if GameMode._reentrantCheck then return end
 
   local npc = EntIndexToHScript(payload.entindex)
 
@@ -99,11 +93,9 @@ end
 -- @tparam[opt] int payload.entindex_attacker Attacker (unit) entity index
 -- @tparam[opt] int payload.entindex_inflictor Inflictor (item, ability, etc) entity index
 function GameMode:_OnEntityKilled(payload)
-  self:d("_OnEntityKilled", {payload = payload})
+  self:d("_OnEntityKilled", { payload = payload })
 
-  if GameMode._reentrantCheck then
-    return
-  end
+  if GameMode._reentrantCheck then return end
 
   local killed = EntIndexToHScript(payload.entindex_killed)
   local attacker = nil

@@ -8,7 +8,8 @@ local M = require("pl.class")()
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- Constructor.
--- @tparam table kv KeyValues table for the hero
+-- @tparam string name Hero name
+-- @tparam table kv KeyValues table
 function M:_init(name, kv)
   self.Name = name
 
@@ -45,7 +46,7 @@ end
 -- @treturn array(string) List of ability names
 function M:Abilities()
   if self.abilities == nil then
-    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, {2, 1}))
+    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, { 2, 1 }))
   end
 
   return self.abilities

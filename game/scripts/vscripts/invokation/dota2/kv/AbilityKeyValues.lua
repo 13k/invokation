@@ -8,7 +8,7 @@ local M = require("pl.class")()
 
 --- Constructor.
 -- @tparam string name Ability name
--- @tparam table kv KeyValues table for the ability
+-- @tparam table kv KeyValues table
 function M:_init(name, kv)
   self.Name = name
 
