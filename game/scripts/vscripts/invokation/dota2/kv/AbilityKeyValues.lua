@@ -1,55 +1,48 @@
 --- AbilityKeyValues class.
 -- @classmod invokation.dota2.kv.AbilityKeyValues
 
+local m = require("moses")
 local KV = require("invokation.dota2.kv")
 
 local M = require("pl.class")()
 
-local function normalize(kv)
-  kv.AbilitySpecial = KV.List(kv.AbilitySpecial)
-  kv.AbilityBehavior = KV.MultiValue(kv.AbilityBehavior, "|")
-  kv.AbilityUnitTargetFlags = KV.MultiValue(kv.AbilityUnitTargetFlags, "|")
-  kv.AbilityUnitTargetTeam = KV.MultiValue(kv.AbilityUnitTargetTeam, "|")
-  kv.AbilityUnitTargetType = KV.MultiValue(kv.AbilityUnitTargetType, "|")
-  kv.AbilityCastPoint = KV.MultiValue(kv.AbilityCastPoint, " ", "number")
-  kv.AbilityCastRange = KV.MultiValue(kv.AbilityCastRange, " ", "number")
-  kv.AbilityChannelTime = KV.MultiValue(kv.AbilityChannelTime, " ", "number")
-  kv.AbilityCooldown = KV.MultiValue(kv.AbilityCooldown, " ", "number")
-  kv.AbilityDamage = KV.MultiValue(kv.AbilityDamage, " ", "number")
-  kv.AbilityDuration = KV.MultiValue(kv.AbilityDuration, " ", "number")
-  kv.AbilityManaCost = KV.MultiValue(kv.AbilityManaCost, " ", "number")
-
-  return kv
-end
-
 --- Constructor.
---
--- It will normalize the following KeyValues entries:
---
--- - **AbilitySpecial**: (_list_) convert to numeric indices list
--- - **AbilityBehavior**: (_list_) split the original string by `"|"`
--- - **AbilityUnitTargetFlags**: (_list_) split the original string by `"|"`
--- - **AbilityUnitTargetTeam**: (_list_) split the original string by `"|"`
--- - **AbilityUnitTargetType**: (_list_) split the original string by `"|"`
--- - **AbilityCastPoint**: (_list_) split the original string by `" "`
--- - **AbilityCastRange**: (_list_) split the original string by `" "`
--- - **AbilityChannelTime**: (_list_) split the original string by `" "`
--- - **AbilityCooldown**: (_list_) split the original string by `" "`
--- - **AbilityDamage**: (_list_) split the original string by `" "`
--- - **AbilityDuration**: (_list_) split the original string by `" "`
--- - **AbilityManaCost**: (_list_) split the original string by `" "`
---
 -- @tparam string name Ability name
 -- @tparam table kv KeyValues table for the ability
 function M:_init(name, kv)
   self.Name = name
-  self.kv = normalize(kv)
+
+  m.extend(self, kv)
+
+  self.AbilitySpecial = KV.AbilitySpecials(kv.AbilitySpecial)
+  self.AbilityBehavior = KV.Flags(kv.AbilityBehavior)
+  self.AbilityUnitTargetFlags = KV.Flags(kv.AbilityUnitTargetFlags)
+  self.AbilityUnitTargetTeam = KV.EnumValues(kv.AbilityUnitTargetTeam)
+  self.AbilityUnitTargetType = KV.Flags(kv.AbilityUnitTargetType)
+  self.AbilityCastPoint = KV.Numbers(kv.AbilityCastPoint)
+  self.AbilityCastRange = KV.Numbers(kv.AbilityCastRange)
+  self.AbilityChannelTime = KV.Numbers(kv.AbilityChannelTime)
+  self.AbilityCooldown = KV.Numbers(kv.AbilityCooldown)
+  self.AbilityDamage = KV.Numbers(kv.AbilityDamage)
+  self.AbilityDuration = KV.Numbers(kv.AbilityDuration)
+  self.AbilityManaCost = KV.Numbers(kv.AbilityManaCost)
+  self.AbilityCastAnimation = KV.EnumValue(kv.AbilityCastAnimation)
 end
 
 --- Serialize the KeyValues
 -- @treturn table
 function M:Serialize()
-  return self.kv
+  if self.__data == nil then
+    self.__data = m.omit(self, m.functions(self))
+  end
+
+  return self.__data
+end
+
+--- Returns an iterator function that iterates over the KeyValues entries.
+-- @treturn function
+function M:Entries()
+  return pairs(self:Serialize())
 end
 
 return M

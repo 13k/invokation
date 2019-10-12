@@ -1,12 +1,21 @@
 --- Collection of `ItemKeyValues`.
 -- @classmod invokation.dota2.kv.ItemsKeyValues
 
-local M = require("pl.class")()
-
+local m = require("moses")
 local ITEMS = require("invokation.const.items")
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
 
+local M = require("pl.class")()
+
 local ITEM_KEY_PATT = "^item_"
+
+local function selectItemEntry(name, kv)
+  if name:match(ITEM_KEY_PATT) and type(kv) == "table" then
+    return name, ItemKeyValues(name, kv)
+  end
+
+  return nil, nil
+end
 
 --- Constructor.
 --
@@ -14,23 +23,13 @@ local ITEM_KEY_PATT = "^item_"
 -- entry into `ItemKeyValues` instances.
 --
 function M:_init()
-  self:loadItems()
-end
-
-function M:loadItems()
-  self.itemsKV = {}
-
-  for name, kv in pairs(ITEMS.KEY_VALUES) do
-    if name:match(ITEM_KEY_PATT) and type(kv) == "table" then
-      self.itemsKV[name] = ItemKeyValues(name, kv)
-    end
-  end
+  self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, {2, 1}))
 end
 
 --- Returns an iterator function that iterates over the `ItemKeyValues` entries.
 -- @treturn function
 function M:Entries()
-  return pairs(self.itemsKV)
+  return pairs(self.__data)
 end
 
 --- Searches for item KeyValues matching the given query.
@@ -39,9 +38,9 @@ end
 function M:Search(query)
   local items = {}
 
-  for name, itemKV in self:Entries() do
-    if itemKV:MatchesQuery(query) then
-      items[name] = itemKV.kv
+  for _, kv in self:Entries() do
+    if kv:MatchesQuery(query) then
+      items[kv.Name] = kv:Serialize()
     end
   end
 

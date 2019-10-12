@@ -9,6 +9,8 @@ local ABILITIES = require("invokation.const.abilities")
 local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
 local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
 
+local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_%d"
+
 --- Hero ID
 -- @field[type=int] HERO_ID
 M.HERO_ID = 74
@@ -17,9 +19,12 @@ M.HERO_ID = 74
 -- @field[type=string] UNIT_NAME
 M.UNIT_NAME = UNITS.INVOKER
 
---- Hero's KeyValues
+--- Raw KeyValues table
 -- @table KEY_VALUES
 M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]
+
+--- @{HeroKeyValues} instance
+M.HERO_KEY_VALUES = HeroKeyValues(M.UNIT_NAME, M.KEY_VALUES)
 
 --- Quas ability name
 -- @field[type=string] ABILITY_QUAS
@@ -72,27 +77,25 @@ M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
 
 --- Level 10 right talent ability name
 -- @field[type=string] ABILITY_TALENT_1
-
 --- Level 10 left talent ability name
 -- @field[type=string] ABILITY_TALENT_2
-
 --- Level 15 right talent ability name
 -- @field[type=string] ABILITY_TALENT_3
-
 --- Level 15 left talent ability name
 -- @field[type=string] ABILITY_TALENT_4
-
 --- Level 20 right talent ability name
 -- @field[type=string] ABILITY_TALENT_5
-
 --- Level 20 left talent ability name
 -- @field[type=string] ABILITY_TALENT_6
-
 --- Level 25 right talent ability name
 -- @field[type=string] ABILITY_TALENT_7
-
 --- Level 25 left talent ability name
 -- @field[type=string] ABILITY_TALENT_8
+
+for i, abilityName in ipairs(M.HERO_KEY_VALUES:Talents()) do
+  local constName = FMT_ABILITY_TALENT_CONST_NAME:format(i)
+  M[constName] = abilityName
+end
 
 --- List of orb abilities names.
 -- @table ORB_ABILITIES
@@ -140,38 +143,31 @@ M.SPELL_ABILITIES = {
 -- @field[type=string] 6 Level 20 left
 -- @field[type=string] 7 Level 25 right
 -- @field[type=string] 8 Level 25 left
-M.TALENT_ABILITIES = {}
-
-local heroKV = HeroKeyValues(M.KEY_VALUES)
-for i, abilityName in ipairs(heroKV:Talents()) do
-  local constName = ("ABILITY_TALENT_%d"):format(i)
-  M[constName] = abilityName
-  M.TALENT_ABILITIES[i] = abilityName
-end
+M.TALENT_ABILITIES = M.HERO_KEY_VALUES:Talents()
 
 --- Abilities KeyValues
 -- @table ABILITIES_KEY_VALUES
--- @field[type=table] ABILITY_QUAS
--- @field[type=table] ABILITY_WEX
--- @field[type=table] ABILITY_EXORT
--- @field[type=table] ABILITY_COLD_SNAP
--- @field[type=table] ABILITY_GHOST_WALK
--- @field[type=table] ABILITY_ICE_WALL
--- @field[type=table] ABILITY_EMP
--- @field[type=table] ABILITY_TORNADO
--- @field[type=table] ABILITY_ALACRITY
--- @field[type=table] ABILITY_SUN_STRIKE
--- @field[type=table] ABILITY_FORGE_SPIRIT
--- @field[type=table] ABILITY_CHAOS_METEOR
--- @field[type=table] ABILITY_DEAFENING_BLAST
--- @field[type=table] ABILITY_TALENT_1
--- @field[type=table] ABILITY_TALENT_2
--- @field[type=table] ABILITY_TALENT_3
--- @field[type=table] ABILITY_TALENT_4
--- @field[type=table] ABILITY_TALENT_5
--- @field[type=table] ABILITY_TALENT_6
--- @field[type=table] ABILITY_TALENT_7
--- @field[type=table] ABILITY_TALENT_8
+-- @field[type=AbilityKeyValues] ABILITY_QUAS
+-- @field[type=AbilityKeyValues] ABILITY_WEX
+-- @field[type=AbilityKeyValues] ABILITY_EXORT
+-- @field[type=AbilityKeyValues] ABILITY_COLD_SNAP
+-- @field[type=AbilityKeyValues] ABILITY_GHOST_WALK
+-- @field[type=AbilityKeyValues] ABILITY_ICE_WALL
+-- @field[type=AbilityKeyValues] ABILITY_EMP
+-- @field[type=AbilityKeyValues] ABILITY_TORNADO
+-- @field[type=AbilityKeyValues] ABILITY_ALACRITY
+-- @field[type=AbilityKeyValues] ABILITY_SUN_STRIKE
+-- @field[type=AbilityKeyValues] ABILITY_FORGE_SPIRIT
+-- @field[type=AbilityKeyValues] ABILITY_CHAOS_METEOR
+-- @field[type=AbilityKeyValues] ABILITY_DEAFENING_BLAST
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_1
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_2
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_3
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_4
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_5
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_6
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_7
+-- @field[type=AbilityKeyValues] ABILITY_TALENT_8
 M.ABILITIES_KEY_VALUES = {}
 
 for _, abilityName in ipairs(M.ORB_ABILITIES) do

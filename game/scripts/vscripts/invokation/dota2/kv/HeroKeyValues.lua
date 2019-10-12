@@ -1,36 +1,51 @@
 --- HeroKeyValues class.
 -- @classmod invokation.dota2.kv.HeroKeyValues
 
+local m = require("moses")
+
 local M = require("pl.class")()
 
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- Constructor.
 -- @tparam table kv KeyValues table for the hero
-function M:_init(kv)
-  self.kv = kv
+function M:_init(name, kv)
+  self.Name = name
+
+  m.extend(self, kv)
 end
 
 --- Serialize the KeyValues
 -- @treturn table
 function M:Serialize()
-  return self.kv
+  if self.__data == nil then
+    self.__data = m.omit(self, m.functions(self))
+  end
+
+  return self.__data
+end
+
+--- Returns an iterator function that iterates over the KeyValues entries.
+-- @treturn function
+function M:Entries()
+  return pairs(self:Serialize())
+end
+
+local function selectAbilityEntry(key, value)
+  local mAbilityId = key:match(ABILITY_KEY_PATT)
+
+  if mAbilityId ~= nil then
+    return tonumber(mAbilityId), value
+  end
+
+  return nil, nil
 end
 
 --- Returns a list of ability names.
 -- @treturn array(string) List of ability names
 function M:Abilities()
   if self.abilities == nil then
-    self.abilities = {}
-
-    for key, value in pairs(self.kv) do
-      local mAbilityID = key:match(ABILITY_KEY_PATT)
-
-      if mAbilityID ~= nil then
-        local abilityID = tonumber(mAbilityID)
-        self.abilities[abilityID] = value
-      end
-    end
+    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, {2, 1}))
   end
 
   return self.abilities
@@ -44,11 +59,7 @@ end
 -- @treturn array(string) List of talent ability names
 function M:Talents()
   if self.talents == nil then
-    self.talents = {}
-
-    for i = self.kv.AbilityTalentStart, #self:Abilities() do
-      table.insert(self.talents, self:Abilities()[i])
-    end
+    self.talents = m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
   end
 
   return self.talents
