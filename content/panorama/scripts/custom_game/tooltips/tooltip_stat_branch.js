@@ -68,14 +68,22 @@
     onLoad: function() {
       this.selected = this.$ctx.GetAttributeUInt32("selected", 0);
       this.debug("onLoad()", { selected: this.selected });
-      this.render();
+      this.update();
     },
 
     onAbilitiesKvChange: function(kv) {
       this.abilitiesKV = kv;
+      this.debug("onAbilitiesKvChange()");
+      this.update();
     },
 
     // ----- Helpers -----
+
+    update: function() {
+      if (this.selected != null && this.abilitiesKV != null) {
+        this.render();
+      }
+    },
 
     resetRows: function() {
       this.$rows = {};
