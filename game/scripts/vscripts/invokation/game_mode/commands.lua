@@ -8,95 +8,8 @@ local pp = require("pl.pretty")
 local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
 local Invoker = require("invokation.dota2.Invoker")
--- local Unit = require("invokation.dota2.Unit")
--- local Player = require("invokation.dota2.Player")
 
-local COMMANDS = {
-  {
-    name = "inv_debug",
-    method = "CommandSetDebug",
-    help = "Set debugging (empty - print debug status, 0 - disabled, 1 - enabled)",
-    flags = FCVAR_CHEAT,
-    dev = false
-  },
-  {
-    name = "inv_debug_misc",
-    method = "CommandDebugMisc",
-    help = "Run miscellaneous debug code (use script_reload to reload)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_dump_lua_version",
-    method = "CommandDumpLuaVersion",
-    help = "Dump Lua version",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_dump_global",
-    method = "CommandDumpGlobal",
-    help = "Dump global value (<name:string>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_find_global",
-    method = "CommandFindGlobal",
-    help = "Find global name (<pattern:regex>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_item_query",
-    method = "CommandItemQuery",
-    help = "Query items (<query:string>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_dump_abilities",
-    method = "CommandDumpAbilities",
-    help = "Dump current hero abilities ([simplified:int])",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_invoke",
-    method = "CommandInvokeAbility",
-    help = "Invoke an ability (<name:string>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_dump_combo_graph",
-    method = "CommandDumpComboGraph",
-    help = "Dumps a combo's finite state machine in DOT format",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_music_status",
-    method = "CommandChangeMusicStatus",
-    help = "Change music status (<status:int> <intensity:float>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_dump_ability_specials",
-    method = "CommandDumpAbilitySpecials",
-    help = "Dump Invoker ability specials ([onlyScaling:int])",
-    flags = FCVAR_CHEAT,
-    dev = true
-  },
-  {
-    name = "inv_reinsert_ability",
-    method = "CommandReinsertAbility",
-    help = "Reinsert Invoker ability (<name:string>)",
-    flags = FCVAR_CHEAT,
-    dev = true
-  }
-}
+local COMMANDS = require("invokation.const.commands")
 
 local function createHandler(gameMode, methodName)
   return function(command, ...)
@@ -143,8 +56,6 @@ end
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @param[opt] ... varargs
 function GameMode:CommandDebugMisc(player, ...) -- luacheck: no unused args
-  -- player = Player(player)
-  -- local hero = Unit(player.hero)
 end
 
 --- Dumps Lua version.
@@ -328,157 +239,24 @@ end
 --- Dumps Invoker ability specials values.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam[opt] string onlyScaling Dump only values that scale, ignoring fixed values
--- @todo Parse specials from ability KV and remove the hardcoded lists
-function GameMode:CommandDumpAbilitySpecials(player, onlyScaling) -- luacheck: no unused args
-  local hero = player:GetAssignedHero()
-  local specials
+function GameMode:CommandDumpSpecials(player, onlyScaling) -- luacheck: no unused args
+  local cmd = require("invokation.game_mode.commands.dump_specials")
+  cmd.dump(player, {onlyScaling = onlyScaling ~= nil})
+end
 
-  if onlyScaling then
-    specials = {
-      [Invoker.ABILITY_COLD_SNAP] = {
-        "duration",
-        "freeze_cooldown",
-        "freeze_damage"
-      },
-      [Invoker.ABILITY_GHOST_WALK] = {
-        "enemy_slow",
-        "self_slow"
-      },
-      [Invoker.ABILITY_ICE_WALL] = {
-        "duration",
-        "slow",
-        "damage_per_second"
-      },
-      [Invoker.ABILITY_EMP] = {
-        "mana_burned"
-      },
-      [Invoker.ABILITY_TORNADO] = {
-        "travel_distance",
-        "lift_duration",
-        "quas_damage",
-        "wex_damage"
-      },
-      [Invoker.ABILITY_ALACRITY] = {
-        "bonus_attack_speed",
-        "bonus_damage"
-      },
-      [Invoker.ABILITY_SUN_STRIKE] = {
-        "damage"
-      },
-      [Invoker.ABILITY_FORGE_SPIRIT] = {
-        "spirit_damage",
-        "spirit_mana",
-        "spirit_armor",
-        "spirit_attack_range",
-        "spirit_hp",
-        "spirit_duration"
-      },
-      [Invoker.ABILITY_CHAOS_METEOR] = {
-        "travel_distance",
-        "main_damage",
-        "burn_dps"
-      },
-      [Invoker.ABILITY_DEAFENING_BLAST] = {
-        "damage",
-        "knockback_duration",
-        "disarm_duration"
-      }
-    }
-  else
-    specials = {
-      [Invoker.ABILITY_COLD_SNAP] = {
-        "duration",
-        "freeze_duration",
-        "freeze_cooldown",
-        "freeze_damage",
-        "damage_trigger"
-      },
-      [Invoker.ABILITY_GHOST_WALK] = {
-        "duration",
-        "area_of_effect",
-        "enemy_slow",
-        "self_slow",
-        "aura_fade_time"
-      },
-      [Invoker.ABILITY_ICE_WALL] = {
-        "duration",
-        "slow",
-        "slow_duration",
-        "damage_per_second",
-        "wall_place_distance",
-        "num_wall_elements",
-        "wall_element_spacing",
-        "wall_element_radius"
-      },
-      [Invoker.ABILITY_EMP] = {
-        "delay",
-        "area_of_effect",
-        "mana_burned",
-        "damage_per_mana_pct"
-      },
-      [Invoker.ABILITY_TORNADO] = {
-        "travel_distance",
-        "travel_speed",
-        "area_of_effect",
-        "vision_distance",
-        "end_vision_duration",
-        "lift_duration",
-        "base_damage",
-        "quas_damage",
-        "wex_damage"
-      },
-      [Invoker.ABILITY_ALACRITY] = {
-        "bonus_attack_speed",
-        "bonus_damage",
-        "duration"
-      },
-      [Invoker.ABILITY_SUN_STRIKE] = {
-        "delay",
-        "area_of_effect",
-        "damage",
-        "vision_distance",
-        "vision_duration"
-      },
-      [Invoker.ABILITY_FORGE_SPIRIT] = {
-        "spirit_damage",
-        "spirit_mana",
-        "spirit_armor",
-        "spirit_attack_range",
-        "spirit_hp",
-        "spirit_duration"
-      },
-      [Invoker.ABILITY_CHAOS_METEOR] = {
-        "land_time",
-        "area_of_effect",
-        "travel_distance",
-        "travel_speed",
-        "damage_interval",
-        "vision_distance",
-        "end_vision_duration",
-        "main_damage",
-        "burn_duration",
-        "burn_dps"
-      },
-      [Invoker.ABILITY_DEAFENING_BLAST] = {
-        "travel_distance",
-        "travel_speed",
-        "radius_start",
-        "radius_end",
-        "end_vision_duration",
-        "damage",
-        "knockback_duration",
-        "disarm_duration"
-      }
-    }
-  end
+--- Debug operations on ability specials KeyValues.
+--
+-- @tparam string op Operation name (dump, findKeys, findValues)
+-- @tparam string query Operation query (dump: path, findKeys: pattern, findValues: pattern)
+function GameMode:CommandDebugSpecials(_, op, query) -- luacheck: no self
+  local cmd = require("invokation.game_mode.commands.debug_specials")
 
-  for aName, sNames in pairs(specials) do
-    local ability = hero:FindAbilityByName(aName)
-
-    for _, sName in ipairs(sNames) do
-      local t = ability:GetSpecialValueFor(sName)
-      print(aName, sName, t)
-    end
+  if op == "dump" then
+    cmd.dump(query)
+  elseif op == "findKeys" then
+    cmd.findKeys(query)
+  elseif op == "findValues" then
+    cmd.findValues(query)
   end
 end
 
