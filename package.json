@@ -2,11 +2,6 @@
   "private": true,
   "name": "invokation",
   "version": "0.4.1-beta1",
-  "config": {
-    "vscripts_path": "game/scripts/vscripts",
-    "panorama_scripts_path": "content/panorama/scripts",
-    "panorama_styles_path": "content/panorama/styles"
-  },
   "scripts": {
     "lint": "yarn run lint.lua && yarn run lint.js && yarn run lint.css",
     "lint.lua": "make lint_lua",
@@ -24,6 +19,7 @@
     "launch.tools": "make launch_tools"
   },
   "devDependencies": {
+    "@prettier/plugin-lua": "^0.0.1",
     "eslint": "^6.1.0",
     "lua-fmt": "^2.6.0",
     "prettier": "^1.18.2",

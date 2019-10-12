@@ -1,30 +1,30 @@
-LUA_SOURCES_PATH := game/scripts/vscripts
-JS_SOURCES_PATH := content/panorama/scripts
-CSS_SOURCES_PATH := content/panorama/styles
+LUA_SRC_PATH := game/scripts/vscripts
+JS_SRC_PATH := content/panorama/scripts
+CSS_SRC_PATH := content/panorama/styles
 
-.PHONY: luacheck ldoc luafmt eslint stylelint stylelint_fix clean install build launch_game launch_tools
-
-lint_lua:
-	@luacheck "$(LUA_SOURCES_PATH)"
+.PHONY: lint lint_lua format_lua doc_lua lint_js format_js lint_css format_css clean install build launch_game launch_tools
 
 format_lua:
-	@bash scripts/luafmt.bash "$(LUA_SOURCES_PATH)"
+	@yarn run prettier --write "$(LUA_SRC_PATH)/**/*.lua"
+
+format_js:
+	@yarn run prettier --write "$(JS_SRC_PATH)/**/*.js"
+
+format_css:
+	@yarn run stylelint --fix "$(CSS_SRC_PATH)"
+	@yarn run prettier --write "$(CSS_SRC_PATH)/**/*.css"
+
+lint_lua:
+	@luacheck "$(LUA_SRC_PATH)"
+
+lint_js:
+	@yarn run eslint "$(JS_SRC_PATH)"
+
+lint_css:
+	@yarn run stylelint "${CSS_SRC_PATH}"
 
 doc_lua:
 	@ldoc --unqualified .
-
-lint_js:
-	@yarn run eslint "$(JS_SOURCES_PATH)"
-
-format_js:
-	@yarn run prettier --config ".prettierrc.yml" --parser babel --write "$(JS_SOURCES_PATH)/**/*.js"
-
-lint_css:
-	@yarn run stylelint "$(CSS_SOURCES_PATH)"
-
-format_css:
-	@yarn run stylelint --fix "$(CSS_SOURCES_PATH)"
-	@yarn run prettier --config ".prettierrc.yml" --parser css --write "$(CSS_SOURCES_PATH)/**/*.css"
 
 clean:
 	@bash scripts/clean.bash
