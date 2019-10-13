@@ -115,13 +115,13 @@ end
 -- @tparam int spec.heroLevel Recommended hero level
 -- @tparam int spec.damageRating Damage rating
 -- @tparam int spec.difficultyRating Difficulty rating
--- @tparam array(string) spec.tags Tags
--- @tparam array(string) spec.items List of required items names
--- @tparam array(int) spec.orbs List of recommended orb abilities levels (`{quas, wex, exort}`)
+-- @tparam {string,...} spec.tags Tags
+-- @tparam {string,...} spec.items Array of required items names
+-- @tparam {int,...} spec.orbs Array of recommended orb abilities levels (`{quas, wex, exort}`)
 -- @tparam int spec.talents Bitmap of recommended talent abilities
--- @tparam array(ComboStep) spec.sequence List of @{ComboStep}
+-- @tparam {ComboStep,...} spec.sequence Array of @{ComboStep}
 -- @tparam[opt] table options Options
--- @tparam invokation.Logger options.logger Logger instance
+-- @tparam Logger options.logger Logger instance
 function M:_init(spec, options)
   self:super(options)
 
@@ -181,13 +181,13 @@ function M:CurrentStep()
 end
 
 --- Returns the current next steps.
--- @treturn ?array(ComboStep) List of next @{ComboStep} or `nil`
+-- @treturn ?{ComboStep,...} Array of next @{ComboStep} or `nil`
 function M:NextSteps()
   return self.nextSteps[self.fsm.current]
 end
 
 --- Progresses the combo with the given ability if possible.
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Ability ability Ability instance
 -- @treturn bool `true` if succeeded, `false` otherwise
 function M:Progress(ability)
   local eventFn = self.fsm[ability.name]

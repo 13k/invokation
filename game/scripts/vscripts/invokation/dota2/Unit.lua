@@ -174,12 +174,12 @@ function M:forEachItem(callback, options)
   return nil
 end
 
---- Returns a list of names of all items in the unit's inventory.
+--- Returns an array of names of all items in the unit's inventory.
 -- @tparam[opt={}] table options Options table
 -- @tparam[opt=true] bool options.includeStash Including stash
 -- @tparam[opt=false] bool options.onlyStash Only stash
 --   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
--- @treturn array(string) List of item names
+-- @treturn {string,...} Array of item names
 function M:ItemNames(options)
   local names = {}
 
@@ -191,11 +191,11 @@ function M:ItemNames(options)
 end
 
 --- Add items with given names.
--- @tparam array(string) items List of item names
+-- @tparam {string,...} items Array of item names
 -- @tparam[opt={}] table options Options table
 -- @tparam[opt=false] bool options.onlyMissing Only add missing items
---   (the diff between the inventory and the list)
--- @treturn {CDOTA_Item,...} List of added item entities
+--   (the diff between the inventory and the array)
+-- @treturn {CDOTA_Item,...} Array of added item entities
 function M:AddItemsByName(items, options)
   if not self:HasInventory() then
     error(UNIT_NO_INVENTORY_ERROR:format(self.name))
@@ -222,7 +222,7 @@ end
 -- @tparam[opt=true] bool options.includeStash Including stash
 -- @tparam[opt=false] bool options.onlyStash Only stash
 --   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
--- @treturn CDOTA_Item|nil Item if found, `nil` otherwise
+-- @treturn ?CDOTA_Item Item if found, `nil` otherwise
 function M:FindItemInInventory(name, options)
   return self:forEachItem(function(item)
     if item:GetAbilityName() == name then
@@ -237,7 +237,7 @@ end
 -- @tparam[opt=false] bool options.onlyStash Only stash
 --   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
 -- @tparam[opt=false] bool options.endCooldown Reset item cooldowns before removing
--- @treturn {CDOTA_Item,...} A list of removed items
+-- @treturn {CDOTA_Item,...} An array of removed items
 function M:RemoveItems(options)
   options = options or {}
 
@@ -290,7 +290,8 @@ end
 
 --- Finds ability or item by name.
 -- @tparam string name Ability or item name
--- @treturn CDOTABaseAbility|CDOTA_Item|nil Ability or item entity if found, `nil` otherwise
+-- @treturn CDOTABaseAbility|CDOTA_Item Ability or item entity if found
+-- @treturn nil otherwise
 function M:FindAbilityOrItem(name)
   if self:HasAbility(name) then
     return self:FindAbilityByName(name)

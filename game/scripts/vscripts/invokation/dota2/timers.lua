@@ -181,7 +181,6 @@ end
   @tparam[opt=false] bool options.paused If `true`, the timer starts paused and must be manually
   unpaused with @{Unpause}
   @tparam[opt=nil] function options.onError Error handler function. If `nil`, uses @{defaultErrorHandler}
-  @todo Protect `self.timers` from concurrency
 ]]
 function M:Create(options)
   local timer = Timer(options)
@@ -207,7 +206,6 @@ end
 --- Pauses a timer.
 -- @tparam string id Timer id
 -- @treturn ?string Id of paused timer or `nil` if the id isn't registered
--- @todo Protect `self.timers` from concurrency
 function M:Pause(id)
   return self:setPaused(id, true)
 end
@@ -215,7 +213,6 @@ end
 --- Unpauses a timer.
 -- @tparam string id Timer id
 -- @treturn ?string Id of paused timer or `nil` if the id isn't registered
--- @todo Protect `self.timers` from concurrency
 function M:Unpause(id)
   return self:setPaused(id, false)
 end
@@ -223,7 +220,6 @@ end
 --- Cancels a timer.
 -- @tparam string id Timer id
 -- @treturn ?string Id of canceled timer or `nil` if the id isn't registered
--- @todo Protect `self.timers` from concurrency
 function M:Cancel(id)
   local timer = self.timers[id]
   self.timers[id] = nil
@@ -231,8 +227,7 @@ function M:Cancel(id)
 end
 
 --- Cancels all timers.
--- @treturn array(string) List of timer ids that were canceled
--- @todo Protect `self.timers` from concurrency
+-- @treturn {string,...} Array of timer ids that were canceled
 function M:CancelAll()
   local canceled = {}
 

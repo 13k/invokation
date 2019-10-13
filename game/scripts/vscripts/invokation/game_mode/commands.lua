@@ -38,7 +38,7 @@ end
 
 --- Sets debugging on/off.
 -- @tparam CDOTAPlayer player Player who issued this console command
--- @tparam "0"|"1"|nil arg `"1"` enables debugging; `"0"` disables debugging; `nil` prints debugging value
+-- @tparam ?string arg `"1"`: enables debugging, `"0"`: disables debugging, `nil`: prints debugging value
 --
 -- luacheck: no unused args
 function GameMode:CommandSetDebug(player, arg)

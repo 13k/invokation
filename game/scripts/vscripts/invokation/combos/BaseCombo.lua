@@ -11,7 +11,7 @@ Logger.InstallHelpers(M)
 
 --- Constructor.
 -- @tparam[opt] table options Options
--- @tparam invokation.Logger options.logger Logger instance
+-- @tparam Logger options.logger Logger instance
 function M:_init(options)
   options = options or {}
 
@@ -25,30 +25,36 @@ end
 
 --- Returns the current step id.
 -- @treturn ?int The current step id or `nil`
--- @warning Abstract method. Subclasses must override it.
-function M:CurrentStepId() -- luacheck: no self
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:CurrentStepId()
   error("Not implemented.")
 end
 
 --- Returns the current step.
--- @treturn ?invokation.combos.ComboStep The current step or `nil`
--- @warning Abstract method. Subclasses must override it.
-function M:CurrentStep() -- luacheck: no self
+-- @treturn ?combos.ComboStep The current step or `nil`
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:CurrentStep()
   error("Not implemented.")
 end
 
 --- Returns the current next steps.
--- @treturn array(invokation.combos.ComboStep)|nil List of next
---   @{invokation.combos.ComboStep} or `nil` if the combo is at the last step
--- @warning Abstract method. Subclasses must override it.
-function M:NextSteps() -- luacheck: no self
+-- @treturn ?{combos.ComboStep,...} Array of next steps or `nil` if the combo is
+--   at the last step
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:NextSteps()
   error("Not implemented.")
 end
 
 --- Progresses the combo with the given ability if possible.
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Ability ability Ability instance
 -- @treturn bool `true` if succeeded, `false` otherwise
--- @warning Abstract method. Subclasses must override it.
+-- @abstract Subclasses must override it.
 --
 -- luacheck: no unused args
 function M:Progress(ability)
@@ -62,15 +68,19 @@ end
 
 --- Progresses combo to pre finish if possible.
 -- @treturn bool `true` if succeeded, `false` otherwise
--- @warning Abstract method. Subclasses must override it.
-function M:PreFinish() -- luacheck: no self
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:PreFinish()
   error("Not implemented.")
 end
 
 --- Finishes the combo if possible.
 -- @treturn bool `true` if succeeded, `false` otherwise
--- @warning Abstract method. Subclasses must override it.
-function M:Finish() -- luacheck: no self
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:Finish()
   error("Not implemented.")
 end
 

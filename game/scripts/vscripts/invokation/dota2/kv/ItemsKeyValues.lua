@@ -18,23 +18,19 @@ local function selectItemEntry(name, kv)
 end
 
 --- Constructor.
---
--- Reads all entries in `scripts/npc/items.txt` and convert each valid item
--- entry into `ItemKeyValues` instances.
---
 function M:_init()
   self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, { 2, 1 }))
 end
 
---- Returns an iterator function that iterates over the `ItemKeyValues` entries.
--- @treturn function
+--- Returns an iterator function that iterates over the @{ItemKeyValues} entries.
+-- @treturn iter(string,ItemKeyValues)
 function M:Entries()
   return pairs(self.__data)
 end
 
 --- Searches for item KeyValues matching the given query.
 -- @tparam string query Query string
--- @treturn {[string]=ItemKeyValues,...} A map of found `ItemKeyValues` with item nameids as keys
+-- @treturn {[string]=ItemKeyValues,...} A table of found entries
 function M:Search(query)
   local items = {}
 

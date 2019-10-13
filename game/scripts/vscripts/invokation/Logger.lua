@@ -12,32 +12,32 @@ local M = require("pl.class")()
 -- @section levels
 
 --- Unknown (outputs everything)
--- @field[type=int] UNKNOWN
+-- @tfield int UNKNOWN
 M.UNKNOWN = 0
 --- Debug
--- @field[type=int] DEBUG
+-- @tfield int DEBUG
 M.DEBUG = 10
 --- Info
--- @field[type=int] INFO
+-- @tfield int INFO
 M.INFO = 20
 --- Warning
--- @field[type=int] WARNING
+-- @tfield int WARNING
 M.WARNING = 30
 --- Error
--- @field[type=int] ERROR
+-- @tfield int ERROR
 M.ERROR = 40
 --- Critical
--- @field[type=int] CRITICAL
+-- @tfield int CRITICAL
 M.CRITICAL = 50
 
 --- Level names
 -- @table LEVEL_NAMES
--- @field[type=string] UNKNOWN UNKNOWN
--- @field[type=string] DEBUG DEBUG
--- @field[type=string] INFO INFO
--- @field[type=string] WARNING WARNING
--- @field[type=string] ERROR ERROR
--- @field[type=string] CRITICAL CRITICAL
+-- @tfield string UNKNOWN UNKNOWN
+-- @tfield string DEBUG DEBUG
+-- @tfield string INFO INFO
+-- @tfield string WARNING WARNING
+-- @tfield string ERROR ERROR
+-- @tfield string CRITICAL CRITICAL
 M.LEVEL_NAMES = {
   [M.UNKNOWN] = "UNKNOWN",
   [M.DEBUG] = "DEBUG",
@@ -72,7 +72,7 @@ end
 -- @section methods
 
 --- Constructor.
--- @tparam string|array(string) progname Program name
+-- @tparam string|{string,...} progname Program name
 -- @tparam[opt=DEFAULT_LEVEL] int level One of the logger levels
 -- @tparam[opt=DEFAULT_FORMAT] string format Log entry format
 function M:_init(progname, level, format)
@@ -87,6 +87,9 @@ function M:_init(progname, level, format)
   self.progname = progname
 end
 
+--- Creates a new Logger instance that inherits from the current instance.
+-- @tparam string progname Child program name
+-- @treturn Logger Child instance
 function M:Child(progname)
   return M({ self.progname, progname }, self.level, self.format)
 end
@@ -111,8 +114,8 @@ function M:Log(level, ...)
   local values = { ... }
   local formatted = {}
 
-  -- Explicitly iterate with actual arguments list size to correctly print `nil`
-  -- values at the end of the list which are ignored in `{...}`
+  -- Explicitly iterate with actual arguments array size to correctly print `nil`
+  -- values at the end of the array which are ignored in `{...}`
   for i = 1, select("#", ...) do
     table.insert(formatted, formatValue(i, values[i]))
   end

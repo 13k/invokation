@@ -3,11 +3,11 @@
 
 --- Command definition.
 -- @table CommandDefinition
--- @field[type=string] name Command name
--- @field[type=string] method `GameMode` method name
--- @field[type=string] help Command help
--- @field[type=int] flags Command flags
--- @field[type=bool] dev Only registered in development environment
+-- @tfield string name Command name
+-- @tfield string method `GameMode` method name
+-- @tfield string help Command help
+-- @tfield int flags Command flags
+-- @tfield bool dev Only registered in development environment
 
 local M = {}
 

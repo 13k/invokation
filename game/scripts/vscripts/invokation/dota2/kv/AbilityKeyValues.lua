@@ -8,7 +8,7 @@ local M = require("pl.class")()
 
 --- Constructor.
 -- @tparam string name Ability name
--- @tparam table kv KeyValues table
+-- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
   self.Name = name
 
@@ -29,8 +29,8 @@ function M:_init(name, kv)
   self.AbilityCastAnimation = KV.EnumValue(kv.AbilityCastAnimation)
 end
 
---- Serialize the KeyValues
--- @treturn table
+--- Serializes the KeyValues data
+-- @treturn {[string]=any,...} Serialized data
 function M:Serialize()
   if self.__data == nil then
     self.__data = m.omit(self, m.functions(self))
@@ -40,7 +40,7 @@ function M:Serialize()
 end
 
 --- Returns an iterator function that iterates over the KeyValues entries.
--- @treturn function
+-- @treturn iter(string,any)
 function M:Entries()
   return pairs(self:Serialize())
 end

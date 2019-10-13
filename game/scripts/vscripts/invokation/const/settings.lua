@@ -114,7 +114,7 @@ M.RUNE_SPAWN_TIME = 120
 
 --- Enabled auto launch for custom game setup.
 --
--- The game will launch after `AUTO_LAUNCH_DELAY` seconds.
+-- The game will launch after @{AUTO_LAUNCH_DELAY} seconds.
 --
 -- `GameRules:EnableCustomGameSetupAutoLaunch(bool)`
 M.ENABLE_AUTO_LAUNCH = true
@@ -131,7 +131,7 @@ M.GAME_SETUP_TIME = 0
 
 --- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
 --
--- If set to 0, players will not be assigned a "valid" team (their team value will be set to `DOTA_TEAM_NOTEAM`).
+-- If set to 0, players will not be assigned a "valid" team (their team value will be set to @{DOTA_TEAM_NOTEAM}).
 --
 -- If set to -1, `GameRules:FinishCustomGameSetup()` must be called manually.
 --
@@ -165,7 +165,7 @@ M.USE_BASE_HERO_GOLD_BOUNTY = true
 
 --- Should we display kills only on the top bar? (No denies, suicides, kills by neutrals)
 --
--- Requires `USE_CUSTOM_TOP_BAR_VALUES` set to `true`
+-- Requires @{USE_CUSTOM_TOP_BAR_VALUES} set to `true`
 M.SHOW_KILLS_ON_TOPBAR = false
 
 --- Should the game end after a certain number of kills?
@@ -270,7 +270,7 @@ M.DISABLE_FOG_OF_WAR = false
 --
 -- When enabled parts of the map the player has never seen will be completely hidden by fog of war.
 --
--- `DISABLE_FOG_OF_WAR` must be `false` for `USE_UNSEEN_FOG_OF_WAR` to work.
+-- @{DISABLE_FOG_OF_WAR} must be `false` for @{USE_UNSEEN_FOG_OF_WAR} to work.
 --
 -- `GameMode:SetUnseenFogOfWarEnabled(bEnabled)`
 M.USE_UNSEEN_FOG_OF_WAR = false
@@ -470,7 +470,7 @@ M.USE_CUSTOM_HERO_LEVELS = false
 
 --- Allows definition of a table of hero XP values.
 --
--- If `USE_CUSTOM_XP_VALUES` is set, use these values as required XP per level.
+-- If @{USE_CUSTOM_XP_VALUES} is set, use these values as required XP per level.
 --
 -- `GameMode:SetCustomXPRequiredToReachNextLevel(hTable)`
 M.XP_PER_LEVEL_TABLE = {}
@@ -480,13 +480,13 @@ M.XP_PER_LEVEL_TABLE = {}
 -- You always need at least 2 non-bounty type runes to be able to spawn or your game will crash.
 --
 -- @table ENABLED_RUNES
--- @field[type=bool] DOTA_RUNE_DOUBLEDAMAGE Double Damage
--- @field[type=bool] DOTA_RUNE_HASTE Haste
--- @field[type=bool] DOTA_RUNE_ILLUSION Illusion
--- @field[type=bool] DOTA_RUNE_INVISIBILITY Invisibility
--- @field[type=bool] DOTA_RUNE_REGENERATION Regeneration
--- @field[type=bool] DOTA_RUNE_BOUNTY Bounty
--- @field[type=bool] DOTA_RUNE_ARCANE Arcane
+-- @tfield bool DOTA_RUNE_DOUBLEDAMAGE Double Damage
+-- @tfield bool DOTA_RUNE_HASTE Haste
+-- @tfield bool DOTA_RUNE_ILLUSION Illusion
+-- @tfield bool DOTA_RUNE_INVISIBILITY Invisibility
+-- @tfield bool DOTA_RUNE_REGENERATION Regeneration
+-- @tfield bool DOTA_RUNE_BOUNTY Bounty
+-- @tfield bool DOTA_RUNE_ARCANE Arcane
 --
 -- `GameMode:SetRuneEnabled(nRune, bEnabled)`
 M.ENABLED_RUNES = {
@@ -501,24 +501,24 @@ M.ENABLED_RUNES = {
 
 --- Custom team colors.
 --
--- If `USE_CUSTOM_TEAM_COLORS` is set, team colors will be set to these colors.
+-- If @{USE_CUSTOM_TEAM_COLORS} is set, team colors will be set to these colors.
 --
--- If `USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS` is set, player colors will be set
+-- If @{USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS} is set, player colors will be set
 -- according to their respective teams.
 --
 -- Color definition is a tuple of 3 integers: `{red, green, blue}`.
 --
 -- @table TEAM_COLORS
--- @field[type=array(int)] DOTA_TEAM_GOODGUYS Radiant
--- @field[type=array(int)] DOTA_TEAM_BADGUYS  Dire
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_1 Custom Team 1
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_2 Custom Team 2
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_3 Custom Team 3
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_4 Custom Team 4
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_5 Custom Team 5
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_6 Custom Team 6
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_7 Custom Team 7
--- @field[type=array(int)] DOTA_TEAM_CUSTOM_8 Custom Team 8
+-- @tfield {int,...} DOTA_TEAM_GOODGUYS Radiant
+-- @tfield {int,...} DOTA_TEAM_BADGUYS  Dire
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_1 Custom Team 1
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_2 Custom Team 2
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_3 Custom Team 3
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_4 Custom Team 4
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_5 Custom Team 5
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_6 Custom Team 6
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_7 Custom Team 7
+-- @tfield {int,...} DOTA_TEAM_CUSTOM_8 Custom Team 8
 --
 -- `SetTeamCustomHealthbarColor(teamNumber, r, g, b)`
 --
@@ -539,16 +539,16 @@ M.TEAM_COLORS = {
 --- If we're not automatically setting the number of players per team, use this table.
 --
 -- @table CUSTOM_TEAM_PLAYER_COUNT
--- @field[type=int] DOTA_TEAM_GOODGUYS Radiant
--- @field[type=int] DOTA_TEAM_BADGUYS  Dire
--- @field[type=int] DOTA_TEAM_CUSTOM_1 Custom Team 1
--- @field[type=int] DOTA_TEAM_CUSTOM_2 Custom Team 2
--- @field[type=int] DOTA_TEAM_CUSTOM_3 Custom Team 3
--- @field[type=int] DOTA_TEAM_CUSTOM_4 Custom Team 4
--- @field[type=int] DOTA_TEAM_CUSTOM_5 Custom Team 5
--- @field[type=int] DOTA_TEAM_CUSTOM_6 Custom Team 6
--- @field[type=int] DOTA_TEAM_CUSTOM_7 Custom Team 7
--- @field[type=int] DOTA_TEAM_CUSTOM_8 Custom Team 8
+-- @tfield int DOTA_TEAM_GOODGUYS Radiant
+-- @tfield int DOTA_TEAM_BADGUYS  Dire
+-- @tfield int DOTA_TEAM_CUSTOM_1 Custom Team 1
+-- @tfield int DOTA_TEAM_CUSTOM_2 Custom Team 2
+-- @tfield int DOTA_TEAM_CUSTOM_3 Custom Team 3
+-- @tfield int DOTA_TEAM_CUSTOM_4 Custom Team 4
+-- @tfield int DOTA_TEAM_CUSTOM_5 Custom Team 5
+-- @tfield int DOTA_TEAM_CUSTOM_6 Custom Team 6
+-- @tfield int DOTA_TEAM_CUSTOM_7 Custom Team 7
+-- @tfield int DOTA_TEAM_CUSTOM_8 Custom Team 8
 --
 -- `GameRules:SetCustomGameTeamMaxPlayers(int, int)`
 M.CUSTOM_TEAM_PLAYER_COUNT = {

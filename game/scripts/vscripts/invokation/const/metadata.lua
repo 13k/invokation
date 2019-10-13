@@ -9,21 +9,21 @@
 local M = {}
 
 --- Package name
--- @field[type=string] package
+-- @tfield string package
 M.package = "Invokation"
 
 --- Package version
--- @field[type=string] version
+-- @tfield string version
 M.version = "0.4.1-beta1"
 
 --- Package description
 -- @table description
--- @field[type=string] summary Package summary
--- @field[type=string] license Package license
--- @field[type=string] homepage Package homepage
--- @field[type=string] issues_url Package issues URL
--- @field[type=string] maintainer Package maintainer
--- @field[type=array(string)] labels Package labels
+-- @tfield string summary Package summary
+-- @tfield string license Package license
+-- @tfield string homepage Package homepage
+-- @tfield string issues_url Package issues URL
+-- @tfield string maintainer Package maintainer
+-- @tfield {string,...} labels Package labels
 M.description = {
   summary = "Invokation School of Arcane Arts",
   license = "MIT",

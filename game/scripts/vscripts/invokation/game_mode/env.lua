@@ -7,11 +7,11 @@ local M = require("pl.class")()
 -- @section modes
 
 --- Development
--- @field[type=string] DEVELOPMENT
+-- @tfield string DEVELOPMENT
 M.DEVELOPMENT = "development"
 
 --- Production
--- @field[type=string] PRODUCTION
+-- @tfield string PRODUCTION
 M.PRODUCTION = "production"
 
 --- Methods

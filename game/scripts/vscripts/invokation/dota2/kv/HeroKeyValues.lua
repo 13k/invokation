@@ -9,15 +9,15 @@ local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- Constructor.
 -- @tparam string name Hero name
--- @tparam table kv KeyValues table
+-- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
   self.Name = name
 
   m.extend(self, kv)
 end
 
---- Serialize the KeyValues
--- @treturn table
+--- Serializes the KeyValues data
+-- @treturn {[string]=any,...} Serialized data
 function M:Serialize()
   if self.__data == nil then
     self.__data = m.omit(self, m.functions(self))
@@ -27,7 +27,7 @@ function M:Serialize()
 end
 
 --- Returns an iterator function that iterates over the KeyValues entries.
--- @treturn function
+-- @treturn iter(string,any)
 function M:Entries()
   return pairs(self:Serialize())
 end
@@ -42,8 +42,8 @@ local function selectAbilityEntry(key, value)
   return nil, nil
 end
 
---- Returns a list of ability names.
--- @treturn array(string) List of ability names
+--- Returns an array of ability names.
+-- @treturn {string,...} Array of ability names
 function M:Abilities()
   if self.abilities == nil then
     self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, { 2, 1 }))
@@ -52,12 +52,12 @@ function M:Abilities()
   return self.abilities
 end
 
---- Returns a list of talent ability names.
+--- Returns an array of talent ability names.
 --
 -- Talents are ordered from lowest to highest level, right to left.
 -- (Level 10 right, Level 10 left, Level 15 right, Level 15 left, ...)
 --
--- @treturn array(string) List of talent ability names
+-- @treturn {string,...} Array of talent ability names
 function M:Talents()
   if self.talents == nil then
     self.talents = m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()

@@ -12,11 +12,11 @@ local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
 local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_%d"
 
 --- Hero ID
--- @field[type=int] HERO_ID
+-- @tfield int HERO_ID
 M.HERO_ID = 74
 
 --- Unit name
--- @field[type=string] UNIT_NAME
+-- @tfield string UNIT_NAME
 M.UNIT_NAME = UNITS.INVOKER
 
 --- Raw KeyValues table
@@ -27,102 +27,102 @@ M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]
 M.HERO_KEY_VALUES = HeroKeyValues(M.UNIT_NAME, M.KEY_VALUES)
 
 --- Quas ability name
--- @field[type=string] ABILITY_QUAS
+-- @tfield string ABILITY_QUAS
 M.ABILITY_QUAS = "invoker_quas"
 --- Wex ability name
--- @field[type=string] ABILITY_WEX
+-- @tfield string ABILITY_WEX
 M.ABILITY_WEX = "invoker_wex"
 --- Exort ability name
--- @field[type=string] ABILITY_EXORT
+-- @tfield string ABILITY_EXORT
 M.ABILITY_EXORT = "invoker_exort"
 --- Empty1 ability name
--- @field[type=string] ABILITY_EMPTY1
+-- @tfield string ABILITY_EMPTY1
 M.ABILITY_EMPTY1 = "invoker_empty1"
 --- Empty2 ability name
--- @field[type=string] ABILITY_EMPTY2
+-- @tfield string ABILITY_EMPTY2
 M.ABILITY_EMPTY2 = "invoker_empty2"
 --- Invoke ability name
--- @field[type=string] ABILITY_INVOKE
+-- @tfield string ABILITY_INVOKE
 M.ABILITY_INVOKE = "invoker_invoke"
 --- Cold Snap ability name
--- @field[type=string] ABILITY_COLD_SNAP
+-- @tfield string ABILITY_COLD_SNAP
 M.ABILITY_COLD_SNAP = "invoker_cold_snap"
 --- Ghost Walk ability name
--- @field[type=string] ABILITY_GHOST_WALK
+-- @tfield string ABILITY_GHOST_WALK
 M.ABILITY_GHOST_WALK = "invoker_ghost_walk"
 --- Ice Wall ability name
--- @field[type=string] ABILITY_ICE_WALL
+-- @tfield string ABILITY_ICE_WALL
 M.ABILITY_ICE_WALL = "invoker_ice_wall"
 --- EMP ability name
--- @field[type=string] ABILITY_EMP
+-- @tfield string ABILITY_EMP
 M.ABILITY_EMP = "invoker_emp"
 --- Tornado ability name
--- @field[type=string] ABILITY_TORNADO
+-- @tfield string ABILITY_TORNADO
 M.ABILITY_TORNADO = "invoker_tornado"
 --- Alacrity ability name
--- @field[type=string] ABILITY_ALACRITY
+-- @tfield string ABILITY_ALACRITY
 M.ABILITY_ALACRITY = "invoker_alacrity"
 --- Sun Strike ability name
--- @field[type=string] ABILITY_SUN_STRIKE
+-- @tfield string ABILITY_SUN_STRIKE
 M.ABILITY_SUN_STRIKE = "invoker_sun_strike"
 --- Forge Spirit ability name
--- @field[type=string] ABILITY_FORGE_SPIRIT
+-- @tfield string ABILITY_FORGE_SPIRIT
 M.ABILITY_FORGE_SPIRIT = "invoker_forge_spirit"
 --- Chaos Meteor ability name
--- @field[type=string] ABILITY_CHAOS_METEOR
+-- @tfield string ABILITY_CHAOS_METEOR
 M.ABILITY_CHAOS_METEOR = "invoker_chaos_meteor"
 --- Deafening Blast ability name
--- @field[type=string] ABILITY_DEAFENING_BLAST
+-- @tfield string ABILITY_DEAFENING_BLAST
 M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
 
 --- Level 10 right talent ability name
--- @field[type=string] ABILITY_TALENT_1
+-- @tfield string ABILITY_TALENT_1
 
 --- Level 10 left talent ability name
--- @field[type=string] ABILITY_TALENT_2
+-- @tfield string ABILITY_TALENT_2
 
 --- Level 15 right talent ability name
--- @field[type=string] ABILITY_TALENT_3
+-- @tfield string ABILITY_TALENT_3
 
 --- Level 15 left talent ability name
--- @field[type=string] ABILITY_TALENT_4
+-- @tfield string ABILITY_TALENT_4
 
 --- Level 20 right talent ability name
--- @field[type=string] ABILITY_TALENT_5
+-- @tfield string ABILITY_TALENT_5
 
 --- Level 20 left talent ability name
--- @field[type=string] ABILITY_TALENT_6
+-- @tfield string ABILITY_TALENT_6
 
 --- Level 25 right talent ability name
--- @field[type=string] ABILITY_TALENT_7
+-- @tfield string ABILITY_TALENT_7
 
 --- Level 25 left talent ability name
--- @field[type=string] ABILITY_TALENT_8
+-- @tfield string ABILITY_TALENT_8
 
 for i, abilityName in ipairs(M.HERO_KEY_VALUES:Talents()) do
   local constName = FMT_ABILITY_TALENT_CONST_NAME:format(i)
   M[constName] = abilityName
 end
 
---- List of orb abilities names.
+--- Array of orb abilities names.
 -- @table ORB_ABILITIES
--- @field[type=string] 1 Quas
--- @field[type=string] 2 Wex
--- @field[type=string] 3 Exort
+-- @tfield string 1 Quas
+-- @tfield string 2 Wex
+-- @tfield string 3 Exort
 M.ORB_ABILITIES = { M.ABILITY_QUAS, M.ABILITY_WEX, M.ABILITY_EXORT }
 
---- List of orb abilities names.
+--- Array of orb abilities names.
 -- @table SPELL_ABILITIES
--- @field[type=string] 1 Cold Snap
--- @field[type=string] 2 Ghost Walk
--- @field[type=string] 3 Ice Wall
--- @field[type=string] 4 EMP
--- @field[type=string] 5 Tornado
--- @field[type=string] 6 Alacrity
--- @field[type=string] 7 Sun Strike
--- @field[type=string] 8 Forge Spirit
--- @field[type=string] 9 Chaos Meteor
--- @field[type=string] 10 Deafening Blast
+-- @tfield string 1 Cold Snap
+-- @tfield string 2 Ghost Walk
+-- @tfield string 3 Ice Wall
+-- @tfield string 4 EMP
+-- @tfield string 5 Tornado
+-- @tfield string 6 Alacrity
+-- @tfield string 7 Sun Strike
+-- @tfield string 8 Forge Spirit
+-- @tfield string 9 Chaos Meteor
+-- @tfield string 10 Deafening Blast
 M.SPELL_ABILITIES =
   {
     M.ABILITY_COLD_SNAP,
@@ -137,41 +137,41 @@ M.SPELL_ABILITIES =
     M.ABILITY_DEAFENING_BLAST,
   }
 
---- List of talent abilities names.
+--- Array of talent abilities names.
 -- @table TALENT_ABILITIES
--- @field[type=string] 1 Level 10 right
--- @field[type=string] 2 Level 10 left
--- @field[type=string] 3 Level 15 right
--- @field[type=string] 4 Level 15 left
--- @field[type=string] 5 Level 20 right
--- @field[type=string] 6 Level 20 left
--- @field[type=string] 7 Level 25 right
--- @field[type=string] 8 Level 25 left
+-- @tfield string 1 Level 10 right
+-- @tfield string 2 Level 10 left
+-- @tfield string 3 Level 15 right
+-- @tfield string 4 Level 15 left
+-- @tfield string 5 Level 20 right
+-- @tfield string 6 Level 20 left
+-- @tfield string 7 Level 25 right
+-- @tfield string 8 Level 25 left
 M.TALENT_ABILITIES = M.HERO_KEY_VALUES:Talents()
 
 --- Abilities KeyValues
 -- @table ABILITIES_KEY_VALUES
--- @field[type=AbilityKeyValues] ABILITY_QUAS
--- @field[type=AbilityKeyValues] ABILITY_WEX
--- @field[type=AbilityKeyValues] ABILITY_EXORT
--- @field[type=AbilityKeyValues] ABILITY_COLD_SNAP
--- @field[type=AbilityKeyValues] ABILITY_GHOST_WALK
--- @field[type=AbilityKeyValues] ABILITY_ICE_WALL
--- @field[type=AbilityKeyValues] ABILITY_EMP
--- @field[type=AbilityKeyValues] ABILITY_TORNADO
--- @field[type=AbilityKeyValues] ABILITY_ALACRITY
--- @field[type=AbilityKeyValues] ABILITY_SUN_STRIKE
--- @field[type=AbilityKeyValues] ABILITY_FORGE_SPIRIT
--- @field[type=AbilityKeyValues] ABILITY_CHAOS_METEOR
--- @field[type=AbilityKeyValues] ABILITY_DEAFENING_BLAST
--- @field[type=AbilityKeyValues] ABILITY_TALENT_1
--- @field[type=AbilityKeyValues] ABILITY_TALENT_2
--- @field[type=AbilityKeyValues] ABILITY_TALENT_3
--- @field[type=AbilityKeyValues] ABILITY_TALENT_4
--- @field[type=AbilityKeyValues] ABILITY_TALENT_5
--- @field[type=AbilityKeyValues] ABILITY_TALENT_6
--- @field[type=AbilityKeyValues] ABILITY_TALENT_7
--- @field[type=AbilityKeyValues] ABILITY_TALENT_8
+-- @tfield AbilityKeyValues ABILITY_QUAS
+-- @tfield AbilityKeyValues ABILITY_WEX
+-- @tfield AbilityKeyValues ABILITY_EXORT
+-- @tfield AbilityKeyValues ABILITY_COLD_SNAP
+-- @tfield AbilityKeyValues ABILITY_GHOST_WALK
+-- @tfield AbilityKeyValues ABILITY_ICE_WALL
+-- @tfield AbilityKeyValues ABILITY_EMP
+-- @tfield AbilityKeyValues ABILITY_TORNADO
+-- @tfield AbilityKeyValues ABILITY_ALACRITY
+-- @tfield AbilityKeyValues ABILITY_SUN_STRIKE
+-- @tfield AbilityKeyValues ABILITY_FORGE_SPIRIT
+-- @tfield AbilityKeyValues ABILITY_CHAOS_METEOR
+-- @tfield AbilityKeyValues ABILITY_DEAFENING_BLAST
+-- @tfield AbilityKeyValues ABILITY_TALENT_1
+-- @tfield AbilityKeyValues ABILITY_TALENT_2
+-- @tfield AbilityKeyValues ABILITY_TALENT_3
+-- @tfield AbilityKeyValues ABILITY_TALENT_4
+-- @tfield AbilityKeyValues ABILITY_TALENT_5
+-- @tfield AbilityKeyValues ABILITY_TALENT_6
+-- @tfield AbilityKeyValues ABILITY_TALENT_7
+-- @tfield AbilityKeyValues ABILITY_TALENT_8
 M.ABILITIES_KEY_VALUES = {}
 
 for _, abilityName in ipairs(M.ORB_ABILITIES) do
@@ -191,16 +191,16 @@ end
 
 --- Table of orb abilities composition ("recipes") of spell abilities.
 -- @table SPELL_COMPOSITION
--- @field[type=array(string)] ABILITY_COLD_SNAP Cold Snap
--- @field[type=array(string)] ABILITY_GHOST_WALK Ghost Walk
--- @field[type=array(string)] ABILITY_ICE_WALL Ice Wall
--- @field[type=array(string)] ABILITY_EMP EMP
--- @field[type=array(string)] ABILITY_TORNADO Tornado
--- @field[type=array(string)] ABILITY_ALACRITY Alacrity
--- @field[type=array(string)] ABILITY_SUN_STRIKE Sun Strike
--- @field[type=array(string)] ABILITY_FORGE_SPIRIT Forge Spirit
--- @field[type=array(string)] ABILITY_CHAOS_METEOR Chaos Meteor
--- @field[type=array(string)] ABILITY_DEAFENING_BLAST Deafening Blast
+-- @tfield {string,...} ABILITY_COLD_SNAP Cold Snap
+-- @tfield {string,...} ABILITY_GHOST_WALK Ghost Walk
+-- @tfield {string,...} ABILITY_ICE_WALL Ice Wall
+-- @tfield {string,...} ABILITY_EMP EMP
+-- @tfield {string,...} ABILITY_TORNADO Tornado
+-- @tfield {string,...} ABILITY_ALACRITY Alacrity
+-- @tfield {string,...} ABILITY_SUN_STRIKE Sun Strike
+-- @tfield {string,...} ABILITY_FORGE_SPIRIT Forge Spirit
+-- @tfield {string,...} ABILITY_CHAOS_METEOR Chaos Meteor
+-- @tfield {string,...} ABILITY_DEAFENING_BLAST Deafening Blast
 M.SPELL_COMPOSITION = {
   [M.ABILITY_COLD_SNAP] = { M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_QUAS },
   [M.ABILITY_GHOST_WALK] = { M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_WEX },
@@ -217,32 +217,32 @@ M.SPELL_COMPOSITION = {
 -- empty1 and empty2 can change indices, we're using them only to reference spell slots
 
 --- Quas ability index.
--- @field[type=int] INDEX_ABILITY_QUAS
+-- @tfield int INDEX_ABILITY_QUAS
 M.INDEX_ABILITY_QUAS = 0
 --- Wex ability index.
--- @field[type=int] INDEX_ABILITY_WEX
+-- @tfield int INDEX_ABILITY_WEX
 M.INDEX_ABILITY_WEX = 1
 --- Exort ability index.
--- @field[type=int] INDEX_ABILITY_EXORT
+-- @tfield int INDEX_ABILITY_EXORT
 M.INDEX_ABILITY_EXORT = 2
 --- Spell slot 1 ability index.
--- @field[type=int] INDEX_ABILITY_EMPTY1
+-- @tfield int INDEX_ABILITY_EMPTY1
 M.INDEX_ABILITY_EMPTY1 = 3
 --- Spell slot 2 ability index.
--- @field[type=int] INDEX_ABILITY_EMPTY2
+-- @tfield int INDEX_ABILITY_EMPTY2
 M.INDEX_ABILITY_EMPTY2 = 4
 --- Invoke ability index.
--- @field[type=int] INDEX_ABILITY_INVOKE
+-- @tfield int INDEX_ABILITY_INVOKE
 M.INDEX_ABILITY_INVOKE = 5
 
 --- Table of ability indices by ability name.
 -- @table ABILITY_INDICES
--- @field[type=int] ABILITY_QUAS Quas
--- @field[type=int] ABILITY_WEX Wex
--- @field[type=int] ABILITY_EXORT Exort
--- @field[type=int] ABILITY_EMPTY1 Spell slot 1
--- @field[type=int] ABILITY_EMPTY2 Spell slot 2
--- @field[type=int] ABILITY_INVOKE Invoke
+-- @tfield int ABILITY_QUAS Quas
+-- @tfield int ABILITY_WEX Wex
+-- @tfield int ABILITY_EXORT Exort
+-- @tfield int ABILITY_EMPTY1 Spell slot 1
+-- @tfield int ABILITY_EMPTY2 Spell slot 2
+-- @tfield int ABILITY_INVOKE Invoke
 M.ABILITY_INDICES = {
   [M.ABILITY_QUAS] = M.INDEX_ABILITY_QUAS,
   [M.ABILITY_WEX] = M.INDEX_ABILITY_WEX,
@@ -255,7 +255,7 @@ M.ABILITY_INDICES = {
 --- Maximum index of the last visible ability.
 --
 -- Abilities with index higher than this are hidden.
---- @field[type=int] MAX_VISIBLE_ABILITY_INDEX
+--- @tfield int MAX_VISIBLE_ABILITY_INDEX
 M.MAX_VISIBLE_ABILITY_INDEX = 5
 
 return M

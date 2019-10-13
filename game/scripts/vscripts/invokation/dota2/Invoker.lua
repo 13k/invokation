@@ -81,8 +81,8 @@ end
 -- If no option is given, level up the ability 1 level.
 --
 -- @table AbilityLevelUpOption
--- @field[opt,type=int] level Specific level
--- @field[opt,type=bool] maxLevel Level up to max ability level
+-- @tfield[opt] int level Specific level
+-- @tfield[opt] bool maxLevel Level up to max ability level
 
 --- Levels up orb abilities.
 -- @tparam table options Options table

@@ -1,4 +1,4 @@
---- List of enabled/disabled abilities.
+--- Table of enabled/disabled abilities.
 -- @module invokation.const.ability_list
 
 local M = {

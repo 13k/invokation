@@ -23,6 +23,19 @@ local WARNF_COMBO_NOT_FINISHED = "Combo %q can't be finished for player %d"
 
 Logger.InstallHelpers(M)
 
+--- Purchase specification.
+-- @table Purchase
+-- @tfield string item Item name
+-- @tfield number cost Purchase cost
+
+--- Level up options specification.
+--
+-- If no options are given, levels hero up one level.
+--
+-- @table LevelUpOptions
+-- @tfield[opt] int level Level up to specified level
+-- @tfield[opt=false] bool maxLevel Level up to max level
+
 local function loadSpecs()
   local specs = require("invokation.const.combos")
 
@@ -61,8 +74,8 @@ end
 
 --- Constructor.
 -- @tparam table options Options table
--- @tparam invokation.Logger options.logger Logger instance
--- @tparam invokation.dota2.NetTable options.netTable NetTable instance
+-- @tparam Logger options.logger Logger instance
+-- @tparam dota2.NetTable options.netTable NetTable instance
 function M:_init(options)
   self.logger = options.logger:Child(LOGGER_PROGNAME)
   self.netTable = options.netTable
@@ -137,8 +150,8 @@ end
 
 --- Handles ability usage.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.dota2.Unit unit Unit instance
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Unit unit Unit instance
+-- @tparam dota2.Ability ability Ability instance
 function M:OnAbilityUsed(player, unit, ability)
   if isIgnoredAbility(ability) then
     self:d("OnAbilityUsed [ignored]", {
@@ -159,7 +172,7 @@ function M:OnAbilityUsed(player, unit, ability)
 end
 
 --- Handles damage instances being dealt to entities.
--- @tparam invokation.dota2.DamageInstance damage DamageInstance instance
+-- @tparam dota2.DamageInstance damage DamageInstance instance
 function M:OnEntityHurt(damage)
   local player = damage:AttackerPlayerOwner()
 
@@ -184,9 +197,7 @@ end
 
 --- Handles item purchases.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam table purchase Purchase information
--- @tparam string purchase.item Item name
--- @tparam number purchase.cost Item cost
+-- @tparam Purchase purchase Purchase information
 function M:OnItemPurchased(player, purchase)
   local combo = self.state[player].combo
 
@@ -208,7 +219,7 @@ end
 
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam string comboId Combo ID
+-- @tparam string comboId Combo Id
 function M:Start(player, comboId)
   self:d("Start", {
     player = player:GetPlayerID(),
@@ -269,7 +280,7 @@ end
 
 --- Progresses the currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Ability ability Ability instance
 function M:Progress(player, ability)
   local combo = self.state[player].combo
 
@@ -303,7 +314,7 @@ end
 
 --- Increments the damage amount of the currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.dota2.DamageInstance damage DamageInstance instance
+-- @tparam dota2.DamageInstance damage DamageInstance instance
 function M:ProgressDamage(player, damage)
   local combo = self.state[player].combo
 
@@ -334,7 +345,7 @@ end
 
 --- Fails and stops currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Ability ability Ability instance
 function M:Fail(player, ability)
   self:d("Fail", { player = player:GetPlayerID() })
 
@@ -371,6 +382,8 @@ function M:PreFinish(player)
   })
 end
 
+--- Finishes a combo for the given player.
+-- @tparam CDOTAPlayer player Player instance
 function M:Finish(player)
   self:d("Finish", { player = player:GetPlayerID() })
 
@@ -411,7 +424,7 @@ end
 
 --- Captures an instance of ability usage for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam invokation.dota2.Ability ability Ability instance
+-- @tparam dota2.Ability ability Ability instance
 function M:CaptureAbility(player, ability)
   if self.state[player].capturing then
     CombosComm.sendAbilityUsed(player, ability)
@@ -419,13 +432,8 @@ function M:CaptureAbility(player, ability)
 end
 
 --- Handles freestyle hero level up.
---
--- If no options are given, levels hero up one level.
---
 -- @tparam CDOTAPlayer player Player instance
--- @tparam table options Options table
--- @tparam[opt] int options.level Level up to specified level
--- @tparam[opt=false] bool options.maxLevel Level up to max level
+-- @tparam LevelUpOptions options
 function M:FreestyleHeroLevelUp(player, options)
   local combo = self.state[player].combo
 

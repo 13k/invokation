@@ -22,8 +22,6 @@ local function createDummy(location)
 end
 
 --- Constructor.
--- @fixme Dummy unit permanently walking back to origin
--- @todo Parameterize spawn location (origin)
 function M:_init()
   self.spawn = Entities:FindByName(nil, Units.DUMMY_TARGET_SPAWN)
   self:Spawn()
