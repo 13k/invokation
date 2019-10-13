@@ -1,7 +1,7 @@
 --- Unit class.
 -- @classmod invokation.dota2.Unit
 
-local list = require("invokation.lang.list")
+local m = require("moses")
 local class = require("pl.class")
 local types = require("pl.types")
 local delegation = require("invokation.lang.delegation")
@@ -206,7 +206,7 @@ function M:AddItemsByName(items, options)
   options = options or {}
 
   if options.onlyMissing then
-    items = list.diff(items, self:ItemNames())
+    items = m.difference(items, self:ItemNames())
   end
 
   local added = {}
