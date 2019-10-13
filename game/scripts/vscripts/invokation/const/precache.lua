@@ -1,9 +1,9 @@
 --- Precache constants.
 -- @module invokation.const.precache
 
-local M = {}
-
 local UNITS = require("invokation.const.units")
+
+local M = {}
 
 --- Precached units.
 M.UNITS = { UNITS.INVOKER, UNITS.DUMMY_TARGET }

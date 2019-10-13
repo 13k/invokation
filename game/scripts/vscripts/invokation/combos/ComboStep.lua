@@ -1,9 +1,10 @@
 --- ComboStep class.
 -- @classmod invokation.combos.ComboStep
 
+local class = require("pl.class")
 local tablex = require("pl.tablex")
 
-local M = require("pl.class")()
+local M = class()
 
 --- Generates a state name from a given step.
 -- @tparam ComboStep step Step instance

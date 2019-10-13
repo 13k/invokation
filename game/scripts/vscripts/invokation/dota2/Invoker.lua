@@ -1,12 +1,14 @@
 --- Invoker class.
 -- @classmod invokation.dota2.Invoker
 
-local M = require("pl.class")()
-
 local List = require("pl.List")
+local class = require("pl.class")
 local tablex = require("pl.tablex")
 local Ability = require("invokation.dota2.Ability")
+
 local INVOKER = require("invokation.const.invoker")
+
+local M = class()
 
 tablex.update(M, INVOKER)
 

@@ -1,7 +1,9 @@
 --- PlayerStates class.
 -- @classmod invokation.combos.PlayerStates
 
-local M = require("pl.class")()
+local class = require("pl.class")
+
+local M = class()
 
 --- Constructor.
 function M:_init()

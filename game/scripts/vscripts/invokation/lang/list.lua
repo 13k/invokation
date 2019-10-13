@@ -1,9 +1,9 @@
 --- List (integer-indexed table) helpers.
 -- @module invokation.lang.list
 
-local M = {}
-
 local List = require("pl.List")
+
+local M = {}
 
 --- Returns the (simple) difference between two lists.
 -- @tparam array a Left-side list

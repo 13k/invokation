@@ -1,6 +1,7 @@
 --- Combos manager.
 -- @classmod invokation.combos.Combos
 
+local class = require("pl.class")
 local Combo = require("invokation.combos.Combo")
 local Logger = require("invokation.Logger")
 local Timers = require("invokation.dota2.timers")
@@ -10,10 +11,11 @@ local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
 local PlayerStates = require("invokation.combos.PlayerStates")
 local FreestyleCombo = require("invokation.combos.FreestyleCombo")
+
 local NET_TABLE = require("invokation.const.net_table")
 local ABILITY_LIST = require("invokation.const.ability_list")
 
-local M = require("pl.class")()
+local M = class()
 
 local LOGGER_PROGNAME = "combos"
 

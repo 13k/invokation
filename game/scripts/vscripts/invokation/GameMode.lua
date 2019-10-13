@@ -5,7 +5,8 @@
 -- @section init
 
 if _G.GameMode == nil then
-  _G.GameMode = require("pl.class")()
+  local class = require("pl.class")
+  _G.GameMode = class()
 end
 
 require("invokation.game_mode.net_tables")
@@ -23,6 +24,7 @@ local Timers = require("invokation.dota2.timers")
 local lrandom = require("invokation.lang.random")
 local NetTable = require("invokation.dota2.NetTable")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
+
 local PRECACHE = require("invokation.const.precache")
 
 local LOGGER_PROGNAME = "invokation"

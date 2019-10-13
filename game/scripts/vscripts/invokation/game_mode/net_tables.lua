@@ -5,6 +5,7 @@
 -- @section net_tables
 
 local tablex = require("pl.tablex")
+
 local INVOKER = require("invokation.const.invoker")
 local NET_TABLE = require("invokation.const.net_table")
 local SHOP_ITEMS = require("invokation.const.shop_items")

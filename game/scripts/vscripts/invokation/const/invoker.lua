@@ -1,13 +1,14 @@
 --- Invoker constants.
 -- @module invokation.const.invoker
 
-local M = {}
+local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
+local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
 
 local UNITS = require("invokation.const.units")
 local HEROES = require("invokation.const.heroes")
 local ABILITIES = require("invokation.const.abilities")
-local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
-local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
+
+local M = {}
 
 local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_%d"
 
@@ -23,7 +24,7 @@ M.UNIT_NAME = UNITS.INVOKER
 -- @table KEY_VALUES
 M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]
 
---- @{invokation.dota2.kv.HeroKeyValues} instance
+--- @{dota2.kv.HeroKeyValues} instance
 M.HERO_KEY_VALUES = HeroKeyValues(M.UNIT_NAME, M.KEY_VALUES)
 
 --- Quas ability name

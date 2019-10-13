@@ -1,11 +1,12 @@
 --- Units helpers.
 -- @module invokation.dota2.units
 
-local M = {}
+local types = require("pl.types")
+local tablex = require("pl.tablex")
 
 local NAMES = require("invokation.const.units")
-local tablex = require("pl.tablex")
-local types = require("pl.types")
+
+local M = {}
 
 tablex.update(M, NAMES)
 

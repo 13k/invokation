@@ -1,10 +1,12 @@
 --- NetTable class.
 -- @classmod invokation.dota2.NetTable
 
-local M = require("pl.class")()
-
+local class = require("pl.class")
 local tablex = require("pl.tablex")
+
 local NET_TABLE = require("invokation.const.net_table")
+
+local M = class()
 
 tablex.update(M, NET_TABLE)
 

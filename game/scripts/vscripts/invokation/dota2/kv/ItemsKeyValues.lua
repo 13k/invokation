@@ -2,10 +2,12 @@
 -- @classmod invokation.dota2.kv.ItemsKeyValues
 
 local m = require("moses")
-local ITEMS = require("invokation.const.items")
+local class = require("pl.class")
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
 
-local M = require("pl.class")()
+local ITEMS = require("invokation.const.items")
+
+local M = class()
 
 local ITEM_KEY_PATT = "^item_"
 

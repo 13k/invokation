@@ -2,8 +2,9 @@
 -- @classmod invokation.dota2.kv.HeroKeyValues
 
 local m = require("moses")
+local class = require("pl.class")
 
-local M = require("pl.class")()
+local M = class()
 
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 

@@ -1,9 +1,9 @@
 --- Function helpers.
 -- @module invokation.lang.function
 
-local M = {}
-
 local func = require("pl.func")
+
+local M = {}
 
 --- Creates a function bound to an instance.
 --

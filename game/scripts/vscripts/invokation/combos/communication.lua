@@ -1,9 +1,9 @@
 --- Internal combos communication helpers.
 -- @module invokation.combos.communication
 
-local M = {}
-
 local CustomEvents = require("invokation.dota2.custom_events")
+
+local M = {}
 
 local function comboMetrics(combo)
   return {

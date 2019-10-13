@@ -1,7 +1,9 @@
 --- DamageInstance class.
 -- @classmod invokation.dota2.DamageInstance
 
-local M = require("pl.class")()
+local class = require("pl.class")
+
+local M = class()
 
 --- Constructor.
 -- @tparam Unit victim Victim unit instance

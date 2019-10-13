@@ -1,12 +1,14 @@
 --- Unit class.
 -- @classmod invokation.dota2.Unit
 
-local M = require("pl.class")()
-
 local list = require("invokation.lang.list")
+local class = require("pl.class")
 local types = require("pl.types")
-local INVENTORY = require("invokation.const.inventory")
 local delegation = require("invokation.lang.delegation")
+
+local INVENTORY = require("invokation.const.inventory")
+
+local M = class()
 
 local UNIT_NO_INVENTORY_ERROR = "Unit '%s' does not have an inventory"
 local UNIT_CANNOT_RESPAWN_ERROR = "Unit '%s' cannot respawn"

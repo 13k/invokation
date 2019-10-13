@@ -1,12 +1,14 @@
 --- Ability class that represents either an ability or item.
 -- @classmod invokation.dota2.Ability
 
-local M = require("pl.class")()
-
+local class = require("pl.class")
 local types = require("pl.types")
 local tablex = require("pl.tablex")
-local INVOKER = require("invokation.const.invoker")
 local delegation = require("invokation.lang.delegation")
+
+local INVOKER = require("invokation.const.invoker")
+
+local M = class()
 
 local ORB_ABILITIES = tablex.pairmap(function(_, ability)
   return true, ability

@@ -2,6 +2,7 @@
 -- @module invokation.dota2.sound_events
 
 local tablex = require("pl.tablex")
+
 local EVENTS = require("invokation.const.sound_events")
 
 local M = {}

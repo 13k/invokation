@@ -1,9 +1,10 @@
 --- BaseCombo is a base class for combos.
 -- @classmod invokation.combos.BaseCombo
 
+local class = require("pl.class")
 local Logger = require("invokation.Logger")
 
-local M = require("pl.class")()
+local M = class()
 
 local LOGGER_PROGNAME = "combo"
 

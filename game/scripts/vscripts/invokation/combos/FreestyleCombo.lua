@@ -1,9 +1,10 @@
 --- FreestyleCombo is a Combo class that implements a freestyle sequence.
 -- @classmod invokation.combos.FreestyleCombo
 
+local class = require("pl.class")
 local BaseCombo = require("invokation.combos.BaseCombo")
 
-local M = require("pl.class")(BaseCombo)
+local M = class(BaseCombo)
 
 --- Hard-coded combo id.
 -- @tfield string COMBO_ID

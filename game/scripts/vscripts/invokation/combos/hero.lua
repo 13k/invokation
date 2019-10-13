@@ -1,8 +1,6 @@
 --- Internal combos hero helpers.
 -- @module invokation.combos.hero
 
-local M = {}
-
 local Unit = require("invokation.dota2.Unit")
 local Player = require("invokation.dota2.Player")
 local Invoker = require("invokation.dota2.Invoker")
@@ -10,6 +8,8 @@ local Invoker = require("invokation.dota2.Invoker")
 local UNITS = require("invokation.const.units")
 local LIMITS = require("invokation.const.limits")
 local SOUND_EVENTS = require("invokation.const.sound_events")
+
+local M = {}
 
 --- Runs the setup phase of a combo.
 -- @tparam CDOTAPlayer player Player playing the combo

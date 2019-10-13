@@ -3,8 +3,9 @@
 
 local m = require("moses")
 local KV = require("invokation.dota2.kv")
+local class = require("pl.class")
 
-local M = require("pl.class")()
+local M = class()
 
 --- Constructor.
 -- @tparam string name Item name

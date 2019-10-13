@@ -1,7 +1,9 @@
 --- Env class.
 -- @classmod invokation.game_mode.Env
 
-local M = require("pl.class")()
+local class = require("pl.class")
+
+local M = class()
 
 --- Environment modes
 -- @section modes

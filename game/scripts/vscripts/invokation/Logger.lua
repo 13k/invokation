@@ -3,10 +3,11 @@
 
 local pp = require("pl.pretty")
 local text = require("pl.text")
+local class = require("pl.class")
 local tablex = require("pl.tablex")
 local stringx = require("pl.stringx")
 
-local M = require("pl.class")()
+local M = class()
 
 --- Logger Levels
 -- @section levels
