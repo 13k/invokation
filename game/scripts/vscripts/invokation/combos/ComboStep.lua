@@ -31,10 +31,10 @@ end
 
 --- Constructor.
 -- @tparam table spec ComboStep specification table
--- @tparam int spec.id Step ID
+-- @tparam int spec.id Step id
 -- @tparam string spec.name Step name (ability or item name)
 -- @tparam[opt=false] bool spec.required Is step required or optional?
--- @tparam[opt] {int,...} spec.next Next steps IDs (`nil` if it's the last step in the sequence)
+-- @tparam[opt] {int,...} spec.next Next steps ids (`nil` if it's the last step in the sequence)
 function M:_init(spec)
   tablex.update(self, spec)
 

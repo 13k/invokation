@@ -12,7 +12,7 @@ local M = {}
 
 local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_%d"
 
---- Hero ID
+--- Hero id
 -- @tfield int HERO_ID
 M.HERO_ID = 74
 

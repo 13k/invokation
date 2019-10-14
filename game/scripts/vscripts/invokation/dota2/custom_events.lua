@@ -19,15 +19,15 @@ end
 --- Register a callback to be called when a particular custom event arrives.
 -- @tparam string event
 -- @tparam function callback
--- @treturn int Listener ID that can be used to unregister later
+-- @treturn int Listener id that can be used to unregister later
 function M.Subscribe(event, callback)
   return CustomGameEventManager:RegisterListener(event, createHandler(callback))
 end
 
 --- Unregister a given listener.
--- @tparam int listenerID
-function M.Unsubscribe(listenerID)
-  return CustomGameEventManager:UnregisterListener(listenerID)
+-- @tparam int listenerId
+function M.Unsubscribe(listenerId)
+  return CustomGameEventManager:UnregisterListener(listenerId)
 end
 
 --- Send event to all players.

@@ -136,7 +136,7 @@ end
 
 --- An item was picked up off the ground.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam string payload.itemname Item name
 -- @tparam int payload.ItemEntityIndex Item entity index
 -- @tparam[opt] int payload.UnitEntityIndex Unit entity index
@@ -147,7 +147,7 @@ end
 
 --- An item was purchased by a player.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam string payload.itemname Item name
 -- @tparam number payload.itemcost Item cost
 function GameMode:OnItemPurchased(payload)
@@ -163,7 +163,7 @@ end
 
 --- An ability was used by a player (including items).
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam int payload.caster_entindex Caster (unit) entity index
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnAbilityUsed(payload)
@@ -225,7 +225,7 @@ end
 
 --- A player last hit a creep, a tower, or a hero.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam int payload.EntKilled Entity index of the unit that was killed
 -- @tparam int payload.FirstBlood `1` if last hit was a first blood
 -- @tparam int payload.HeroKill `1` if last hit was a hero kill
@@ -244,15 +244,15 @@ end
 
 --- A rune was activated by a player.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
--- @tparam int payload.rune Rune ID (`DOTA_RUNE_*` constants)
+-- @tparam int payload.PlayerID Player id
+-- @tparam int payload.rune Rune id (`DOTA_RUNE_*` constants)
 function GameMode:OnRuneActivated(payload)
   self:d("OnRuneActivated", { payload = payload })
 end
 
 --- A player took damage from a tower.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam number payload.damage Damage amount
 function GameMode:OnPlayerTakeTowerDamage(payload)
   self:d("OnPlayerTakeTowerDamage", { payload = payload })
@@ -269,8 +269,8 @@ end
 
 --- A player killed another player in a multi-team context.
 -- @tparam table payload
--- @tparam int payload.killer_userid Killer player ID
--- @tparam int payload.victim_userid Victim player ID
+-- @tparam int payload.killer_userid Killer player id
+-- @tparam int payload.victim_userid Victim player id
 -- @tparam int payload.herokills Number of kills?
 -- @tparam int payload.teamnumber Team number
 function GameMode:OnTeamKillCredit(payload)
@@ -300,14 +300,14 @@ end
 -- @tparam table payload
 -- @tparam string payload.itemname Item name
 -- @tparam number payload.itemcost Item cost
--- @tparam[opt] int payload.PlayerID Player ID
+-- @tparam[opt] int payload.PlayerID Player id
 function GameMode:OnItemCombined(payload)
   self:d("OnItemCombined", { payload = payload })
 end
 
 --- Called whenever an ability begins its PhaseStart phase (but before it is actually cast).
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
+-- @tparam int payload.PlayerID Player id
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnAbilityCastBegins(payload)
   self:d("OnAbilityCastBegins", { payload = payload })
@@ -315,7 +315,7 @@ end
 
 --- Called whenever a tower is killed.
 -- @tparam table payload
--- @tparam int payload.killer_userid Player ID
+-- @tparam int payload.killer_userid Player id
 -- @tparam int payload.gold Gold gained amount
 -- @tparam int payload.teamnumber Team number
 function GameMode:OnTowerKill(payload)
@@ -324,7 +324,7 @@ end
 
 --- Called whenever a player changes their custom team selection during Game Setup.
 -- @tparam table payload
--- @tparam int payload.player_id Player ID
+-- @tparam int payload.player_id Player id
 -- @tparam int payload.success `1` if change was successful
 -- @tparam int payload.team_id Team number
 function GameMode:OnPlayerSelectedCustomTeam(payload)
@@ -342,8 +342,8 @@ end
 
 --- Called whenever any player sends a chat message.
 -- @tparam table payload
--- @tparam int payload.playerid Player ID
--- @tparam int payload.userid User ID
+-- @tparam int payload.playerid Player id
+-- @tparam int payload.userid User id
 -- @tparam string payload.text Message
 -- @tparam int payload.teamonly `1` if message was sent to allies only
 function GameMode:OnPlayerChat(payload)

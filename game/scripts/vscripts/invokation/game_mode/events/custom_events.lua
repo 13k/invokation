@@ -15,7 +15,7 @@ end
 --- Handles combo start events.
 -- @tparam CDOTAPlayer player
 -- @tparam table payload
--- @tparam string payload.combo Combo ID
+-- @tparam string payload.combo Combo id
 function GameMode:OnComboStart(player, payload)
   self:d("OnComboStart", {
     player = player:GetPlayerID(),

@@ -45,8 +45,8 @@ end
 
 --- Called once when the player fully connects and becomes "Ready" during loading.
 -- @tparam table payload
--- @tparam int payload.PlayerID Player ID
--- @tparam int payload.userid User ID
+-- @tparam int payload.PlayerID Player id
+-- @tparam int payload.userid User id
 function GameMode:_OnConnectFull(payload)
   self:d("_OnConnectFull", { payload = payload })
 

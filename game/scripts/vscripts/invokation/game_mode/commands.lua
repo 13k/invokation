@@ -207,7 +207,7 @@ end
 
 --- Dumps combo graph in DOT format.
 -- @tparam CDOTAPlayer player Player who issued this console command
--- @tparam string comboId Combo ID
+-- @tparam string comboId Combo id
 --
 -- luacheck: no unused args
 function GameMode:CommandDumpComboGraph(player, comboId)

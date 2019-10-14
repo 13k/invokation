@@ -10,17 +10,17 @@ local M = class()
 -- Attributes:
 --
 -- * `entity`: (`CDOTAPlayer`) player entity
--- * `id`: (`int`) player ID
--- * `accountID`: (`int`) player's 32-bit account ID
--- * `steamID`: (`int`) player's 64-bit steam ID
+-- * `id`: (`int`) player id
+-- * `accountId`: (`int`) player's 32-bit account id
+-- * `steamId`: (`int`) player's 64-bit steam id
 -- * `hero`: (`CDOTA_BaseNPC_Hero`) player's assigned hero entity
 --
 -- @tparam CDOTAPlayer entity Player entity
 function M:_init(entity)
   self.entity = entity
   self.id = self.entity:GetPlayerID()
-  self.accountID = PlayerResource:GetSteamAccountID(self.id)
-  self.steamID = PlayerResource:GetSteamID(self.id)
+  self.accountId = PlayerResource:GetSteamAccountID(self.id)
+  self.steamId = PlayerResource:GetSteamID(self.id)
   self.hero = self.entity:GetAssignedHero()
 end
 
