@@ -1,19 +1,24 @@
 project = "Invokation"
 description = "Invokation Dota 2 custom game"
 title = "Invokation Lua Documentation"
+
+dir = "doc/ldoc"
+format = "commonmark"
 package = "invokation"
+pretty = "lxsh"
+readme = "README.md"
+style = "doc"
+template = "doc"
 
 file = {
   "game/scripts/vscripts/invokation",
   exclude = { "game/scripts/vscripts/invokation/game_mode/commands" },
 }
 
-dir = "doc/ldoc"
-format = "discount"
-style = "doc"
-template = "doc"
-pretty = "lxsh"
-readme = "README.md"
+custom_tags = { {
+  "abstract",
+  title = "Abstract method",
+} }
 
 backtick_references = false
 no_lua_ref = true
@@ -27,8 +32,3 @@ alias("tfield", {
   "field",
   modifiers = { type = "$1" },
 })
-
-custom_tags = { {
-  "abstract",
-  title = "Abstract method",
-} }
