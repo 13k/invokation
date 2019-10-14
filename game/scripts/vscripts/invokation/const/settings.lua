@@ -131,7 +131,7 @@ M.GAME_SETUP_TIME = 0
 
 --- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
 --
--- If set to 0, players will not be assigned a "valid" team (their team value will be set to @{DOTA_TEAM_NOTEAM}).
+-- If set to 0, players will not be assigned a "valid" team (their team value will be set to `DOTA_TEAM_NOTEAM`).
 --
 -- If set to -1, `GameRules:FinishCustomGameSetup()` must be called manually.
 --

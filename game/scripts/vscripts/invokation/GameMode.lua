@@ -16,12 +16,13 @@ require("invokation.game_mode.events")
 require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
 
-local lfn = require("invokation.lang.function")
+local m = require("moses")
 local Env = require("invokation.game_mode.Env")
+local func = require("invokation.lang.function")
+local rand = require("invokation.lang.random")
 local Combos = require("invokation.combos.Combos")
 local Logger = require("invokation.Logger")
 local Timers = require("invokation.dota2.timers")
-local lrandom = require("invokation.lang.random")
 local NetTable = require("invokation.dota2.NetTable")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
 
@@ -71,11 +72,11 @@ function GameMode:_init(options)
 end
 
 function GameMode:fnHandler(methodName)
-  return self.env.development and lfn.lookupbyname(GameMode, methodName) or GameMode[methodName]
+  return self.env.development and func.lookupbyname(GameMode, methodName) or GameMode[methodName]
 end
 
 function GameMode:methodHandler(methodName)
-  return lfn.bind(self, self:fnHandler(methodName))
+  return m.bind(self:fnHandler(methodName), self)
 end
 
 --- Entry-point for the game initialization.
@@ -99,7 +100,7 @@ end
 function GameMode:setupModules()
   Timers:Start()
   self:d("  setup Timers")
-  lrandom.randomseed()
+  rand.seed()
   self:d("  setup random")
 
   if self.env.development then
