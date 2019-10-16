@@ -133,7 +133,7 @@ M.GAME_SETUP_TIME = 0
 --
 -- If set to 0, players will not be assigned a "valid" team (their team value will be set to `DOTA_TEAM_NOTEAM`).
 --
--- If set to -1, `GameRules:FinishCustomGameSetup()` must be called manually.
+-- If set to -1, `GameRules:FinishCustomGameSetup` must be called manually.
 --
 -- `GameRules:SetCustomGameSetupTimeout(float)`
 M.GAME_SETUP_TIMEOUT = 1

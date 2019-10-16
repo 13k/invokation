@@ -8,9 +8,11 @@ local Unit = require("invokation.dota2.Unit")
 local Ability = require("invokation.dota2.Ability")
 local DamageInstance = require("invokation.dota2.DamageInstance")
 
-local ABILITY_OR_ITEM_NOT_FOUND_ERROR = "Could not find ability or item named '%q' on unit '%s'"
+local ERRF_ABILITY_OR_ITEM_NOT_FOUND = "Could not find ability or item named '%q' on unit '%s'"
 
 --- The overall game state has changeds.
+-- @tparam string state
+-- @tparam table payload
 function GameMode:OnGameRulesStateChange(state, payload)
   self:d("OnGameRulesStateChange", {
     state = state,
@@ -174,7 +176,7 @@ function GameMode:OnAbilityUsed(payload)
   local abilityEnt = caster:FindAbilityOrItem(payload.abilityname)
 
   if abilityEnt == nil then
-    local err = ABILITY_OR_ITEM_NOT_FOUND_ERROR:format(payload.abilityname, caster.name)
+    local err = ERRF_ABILITY_OR_ITEM_NOT_FOUND:format(payload.abilityname, caster.name)
     error(err)
   end
 

@@ -59,7 +59,7 @@ end
 
 --- Initializes timers.
 --
--- Should be placed inside the `Activate()` function.
+-- Should be placed inside the custom game's `Activate` function.
 --
 -- @tparam[opt=0.01] float interval Timer processing interval
 function M:Start(interval)

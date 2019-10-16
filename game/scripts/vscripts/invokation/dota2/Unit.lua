@@ -10,8 +10,8 @@ local INVENTORY = require("invokation.const.inventory")
 
 local M = class()
 
-local UNIT_NO_INVENTORY_ERROR = "Unit '%s' does not have an inventory"
-local UNIT_CANNOT_RESPAWN_ERROR = "Unit '%s' cannot respawn"
+local ERRF_UNIT_NO_INVENTORY = "Unit '%s' does not have an inventory"
+local ERRF_UNIT_CANNOT_RESPAWN = "Unit '%s' cannot respawn"
 
 local DELEGATES =
   {
@@ -54,8 +54,8 @@ end
 
 --- Respawns the unit.
 --
--- If the unit is a hero, uses `CDOTA_BaseNPC_Hero:RespawnHero()` with given
--- options, otherwise uses `CDOTA_BaseNPC:RespawnUnit()`.
+-- If the unit is a hero, uses `CDOTA_BaseNPC_Hero:RespawnHero` with given
+-- options, otherwise uses `CDOTA_BaseNPC:RespawnUnit`.
 --
 -- @tparam[opt={}] table options Options table
 -- @tparam[opt=false] bool options.buyback Is buyback respawn?
@@ -63,7 +63,7 @@ end
 -- @tparam[opt=false] bool options.penalty Apply respawn penalty?
 function M:Respawn(options)
   if not self.entity:UnitCanRespawn() then
-    error(UNIT_CANNOT_RESPAWN_ERROR:format(self.name))
+    error(ERRF_UNIT_CANNOT_RESPAWN:format(self.name))
   end
 
   options = options or {}
@@ -140,7 +140,7 @@ end
 
 function M:forEachItem(callback, options)
   if not self:HasInventory() then
-    error(UNIT_NO_INVENTORY_ERROR:format(self.name))
+    error(ERRF_UNIT_NO_INVENTORY:format(self.name))
   end
 
   options = options or {}
@@ -200,7 +200,7 @@ end
 -- @treturn {CDOTA_Item,...} Array of added item entities
 function M:AddItemsByName(items, options)
   if not self:HasInventory() then
-    error(UNIT_NO_INVENTORY_ERROR:format(self.name))
+    error(ERRF_UNIT_NO_INVENTORY:format(self.name))
   end
 
   options = options or {}

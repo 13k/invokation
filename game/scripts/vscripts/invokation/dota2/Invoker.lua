@@ -54,9 +54,9 @@ end
   This is a hack. "AbilitySpecial" values for Invoker spells that depend on
   orb ability level (specials that have "levelkey" set to "quaslevel",
   "wexlevel" or "exortlevel") don't change when orb ability levels are
-  manually changed (with `SetLevel()`). Since we're resetting orb levels to
-  zero, this hack "resets" spell abilities by removing and reinserting them
-  on the hero.
+  manually changed (with `CDOTABaseAbility:SetLevel`). Since we're resetting
+  orb levels to zero, this hack "resets" spell abilities by removing and
+  reinserting them on the hero.
 
   WARNING: when removing an ability, make sure they aren't visible (invoked),
   otherwise the whole ability slot will disappear from the UI.
@@ -89,9 +89,9 @@ end
 --- Levels up orb abilities.
 -- @tparam table options Options table
 -- @tparam[opt=false] bool options.maxLevel Level up abilities to max level
--- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_QUAS Quas level up option
--- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_WEX Wex level up option
--- @tparam[opt] AbilityLevelUpOption invokation.const.invoker.ABILITY_EXORT Exort level up option
+-- @tparam[opt] AbilityLevelUpOption const.invoker.ABILITY_QUAS Quas level up option
+-- @tparam[opt] AbilityLevelUpOption const.invoker.ABILITY_WEX Wex level up option
+-- @tparam[opt] AbilityLevelUpOption const.invoker.ABILITY_EXORT Exort level up option
 function M:LevelUpAbilities(options)
   options = options or {}
 
