@@ -207,13 +207,13 @@ end
 
 --- Dumps combo graph in DOT format.
 -- @tparam CDOTAPlayer player Player who issued this console command
--- @tparam string comboId Combo id
+-- @tparam string id Combo id
 --
 -- luacheck: no unused args
-function GameMode:CommandDumpComboGraph(player, comboId)
-  if not comboId then return end
+function GameMode:CommandDumpComboGraph(player, id)
+  if not id then return end
 
-  local combo = self.combos:createCombo(tonumber(comboId))
+  local combo = self.combos:createCombo(tonumber(id))
 
   if combo == nil then
     print("Could not find combo")

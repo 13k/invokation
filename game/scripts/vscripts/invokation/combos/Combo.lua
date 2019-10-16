@@ -97,28 +97,12 @@ local function abilityWait(ability)
   return ability:GetDuration() or 0
 end
 
---- Combo specification.
--- @table Spec
--- @tfield string id id
--- @tfield string specialty Specialty
--- @tfield string stance Stance
--- @tfield int heroLevel Recommended hero level
--- @tfield int damageRating Damage rating
--- @tfield int difficultyRating Difficulty rating
--- @tfield {string,...} tags Tags
--- @tfield {string,...} items Array of required items names
--- @tfield {int,...} orbs Array of recommended orb abilities levels (`{quas, wex, exort}`)
--- @tfield int talents Bitmap of recommended talent abilities
--- @tfield {ComboStep,...} sequence Array of steps
-
 --- Constructor.
--- @tparam Spec spec Combo data
+-- @tparam BaseCombo.Spec spec Combo data
 -- @tparam[opt] table options Options
 -- @tparam Logger options.logger Logger instance
 function M:_init(spec, options)
-  self:super(options)
-
-  tablex.update(self, spec)
+  self:super(spec, options)
 
   self.sequence = tablex.map(ComboStep, self.sequence)
   self.startTimes = {}

@@ -10,17 +10,19 @@ local M = class(BaseCombo)
 -- @tfield string COMBO_ID
 M.COMBO_ID = "freestyle"
 
+local SPEC = {
+  id = M.COMBO_ID,
+  heroLevel = 1,
+  gold = 99999,
+  items = {},
+}
+
 --- Constructor.
 -- @tparam[opt] table options Options
 -- @tparam Logger options.logger Logger instance
 function M:_init(options)
-  self:super(options)
-
-  self.id = M.COMBO_ID
+  self:super(SPEC, options)
   self.started = true
-  self.heroLevel = 1
-  self.items = {}
-  self.gold = 99999
 end
 
 --- Freestyle combos have no steps.

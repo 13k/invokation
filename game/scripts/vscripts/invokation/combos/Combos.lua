@@ -92,18 +92,14 @@ function M:load()
   self.netTable:Set(NET_TABLE.MAIN_KEYS.COMBOS, self.specs)
 end
 
-function M:createCombo(comboId)
-  if comboId == FreestyleCombo.COMBO_ID then
+function M:createCombo(id)
+  if id == FreestyleCombo.COMBO_ID then
     return FreestyleCombo({ logger = self.logger })
   end
 
-  local spec = self.specs[comboId]
+  local spec = self.specs[id]
 
-  if spec == nil then
-    return nil
-  end
-
-  return Combo(spec, { logger = self.logger })
+  return spec and Combo(spec, { logger = self.logger })
 end
 
 function M:setup(player, combo)
@@ -221,26 +217,26 @@ end
 
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam string comboId Combo Id
-function M:Start(player, comboId)
+-- @tparam string id Combo Id
+function M:Start(player, id)
   self:d("Start", {
     player = player:GetPlayerID(),
-    combo = comboId,
+    id = id,
   })
 
   local combo = self.state[player].combo
   local hardReset = combo == nil
 
-  if combo ~= nil and combo.id ~= comboId then
+  if combo ~= nil and combo.id ~= id then
     self:stop(player, combo)
   end
 
   self:teardown(player, { hardReset = hardReset })
 
-  combo = self:createCombo(comboId)
+  combo = self:createCombo(id)
 
   if combo == nil then
-    self:errf(ERRF_COMBO_NOT_FOUND, comboId)
+    self:errf(ERRF_COMBO_NOT_FOUND, id)
     return
   end
 
@@ -276,7 +272,17 @@ function M:Restart(player, options)
     return
   end
 
+  local id = combo.id
+
   self:teardown(player, options)
+
+  combo = self:createCombo(id)
+
+  if combo == nil then
+    self:errf(ERRF_COMBO_NOT_FOUND, id)
+    return
+  end
+
   self:start(player, combo)
 end
 

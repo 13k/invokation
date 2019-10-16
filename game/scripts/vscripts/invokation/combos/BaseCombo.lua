@@ -2,6 +2,7 @@
 -- @classmod invokation.combos.BaseCombo
 
 local class = require("pl.class")
+local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
 
 local M = class()
@@ -10,11 +11,29 @@ local LOGGER_PROGNAME = "combo"
 
 Logger.InstallHelpers(M)
 
+--- Combo specification.
+-- @table Spec
+-- @tfield string id id
+-- @tfield string specialty Specialty
+-- @tfield string stance Stance
+-- @tfield int heroLevel Hero level
+-- @tfield int damageRating Damage rating
+-- @tfield int difficultyRating Difficulty rating
+-- @tfield int gold Hero starting gold
+-- @tfield {string,...} tags Tags
+-- @tfield {string,...} items Array of required items names
+-- @tfield {int,...} orbs Array of recommended orb abilities levels (`{quas, wex, exort}`)
+-- @tfield int talents Bitmap of recommended talent abilities
+-- @tfield {ComboStep.Spec,...} sequence Array of steps data
+
 --- Constructor.
+-- @tparam Spec spec Combo data
 -- @tparam[opt] table options Options
 -- @tparam Logger options.logger Logger instance
-function M:_init(options)
+function M:_init(spec, options)
   options = options or {}
+
+  tablex.update(self, spec)
 
   self.logger = options.logger:Child(LOGGER_PROGNAME)
   self.started = false
