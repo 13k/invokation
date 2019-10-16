@@ -14,7 +14,7 @@ M.package = "Invokation"
 
 --- Package version
 -- @tfield string version
-M.version = "0.4.1-beta1"
+M.version = "0.4.2-beta1"
 
 --- Package description
 -- @table description
