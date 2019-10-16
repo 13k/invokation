@@ -4,7 +4,7 @@
   var _ = global.lodash;
   var L10n = global.L10n;
   var NetTable = global.NetTable;
-  var LuaListDeep = global.Util.LuaListDeep;
+  var LuaArrayDeep = global.Util.LuaArrayDeep;
   var CreateItemImage = global.Util.CreateItemImage;
   var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
   var Sequence = global.Sequence.Sequence;
@@ -133,7 +133,7 @@
     },
 
     loadItems: function() {
-      this.shopItems = LuaListDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
+      this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
     },
 
     select: function(imagePanel) {

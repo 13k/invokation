@@ -21,7 +21,7 @@
 {
   "invokation_viewer_render"
   {
-    "combo_id" "string"
+    "id" "uint64"
   }
 
   "invokation_popup_text_entry_submit"

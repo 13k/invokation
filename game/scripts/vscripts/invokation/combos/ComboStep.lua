@@ -6,6 +6,13 @@ local tablex = require("pl.tablex")
 
 local M = class()
 
+--- ComboStep specification.
+-- @table Spec
+-- @tfield int id Step id
+-- @tfield string name Step name (ability or item name)
+-- @tfield[opt=false] bool required Is step required or optional?
+-- @tfield[opt] {int,...} next Next steps ids (`nil` if it's the last step in the sequence)
+
 --- Generates a state name from a given step.
 -- @tparam ComboStep step Step instance
 -- @treturn string State name
@@ -19,7 +26,7 @@ end
 -- @treturn nil otherwise
 function M.StepId(stateName)
   local id = stateName:match("^(%d+):")
-  return id and tonumber(id) or nil
+  return id and tonumber(id)
 end
 
 --- Generates an event name from a given step.
@@ -30,11 +37,7 @@ function M.EventName(step)
 end
 
 --- Constructor.
--- @tparam table spec ComboStep specification table
--- @tparam int spec.id Step id
--- @tparam string spec.name Step name (ability or item name)
--- @tparam[opt=false] bool spec.required Is step required or optional?
--- @tparam[opt] {int,...} spec.next Next steps ids (`nil` if it's the last step in the sequence)
+-- @tparam Spec spec Step data
 function M:_init(spec)
   tablex.update(self, spec)
 

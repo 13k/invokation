@@ -11,7 +11,7 @@
   var module = module || {};
   var exports = (module.exports = module.exports || {});
 
-  exports.IsLuaList = function(obj) {
+  exports.IsLuaArray = function(obj) {
     return (
       _.isPlainObject(obj) &&
       _.chain(obj)
@@ -23,10 +23,10 @@
     );
   };
 
-  // should support Lua lists with non-integer keys,
+  // should support Lua arrays with non-integer keys,
   // like the common construct (5.1) `{n=select("#", ...), ...}` or (>=5.2) `table.pack(...)`
-  exports.LuaList = function(obj) {
-    if (!exports.IsLuaList(obj)) {
+  exports.LuaArray = function(obj) {
+    if (!exports.IsLuaArray(obj)) {
       return obj;
     }
 
@@ -45,16 +45,16 @@
     );
   };
 
-  exports.LuaListDeep = function(obj, options) {
+  exports.LuaArrayDeep = function(obj, options) {
     options = options || {};
 
-    var recurse = _.chain(exports.LuaListDeep)
+    var recurse = _.chain(exports.LuaArrayDeep)
       .partialRight(options)
       .unary()
       .value();
 
-    if (exports.IsLuaList(obj)) {
-      return _.map(exports.LuaList(obj), recurse);
+    if (exports.IsLuaArray(obj)) {
+      return _.map(exports.LuaArray(obj), recurse);
     }
 
     if (_.isArray(obj)) {
@@ -76,6 +76,10 @@
     }
 
     return obj;
+  };
+
+  exports.LuaIndexArray = function(obj) {
+    return _.map(exports.LuaArray(obj), _.partial(_.add, -1));
   };
 
   exports.Prefixer = function(string, prefix) {

@@ -40,11 +40,11 @@ function M:CurrentStep()
 end
 
 --- Freestyle combos have no steps.
--- @treturn table `{}` (always returns an empty array)
+-- @treturn nil
 --
 -- luacheck: no self
-function M:NextSteps()
-  return {}
+function M:NextStepsIds()
+  return nil
 end
 
 --- Always progresses the combo with the given ability.

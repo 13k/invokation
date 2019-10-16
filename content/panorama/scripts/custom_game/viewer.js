@@ -78,7 +78,7 @@
 
     onViewerRender: function(payload) {
       this.debug("onViewerRender()", payload);
-      this.view(payload.combo);
+      this.view(payload.id);
     },
 
     // ----- Helpers -----
@@ -97,7 +97,7 @@
 
     startCombo: function() {
       this.debug("startCombo()", this.combo.id);
-      this.sendServer(EVENTS.COMBO_START, { combo: this.combo.id });
+      this.sendServer(EVENTS.COMBO_START, { id: this.combo.id });
     },
 
     createStepPanel: function(parent, step) {
@@ -181,8 +181,8 @@
 
     // ----- Action runners -----
 
-    view: function(comboId) {
-      this.combo = COMBOS.Get(comboId);
+    view: function(id) {
+      this.combo = COMBOS.Get(id);
 
       var seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
 

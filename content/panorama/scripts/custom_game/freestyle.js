@@ -42,7 +42,7 @@
     // --- Event handlers -----
 
     onComboStarted: function(payload) {
-      if (payload.combo !== FREESTYLE_COMBO_ID) {
+      if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
 
@@ -51,7 +51,7 @@
     },
 
     onComboStopped: function(payload) {
-      if (payload.combo !== FREESTYLE_COMBO_ID) {
+      if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
 
@@ -60,7 +60,7 @@
     },
 
     onComboProgress: function(payload) {
-      if (payload.combo !== FREESTYLE_COMBO_ID) {
+      if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
 

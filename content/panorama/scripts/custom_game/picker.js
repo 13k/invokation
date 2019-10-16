@@ -122,12 +122,12 @@
     onComboDetailsShow: function(payload) {
       this.debug("onComboDetailsShow()", payload);
       this.close();
-      this.renderViewer(payload.combo);
+      this.renderViewer(payload.id);
     },
 
     onComboPlay: function(payload) {
       this.debug("onComboPlay()", payload);
-      this.startCombo(payload.combo);
+      this.startCombo(payload.id);
     },
 
     onComboStarted: function() {
@@ -141,12 +141,12 @@
     },
 
     onComboFinished: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboFinished()", payload);
-      this.finishCombo(payload.combo);
+      this.finishCombo(payload.id);
     },
 
     onFilterTagsChange: function(payload) {
@@ -184,23 +184,23 @@
       COMBOS.OnChange(this.handler("onCombosChange"));
     },
 
-    startCombo: function(combo) {
-      this.debug("startCombo()", combo.id);
-      this.sendServer(EVENTS.COMBO_START, { combo: combo.id });
+    startCombo: function(id) {
+      this.debug("startCombo()", id);
+      this.sendServer(EVENTS.COMBO_START, { id: id });
     },
 
-    finishCombo: function(comboId) {
-      this.debug("finishCombo()", comboId);
-      this.finishedCombos[comboId] = true;
-      this.markComboPanelAsFinished(comboId);
+    finishCombo: function(id) {
+      this.debug("finishCombo()", id);
+      this.finishedCombos[id] = true;
+      this.markComboPanelAsFinished(id);
     },
 
-    markComboPanelAsFinished: function(comboId) {
-      this.comboPanels[comboId].component.Input("SetFinished");
+    markComboPanelAsFinished: function(id) {
+      this.comboPanels[id].component.Input("SetFinished");
     },
 
-    renderViewer: function(combo) {
-      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo });
+    renderViewer: function(id) {
+      this.sendClientSide(EVENTS.VIEWER_RENDER, { id: id });
     },
 
     comboTags: function() {

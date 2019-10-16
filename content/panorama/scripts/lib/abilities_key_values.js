@@ -6,7 +6,7 @@
   var Logger = global.Logger;
   var NetTable = global.NetTable;
   var Callbacks = global.Callbacks;
-  var LuaListDeep = global.Util.LuaListDeep;
+  var LuaArrayDeep = global.Util.LuaArrayDeep;
 
   var ENV = global.ENV;
   var NET_TABLE = global.Const.NET_TABLE;
@@ -62,7 +62,7 @@
     },
 
     normalize: function() {
-      this.data = LuaListDeep(this.data);
+      this.data = LuaArrayDeep(this.data);
     },
 
     Load: function() {

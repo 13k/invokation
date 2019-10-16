@@ -7,27 +7,29 @@
 local CustomEvents = require("invokation.dota2.custom_events")
 
 --- Handles combos reload events.
-function GameMode:OnCombosReload()
+-- @tparam CDOTAPlayer player
+-- @tparam const.custom_events.CombosReloadPayload payload
+-- luacheck: no unused args
+function GameMode:OnCombosReload(player, payload)
   self:d("OnCombosReload")
   self.combos:load()
 end
 
 --- Handles combo start events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
--- @tparam string payload.combo Combo id
+-- @tparam const.custom_events.ComboStartPayload payload
 function GameMode:OnComboStart(player, payload)
   self:d("OnComboStart", {
     player = player:GetPlayerID(),
     payload = payload,
   })
 
-  self.combos:Start(player, payload.combo)
+  self.combos:Start(player, payload.id)
 end
 
 --- Handles combo stop events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
+-- @tparam const.custom_events.ComboStopPayload payload
 function GameMode:OnComboStop(player, payload)
   self:d("OnComboStop", {
     player = player:GetPlayerID(),
@@ -39,36 +41,38 @@ end
 
 --- Handles combo restart events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
--- @tparam[opt=false] bool payload.hardReset Hard reset
+-- @tparam const.custom_events.ComboRestartPayload payload
 function GameMode:OnComboRestart(player, payload)
   self:d("OnComboRestart", {
     player = player:GetPlayerID(),
     payload = payload,
   })
 
-  local hardReset = payload.hardReset == 1
+  local options = { hardReset = payload.hardReset == 1 }
 
-  self.combos:Restart(player, { hardReset = hardReset })
+  self.combos:Restart(player, options)
 end
 
 --- Handles freestyle hero level up events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
--- @tparam[opt] int options.level Level up to specified level
--- @tparam[opt=false] bool payload.maxLevel Level up to max level
+-- @tparam const.custom_events.FreestyleHeroLevelUpPayload payload
 function GameMode:OnFreestyleHeroLevelUp(player, payload)
   self:d("OnFreestyleHeroLevelUp", {
     player = player:GetPlayerID(),
     payload = payload,
   })
 
-  self.combos:FreestyleHeroLevelUp(player, payload)
+  local options = {
+    level = payload.level,
+    maxLevel = payload.maxLevel == 1,
+  }
+
+  self.combos:FreestyleHeroLevelUp(player, options)
 end
 
 --- Handles combat log capture start events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
+-- @tparam const.custom_events.CombatLogCaptureStartPayload payload
 function GameMode:OnCombatLogCaptureStart(player, payload)
   self:d("OnCombatLogCaptureStart", {
     player = player:GetPlayerID(),
@@ -80,7 +84,7 @@ end
 
 --- Handles combat log capture stop events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
+-- @tparam const.custom_events.CombatLogCaptureStopPayload payload
 function GameMode:OnCombatLogCaptureStop(player, payload)
   self:d("OnCombatLogCaptureStop", {
     player = player:GetPlayerID(),
@@ -92,7 +96,7 @@ end
 
 --- Handles item picker query events.
 -- @tparam CDOTAPlayer player
--- @tparam table payload
+-- @tparam const.custom_events.ItemPickerQueryPayload payload
 function GameMode:OnItemPickerQuery(player, payload)
   self:d("OnItemPickerQuery", {
     player = player:GetPlayerID(),

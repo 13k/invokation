@@ -42,13 +42,13 @@ function M:CurrentStep()
   error("Not implemented.")
 end
 
---- Returns the current next steps.
--- @treturn ?{combos.ComboStep,...} Array of next steps or `nil` if the combo is
+--- Returns the current next steps ids.
+-- @treturn ?{int,...} Array of next steps ids or `nil` if the combo is
 --   at the last step
 -- @abstract Subclasses must override it.
 --
 -- luacheck: no self
-function M:NextSteps()
+function M:NextStepsIds()
   error("Not implemented.")
 end
 

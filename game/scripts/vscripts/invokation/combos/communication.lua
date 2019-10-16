@@ -26,8 +26,8 @@ end
 -- @tparam Combo combo Combo
 function M.sendStarted(player, combo)
   local payload = {
-    combo = combo.id,
-    next = combo:NextSteps(),
+    id = combo.id,
+    next = combo:NextStepsIds(),
   }
 
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STARTED, player, payload)
@@ -37,7 +37,7 @@ end
 -- @tparam CDOTAPlayer player Player to send the event to
 -- @tparam Combo combo Combo
 function M.sendStopped(player, combo)
-  local payload = { combo = combo.id }
+  local payload = { id = combo.id }
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STOPPED, player, payload)
 end
 
@@ -45,7 +45,7 @@ end
 -- @tparam CDOTAPlayer player Player to send the event to
 -- @tparam Combo combo Combo
 function M.sendInProgress(player, combo)
-  local payload = { combo = combo.id }
+  local payload = { id = combo.id }
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_IN_PROGRESS, player, payload)
 end
 
@@ -54,9 +54,9 @@ end
 -- @tparam Combo combo Combo
 function M.sendProgress(player, combo)
   local payload = {
-    combo = combo.id,
+    id = combo.id,
     metrics = comboMetrics(combo),
-    next = combo:NextSteps(),
+    next = combo:NextStepsIds(),
   }
 
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_PROGRESS, player, payload)
@@ -68,8 +68,8 @@ end
 -- @tparam dota2.Ability ability Ability used that caused the error
 function M.sendStepError(player, combo, ability)
   local payload = {
-    combo = combo.id,
-    expected = combo:NextSteps(),
+    id = combo.id,
+    expected = combo:NextStepsIds(),
     ability = ability.name,
   }
 
@@ -81,7 +81,7 @@ end
 -- @tparam Combo combo Combo
 function M.sendPreFinish(player, combo)
   local payload = {
-    combo = combo.id,
+    id = combo.id,
     metrics = comboMetrics(combo),
     wait = combo.waitDuration,
   }
@@ -94,7 +94,7 @@ end
 -- @tparam Combo combo Combo
 function M.sendFinished(player, combo)
   local payload = {
-    combo = combo.id,
+    id = combo.id,
     metrics = comboMetrics(combo),
   }
 

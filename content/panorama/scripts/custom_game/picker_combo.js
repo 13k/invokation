@@ -104,12 +104,12 @@
 
     ShowDetails: function() {
       this.debug("ShowDetails()", this.combo.id);
-      this.runOutput("OnShowDetails", { combo: this.combo.id });
+      this.runOutput("OnShowDetails", { id: this.combo.id });
     },
 
     Play: function() {
       this.debug("Play()", this.combo.id);
-      this.runOutput("OnPlay", { combo: this.combo });
+      this.runOutput("OnPlay", { id: this.combo.id });
     },
   });
 

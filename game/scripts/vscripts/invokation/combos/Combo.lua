@@ -33,8 +33,7 @@ local WAIT_ABILITY_SPECIALS = {
   item_shivas_guard = { "blast_debuff_duration" },
 }
 
-local function parseSequence(sequence)
-  local nextSteps = {}
+local function fsmDef(sequence)
   local events = {}
   local lastState
 
@@ -50,13 +49,8 @@ local function parseSequence(sequence)
 
   for _, step in ipairs(steps) do
     lastState = step.state
-    nextSteps[step.state] = {}
 
-    if step.next == nil then
-      break
-    end
-
-    for _, nextId in ipairs(step.next) do
+    for _, nextId in ipairs(step.next or {}) do
       local nextStep = sequence[nextId]
 
       table.insert(events, {
@@ -64,8 +58,6 @@ local function parseSequence(sequence)
         from = step.state,
         to = nextStep.state,
       })
-
-      table.insert(nextSteps[step.state], nextStep)
     end
   end
 
@@ -81,12 +73,10 @@ local function parseSequence(sequence)
     to = FINISH_STATE,
   })
 
-  local fsmDef = {
+  return {
     initial = INITIAL_STATE,
     events = events,
   }
-
-  return fsmDef, nextSteps
 end
 
 local function currentTime()
@@ -107,19 +97,22 @@ local function abilityWait(ability)
   return ability:GetDuration() or 0
 end
 
+--- Combo specification.
+-- @table Spec
+-- @tfield string id id
+-- @tfield string specialty Specialty
+-- @tfield string stance Stance
+-- @tfield int heroLevel Recommended hero level
+-- @tfield int damageRating Damage rating
+-- @tfield int difficultyRating Difficulty rating
+-- @tfield {string,...} tags Tags
+-- @tfield {string,...} items Array of required items names
+-- @tfield {int,...} orbs Array of recommended orb abilities levels (`{quas, wex, exort}`)
+-- @tfield int talents Bitmap of recommended talent abilities
+-- @tfield {ComboStep,...} sequence Array of steps
+
 --- Constructor.
--- @tparam table spec Combo specification table
--- @tparam string spec.id id
--- @tparam string spec.specialty Specialty
--- @tparam string spec.stance Stance
--- @tparam int spec.heroLevel Recommended hero level
--- @tparam int spec.damageRating Damage rating
--- @tparam int spec.difficultyRating Difficulty rating
--- @tparam {string,...} spec.tags Tags
--- @tparam {string,...} spec.items Array of required items names
--- @tparam {int,...} spec.orbs Array of recommended orb abilities levels (`{quas, wex, exort}`)
--- @tparam int spec.talents Bitmap of recommended talent abilities
--- @tparam {ComboStep,...} spec.sequence Array of @{ComboStep}
+-- @tparam Spec spec Combo data
 -- @tparam[opt] table options Options
 -- @tparam Logger options.logger Logger instance
 function M:_init(spec, options)
@@ -131,35 +124,41 @@ function M:_init(spec, options)
   self.startTimes = {}
   self.endTimes = {}
   self.waitQueue = {}
+  self.stepId = 0
+  self.nextSteps = { 1 }
 
   self:createFSM()
 end
 
 function M:createFSM()
-  local fsmDef
-  local nextSteps
-
-  if CACHE[self.id] ~= nil then
-    local cached = CACHE[self.id]
-    fsmDef = cached.fsmDef
-    nextSteps = cached.nextSteps
-  else
-    fsmDef, nextSteps = parseSequence(self.sequence)
-    CACHE[self.id] = {
-      fsmDef = fsmDef,
-      nextSteps = nextSteps,
-    }
+  if CACHE[self.id] == nil then
+    CACHE[self.id] = fsmDef(self.sequence)
   end
 
-  self.fsm = fsm.create(fsmDef)
+  self.fsm = fsm.create(CACHE[self.id])
 
   self.fsm.onstatechange = function(_, _, from, to)
     local now = currentTime()
+
     self.endTimes[from] = now
     self.startTimes[to] = now
+
+    self.stepId = ComboStep.StepId(to)
+    self.step = self.sequence[self.stepId]
+    self.nextSteps = self.step and self.step.next
+
+    self:debugState("state change")
   end
 
-  self.nextSteps = nextSteps
+  self:debugState("start")
+end
+
+function M:debugState(message)
+  self:d(message, {
+    state = self.fsm.current,
+    stepId = self:CurrentStepId() or "<nil>",
+    nextSteps = self:NextStepsIds() or "<nil>",
+  })
 end
 
 --- Generates a DOT formatted string from the combo's FSM.
@@ -171,7 +170,7 @@ end
 --- Returns the current step id.
 -- @treturn ?int The current step id or `nil`
 function M:CurrentStepId()
-  return ComboStep.StepId(self.fsm.current)
+  return self.stepId
 end
 
 --- Returns the current step.
@@ -180,10 +179,10 @@ function M:CurrentStep()
   return self.sequence[self:CurrentStepId()]
 end
 
---- Returns the current next steps.
--- @treturn ?{ComboStep,...} Array of next @{ComboStep} or `nil`
-function M:NextSteps()
-  return self.nextSteps[self.fsm.current]
+--- Returns the current next steps ids.
+-- @treturn ?{int,...} Array of next steps ids or `nil`
+function M:NextStepsIds()
+  return self.nextSteps
 end
 
 --- Progresses the combo with the given ability if possible.

@@ -10,7 +10,7 @@
   var AddClassAction = global.Sequence.AddClassAction;
   var RemoveClassAction = global.Sequence.RemoveClassAction;
   var SetDialogVariableAction = global.Sequence.SetDialogVariableAction;
-  var LuaList = global.Util.LuaList;
+  var LuaIndexArray = global.Util.LuaIndexArray;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
 
@@ -89,66 +89,66 @@
     // --- Event handlers -----
 
     onComboStarted: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStarted()", payload);
-      this.start(payload.combo, payload.next);
+      this.start(payload.id, LuaIndexArray(payload.next));
     },
 
     onComboStopped: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStopped()", payload);
-      this.stop(payload.combo);
+      this.stop(payload.id);
     },
 
     onComboInProgress: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboInProgress()", payload);
-      this.inProgress(payload.combo);
+      this.inProgress(payload.id);
     },
 
     onComboProgress: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboProgress()", payload);
-      this.progress(payload.combo, payload.metrics, payload.next);
+      this.progress(payload.id, payload.metrics, LuaIndexArray(payload.next));
     },
 
     onComboStepError: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStepError()", payload);
-      this.fail(payload.combo, payload.expected, payload.ability);
+      this.fail(payload.id, LuaIndexArray(payload.expected), payload.ability);
     },
 
     onComboPreFinish: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboPreFinish()", payload);
-      this.preFinish(payload.combo, payload.metrics, payload.wait);
+      this.preFinish(payload.id, payload.metrics, payload.wait);
     },
 
     onComboFinished: function(payload) {
-      if (payload.combo === FREESTYLE_COMBO_ID) {
+      if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboFinished()", payload);
-      this.finish(payload.combo, payload.metrics);
+      this.finish(payload.id, payload.metrics);
     },
 
     // ----- Helpers -----
@@ -162,7 +162,7 @@
     },
 
     sendRenderViewer: function(combo) {
-      this.sendClientSide(EVENTS.VIEWER_RENDER, { combo: combo.id });
+      this.sendClientSide(EVENTS.VIEWER_RENDER, { id: combo.id });
     },
 
     createComboScorePanel: function(parent) {
@@ -217,6 +217,16 @@
       this.timer.update = true;
       this.debug("startTimer()", this.timer);
       this.updateTimer();
+    },
+
+    updateTimer: function() {
+      if (!this.timer.update) {
+        return;
+      }
+
+      this.$timerLabel.text = ((Date.now() - this.timer.start) / 1000).toFixed(1);
+
+      $.Schedule(0.1, this.updateTimer.bind(this));
     },
 
     stopTimer: function() {
@@ -418,6 +428,27 @@
         .AddClass(this.$waitProgress, "Hide");
     },
 
+    // ----- Composite actions -----
+
+    progressWhenInProgressAction: function(metrics, next) {
+      var nextSteps = _.at(this.combo.sequence, next);
+
+      return new Sequence()
+        .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
+        .Action(this.deactivateStepPanelsAction(this.combo.sequence))
+        .Action(this.activateStepPanelsAction(nextSteps))
+        .Action(this.updateScoreCounterAction(metrics.count));
+    },
+
+    progressWhenFinishedAction: function(metrics) {
+      var scoreSummaryOptions = {
+        count: metrics.count || 0,
+        endDamage: metrics.damage || 0,
+      };
+
+      return this.updateScoreSummaryAction(scoreSummaryOptions);
+    },
+
     // ----- Action runners -----
 
     initHudVisibility: function(mode) {
@@ -480,20 +511,9 @@
       var seq = new Sequence();
 
       if (this.finished) {
-        var scoreSummaryOptions = {
-          count: metrics.count || 0,
-          endDamage: metrics.damage || 0,
-        };
-
-        seq.Action(this.updateScoreSummaryAction(scoreSummaryOptions));
+        seq.Action(this.progressWhenFinishedAction(metrics));
       } else {
-        next = LuaList(next);
-
-        seq
-          .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
-          .Action(this.deactivateStepPanelsAction(this.combo.sequence))
-          .Action(this.activateStepPanelsAction(next))
-          .Action(this.updateScoreCounterAction(metrics.count));
+        seq.Action(this.progressWhenInProgressAction(metrics, next));
       }
 
       this.debugFn(function() {
@@ -548,14 +568,14 @@
     fail: function(id, expected, ability) {
       this.stopTimer();
 
-      expected = LuaList(expected);
+      var expectedSteps = _.at(this.combo.sequence, expected);
 
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.failure)
         .Action(this.showSplashAction("failure"))
         .AddClass(this.$score, "Failed")
-        .Action(this.failStepPanelsAction(expected))
-        .Action(this.bumpStepPanelsAction(expected))
+        .Action(this.failStepPanelsAction(expectedSteps))
+        .Action(this.bumpStepPanelsAction(expectedSteps))
         .Action(this.hideTimerAction());
 
       this.debugFn(function() {
@@ -589,16 +609,6 @@
       });
 
       return seq.Start();
-    },
-
-    updateTimer: function() {
-      if (!this.timer.update) {
-        return;
-      }
-
-      this.$timerLabel.text = ((Date.now() - this.timer.start) / 1000).toFixed(1);
-
-      $.Schedule(0.1, this.updateTimer.bind(this));
     },
 
     // ----- UI methods -----

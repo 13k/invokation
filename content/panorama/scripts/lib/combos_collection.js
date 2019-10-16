@@ -11,7 +11,7 @@
   var IsOrbAbility = global.Util.IsOrbAbility;
   var IsInvocationAbility = global.Util.IsInvocationAbility;
   var IsItemAbility = global.Util.IsItemAbility;
-  var LuaListDeep = global.Util.LuaListDeep;
+  var LuaArrayDeep = global.Util.LuaArrayDeep;
 
   var ENV = global.ENV;
   var EVENTS = global.Const.EVENTS;
@@ -73,7 +73,7 @@
 
     normalize: function() {
       _.forEach(this.data, function(combo) {
-        LuaListDeep(combo, { inplace: true });
+        LuaArrayDeep(combo, { inplace: true });
 
         combo.l10n = L10n.LocalizeComboProperties(combo);
         combo.l10n.name = L10n.LocalizeComboKey(combo, "name");
