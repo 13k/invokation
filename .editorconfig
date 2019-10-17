@@ -20,11 +20,23 @@ trim_trailing_whitespace = false
 indent_size = 2
 indent_style = space
 
-[*.{json,yml}]
+[*.json]
 indent_size = 2
 indent_style = space
 
-[*.{css,js,xml}]
+[*.css]
+indent_size = 2
+indent_style = space
+
+[*.js]
+indent_size = 2
+indent_style = space
+
+[*.xml]
+indent_size = 2
+indent_style = space
+
+[{.busted,.luacheckrc,config.ld}]
 indent_size = 2
 indent_style = space
 
@@ -32,10 +44,10 @@ indent_style = space
 indent_size = 2
 indent_style = space
 
-[{.luacheckrc,config.ld}]
+[*.{txt,gameevents,vmat,vsndevts}]
 indent_size = 2
 indent_style = space
 
-[*.{txt,gamevents,vmat,vsndevts}]
+[*.{yml,yaml}]
 indent_size = 2
 indent_style = space
