@@ -8,16 +8,8 @@
     "lua.targetVersion": "5.1",
 
     "files.associations": {
-      "addoninfo.txt": "vdf",
-      "addon_*.txt": "vdf",
-      "custom_ui.txt": "vdf",
-      "custom_*.txt": "vdf",
-      "herolist.txt": "vdf",
-      "npc_abilities_custom.txt": "vdf",
-      "npc_abilities_override.txt": "vdf",
-      "npc_heroes_custom.txt": "vdf",
-      "npc_items_custom.txt": "vdf",
-      "npc_units_custom.txt": "vdf"
+      "**/game/**/*.txt": "vdf",
+      "**/content/materials/**/*.txt": "vdf"
     }
   }
 }
