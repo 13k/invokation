@@ -37,9 +37,9 @@ function M.EventName(step)
 end
 
 --- Constructor.
--- @tparam Spec spec Step data
-function M:_init(spec)
-  tablex.update(self, spec)
+-- @tparam Spec data Step data
+function M:_init(data)
+  tablex.update(self, data)
 
   self.state = M.StateName(self)
   self.event = M.EventName(self)

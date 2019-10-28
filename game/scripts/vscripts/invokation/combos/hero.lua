@@ -63,7 +63,7 @@ function M.teardown(player, options)
   end
 end
 
---- Refunds a purchase made by a player.
+--- Refunds a purchase made by a player's hero.
 -- @tparam CDOTAPlayer player Player that made the purchase
 -- @tparam Combos.Purchase purchase Purchase information
 function M.refundPurchase(player, purchase)

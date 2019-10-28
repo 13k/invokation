@@ -11,6 +11,8 @@ local LOGGER_PROGNAME = "combo"
 
 Logger.InstallHelpers(M)
 
+M.ERR_NOT_IMPLEMENTED = "Not implemented"
+
 --- Combo specification.
 -- @table Spec
 -- @tfield string id id
@@ -35,12 +37,16 @@ function M:_init(spec, options)
 
   tablex.update(self, spec)
 
-  self.logger = options.logger:Child(LOGGER_PROGNAME)
   self.started = false
   self.failed = false
+  self.preFinished = false
   self.finished = false
   self.count = 0
   self.damage = 0
+
+  if options.logger then
+    self.logger = options.logger:Child(LOGGER_PROGNAME)
+  end
 end
 
 --- Returns the current step id.
@@ -49,7 +55,7 @@ end
 --
 -- luacheck: no self
 function M:CurrentStepId()
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Returns the current step.
@@ -58,17 +64,25 @@ end
 --
 -- luacheck: no self
 function M:CurrentStep()
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Returns the current next steps ids.
--- @treturn ?{int,...} Array of next steps ids or `nil` if the combo is
---   at the last step
+-- @treturn {int,...} Array of next steps ids
 -- @abstract Subclasses must override it.
 --
 -- luacheck: no self
 function M:NextStepsIds()
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
+end
+
+--- Returns the current next steps.
+-- @treturn {ComboStep,...} Array of next steps
+-- @abstract Subclasses must override it.
+--
+-- luacheck: no self
+function M:NextSteps()
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Progresses the combo with the given ability if possible.
@@ -78,7 +92,7 @@ end
 --
 -- luacheck: no unused args
 function M:Progress(ability)
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Marks the combo as failed.
@@ -92,7 +106,7 @@ end
 --
 -- luacheck: no self
 function M:PreFinish()
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Finishes the combo if possible.
@@ -101,7 +115,7 @@ end
 --
 -- luacheck: no self
 function M:Finish()
-  error("Not implemented.")
+  error(M.ERR_NOT_IMPLEMENTED)
 end
 
 --- Increments the total amount of damage dealt during this combo session.

@@ -63,7 +63,7 @@ local function isIgnoredAbility(ability)
 end
 
 local function isProgressingAbilities(combo)
-  return combo and not combo.failed and not combo.delayedFinish
+  return combo and not combo.failed and not combo.preFinished
 end
 
 local function isProgressingDamage(combo)
@@ -74,15 +74,23 @@ local function isFreestyle(combo)
   return (combo and combo.id) == FreestyleCombo.COMBO_ID
 end
 
+local function gameTime()
+  return GameRules:GetGameTime()
+end
+
 --- Constructor.
 -- @tparam table options Options table
 -- @tparam Logger options.logger Logger instance
 -- @tparam dota2.NetTable options.netTable NetTable instance
 function M:_init(options)
-  self.logger = options.logger:Child(LOGGER_PROGNAME)
   self.netTable = options.netTable
   self.combos = {}
   self.state = PlayerStates()
+
+  if options.logger then
+    self.logger = options.logger:Child(LOGGER_PROGNAME)
+  end
+
   self:load()
 end
 
@@ -99,7 +107,10 @@ function M:createCombo(id)
 
   local spec = self.specs[id]
 
-  return spec and Combo(spec, { logger = self.logger })
+  return spec and Combo(spec, {
+    logger = self.logger,
+    clock = gameTime,
+  })
 end
 
 function M:setup(player, combo)
@@ -154,8 +165,10 @@ function M:OnAbilityUsed(player, unit, ability)
   if isIgnoredAbility(ability) then
     self:d("OnAbilityUsed [ignored]", {
       player = player:GetPlayerID(),
+      unit = unit.name,
       ability = ability.name,
     })
+
     return
   end
 
@@ -179,6 +192,7 @@ function M:OnEntityHurt(damage)
       category = damage.category,
       amount = damage.amount,
     })
+
     return
   end
 
@@ -204,6 +218,7 @@ function M:OnItemPurchased(player, purchase)
       player = player:GetPlayerID(),
       purchase = purchase,
     })
+
     return
   end
 
@@ -297,6 +312,7 @@ function M:Progress(player, ability)
       player = player:GetPlayerID(),
       ability = ability.name,
     })
+
     return
   end
 
@@ -409,7 +425,7 @@ function M:Finish(player)
 
   self:d("Finished", {
     id = combo.id,
-    now = GameRules:GetGameTime(),
+    now = gameTime(),
   })
 
   CombosSound.onComboFinished(player)
