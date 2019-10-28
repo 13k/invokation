@@ -1,13 +1,15 @@
+max_line_length = 100
+
 exclude_files = {
   "game/scripts/vscripts/moses.lua",
-  "game/scripts/vscripts/pl/**/*.lua"
+  "game/scripts/vscripts/pl/**/*.lua",
 }
 
 new_globals = {
   "Precache",
   "Activate",
   "GameRules",
-  "GameMode"
+  "GameMode",
 }
 
 -- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
@@ -539,5 +541,5 @@ new_read_globals = {
   "ACT_DOTA_ATTACK_EVENT_BASH", -- (1705)
   "ACT_DOTA_CAPTURE_RARE", -- (1706)
   "ACT_DOTA_AW_MAGNETIC_FIELD", -- (1707)
-  "ACT_DOTA_CAST_GHOST_SHIP" -- (1708)
+  "ACT_DOTA_CAST_GHOST_SHIP", -- (1708)
 }

@@ -57,7 +57,8 @@ function GameMode:setupGameMode()
   self.gameMode:SetUseDefaultDOTARuneSpawnLogic(S.USE_DEFAULT_DOTA_RUNE_SPAWN_LOGIC)
   self.gameMode:SetWeatherEffectsDisabled(S.DISABLE_WEATHER_EFFECTS)
 
-  self.gameMode:SetCustomXPRequiredToReachNextLevel(S.XP_PER_LEVEL_TABLE) -- Must be set before `SetUseCustomHeroLevels`
+  -- Must be set before `SetUseCustomHeroLevels`
+  self.gameMode:SetCustomXPRequiredToReachNextLevel(S.XP_PER_LEVEL_TABLE)
   self.gameMode:SetUseCustomHeroLevels(S.USE_CUSTOM_HERO_LEVELS)
 
   -- self.gameMode:SetCustomAttributeDerivedStatValue(nStatType, flNewValue)

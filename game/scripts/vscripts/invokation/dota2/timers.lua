@@ -174,13 +174,14 @@ end
   @tparam[opt] string options.id Timer id
   @tparam[opt] list options.args List of arguments to pass to the callback
   @tparam[opt] number options.at Specific start time (timestamp in seconds).
-  `nil`, `0` or negative number means it starts immediately
+    `nil`, `0` or negative number means it starts immediately
   @tparam[opt] number options.delay Delay start time (in seconds).
-  `nil`, `0` or negative number means it starts immediately
+    `nil`, `0` or negative number means it starts immediately
   @tparam[opt=false] bool options.realtime If `true`, uses real clock (ignores pauses)
   @tparam[opt=false] bool options.paused If `true`, the timer starts paused and must be manually
   unpaused with @{Unpause}
-  @tparam[opt=nil] function options.onError Error handler function. If `nil`, uses @{defaultErrorHandler}
+  @tparam[opt=nil] function options.onError Error handler function.
+    If `nil`, uses @{defaultErrorHandler}
 ]]
 function M:Create(options)
   local timer = Timer(options)

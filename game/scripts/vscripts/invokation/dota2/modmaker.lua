@@ -17,7 +17,9 @@ ModMaker Library by BMD.
 - Ensure that `modmaker/modmaker.xml` is included in your
   `custom_ui_manifest.xml` with
 
-    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
+    <CustomUIElement
+      type="Hud"
+      layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
 
 ### Usage
 

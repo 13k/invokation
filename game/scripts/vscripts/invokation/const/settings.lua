@@ -131,7 +131,8 @@ M.GAME_SETUP_TIME = 0
 
 --- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
 --
--- If set to 0, players will not be assigned a "valid" team (their team value will be set to `DOTA_TEAM_NOTEAM`).
+-- If set to 0, players will not be assigned a "valid" team (their team value
+-- will be set to `DOTA_TEAM_NOTEAM`).
 --
 -- If set to -1, `GameRules:FinishCustomGameSetup` must be called manually.
 --
@@ -158,7 +159,8 @@ M.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS = true
 -- `GameRules:SetUseCustomHeroXPValues(bool)`
 M.USE_CUSTOM_XP_VALUES = false
 
---- Heroes will use the basic NPC functionality for determining their bounty, rather than DOTA specific formulas.
+--- Heroes will use the basic NPC functionality for determining their bounty,
+-- rather than DOTA specific formulas.
 --
 -- `GameRules:SetUseBaseGoldBountyOnHeroes(bool)`
 M.USE_BASE_HERO_GOLD_BOUNTY = true
@@ -234,7 +236,8 @@ M.CUSTOM_GLYPH_COOLDOWN = 300
 -- `GameMode:SetCustomScanCooldown(flCooldown)`
 M.CUSTOM_SCAN_COOLDOWN = 300
 
---- Set the effect used as a custom weather effect, when units are on non-default terrain, in this mode.
+--- Set the effect used as a custom weather effect, when units are on
+-- non-default terrain, in this mode.
 --
 -- `GameMode:SetCustomTerrainWeatherEffect(pszEffectName)`
 M.CUSTOM_TERRAIN_WEATHER_EFFECT = nil
@@ -275,7 +278,9 @@ M.DISABLE_FOG_OF_WAR = false
 -- `GameMode:SetUnseenFogOfWarEnabled(bEnabled)`
 M.USE_UNSEEN_FOG_OF_WAR = false
 
---- Enables/Disables bots in custom games. Note: this will only work with default heroes in the dota map.
+--- Enables/Disables bots in custom games.
+--
+-- Note: this will only work with default heroes in the dota map.
 --
 -- `GameMode:SetBotThinkingEnabled(bEnabled)`
 M.USE_STANDARD_DOTA_BOT_THINKING = false
@@ -315,7 +320,8 @@ M.TOP_BAR_VISIBLE = false
 -- `GameMode:SetTowerBackdoorProtectionEnabled(bEnabled)`
 M.ENABLE_TOWER_BACKDOOR_PROTECTION = true
 
---- Make it so illusions are immediately removed upon death, rather than sticking around for a few seconds.
+--- Make it so illusions are immediately removed upon death, rather than
+-- sticking around for a few seconds.
 --
 -- `GameMode:SetRemoveIllusionsOnDeath(bRemove)`
 M.REMOVE_ILLUSIONS_ON_DEATH = true

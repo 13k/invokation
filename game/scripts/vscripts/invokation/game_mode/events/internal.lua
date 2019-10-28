@@ -6,6 +6,7 @@
 
 local S = require("invokation.const.settings")
 
+-- luacheck: no max line length
 local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
 

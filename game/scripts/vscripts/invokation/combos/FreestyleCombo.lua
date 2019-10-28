@@ -27,7 +27,6 @@ end
 
 --- Freestyle combos have no steps.
 -- @treturn nil
---
 -- luacheck: no self
 function M:CurrentStepId()
   return nil
@@ -35,23 +34,20 @@ end
 
 --- Freestyle combos have no steps.
 -- @treturn nil
---
 -- luacheck: no self
 function M:CurrentStep()
   return nil
 end
 
 --- Freestyle combos have no steps.
--- @treturn {}
---
+-- @treturn {int,...} Always returns an empty array
 -- luacheck: no self
 function M:NextStepsIds()
   return {}
 end
 
 --- Freestyle combos have no steps.
--- @treturn {}
---
+-- @treturn {int,...} Always returns an empty array
 -- luacheck: no self
 function M:NextSteps()
   return {}
@@ -71,7 +67,6 @@ function M:Progress(ability)
 end
 
 --- Freestyle combos never fail.
---
 -- luacheck: no self
 function M:Fail()
   return
@@ -79,7 +74,6 @@ end
 
 --- Freestyle combos never pre finish.
 -- @treturn bool `false`
---
 -- luacheck: no self
 function M:PreFinish()
   return false
@@ -87,7 +81,6 @@ end
 
 --- Freestyle combos never finish.
 -- @treturn bool `false`
---
 -- luacheck: no self
 function M:Finish()
   return false

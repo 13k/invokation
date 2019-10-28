@@ -79,7 +79,8 @@ local function reinsertSpellAbility(hero, ability)
 end
 
 local function canLevelUpAbility(hero, ability, targetLevel)
-  return ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED and hero:GetAbilityPoints() > 0 and ability:GetLevel() < targetLevel
+  -- luacheck: no max line length
+  return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and (hero:GetAbilityPoints() > 0) and (ability:GetLevel() < targetLevel)
 end
 
 --- Ability level up option.
