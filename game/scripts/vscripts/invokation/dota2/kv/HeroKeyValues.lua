@@ -3,6 +3,7 @@
 
 local m = require("moses")
 local class = require("pl.class")
+local Talents = require("invokation.dota2.talents")
 
 local M = class()
 
@@ -54,14 +55,13 @@ function M:Abilities()
 end
 
 --- Returns an array of talent ability names.
---
--- Talents are ordered from lowest to highest level, right to left.
--- (Level 10 right, Level 10 left, Level 15 right, Level 15 left, ...)
---
--- @treturn {string,...} Array of talent ability names
+-- @treturn talents.Talents Table of talent ability names
 function M:Talents()
   if self.talents == nil then
-    self.talents = m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
+    self.talents =
+      Talents.NamesArrayToEnumsTable(
+        m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
+      )
   end
 
   return self.talents

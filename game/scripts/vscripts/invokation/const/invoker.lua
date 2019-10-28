@@ -1,6 +1,8 @@
 --- Invoker constants.
 -- @module invokation.const.invoker
 
+local m = require("moses")
+local Talents = require("invokation.dota2.talents")
 local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
 local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
 
@@ -10,7 +12,7 @@ local ABILITIES = require("invokation.const.abilities")
 
 local M = {}
 
-local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_%d"
+local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_L%d_%s"
 
 --- Hero id
 -- @tfield int HERO_ID
@@ -77,31 +79,31 @@ M.ABILITY_CHAOS_METEOR = "invoker_chaos_meteor"
 M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
 
 --- Level 10 right talent ability name
--- @tfield string ABILITY_TALENT_1
+-- @tfield string ABILITY_TALENT_L10_RIGHT
 
 --- Level 10 left talent ability name
--- @tfield string ABILITY_TALENT_2
+-- @tfield string ABILITY_TALENT_L10_LEFT
 
 --- Level 15 right talent ability name
--- @tfield string ABILITY_TALENT_3
+-- @tfield string ABILITY_TALENT_L15_RIGHT
 
 --- Level 15 left talent ability name
--- @tfield string ABILITY_TALENT_4
+-- @tfield string ABILITY_TALENT_L15_LEFT
 
 --- Level 20 right talent ability name
--- @tfield string ABILITY_TALENT_5
+-- @tfield string ABILITY_TALENT_L20_RIGHT
 
 --- Level 20 left talent ability name
--- @tfield string ABILITY_TALENT_6
+-- @tfield string ABILITY_TALENT_L20_LEFT
 
 --- Level 25 right talent ability name
--- @tfield string ABILITY_TALENT_7
+-- @tfield string ABILITY_TALENT_L25_RIGHT
 
 --- Level 25 left talent ability name
--- @tfield string ABILITY_TALENT_8
+-- @tfield string ABILITY_TALENT_L25_LEFT
 
-for i, abilityName in ipairs(M.HERO_KEY_VALUES:Talents()) do
-  local constName = FMT_ABILITY_TALENT_CONST_NAME:format(i)
+for enumValue, abilityName in pairs(M.HERO_KEY_VALUES:Talents()) do
+  local constName = FMT_ABILITY_TALENT_CONST_NAME:format(Talents.LevelAndSide(enumValue))
   M[constName] = abilityName
 end
 
@@ -148,7 +150,7 @@ M.SPELL_ABILITIES =
 -- @tfield string 6 Level 20 left
 -- @tfield string 7 Level 25 right
 -- @tfield string 8 Level 25 left
-M.TALENT_ABILITIES = M.HERO_KEY_VALUES:Talents()
+M.TALENT_ABILITIES = m.values(M.HERO_KEY_VALUES:Talents())
 
 --- Abilities KeyValues
 -- @table ABILITIES_KEY_VALUES
