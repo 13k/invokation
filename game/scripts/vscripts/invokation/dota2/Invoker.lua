@@ -78,6 +78,10 @@ local function reinsertSpellAbility(hero, ability)
   ability:SetLevel(level)
 end
 
+local function canLevelUpAbility(hero, ability, targetLevel)
+  return ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED and hero:GetAbilityPoints() > 0 and ability:GetLevel() < targetLevel
+end
+
 --- Ability level up option.
 --
 -- If no option is given, level up the ability 1 level.
@@ -99,21 +103,18 @@ function M:LevelUpAbilities(options)
     if options.maxLevel or options[name] then
       local abilityOption = options[name] or {}
       local ability = self.hero:FindAbilityByName(name)
+      local targetLevel
 
-      if ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED then
-        local targetLevel
+      if options.maxLevel or abilityOption.maxLevel then
+        targetLevel = ability:GetMaxLevel()
+      elseif abilityOption.level then
+        targetLevel = abilityOption.level
+      else
+        targetLevel = ability:GetLevel() + 1
+      end
 
-        if options.maxLevel or abilityOption.maxLevel then
-          targetLevel = ability:GetMaxLevel()
-        elseif abilityOption.level then
-          targetLevel = abilityOption.level
-        else
-          targetLevel = ability:GetLevel() + 1
-        end
-
-        while ability:GetLevel() < targetLevel do
-          self.hero:UpgradeAbility(ability)
-        end
+      while canLevelUpAbility(self.hero, ability, targetLevel) do
+        self.hero:UpgradeAbility(ability)
       end
     end
   end
@@ -135,8 +136,11 @@ function M:ResetAbilities(options)
 
   for _, name in ipairs(resetAbilities) do
     local ability = self.hero:FindAbilityByName(name)
-    points = points + ability:GetLevel()
-    ability:SetLevel(0)
+
+    if ability ~= nil then
+      points = points + ability:GetLevel()
+      ability:SetLevel(0)
+    end
   end
 
   if options.reinsertSpells then
