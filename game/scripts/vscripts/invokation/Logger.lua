@@ -224,36 +224,42 @@ M.HelpersMixin = {}
 --- Shortcut for `Logger.Debug`
 -- @function invokation.Logger.HelpersMixin:d
 function M.HelpersMixin:d(...)
+  if not self.logger then return end
   return self.logger:Debug(...)
 end
 
 --- Shortcut for `Logger.Debugf`
 -- @function invokation.Logger.HelpersMixin:debugf
 function M.HelpersMixin:debugf(...)
+  if not self.logger then return end
   return self.logger:Debugf(...)
 end
 
 --- Shortcut for `Logger.Warning`
 -- @function invokation.Logger.HelpersMixin:warn
 function M.HelpersMixin:warn(...)
+  if not self.logger then return end
   return self.logger:Warning(...)
 end
 
 --- Shortcut for `Logger.Warningf`
 -- @function invokation.Logger.HelpersMixin:warnf
 function M.HelpersMixin:warnf(...)
+  if not self.logger then return end
   return self.logger:Warningf(...)
 end
 
 --- Shortcut for `Logger.Error`
 -- @function invokation.Logger.HelpersMixin:err
 function M.HelpersMixin:err(...)
+  if not self.logger then return end
   return self.logger:Error(...)
 end
 
 --- Shortcut for `Logger.Errorf`
 -- @function invokation.Logger.HelpersMixin:errf
 function M.HelpersMixin:errf(...)
+  if not self.logger then return end
   return self.logger:Errorf(...)
 end
 
