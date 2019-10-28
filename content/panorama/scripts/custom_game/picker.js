@@ -631,7 +631,7 @@
 
     Freestyle: function() {
       this.debug("Freestyle()");
-      this.startCombo({ id: FREESTYLE_COMBO_ID });
+      this.startCombo(FREESTYLE_COMBO_ID);
     },
 
     ToggleFilters: function() {
