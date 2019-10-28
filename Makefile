@@ -2,28 +2,28 @@ LUA_SRC_PATH := game/scripts/vscripts
 JS_SRC_PATH := content/panorama/scripts
 CSS_SRC_PATH := content/panorama/styles
 
-.PHONY: lint lint_lua format_lua doc_lua lint_js format_js lint_css format_css clean install build launch_game launch_tools
+.PHONY: format-lua format-js format-css lint-lua lint-js lint-css doc-lua test-lua clean install build launch-game launch-tools
 
-format_lua:
+format-lua:
 	@yarn run prettier --write "$(LUA_SRC_PATH)/**/*.lua"
 
-format_js:
+format-js:
 	@yarn run prettier --write "$(JS_SRC_PATH)/**/*.js"
 
-format_css:
+format-css:
 	@yarn run stylelint --fix "$(CSS_SRC_PATH)"
 	@yarn run prettier --write "$(CSS_SRC_PATH)/**/*.css"
 
-lint_lua:
+lint-lua:
 	@luacheck "$(LUA_SRC_PATH)"
 
-lint_js:
+lint-js:
 	@yarn run eslint "$(JS_SRC_PATH)"
 
-lint_css:
+lint-css:
 	@yarn run stylelint "${CSS_SRC_PATH}"
 
-doc_lua:
+doc-lua:
 	@ldoc --unqualified .
 
 clean:
@@ -35,8 +35,8 @@ install:
 build:
 	@bash scripts/build.bash
 
-launch_game:
+launch-game:
 	@bash scripts/launch_game.bash
 
-launch_tools:
+launch-tools:
 	@bash scripts/launch_tools.bash

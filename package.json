@@ -4,19 +4,19 @@
   "version": "0.4.2-beta1",
   "scripts": {
     "lint": "yarn run lint.lua && yarn run lint.js && yarn run lint.css",
-    "lint.lua": "make lint_lua",
-    "lint.js": "make lint_js",
-    "lint.css": "make lint_css",
+    "lint.lua": "make lint-lua",
+    "lint.js": "make lint-js",
+    "lint.css": "make lint-css",
     "format": "yarn run format.lua && yarn run format.js && yarn run format.css",
-    "format.lua": "make format_lua",
-    "format.js": "make format_js",
-    "format.css": "make format_css",
+    "format.lua": "make format-lua",
+    "format.js": "make format-js",
+    "format.css": "make format-css",
     "reset": "yarn run clean && yarn run install && yarn run build",
     "clean": "make clean",
     "install": "make install",
     "build": "make build",
-    "launch.game": "make launch_game",
-    "launch.tools": "make launch_tools"
+    "launch.game": "make launch-game",
+    "launch.tools": "make launch-tools"
   },
   "devDependencies": {
     "@prettier/plugin-lua": "^0.0.1",

@@ -70,7 +70,7 @@
     {
       "label": "Launch Game",
       "type": "shell",
-      "command": "make launch_game",
+      "command": "make launch-game",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -84,7 +84,7 @@
     {
       "label": "Launch Tools",
       "type": "shell",
-      "command": "make launch_tools",
+      "command": "make launch-tools",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -95,33 +95,5 @@
         "clear": false
       }
     }
-    // {
-    //   "label": "Lint Lua code",
-    //   "type": "shell",
-    //   "command": "make luacheck",
-    //   "problemMatcher": [],
-    //   "presentation": {
-    //     "echo": true,
-    //     "reveal": "always",
-    //     "focus": true,
-    //     "panel": "shared",
-    //     "showReuseMessage": false,
-    //     "clear": false
-    //   }
-    // },
-    // {
-    //   "label": "Build Lua documentation",
-    //   "type": "shell",
-    //   "command": "make ldoc",
-    //   "problemMatcher": [],
-    //   "presentation": {
-    //     "echo": true,
-    //     "reveal": "always",
-    //     "focus": true,
-    //     "panel": "shared",
-    //     "showReuseMessage": false,
-    //     "clear": false
-    //   }
-    // }
   ]
 }
