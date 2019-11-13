@@ -1,4 +1,5 @@
 LUA_SRC_PATH := game/scripts/vscripts
+LUA_TEST_PATH := spec
 JS_SRC_PATH := content/panorama/scripts
 CSS_SRC_PATH := content/panorama/styles
 
@@ -16,6 +17,7 @@ format-css:
 
 lint-lua:
 	@luacheck "$(LUA_SRC_PATH)"
+	@luacheck "$(LUA_TEST_PATH)"
 
 lint-js:
 	@yarn run eslint "$(JS_SRC_PATH)"
@@ -25,6 +27,9 @@ lint-css:
 
 doc-lua:
 	@ldoc --unqualified .
+
+test-lua:
+	@busted
 
 clean:
 	@bash scripts/clean.bash
