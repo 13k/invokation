@@ -1,6 +1,7 @@
 --- DummyTarget class.
 -- @classmod invokation.dota2.DummyTarget
 
+local m = require("moses")
 local class = require("pl.class")
 local Units = require("invokation.dota2.units")
 local delegation = require("invokation.lang.delegation")
@@ -54,7 +55,7 @@ end
 --- Checks if dummy unit is alive.
 -- @treturn bool
 function M:IsAlive()
-  return self.entity and not self.entity:IsNull() and self.entity:IsAlive()
+  return m.toBoolean(self.entity and not self.entity:IsNull() and self.entity:IsAlive())
 end
 
 --- Checks if the dummy unit is dead.

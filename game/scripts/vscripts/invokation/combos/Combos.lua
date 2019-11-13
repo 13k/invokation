@@ -84,7 +84,6 @@ end
 -- @tparam dota2.NetTable options.netTable NetTable instance
 function M:_init(options)
   self.netTable = options.netTable
-  self.combos = {}
   self.state = PlayerStates()
 
   if options.logger then
@@ -100,17 +99,35 @@ function M:load()
   self.netTable:Set(NET_TABLE.MAIN_KEYS.COMBOS, self.specs)
 end
 
-function M:createCombo(id)
+function M:Create(id)
   if id == FreestyleCombo.COMBO_ID then
     return FreestyleCombo({ logger = self.logger })
   end
 
   local spec = self.specs[id]
 
-  return spec and Combo(spec, {
+  if spec == nil then
+    local err = ERRF_COMBO_NOT_FOUND:format(id)
+    self:err(err)
+    error(err)
+  end
+
+  return Combo(spec, {
     logger = self.logger,
     clock = gameTime,
   })
+end
+
+function M:requireCombo(player)
+  local combo = self.state[player].combo
+
+  if combo == nil then
+    local err = ERRF_COMBO_NOT_ACTIVE:format(player:GetPlayerID())
+    self:err(err)
+    error(err)
+  end
+
+  return combo
 end
 
 function M:setup(player, combo)
@@ -232,27 +249,19 @@ end
 
 --- Starts a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
--- @tparam string id Combo Id
-function M:Start(player, id)
+-- @tparam Combo combo Combo
+function M:Start(player, combo)
   self:d("Start", {
     player = player:GetPlayerID(),
     id = id,
   })
 
-  local combo = self.state[player].combo
-  local hardReset = combo == nil
+  local current = self.state[player].combo
 
-  if combo ~= nil and combo.id ~= id then
-    self:stop(player, combo)
-  end
-
-  self:teardown(player, { hardReset = hardReset })
-
-  combo = self:createCombo(id)
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_FOUND, id)
-    return
+  if current ~= nil and current.id ~= combo.id then
+    self:stop(player, current)
+  else
+    self:teardown(player, { hardReset = current == nil })
   end
 
   self:start(player, combo)
@@ -263,12 +272,7 @@ end
 function M:Stop(player)
   self:d("Stop", { player = player:GetPlayerID() })
 
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
+  local combo = self:requireCombo(player)
 
   self:stop(player, combo)
 end
@@ -278,25 +282,16 @@ end
 -- @tparam table options Options table
 -- @tparam[opt=false] bool options.hardReset Hard reset
 function M:Restart(player, options)
-  self:d("Restart", { player = player:GetPlayerID() })
+  self:d("Restart", {
+    player = player:GetPlayerID(),
+    options = options,
+  })
 
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
-
-  local id = combo.id
+  local combo = self:requireCombo(player)
 
   self:teardown(player, options)
 
-  combo = self:createCombo(id)
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_FOUND, id)
-    return
-  end
+  combo = self:Create(combo.id)
 
   self:start(player, combo)
 end
@@ -373,14 +368,10 @@ end
 function M:Fail(player, ability)
   self:d("Fail", { player = player:GetPlayerID() })
 
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
+  local combo = self:requireCombo(player)
 
   combo:Fail()
+
   CombosSound.onComboStepError(player)
   CombosComm.sendStepError(player, combo, ability)
 end
@@ -390,12 +381,7 @@ end
 function M:PreFinish(player)
   self:d("PreFinish", { player = player:GetPlayerID() })
 
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
+  local combo = self:requireCombo(player)
 
   CombosComm.sendPreFinish(player, combo)
 
@@ -411,12 +397,7 @@ end
 function M:Finish(player)
   self:d("Finish", { player = player:GetPlayerID() })
 
-  local combo = self.state[player].combo
-
-  if combo == nil then
-    self:errf(ERRF_COMBO_NOT_ACTIVE, player:GetPlayerID())
-    return
-  end
+  local combo = self:requireCombo(player)
 
   if not combo:Finish() then
     self:warnf(WARNF_COMBO_NOT_FINISHED, combo.id, player:GetPlayerID())

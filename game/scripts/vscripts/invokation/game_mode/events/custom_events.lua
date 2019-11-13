@@ -24,7 +24,9 @@ function GameMode:OnComboStart(player, payload)
     payload = payload,
   })
 
-  self.combos:Start(player, payload.id)
+  local combo = self.combos:Create(payload.id)
+
+  self.combos:Start(player, combo)
 end
 
 --- Handles combo stop events.

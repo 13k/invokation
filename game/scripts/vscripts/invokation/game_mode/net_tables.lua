@@ -4,7 +4,7 @@
 --- NetTables
 -- @section net_tables
 
-local tablex = require("pl.tablex")
+local m = require("moses")
 
 local INVOKER = require("invokation.const.invoker")
 local NET_TABLE = require("invokation.const.net_table")
@@ -21,10 +21,10 @@ function GameMode:setupNetTableShopItems()
 end
 
 function GameMode:setupNetTableAbilities()
-  local abilities = tablex.pairmap(function(ability, kv)
-    return kv:Serialize(), ability
-  end, INVOKER.ABILITIES_KEY_VALUES)
+  local serialize = m.chain(m.result):partialRight("Serialize"):unary():value()
+  local abilities = m.map(INVOKER.ABILITIES_KEY_VALUES, serialize)
 
   self.netTable:Set(NET_TABLE.MAIN_KEYS.ABILITIES_KEY_VALUES, abilities)
+
   self:d("  setup abilities NetTable data")
 end

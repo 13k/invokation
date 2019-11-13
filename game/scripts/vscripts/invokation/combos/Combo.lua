@@ -31,7 +31,7 @@ local function abilityWait(ability)
   end
 
   local function getSpecialValue(specialKey)
-    return ability:GetSpecialValueFor(specialKey)
+    return ability:GetSpecialValueFor(specialKey) or 0
   end
 
   local values = tablex.imap(getSpecialValue, WAIT_ABILITY_SPECIALS[ability.name])
@@ -48,6 +48,7 @@ function M:_init(spec, options)
   self:super(spec, options)
 
   options = options or {}
+
   self.clock = options.clock or _G.Time
   self.sequence = ComboSequence(self.id, self.sequence, { clock = self.clock })
   self.waitQueue = {}
@@ -92,6 +93,7 @@ function M:Progress(ability)
   if progressed then
     self.started = true
     self.count = self.count + 1
+
     table.insert(self.waitQueue, self.clock() + abilityWait(ability))
   end
 
