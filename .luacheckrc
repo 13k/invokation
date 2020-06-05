@@ -1,4 +1,4 @@
-max_line_length = 100
+max_line_length = 120
 
 exclude_files = {
   "game/scripts/vscripts/moses.lua",
