@@ -13,7 +13,7 @@
     "format.css": "make format-css",
     "reset": "yarn run clean && yarn run install && yarn run build",
     "clean": "make clean",
-    "install": "make install",
+    "setup": "make install",
     "build": "make build",
     "launch.game": "make launch-game",
     "launch.tools": "make launch-tools"
