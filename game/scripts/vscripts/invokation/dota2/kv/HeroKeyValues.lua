@@ -59,9 +59,7 @@ end
 function M:Talents()
   if self.talents == nil then
     self.talents =
-      Talents.NamesArrayToEnumsTable(
-        m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
-      )
+      Talents.NamesArrayToEnumsTable(m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value())
   end
 
   return self.talents

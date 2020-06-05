@@ -35,11 +35,7 @@
     // ----- Helpers -----
 
     render: function() {
-      this.$itemPicker = CreatePanelWithLayout(
-        this.$itemPickerContainer,
-        ITEM_PICKER_ID,
-        ITEM_PICKER_LAYOUT
-      );
+      this.$itemPicker = CreatePanelWithLayout(this.$itemPickerContainer, ITEM_PICKER_ID, ITEM_PICKER_LAYOUT);
 
       this.$itemPicker.component.Outputs({
         OnSelect: this.handler("onItemSelected"),

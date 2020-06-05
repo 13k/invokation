@@ -178,18 +178,15 @@ M.TALENT_ABILITIES = m.values(M.HERO_KEY_VALUES:Talents())
 M.ABILITIES_KEY_VALUES = {}
 
 for _, abilityName in ipairs(M.ORB_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] =
-    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.SPELL_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] =
-    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.TALENT_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] =
-    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 --- Table of orb abilities composition ("recipes") of spell abilities.

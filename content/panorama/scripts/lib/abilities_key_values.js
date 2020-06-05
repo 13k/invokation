@@ -31,10 +31,7 @@
     },
 
     listenToNetTableChange: function() {
-      return this.netTable.OnKeyChange(
-        NET_TABLE.KEYS.MAIN.ABILITIES_KEY_VALUES,
-        this.onNetTableChange.bind(this)
-      );
+      return this.netTable.OnKeyChange(NET_TABLE.KEYS.MAIN.ABILITIES_KEY_VALUES, this.onNetTableChange.bind(this));
     },
 
     onNetTableChange: function(key, value) {

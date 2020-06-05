@@ -305,9 +305,7 @@
     removeTag: function(tag) {
       tag = normalizeTag(tag);
 
-      var seq = new Sequence()
-        .Action(this.removeTagAction(tag))
-        .RunFunction(this, this.notifyChange);
+      var seq = new Sequence().Action(this.removeTagAction(tag)).RunFunction(this, this.notifyChange);
 
       this.debugFn(function() {
         return ["removeTag()", { tag: tag, actions: seq.size() }];

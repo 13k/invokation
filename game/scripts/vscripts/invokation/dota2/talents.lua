@@ -34,17 +34,7 @@ M.L25_LEFT = 0x80
 -- @tfield int 6 L20_LEFT
 -- @tfield int 7 L25_RIGHT
 -- @tfield int 8 L25_LEFT
-M.ENUM =
-  {
-    M.L10_RIGHT,
-    M.L10_LEFT,
-    M.L15_RIGHT,
-    M.L15_LEFT,
-    M.L20_RIGHT,
-    M.L20_LEFT,
-    M.L25_RIGHT,
-    M.L25_LEFT,
-  }
+M.ENUM = { M.L10_RIGHT, M.L10_LEFT, M.L15_RIGHT, M.L15_LEFT, M.L20_RIGHT, M.L20_LEFT, M.L25_RIGHT, M.L25_LEFT }
 
 local LEVEL_SIDE = {
   [M.L10_RIGHT] = { 10, "RIGHT" },

@@ -252,11 +252,7 @@
     renderSequenceAction: function() {
       this.stepsPanels = {};
 
-      var bumpSeq = this.staggeredSequenceOnStepPanels(
-        BUMP_DELAY,
-        this.combo.sequence,
-        "bumpStepPanel"
-      );
+      var bumpSeq = this.staggeredSequenceOnStepPanels(BUMP_DELAY, this.combo.sequence, "bumpStepPanel");
 
       return new Sequence()
         .Action(this.resetSequenceAction())
@@ -269,10 +265,7 @@
     },
 
     createStepPanelsAction: function() {
-      var createActions = _.map(
-        this.combo.sequence,
-        _.bind(this.createStepPanelAction, this, this.$sequence)
-      );
+      var createActions = _.map(this.combo.sequence, _.bind(this.createStepPanelAction, this, this.$sequence));
 
       return new Sequence().Action(createActions);
     },
@@ -377,20 +370,15 @@
     },
 
     hideSplashAction: function() {
-      return new ParallelSequence()
-        .Action(this.clearSplashAction())
-        .RemoveClass(this.$splash, "Show");
+      return new ParallelSequence().Action(this.clearSplashAction()).RemoveClass(this.$splash, "Show");
     },
 
     // ----- Score actions -----
 
     updateScoreCounterAction: function(count) {
-      return new RunFunctionAction(
-        this.$comboScore.component,
-        this.$comboScore.component.Input,
-        "UpdateCounter",
-        { count: count }
-      );
+      return new RunFunctionAction(this.$comboScore.component, this.$comboScore.component.Input, "UpdateCounter", {
+        count: count,
+      });
     },
 
     updateScoreSummaryAction: function(options) {

@@ -34,7 +34,7 @@
   align: center center;
 }
 
-#Search Label {
+#Search label {
   padding-top: 3px;
 }
 
@@ -51,7 +51,7 @@
   vertical-align: center;
 }
 
-#SearchButton Label {
+#SearchButton label {
   margin: 0;
   padding: 0;
   align: center center;
@@ -157,28 +157,16 @@
   padding-bottom: 0;
   padding-left: 35px;
   vertical-align: center;
-  background-color: gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(#434b4b55),
-    to(#636f6f55)
-  );
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#434b4b55), to(#636f6f55));
   transition-duration: 0.2s;
   transition-property: background-color, opacity;
 }
 
 #Github:hover {
-  background-color: gradient(
-    linear,
-    0% 0%,
-    0% 100%,
-    from(#434b4b),
-    to(#636f6f)
-  );
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#434b4b), to(#636f6f));
 }
 
-#Github Label {
+#Github label {
   margin: 0;
   padding: 0;
   align: center center;

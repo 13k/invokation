@@ -58,11 +58,7 @@ function LuaAPI(msg) {
     var s = luaCategories[i];
     var cat = lua[s];
     var categoryPanel = $.CreatePanel("Panel", panel, s);
-    categoryPanel.BLoadLayout(
-      "file://{resources}/layout/custom_game/modmaker/modmaker_api_category.xml",
-      false,
-      false
-    );
+    categoryPanel.BLoadLayout("file://{resources}/layout/custom_game/modmaker/modmaker_api_category.xml", false, false);
     categoryPanels[s] = categoryPanel;
 
     properties[s] = Object.keys(cat).sort();

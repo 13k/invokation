@@ -247,9 +247,7 @@
 
       var id = options.container.id;
 
-      options.start = Math.ceil(
-        (options.start != null ? options.start : this.digitsValue(id)) || 0
-      );
+      options.start = Math.ceil((options.start != null ? options.start : this.digitsValue(id)) || 0);
 
       options.end = Math.ceil(options.end);
       options.increment = options.increment || (options.end - options.start) / options.iterations;
@@ -266,12 +264,7 @@
 
         (function() {
           var boundValue = Math.ceil(value);
-          var updateSeq = new Sequence().RunFunction(
-            this,
-            this.updateDigits,
-            options.container,
-            boundValue
-          );
+          var updateSeq = new Sequence().RunFunction(this, this.updateDigits, options.container, boundValue);
 
           if (_.isFunction(options.callbacks.onSpin)) {
             updateSeq.RunFunction(options.callbacks.onSpin, boundValue);
@@ -396,9 +389,7 @@
     },
 
     hideAction: function() {
-      return new ParallelSequence()
-        .Action(this.hideCounterAction())
-        .Action(this.hideSummaryAction());
+      return new ParallelSequence().Action(this.hideCounterAction()).Action(this.hideSummaryAction());
     },
 
     // ----- Action runners -----

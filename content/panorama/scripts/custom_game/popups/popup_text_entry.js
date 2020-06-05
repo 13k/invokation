@@ -5,17 +5,7 @@
   var EVENTS = global.Const.EVENTS;
   var CreateComponent = context.CreateComponent;
 
-  var PROPERTIES = [
-    "channel",
-    "title",
-    "body",
-    "image",
-    "econitem",
-    "heroid",
-    "hero",
-    "ability",
-    "item",
-  ];
+  var PROPERTIES = ["channel", "title", "body", "image", "econitem", "heroid", "hero", "ability", "item"];
 
   var ICON_CLASSES = {
     IMAGE: "ImageIconEnabled",

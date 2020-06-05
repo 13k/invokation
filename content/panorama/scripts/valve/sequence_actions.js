@@ -393,10 +393,7 @@
     if (now >= this.endTimestamp) return false;
 
     var ratio = (now - this.startTimestamp) / (this.endTimestamp - this.startTimestamp);
-    this.panel.SetDialogVariableInt(
-      this.dialogVariable,
-      this.startValue + (this.endValue - this.startValue) * ratio
-    );
+    this.panel.SetDialogVariableInt(this.dialogVariable, this.startValue + (this.endValue - this.startValue) * ratio);
     return true;
   };
 
