@@ -1,6 +1,7 @@
 .envrc
 .env
 .lua-version
+.nvmrc
 /doc/ldoc
 /node_modules
 /tmp
