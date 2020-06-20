@@ -17,29 +17,37 @@ SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 # shellcheck source="./common.bash"
 source "$SCRIPT_DIR/common.bash"
 
-echo "Linking addon from $ROOT_PATH to $DOTA2_PATH"
-
-mkdir -vp "$DOTA2_ADDONS_CONTENT_PATH"
-mkdir -vp "$ADDON_GAME_PATH"
-
-if [[ ! -e "$ADDON_CONTENT_PATH" ]]; then
-  mklink "$SRC_CONTENT_PATH" "$ADDON_CONTENT_PATH"
-fi
-
-while read -r rel_path; do
-  src="$SRC_GAME_PATH/$rel_path"
-  dest="$ADDON_GAME_PATH/$rel_path"
+create_link() {
+  local src="$1" dest="$2"
 
   echo -n " * $src -> $dest "
 
   if [[ -e "$dest" ]]; then
     echo "skip"
-    continue
+    return 0
   fi
 
   echo "link"
-  mkdir -vp "$(dirname "$dest")" || abort "Error creating directory '$dest'"
-  mklink "$src" "$dest" || abort "Error linking '$src' to '$dest'"
+
+  mkdir -vp "$(dirname "$dest")" &&
+    mklink "$src" "$dest"
+}
+
+echo "Linking addon from $ROOT_PATH to $DOTA2_PATH"
+
+declare -A links=(
+  ["$SRC_CONTENT_PATH"]="$ADDON_CONTENT_PATH"
+)
+
+while read -r rel_path; do
+  src="$SRC_GAME_PATH/$rel_path"
+  dest="$ADDON_GAME_PATH/$rel_path"
+  links["$src"]="$dest"
 done < <(find "$SRC_GAME_PATH" -mindepth 1 -maxdepth 1 -printf "%P\\n")
+
+for src in "${!links[@]}"; do
+  dest="${links["$src"]}"
+  create_link "$src" "$dest" || abort "Error linking '$src' to '$dest'"
+done
 
 echo "Done"
