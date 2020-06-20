@@ -3,7 +3,7 @@ description = "Invokation Dota 2 custom game"
 title = "Invokation Lua Documentation"
 
 dir = "doc/ldoc"
-format = "commonmark"
+format = "lunamark"
 package = "invokation"
 pretty = "lxsh"
 readme = "README.md"

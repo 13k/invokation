@@ -24,6 +24,7 @@ dependencies = {
 
 build_dependencies = {
   "ldoc",
+  "lunamark",
   "luacheck",
 }
 
