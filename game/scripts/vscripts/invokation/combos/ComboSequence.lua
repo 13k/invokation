@@ -2,7 +2,7 @@
 -- @classmod invokation.combos.ComboSequence
 
 local m = require("moses")
-local fsm = require("invokation.fsm")
+local fsm = require("fsm")
 local class = require("pl.class")
 local Logger = require("invokation.Logger")
 local ComboStep = require("invokation.combos.ComboStep")

@@ -1,5 +1,6 @@
 .luacheckrc
 content/panorama/scripts/valve/**
 content/panorama/scripts/vendor/**
+game/scripts/vscripts/fsm.lua
 game/scripts/vscripts/moses.lua
 game/scripts/vscripts/pl/**
