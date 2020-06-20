@@ -2,6 +2,12 @@
 .env
 .lua-version
 .nvmrc
+.pnp.*
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 /doc/ldoc
 /node_modules
 /tmp
