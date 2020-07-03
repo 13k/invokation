@@ -19,7 +19,7 @@ custom_tags = {
   { "abstract", title = "Abstract method" },
 }
 
-backtick_references = false
+backtick_references = true
 no_lua_ref = true
 no_space_before_args = true
 not_luadoc = true
