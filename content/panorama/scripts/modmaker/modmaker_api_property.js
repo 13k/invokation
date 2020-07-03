@@ -24,12 +24,12 @@ function FuncClicked() {
   textEntry.text = $("#PropertyFunction").text;
   textEntry.style.marginLeft = "40px;";
   textEntry.style.width = "700px";
-  textEntry.SetPanelEvent("onblur", function() {
+  textEntry.SetPanelEvent("onblur", function () {
     $("#PropertyFunction").visible = true;
     textEntry.DeleteAsync(0);
   });
 
-  textEntry.SetPanelEvent("oncancel", function() {
+  textEntry.SetPanelEvent("oncancel", function () {
     $("#PropertyFunction").visible = true;
     textEntry.DeleteAsync(0);
   });
@@ -50,7 +50,7 @@ function New(n, p) {
   prop = p;
 }
 
-(function() {
+(function () {
   $.GetContextPanel().Show = Show;
   $.GetContextPanel().Hide = Hide;
   $.GetContextPanel().New = New;

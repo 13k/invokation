@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var Sequence = global.Sequence.Sequence;
   var StopSequence = global.Sequence.StopSequence;
@@ -35,23 +35,11 @@
   }
 
   function tagId(tag) {
-    return (
-      TAG_ID_PREFIX +
-      _.chain(tag)
-        .camelCase()
-        .upperFirst()
-        .value()
-    );
+    return TAG_ID_PREFIX + _.chain(tag).camelCase().upperFirst().value();
   }
 
   function optionId(option) {
-    return (
-      OPTION_ID_PREFIX +
-      _.chain(option)
-        .camelCase()
-        .upperFirst()
-        .value()
-    );
+    return OPTION_ID_PREFIX + _.chain(option).camelCase().upperFirst().value();
   }
 
   var UITagSelect = CreateComponent({
@@ -79,7 +67,7 @@
 
     // ----- I/O -----
 
-    setOptions: function(payload) {
+    setOptions: function (payload) {
       this.debug("setOptions()", payload);
       this.options = payload.options;
       this.renderOptions();
@@ -87,12 +75,12 @@
 
     // ----- Event handlers -----
 
-    onTagRemove: function(tag) {
+    onTagRemove: function (tag) {
       this.debug("onTagRemove()", tag);
       this.removeTag(tag);
     },
 
-    onOptionSelect: function() {
+    onOptionSelect: function () {
       var selected = this.$options.GetSelected();
 
       this.debug("OnOptionSelect", _.get(selected, "id"));
@@ -116,7 +104,7 @@
       this.$options.SetSelected(OPTION_ID_EMPTY);
     },
 
-    onPopupTextEntrySubmit: function(payload) {
+    onPopupTextEntrySubmit: function (payload) {
       if (payload.channel !== this.popupTextEntryChannel) {
         return;
       }
@@ -130,11 +118,11 @@
 
     // ----- Helpers -----
 
-    notifyChange: function() {
+    notifyChange: function () {
       this.runOutput("OnChange", { tags: this.tags });
     },
 
-    selectTag: function(tag) {
+    selectTag: function (tag) {
       tag = normalizeTag(tag);
 
       if (_.isEmpty(tag) || this.isTagSelected(tag)) {
@@ -145,7 +133,7 @@
       return tag;
     },
 
-    deselectTag: function(tag) {
+    deselectTag: function (tag) {
       tag = normalizeTag(tag);
 
       if (!this.isTagSelected(tag)) {
@@ -156,19 +144,19 @@
       return tag;
     },
 
-    isTagSelected: function(tag) {
+    isTagSelected: function (tag) {
       return _.includes(this.tags, normalizeTag(tag));
     },
 
-    registerTagPanel: function(tag, panel) {
+    registerTagPanel: function (tag, panel) {
       this.tagPanels[tag] = panel;
     },
 
-    unregisterTagPanel: function(tag) {
+    unregisterTagPanel: function (tag) {
       delete this.tagPanels[tag];
     },
 
-    createOption: function(option) {
+    createOption: function (option) {
       var id;
       var text;
 
@@ -195,7 +183,7 @@
       return panel;
     },
 
-    createTag: function(tag) {
+    createTag: function (tag) {
       var id = tagId(tag);
 
       var panel = CreatePanelWithLayoutSnippet(this.$list, id, TAG_SNIPPET);
@@ -211,11 +199,11 @@
 
     // ----- Actions -----
 
-    createOptionAction: function(option) {
+    createOptionAction: function (option) {
       return new AddOptionAction(this.$options, _.bind(this.createOption, this, option));
     },
 
-    renderOptionsAction: function() {
+    renderOptionsAction: function () {
       var actions = _.chain([OPTION_EMPTY])
         .concat(this.options, OPTION_TEXT_ENTRY)
         .reject(this.isTagSelected.bind(this))
@@ -225,32 +213,32 @@
       return new Sequence().RemoveAllOptions(this.$options).Action(actions);
     },
 
-    selectTagAction: function(tag) {
-      return new RunFunctionAction(this, function() {
+    selectTagAction: function (tag) {
+      return new RunFunctionAction(this, function () {
         if (!this.selectTag(tag)) {
           throw new StopSequence();
         }
       });
     },
 
-    deselectTagAction: function(tag) {
-      return new RunFunctionAction(this, function() {
+    deselectTagAction: function (tag) {
+      return new RunFunctionAction(this, function () {
         if (!this.deselectTag(tag)) {
           throw new StopSequence();
         }
       });
     },
 
-    createTagAction: function(tag) {
+    createTagAction: function (tag) {
       return new Sequence().RunFunction(this, this.createTag, tag);
       // .RunFunction(this, this.moveOptionsAfterTag, tag);
     },
 
-    addTagAction: function(tag) {
+    addTagAction: function (tag) {
       return new Sequence().Action(this.selectTagAction(tag)).Action(this.createTagAction(tag));
     },
 
-    removeTagAction: function(tag, options) {
+    removeTagAction: function (tag, options) {
       options = _.assign({ immediate: false }, options);
 
       var delay = options.immediate ? 0 : TAG_DELETE_DELAY;
@@ -267,11 +255,8 @@
         .DeleteAsync(panel, delay);
     },
 
-    clearTagsAction: function() {
-      var removeTagAction = _.chain(this.removeTagAction)
-        .bind(this, _, { immediate: true })
-        .unary()
-        .value();
+    clearTagsAction: function () {
+      var removeTagAction = _.chain(this.removeTagAction).bind(this, _, { immediate: true }).unary().value();
 
       var actions = _.map(this.tags, removeTagAction);
 
@@ -280,51 +265,51 @@
 
     // ----- Action runners -----
 
-    renderOptions: function() {
+    renderOptions: function () {
       var seq = new Sequence().Action(this.renderOptionsAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["renderOptions()", { options: this.options, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    addTag: function(tag) {
+    addTag: function (tag) {
       tag = normalizeTag(tag);
 
       var seq = new Sequence().Action(this.addTagAction(tag)).RunFunction(this, this.notifyChange);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["addTag()", { tag: tag, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    removeTag: function(tag) {
+    removeTag: function (tag) {
       tag = normalizeTag(tag);
 
       var seq = new Sequence().Action(this.removeTagAction(tag)).RunFunction(this, this.notifyChange);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["removeTag()", { tag: tag, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    clearTags: function() {
+    clearTags: function () {
       var seq = new Sequence().Action(this.clearTagsAction()).RunFunction(this, this.notifyChange);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["clearTags()", { tags: this.tags.length, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    showTagEntryPopup: function() {
+    showTagEntryPopup: function () {
       return this.showPopup(this.$options, POPUP_TEXT_ENTRY_ID, POPUP_TEXT_ENTRY_LAYOUT, {
         channel: this.popupTextEntryChannel,
         title: $.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),

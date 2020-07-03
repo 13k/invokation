@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var NetTable = global.NetTable;
@@ -33,10 +33,7 @@
   var ITEM_HIGHLIGHT_CLASS = "Highlighted";
 
   function elementId(prefix, name) {
-    var suffix = _.chain(name)
-      .camelCase()
-      .upperFirst()
-      .value();
+    var suffix = _.chain(name).camelCase().upperFirst().value();
 
     return prefix + suffix;
   }
@@ -61,36 +58,29 @@
       this.debug("init");
     },
 
-    onImageActivate: function(imagePanel) {
+    onImageActivate: function (imagePanel) {
       this.debug("onImageActivate()", imagePanel.id);
       this.select(imagePanel);
     },
 
-    onQueryResponse: function(payload) {
+    onQueryResponse: function (payload) {
       this.debug("onQueryResponse()");
       this.highlight(payload.items);
     },
 
-    highlight: function(items) {
-      return new Sequence()
-        .Action(this.disableItemsAction())
-        .Action(this.enableItemsAction(items))
-        .Start();
+    highlight: function (items) {
+      return new Sequence().Action(this.disableItemsAction()).Action(this.enableItemsAction(items)).Start();
     },
 
-    disableItemsAction: function() {
-      var disableItemAction = _.chain(this.disableItemAction)
-        .bind(this)
-        .rearg([1, 0])
-        .ary(2)
-        .value();
+    disableItemsAction: function () {
+      var disableItemAction = _.chain(this.disableItemAction).bind(this).rearg([1, 0]).ary(2).value();
 
       var actions = _.map(this.itemPanels, disableItemAction);
 
       return new ParallelSequence().Action(actions);
     },
 
-    disableItemAction: function(itemName) {
+    disableItemAction: function (itemName) {
       var panels = this.itemPanels[itemName];
 
       if (!panels) {
@@ -98,26 +88,22 @@
         return new NoopAction();
       }
 
-      var actions = _.map(panels, function(panel) {
+      var actions = _.map(panels, function (panel) {
         return new DisableAction(panel);
       });
 
       return new ParallelSequence().Action(actions);
     },
 
-    enableItemsAction: function(items) {
-      var enableItemAction = _.chain(this.enableItemAction)
-        .bind(this)
-        .rearg([1, 0])
-        .ary(2)
-        .value();
+    enableItemsAction: function (items) {
+      var enableItemAction = _.chain(this.enableItemAction).bind(this).rearg([1, 0]).ary(2).value();
 
       var actions = _.map(items, enableItemAction);
 
       return new ParallelSequence().Action(actions);
     },
 
-    enableItemAction: function(itemName) {
+    enableItemAction: function (itemName) {
       var panels = this.itemPanels[itemName];
 
       if (!panels) {
@@ -125,21 +111,21 @@
         return new NoopAction();
       }
 
-      var actions = _.map(panels, function(panel) {
+      var actions = _.map(panels, function (panel) {
         return new EnableAction(panel);
       });
 
       return new ParallelSequence().Action(actions);
     },
 
-    loadItems: function() {
+    loadItems: function () {
       this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
     },
 
-    select: function(imagePanel) {
+    select: function (imagePanel) {
       var highlighted = this.$groups.FindChildrenWithClassTraverse(ITEM_HIGHLIGHT_CLASS);
 
-      _.each(highlighted, function(panel) {
+      _.each(highlighted, function (panel) {
         panel.RemoveClass(ITEM_HIGHLIGHT_CLASS);
       });
 
@@ -148,7 +134,7 @@
       this.runOutput("OnSelect", { item: imagePanel.itemname });
     },
 
-    search: function(query) {
+    search: function (query) {
       if (_.isEmpty(query)) {
         return this.enableItemsAction(this.itemPanels).Start();
       }
@@ -156,26 +142,19 @@
       return this.sendServer(EVENTS.ITEM_PICKER_QUERY, { query: query });
     },
 
-    render: function() {
+    render: function () {
       this.$search.SetFocus(true);
 
-      var createGroup = _.chain(this.createGroup)
-        .bind(this, this.$groups)
-        .rearg([1, 0])
-        .ary(2)
-        .value();
+      var createGroup = _.chain(this.createGroup).bind(this, this.$groups).rearg([1, 0]).ary(2).value();
 
       _.each(CATEGORIES, createGroup);
     },
 
-    createGroup: function(parent, group, categories) {
+    createGroup: function (parent, group, categories) {
       var groupId = elementId(GROUP_ID_PREFIX, group);
       var panel = CreatePanelWithLayoutSnippet(parent, groupId, GROUP_SNIPPET);
       var categoriesPanel = panel.FindChild(GROUP_CATEGORY_LIST_ID);
-      var createCategory = _.chain(this.createCategory)
-        .bind(this, categoriesPanel)
-        .unary()
-        .value();
+      var createCategory = _.chain(this.createCategory).bind(this, categoriesPanel).unary().value();
 
       panel.SetDialogVariable(GROUP_NAME_ATTR, L10n.LocalizeShopGroup(group));
 
@@ -184,15 +163,12 @@
       return panel;
     },
 
-    createCategory: function(parent, category) {
+    createCategory: function (parent, category) {
       var categoryId = elementId(CATEGORY_ID_PREFIX, category);
       var panel = CreatePanelWithLayoutSnippet(parent, categoryId, CATEGORY_SNIPPET);
       var itemsPanel = panel.FindChild(CATEGORY_ITEM_LIST_ID);
       var items = this.shopItems[category];
-      var createItemImage = _.chain(this.createItemImage)
-        .bind(this, itemsPanel)
-        .unary()
-        .value();
+      var createItemImage = _.chain(this.createItemImage).bind(this, itemsPanel).unary().value();
 
       panel.SetDialogVariable(CATEGORY_NAME_ATTR, L10n.LocalizeShopCategory(category));
 
@@ -201,7 +177,7 @@
       return panel;
     },
 
-    createItemImage: function(parent, itemName) {
+    createItemImage: function (parent, itemName) {
       var itemId = elementId(ITEM_ID_PREFIX, itemName);
       var panel = CreateItemImage(parent, itemId, itemName);
 
@@ -217,7 +193,7 @@
       return panel;
     },
 
-    Search: function() {
+    Search: function () {
       this.debug("Search()", this.$search.text.toString());
       this.search(this.$search.text);
     },

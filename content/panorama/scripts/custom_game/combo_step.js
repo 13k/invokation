@@ -3,7 +3,7 @@
 
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var CreateAbilityOrItemImage = global.Util.CreateAbilityOrItemImage;
   var CreateComponent = context.CreateComponent;
@@ -24,9 +24,9 @@
     },
 
     // child components code can override this function
-    onStepChange: function() {},
+    onStepChange: function () {},
 
-    setStep: function(payload) {
+    setStep: function (payload) {
       this.combo = payload.combo;
       this.step = payload.step;
 
@@ -51,11 +51,11 @@
       this.onStepChange();
     },
 
-    ShowTooltip: function() {
+    ShowTooltip: function () {
       this.showAbilityTooltip(this.$ctx, this.step.name);
     },
 
-    HideTooltip: function() {
+    HideTooltip: function () {
       this.hideAbilityTooltip(this.$ctx);
     },
   });

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(_global, context) {
+(function (_global, context) {
   var CreateComponent = context.CreateComponent;
 
   var POPUP_GAME_INFO_LAYOUT = "file://{resources}/layout/custom_game/popups/popup_game_info.xml";
@@ -13,7 +13,7 @@
 
     // ----- UI methods -----
 
-    ShowGameInfo: function() {
+    ShowGameInfo: function () {
       this.debug("ShowGameInfo()");
       return this.showPopup(this.$ctx, "PopupGameInfo", POPUP_GAME_INFO_LAYOUT);
     },

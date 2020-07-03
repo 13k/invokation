@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var IsTalentSelected = global.Util.IsTalentSelected;
@@ -38,30 +38,30 @@
 
     // ----- I/O -----
 
-    onSelect: function(payload) {
+    onSelect: function (payload) {
       this.debug("onSelect()", payload);
       this.select(payload.talents);
     },
 
-    onReset: function() {
+    onReset: function () {
       this.debug("onReset()");
       this.reset();
     },
 
     // ----- Helpers -----
 
-    bindRows: function() {
+    bindRows: function () {
       this.$rows = {};
       _.each(LEVELS, this.bindRow.bind(this));
     },
 
-    bindRow: function(level) {
+    bindRow: function (level) {
       this.$rows[level] = this.element(statRowAttr(level));
     },
 
     // ----- Actions -----
 
-    selectLevelAction: function(level, choices) {
+    selectLevelAction: function (level, choices) {
       var seq = new ParallelSequence();
 
       if (IsTalentSelected(level, "right", choices)) {
@@ -75,7 +75,7 @@
       return seq;
     },
 
-    resetLevelAction: function(level) {
+    resetLevelAction: function (level) {
       return new ParallelSequence()
         .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.LEFT)
         .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
@@ -83,34 +83,28 @@
 
     // ----- Action runners -----
 
-    select: function(choices) {
+    select: function (choices) {
       this.selected = choices;
 
-      var selectLevelAction = _.chain(this.selectLevelAction)
-        .bind(this, _, choices)
-        .unary()
-        .value();
+      var selectLevelAction = _.chain(this.selectLevelAction).bind(this, _, choices).unary().value();
 
       var actions = _.map(LEVELS, selectLevelAction);
       var seq = new ParallelSequence().Action(actions);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["select()", { choices: choices, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    reset: function() {
-      var resetLevelAction = _.chain(this.resetLevelAction)
-        .bind(this)
-        .unary()
-        .value();
+    reset: function () {
+      var resetLevelAction = _.chain(this.resetLevelAction).bind(this).unary().value();
 
       var actions = _.map(LEVELS, resetLevelAction);
       var seq = new ParallelSequence().Action(actions);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["reset()", { actions: seq.size() }];
       });
 
@@ -119,7 +113,7 @@
 
     // ----- UI methods -----
 
-    ShowTooltip: function() {
+    ShowTooltip: function () {
       this.tooltipId = _.uniqueId(TOOLTIP_ID);
 
       var params = {
@@ -131,7 +125,7 @@
       this.showTooltip(this.$ctx, this.tooltipId, TOOLTIP_LAYOUT, params);
     },
 
-    HideTooltip: function() {
+    HideTooltip: function () {
       if (this.tooltipId) {
         this.hideTooltip(this.$ctx, this.tooltipId);
         this.tooltipId = null;

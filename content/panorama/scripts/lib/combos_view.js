@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
   var Class = global.Class;
 
@@ -40,12 +40,7 @@
       return seq;
     }
 
-    return seq.filter(
-      _.chain(matchesTags)
-        .partialRight(tags)
-        .unary()
-        .value()
-    );
+    return seq.filter(_.chain(matchesTags).partialRight(tags).unary().value());
   }
 
   function filterByItem(seq, item) {
@@ -53,12 +48,7 @@
       return seq;
     }
 
-    return seq.filter(
-      _.chain(matchesItem)
-        .partialRight(item)
-        .unary()
-        .value()
-    );
+    return seq.filter(_.chain(matchesItem).partialRight(item).unary().value());
   }
 
   function filterByAbility(seq, ability) {
@@ -66,12 +56,7 @@
       return seq;
     }
 
-    return seq.filter(
-      _.chain(matchesAbility)
-        .partialRight(ability)
-        .unary()
-        .value()
-    );
+    return seq.filter(_.chain(matchesAbility).partialRight(ability).unary().value());
   }
 
   var CombosView = Class({
@@ -79,32 +64,32 @@
       this.setCombos(combos);
     },
 
-    setCombos: function(combos) {
+    setCombos: function (combos) {
       this.combos = combos;
       this.setView(combos);
     },
 
-    setView: function(view) {
+    setView: function (view) {
       this.view = view;
       this.sort();
     },
 
-    sort: function() {
+    sort: function () {
       this.view = _.sortBy(this.view, SORT_ORDER);
     },
 
-    Length: function() {
+    Length: function () {
       return this.view.length;
     },
 
-    Entries: function() {
+    Entries: function () {
       return this.view;
     },
 
-    Filter: function(filters) {
+    Filter: function (filters) {
       var seq = _.chain(this.combos);
 
-      _.each(filters, function(value, property) {
+      _.each(filters, function (value, property) {
         seq = filterByProperty(seq, property, value);
       });
 

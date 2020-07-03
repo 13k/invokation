@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var ParallelSequence = global.Sequence.ParallelSequence;
   var Sequence = global.Sequence.Sequence;
@@ -44,22 +44,22 @@
 
     // --- Inputs ---
 
-    setCombo: function(combo) {
+    setCombo: function (combo) {
       this.combo = combo;
       this.render();
     },
 
-    onSetFinished: function() {
+    onSetFinished: function () {
       this.$ctx.AddClass(CLASSES.FINISHED);
     },
 
-    onUnsetFinished: function() {
+    onUnsetFinished: function () {
       this.$ctx.RemoveClass(CLASSES.FINISHED);
     },
 
     // --- Actions ---
 
-    setVariablesAction: function() {
+    setVariablesAction: function () {
       return new ParallelSequence()
         .SetDialogVariable(this.$ctx, "hero_level", this.combo.heroLevel)
         .SetDialogVariable(this.$ctx, "specialty", this.combo.l10n.specialty)
@@ -68,13 +68,13 @@
         .SetDialogVariable(this.$ctx, "difficulty_rating", this.combo.l10n.difficultyRating);
     },
 
-    setAttributesAction: function() {
+    setAttributesAction: function () {
       return new ParallelSequence()
         .SetAttribute(this.$titleLabel, "text", this.combo.l10n.name)
         .SetAttribute(this.$heroLevelLabel, "text", String(this.combo.heroLevel));
     },
 
-    setClassesAction: function() {
+    setClassesAction: function () {
       var specialtyClass = propertyCssClass("specialty", this.combo.specialty);
       var stanceClass = propertyCssClass("stance", this.combo.stance);
       var damageRatingClass = propertyCssClass("damageRating", this.combo.damageRating);
@@ -89,25 +89,25 @@
 
     // ----- Action Runners -----
 
-    render: function() {
+    render: function () {
       var seq = new Sequence()
         .Action(this.setVariablesAction())
         .Action(this.setAttributesAction())
         .Action(this.setClassesAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["render()", { id: this.combo.id, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    ShowDetails: function() {
+    ShowDetails: function () {
       this.debug("ShowDetails()", this.combo.id);
       this.runOutput("OnShowDetails", { id: this.combo.id });
     },
 
-    Play: function() {
+    Play: function () {
       this.debug("Play()", this.combo.id);
       this.runOutput("OnPlay", { id: this.combo.id });
     },

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
   var FlattenObjectWith = global.Util.FlattenObjectWith;
 
@@ -10,28 +10,18 @@
 
   // "escape" keys by surrounding key parts with brackets
   function cacheKey(key) {
-    var bracketify = function(k) {
+    var bracketify = function (k) {
       return "[" + k + "]";
     };
 
-    return _.chain(key)
-      .split(".")
-      .map(bracketify)
-      .value();
+    return _.chain(key).split(".").map(bracketify).value();
   }
 
   // "unescape" cache keys
   function uncacheKey(key) {
-    var unbracket = _.chain(_.trim)
-      .partialRight("[]")
-      .unary()
-      .value();
+    var unbracket = _.chain(_.trim).partialRight("[]").unary().value();
 
-    return _.chain(key)
-      .split(".")
-      .map(unbracket)
-      .join(".")
-      .value();
+    return _.chain(key).split(".").map(unbracket).join(".").value();
   }
 
   function cacheGet(key) {
@@ -52,21 +42,21 @@
     return subscriptionId;
   }
 
-  module.Subscribe = function(key, name, fn) {
+  module.Subscribe = function (key, name, fn) {
     key += "." + name;
     return cacheAdd(key, GameEvents.Subscribe(name, fn));
   };
 
-  module.Unsubscribe = function(subscriptionId) {
+  module.Unsubscribe = function (subscriptionId) {
     GameEvents.Unsubscribe(subscriptionId);
     return subscriptionId;
   };
 
-  module.UnsubscribeAll = function(subscriptionIds) {
+  module.UnsubscribeAll = function (subscriptionIds) {
     return _.map(subscriptionIds, module.Unsubscribe);
   };
 
-  module.UnsubscribeAllSiblings = function(key) {
+  module.UnsubscribeAllSiblings = function (key) {
     var path = cacheKey(key);
     var slabPath = _.initial(path);
     var pageId = _.last(path);
@@ -90,19 +80,19 @@
     return _.mapKeys(result, _.rearg(uncacheKey, [1]));
   };
 
-  module.SendServer = function(name, payload) {
+  module.SendServer = function (name, payload) {
     return GameEvents.SendCustomGameEventToServer(name, payload || {});
   };
 
-  module.SendAll = function(name, payload) {
+  module.SendAll = function (name, payload) {
     return GameEvents.SendCustomGameEventToAllClients(name, payload || {});
   };
 
-  module.SendPlayer = function(playerIndex, name, payload) {
+  module.SendPlayer = function (playerIndex, name, payload) {
     return GameEvents.SendCustomGameEventToClient(name, playerIndex, payload || {});
   };
 
-  module.SendClientSide = function(name, payload) {
+  module.SendClientSide = function (name, payload) {
     return GameEvents.SendEventClientSide(name, payload || {});
   };
 

@@ -87,7 +87,7 @@ function New(n, t, p) {
   properties = p;
 }
 
-(function() {
+(function () {
   $.GetContextPanel().Show = Show;
   $.GetContextPanel().Hide = Hide;
   $.GetContextPanel().New = New;

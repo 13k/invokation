@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
@@ -41,7 +41,7 @@
 
     // --- Event handlers -----
 
-    onComboStarted: function(payload) {
+    onComboStarted: function (payload) {
       if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
@@ -50,7 +50,7 @@
       this.start();
     },
 
-    onComboStopped: function(payload) {
+    onComboStopped: function (payload) {
       if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
@@ -59,7 +59,7 @@
       this.stop();
     },
 
-    onComboProgress: function(payload) {
+    onComboProgress: function (payload) {
       if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
@@ -70,19 +70,19 @@
 
     // ----- Helpers -----
 
-    sendStop: function() {
+    sendStop: function () {
       this.sendServer(EVENTS.COMBO_STOP);
     },
 
-    sendRestart: function(isHardReset) {
+    sendRestart: function (isHardReset) {
       this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
     },
 
-    sendLevelUp: function(payload) {
+    sendLevelUp: function (payload) {
       this.sendServer(EVENTS.FREESTYLE_HERO_LEVEL_UP, payload);
     },
 
-    createComboScorePanel: function(parent) {
+    createComboScorePanel: function (parent) {
       var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
       panel.AddClass(COMBO_SCORE_CLASS);
       return panel;
@@ -90,11 +90,11 @@
 
     // ----- Component actions -----
 
-    showAction: function() {
+    showAction: function () {
       return new RemoveClassAction(this.$ctx, "Hide");
     },
 
-    hideAction: function() {
+    hideAction: function () {
       return new ParallelSequence()
         .Action(this.hideScoreAction())
         .Action(this.hideShopAction())
@@ -103,7 +103,7 @@
 
     // ----- Score actions -----
 
-    updateScoreSummaryAction: function(options) {
+    updateScoreSummaryAction: function (options) {
       return new RunFunctionAction(
         this.$comboScore.component,
         this.$comboScore.component.Input,
@@ -112,23 +112,23 @@
       );
     },
 
-    hideScoreAction: function() {
+    hideScoreAction: function () {
       return new Sequence().RunFunction(this.$comboScore.component, this.$comboScore.component.Input, "Hide");
     },
 
     // ----- HUD actions -----
 
-    showShopAction: function() {
+    showShopAction: function () {
       return new RunFunctionAction(this, this.showInventoryShopUI);
     },
 
-    hideShopAction: function() {
+    hideShopAction: function () {
       return new RunFunctionAction(this, this.hideInventoryShopUI);
     },
 
     // ----- Action runners -----
 
-    start: function() {
+    start: function () {
       var seq = new Sequence()
         .PlaySoundEffect(SOUND_EVENTS.start)
         .Action(this.hideScoreAction())
@@ -136,24 +136,24 @@
         .Wait(START_DELAY)
         .Action(this.showAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["start()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    stop: function() {
+    stop: function () {
       var seq = new Sequence().Action(this.hideAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["stop()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    progress: function(metrics) {
+    progress: function (metrics) {
       var options = {
         count: metrics.count || 0,
         endDamage: metrics.damage || 0,
@@ -161,7 +161,7 @@
 
       var seq = new Sequence().Action(this.updateScoreSummaryAction(options));
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["progress()", _.assign({ actions: seq.size() }, options)];
       });
 
@@ -170,24 +170,24 @@
 
     // ----- UI methods -----
 
-    Restart: function(isHardReset) {
-      this.debugFn(function() {
+    Restart: function (isHardReset) {
+      this.debugFn(function () {
         return ["Restart()", { isHardReset: isHardReset }];
       });
 
       this.sendRestart(!!isHardReset);
     },
 
-    Stop: function() {
+    Stop: function () {
       this.debug("Stop()");
       this.sendStop();
     },
 
-    LevelUp: function() {
+    LevelUp: function () {
       this.sendLevelUp();
     },
 
-    LevelMax: function() {
+    LevelMax: function () {
       this.sendLevelUp({ maxLevel: true });
     },
   });

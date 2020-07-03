@@ -1,9 +1,9 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
 
-  global.Class = function() {
+  global.Class = function () {
     var args, body, base, mixins, klass;
 
     args = _.toArray(arguments);
@@ -16,7 +16,7 @@
     if (_.has(body, "constructor")) {
       klass = body.constructor;
     } else {
-      klass = function() {};
+      klass = function () {};
       body.constructor = klass;
     }
 
@@ -24,10 +24,7 @@
     klass.super = base;
     klass.prototype = _.create(klass.super.prototype, { classid: klass.id });
 
-    var assignArgs = _.chain([klass.prototype])
-      .concat(mixins)
-      .push(body)
-      .value();
+    var assignArgs = _.chain([klass.prototype]).concat(mixins).push(body).value();
 
     _.assign.apply(_, assignArgs);
 

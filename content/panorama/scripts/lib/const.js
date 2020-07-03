@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var META = {
     VERSION: "v0.4.2-beta1",
     URL: "https://github.com/13k/invokation",

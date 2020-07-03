@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
@@ -88,7 +88,7 @@
 
     // --- Event handlers -----
 
-    onComboStarted: function(payload) {
+    onComboStarted: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -97,7 +97,7 @@
       this.start(payload.id, LuaIndexArray(payload.next));
     },
 
-    onComboStopped: function(payload) {
+    onComboStopped: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -106,7 +106,7 @@
       this.stop(payload.id);
     },
 
-    onComboInProgress: function(payload) {
+    onComboInProgress: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -115,7 +115,7 @@
       this.inProgress(payload.id);
     },
 
-    onComboProgress: function(payload) {
+    onComboProgress: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -124,7 +124,7 @@
       this.progress(payload.id, payload.metrics, LuaIndexArray(payload.next));
     },
 
-    onComboStepError: function(payload) {
+    onComboStepError: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -133,7 +133,7 @@
       this.fail(payload.id, LuaIndexArray(payload.expected), payload.ability);
     },
 
-    onComboPreFinish: function(payload) {
+    onComboPreFinish: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -142,7 +142,7 @@
       this.preFinish(payload.id, payload.metrics, payload.wait);
     },
 
-    onComboFinished: function(payload) {
+    onComboFinished: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -153,25 +153,25 @@
 
     // ----- Helpers -----
 
-    sendStop: function() {
+    sendStop: function () {
       this.sendServer(EVENTS.COMBO_STOP);
     },
 
-    sendRestart: function(isHardReset) {
+    sendRestart: function (isHardReset) {
       this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
     },
 
-    sendRenderViewer: function(combo) {
+    sendRenderViewer: function (combo) {
       this.sendClientSide(EVENTS.VIEWER_RENDER, { id: combo.id });
     },
 
-    createComboScorePanel: function(parent) {
+    createComboScorePanel: function (parent) {
       var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
       panel.AddClass(COMBO_SCORE_CLASS);
       return panel;
     },
 
-    createStepPanel: function(parent, step) {
+    createStepPanel: function (parent, step) {
       var id = "combo_step_" + step.name + "_" + step.id.toString();
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
 
@@ -182,44 +182,44 @@
       return panel;
     },
 
-    scrollToStepPanel: function(step) {
+    scrollToStepPanel: function (step) {
       var panel = this.stepsPanels[step.id];
       panel.ScrollParentToMakePanelFit(1, false);
     },
 
-    stepPanelInput: function(step, input) {
+    stepPanelInput: function (step, input) {
       var panel = this.stepsPanels[step.id];
       panel.component.Input(input);
     },
 
-    bumpStepPanel: function(step) {
+    bumpStepPanel: function (step) {
       return this.stepPanelInput(step, "StepBump");
     },
 
-    activateStepPanel: function(step) {
+    activateStepPanel: function (step) {
       return this.stepPanelInput(step, "SetStepActive");
     },
 
-    deactivateStepPanel: function(step) {
+    deactivateStepPanel: function (step) {
       return this.stepPanelInput(step, "UnsetStepActive");
     },
 
-    failStepPanel: function(step) {
+    failStepPanel: function (step) {
       return this.stepPanelInput(step, "SetStepError");
     },
 
-    clearFailedStepPanel: function(step) {
+    clearFailedStepPanel: function (step) {
       return this.stepPanelInput(step, "UnsetStepError");
     },
 
-    startTimer: function() {
+    startTimer: function () {
       this.timer.start = Date.now();
       this.timer.update = true;
       this.debug("startTimer()", this.timer);
       this.updateTimer();
     },
 
-    updateTimer: function() {
+    updateTimer: function () {
       if (!this.timer.update) {
         return;
       }
@@ -229,18 +229,18 @@
       $.Schedule(0.1, this.updateTimer.bind(this));
     },
 
-    stopTimer: function() {
+    stopTimer: function () {
       this.timer.start = null;
       this.timer.update = false;
     },
 
     // ----- Component actions -----
 
-    showAction: function() {
+    showAction: function () {
       return new RemoveClassAction(this.$ctx, "Hide");
     },
 
-    hideAction: function() {
+    hideAction: function () {
       return new ParallelSequence()
         .Action(this.hideSplashAction())
         .Action(this.hideScoreAction())
@@ -249,48 +249,45 @@
 
     // ----- Sequence actions -----
 
-    renderSequenceAction: function() {
+    renderSequenceAction: function () {
       this.stepsPanels = {};
 
       var bumpSeq = this.staggeredSequenceOnStepPanels(BUMP_DELAY, this.combo.sequence, "bumpStepPanel");
 
-      return new Sequence()
-        .Action(this.resetSequenceAction())
-        .Action(this.createStepPanelsAction())
-        .Action(bumpSeq);
+      return new Sequence().Action(this.resetSequenceAction()).Action(this.createStepPanelsAction()).Action(bumpSeq);
     },
 
-    resetSequenceAction: function() {
+    resetSequenceAction: function () {
       return new Sequence().ScrollToTop(this.$sequence).RemoveChildren(this.$sequence);
     },
 
-    createStepPanelsAction: function() {
+    createStepPanelsAction: function () {
       var createActions = _.map(this.combo.sequence, _.bind(this.createStepPanelAction, this, this.$sequence));
 
       return new Sequence().Action(createActions);
     },
 
-    createStepPanelAction: function(parent, step) {
+    createStepPanelAction: function (parent, step) {
       return new RunFunctionAction(this, this.createStepPanel, parent, step);
     },
 
-    sequenceActionsOnStepPanels: function(steps, fn) {
+    sequenceActionsOnStepPanels: function (steps, fn) {
       fn = this.handler(fn);
 
-      return _.map(steps, function(step) {
+      return _.map(steps, function (step) {
         return new RunFunctionAction(fn, step);
       });
     },
 
-    parallelSequenceOnStepPanels: function(steps, fn) {
+    parallelSequenceOnStepPanels: function (steps, fn) {
       return new ParallelSequence().Action(this.sequenceActionsOnStepPanels(steps, fn));
     },
 
-    staggeredSequenceOnStepPanels: function(delay, steps, fn) {
+    staggeredSequenceOnStepPanels: function (delay, steps, fn) {
       return new StaggeredSequence(delay).Action(this.sequenceActionsOnStepPanels(steps, fn));
     },
 
-    activateStepPanelsAction: function(steps) {
+    activateStepPanelsAction: function (steps) {
       var seq = new Sequence();
 
       if (_.isEmpty(steps)) {
@@ -302,39 +299,39 @@
       return seq.RunFunction(this, this.scrollToStepPanel, steps[0]).Action(activateSeq);
     },
 
-    deactivateStepPanelsAction: function(steps) {
+    deactivateStepPanelsAction: function (steps) {
       return this.parallelSequenceOnStepPanels(steps, "deactivateStepPanel");
     },
 
-    bumpStepPanelsAction: function(steps) {
+    bumpStepPanelsAction: function (steps) {
       return this.parallelSequenceOnStepPanels(steps, "bumpStepPanel");
     },
 
-    failStepPanelsAction: function(steps) {
+    failStepPanelsAction: function (steps) {
       return this.parallelSequenceOnStepPanels(steps, "failStepPanel");
     },
 
-    clearFailedStepPanelsAction: function(steps) {
+    clearFailedStepPanelsAction: function (steps) {
       return this.parallelSequenceOnStepPanels(steps, "clearFailedStepPanel");
     },
 
     // ----- HUD actions -----
 
-    resetHudVisibilityActions: function() {
+    resetHudVisibilityActions: function () {
       return _.map(
         HUD_VISIBILITY_CLASSES,
-        function(cls) {
+        function (cls) {
           return new RemoveClassAction(this.$ctx, cls);
         }.bind(this)
       );
     },
 
-    updateHudVisibilityTooltipAction: function(mode) {
+    updateHudVisibilityTooltipAction: function (mode) {
       var hudVisibilityTooltip = L10n.LocalizeParameterized(L10N_PREFIXES.HUD_VISIBILITY, mode);
       return new SetDialogVariableAction(this.$ctx, "hud_visibility", hudVisibilityTooltip);
     },
 
-    switchHudAction: function(prevMode, nextMode) {
+    switchHudAction: function (prevMode, nextMode) {
       var prevClass = HUD_VISIBILITY_CLASSES[prevMode];
       var nextClass = HUD_VISIBILITY_CLASSES[nextMode];
       var heroHudFn = nextMode === "no_hands" ? this.hideActionPanelUI : this.showActionPanelUI;
@@ -347,14 +344,14 @@
 
     // ----- Splash actions -----
 
-    clearSplashAction: function() {
+    clearSplashAction: function () {
       return new ParallelSequence()
         .RemoveClass(this.$splash, "start")
         .RemoveClass(this.$splash, "success")
         .RemoveClass(this.$splash, "failure");
     },
 
-    showSplashAction: function(state) {
+    showSplashAction: function (state) {
       var titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
       var helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
       var title = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "title", titleIndex]);
@@ -369,19 +366,19 @@
       return new Sequence().Action(actions).AddClass(this.$splash, "Show");
     },
 
-    hideSplashAction: function() {
+    hideSplashAction: function () {
       return new ParallelSequence().Action(this.clearSplashAction()).RemoveClass(this.$splash, "Show");
     },
 
     // ----- Score actions -----
 
-    updateScoreCounterAction: function(count) {
+    updateScoreCounterAction: function (count) {
       return new RunFunctionAction(this.$comboScore.component, this.$comboScore.component.Input, "UpdateCounter", {
         count: count,
       });
     },
 
-    updateScoreSummaryAction: function(options) {
+    updateScoreSummaryAction: function (options) {
       return new RunFunctionAction(
         this.$comboScore.component,
         this.$comboScore.component.Input,
@@ -390,21 +387,21 @@
       );
     },
 
-    hideScoreAction: function() {
+    hideScoreAction: function () {
       return new Sequence()
         .RemoveClass(this.$score, "Failed")
         .RunFunction(this.$comboScore.component, this.$comboScore.component.Input, "Hide");
     },
 
-    showTimerAction: function() {
+    showTimerAction: function () {
       return new RemoveClassAction(this.$timer, "Hide");
     },
 
-    hideTimerAction: function() {
+    hideTimerAction: function () {
       return new AddClassAction(this.$timer, "Hide");
     },
 
-    countdownWaitAction: function(wait) {
+    countdownWaitAction: function (wait) {
       var animate = new ParallelSequence()
         .AnimateDialogVariableInt(this.$waitProgress, "wait_seconds", wait, 0, wait)
         .AnimateProgressBar(this.$waitProgressBar, wait, 0, wait);
@@ -418,7 +415,7 @@
 
     // ----- Composite actions -----
 
-    progressWhenInProgressAction: function(metrics, next) {
+    progressWhenInProgressAction: function (metrics, next) {
       var nextSteps = _.at(this.combo.sequence, next);
 
       return new Sequence()
@@ -428,7 +425,7 @@
         .Action(this.updateScoreCounterAction(metrics.count));
     },
 
-    progressWhenFinishedAction: function(metrics) {
+    progressWhenFinishedAction: function (metrics) {
       var scoreSummaryOptions = {
         count: metrics.count || 0,
         endDamage: metrics.damage || 0,
@@ -439,7 +436,7 @@
 
     // ----- Action runners -----
 
-    initHudVisibility: function(mode) {
+    initHudVisibility: function (mode) {
       return new Sequence()
         .Action(this.updateHudVisibilityTooltipAction(mode))
         .Action(this.resetHudVisibilityActions())
@@ -447,7 +444,7 @@
         .Start();
     },
 
-    start: function(id, next) {
+    start: function (id, next) {
       this.combo = COMBOS.Get(id);
       this.finished = false;
 
@@ -462,31 +459,31 @@
         .Wait(0.25)
         .RunFunction(this, this.progress, this.combo.id, {}, next);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["start()", { id: this.combo.id, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    stop: function(id) {
+    stop: function (id) {
       this.stopTimer();
       this.combo = null;
       this.finished = false;
 
       var seq = new Sequence().Action(this.hideAction()).Action(this.hideTimerAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["stop()", { id: id, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    inProgress: function(id) {
+    inProgress: function (id) {
       var seq = new Sequence().Action(this.showTimerAction()).Action(this.hideSplashAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["inProgress()", { id: id }];
       });
 
@@ -495,7 +492,7 @@
       return seq.Start();
     },
 
-    progress: function(id, metrics, next) {
+    progress: function (id, metrics, next) {
       var seq = new Sequence();
 
       if (this.finished) {
@@ -504,14 +501,14 @@
         seq.Action(this.progressWhenInProgressAction(metrics, next));
       }
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["progress()", { id: id, metrics: metrics, next: next, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    preFinish: function(id, metrics, wait) {
+    preFinish: function (id, metrics, wait) {
       var options = {
         count: metrics.count || 0,
         startDamage: 0,
@@ -526,14 +523,14 @@
         .Action(this.updateScoreSummaryAction(options))
         .Action(this.countdownWaitAction(wait));
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["preFinish()", _.assign({ id: id, actions: seq.size() }, options)];
       });
 
       return seq.Start();
     },
 
-    finish: function(id, metrics) {
+    finish: function (id, metrics) {
       this.stopTimer();
 
       var options = {
@@ -546,14 +543,14 @@
         .Action(this.showSplashAction("success"))
         .Action(this.updateScoreSummaryAction(options));
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["finish()", _.assign({ id: id, actions: seq.size() }, options)];
       });
 
       return seq.Start();
     },
 
-    fail: function(id, expected, ability) {
+    fail: function (id, expected, ability) {
       this.stopTimer();
 
       var expectedSteps = _.at(this.combo.sequence, expected);
@@ -566,14 +563,14 @@
         .Action(this.bumpStepPanelsAction(expectedSteps))
         .Action(this.hideTimerAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["fail()", { id: id, ability: ability, expected: expected, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    toggleHUD: function() {
+    toggleHUD: function () {
       var prevMode = this.hudMode;
       var nextMode;
 
@@ -592,7 +589,7 @@
       this.hudMode = nextMode;
       var seq = this.switchHudAction(prevMode, nextMode);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["toggleHUD()", { prev: prevMode, next: nextMode, actions: seq.size() }];
       });
 
@@ -601,25 +598,25 @@
 
     // ----- UI methods -----
 
-    Restart: function(isHardReset) {
-      this.debugFn(function() {
+    Restart: function (isHardReset) {
+      this.debugFn(function () {
         return ["Restart()", { isHardReset: isHardReset }];
       });
 
       this.sendRestart(!!isHardReset);
     },
 
-    Stop: function() {
+    Stop: function () {
       this.debug("Stop()");
       this.sendStop();
     },
 
-    ShowDetails: function() {
+    ShowDetails: function () {
       this.debug("ShowDetails()");
       this.sendRenderViewer(this.combo);
     },
 
-    ToggleHUD: function() {
+    ToggleHUD: function () {
       this.toggleHUD();
     },
   });

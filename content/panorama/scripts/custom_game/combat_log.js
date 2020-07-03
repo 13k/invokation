@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var Grid = global.Grid;
   var Sequence = global.Sequence.Sequence;
   var IsInvocationAbility = global.Util.IsInvocationAbility;
@@ -57,17 +57,17 @@
 
     // ----- Event handlers -----
 
-    onClear: function() {
+    onClear: function () {
       this.debug("onClear()");
       this.clear();
     },
 
-    onGridRowChange: function(idx) {
+    onGridRowChange: function (idx) {
       this.debug("onGridRowChange()", idx);
       this.addRow(idx);
     },
 
-    onAbilityUsed: function(payload) {
+    onAbilityUsed: function (payload) {
       this.debug("onAbilityUsed()", payload);
 
       if (this.isFilteringInvocations() && IsInvocationAbility(payload.ability)) {
@@ -79,47 +79,47 @@
 
     // ----- Helpers -----
 
-    bindEvents: function() {
+    bindEvents: function () {
       this.grid.OnRowChange(this.onGridRowChange.bind(this));
     },
 
-    startCapturing: function() {
+    startCapturing: function () {
       this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_START);
     },
 
-    stopCapturing: function() {
+    stopCapturing: function () {
       this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
     },
 
-    isOpen: function() {
+    isOpen: function () {
       return !this.$ctx.BHasClass(CLOSED_CLASS);
     },
 
-    isFilteringInvocations: function() {
+    isFilteringInvocations: function () {
       return this.$filterInvocations.checked;
     },
 
-    start: function() {
+    start: function () {
       this.startCapturing();
     },
 
-    stop: function() {
+    stop: function () {
       this.stopCapturing();
     },
 
-    appendToGrid: function(abilityName) {
+    appendToGrid: function (abilityName) {
       this.grid.Add(abilityName);
     },
 
-    clearGrid: function() {
+    clearGrid: function () {
       this.grid.Clear();
     },
 
-    resetRow: function() {
+    resetRow: function () {
       this.$row = null;
     },
 
-    createRow: function(rowIndex) {
+    createRow: function (rowIndex) {
       var id = rowId(rowIndex);
       var panel = $.CreatePanel("Panel", this.$contents, id);
 
@@ -129,7 +129,7 @@
       return panel;
     },
 
-    createAbilityIcon: function(abilityName) {
+    createAbilityIcon: function (abilityName) {
       var id = iconId(this.grid.Row(), this.grid.Column());
       var panel = $.CreatePanel("Panel", this.$row, id);
 
@@ -153,22 +153,19 @@
 
     // ----- Action runners -----
 
-    open: function() {
+    open: function () {
       return new Sequence().RemoveClass(this.$ctx, CLOSED_CLASS).Start();
     },
 
-    close: function() {
+    close: function () {
       return new Sequence().AddClass(this.$ctx, CLOSED_CLASS).Start();
     },
 
-    addRow: function(rowIndex) {
-      return new Sequence()
-        .RunFunction(this, this.createRow, rowIndex)
-        .ScrollToBottom(this.$contents)
-        .Start();
+    addRow: function (rowIndex) {
+      return new Sequence().RunFunction(this, this.createRow, rowIndex).ScrollToBottom(this.$contents).Start();
     },
 
-    addColumn: function(abilityName) {
+    addColumn: function (abilityName) {
       return new Sequence()
         .RunFunction(this, this.appendToGrid, abilityName)
         .RunFunction(this, this.createAbilityIcon, abilityName)
@@ -176,7 +173,7 @@
         .Start();
     },
 
-    clear: function() {
+    clear: function () {
       return new Sequence()
         .RunFunction(this, this.clearGrid)
         .RunFunction(this, this.resetRow)
@@ -186,7 +183,7 @@
 
     // ----- UI methods -----
 
-    Toggle: function() {
+    Toggle: function () {
       if (this.isOpen()) {
         return this.close();
       }
@@ -194,7 +191,7 @@
       return this.open();
     },
 
-    Clear: function() {
+    Clear: function () {
       return this.clear();
     },
   });

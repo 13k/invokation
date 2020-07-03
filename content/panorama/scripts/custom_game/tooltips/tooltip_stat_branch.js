@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
@@ -36,7 +36,7 @@
 
   var TALENT_ABILITIES = _.transform(
     INVOKER.TALENT_ABILITIES,
-    function(abilities, ability, i) {
+    function (abilities, ability, i) {
       var level = TalentArrayIndexToLevel(i);
       var side = _.toUpper(TalentArrayIndexToSide(i));
 
@@ -65,13 +65,13 @@
 
     // ----- Event handlers -----
 
-    onLoad: function() {
+    onLoad: function () {
       this.selected = this.$ctx.GetAttributeUInt32("selected", 0);
       this.debug("onLoad()", { selected: this.selected });
       this.update();
     },
 
-    onAbilitiesKvChange: function(kv) {
+    onAbilitiesKvChange: function (kv) {
       this.abilitiesKV = kv;
       this.debug("onAbilitiesKvChange()");
       this.update();
@@ -79,17 +79,17 @@
 
     // ----- Helpers -----
 
-    update: function() {
+    update: function () {
       if (this.selected != null && this.abilitiesKV != null) {
         this.render();
       }
     },
 
-    resetRows: function() {
+    resetRows: function () {
       this.$rows = {};
     },
 
-    localizeBranch: function(panel, level, side) {
+    localizeBranch: function (panel, level, side) {
       var ability = _.get(TALENT_ABILITIES, [level, side]);
       var abilitySpecial = _.get(this.abilitiesKV, [ability, "AbilitySpecial"]);
 
@@ -97,8 +97,8 @@
 
       var branchLabel = _.first(branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL));
 
-      _.each(abilitySpecial, function(special) {
-        _.forOwn(special, function(value, key) {
+      _.each(abilitySpecial, function (special) {
+        _.forOwn(special, function (value, key) {
           if (key === "var_type") return;
           branchLabel.SetDialogVariable(key, value);
         });
@@ -107,16 +107,13 @@
       branchLabel.text = L10n.LocalizeAbilityTooltip(ability, branchLabel);
     },
 
-    createBranchRowPanel: function(level) {
+    createBranchRowPanel: function (level) {
       var id = branchRowId(level);
       var panel = CreatePanelWithLayoutSnippet(this.$container, id, BRANCH_ROW_SNIPPET);
 
       panel.SetDialogVariable(BRANCH_ROW_VAR_LEVEL, level);
 
-      var localizeBranch = _.chain(this.localizeBranch)
-        .bind(this, panel, level)
-        .unary()
-        .value();
+      var localizeBranch = _.chain(this.localizeBranch).bind(this, panel, level).unary().value();
 
       _.each(SIDES, localizeBranch);
 
@@ -127,24 +124,21 @@
 
     // ----- Actions -----
 
-    resetAction: function() {
+    resetAction: function () {
       return new Sequence().RemoveChildren(this.$container).RunFunction(this, this.resetRows);
     },
 
-    createBranchRowPanelAction: function(level) {
+    createBranchRowPanelAction: function (level) {
       return new RunFunctionAction(this, this.createBranchRowPanel, level);
     },
 
-    renderRowsAction: function() {
-      var createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction)
-        .bind(this)
-        .unary()
-        .value();
+    renderRowsAction: function () {
+      var createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction).bind(this).unary().value();
 
       return _.map(LEVELS, createBranchRowPanelAction);
     },
 
-    selectBranchAction: function(level) {
+    selectBranchAction: function (level) {
       var seq = new Sequence();
       var side;
 
@@ -161,11 +155,8 @@
       return seq;
     },
 
-    selectBranchesAction: function() {
-      var selectBranchAction = _.chain(this.selectBranchAction)
-        .bind(this)
-        .unary()
-        .value();
+    selectBranchesAction: function () {
+      var selectBranchAction = _.chain(this.selectBranchAction).bind(this).unary().value();
 
       var actions = _.map(LEVELS, selectBranchAction);
 
@@ -174,24 +165,24 @@
 
     // ----- Action runners -----
 
-    render: function() {
+    render: function () {
       var seq = new Sequence()
         .Action(this.resetAction())
         .Action(this.renderRowsAction())
         .Action(this.selectBranchesAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["render()", { selected: this.selected, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    selectBranchSide: function(level, side) {
+    selectBranchSide: function (level, side) {
       var row = this.$rows[level];
       var seq = new Sequence();
 
-      _.each(SIDES, function(s) {
+      _.each(SIDES, function (s) {
         seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[s]);
       });
 

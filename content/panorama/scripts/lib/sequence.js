@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var Class = global.Class;
 
@@ -26,7 +26,7 @@
 
   var RunSingleAction = context.RunSingleAction;
 
-  var createAction = function(klass, args) {
+  var createAction = function (klass, args) {
     function A() {
       return klass.apply(this, args);
     }
@@ -41,7 +41,7 @@
       NoopAction.super.call(this);
     },
 
-    update: function() {
+    update: function () {
       return false;
     },
   });
@@ -52,14 +52,14 @@
       this.args = arguments;
     },
 
-    update: function() {
+    update: function () {
       $.Msg.apply($, this.args);
       return false;
     },
   });
 
   var RunFunctionAction = Class(context.RunFunctionAction, {
-    constructor: function() {
+    constructor: function () {
       var args = _.toArray(arguments);
       var ctx;
 
@@ -85,7 +85,7 @@
       this.replacement = replacement;
     },
 
-    update: function() {
+    update: function () {
       this.panel.RemoveClass(this.className);
       this.panel.AddClass(this.replacement);
       return false;
@@ -101,7 +101,7 @@
       this.value = value;
     },
 
-    update: function() {
+    update: function () {
       this.panel[this.attribute] = this.value;
       return false;
     },
@@ -128,7 +128,7 @@
       this.value = value;
     },
 
-    update: function() {
+    update: function () {
       this.panel.SetDialogVariable(this.variable, this.value);
       return false;
     },
@@ -139,7 +139,7 @@
       SetDialogVariableTimeAction.super.call(this, panel, variable, value);
     },
 
-    update: function() {
+    update: function () {
       this.panel.SetDialogVariableTime(this.variable, this.value);
       return false;
     },
@@ -152,7 +152,7 @@
       this.panel = panel;
     },
 
-    update: function() {
+    update: function () {
       this.panel.ScrollToTop();
       return false;
     },
@@ -165,7 +165,7 @@
       this.panel = panel;
     },
 
-    update: function() {
+    update: function () {
       this.panel.ScrollToBottom();
       return false;
     },
@@ -179,7 +179,7 @@
       this.delay = delay;
     },
 
-    update: function() {
+    update: function () {
       this.panel.DeleteAsync(this.delay);
       return false;
     },
@@ -192,7 +192,7 @@
       this.panel = panel;
     },
 
-    update: function() {
+    update: function () {
       this.panel.RemoveAndDeleteChildren();
       return false;
     },
@@ -206,7 +206,7 @@
       this.optionId = optionId;
     },
 
-    update: function() {
+    update: function () {
       this.panel.SetSelected(this.optionId);
       return false;
     },
@@ -220,7 +220,7 @@
       this.option = option;
     },
 
-    update: function() {
+    update: function () {
       var optionPanel = typeof this.option === "function" ? this.option() : this.option;
       this.panel.AddOption(optionPanel);
       return false;
@@ -235,7 +235,7 @@
       this.optionId = optionId;
     },
 
-    update: function() {
+    update: function () {
       this.panel.RemoveOption(this.optionId);
       return false;
     },
@@ -248,7 +248,7 @@
       this.panel = panel;
     },
 
-    update: function() {
+    update: function () {
       this.panel.RemoveAllOptions();
       return false;
     },
@@ -261,13 +261,13 @@
       this.panel = panel;
     },
 
-    update: function() {
+    update: function () {
       this.panel.SetFocus();
       return false;
     },
   });
 
-  var isSequence = function(object) {
+  var isSequence = function (object) {
     return (
       object instanceof Sequence ||
       object instanceof ParallelSequence ||
@@ -276,21 +276,21 @@
     );
   };
 
-  var actionSize = function(action) {
+  var actionSize = function (action) {
     return isSequence(action) ? action.size() : 1;
   };
 
   var SequenceMixin = {
-    size: function() {
+    size: function () {
       var aggregate = _.overArgs(_.add, [_, actionSize]);
       return _.reduce(this.actions, aggregate, 1);
     },
 
-    Start: function() {
+    Start: function () {
       return RunSingleAction(this);
     },
 
-    Action: function(action) {
+    Action: function (action) {
       if (!_.isArray(action)) {
         action = [action];
       }
@@ -299,162 +299,162 @@
       return this;
     },
 
-    Noop: function() {
+    Noop: function () {
       this.Action(new NoopAction());
       return this;
     },
 
-    RunFunction: function() {
+    RunFunction: function () {
       this.Action(createAction(RunFunctionAction, arguments));
       return this;
     },
 
-    Wait: function(seconds) {
+    Wait: function (seconds) {
       this.Action(new WaitAction(seconds));
       return this;
     },
 
-    WaitOneFrame: function() {
+    WaitOneFrame: function () {
       this.Action(new WaitOneFrameAction());
       return this;
     },
 
-    WaitEvent: function(panel, eventName) {
+    WaitEvent: function (panel, eventName) {
       this.Action(new WaitEventAction(panel, eventName));
       return this;
     },
 
-    WaitAction: function(action, timeoutDuration, continueAfterTimeout) {
+    WaitAction: function (action, timeoutDuration, continueAfterTimeout) {
       this.Action(new WaitActionAction(action, timeoutDuration, continueAfterTimeout));
       return this;
     },
 
-    Print: function() {
+    Print: function () {
       this.Action(createAction(PrintAction, arguments));
       return this;
     },
 
-    AddClass: function(panel, panelClass) {
+    AddClass: function (panel, panelClass) {
       this.Action(new AddClassAction(panel, panelClass));
       return this;
     },
 
-    RemoveClass: function(panel, panelClass) {
+    RemoveClass: function (panel, panelClass) {
       this.Action(new RemoveClassAction(panel, panelClass));
       return this;
     },
 
-    SwitchClass: function(panel, panelSlot, panelClass) {
+    SwitchClass: function (panel, panelSlot, panelClass) {
       this.Action(new SwitchClassAction(panel, panelSlot, panelClass));
       return this;
     },
 
-    ReplaceClass: function(panel, className, replacement) {
+    ReplaceClass: function (panel, className, replacement) {
       this.Action(new ReplaceClassAction(panel, className, replacement));
       return this;
     },
 
-    WaitClass: function(panel, panelClass) {
+    WaitClass: function (panel, panelClass) {
       this.Action(new WaitClassAction(panel, panelClass));
       return this;
     },
 
-    DeleteAsync: function(panel, delay) {
+    DeleteAsync: function (panel, delay) {
       this.Action(new DeleteAsyncAction(panel, delay));
       return this;
     },
 
-    RemoveChildren: function(panel) {
+    RemoveChildren: function (panel) {
       this.Action(new RemoveChildrenAction(panel));
       return this;
     },
 
-    ScrollToTop: function(panel) {
+    ScrollToTop: function (panel) {
       this.Action(new ScrollToTopAction(panel));
       return this;
     },
 
-    ScrollToBottom: function(panel) {
+    ScrollToBottom: function (panel) {
       this.Action(new ScrollToBottomAction(panel));
       return this;
     },
 
-    Enable: function(panel) {
+    Enable: function (panel) {
       this.Action(new EnableAction(panel));
       return this;
     },
 
-    Disable: function(panel) {
+    Disable: function (panel) {
       this.Action(new DisableAction(panel));
       return this;
     },
 
-    Focus: function(panel) {
+    Focus: function (panel) {
       this.Action(new FocusAction(panel));
       return this;
     },
 
-    SetAttribute: function(panel, attribute, value) {
+    SetAttribute: function (panel, attribute, value) {
       this.Action(new SetAttributeAction(panel, attribute, value));
       return this;
     },
 
-    SetDialogVariable: function(panel, dialogVariable, value) {
+    SetDialogVariable: function (panel, dialogVariable, value) {
       this.Action(new SetDialogVariableAction(panel, dialogVariable, value));
       return this;
     },
 
-    SetDialogVariableInt: function(panel, dialogVariable, value) {
+    SetDialogVariableInt: function (panel, dialogVariable, value) {
       this.Action(new SetDialogVariableIntAction(panel, dialogVariable, value));
       return this;
     },
 
-    AnimateDialogVariableInt: function(panel, dialogVariable, start, end, seconds) {
+    AnimateDialogVariableInt: function (panel, dialogVariable, start, end, seconds) {
       this.Action(new AnimateDialogVariableIntAction(panel, dialogVariable, start, end, seconds));
       return this;
     },
 
-    SetDialogVariableTime: function(panel, dialogVariable, value) {
+    SetDialogVariableTime: function (panel, dialogVariable, value) {
       this.Action(new SetDialogVariableTimeAction(panel, dialogVariable, value));
       return this;
     },
 
-    SetProgressBarValue: function(progressBar, value) {
+    SetProgressBarValue: function (progressBar, value) {
       this.Action(new SetProgressBarValueAction(progressBar, value));
       return this;
     },
 
-    AnimateProgressBar: function(progressBar, startValue, endValue, seconds) {
+    AnimateProgressBar: function (progressBar, startValue, endValue, seconds) {
       this.Action(new AnimateProgressBarAction(progressBar, startValue, endValue, seconds));
       return this;
     },
 
-    AnimateProgressBarWithMiddle: function(progressBar, startValue, endValue, seconds) {
+    AnimateProgressBarWithMiddle: function (progressBar, startValue, endValue, seconds) {
       this.Action(new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds));
       return this;
     },
 
-    AddOption: function(panel, option) {
+    AddOption: function (panel, option) {
       this.Action(new AddOptionAction(panel, option));
       return this;
     },
 
-    RemoveOption: function(panel, optionId) {
+    RemoveOption: function (panel, optionId) {
       this.Action(new RemoveOptionAction(panel, optionId));
       return this;
     },
 
-    RemoveAllOptions: function(panel) {
+    RemoveAllOptions: function (panel) {
       this.Action(new RemoveAllOptionsAction(panel));
       return this;
     },
 
-    SelectOption: function(panel, optionId) {
+    SelectOption: function (panel, optionId) {
       this.Action(new SelectOptionAction(panel, optionId));
       return this;
     },
 
-    PlaySoundEffect: function(soundName) {
+    PlaySoundEffect: function (soundName) {
       this.Action(new PlaySoundEffectAction(soundName));
       return this;
     },
@@ -468,13 +468,13 @@
       this.actions = [];
     },
 
-    start: function() {
+    start: function () {
       this.index = 0;
       this.running = false;
       this.stop = false;
     },
 
-    update: function() {
+    update: function () {
       while (this.index < this.actions.length) {
         var action = this.actions[this.index];
 
@@ -511,7 +511,7 @@
       return false;
     },
 
-    finish: function() {
+    finish: function () {
       if (this.stop) {
         return;
       }

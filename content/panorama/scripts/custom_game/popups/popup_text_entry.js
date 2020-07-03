@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var EVENTS = global.Const.EVENTS;
   var CreateComponent = context.CreateComponent;
@@ -33,10 +33,10 @@
 
     // ----- Event handlers -----
 
-    onLoad: function() {
+    onLoad: function () {
       this.loadProperties();
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["onLoad()", _.pick(this, PROPERTIES)];
       });
 
@@ -45,16 +45,16 @@
 
     // ----- Helpers -----
 
-    loadProperties: function() {
+    loadProperties: function () {
       _.each(
         PROPERTIES,
-        function(property) {
+        function (property) {
           this[property] = this.$ctx.GetAttributeString(property, "");
         }.bind(this)
       );
     },
 
-    render: function() {
+    render: function () {
       var iconType;
 
       this.$ctx.SetDialogVariable("title", this.title);
@@ -89,11 +89,11 @@
 
     // ----- UI methods -----
 
-    Close: function() {
+    Close: function () {
       this.closePopup(this.$ctx);
     },
 
-    Submit: function() {
+    Submit: function () {
       this.debug("Submit()", this.$textEntry.text);
 
       this.sendClientSide(EVENTS.POPUP_TEXT_ENTRY_SUBMIT, {

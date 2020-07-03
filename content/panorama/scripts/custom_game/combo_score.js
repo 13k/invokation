@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
@@ -55,14 +55,10 @@
 
   function eachUpdateDigitsOperations(container, value, callback) {
     var panels = container.FindChildrenWithClassTraverse(DIGIT_CLASS);
-    var valueRevStr = value
-      .toString()
-      .split("")
-      .reverse()
-      .join("");
+    var valueRevStr = value.toString().split("").reverse().join("");
 
     for (var i = 0; i < panels.length; i++) {
-      (function() {
+      (function () {
         var idx = i;
         var digit = valueRevStr[idx];
         var panel = panels[idx];
@@ -127,37 +123,37 @@
 
     // ----- Helpers -----
 
-    counterFxAmbientStart: function() {
+    counterFxAmbientStart: function () {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.ambient, "Start", "0");
     },
 
-    counterFxBurstStart: function() {
+    counterFxBurstStart: function () {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Start", "0");
     },
 
-    counterFxBurstStop: function() {
+    counterFxBurstStop: function () {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Stop", "0");
     },
 
-    summaryFxAmbientStart: function() {
+    summaryFxAmbientStart: function () {
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2.ambient, "Start", "0");
     },
 
-    summaryFxBurstStart: function(intensity) {
+    summaryFxBurstStart: function (intensity) {
       var key = "burst" + intensity;
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Start", "0");
     },
 
-    summaryFxBurstStop: function(intensity) {
+    summaryFxBurstStop: function (intensity) {
       var key = "burst" + intensity;
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Stop", "0");
     },
 
-    burstIntensity: function(value) {
+    burstIntensity: function (value) {
       return _.sortedIndex(this.burstIntensityThresholds, value) + 1;
     },
 
-    digitsValue: function(id, value) {
+    digitsValue: function (id, value) {
       if (arguments.length > 1) {
         this.values[id] = value;
       }
@@ -165,12 +161,12 @@
       return this.values[id];
     },
 
-    spinQueue: function(id) {
+    spinQueue: function (id) {
       this.spinQueues[id] = this.spinQueues[id] || [];
       return this.spinQueues[id];
     },
 
-    consumeSpinDigits: function(id) {
+    consumeSpinDigits: function (id) {
       var queue = this.spinQueue(id);
       var options = queue.pop();
 
@@ -181,7 +177,7 @@
       }
     },
 
-    enqueueSpinDigits: function(options) {
+    enqueueSpinDigits: function (options) {
       var id = options.container.id;
 
       this.spinQueue(id).push(options);
@@ -191,17 +187,17 @@
       }
     },
 
-    updateDigits: function(container, value) {
-      eachUpdateDigitsOperations(container, value, function(panel, ops) {
-        _.forOwn(ops.setAttributes, function(value, key) {
+    updateDigits: function (container, value) {
+      eachUpdateDigitsOperations(container, value, function (panel, ops) {
+        _.forOwn(ops.setAttributes, function (value, key) {
           panel[key] = value;
         });
 
-        _.each(ops.removeClass, function(cssClass) {
+        _.each(ops.removeClass, function (cssClass) {
           panel.RemoveClass(cssClass);
         });
 
-        _.each(ops.addClass, function(cssClass) {
+        _.each(ops.addClass, function (cssClass) {
           panel.AddClass(cssClass);
         });
       });
@@ -211,21 +207,21 @@
 
     // ----- Actions -----
 
-    updateDigitsAction: function(container, value) {
+    updateDigitsAction: function (container, value) {
       var seq = new ParallelSequence();
 
-      eachUpdateDigitsOperations(container, value, function(panel, ops) {
+      eachUpdateDigitsOperations(container, value, function (panel, ops) {
         var panelSeq = new ParallelSequence();
 
-        _.forOwn(ops.setAttributes, function(value, key) {
+        _.forOwn(ops.setAttributes, function (value, key) {
           panelSeq.SetAttribute(panel, key, value);
         });
 
-        _.each(ops.removeClass, function(cssClass) {
+        _.each(ops.removeClass, function (cssClass) {
           panelSeq.RemoveClass(panel, cssClass);
         });
 
-        _.each(ops.addClass, function(cssClass) {
+        _.each(ops.addClass, function (cssClass) {
           panelSeq.AddClass(panel, cssClass);
         });
 
@@ -235,7 +231,7 @@
       return seq.RunFunction(this, this.digitsValue, container.id, value);
     },
 
-    spinDigitsAction: function(options) {
+    spinDigitsAction: function (options) {
       options = _.assign(
         {
           iterations: 10,
@@ -262,7 +258,7 @@
         var value = v > options.end ? options.end : v < options.start ? options.start : v;
         cond = options.increment > 0 ? v < options.end : v > options.start;
 
-        (function() {
+        (function () {
           var boundValue = Math.ceil(value);
           var updateSeq = new Sequence().RunFunction(this, this.updateDigits, options.container, boundValue);
 
@@ -279,25 +275,25 @@
       }
 
       return new Sequence()
-        .RunFunction(this, function() {
+        .RunFunction(this, function () {
           this.spinning[id] = true;
         })
         .Action(seq)
-        .RunFunction(this, function() {
+        .RunFunction(this, function () {
           this.spinning[id] = false;
           this.consumeSpinDigits(id);
         });
     },
 
-    updateCounterDigitsAction: function(value) {
+    updateCounterDigitsAction: function (value) {
       return this.updateDigitsAction(this.$counterTicker, value);
     },
 
-    updateSummaryCounterDigitsAction: function(count) {
+    updateSummaryCounterDigitsAction: function (count) {
       return this.updateDigitsAction(this.$summaryCountDisplay, count);
     },
 
-    spinSummaryDamageDigitsAction: function(options) {
+    spinSummaryDamageDigitsAction: function (options) {
       options = _.assign(
         {
           callbacks: {},
@@ -307,7 +303,7 @@
 
       var appliedFx = {};
 
-      options.callbacks.onSpin = function(damage) {
+      options.callbacks.onSpin = function (damage) {
         var intensity = this.burstIntensity(damage);
 
         if (!(intensity in appliedFx)) {
@@ -316,30 +312,30 @@
         }
       }.bind(this);
 
-      options.callbacks.onSpinEnd = function() {
+      options.callbacks.onSpinEnd = function () {
         _.forOwn(appliedFx, this.summaryFxBurstStop.bind(this));
       }.bind(this);
 
       return new RunFunctionAction(this, this.enqueueSpinDigits, options);
     },
 
-    bumpCounterTickerAction: function() {
+    bumpCounterTickerAction: function () {
       return new AddClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
     },
 
-    unbumpCounterTickerAction: function() {
+    unbumpCounterTickerAction: function () {
       return new RemoveClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
     },
 
-    showCounterAction: function() {
+    showCounterAction: function () {
       return new AddClassAction(this.$ctx, COUNTER_SHOW_CLASS);
     },
 
-    hideCounterAction: function() {
+    hideCounterAction: function () {
       return new RemoveClassAction(this.$ctx, COUNTER_SHOW_CLASS);
     },
 
-    updateCounterAction: function(count) {
+    updateCounterAction: function (count) {
       var seq = new Sequence();
 
       if (count < 1) {
@@ -357,15 +353,15 @@
         .RunFunction(this, this.counterFxBurstStop);
     },
 
-    showSummaryAction: function() {
+    showSummaryAction: function () {
       return new AddClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
     },
 
-    hideSummaryAction: function() {
+    hideSummaryAction: function () {
       return new RemoveClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
     },
 
-    updateSummaryAction: function(options) {
+    updateSummaryAction: function (options) {
       var count = _.get(options, "count", 0);
       var seq = new Sequence();
 
@@ -388,26 +384,26 @@
         .Action(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
     },
 
-    hideAction: function() {
+    hideAction: function () {
       return new ParallelSequence().Action(this.hideCounterAction()).Action(this.hideSummaryAction());
     },
 
     // ----- Action runners -----
 
-    spinDigits: function(options) {
+    spinDigits: function (options) {
       this.spinDigitsAction(options).Start();
     },
 
-    updateCounter: function(payload) {
+    updateCounter: function (payload) {
       var count = payload.count || 0;
       return this.updateCounterAction(count).Start();
     },
 
-    updateSummary: function(payload) {
+    updateSummary: function (payload) {
       return this.updateSummaryAction(payload).Start();
     },
 
-    hide: function() {
+    hide: function () {
       return this.hideAction().Start();
     },
   });

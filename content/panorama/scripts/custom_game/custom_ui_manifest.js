@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var CombosCollection = global.CombosCollection;
   var AbilitiesKeyValues = global.AbilitiesKeyValues;
@@ -71,7 +71,7 @@
     constructor: function CustomUIManifest() {
       CustomUIManifest.super.call(this);
 
-      _.forEach(UI_CONFIG, function(value, key) {
+      _.forEach(UI_CONFIG, function (value, key) {
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t[key], value);
       });
 

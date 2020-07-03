@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var CombosView = global.CombosView;
@@ -41,7 +41,7 @@
     PROPERTY_FILTER_OPTION_DEFAULT: "invokation_picker_filter_option_all",
   };
 
-  var COMBO_PROPERTIES_TYPES = _.mapValues(COMBO_PROPERTIES, function(values) {
+  var COMBO_PROPERTIES_TYPES = _.mapValues(COMBO_PROPERTIES, function (values) {
     return typeof values[0];
   });
 
@@ -111,35 +111,35 @@
 
     // ----- Event handlers -----
 
-    onCombosChange: function() {
+    onCombosChange: function () {
       this.debug("onCombosChange()");
       this.combosView = new CombosView(COMBOS.Entries());
       this.$filterTags.component.Input("SetOptions", { options: this.comboTags() });
       this.renderCombos();
     },
 
-    onComboDetailsShow: function(payload) {
+    onComboDetailsShow: function (payload) {
       this.debug("onComboDetailsShow()", payload);
       this.close();
       this.renderViewer(payload.id);
     },
 
-    onComboPlay: function(payload) {
+    onComboPlay: function (payload) {
       this.debug("onComboPlay()", payload);
       this.startCombo(payload.id);
     },
 
-    onComboStarted: function() {
+    onComboStarted: function () {
       this.debug("onComboStarted()");
       this.close();
     },
 
-    onComboStopped: function() {
+    onComboStopped: function () {
       this.debug("onComboStopped()");
       this.open();
     },
 
-    onComboFinished: function(payload) {
+    onComboFinished: function (payload) {
       if (payload.id === FREESTYLE_COMBO_ID) {
         return;
       }
@@ -148,12 +148,12 @@
       this.finishCombo(payload.id);
     },
 
-    onFilterTagsChange: function(payload) {
+    onFilterTagsChange: function (payload) {
       this.debug("onFilterTagsChange()", payload);
       this.filterByTags(payload.tags);
     },
 
-    onPopupItemPickerSubmit: function(payload) {
+    onPopupItemPickerSubmit: function (payload) {
       if (payload.channel !== this.popupItemPickerChannel) {
         return;
       }
@@ -165,7 +165,7 @@
       }
     },
 
-    onPopupAbilityPickerSubmit: function(payload) {
+    onPopupAbilityPickerSubmit: function (payload) {
       if (payload.channel !== this.popupAbilityPickerChannel) {
         return;
       }
@@ -179,51 +179,46 @@
 
     // ----- Helpers -----
 
-    bindEvents: function() {
+    bindEvents: function () {
       COMBOS.OnChange(this.handler("onCombosChange"));
     },
 
-    startCombo: function(id) {
+    startCombo: function (id) {
       this.debug("startCombo()", id);
       this.sendServer(EVENTS.COMBO_START, { id: id });
     },
 
-    finishCombo: function(id) {
+    finishCombo: function (id) {
       this.debug("finishCombo()", id);
       this.finishedCombos[id] = true;
       this.markComboPanelAsFinished(id);
     },
 
-    markComboPanelAsFinished: function(id) {
+    markComboPanelAsFinished: function (id) {
       this.comboPanels[id].component.Input("SetFinished");
     },
 
-    renderViewer: function(id) {
+    renderViewer: function (id) {
       this.sendClientSide(EVENTS.VIEWER_RENDER, { id: id });
     },
 
-    comboTags: function() {
-      return _.chain(this.combosView.Entries())
-        .map("tags")
-        .flatten()
-        .uniq()
-        .sort()
-        .value();
+    comboTags: function () {
+      return _.chain(this.combosView.Entries()).map("tags").flatten().uniq().sort().value();
     },
 
-    isClosed: function() {
+    isClosed: function () {
       return this.$slideout.BHasClass(CLASSES.DRAWER_CLOSED);
     },
 
-    isFiltersPanelClosed: function() {
+    isFiltersPanelClosed: function () {
       return this.$slideout.BHasClass(CLASSES.FILTERS_CLOSED);
     },
 
-    resetComboPanels: function() {
+    resetComboPanels: function () {
       this.comboPanels = {};
     },
 
-    createComboPanel: function(parent, combo) {
+    createComboPanel: function (parent, combo) {
       var id = comboPanelId(combo);
       var panel = CreatePanelWithLayout(parent, id, COMBO_PANEL_LAYOUT);
 
@@ -245,7 +240,7 @@
       return panel;
     },
 
-    createPropertyFilterOption: function(parent, property, value) {
+    createPropertyFilterOption: function (parent, property, value) {
       var id = propertyFilterOptionId(property, value);
       var panel = $.CreatePanel("Label", parent, id);
       var text;
@@ -263,7 +258,7 @@
       return panel;
     },
 
-    createTagsFilter: function() {
+    createTagsFilter: function () {
       this.$filterTags = CreatePanelWithLayout(this.$filterTagsContainer, TAG_SELECT_ID, TAG_SELECT_LAYOUT);
 
       this.$filterTags.component.Outputs({
@@ -273,24 +268,20 @@
       return this.$filterTags;
     },
 
-    resetTagsFilter: function() {
+    resetTagsFilter: function () {
       this.$filterTags.component.Input("Clear");
     },
 
-    enableFiltering: function() {
+    enableFiltering: function () {
       this.filtering = true;
     },
 
-    disableFiltering: function() {
+    disableFiltering: function () {
       this.filtering = false;
     },
 
-    filter: function() {
-      var propertyFilterValue = _.chain(this.propertyFilterValue)
-        .bind(this)
-        .unary()
-        .rearg([1])
-        .value();
+    filter: function () {
+      var propertyFilterValue = _.chain(this.propertyFilterValue).bind(this).unary().rearg([1]).value();
 
       var filters = _.mapValues(COMBO_PROPERTIES, propertyFilterValue);
 
@@ -302,11 +293,11 @@
       this.combosView.Filter(filters);
     },
 
-    propertyFilter: function(property) {
+    propertyFilter: function (property) {
       return this.element(propertyFilterAttr(property));
     },
 
-    propertyFilterValue: function(property) {
+    propertyFilterValue: function (property) {
       var value = _.chain(this)
         .invoke("propertyFilter", property)
         .invoke("GetSelected")
@@ -320,52 +311,48 @@
       return value;
     },
 
-    tagsFilterValue: function() {
+    tagsFilterValue: function () {
       return this.filterTags;
     },
 
-    itemFilterValue: function() {
+    itemFilterValue: function () {
       return this.$filterItemImage.itemname;
     },
 
-    abilityFilterValue: function() {
+    abilityFilterValue: function () {
       return this.$filterAbilityImage.abilityname;
     },
 
     // ----- Actions -----
 
-    resetCombosAction: function() {
+    resetCombosAction: function () {
       return new Sequence().RunFunction(this, this.resetComboPanels).RemoveChildren(this.$combos);
     },
 
-    renderCombosAction: function() {
+    renderCombosAction: function () {
       return new Sequence().Action(this.resetCombosAction()).Action(this.createComboPanelsAction());
     },
 
-    createComboPanelsAction: function() {
+    createComboPanelsAction: function () {
       var createComboPanelAction = _.bind(this.createComboPanelAction, this, this.$combos);
       return new Sequence().Action(_.map(this.combosView.Entries(), createComboPanelAction));
     },
 
-    createComboPanelAction: function(parent, combo) {
+    createComboPanelAction: function (parent, combo) {
       return new RunFunctionAction(this, this.createComboPanel, parent, combo);
     },
 
-    renderFiltersAction: function() {
+    renderFiltersAction: function () {
       return new ParallelSequence().Action(this.renderPropertyFiltersAction()).Action(this.renderTagsFilterAction());
     },
 
-    renderPropertyFiltersAction: function() {
-      var renderPropertyFilterAction = _.chain(this.renderPropertyFilterAction)
-        .bind(this)
-        .ary(2)
-        .rearg([1, 0])
-        .value();
+    renderPropertyFiltersAction: function () {
+      var renderPropertyFilterAction = _.chain(this.renderPropertyFilterAction).bind(this).ary(2).rearg([1, 0]).value();
 
       return new ParallelSequence().Action(_.map(COMBO_PROPERTIES, renderPropertyFilterAction));
     },
 
-    renderPropertyFilterAction: function(property, values) {
+    renderPropertyFilterAction: function (property, values) {
       values = _.concat([PROPERTY_FILTER_OPTION_DEFAULT], values);
 
       var dropDown = this.propertyFilter(property);
@@ -377,105 +364,101 @@
       return new Sequence().RemoveAllOptions(dropDown).Action(_.map(values, renderPropertyFilterOptionAction));
     },
 
-    renderPropertyFilterOptionAction: function(property, value) {
+    renderPropertyFilterOptionAction: function (property, value) {
       var dropDown = this.propertyFilter(property);
       var createPropertyFilterOption = _.bind(this.createPropertyFilterOption, this, dropDown, property, value);
 
       return new AddOptionAction(dropDown, createPropertyFilterOption);
     },
 
-    resetPropertyFiltersAction: function() {
-      var resetPropertyFilterAction = _.chain(this.resetPropertyFilterAction)
-        .bind(this)
-        .unary()
-        .rearg([1])
-        .value();
+    resetPropertyFiltersAction: function () {
+      var resetPropertyFilterAction = _.chain(this.resetPropertyFilterAction).bind(this).unary().rearg([1]).value();
 
       return new ParallelSequence().Action(_.map(COMBO_PROPERTIES, resetPropertyFilterAction));
     },
 
-    resetPropertyFilterAction: function(property) {
+    resetPropertyFilterAction: function (property) {
       return new SelectOptionAction(
         this.propertyFilter(property),
         propertyFilterOptionId(property, PROPERTY_FILTER_OPTION_DEFAULT)
       );
     },
 
-    renderTagsFilterAction: function() {
+    renderTagsFilterAction: function () {
       return new RunFunctionAction(this, this.createTagsFilter);
     },
 
-    resetTagsFilterAction: function() {
+    resetTagsFilterAction: function () {
       return new RunFunctionAction(this, this.resetTagsFilter);
     },
 
-    setItemFilterAction: function(name) {
+    setItemFilterAction: function (name) {
       return new SetAttributeAction(this.$filterItemImage, "itemname", name);
     },
 
-    resetItemFilterAction: function() {
+    resetItemFilterAction: function () {
       return new ParallelSequence().Disable(this.$filterItemResetButton).Action(this.setItemFilterAction(""));
     },
 
-    setAbilityFilterAction: function(name) {
+    setAbilityFilterAction: function (name) {
       return new SetAttributeAction(this.$filterAbilityImage, "abilityname", name);
     },
 
-    resetAbilityFilterAction: function() {
+    resetAbilityFilterAction: function () {
       return new ParallelSequence().Disable(this.$filterAbilityResetButton).Action(this.setAbilityFilterAction(""));
     },
 
     // ----- Action runners -----
 
-    renderCombos: function() {
+    renderCombos: function () {
       var seq = this.renderCombosAction();
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["renderCombos()", { combos: this.combosView.Length(), actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    renderFilters: function() {
+    renderFilters: function () {
       var seq = this.renderFiltersAction();
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["renderFilters()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    open: function() {
+    open: function () {
       if (!this.isClosed()) {
         return;
       }
 
       var seq = new ParallelSequence().PlaySoundEffect(SOUNDS.OPEN).RemoveClass(this.$slideout, CLASSES.DRAWER_CLOSED);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["open()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    close: function() {
+    close: function () {
       if (this.isClosed()) {
         return;
       }
 
       var seq = new ParallelSequence().PlaySoundEffect(SOUNDS.CLOSE).AddClass(this.$slideout, CLASSES.DRAWER_CLOSED);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["close()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    openFilters: function() {
+    openFilters: function () {
       if (!this.isFiltersPanelClosed()) {
         return;
       }
@@ -484,14 +467,14 @@
         .PlaySoundEffect(SOUNDS.FILTERS_OPEN)
         .RemoveClass(this.$slideout, CLASSES.FILTERS_CLOSED);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["openFilters()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    closeFilters: function() {
+    closeFilters: function () {
       if (this.isFiltersPanelClosed()) {
         return;
       }
@@ -500,14 +483,14 @@
         .PlaySoundEffect(SOUNDS.FILTERS_CLOSE)
         .AddClass(this.$slideout, CLASSES.FILTERS_CLOSED);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["closeFilters()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    filterByTags: function(tags) {
+    filterByTags: function (tags) {
       this.filterTags = tags;
       var seq = new Sequence();
 
@@ -519,40 +502,40 @@
 
       seq.RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["filterByTags()", { tags: this.filterTags, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    filterByItem: function(name) {
+    filterByItem: function (name) {
       var seq = new Sequence()
         .Action(this.setItemFilterAction(name))
         .Enable(this.$filterItemResetButton)
         .RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["filterByItem()", { item: name, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    filterByAbility: function(name) {
+    filterByAbility: function (name) {
       var seq = new Sequence()
         .Action(this.setAbilityFilterAction(name))
         .Enable(this.$filterAbilityResetButton)
         .RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["filterByAbility()", { ability: name, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    resetFilters: function() {
+    resetFilters: function () {
       var seq = new Sequence()
         .RunFunction(this, this.disableFiltering)
         .Action(this.resetPropertyFiltersAction())
@@ -562,27 +545,27 @@
         .RunFunction(this, this.enableFiltering)
         .RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["resetFilters()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    resetItemFilter: function() {
+    resetItemFilter: function () {
       var seq = new Sequence().Action(this.resetItemFilterAction()).RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["resetItemFilter()", { actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    resetAbilityFilter: function() {
+    resetAbilityFilter: function () {
       var seq = new Sequence().Action(this.resetAbilityFilterAction()).RunFunction(this, this.Filter);
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["resetAbilityFilter()", { actions: seq.size() }];
       });
 
@@ -591,12 +574,12 @@
 
     // ----- UI methods -----
 
-    Reload: function() {
+    Reload: function () {
       this.debug("Reload()");
       COMBOS.Reload();
     },
 
-    Toggle: function() {
+    Toggle: function () {
       if (this.isClosed()) {
         this.open();
       } else {
@@ -604,12 +587,12 @@
       }
     },
 
-    Freestyle: function() {
+    Freestyle: function () {
       this.debug("Freestyle()");
       this.startCombo(FREESTYLE_COMBO_ID);
     },
 
-    ToggleFilters: function() {
+    ToggleFilters: function () {
       if (this.isFiltersPanelClosed()) {
         this.openFilters();
       } else {
@@ -617,7 +600,7 @@
       }
     },
 
-    Filter: function() {
+    Filter: function () {
       if (!this.filtering) {
         return;
       }
@@ -626,25 +609,25 @@
       return this.renderCombos();
     },
 
-    ResetFilters: function() {
+    ResetFilters: function () {
       return this.resetFilters();
     },
 
-    ResetTagsFilter: function() {
+    ResetTagsFilter: function () {
       return this.resetTagsFilter();
     },
 
-    ShowItemFilter: function() {
+    ShowItemFilter: function () {
       return this.showPopup(this.$filterItemImage, POPUP_ITEM_PICKER_ID, POPUP_ITEM_PICKER_LAYOUT, {
         channel: this.popupItemPickerChannel,
       });
     },
 
-    ResetItemFilter: function() {
+    ResetItemFilter: function () {
       return this.resetItemFilter();
     },
 
-    ShowAbilityFilter: function() {
+    ShowAbilityFilter: function () {
       return this.showPopup(
         this.$filterAbilityImage,
         POPUP_INVOKER_ABILITY_PICKER_ID,
@@ -653,7 +636,7 @@
       );
     },
 
-    ResetAbilityFilter: function() {
+    ResetAbilityFilter: function () {
       return this.resetAbilityFilter();
     },
   });

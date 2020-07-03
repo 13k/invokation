@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
 
   var module = function NetTable(name) {
@@ -10,7 +10,7 @@
     this.subscribe(this.onChange.bind(this));
   };
 
-  module.prototype.onChange = function(table, key, value) {
+  module.prototype.onChange = function (table, key, value) {
     if (table !== this.name) {
       return;
     }
@@ -19,23 +19,23 @@
     _.over(_.get(this._onKeyChangeCallbacks, key, []))(key, value);
   };
 
-  module.prototype.subscribe = function(fn) {
+  module.prototype.subscribe = function (fn) {
     return CustomNetTables.SubscribeNetTableListener(this.name, fn);
   };
 
-  module.prototype.All = function() {
+  module.prototype.All = function () {
     return CustomNetTables.GetAllTableValues(this.name);
   };
 
-  module.prototype.Get = function(key) {
+  module.prototype.Get = function (key) {
     return CustomNetTables.GetTableValue(this.name, key);
   };
 
-  module.prototype.OnChange = function(fn) {
+  module.prototype.OnChange = function (fn) {
     this._onChangeCallbacks.push(fn);
   };
 
-  module.prototype.OnKeyChange = function(key, fn) {
+  module.prototype.OnKeyChange = function (key, fn) {
     this._onKeyChangeCallbacks[key] = this._onKeyChangeCallbacks[key] || [];
     this._onKeyChangeCallbacks[key].push(fn);
   };

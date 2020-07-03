@@ -168,7 +168,7 @@ function CloseClicked() {
   $("#APIWindow").visible = false;
 }
 
-(function() {
+(function () {
   GameEvents.Subscribe("modmaker_lua_api", LuaAPI);
   GameEvents.Subscribe("modmaker_send_file", SendFile);
 

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
   var Class = global.Class;
 
@@ -23,7 +23,7 @@
       this.progname = options.progname && "[" + options.progname + "]";
     },
 
-    log: function(level) {
+    log: function (level) {
       level = parseInt(level) || -1;
 
       if (level < this.level || arguments.length < 2) {
@@ -39,7 +39,7 @@
 
       args = args
         .concat(_.drop(arguments))
-        .flatMap(function(arg) {
+        .flatMap(function (arg) {
           return [arg, " "];
         })
         .dropRight()
@@ -48,7 +48,7 @@
       return $.Msg.apply(null, args);
     },
 
-    logFn: function(level, fn) {
+    logFn: function (level, fn) {
       if (level < this.level) {
         return;
       }
@@ -68,17 +68,17 @@
     },
   };
 
-  _.forEach(LEVELS, function(value, name) {
+  _.forEach(LEVELS, function (value, name) {
     if (name === "UNKNOWN") return;
 
     var baseName = _.lowerCase(name);
 
-    prototype[baseName] = function() {
+    prototype[baseName] = function () {
       var args = _.concat([value], arguments);
       return this.log.apply(this, args);
     };
 
-    prototype[baseName + "Fn"] = function() {
+    prototype[baseName + "Fn"] = function () {
       var args = _.concat([value], arguments);
       return this.logFn.apply(this, args);
     };

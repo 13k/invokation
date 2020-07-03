@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
 
   var COMBO_PROPERTIES = global.Const.COMBO_PROPERTIES;
@@ -18,53 +18,50 @@
 
   var ABILITY_TOOLTIP_KEY_PREFIX = "DOTA_Tooltip_ability_";
 
-  exports.ShopGroupKey = function(group) {
+  exports.ShopGroupKey = function (group) {
     return SHOP_GROUP_KEY_PREFIX + _.capitalize(group);
   };
 
-  exports.ShopCategoryKey = function(category) {
+  exports.ShopCategoryKey = function (category) {
     return SHOP_CATEGORY_KEY_PREFIX + _.toUpper(String(category));
   };
 
-  exports.AbilityTooltipKey = function(ability) {
+  exports.AbilityTooltipKey = function (ability) {
     return ABILITY_TOOLTIP_KEY_PREFIX + ability;
   };
 
-  exports.ParameterizedKey = function(prefix, params) {
-    return _.chain([prefix])
-      .concat(params)
-      .join(KEY_PARAM_SEP)
-      .value();
+  exports.ParameterizedKey = function (prefix, params) {
+    return _.chain([prefix]).concat(params).join(KEY_PARAM_SEP).value();
   };
 
-  exports.ComboKey = function(combo, params) {
+  exports.ComboKey = function (combo, params) {
     params = _.concat([combo.id], params || []);
     return exports.ParameterizedKey(COMBO_KEY_PREFIX, params);
   };
 
-  exports.ComboPropertiesKey = function(property, params) {
+  exports.ComboPropertiesKey = function (property, params) {
     params = _.concat([_.snakeCase(property)], params || []);
     return exports.ParameterizedKey(COMBO_PROPERTIES_PREFIX, params);
   };
 
-  exports.LocalizeFallback = function(key, fallbackKey) {
+  exports.LocalizeFallback = function (key, fallbackKey) {
     var l10n = $.Localize(key);
     return l10n === key ? $.Localize(fallbackKey) : l10n;
   };
 
-  exports.LocalizeParameterized = function(prefix, params) {
+  exports.LocalizeParameterized = function (prefix, params) {
     return $.Localize(exports.ParameterizedKey(prefix, params));
   };
 
-  exports.LocalizeComboKey = function(combo, params) {
+  exports.LocalizeComboKey = function (combo, params) {
     return $.Localize(exports.ComboKey(combo, params));
   };
 
-  exports.LocalizeComboKeys = function(combo, keys) {
+  exports.LocalizeComboKeys = function (combo, keys) {
     keys = keys || COMBO_KEYS;
 
     if (_.isArray(keys)) {
-      var transformKeys = function(keys, key) {
+      var transformKeys = function (keys, key) {
         keys[key] = exports.LocalizeComboKey(combo, key);
       };
 
@@ -74,32 +71,29 @@
     return exports.LocalizeComboKey(combo, keys);
   };
 
-  exports.LocalizeComboPropertiesKey = function(property, params) {
+  exports.LocalizeComboPropertiesKey = function (property, params) {
     return $.Localize(exports.ComboPropertiesKey(property, params));
   };
 
-  exports.LocalizeComboProperty = function(combo, property) {
+  exports.LocalizeComboProperty = function (combo, property) {
     return exports.LocalizeComboPropertiesKey(property, combo[property]);
   };
 
-  exports.LocalizeComboProperties = function(combo) {
-    var comboPropertyL10n = _.chain(exports.LocalizeComboProperty)
-      .partial(combo)
-      .rearg([1, 0])
-      .value();
+  exports.LocalizeComboProperties = function (combo) {
+    var comboPropertyL10n = _.chain(exports.LocalizeComboProperty).partial(combo).rearg([1, 0]).value();
 
     return _.mapValues(COMBO_PROPERTIES, comboPropertyL10n);
   };
 
-  exports.LocalizeShopGroup = function(group) {
+  exports.LocalizeShopGroup = function (group) {
     return $.Localize(exports.ShopGroupKey(group));
   };
 
-  exports.LocalizeShopCategory = function(category) {
+  exports.LocalizeShopCategory = function (category) {
     return $.Localize(exports.ShopCategoryKey(category));
   };
 
-  exports.LocalizeAbilityTooltip = function(ability, panel) {
+  exports.LocalizeAbilityTooltip = function (ability, panel) {
     return $.Localize(exports.AbilityTooltipKey(ability), panel);
   };
 

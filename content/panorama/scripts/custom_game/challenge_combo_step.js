@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var Class = global.Class;
   var ComboStep = context.ComboStep;
 
@@ -23,24 +23,24 @@
       });
     },
 
-    onSetActive: function() {
+    onSetActive: function () {
       this.$ctx.AddClass(CLASSES.ACTIVE);
     },
 
-    onUnsetActive: function() {
+    onUnsetActive: function () {
       this.$ctx.RemoveClass(CLASSES.ACTIVE);
     },
 
-    onSetError: function() {
+    onSetError: function () {
       this.$ctx.RemoveClass(CLASSES.ERROR);
       this.$ctx.AddClass(CLASSES.ERROR);
     },
 
-    onUnsetError: function() {
+    onUnsetError: function () {
       this.$ctx.RemoveClass(CLASSES.ERROR);
     },
 
-    onBump: function() {
+    onBump: function () {
       this.$ctx.RemoveClass(CLASSES.BUMP);
       this.$ctx.AddClass(CLASSES.BUMP);
     },

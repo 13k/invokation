@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
   var Class = global.Class;
   var Logger = global.Logger;
@@ -26,15 +26,15 @@
       this.listenToNetTableChange();
     },
 
-    loadFromNetTable: function() {
+    loadFromNetTable: function () {
       return this.netTable.Get(NET_TABLE.KEYS.MAIN.ABILITIES_KEY_VALUES);
     },
 
-    listenToNetTableChange: function() {
+    listenToNetTableChange: function () {
       return this.netTable.OnKeyChange(NET_TABLE.KEYS.MAIN.ABILITIES_KEY_VALUES, this.onNetTableChange.bind(this));
     },
 
-    onNetTableChange: function(key, value) {
+    onNetTableChange: function (key, value) {
       if (key !== NET_TABLE.KEYS.MAIN.ABILITIES_KEY_VALUES) {
         return;
       }
@@ -43,7 +43,7 @@
       this.set(value);
     },
 
-    set: function(value) {
+    set: function (value) {
       if (!value) {
         this.logger.warning(WARN_UNDEF_VALUE);
         return;
@@ -53,16 +53,16 @@
       this.onChange();
     },
 
-    onChange: function() {
+    onChange: function () {
       this.normalize();
       this.callbacks.Run("change", this.data);
     },
 
-    normalize: function() {
+    normalize: function () {
       this.data = LuaArrayDeep(this.data);
     },
 
-    Load: function() {
+    Load: function () {
       this.logger.debug("Load()");
 
       if (!this.data) {
@@ -73,7 +73,7 @@
       return false;
     },
 
-    OnChange: function(fn) {
+    OnChange: function (fn) {
       this.callbacks.On("change", fn);
 
       if (this.data) {
@@ -81,15 +81,15 @@
       }
     },
 
-    Entries: function() {
+    Entries: function () {
       return _.values(this.data);
     },
 
-    Get: function(id) {
+    Get: function (id) {
       return _.get(this.data, id);
     },
 
-    Each: function(fn) {
+    Each: function (fn) {
       return _.forOwn(this.data, fn);
     },
   });

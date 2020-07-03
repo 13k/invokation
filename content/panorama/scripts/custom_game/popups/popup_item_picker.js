@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var EVENTS = global.Const.EVENTS;
   var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
   var CreateComponent = context.CreateComponent;
@@ -21,20 +21,20 @@
 
     // ----- Event handlers -----
 
-    onLoad: function() {
+    onLoad: function () {
       this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
       this.debug("onLoad()", { channel: this.channel });
       this.render();
     },
 
-    onItemSelected: function(payload) {
+    onItemSelected: function (payload) {
       this.debug("onItemSelected()", payload);
       this.selected = payload.item;
     },
 
     // ----- Helpers -----
 
-    render: function() {
+    render: function () {
       this.$itemPicker = CreatePanelWithLayout(this.$itemPickerContainer, ITEM_PICKER_ID, ITEM_PICKER_LAYOUT);
 
       this.$itemPicker.component.Outputs({
@@ -46,11 +46,11 @@
 
     // ----- UI methods -----
 
-    Close: function() {
+    Close: function () {
       this.closePopup(this.$ctx);
     },
 
-    Submit: function() {
+    Submit: function () {
       this.debug("Submit()", this.selected);
 
       this.sendClientSide(EVENTS.POPUP_ITEM_PICKER_SUBMIT, {

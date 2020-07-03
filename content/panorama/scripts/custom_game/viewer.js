@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global, context) {
+(function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
@@ -34,7 +34,7 @@
   function htmlTitle(title) {
     return _.chain(title)
       .split(" - ")
-      .map(function(line, i) {
+      .map(function (line, i) {
         var heading = i === 0 ? "h1" : "h3";
         return "<" + heading + ">" + line + "</" + heading + ">";
       })
@@ -71,36 +71,36 @@
 
     // --- Event handlers -----
 
-    onComboStarted: function() {
+    onComboStarted: function () {
       this.debug("onComboStarted()");
       this.close();
     },
 
-    onViewerRender: function(payload) {
+    onViewerRender: function (payload) {
       this.debug("onViewerRender()", payload);
       this.view(payload.id);
     },
 
     // ----- Helpers -----
 
-    renderTalents: function() {
+    renderTalents: function () {
       this.$talents.BLoadLayout(TALENTS_DISPLAY_LAYOUT, false, false);
     },
 
-    resetSelectedTalents: function() {
+    resetSelectedTalents: function () {
       this.$talents.component.Input("Reset");
     },
 
-    selectTalents: function() {
+    selectTalents: function () {
       this.$talents.component.Input("Select", { talents: this.combo.talents });
     },
 
-    startCombo: function() {
+    startCombo: function () {
       this.debug("startCombo()", this.combo.id);
       this.sendServer(EVENTS.COMBO_START, { id: this.combo.id });
     },
 
-    createStepPanel: function(parent, step) {
+    createStepPanel: function (parent, step) {
       var id = stepPanelId(step);
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
 
@@ -109,7 +109,7 @@
       return panel;
     },
 
-    createPropertiesPanel: function() {
+    createPropertiesPanel: function () {
       var panel = CreatePanelWithLayout(this.$propertiesSection, PROPERTIES_ID, PROPERTIES_LAYOUT);
 
       panel.component.Input("SetCombo", this.combo);
@@ -119,15 +119,15 @@
 
     // ----- Actions -----
 
-    openAction: function() {
+    openAction: function () {
       return new Sequence().RemoveClass(this.$ctx, CLASSES.CLOSED);
     },
 
-    closeAction: function() {
+    closeAction: function () {
       return new Sequence().AddClass(this.$ctx, CLASSES.CLOSED);
     },
 
-    renderAction: function() {
+    renderAction: function () {
       return new Sequence()
         .Action(this.renderInfoAction())
         .Action(this.renderPropertiesAction())
@@ -137,7 +137,7 @@
         .ScrollToTop(this.$scrollPanel);
     },
 
-    renderInfoAction: function() {
+    renderInfoAction: function () {
       var title = htmlTitle(this.combo.l10n.name);
       var descriptionL10nKey = L10n.ComboKey(this.combo, "description");
       var description = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
@@ -147,72 +147,69 @@
         .SetAttribute(this.$descriptionLabel, "text", description);
     },
 
-    renderPropertiesAction: function() {
+    renderPropertiesAction: function () {
       return new Sequence().RemoveChildren(this.$propertiesSection).RunFunction(this, this.createPropertiesPanel);
     },
 
-    renderTalentsAction: function() {
+    renderTalentsAction: function () {
       return new Sequence().RunFunction(this, this.resetSelectedTalents).RunFunction(this, this.selectTalents);
     },
 
-    renderOrbsAction: function() {
+    renderOrbsAction: function () {
       return new ParallelSequence()
         .SetAttribute(this.$orbQuasLabel, "text", this.combo.orbs[0])
         .SetAttribute(this.$orbWexLabel, "text", this.combo.orbs[1])
         .SetAttribute(this.$orbExortLabel, "text", this.combo.orbs[2]);
     },
 
-    renderSequenceAction: function() {
+    renderSequenceAction: function () {
       var actions = _.map(this.combo.sequence, _.bind(this.createStepPanelAction, this, this.$sequence));
 
       return new Sequence().RemoveChildren(this.$sequence).Action(actions);
     },
 
-    createStepPanelAction: function(parent, step) {
+    createStepPanelAction: function (parent, step) {
       return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
     },
 
     // ----- Action runners -----
 
-    view: function(id) {
+    view: function (id) {
       this.combo = COMBOS.Get(id);
 
       var seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
 
-      this.debugFn(function() {
+      this.debugFn(function () {
         return ["view()", { id: this.combo.id, actions: seq.size() }];
       });
 
       return seq.Start();
     },
 
-    close: function() {
+    close: function () {
       return this.closeAction().Start();
     },
 
     // ----- UI methods -----
 
-    Reload: function() {
+    Reload: function () {
       this.debug("Reload()");
       return this.renderAction().Start();
     },
 
-    Close: function() {
+    Close: function () {
       return this.close();
     },
 
-    Play: function() {
+    Play: function () {
       return this.startCombo();
     },
 
-    ShowOrbTooltip: function(orb) {
+    ShowOrbTooltip: function (orb) {
       var index = ORBS.indexOf(orb);
 
       if (index >= 0) {
-        var attr = _.chain("orb_")
-          .concat(orb)
-          .camelCase()
-          .value();
+        var attr = _.chain("orb_").concat(orb).camelCase().value();
         var elem = this.element(attr);
         this.showAbilityTooltip(elem, elem.abilityname, { level: this.combo.orbs[index] });
       }

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(global /*, context */) {
+(function (global /*, context */) {
   var _ = global.lodash;
   var L10n = global.L10n;
   var Class = global.Class;
@@ -32,19 +32,19 @@
       this.listenToNetTableChange();
     },
 
-    sendReloadToServer: function() {
+    sendReloadToServer: function () {
       CustomEvents.SendServer(EVENTS.COMBOS_RELOAD);
     },
 
-    loadFromNetTable: function() {
+    loadFromNetTable: function () {
       return this.netTable.Get(NET_TABLE.KEYS.MAIN.COMBOS);
     },
 
-    listenToNetTableChange: function() {
+    listenToNetTableChange: function () {
       return this.netTable.OnKeyChange(NET_TABLE.KEYS.MAIN.COMBOS, this.onNetTableChange.bind(this));
     },
 
-    onNetTableChange: function(key, value) {
+    onNetTableChange: function (key, value) {
       if (key !== NET_TABLE.KEYS.MAIN.COMBOS) {
         return;
       }
@@ -53,7 +53,7 @@
       this.set(value);
     },
 
-    set: function(value) {
+    set: function (value) {
       if (!value) {
         this.logger.warning(WARN_UNDEF_VALUE);
         return;
@@ -63,19 +63,19 @@
       this.onChange();
     },
 
-    onChange: function() {
+    onChange: function () {
       this.normalize();
       this.callbacks.Run("change", this.data);
     },
 
-    normalize: function() {
-      _.forEach(this.data, function(combo) {
+    normalize: function () {
+      _.forEach(this.data, function (combo) {
         LuaArrayDeep(combo, { inplace: true });
 
         combo.l10n = L10n.LocalizeComboProperties(combo);
         combo.l10n.name = L10n.LocalizeComboKey(combo, "name");
 
-        _.forEach(combo.sequence, function(step) {
+        _.forEach(combo.sequence, function (step) {
           step.isOrbAbility = IsOrbAbility(step.name);
           step.isInvocationAbility = IsInvocationAbility(step.name);
           step.isItem = IsItemAbility(step.name);
@@ -83,7 +83,7 @@
       });
     },
 
-    Load: function() {
+    Load: function () {
       this.logger.debug("Load()");
 
       if (!this.data) {
@@ -94,14 +94,14 @@
       return false;
     },
 
-    Reload: function() {
+    Reload: function () {
       this.logger.debug("Reload()");
       this.data = null;
       this.sendReloadToServer();
       return this.Load();
     },
 
-    OnChange: function(fn) {
+    OnChange: function (fn) {
       this.callbacks.On("change", fn);
 
       if (this.data) {
@@ -109,15 +109,15 @@
       }
     },
 
-    Entries: function() {
+    Entries: function () {
       return _.values(this.data);
     },
 
-    Get: function(id) {
+    Get: function (id) {
       return _.get(this.data, id);
     },
 
-    Each: function(fn) {
+    Each: function (fn) {
       return _.forOwn(this.data, fn);
     },
   });
