@@ -1,9 +1,0 @@
-{
-  "version": "0.2.0",
-  "configurations": [{
-    "type": "lua",
-    "request": "launch",
-    "name": "Launch",
-    "program": "${workspaceFolder}/game/scripts/vscripts/addon_game_mode.lua"
-  }]
-}
