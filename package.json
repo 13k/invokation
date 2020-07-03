@@ -1,9 +1,8 @@
 {
   "private": true,
   "name": "invokation",
-  "version": "0.4.2-beta1",
+  "version": "dev",
   "devDependencies": {
-    "@prettier/plugin-lua": "^0.0.1",
     "eslint": "^7.3.0",
     "prettier": "^2.0.5",
     "stylelint": "^13.6.1",

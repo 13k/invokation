@@ -354,17 +354,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/plugin-lua@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@prettier/plugin-lua@npm:0.0.1"
-  dependencies:
-    luaparse: 0.2.1
-  peerDependencies:
-    prettier: ">=1.0.0"
-  checksum: e375b0e33570ed2f6e3caf5917ea3ec5c5c7f2e7e139bbd50285856db3efaa45735ee3bc22d5db121ef335ae8c3e291c1ba7a62a5b77971fbb8c03c19f460207
-  languageName: node
-  linkType: hard
-
 "@stylelint/postcss-css-in-js@npm:^0.37.1":
   version: 0.37.1
   resolution: "@stylelint/postcss-css-in-js@npm:0.37.1"
@@ -1451,7 +1440,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "invokation@workspace:."
   dependencies:
-    "@prettier/plugin-lua": ^0.0.1
     eslint: ^7.3.0
     prettier: ^2.0.5
     stylelint: ^13.6.1
@@ -1752,15 +1740,6 @@ __metadata:
   version: 2.0.4
   resolution: "longest-streak@npm:2.0.4"
   checksum: ba5ebac14700c0a5f88a312be789b651c35bfed84bd5e2b4f04ac0898add697c36ede401d0b17dfaac0956171027b61ad49ad866ac949ae1d36f9e4ced60cbe1
-  languageName: node
-  linkType: hard
-
-"luaparse@npm:0.2.1":
-  version: 0.2.1
-  resolution: "luaparse@npm:0.2.1"
-  bin:
-    luaparse: ./bin/luaparse
-  checksum: 7178b5b8c69e49b02eb4bd4609d95616485a696487c2edc985caf817743d5e6347d6f63864577546ec68d9ad1d74b247834df2af960c7ebd0f589c37d185e4a3
   languageName: node
   linkType: hard
 

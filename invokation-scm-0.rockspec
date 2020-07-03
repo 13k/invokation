@@ -1,5 +1,5 @@
 rockspec_format = "3.0"
-package = "Invokation"
+package = "invokation"
 version = "scm-0"
 
 source = {
@@ -16,7 +16,11 @@ description = {
   license = "MIT",
 }
 
-supported_platforms = { "linux", "macosx", "windows" }
+supported_platforms = {
+  "linux",
+  "macosx",
+  "windows",
+}
 
 dependencies = {
   "lua == 5.1",
@@ -24,15 +28,16 @@ dependencies = {
 
 build_dependencies = {
   "ldoc",
-  "lunamark",
   "luacheck",
+  "luaformatter",
+  "lunamark",
 }
 
 test_dependencies = {
-  "luacov",
+  "bit32 ~> 5.3",
   "busted",
   "compat53 ~> 0.7",
-  "bit32 ~> 5.3",
+  "luacov",
 }
 
 test = {

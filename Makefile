@@ -22,7 +22,7 @@ doc: doc-lua
 
 .PHONY: format-lua
 format-lua:
-	@yarn run prettier --write "$(LUA_SRC_PATH)/**/*.lua"
+	@lua-format "$(LUA_SRC_PATH)/**/*.lua"
 
 .PHONY: format-js
 format-js:
