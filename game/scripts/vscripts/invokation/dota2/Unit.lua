@@ -1,6 +1,5 @@
 --- Unit class.
 -- @classmod invokation.dota2.Unit
-
 local m = require("moses")
 local class = require("pl.class")
 local types = require("pl.types")
@@ -13,35 +12,34 @@ local M = class()
 local ERRF_UNIT_NO_INVENTORY = "Unit '%s' does not have an inventory"
 local ERRF_UNIT_CANNOT_RESPAWN = "Unit '%s' cannot respawn"
 
-local DELEGATES =
-  {
-    "AddItemByName",
-    "FindAbilityByName",
-    "GetAbilityByIndex",
-    "GetEntityIndex",
-    "GetItemInSlot",
-    "GetLevel",
-    "GetMaxHealth",
-    "GetMaxMana",
-    "GetPlayerOwner",
-    "GetPlayerOwnerID",
-    "GiveMana",
-    "HasAbility",
-    "HasInventory",
-    "HasItemInInventory",
-    "Heal",
-    "HeroLevelUp",
-    "Hold",
-    "Interrupt",
-    "IsAlive",
-    "IsHero",
-    "RemoveItem",
-    "RespawnHero",
-    "RespawnUnit",
-    "SetAbilityPoints",
-    "SetGold",
-    "StopSound",
-  }
+local DELEGATES = {
+  "AddItemByName",
+  "FindAbilityByName",
+  "GetAbilityByIndex",
+  "GetEntityIndex",
+  "GetItemInSlot",
+  "GetLevel",
+  "GetMaxHealth",
+  "GetMaxMana",
+  "GetPlayerOwner",
+  "GetPlayerOwnerID",
+  "GiveMana",
+  "HasAbility",
+  "HasInventory",
+  "HasItemInInventory",
+  "Heal",
+  "HeroLevelUp",
+  "Hold",
+  "Interrupt",
+  "IsAlive",
+  "IsHero",
+  "RemoveItem",
+  "RespawnHero",
+  "RespawnUnit",
+  "SetAbilityPoints",
+  "SetGold",
+  "StopSound",
+}
 
 delegation.delegate(M, "entity", DELEGATES)
 
@@ -69,11 +67,8 @@ function M:Respawn(options)
   options = options or {}
 
   if self:IsHero() then
-    return self:RespawnHero(
-      types.to_bool(options.buyback),
-      types.to_bool(options.isFirst),
-      types.to_bool(options.penalty)
-    )
+    return self:RespawnHero(types.to_bool(options.buyback), types.to_bool(options.isFirst),
+                            types.to_bool(options.penalty))
   end
 
   return self:RespawnUnit()
@@ -93,13 +88,9 @@ function M:Purge(options)
   options.stuns = options.stuns == nil and true or options.stuns
   options.exceptions = options.exceptions == nil and true or options.exceptions
 
-  return self.entity:Purge(
-    types.to_bool(options.buffs),
-    types.to_bool(options.debuffs),
-    types.to_bool(options.frameOnly),
-    types.to_bool(options.stuns),
-    types.to_bool(options.exceptions)
-  )
+  return self.entity:Purge(types.to_bool(options.buffs), types.to_bool(options.debuffs),
+                           types.to_bool(options.frameOnly), types.to_bool(options.stuns),
+                           types.to_bool(options.exceptions))
 end
 
 --- Levels up the hero unit.
@@ -160,7 +151,7 @@ function M:forEachItem(callback, options)
     local item = self:GetItemInSlot(slot)
 
     if item then
-      local ret = { callback(item, slot) }
+      local ret = {callback(item, slot)}
       local continue = true
 
       if #ret > 0 then

@@ -7,12 +7,7 @@ return {
     AbilityCooldown = 0,
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        health_regen_per_instance = "1 3 5 7 9 11 13",
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_FLOAT", health_regen_per_instance = "1 3 5 7 9 11 13"}},
   },
   invoker_wex = {
     ID = 5371,
@@ -23,14 +18,8 @@ return {
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        attack_speed_per_instance = "2 4 6 8 10 12 14",
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        move_speed_per_instance = "1 2 3 4 5 6 7",
-      },
+      ["01"] = {var_type = "FIELD_INTEGER", attack_speed_per_instance = "2 4 6 8 10 12 14"},
+      ["02"] = {var_type = "FIELD_INTEGER", move_speed_per_instance = "1 2 3 4 5 6 7"},
     },
   },
   invoker_exort = {
@@ -41,12 +30,7 @@ return {
     AbilityCooldown = 0,
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        bonus_damage_per_instance = "2 6 10 14 18 22 26",
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", bonus_damage_per_instance = "2 6 10 14 18 22 26"}},
   },
   invoker_empty1 = {
     ID = 5373,
@@ -72,19 +56,9 @@ return {
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        max_invoked_spells = 2,
-      },
-      ["02"] = {
-        var_type = "FIELD_FLOAT",
-        cooldown_scepter = 2,
-        RequiresScepter = 1,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        mana_cost_scepter = 0,
-      },
+      ["01"] = {var_type = "FIELD_INTEGER", max_invoked_spells = 2},
+      ["02"] = {var_type = "FIELD_FLOAT", cooldown_scepter = 2, RequiresScepter = 1},
+      ["03"] = {var_type = "FIELD_INTEGER", mana_cost_scepter = 0},
     },
   },
   invoker_cold_snap = {
@@ -112,24 +86,14 @@ return {
         levelkey = "quaslevel",
         LinkedSpecialBonus = "special_bonus_unique_invoker_7",
       },
-      ["02"] = {
-        var_type = "FIELD_FLOAT",
-        freeze_duration = 0.4,
-      },
+      ["02"] = {var_type = "FIELD_FLOAT", freeze_duration = 0.4},
       ["03"] = {
         var_type = "FIELD_FLOAT",
         freeze_cooldown = "0.77 0.74 0.71 0.69 0.66 0.63 0.60 0.57",
         levelkey = "quaslevel",
       },
-      ["04"] = {
-        var_type = "FIELD_FLOAT",
-        freeze_damage = "8 16 24 32 40 48 56 64",
-        levelkey = "quaslevel",
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        damage_trigger = 10.0,
-      },
+      ["04"] = {var_type = "FIELD_FLOAT", freeze_damage = "8 16 24 32 40 48 56 64", levelkey = "quaslevel"},
+      ["05"] = {var_type = "FIELD_FLOAT", damage_trigger = 10.0},
     },
   },
   invoker_ghost_walk = {
@@ -145,28 +109,11 @@ return {
     AbilityCastPoint = 0.05,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        duration = 100.0,
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        area_of_effect = 400,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        enemy_slow = "-20 -25 -30 -35 -40 -45 -50 -55",
-        levelkey = "quaslevel",
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        self_slow = "-30 -20 -10 0 10 20 30 40",
-        levelkey = "wexlevel",
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        aura_fade_time = 2.0,
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", duration = 100.0},
+      ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 400},
+      ["03"] = {var_type = "FIELD_INTEGER", enemy_slow = "-20 -25 -30 -35 -40 -45 -50 -55", levelkey = "quaslevel"},
+      ["04"] = {var_type = "FIELD_INTEGER", self_slow = "-30 -20 -10 0 10 20 30 40", levelkey = "wexlevel"},
+      ["05"] = {var_type = "FIELD_FLOAT", aura_fade_time = 2.0},
     },
   },
   invoker_tornado = {
@@ -189,42 +136,19 @@ return {
         travel_distance = "800 1200 1600 2000 2400 2800 3200 3600",
         levelkey = "wexlevel",
       },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        travel_speed = 1000,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        area_of_effect = 200,
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        vision_distance = 200,
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        end_vision_duration = 1.75,
-      },
+      ["02"] = {var_type = "FIELD_INTEGER", travel_speed = 1000},
+      ["03"] = {var_type = "FIELD_INTEGER", area_of_effect = 200},
+      ["04"] = {var_type = "FIELD_INTEGER", vision_distance = 200},
+      ["05"] = {var_type = "FIELD_FLOAT", end_vision_duration = 1.75},
       ["06"] = {
         var_type = "FIELD_FLOAT",
         lift_duration = "0.8 1.1 1.4 1.7 2.0 2.3 2.6 2.9",
         LinkedSpecialBonus = "special_bonus_unique_invoker_8",
         levelkey = "quaslevel",
       },
-      ["07"] = {
-        var_type = "FIELD_FLOAT",
-        base_damage = 70,
-      },
-      ["08"] = {
-        var_type = "FIELD_FLOAT",
-        quas_damage = "0 0 0 0 0 0 0",
-        levelkey = "quaslevel",
-      },
-      ["09"] = {
-        var_type = "FIELD_FLOAT",
-        wex_damage = "45 90 135 180 225 270 315 360",
-        levelkey = "wexlevel",
-      },
+      ["07"] = {var_type = "FIELD_FLOAT", base_damage = 70},
+      ["08"] = {var_type = "FIELD_FLOAT", quas_damage = "0 0 0 0 0 0 0", levelkey = "quaslevel"},
+      ["09"] = {var_type = "FIELD_FLOAT", wex_damage = "45 90 135 180 225 270 315 360", levelkey = "wexlevel"},
     },
   },
   invoker_emp = {
@@ -241,24 +165,10 @@ return {
     AbilityCooldown = 30,
     AbilityManaCost = 125,
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        delay = 2.9,
-        levelkey = "wexlevel",
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        area_of_effect = 675,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        mana_burned = "100 175 250 325 400 475 550 625",
-        levelkey = "wexlevel",
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        damage_per_mana_pct = 60,
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", delay = 2.9, levelkey = "wexlevel"},
+      ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 675},
+      ["03"] = {var_type = "FIELD_INTEGER", mana_burned = "100 175 250 325 400 475 550 625", levelkey = "wexlevel"},
+      ["04"] = {var_type = "FIELD_INTEGER", damage_per_mana_pct = 60},
     },
   },
   invoker_alacrity = {
@@ -289,10 +199,7 @@ return {
         levelkey = "exortlevel",
         LinkedSpecialBonus = "special_bonus_unique_invoker_5",
       },
-      ["03"] = {
-        var_type = "FIELD_FLOAT",
-        duration = 9,
-      },
+      ["03"] = {var_type = "FIELD_FLOAT", duration = 9},
     },
   },
   invoker_chaos_meteor = {
@@ -312,46 +219,24 @@ return {
     AbilityManaCost = 200,
     AbilityModifierSupportValue = 0.0,
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        land_time = 1.3,
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        area_of_effect = 275,
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", land_time = 1.3},
+      ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 275},
       ["03"] = {
         var_type = "FIELD_INTEGER",
         travel_distance = "465 615 780 930 1095 1245 1410 1575",
         levelkey = "wexlevel",
       },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        travel_speed = 300,
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        damage_interval = 0.5,
-        CalculateSpellDamageTooltip = 0,
-      },
-      ["06"] = {
-        var_type = "FIELD_INTEGER",
-        vision_distance = 500,
-      },
-      ["07"] = {
-        var_type = "FIELD_FLOAT",
-        end_vision_duration = 3.0,
-      },
+      ["04"] = {var_type = "FIELD_INTEGER", travel_speed = 300},
+      ["05"] = {var_type = "FIELD_FLOAT", damage_interval = 0.5, CalculateSpellDamageTooltip = 0},
+      ["06"] = {var_type = "FIELD_INTEGER", vision_distance = 500},
+      ["07"] = {var_type = "FIELD_FLOAT", end_vision_duration = 3.0},
       ["08"] = {
         var_type = "FIELD_FLOAT",
         main_damage = "57.5 75 92.5 110 127.5 145 162.5 180",
         LinkedSpecialBonus = "special_bonus_unique_invoker_6",
         levelkey = "exortlevel",
       },
-      ["09"] = {
-        var_type = "FIELD_FLOAT",
-        burn_duration = 3.0,
-      },
+      ["09"] = {var_type = "FIELD_FLOAT", burn_duration = 3.0},
       ["10"] = {
         var_type = "FIELD_FLOAT",
         burn_dps = "11.5 15 18.5 22 25.5 29 32.5 36",
@@ -375,27 +260,11 @@ return {
     AbilityCooldown = 25,
     AbilityManaCost = 175,
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        delay = 1.7,
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        area_of_effect = 175,
-      },
-      ["03"] = {
-        var_type = "FIELD_FLOAT",
-        damage = "100 162.5 225 287.5 350 412.5 475 537.5",
-        levelkey = "exortlevel",
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        vision_distance = 400,
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        vision_duration = 4.0,
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", delay = 1.7},
+      ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 175},
+      ["03"] = {var_type = "FIELD_FLOAT", damage = "100 162.5 225 287.5 350 412.5 475 537.5", levelkey = "exortlevel"},
+      ["04"] = {var_type = "FIELD_INTEGER", vision_distance = 400},
+      ["05"] = {var_type = "FIELD_FLOAT", vision_duration = 4.0},
     },
   },
   invoker_forge_spirit = {
@@ -410,36 +279,16 @@ return {
     AbilityCastPoint = 0.05,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        spirit_damage = "22 32 42 52 62 72 82 92",
-        levelkey = "exortlevel",
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        spirit_mana = "100 150 200 250 300 350 400 450",
-        levelkey = "exortlevel",
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        spirit_armor = "0 1 2 3 4 5 6 7",
-        levelkey = "exortlevel",
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", spirit_damage = "22 32 42 52 62 72 82 92", levelkey = "exortlevel"},
+      ["02"] = {var_type = "FIELD_INTEGER", spirit_mana = "100 150 200 250 300 350 400 450", levelkey = "exortlevel"},
+      ["03"] = {var_type = "FIELD_INTEGER", spirit_armor = "0 1 2 3 4 5 6 7", levelkey = "exortlevel"},
       ["04"] = {
         var_type = "FIELD_FLOAT",
         spirit_attack_range = "300 365 430 495 560 625 690 755",
         levelkey = "quaslevel",
       },
-      ["05"] = {
-        var_type = "FIELD_INTEGER",
-        spirit_hp = "300 400 500 600 700 800 900 1000",
-        levelkey = "quaslevel",
-      },
-      ["06"] = {
-        var_type = "FIELD_FLOAT",
-        spirit_duration = "20 30 40 50 60 70 80 90",
-        levelkey = "quaslevel",
-      },
+      ["05"] = {var_type = "FIELD_INTEGER", spirit_hp = "300 400 500 600 700 800 900 1000", levelkey = "quaslevel"},
+      ["06"] = {var_type = "FIELD_FLOAT", spirit_duration = "20 30 40 50 60 70 80 90", levelkey = "quaslevel"},
     },
   },
   invoker_ice_wall = {
@@ -457,41 +306,14 @@ return {
     AbilityCastPoint = 0.05,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        duration = "3.0 4.5 6.0 7.5 9.0 10.5 12.0 13.5",
-        levelkey = "quaslevel",
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        slow = "-20 -40 -60 -80 -100 -120 -140 -160",
-        levelkey = "quaslevel",
-      },
-      ["03"] = {
-        var_type = "FIELD_FLOAT",
-        slow_duration = 2.0,
-      },
-      ["04"] = {
-        var_type = "FIELD_FLOAT",
-        damage_per_second = "6 12 18 24 30 36 42 48",
-        levelkey = "exortlevel",
-      },
-      ["05"] = {
-        var_type = "FIELD_INTEGER",
-        wall_place_distance = 200,
-      },
-      ["06"] = {
-        var_type = "FIELD_INTEGER",
-        num_wall_elements = 15,
-      },
-      ["07"] = {
-        var_type = "FIELD_INTEGER",
-        wall_element_spacing = 80,
-      },
-      ["08"] = {
-        var_type = "FIELD_INTEGER",
-        wall_element_radius = 105,
-      },
+      ["01"] = {var_type = "FIELD_FLOAT", duration = "3.0 4.5 6.0 7.5 9.0 10.5 12.0 13.5", levelkey = "quaslevel"},
+      ["02"] = {var_type = "FIELD_INTEGER", slow = "-20 -40 -60 -80 -100 -120 -140 -160", levelkey = "quaslevel"},
+      ["03"] = {var_type = "FIELD_FLOAT", slow_duration = 2.0},
+      ["04"] = {var_type = "FIELD_FLOAT", damage_per_second = "6 12 18 24 30 36 42 48", levelkey = "exortlevel"},
+      ["05"] = {var_type = "FIELD_INTEGER", wall_place_distance = 200},
+      ["06"] = {var_type = "FIELD_INTEGER", num_wall_elements = 15},
+      ["07"] = {var_type = "FIELD_INTEGER", wall_element_spacing = 80},
+      ["08"] = {var_type = "FIELD_INTEGER", wall_element_radius = 105},
     },
   },
   invoker_deafening_blast = {
@@ -511,31 +333,12 @@ return {
     AbilityManaCost = 300,
     AbilityModifierSupportValue = 0.5,
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        travel_distance = 1000,
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        travel_speed = 1100,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        radius_start = 175,
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        radius_end = 225,
-      },
-      ["05"] = {
-        var_type = "FIELD_FLOAT",
-        end_vision_duration = 1.75,
-      },
-      ["06"] = {
-        var_type = "FIELD_FLOAT",
-        damage = "40 80 120 160 200 240 280 320",
-        levelkey = "exortlevel",
-      },
+      ["01"] = {var_type = "FIELD_INTEGER", travel_distance = 1000},
+      ["02"] = {var_type = "FIELD_INTEGER", travel_speed = 1100},
+      ["03"] = {var_type = "FIELD_INTEGER", radius_start = 175},
+      ["04"] = {var_type = "FIELD_INTEGER", radius_end = 225},
+      ["05"] = {var_type = "FIELD_FLOAT", end_vision_duration = 1.75},
+      ["06"] = {var_type = "FIELD_FLOAT", damage = "40 80 120 160 200 240 280 320", levelkey = "exortlevel"},
       ["07"] = {
         var_type = "FIELD_FLOAT",
         knockback_duration = "0.25 0.5 0.75 1.0 1.25 1.5 1.75 2.0",
@@ -552,122 +355,65 @@ return {
     ID = 6097,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 2,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 2}},
   },
   special_bonus_unique_invoker_2 = {
     ID = 6098,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 0,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 0}},
   },
   special_bonus_unique_invoker_3 = {
     ID = 6099,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 16,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 16}},
   },
   special_bonus_unique_invoker_4 = {
     ID = 6656,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
     AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 2,
-      },
-      ["02"] = {
-        var_type = "FIELD_INTEGER",
-        cooldown = 90,
-      },
-      ["03"] = {
-        var_type = "FIELD_INTEGER",
-        min_range = 160,
-      },
-      ["04"] = {
-        var_type = "FIELD_INTEGER",
-        max_range = 200,
-      },
+      ["01"] = {var_type = "FIELD_INTEGER", value = 2},
+      ["02"] = {var_type = "FIELD_INTEGER", cooldown = 90},
+      ["03"] = {var_type = "FIELD_INTEGER", min_range = 160},
+      ["04"] = {var_type = "FIELD_INTEGER", max_range = 200},
     },
   },
   special_bonus_unique_invoker_5 = {
     ID = 6657,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 50,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 50}},
   },
   special_bonus_unique_invoker_6 = {
     ID = 6811,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 40,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 40}},
   },
   special_bonus_unique_invoker_7 = {
     ID = 7016,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        value = 2.5,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_FLOAT", value = 2.5}},
   },
   special_bonus_unique_invoker_8 = {
     ID = 7017,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_FLOAT",
-        value = 1.25,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_FLOAT", value = 1.25}},
   },
   special_bonus_unique_invoker_9 = {
     ID = 7148,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 15,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 15}},
   },
   special_bonus_unique_invoker_10 = {
     ID = 7390,
     AbilityType = "DOTA_ABILITY_TYPE_ATTRIBUTES",
     AbilityBehavior = "DOTA_ABILITY_BEHAVIOR_PASSIVE",
-    AbilitySpecial = {
-      ["01"] = {
-        var_type = "FIELD_INTEGER",
-        value = 30,
-      },
-    },
+    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", value = 30}},
   },
 }

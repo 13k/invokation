@@ -1,9 +1,7 @@
 --- NetTables
 -- @submodule invokation.GameMode
-
 --- NetTables
 -- @section net_tables
-
 local m = require("moses")
 
 local INVOKER = require("invokation.const.invoker")

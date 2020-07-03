@@ -1,6 +1,5 @@
 --- DamageInstance class.
 -- @classmod invokation.dota2.DamageInstance
-
 local class = require("pl.class")
 
 local M = class()

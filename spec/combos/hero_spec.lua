@@ -11,13 +11,10 @@ local SOUND_EVENTS = require("invokation.const.sound_events")
 
 describe("combos.hero", function()
   local function itemsNames(hero)
-    return m.chain(hero.inventory):reduce(
-      function(names, item)
-        table.insert(names, item:GetAbilityName())
-        return names
-      end,
-      {}
-    ):sort():value()
+    return m.chain(hero.inventory):reduce(function(names, item)
+      table.insert(names, item:GetAbilityName())
+      return names
+    end, {}):sort():value()
   end
 
   describe(".setup", function()
@@ -33,19 +30,13 @@ describe("combos.hero", function()
         "item_octarine_core",
         "item_ultimate_scepter",
       },
-      sequence = { {
-        id = 1,
-        name = "ability",
-      } },
+      sequence = {{id = 1, name = "ability"}},
     })
 
     it("runs the combo setup", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
       CombosHero.setup(player, combo)
 
@@ -56,18 +47,10 @@ describe("combos.hero", function()
 
     describe("when hero already has some items", function()
       it("gives the hero only the missing items", function()
-        local hero = create(
-          "dota_hero",
-          { name = "dota_npc_hero_invoker" },
-          {
-            items = { "item_shivas_guard", "item_refresher" },
-          }
-        )
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker"},
+                            {items = {"item_shivas_guard", "item_refresher"}})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
         CombosHero.setup(player, combo)
 
@@ -78,12 +61,9 @@ describe("combos.hero", function()
 
   describe(".teardown", function()
     it("stops currently playing sounds on the hero", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
       local spyStopSound = spy.on(hero, "StopSound")
 
@@ -93,15 +73,12 @@ describe("combos.hero", function()
     end)
 
     it("resets hero abilities cooldowns", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
       local abilitySpies = m.map(hero.abilities, function(ability)
-        return ability, { EndCooldown = spy.on(ability, "EndCooldown") }
+        return ability, {EndCooldown = spy.on(ability, "EndCooldown")}
       end)
 
       CombosHero.teardown(player)
@@ -112,21 +89,13 @@ describe("combos.hero", function()
     end)
 
     it("resets hero items cooldowns", function()
-      local hero = create(
-        "dota_hero",
-        { name = "dota_npc_hero_invoker" },
-        {
-          items = { "item_shivas_guard", "item_refresher" },
-        }
-      )
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"},
+                          {items = {"item_shivas_guard", "item_refresher"}})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
       local itemSpies = m.map(hero.inventory, function(item)
-        return item, { EndCooldown = spy.on(item, "EndCooldown") }
+        return item, {EndCooldown = spy.on(item, "EndCooldown")}
       end)
 
       CombosHero.teardown(player)
@@ -137,23 +106,15 @@ describe("combos.hero", function()
     end)
 
     describe("with dropped items", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
-      local items = { create("dota_item", {
-        name = "item_blink",
-        purchaser = hero,
-      }), create("dota_item", {
-        name = "item_refresher",
-        purchaser = hero,
-      }), create("dota_item", {
-        name = "item_travel_boots",
-        purchaser = hero,
-      }) }
+      local items = {
+        create("dota_item", {name = "item_blink", purchaser = hero}),
+        create("dota_item", {name = "item_refresher", purchaser = hero}),
+        create("dota_item", {name = "item_travel_boots", purchaser = hero}),
+      }
 
       before_each(function()
         stub.new(GameRules, "NumDroppedItems", #items)
@@ -169,7 +130,7 @@ describe("combos.hero", function()
 
       it("removes dropped items owned by the hero", function()
         local itemSpies = m.map(items, function(item)
-          return item, { RemoveSelf = spy.on(item, "RemoveSelf") }
+          return item, {RemoveSelf = spy.on(item, "RemoveSelf")}
         end)
 
         CombosHero.teardown(player)
@@ -182,28 +143,22 @@ describe("combos.hero", function()
     end)
 
     describe("with spawned units by the hero", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
       local units = {}
       local unitSpies = {}
 
       for _, name in pairs(UNITS.INVOKER_SPAWNED) do
         for _ = 0, 1 do
-          local unit = create("dota_unit", {
-            name = name,
-            playerOwner = player,
-          })
+          local unit = create("dota_unit", {name = name, playerOwner = player})
 
           units[name] = units[name] or {}
           table.insert(units[name], unit)
 
           unitSpies[name] = unitSpies[name] or {}
-          unitSpies[name][unit] = { RemoveSelf = spy.on(unit, "RemoveSelf") }
+          unitSpies[name][unit] = {RemoveSelf = spy.on(unit, "RemoveSelf")}
         end
       end
 
@@ -237,12 +192,9 @@ describe("combos.hero", function()
 
     describe("with soft reset", function()
       it("purges the hero", function()
-        local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
         local spyHeroPurge = spy.on(hero, "Purge")
 
@@ -252,16 +204,9 @@ describe("combos.hero", function()
       end)
 
       it("heals the hero to max health", function()
-        local hero = create("dota_hero", {
-          name = "dota_npc_hero_invoker",
-          maxHealth = 1000.0,
-          health = 301.25,
-        })
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker", maxHealth = 1000.0, health = 301.25})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
         assert.are.equal(301.25, hero:GetHealth())
 
@@ -271,16 +216,9 @@ describe("combos.hero", function()
       end)
 
       it("gives the hero max mana", function()
-        local hero = create("dota_hero", {
-          name = "dota_npc_hero_invoker",
-          maxMana = 1000.0,
-          mana = 301.25,
-        })
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker", maxMana = 1000.0, mana = 301.25})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
         assert.are.equal(301.25, hero:GetMana())
 
@@ -300,20 +238,12 @@ describe("combos.hero", function()
       end)
 
       it("removes all hero's items", function()
-        local hero = create(
-          "dota_hero",
-          { name = "dota_npc_hero_invoker" },
-          {
-            items = { "item_shivas_guard", "item_refresher" },
-          }
-        )
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker"},
+                            {items = {"item_shivas_guard", "item_refresher"}})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
-        CombosHero.teardown(player, { hardReset = true })
+        CombosHero.teardown(player, {hardReset = true})
 
         assert.are.same({}, hero.inventory)
       end)
@@ -335,15 +265,11 @@ describe("combos.hero", function()
           [INVOKER.ABILITY_TALENT_L25_LEFT] = 0,
         }
 
-        local hero =
-          create("dota_hero", { name = "dota_npc_hero_invoker" }, { abilities = abilities })
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker"}, {abilities = abilities})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
-        CombosHero.teardown(player, { hardReset = true })
+        CombosHero.teardown(player, {hardReset = true})
 
         for _, name in ipairs(INVOKER.ORB_ABILITIES) do
           assert.are.equal(0, hero:FindAbilityByName(name):GetLevel())
@@ -359,23 +285,15 @@ describe("combos.hero", function()
       end)
 
       it("replaces hero with a new one", function()
-        local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+        local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-        local player = create("dota_player", {
-          id = 13,
-          hero = hero,
-        })
+        local player = create("dota_player", {id = 13, hero = hero})
 
         local spyHeroRemoveSelf = spy.on(hero, "RemoveSelf")
 
-        CombosHero.teardown(player, { hardReset = true })
+        CombosHero.teardown(player, {hardReset = true})
 
-        assert.stub(PlayerResource.ReplaceHeroWith).was.self.called_with(
-          13,
-          "dota_npc_hero_invoker",
-          0,
-          0
-        )
+        assert.stub(PlayerResource.ReplaceHeroWith).was.self.called_with(13, "dota_npc_hero_invoker", 0, 0)
 
         assert.spy(spyHeroRemoveSelf).was.self.called()
         assert.is_true(hero:IsNull())
@@ -385,17 +303,11 @@ describe("combos.hero", function()
 
   describe(".refundPurchase", function()
     it("refunds a purchase", function()
-      local hero = create("dota_hero", { name = "dota_npc_hero_invoker" })
+      local hero = create("dota_hero", {name = "dota_npc_hero_invoker"})
 
-      local player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      local player = create("dota_player", {id = 13, hero = hero})
 
-      local purchase = {
-        item = "item_blink",
-        cost = 1234.5,
-      }
+      local purchase = {item = "item_blink", cost = 1234.5}
 
       hero:SetGold(0, true)
       hero:SetGold(0, false)
@@ -428,27 +340,17 @@ describe("combos.hero", function()
     local hero, player
 
     before_each(function()
-      hero = create(
-        "dota_hero",
-        {
-          name = "dota_npc_hero_invoker",
-          level = 3,
-          abilityPoints = LIMITS.MAX_HERO_LEVEL - 3,
-        },
-        { abilities = abilities }
-      )
+      hero = create("dota_hero", {name = "dota_npc_hero_invoker", level = 3, abilityPoints = LIMITS.MAX_HERO_LEVEL - 3},
+                    {abilities = abilities})
 
-      player = create("dota_player", {
-        id = 13,
-        hero = hero,
-      })
+      player = create("dota_player", {id = 13, hero = hero})
     end)
 
     describe("with specific level option", function()
       it("levels up the player hero to the specified level", function()
         assert.are.equal(3, hero:GetLevel())
 
-        CombosHero.levelUp(player, { level = 6 })
+        CombosHero.levelUp(player, {level = 6})
 
         assert.are.equal(6, hero:GetLevel())
       end)
@@ -468,7 +370,7 @@ describe("combos.hero", function()
       it("levels up the player hero to max level", function()
         assert.are.equal(3, hero:GetLevel())
 
-        CombosHero.levelUp(player, { maxLevel = true })
+        CombosHero.levelUp(player, {maxLevel = true})
 
         assert.are.equal(LIMITS.MAX_HERO_LEVEL, hero:GetLevel())
       end)
@@ -479,7 +381,7 @@ describe("combos.hero", function()
         assert.are.equal(3, hero:GetLevel())
         assert.are.equal(22, hero:GetAbilityPoints())
 
-        CombosHero.levelUp(player, { maxLevel = true })
+        CombosHero.levelUp(player, {maxLevel = true})
 
         assert.are.equal(LIMITS.MAX_HERO_LEVEL, hero:GetLevel())
         assert.are.equal(4, hero:GetAbilityPoints())

@@ -1,6 +1,5 @@
 --- FreestyleCombo is a Combo class that implements a freestyle sequence.
 -- @classmod invokation.combos.FreestyleCombo
-
 local class = require("pl.class")
 local BaseCombo = require("invokation.combos.BaseCombo")
 
@@ -10,12 +9,7 @@ local M = class(BaseCombo)
 -- @tfield string COMBO_ID
 M.COMBO_ID = "freestyle"
 
-local SPEC = {
-  id = M.COMBO_ID,
-  heroLevel = 1,
-  gold = 99999,
-  items = {},
-}
+local SPEC = {id = M.COMBO_ID, heroLevel = 1, gold = 99999, items = {}}
 
 --- Constructor.
 -- @tparam[opt] table options Options

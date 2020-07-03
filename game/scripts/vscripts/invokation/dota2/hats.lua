@@ -1,7 +1,6 @@
 --- Hats helpers.
 -- @module invokation.dota2.hats
 -- @author Noya (09.08.2015)
-
 local M = {}
 
 --- Hides all dem hats.

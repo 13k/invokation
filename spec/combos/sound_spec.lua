@@ -3,9 +3,9 @@ local SoundEvents = require("invokation.dota2.sound_events")
 local DummyTarget = require("invokation.dota2.DummyTarget")
 
 describe("combos.sound", function()
-  local player = CDOTAPlayer{}
+  local player = CDOTAPlayer {}
   local entity = {}
-  local dummy = { entity = entity }
+  local dummy = {entity = entity}
 
   local stubRandomInt
   local spyEmitOnEntity
@@ -28,7 +28,7 @@ describe("combos.sound", function()
 
   describe(".emitRandomEventOnEntity", function()
     it("emits random sound event on entity", function()
-      local events = { "a", "b", "c" }
+      local events = {"a", "b", "c"}
 
       CombosSound.emitRandomEventOnEntity(entity, events)
 
@@ -39,7 +39,7 @@ describe("combos.sound", function()
 
   describe(".emitRandomEventOnPlayer", function()
     it("emits random sound event on player", function()
-      local events = { "a", "b", "c" }
+      local events = {"a", "b", "c"}
 
       CombosSound.emitRandomEventOnPlayer(player, events)
 

@@ -1,6 +1,5 @@
 --- Abilities constants.
 -- @module invokation.const.abilities
-
 local M = {}
 
 local KEY_VALUES_FILE = "scripts/npc/npc_abilities.txt"

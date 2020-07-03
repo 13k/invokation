@@ -1,9 +1,7 @@
 --- GameRules Setup
 -- @submodule invokation.GameMode
-
 --- GameRules Setup
 -- @section game_rules
-
 local S = require("invokation.const.settings")
 
 function GameMode:setupGameRules()

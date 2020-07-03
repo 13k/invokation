@@ -1,6 +1,5 @@
 --- Env class.
 -- @classmod invokation.game_mode.Env
-
 local class = require("pl.class")
 
 local M = class()

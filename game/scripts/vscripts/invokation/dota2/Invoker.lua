@@ -1,6 +1,5 @@
 --- Invoker class.
 -- @classmod invokation.dota2.Invoker
-
 local List = require("pl.List")
 local class = require("pl.class")
 local tablex = require("pl.tablex")
@@ -19,12 +18,8 @@ function M:_init(hero)
 end
 
 function M:swapAbilities(ability1, ability2)
-  return self.hero:SwapAbilities(
-    ability1.name,
-    ability2.name,
-    ability2.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX,
-    ability1.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX
-  )
+  return self.hero:SwapAbilities(ability1.name, ability2.name, ability2.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX,
+                                 ability1.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX)
 end
 
 --- Invokes an ability by name.
@@ -33,7 +28,9 @@ function M:Invoke(abilityName)
   local invoked = Ability(self.hero:FindAbilityByName(abilityName))
 
   -- I(i) : [i, s2], [s3, s4, s5] -> [i, s2], [s3, s4, s5]
-  if invoked.index == INVOKER.INDEX_ABILITY_EMPTY1 then return end
+  if invoked.index == INVOKER.INDEX_ABILITY_EMPTY1 then
+    return
+  end
 
   local spell1 = Ability(self.hero:GetAbilityByIndex(INVOKER.INDEX_ABILITY_EMPTY1))
 
@@ -80,7 +77,8 @@ end
 
 local function canLevelUpAbility(hero, ability, targetLevel)
   -- luacheck: no max line length
-  return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and (hero:GetAbilityPoints() > 0) and (ability:GetLevel() < targetLevel)
+  return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and (hero:GetAbilityPoints() > 0) and
+           (ability:GetLevel() < targetLevel)
 end
 
 --- Ability level up option.

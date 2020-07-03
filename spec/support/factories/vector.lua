@@ -7,7 +7,7 @@ Factory.define("vector", function(attributes)
   if m.isArray(attributes) then
     coordinates = attributes
   else
-    coordinates = { attributes.x, attributes.y, attributes.z }
+    coordinates = {attributes.x, attributes.y, attributes.z}
   end
 
   return Vector(unpack(coordinates))

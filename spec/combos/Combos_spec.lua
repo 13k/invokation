@@ -18,11 +18,8 @@ describe("Combos", function()
   local combos
   local netTable = {}
   local dummySpawn = create("entity")
-  local hero = create("dota_hero", { name = "npc_dota_hero_invoker" })
-  local player = create("dota_player", {
-    id = 13,
-    hero = hero,
-  })
+  local hero = create("dota_hero", {name = "npc_dota_hero_invoker"})
+  local player = create("dota_player", {id = 13, hero = hero})
 
   setup(function()
     stub.new(Entities, "FindByName", function(_, _, name)
@@ -37,7 +34,7 @@ describe("Combos", function()
   before_each(function()
     stub.new(netTable, "Set")
 
-    combos = Combos({ netTable = netTable })
+    combos = Combos({netTable = netTable})
   end)
 
   after_each(function()
@@ -75,10 +72,10 @@ describe("Combos", function()
       combos.Progress:revert()
     end)
 
-    local unit = create("unit", { name = "npc_dota_hero_invoker" })
+    local unit = create("unit", {name = "npc_dota_hero_invoker"})
 
     describe("with relevant ability", function()
-      local ability = create("ability", { name = "invoker_sun_strike" })
+      local ability = create("ability", {name = "invoker_sun_strike"})
 
       it("handles ability capture and combo progress", function()
         combos:OnAbilityUsed(player, unit, ability)
@@ -89,7 +86,7 @@ describe("Combos", function()
     end)
 
     describe("with ignored ability", function()
-      local ability = create("ability", { name = "item_phase_boots" })
+      local ability = create("ability", {name = "item_phase_boots"})
 
       it("is a noop", function()
         combos:OnAbilityUsed(player, unit, ability)
@@ -109,15 +106,12 @@ describe("Combos", function()
       combos.ProgressDamage:revert()
     end)
 
-    local victim = create("unit", { name = "npc_invokation_dummy_target" })
+    local victim = create("unit", {name = "npc_invokation_dummy_target"})
 
     describe("with player-owned attacker", function()
-      local attacker = create("unit", {
-        name = "npc_dota_hero_invoker",
-        playerOwner = player,
-      })
+      local attacker = create("unit", {name = "npc_dota_hero_invoker", playerOwner = player})
 
-      local inflictor = create("ability", { name = "invoker_sun_strike" })
+      local inflictor = create("ability", {name = "invoker_sun_strike"})
 
       it("handles combo damage progress", function()
         local damage = DamageInstance(victim, 123.4, attacker, inflictor)
@@ -130,8 +124,8 @@ describe("Combos", function()
     end)
 
     describe("with non-player attacker", function()
-      local attacker = create("unit", { name = "npc_dota_hero_axe" })
-      local inflictor = create("ability", { name = "item_dagon_5" })
+      local attacker = create("unit", {name = "npc_dota_hero_axe"})
+      local inflictor = create("ability", {name = "item_dagon_5"})
 
       it("is a noop", function()
         local damage = DamageInstance(victim, 123.4, attacker, inflictor)
@@ -144,10 +138,7 @@ describe("Combos", function()
   end)
 
   describe("#OnItemPurchased", function()
-    local purchase = {
-      item = "item_blink",
-      cost = 1234.5,
-    }
+    local purchase = {item = "item_blink", cost = 1234.5}
 
     describe("when no combo is active", function()
       it("is a noop", function()
@@ -254,16 +245,13 @@ describe("Combos", function()
         assert.are.equal(13, combo.id)
         assert.is_true(dummy:IsAlive())
 
-        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), { hardReset = true })
+        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
 
         assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(combo))
         assert.spy(CombosSound.onDummyCreate).was.called_with(match.is_ref(dummy))
         assert.spy(CombosSound.onComboStop).was_not.called()
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
-        assert.spy(CombosComm.sendStarted).was.called_with(
-          match.is_ref(player),
-          match.is_ref(combo)
-        )
+        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(combo))
         assert.spy(CombosComm.sendStopped).was_not.called()
       end)
     end)
@@ -297,7 +285,7 @@ describe("Combos", function()
         assert.are.equal(13, comboAfter.id)
         assert.is_true(dummy:IsAlive())
 
-        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), { hardReset = false })
+        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = false})
 
         assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
@@ -305,10 +293,7 @@ describe("Combos", function()
         assert.spy(CombosSound.onComboStop).was_not.called()
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-        assert.spy(CombosComm.sendStarted).was.called_with(
-          match.is_ref(player),
-          match.is_ref(comboAfter)
-        )
+        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
         assert.spy(CombosComm.sendStopped).was_not.called()
       end)
@@ -343,7 +328,7 @@ describe("Combos", function()
         assert.are.equal(3, comboAfter.id)
         assert.is_true(dummy:IsAlive())
 
-        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), { hardReset = true })
+        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
 
         assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
@@ -351,15 +336,9 @@ describe("Combos", function()
         assert.spy(CombosSound.onComboStop).was.called_with(match.is_ref(player))
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-        assert.spy(CombosComm.sendStarted).was.called_with(
-          match.is_ref(player),
-          match.is_ref(comboAfter)
-        )
+        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
-        assert.spy(CombosComm.sendStopped).was.called_with(
-          match.is_ref(player),
-          match.is_ref(comboBefore)
-        )
+        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player), match.is_ref(comboBefore))
       end)
     end)
   end)
@@ -414,12 +393,9 @@ describe("Combos", function()
         assert.are.equal(dummyBefore, dummyAfter)
         assert.is_false(dummyAfter:IsAlive())
 
-        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), { hardReset = true })
+        assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
         assert.spy(CombosSound.onComboStop).was.called_with(match.is_ref(player))
-        assert.spy(CombosComm.sendStopped).was.called_with(
-          match.is_ref(player),
-          match.is_ref(comboBefore)
-        )
+        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player), match.is_ref(comboBefore))
       end)
     end)
   end)
@@ -479,7 +455,7 @@ describe("Combos", function()
           CombosComm.sendStarted:clear()
           CombosComm.sendStopped:clear()
 
-          combos:Restart(player, { hardReset = false })
+          combos:Restart(player, {hardReset = false})
 
           local comboAfter = combos.state[player].combo
           local dummy = combos.state[player].dummy
@@ -491,24 +467,15 @@ describe("Combos", function()
           assert.are.equal(13, comboAfter.id)
           assert.is_true(dummy:IsAlive())
 
-          assert.spy(CombosHero.teardown).was.called_with(
-            match.is_ref(player),
-            { hardReset = false }
-          )
+          assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = false})
 
-          assert.spy(CombosHero.setup).was.called_with(
-            match.is_ref(player),
-            match.is_ref(comboAfter)
-          )
+          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
           assert.spy(CombosSound.onDummyCreate).was_not.called_with(match.is_ref(dummy))
           assert.spy(CombosSound.onComboStop).was_not.called()
           assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-          assert.spy(CombosComm.sendStarted).was.called_with(
-            match.is_ref(player),
-            match.is_ref(comboAfter)
-          )
+          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
           assert.spy(CombosComm.sendStopped).was_not.called()
         end)
@@ -531,7 +498,7 @@ describe("Combos", function()
           CombosComm.sendStarted:clear()
           CombosComm.sendStopped:clear()
 
-          combos:Restart(player, { hardReset = true })
+          combos:Restart(player, {hardReset = true})
 
           local comboAfter = combos.state[player].combo
           local dummy = combos.state[player].dummy
@@ -543,24 +510,15 @@ describe("Combos", function()
           assert.are.equal(13, comboAfter.id)
           assert.is_true(dummy:IsAlive())
 
-          assert.spy(CombosHero.teardown).was.called_with(
-            match.is_ref(player),
-            { hardReset = true }
-          )
+          assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
 
-          assert.spy(CombosHero.setup).was.called_with(
-            match.is_ref(player),
-            match.is_ref(comboAfter)
-          )
+          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
           assert.spy(CombosSound.onDummyCreate).was_not.called_with(match.is_ref(dummy))
           assert.spy(CombosSound.onComboStop).was_not.called()
           assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-          assert.spy(CombosComm.sendStarted).was.called_with(
-            match.is_ref(player),
-            match.is_ref(comboAfter)
-          )
+          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
 
           assert.spy(CombosComm.sendStopped).was_not.called()
         end)
@@ -580,29 +538,15 @@ describe("Combos", function()
         damageRating = 5,
         difficultyRating = 5,
         gold = 1234,
-        tags = { "late-game" },
-        items = { "item_blink" },
-        orbs = { 7, 7, 7 },
-        talents = Talents.Select(
-          Talents.L10_LEFT,
-          Talents.L15_RIGHT,
-          Talents.L20_RIGHT,
-          Talents.L25_RIGHT
-        ),
-        sequence = { {
-          id = 1,
-          name = "invoker_cold_snap",
-          required = true,
-          next = { 2, 3 },
-        }, {
-          id = 2,
-          name = "invoker_ghost_walk",
-          next = { 3 },
-        }, {
-          id = 3,
-          name = "invoker_emp",
-          required = true,
-        } },
+        tags = {"late-game"},
+        items = {"item_blink"},
+        orbs = {7, 7, 7},
+        talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+        sequence = {
+          {id = 1, name = "invoker_cold_snap", required = true, next = {2, 3}},
+          {id = 2, name = "invoker_ghost_walk", next = {3}},
+          {id = 3, name = "invoker_emp", required = true},
+        },
       })
 
       spy.on(combos, "PreFinish")
@@ -620,7 +564,7 @@ describe("Combos", function()
 
     describe("with no active combo", function()
       it("does nothing", function()
-        combos:Progress(player, create("ability", { name = "invoker_cold_snap" }))
+        combos:Progress(player, create("ability", {name = "invoker_cold_snap"}))
 
         assert.spy(combos.PreFinish).was_not.called()
         assert.spy(combos.Fail).was_not.called()
@@ -633,7 +577,7 @@ describe("Combos", function()
       it("does nothing", function()
         combos:Start(player, combo)
         combo:Fail()
-        combos:Progress(player, create("ability", { name = "invoker_cold_snap" }))
+        combos:Progress(player, create("ability", {name = "invoker_cold_snap"}))
 
         assert.spy(combos.PreFinish).was_not.called()
         assert.spy(combos.Fail).was_not.called()
@@ -646,14 +590,14 @@ describe("Combos", function()
       it("does nothing", function()
         combos:Start(player, combo)
 
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_cold_snap" })))
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_ghost_walk" })))
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_emp" })))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_cold_snap"})))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_ghost_walk"})))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_emp"})))
         assert.is_true(combo:PreFinish())
 
         assert.is_true(combo.preFinished)
 
-        combos:Progress(player, create("ability", { name = "invoker_cold_snap" }))
+        combos:Progress(player, create("ability", {name = "invoker_cold_snap"}))
 
         assert.spy(combos.PreFinish).was_not.called()
         assert.spy(combos.Fail).was_not.called()
@@ -666,15 +610,15 @@ describe("Combos", function()
       it("does nothing", function()
         combos:Start(player, combo)
 
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_cold_snap" })))
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_ghost_walk" })))
-        assert.is_true(combo:Progress(create("ability", { name = "invoker_emp" })))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_cold_snap"})))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_ghost_walk"})))
+        assert.is_true(combo:Progress(create("ability", {name = "invoker_emp"})))
         assert.is_true(combo:PreFinish())
         assert.is_true(combo:Finish())
 
         assert.is_true(combo.finished)
 
-        combos:Progress(player, create("ability", { name = "invoker_cold_snap" }))
+        combos:Progress(player, create("ability", {name = "invoker_cold_snap"}))
 
         assert.spy(combos.PreFinish).was_not.called()
         assert.spy(combos.Fail).was_not.called()
@@ -690,7 +634,7 @@ describe("Combos", function()
 
       describe("with invocation ability", function()
         it("does nothing", function()
-          combos:Progress(player, create("ability", { name = "invoker_exort" }))
+          combos:Progress(player, create("ability", {name = "invoker_exort"}))
 
           assert.spy(combos.PreFinish).was_not.called()
           assert.spy(combos.Fail).was_not.called()
@@ -700,7 +644,7 @@ describe("Combos", function()
       end)
 
       describe("with incorrect ability", function()
-        local ability = create("ability", { name = "invoker_sun_strike" })
+        local ability = create("ability", {name = "invoker_sun_strike"})
 
         it("fails the combo", function()
           combos:Progress(player, ability)
@@ -714,35 +658,29 @@ describe("Combos", function()
 
       describe("with correct ability", function()
         it("progresses the combo", function()
-          combos:Progress(player, create("ability", { name = "invoker_cold_snap" }))
+          combos:Progress(player, create("ability", {name = "invoker_cold_snap"}))
 
           assert.spy(combos.PreFinish).was_not.called()
           assert.spy(combos.Fail).was_not.called()
-          assert.spy(CombosComm.sendProgress).was.called_with(
-            match.is_ref(player),
-            match.is_ref(combo)
-          )
+          assert.spy(CombosComm.sendProgress).was.called_with(match.is_ref(player), match.is_ref(combo))
         end)
 
         describe("when it's the first combo step", function()
           it("communicates that combo is in progress", function()
-            local ability = create("ability", { name = "invoker_cold_snap" })
+            local ability = create("ability", {name = "invoker_cold_snap"})
 
             combos:Progress(player, ability)
 
-            assert.spy(CombosComm.sendInProgress).was.called_with(
-              match.is_ref(player),
-              match.is_ref(combo)
-            )
+            assert.spy(CombosComm.sendInProgress).was.called_with(match.is_ref(player), match.is_ref(combo))
           end)
         end)
 
         describe("when it's the last combo step", function()
           it("pre-finishes the combo", function()
-            assert.is_true(combo:Progress(create("ability", { name = "invoker_cold_snap" })))
-            assert.is_true(combo:Progress(create("ability", { name = "invoker_ghost_walk" })))
+            assert.is_true(combo:Progress(create("ability", {name = "invoker_cold_snap"})))
+            assert.is_true(combo:Progress(create("ability", {name = "invoker_ghost_walk"})))
 
-            combos:Progress(player, create("ability", { name = "invoker_emp" }))
+            combos:Progress(player, create("ability", {name = "invoker_emp"}))
 
             assert.is_true(combo.preFinished)
             assert.spy(combos.PreFinish).was.self.called_with(match.is_ref(player))

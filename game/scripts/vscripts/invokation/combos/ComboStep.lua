@@ -1,6 +1,5 @@
 --- ComboStep class.
 -- @classmod invokation.combos.ComboStep
-
 local class = require("pl.class")
 local tablex = require("pl.tablex")
 

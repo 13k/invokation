@@ -24,9 +24,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#CurrentStepId", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns nil", function()
       assert.is_nil(combo:CurrentStepId())
@@ -36,9 +38,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#CurrentStep", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns nil", function()
       assert.is_nil(combo:CurrentStep())
@@ -48,9 +52,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#NextStepsIds", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns an empty array", function()
       assert.is.same({}, combo:NextStepsIds())
@@ -60,9 +66,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#NextSteps", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns an empty array", function()
       assert.is.same({}, combo:NextSteps())
@@ -73,9 +81,11 @@ describe("FreestyleCombo", function()
 
   describe("#Progress", function()
     describe("with invocation ability", function()
-      local ability = { IsInvocationAbility = spy.new(function()
-        return true
-      end) }
+      local ability = {
+        IsInvocationAbility = spy.new(function()
+          return true
+        end),
+      }
 
       before_each(function()
         ability.IsInvocationAbility:clear()
@@ -94,9 +104,11 @@ describe("FreestyleCombo", function()
     end)
 
     describe("with non-invocation ability", function()
-      local ability = { IsInvocationAbility = spy.new(function()
-        return false
-      end) }
+      local ability = {
+        IsInvocationAbility = spy.new(function()
+          return false
+        end),
+      }
 
       before_each(function()
         ability.IsInvocationAbility:clear()
@@ -123,9 +135,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#Fail", function()
-    local ability = { IsInvocationAbility = function()
-      return true
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return true
+      end,
+    }
 
     it("is a no-op", function()
       assert.is_false(combo.failed)
@@ -138,9 +152,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#PreFinish", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns false", function()
       assert.is_false(combo:PreFinish())
@@ -155,9 +171,11 @@ describe("FreestyleCombo", function()
   end)
 
   describe("#Finish", function()
-    local ability = { IsInvocationAbility = function()
-      return false
-    end }
+    local ability = {
+      IsInvocationAbility = function()
+        return false
+      end,
+    }
 
     it("always returns false", function()
       assert.is_false(combo:Finish())

@@ -1,6 +1,5 @@
 --- Units helpers.
 -- @module invokation.dota2.units
-
 local types = require("pl.types")
 local tablex = require("pl.tablex")
 
@@ -22,14 +21,8 @@ tablex.update(M, NAMES)
 function M.Create(name, options)
   options.findClearSpace = options.findClearSpace ~= nil and options.findClearSpace or true
 
-  return CreateUnitByName(
-    name,
-    options.location,
-    types.to_bool(options.findClearSpace),
-    options.npcOwner,
-    options.unitOwner,
-    options.team
-  )
+  return CreateUnitByName(name, options.location, types.to_bool(options.findClearSpace), options.npcOwner,
+                          options.unitOwner, options.team)
 end
 
 --- Creates an unit by name (async).
@@ -45,15 +38,8 @@ end
 function M.CreateAsync(name, options)
   options.findClearSpace = options.findClearSpace ~= nil and options.findClearSpace or true
 
-  return CreateUnitByNameAsync(
-    name,
-    options.location,
-    types.to_bool(options.findClearSpace),
-    options.npcOwner,
-    options.unitOwner,
-    options.team,
-    options.callback
-  )
+  return CreateUnitByNameAsync(name, options.location, types.to_bool(options.findClearSpace), options.npcOwner,
+                               options.unitOwner, options.team, options.callback)
 end
 
 --- Creates a new data-driven unit with the given table.

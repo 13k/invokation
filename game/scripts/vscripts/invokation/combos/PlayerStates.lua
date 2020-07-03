@@ -1,6 +1,5 @@
 --- PlayerStates class.
 -- @classmod invokation.combos.PlayerStates
-
 local class = require("pl.class")
 
 local M = class()

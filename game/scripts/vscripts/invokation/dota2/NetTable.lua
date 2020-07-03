@@ -1,6 +1,5 @@
 --- NetTable class.
 -- @classmod invokation.dota2.NetTable
-
 local class = require("pl.class")
 local tablex = require("pl.tablex")
 

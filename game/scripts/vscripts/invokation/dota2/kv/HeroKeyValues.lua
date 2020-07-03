@@ -1,6 +1,5 @@
 --- HeroKeyValues class.
 -- @classmod invokation.dota2.kv.HeroKeyValues
-
 local m = require("moses")
 local class = require("pl.class")
 local Talents = require("invokation.dota2.talents")
@@ -48,7 +47,7 @@ end
 -- @treturn {string,...} Array of ability names
 function M:Abilities()
   if self.abilities == nil then
-    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, { 2, 1 }))
+    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, {2, 1}))
   end
 
   return self.abilities
@@ -58,8 +57,8 @@ end
 -- @treturn talents.Talents Table of talent ability names
 function M:Talents()
   if self.talents == nil then
-    self.talents =
-      Talents.NamesArrayToEnumsTable(m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value())
+    self.talents = Talents.NamesArrayToEnumsTable(m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact()
+                                                    :value())
   end
 
   return self.talents

@@ -1,9 +1,7 @@
 --- Events Setup
 -- @submodule invokation.GameMode
-
 --- Events Setup
 -- @section events
-
 require("invokation.game_mode.events.internal")
 require("invokation.game_mode.events.game_events")
 require("invokation.game_mode.events.custom_events")
@@ -49,15 +47,15 @@ function GameMode:registerGameEvents()
   self:listenToGameEvent("player_reconnected", "OnPlayerReconnect")
   self:listenToGameEvent("tree_cut", "OnTreeCut")
 
-  --self:listenToGameEvent("dota_combatlog", "OnCombatLogEvent")
-  --self:listenToGameEvent("dota_match_done", "OnDotaMatchDone")
-  --self:listenToGameEvent("dota_player_killed", "OnPlayerKilled")
-  --self:listenToGameEvent("dota_tutorial_shop_toggled", "OnShopToggled")
-  --self:listenToGameEvent("dota_unit_event", "OnDotaUnitEvent")
-  --self:listenToGameEvent("nommed_tree", "OnPlayerAteTree")
-  --self:listenToGameEvent("player_completed_game", "OnPlayerCompletedGame")
-  --self:listenToGameEvent("player_spawn", "OnPlayerSpawn")
-  --self:listenToGameEvent("player_team", "OnPlayerTeam")
+  -- self:listenToGameEvent("dota_combatlog", "OnCombatLogEvent")
+  -- self:listenToGameEvent("dota_match_done", "OnDotaMatchDone")
+  -- self:listenToGameEvent("dota_player_killed", "OnPlayerKilled")
+  -- self:listenToGameEvent("dota_tutorial_shop_toggled", "OnShopToggled")
+  -- self:listenToGameEvent("dota_unit_event", "OnDotaUnitEvent")
+  -- self:listenToGameEvent("nommed_tree", "OnPlayerAteTree")
+  -- self:listenToGameEvent("player_completed_game", "OnPlayerCompletedGame")
+  -- self:listenToGameEvent("player_spawn", "OnPlayerSpawn")
+  -- self:listenToGameEvent("player_team", "OnPlayerTeam")
 
   self:d("  register game events listeners")
 end

@@ -1,6 +1,5 @@
 --- Custom events helpers.
 -- @module invokation.dota2.custom_events
-
 local tablex = require("pl.tablex")
 
 local EVENTS = require("invokation.const.custom_events")

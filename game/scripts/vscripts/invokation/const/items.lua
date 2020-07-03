@@ -1,6 +1,5 @@
 --- Items constants.
 -- @module invokation.const.items
-
 local M = {}
 
 local KEY_VALUES_FILE = "scripts/npc/items.txt"

@@ -1,6 +1,5 @@
 --- BaseCombo is a base class for combos.
 -- @classmod invokation.combos.BaseCombo
-
 local moses = require("moses")
 local class = require("pl.class")
 local Logger = require("invokation.Logger")

@@ -1,6 +1,5 @@
 --- Debugging helpers.
 -- @module invokation.lang.debug
-
 local M = {}
 
 --- Toggles function call debugging.

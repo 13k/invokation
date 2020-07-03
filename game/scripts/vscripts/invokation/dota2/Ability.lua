@@ -1,6 +1,5 @@
 --- Ability class that represents either an ability or item.
 -- @classmod invokation.dota2.Ability
-
 local class = require("pl.class")
 local types = require("pl.types")
 local tablex = require("pl.tablex")
@@ -14,7 +13,7 @@ local ORB_ABILITIES = tablex.pairmap(function(_, ability)
   return true, ability
 end, INVOKER.ORB_ABILITIES)
 
-local DELEGATES = { "GetDuration", "GetSpecialValueFor", "IsItem" }
+local DELEGATES = {"GetDuration", "GetSpecialValueFor", "IsItem"}
 
 delegation.delegate(M, "entity", DELEGATES)
 

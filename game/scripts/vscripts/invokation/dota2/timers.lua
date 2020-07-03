@@ -7,8 +7,7 @@
 -- @author 13k (updates)
 -- @license Apache License 2.0
 -- @copyright bmddota
-
-local M = { _VERSION = "1.06" }
+local M = {_VERSION = "1.06"}
 
 local THINK_NAME = "timers"
 local THINK_INTERVAL = 0.01
@@ -78,9 +77,13 @@ function M:think()
 end
 
 function M:processTimer(timer)
-  if timer.paused then return end
+  if timer.paused then
+    return
+  end
 
-  if timer.at > timer:now() then return end
+  if timer.at > timer:now() then
+    return
+  end
 
   local removeTimer = true
   local success, result = xpcall(timer.callbackWrapper, timer.onError)

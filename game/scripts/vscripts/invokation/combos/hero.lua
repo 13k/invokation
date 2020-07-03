@@ -1,6 +1,5 @@
 --- Internal combos hero helpers.
 -- @module invokation.combos.hero
-
 local Unit = require("invokation.dota2.Unit")
 local Player = require("invokation.dota2.Player")
 local Invoker = require("invokation.dota2.Invoker")
@@ -20,7 +19,7 @@ function M.setup(player, combo)
   local unit = Unit(player.hero)
 
   unit:HeroLevelUpTo(combo.heroLevel)
-  unit:AddItemsByName(combo.items or {}, { onlyMissing = true })
+  unit:AddItemsByName(combo.items or {}, {onlyMissing = true})
 
   if combo.gold ~= nil then
     unit:GiveGold(combo.gold)
@@ -90,11 +89,11 @@ function M.levelUp(player, options)
     targetLevel = unit:GetLevel() + 1
   end
 
-  unit:HeroLevelUpTo(targetLevel, { playEffects = true })
+  unit:HeroLevelUpTo(targetLevel, {playEffects = true})
 
   if targetLevel == LIMITS.MAX_HERO_LEVEL then
     local invoker = Invoker(player.hero)
-    invoker:LevelUpAbilities({ maxLevel = true })
+    invoker:LevelUpAbilities({maxLevel = true})
   end
 end
 

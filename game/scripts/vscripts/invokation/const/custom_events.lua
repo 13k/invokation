@@ -1,6 +1,5 @@
 --- Custom event names.
 -- @module invokation.const.custom_events
-
 local M = {}
 
 --- Combos

@@ -1,9 +1,7 @@
 --- Console Commands
 -- @submodule invokation.GameMode
-
 --- Console Commands
 -- @section commands
-
 local pp = require("pl.pretty")
 local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
@@ -72,7 +70,9 @@ end
 -- @tparam string name Dot-separated value name
 -- luacheck: no unused args
 function GameMode:CommandDumpGlobal(player, name)
-  if not name then return end
+  if not name then
+    return
+  end
 
   local value = _G
 
@@ -96,7 +96,9 @@ end
 -- @tparam string pattern Name pattern (uses `string.match` for matching)
 -- luacheck: no unused args
 function GameMode:CommandFindGlobal(player, pattern)
-  if not pattern then return end
+  if not pattern then
+    return
+  end
 
   local matches = {}
 
@@ -122,7 +124,9 @@ end
 -- @tparam string query Query string
 -- luacheck: no unused args
 function GameMode:CommandItemQuery(player, query)
-  if not query then return end
+  if not query then
+    return
+  end
 
   local items = self.itemsKV:Search(query)
 
@@ -143,7 +147,7 @@ local function debugAbility(a, simple)
   end
 
   if simple then
-    return { a:GetAbilityIndex(), a:GetAbilityName(), a:GetLevel() }
+    return {a:GetAbilityIndex(), a:GetAbilityName(), a:GetLevel()}
   end
 
   return {
@@ -191,7 +195,9 @@ end
 -- @tparam string ability Ability name
 -- luacheck: no unused args
 function GameMode:CommandInvokeAbility(player, ability)
-  if not ability then return end
+  if not ability then
+    return
+  end
 
   local hero = player:GetAssignedHero()
   local invoker = Invoker(hero)
@@ -204,7 +210,9 @@ end
 -- @tparam string id Combo id
 -- luacheck: no unused args
 function GameMode:CommandDumpComboGraph(player, id)
-  if not id then return end
+  if not id then
+    return
+  end
 
   local combo = self.combos:createCombo(tonumber(id))
 
@@ -222,7 +230,9 @@ end
 -- @tparam string intensity Music intensity
 -- luacheck: no unused args
 function GameMode:CommandChangeMusicStatus(player, status, intensity)
-  if not status or not intensity then return end
+  if not status or not intensity then
+    return
+  end
 
   status = tonumber(status)
   intensity = tonumber(intensity)
@@ -236,7 +246,7 @@ end
 -- luacheck: no unused args
 function GameMode:CommandDumpSpecials(player, onlyScaling)
   local cmd = require("invokation.game_mode.commands.dump_specials")
-  cmd.dump(player, { onlyScaling = onlyScaling ~= nil })
+  cmd.dump(player, {onlyScaling = onlyScaling ~= nil})
 end
 
 --- Debug operations on ability specials KeyValues.
@@ -262,7 +272,9 @@ end
 -- @tparam string name Ability name
 -- luacheck: no unused args
 function GameMode:CommandReinsertAbility(player, name)
-  if not name then return end
+  if not name then
+    return
+  end
 
   local hero = player:GetAssignedHero()
   local ability = hero:FindAbilityByName(name)

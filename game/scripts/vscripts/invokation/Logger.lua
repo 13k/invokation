@@ -1,6 +1,5 @@
 --- Logger class.
 -- @classmod invokation.Logger
-
 local moses = require("moses")
 local pp = require("pl.pretty")
 local text = require("pl.text")
@@ -92,7 +91,7 @@ end
 -- @tparam string progname Child program name
 -- @treturn Logger Child instance
 function M:Child(progname)
-  return M({ self.progname, progname }, self.level, self.format)
+  return M({self.progname, progname}, self.level, self.format)
 end
 
 --- Logs a message if the current logger level is lower than the given level.
@@ -110,9 +109,11 @@ end
 -- @tparam int level One of the logger levels
 -- @param[opt] ... Values
 function M:Log(level, ...)
-  if level < self.level then return end
+  if level < self.level then
+    return
+  end
 
-  local values = { ... }
+  local values = {...}
   local formatted = {}
 
   -- Explicitly iterate with actual arguments array size to correctly print `nil`
@@ -137,7 +138,9 @@ end
 -- @tparam string format Format string
 -- @param[opt] ... Values
 function M:Logf(level, format, ...)
-  if level < self.level then return end
+  if level < self.level then
+    return
+  end
 
   return self:Log(level, format:format(...))
 end
@@ -188,7 +191,9 @@ end
 -- @param[opt] ... Values
 
 local function createLevelMethods(levelName)
-  if levelName == "UNKNOWN" then return end
+  if levelName == "UNKNOWN" then
+    return
+  end
 
   local title = stringx.title(levelName)
 
@@ -224,42 +229,54 @@ M.HelpersMixin = {}
 --- Shortcut for `Logger.Debug`
 -- @function invokation.Logger.HelpersMixin:d
 function M.HelpersMixin:d(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Debug(...)
 end
 
 --- Shortcut for `Logger.Debugf`
 -- @function invokation.Logger.HelpersMixin:debugf
 function M.HelpersMixin:debugf(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Debugf(...)
 end
 
 --- Shortcut for `Logger.Warning`
 -- @function invokation.Logger.HelpersMixin:warn
 function M.HelpersMixin:warn(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Warning(...)
 end
 
 --- Shortcut for `Logger.Warningf`
 -- @function invokation.Logger.HelpersMixin:warnf
 function M.HelpersMixin:warnf(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Warningf(...)
 end
 
 --- Shortcut for `Logger.Error`
 -- @function invokation.Logger.HelpersMixin:err
 function M.HelpersMixin:err(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Error(...)
 end
 
 --- Shortcut for `Logger.Errorf`
 -- @function invokation.Logger.HelpersMixin:errf
 function M.HelpersMixin:errf(...)
-  if not self.logger then return end
+  if not self.logger then
+    return
+  end
   return self.logger:Errorf(...)
 end
 

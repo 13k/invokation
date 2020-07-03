@@ -1,6 +1,5 @@
 --- Player class.
 -- @classmod invokation.dota2.Player
-
 local class = require("pl.class")
 
 local M = class()

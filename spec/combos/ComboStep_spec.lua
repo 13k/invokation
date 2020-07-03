@@ -1,12 +1,7 @@
 local ComboStep = require("invokation.combos.ComboStep")
 
 describe("ComboStep", function()
-  local data = {
-    id = 1,
-    name = "step_name",
-    required = true,
-    next = { 2, 3 },
-  }
+  local data = {id = 1, name = "step_name", required = true, next = {2, 3}}
 
   local step
 

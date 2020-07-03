@@ -1,6 +1,5 @@
 --- AbilityKeyValues class.
 -- @classmod invokation.dota2.kv.AbilityKeyValues
-
 local m = require("moses")
 local KV = require("invokation.dota2.kv")
 local class = require("pl.class")

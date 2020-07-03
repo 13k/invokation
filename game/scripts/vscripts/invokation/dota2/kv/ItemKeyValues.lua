@@ -1,6 +1,5 @@
 --- ItemKeyValues class.
 -- @classmod invokation.dota2.kv.ItemKeyValues
-
 local m = require("moses")
 local KV = require("invokation.dota2.kv")
 local class = require("pl.class")
@@ -52,9 +51,8 @@ end
 function M:MatchesQuery(query)
   local matcher = m.chain(string.match):partialRight(query):unary():value()
 
-  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher)) or (m.isTable(
-    self.ItemAliases
-  ) and m.findIndex(self.ItemAliases, matcher))
+  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher)) or
+           (m.isTable(self.ItemAliases) and m.findIndex(self.ItemAliases, matcher))
 end
 
 return M

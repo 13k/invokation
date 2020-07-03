@@ -2,31 +2,28 @@ local m = require("moses")
 local class = require("pl.class")
 local Factory = require("support.factory")
 
-local INVENTORY_ACTIVE_SLOTS =
-  {
-    DOTA_ITEM_SLOT_1,
-    DOTA_ITEM_SLOT_2,
-    DOTA_ITEM_SLOT_3,
-    DOTA_ITEM_SLOT_4,
-    DOTA_ITEM_SLOT_5,
-    DOTA_ITEM_SLOT_6,
-    DOTA_ITEM_SLOT_7,
-    DOTA_ITEM_SLOT_8,
-    DOTA_ITEM_SLOT_9,
-  }
+local INVENTORY_ACTIVE_SLOTS = {
+  DOTA_ITEM_SLOT_1,
+  DOTA_ITEM_SLOT_2,
+  DOTA_ITEM_SLOT_3,
+  DOTA_ITEM_SLOT_4,
+  DOTA_ITEM_SLOT_5,
+  DOTA_ITEM_SLOT_6,
+  DOTA_ITEM_SLOT_7,
+  DOTA_ITEM_SLOT_8,
+  DOTA_ITEM_SLOT_9,
+}
 
-local INVENTORY_STASH_SLOTS =
-  {
-    DOTA_STASH_SLOT_1,
-    DOTA_STASH_SLOT_2,
-    DOTA_STASH_SLOT_3,
-    DOTA_STASH_SLOT_4,
-    DOTA_STASH_SLOT_5,
-    DOTA_STASH_SLOT_6,
-  }
+local INVENTORY_STASH_SLOTS = {
+  DOTA_STASH_SLOT_1,
+  DOTA_STASH_SLOT_2,
+  DOTA_STASH_SLOT_3,
+  DOTA_STASH_SLOT_4,
+  DOTA_STASH_SLOT_5,
+  DOTA_STASH_SLOT_6,
+}
 
-local INVENTORY_SLOTS =
-  m.chain({}):append(INVENTORY_ACTIVE_SLOTS):append(INVENTORY_STASH_SLOTS):value()
+local INVENTORY_SLOTS = m.chain({}):append(INVENTORY_ACTIVE_SLOTS):append(INVENTORY_STASH_SLOTS):value()
 
 CDOTA_BaseNPC = class(CBaseFlex)
 
@@ -109,7 +106,7 @@ function CDOTA_BaseNPC:FindAbilityByName(name)
 end
 
 function CDOTA_BaseNPC:AddAbility(name)
-  local ability = Factory.create("dota_ability", { name = name })
+  local ability = Factory.create("dota_ability", {name = name})
 
   table.insert(self.abilities, ability)
   ability:SetAbilityIndex(#self.abilities)
@@ -188,13 +185,15 @@ function CDOTA_BaseNPC:AddItemByName(name)
     return nil
   end
 
-  self.inventory[slot] = CDOTA_Item{ name = name }
+  self.inventory[slot] = CDOTA_Item {name = name}
 
   return self.inventory[slot]
 end
 
 function CDOTA_BaseNPC:RemoveItem(item)
-  if not self.hasInventory then return end
+  if not self.hasInventory then
+    return
+  end
 
   local slot = self:findItemSlot(item)
 

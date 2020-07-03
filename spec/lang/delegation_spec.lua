@@ -21,7 +21,7 @@ describe("delegation", function()
       self.engine = e
     end
 
-    delegation.delegate(Car, "engine", { "start", "shutdown" })
+    delegation.delegate(Car, "engine", {"start", "shutdown"})
 
     local engine, car
     local spyStart, spyShutdown

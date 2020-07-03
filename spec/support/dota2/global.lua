@@ -36,13 +36,8 @@ function LoadKeyValues(filename)
 end
 
 function CreateUnitByName(name, location, findClearSpace, npcOwner, unitOwner, teamNumber)
-  return Factory.create("dota_unit", {
-    name = name,
-    origin = location,
-    owner = unitOwner,
-    playerOwner = npcOwner,
-    team = teamNumber,
-  })
+  return Factory.create("dota_unit",
+                        {name = name, origin = location, owner = unitOwner, playerOwner = npcOwner, team = teamNumber})
 end
 
 function EmitGlobalSound(event)

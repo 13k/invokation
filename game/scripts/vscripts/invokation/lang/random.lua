@@ -1,6 +1,5 @@
 --- Random helpers.
 -- @module invokation.lang.random
-
 local M = {}
 
 --- Seeds random generation.

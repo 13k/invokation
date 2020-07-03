@@ -1,6 +1,5 @@
 --- Function helpers.
 -- @module invokation.lang.function
-
 local M = {}
 
 --- Creates a wrapper function that performs method lookup by name on a table.

@@ -1,6 +1,5 @@
 --- Method delegation helpers.
 -- @module invokation.lang.delegation
-
 local M = {}
 
 --- Creates delegator instance methods in a class.
@@ -46,7 +45,7 @@ local M = {}
 -- @tparam string|{string,...} methods Method name or array of names to delegate
 function M.delegate(classObject, delegateTo, methods)
   if type(methods) == "string" then
-    methods = { methods }
+    methods = {methods}
   end
 
   for _, method in ipairs(methods) do

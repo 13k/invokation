@@ -1,6 +1,5 @@
 --- Combo class.
 -- @classmod invokation.combos.Combo
-
 local moses = require("moses")
 local class = require("pl.class")
 local tablex = require("pl.tablex")
@@ -12,18 +11,18 @@ local M = class(BaseCombo)
 local STATES = ComboSequence.STATES
 
 local WAIT_ABILITY_SPECIALS = {
-  invoker_alacrity = { "duration" },
-  invoker_chaos_meteor = { "land_time", "burn_duration" },
-  invoker_cold_snap = { "duration" },
-  invoker_deafening_blast = { "disarm_duration" },
-  invoker_emp = { "delay" },
-  invoker_ice_wall = { "duration" },
-  invoker_sun_strike = { "delay" },
-  invoker_tornado = { "lift_duration" },
-  item_black_king_bar = { "duration" },
-  item_cyclone = { "cyclone_duration" },
-  item_sheepstick = { "sheep_duration" },
-  item_shivas_guard = { "blast_debuff_duration" },
+  invoker_alacrity = {"duration"},
+  invoker_chaos_meteor = {"land_time", "burn_duration"},
+  invoker_cold_snap = {"duration"},
+  invoker_deafening_blast = {"disarm_duration"},
+  invoker_emp = {"delay"},
+  invoker_ice_wall = {"duration"},
+  invoker_sun_strike = {"delay"},
+  invoker_tornado = {"lift_duration"},
+  item_black_king_bar = {"duration"},
+  item_cyclone = {"cyclone_duration"},
+  item_sheepstick = {"sheep_duration"},
+  item_shivas_guard = {"blast_debuff_duration"},
 }
 
 local function abilityWait(ability)
@@ -51,7 +50,7 @@ function M:_init(spec, options)
   options = options or {}
 
   self.clock = options.clock or _G.Time
-  self.sequence = ComboSequence(self.id, self.sequence, { clock = self.clock })
+  self.sequence = ComboSequence(self.id, self.sequence, {clock = self.clock})
   self.waitQueue = {}
 end
 

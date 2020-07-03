@@ -1,6 +1,5 @@
 --- KeyValue utils.
 -- @module invokation.dota2.kv
-
 local m = require("moses")
 local stringx = require("pl.stringx")
 
@@ -9,7 +8,9 @@ local ENUMS = require("invokation.const.enums")
 local M = {}
 
 local function warn(fmt, ...)
-  if not IsInToolsMode() then return end
+  if not IsInToolsMode() then
+    return
+  end
 
   print("(WARNING) [kv] " .. fmt:format(...))
 end
@@ -73,7 +74,9 @@ end
 -- @treturn int `0` if the enum name is invalid (not a string) or is not defined
 -- @treturn int The enum value if it exists
 function M.EnumValue(name)
-  if name == nil then return end
+  if name == nil then
+    return
+  end
 
   if not m.isString(name) then
     warn("EnumValue(): invalid name %s [%s]", name, type(name))
@@ -126,10 +129,7 @@ function M.Flags(value)
   return m.reduce(value, bit.bor)
 end
 
-local ABILITY_SPECIAL_CAST = {
-  FIELD_FLOAT = M.Numbers,
-  FIELD_INTEGER = M.Numbers,
-}
+local ABILITY_SPECIAL_CAST = {FIELD_FLOAT = M.Numbers, FIELD_INTEGER = M.Numbers}
 
 --- Table of known extra fields to be converted in @{AbilitySpecial}.
 -- @table ABILITY_SPECIAL_EXTRA
@@ -192,7 +192,7 @@ function M.AbilitySpecial(value)
     return value
   end
 
-  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({ 2, 1 }):value()
+  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({2, 1}):value()
 
   return m.map(value, castField)
 end

@@ -1,6 +1,5 @@
 --- Table of enabled/disabled abilities.
 -- @module invokation.const.ability_list
-
 local M = {
   item_tome_of_knowledge = false,
   item_courier = false,

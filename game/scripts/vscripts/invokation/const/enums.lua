@@ -1,6 +1,5 @@
 --- Missing or renamed enums.
 -- @module invokation.const.enums
-
 local M = {}
 
 --- Missing (GameActivity_t) ACT_INVALID

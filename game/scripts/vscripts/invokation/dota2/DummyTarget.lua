@@ -1,6 +1,5 @@
 --- DummyTarget class.
 -- @classmod invokation.dota2.DummyTarget
-
 local m = require("moses")
 local class = require("pl.class")
 local Units = require("invokation.dota2.units")
@@ -8,15 +7,12 @@ local delegation = require("invokation.lang.delegation")
 
 local M = class()
 
-local DELEGATES = { "Hold" }
+local DELEGATES = {"Hold"}
 
 delegation.delegate(M, "entity", DELEGATES)
 
 local function createDummy(location)
-  local unit = Units.Create(Units.DUMMY_TARGET, {
-    location = location,
-    team = DOTA_TEAM_BADGUYS,
-  })
+  local unit = Units.Create(Units.DUMMY_TARGET, {location = location, team = DOTA_TEAM_BADGUYS})
 
   unit:SetIdleAcquire(false)
 
@@ -31,7 +27,9 @@ end
 
 --- Spawns the dummy unit.
 function M:Spawn()
-  if self:IsAlive() then return end
+  if self:IsAlive() then
+    return
+  end
 
   self.entity = createDummy(self.spawn:GetAbsOrigin())
   self:Hold()
@@ -39,7 +37,9 @@ end
 
 --- Kills the dummy unit.
 function M:Kill()
-  if not self:IsAlive() then return end
+  if not self:IsAlive() then
+    return
+  end
 
   self.entity:ForceKill(false)
   self.entity:RemoveSelf()

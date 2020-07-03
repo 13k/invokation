@@ -3,13 +3,9 @@ local class = require("pl.class")
 
 CDOTA_BaseNPC_Hero = class(CDOTA_BaseNPC)
 
-local ATTRIBUTES = { hasInventory = true }
+local ATTRIBUTES = {hasInventory = true}
 
-local DEFAULTS = {
-  abilityPoints = 1,
-  goldReliable = 0,
-  goldUnreliable = 0,
-}
+local DEFAULTS = {abilityPoints = 1, goldReliable = 0, goldUnreliable = 0}
 
 function CDOTA_BaseNPC_Hero:_init(attributes)
   attributes = m.chain({}):extend(ATTRIBUTES):extend(attributes):defaults(DEFAULTS):value()

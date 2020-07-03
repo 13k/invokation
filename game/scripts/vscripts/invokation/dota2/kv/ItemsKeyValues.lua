@@ -1,6 +1,5 @@
 --- Collection of `ItemKeyValues`.
 -- @classmod invokation.dota2.kv.ItemsKeyValues
-
 local m = require("moses")
 local class = require("pl.class")
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
@@ -21,7 +20,7 @@ end
 
 --- Constructor.
 function M:_init()
-  self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, { 2, 1 }))
+  self.__data = m.map(ITEMS.KEY_VALUES, m.rearg(selectItemEntry, {2, 1}))
 end
 
 --- Returns an iterator function that iterates over the @{ItemKeyValues} entries.

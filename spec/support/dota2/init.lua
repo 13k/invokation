@@ -1,5 +1,4 @@
 -- globals
-
 bit = require("bit32")
 
 require("support.dota2.enum")

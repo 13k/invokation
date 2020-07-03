@@ -54,13 +54,7 @@ function parse(input)
       end
     elseif ch == '"' then
       if token.type == nil then
-        token = {
-          type = "id",
-          value = "",
-          offset = input:seek(),
-          line = cur.line,
-          col = cur.col
-        }
+        token = {type = "id", value = "", offset = input:seek(), line = cur.line, col = cur.col}
       elseif token.type == "id" then
         table.insert(tokens, token)
         token = {}
@@ -69,24 +63,12 @@ function parse(input)
         error(msg)
       end
     elseif ch == "{" then
-      token = {
-        type = "scope_open",
-        value = ch,
-        offset = input:seek(),
-        line = cur.line,
-        col = cur.col
-      }
+      token = {type = "scope_open", value = ch, offset = input:seek(), line = cur.line, col = cur.col}
 
       table.insert(tokens, token)
       token = {}
     elseif ch == "}" then
-      token = {
-        type = "scope_close",
-        value = ch,
-        offset = input:seek(),
-        line = cur.line,
-        col = cur.col
-      }
+      token = {type = "scope_close", value = ch, offset = input:seek(), line = cur.line, col = cur.col}
 
       table.insert(tokens, token)
       token = {}

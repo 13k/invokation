@@ -6,20 +6,11 @@ local ComboSequence = require("invokation.combos.ComboSequence")
 local STATES = ComboSequence.STATES
 
 describe("ComboSequence", function()
-  local steps = { {
-    id = 1,
-    name = "step1",
-    required = true,
-    next = { 2, 3 },
-  }, {
-    id = 2,
-    name = "step2",
-    next = { 3 },
-  }, {
-    id = 3,
-    name = "step3",
-    required = true,
-  } }
+  local steps = {
+    {id = 1, name = "step1", required = true, next = {2, 3}},
+    {id = 2, name = "step2", next = {3}},
+    {id = 3, name = "step3", required = true},
+  }
 
   local clockIdx
   local function clock()
@@ -38,7 +29,7 @@ describe("ComboSequence", function()
     clockIdx = 0
     seqId = m.uniqueId()
     spyClock = spy.new(clock)
-    seq = ComboSequence(seqId, steps, { clock = spyClock })
+    seq = ComboSequence(seqId, steps, {clock = spyClock})
   end)
 
   describe("constructor", function()
@@ -46,11 +37,9 @@ describe("ComboSequence", function()
       assert.are.equal(seqId, seq.id)
       assert.are.equal(spyClock, seq.clock)
       assert.is_table(seq.sequence)
-      assert.is_true(
-        m.all(seq.sequence, function(s)
-          return ComboStep:class_of(s)
-        end)
-      )
+      assert.is_true(m.all(seq.sequence, function(s)
+        return ComboStep:class_of(s)
+      end))
     end)
   end)
 
@@ -101,8 +90,8 @@ describe("ComboSequence", function()
       it("progresses the sequence", function()
         assert.is_nil(seq.current)
         assert.is_nil(seq.currentId)
-        assert.are.same({ 1 }, seq.nextIds)
-        assert.are.same({ 1 }, stepsIds(seq.next))
+        assert.are.same({1}, seq.nextIds)
+        assert.are.same({1}, stepsIds(seq.next))
         assert.is_nil(seq:EnterTime(STATES.INITIAL))
         assert.is_nil(seq:LeaveTime(STATES.INITIAL))
 
@@ -110,16 +99,16 @@ describe("ComboSequence", function()
 
         assert.are.same(1, seq.current.id)
         assert.are.equal(1, seq.currentId)
-        assert.are.same({ 2, 3 }, seq.nextIds)
-        assert.are.same({ 2, 3 }, stepsIds(seq.next))
+        assert.are.same({2, 3}, seq.nextIds)
+        assert.are.same({2, 3}, stepsIds(seq.next))
         assert.are.equal(1, seq:LeaveTime(STATES.INITIAL))
 
         assert.is_true(seq:Progress("step2"))
 
         assert.are.same(2, seq.current.id)
         assert.are.equal(2, seq.currentId)
-        assert.are.same({ 3 }, seq.nextIds)
-        assert.are.same({ 3 }, stepsIds(seq.next))
+        assert.are.same({3}, seq.nextIds)
+        assert.are.same({3}, stepsIds(seq.next))
 
         assert.is_true(seq:Progress("step3"))
 
@@ -149,8 +138,8 @@ describe("ComboSequence", function()
       it("enables skipping optional steps", function()
         assert.is_nil(seq.current)
         assert.is_nil(seq.currentId)
-        assert.are.same({ 1 }, seq.nextIds)
-        assert.are.same({ 1 }, stepsIds(seq.next))
+        assert.are.same({1}, seq.nextIds)
+        assert.are.same({1}, stepsIds(seq.next))
         assert.is_nil(seq:EnterTime(STATES.INITIAL))
         assert.is_nil(seq:LeaveTime(STATES.INITIAL))
 
@@ -158,8 +147,8 @@ describe("ComboSequence", function()
 
         assert.are.same(1, seq.current.id)
         assert.are.equal(1, seq.currentId)
-        assert.are.same({ 2, 3 }, seq.nextIds)
-        assert.are.same({ 2, 3 }, stepsIds(seq.next))
+        assert.are.same({2, 3}, seq.nextIds)
+        assert.are.same({2, 3}, stepsIds(seq.next))
         assert.are.equal(1, seq:LeaveTime(STATES.INITIAL))
 
         assert.is_true(seq:Progress("step3"))

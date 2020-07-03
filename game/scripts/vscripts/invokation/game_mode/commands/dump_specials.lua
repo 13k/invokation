@@ -3,10 +3,7 @@ local Invoker = require("invokation.dota2.Invoker")
 
 local M = {}
 
-local FIELD_TYPES = {
-  FIELD_INTEGER = "number",
-  FIELD_FLOAT = "number",
-}
+local FIELD_TYPES = {FIELD_INTEGER = "number", FIELD_FLOAT = "number"}
 
 local function isSpecialKey(key, value, luaType)
   if key == "var_type" then
@@ -42,13 +39,13 @@ local function extractSpecialKey(special)
   end
 
   local luaType = FIELD_TYPES[special.var_type]
-  local selectSpecialKey = m.chain(isSpecialKey):partialRight(luaType):rearg({ 2, 1 }):value()
+  local selectSpecialKey = m.chain(isSpecialKey):partialRight(luaType):rearg({2, 1}):value()
 
   return m.chain(special):map(selectSpecialKey):keys():value()[1]
 end
 
 local function extractScalingSpecialKey(special)
-  local selectScalingSpecialKey = m.rearg(isScalingSpecialKey, { 2, 1 })
+  local selectScalingSpecialKey = m.rearg(isScalingSpecialKey, {2, 1})
   return m.chain(special):map(selectScalingSpecialKey):keys():value()[1]
 end
 
