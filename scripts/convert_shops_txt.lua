@@ -3,21 +3,21 @@ local tablex = require("pl.tablex")
 
 local USAGE = "Usage: %s <input> <output>\n"
 
-function stderr(...)
+local function stderr(...)
   io.stderr:write(...)
 end
 
-function usage()
+local function usage()
   stderr(USAGE:format(arg[0]))
 end
 
-function parse(input)
+local function parse(input)
   local tokens = {}
   local token = {}
   local cur = {line = 1, col = 0}
 
   repeat
-    ch = input:read(1)
+    local ch = input:read(1)
     cur.col = cur.col + 1
 
     if ch == nil then
@@ -85,7 +85,7 @@ function parse(input)
   return tokens
 end
 
-function rewrite(tokens)
+local function rewrite(tokens)
   local rewritten = {}
   local scope_index = 0
 
@@ -124,7 +124,7 @@ function rewrite(tokens)
   return rewritten
 end
 
-function dump(tokens, output)
+local function dump(tokens, output)
   local indent_level = 0
   local indent = "  "
   local id_quote = '"'
@@ -178,7 +178,7 @@ function dump(tokens, output)
   end
 end
 
-function main()
+local function main()
   if #arg < 2 then
     usage()
     os.exit(1)
