@@ -1,12 +1,12 @@
-/.envrc
 /.env
-/.lua-version
+/.envrc
 /.luarocks
+/.lua-version
 /.nvmrc
 /.pnp.*
 /.yarn/*
-!/.yarn/releases
 !/.yarn/plugins
+!/.yarn/releases
 !/.yarn/sdks
 !/.yarn/versions
 /doc/ldoc
@@ -15,3 +15,4 @@
 /luarocks
 /node_modules
 /tmp
+luacov.*
