@@ -1,5 +1,7 @@
 --- Command definitions.
 -- @module invokation.const.commands
+local M = {}
+
 --- Command definition.
 -- @table CommandDefinition
 -- @tfield string name Command name
@@ -7,7 +9,6 @@
 -- @tfield string help Command help
 -- @tfield int flags Command flags
 -- @tfield bool dev Only registered in development environment
-local M = {}
 
 table.insert(M, {
   name = "inv_debug",

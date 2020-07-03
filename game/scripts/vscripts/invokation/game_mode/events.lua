@@ -1,12 +1,13 @@
 --- Events Setup
 -- @submodule invokation.GameMode
---- Events Setup
--- @section events
 require("invokation.game_mode.events.internal")
 require("invokation.game_mode.events.game_events")
 require("invokation.game_mode.events.custom_events")
 
 local CustomEvents = require("invokation.dota2.custom_events")
+
+--- Events Setup
+-- @section events
 
 function GameMode:listenToGameEvent(event, methodName)
   return ListenToGameEvent(event, self:fnHandler(methodName), self)

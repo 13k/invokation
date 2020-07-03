@@ -1,13 +1,14 @@
 --- Console Commands
 -- @submodule invokation.GameMode
---- Console Commands
--- @section commands
 local pp = require("pl.pretty")
 local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
 local Invoker = require("invokation.dota2.Invoker")
 
 local COMMANDS = require("invokation.const.commands")
+
+--- Console Commands
+-- @section commands
 
 local function createHandler(gameMode, methodName)
   return function(command, ...)

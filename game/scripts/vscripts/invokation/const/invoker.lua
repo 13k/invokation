@@ -25,7 +25,7 @@ M.UNIT_NAME = UNITS.INVOKER
 -- @table KEY_VALUES
 M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]
 
---- @{dota2.kv.HeroKeyValues} instance
+--- `dota2.kv.HeroKeyValues` instance
 M.HERO_KEY_VALUES = HeroKeyValues(M.UNIT_NAME, M.KEY_VALUES)
 
 --- Quas ability name

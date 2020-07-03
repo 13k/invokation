@@ -1,8 +1,9 @@
 --- Custom Events Listeners
 -- @submodule invokation.GameMode
+local CustomEvents = require("invokation.dota2.custom_events")
+
 --- Custom Events Listeners
 -- @section custom_events
-local CustomEvents = require("invokation.dota2.custom_events")
 
 --- Handles combos reload events.
 -- @tparam CDOTAPlayer player

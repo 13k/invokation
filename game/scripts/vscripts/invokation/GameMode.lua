@@ -1,7 +1,5 @@
 --- Main class for the game.
 -- @classmod invokation.GameMode
---- Initialization
--- @section init
 if _G.GameMode == nil then
   local class = require("pl.class")
   _G.GameMode = class()
@@ -27,6 +25,9 @@ local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
 local PRECACHE = require("invokation.const.precache")
 
 local LOGGER_PROGNAME = "invokation"
+
+--- Initialization
+-- @section init
 
 GameMode.META = require("invokation.const.metadata")
 GameMode._VERSION = GameMode.META.version

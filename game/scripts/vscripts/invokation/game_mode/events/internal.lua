@@ -1,12 +1,13 @@
 --- Internal Game Events Listeners
 -- @submodule invokation.GameMode
---- Internal Game Events Listeners
--- @section internal_game_events
 local S = require("invokation.const.settings")
 
 -- luacheck: no max line length
 local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
+
+--- Internal Game Events Listeners
+-- @section internal_game_events
 
 --- Called when the overall game state has changed.
 -- @tparam table payload
