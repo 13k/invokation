@@ -46,5 +46,5 @@ test = {
 
 build = {
   type = "make",
-  build_target = "luarocks-build",
+  build_target = "build-lua",
 }
