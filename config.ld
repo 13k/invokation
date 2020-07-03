@@ -15,10 +15,9 @@ file = {
   exclude = { "game/scripts/vscripts/invokation/game_mode/commands" },
 }
 
-custom_tags = { {
-  "abstract",
-  title = "Abstract method",
-} }
+custom_tags = {
+  { "abstract", title = "Abstract method" },
+}
 
 backtick_references = false
 no_lua_ref = true

@@ -1,6 +1,7 @@
 return {
   _all = {
     verbose = true,
+    coverage = true,
     lpath = "./game/scripts/vscripts/?.lua;./game/scripts/vscripts/?/?.lua;./spec/?.lua;./spec/?/?.lua;./spec/?/init.lua",
     helper = "./spec/helper.lua",
   },
