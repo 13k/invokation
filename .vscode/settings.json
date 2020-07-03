@@ -6,5 +6,7 @@
   "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
-  "lua.targetVersion": "5.1"
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/?.lua"],
+  "vscode-lua-format.configPath": ".lua-format"
 }
