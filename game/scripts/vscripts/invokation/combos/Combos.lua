@@ -23,7 +23,7 @@ local ERRF_COMBO_NOT_FOUND = "Combo %q not found"
 local ERRF_COMBO_NOT_ACTIVE = "Player %d has no active combo"
 local WARNF_COMBO_NOT_FINISHED = "Combo %q can't be finished for player %d"
 
-Logger.InstallHelpers(M)
+Logger.Extend(M)
 
 --- Purchase specification.
 -- @table Purchase

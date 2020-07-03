@@ -1,9 +1,7 @@
 --- Main class for the game.
 -- @classmod invokation.GameMode
-
 --- Initialization
 -- @section init
-
 if _G.GameMode == nil then
   local class = require("pl.class")
   _G.GameMode = class()
@@ -33,7 +31,7 @@ local LOGGER_PROGNAME = "invokation"
 GameMode.META = require("invokation.const.metadata")
 GameMode._VERSION = GameMode.META.version
 
-Logger.InstallHelpers(GameMode)
+Logger.Extend(GameMode)
 
 --- Precaches resources/units/items/abilities that will be needed for sure in
 -- your game and that will not be precached by hero selection.
@@ -65,10 +63,7 @@ function GameMode:_init(options)
   self.logger = Logger(LOGGER_PROGNAME, self.env.development and Logger.DEBUG or Logger.INFO)
   self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
-  self.combos = Combos({
-    logger = self.logger,
-    netTable = self.netTable,
-  })
+  self.combos = Combos({logger = self.logger, netTable = self.netTable})
 end
 
 function GameMode:fnHandler(methodName)
@@ -81,7 +76,9 @@ end
 
 --- Entry-point for the game initialization.
 function GameMode:Activate()
-  if GameMode._reentrantCheck then return end
+  if GameMode._reentrantCheck then
+    return
+  end
 
   self:d("Loading GameMode...")
 

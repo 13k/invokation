@@ -9,7 +9,7 @@ local ComboStep = require("invokation.combos.ComboStep")
 
 local M = class()
 
-Logger.InstallHelpers(M)
+Logger.Extend(M)
 
 --- Sequence states
 -- @table STATES

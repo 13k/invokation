@@ -1,10 +1,10 @@
 --- Logger class.
 -- @classmod invokation.Logger
 
+local moses = require("moses")
 local pp = require("pl.pretty")
 local text = require("pl.text")
 local class = require("pl.class")
-local tablex = require("pl.tablex")
 local stringx = require("pl.stringx")
 
 local M = class()
@@ -82,7 +82,7 @@ function M:_init(progname, level, format)
   self.template = text.Template(self.format)
 
   if type(progname) == "table" then
-    progname = stringx.join(".", progname)
+    progname = moses.join(progname, ".")
   end
 
   self.progname = progname
@@ -125,7 +125,7 @@ function M:Log(level, ...)
     timestamp = GetSystemDate() .. " " .. GetSystemTime(),
     severity = M.LEVEL_NAMES[level],
     progname = self.progname,
-    message = stringx.join(" ", formatted),
+    message = moses.join(formatted, " "),
   }
 
   return print(self.template:substitute(tmplValues))
@@ -211,10 +211,10 @@ end
 -- @section helpers_mixin
 
 --- Mixes @{HelpersMixin} into a class.
--- @function invokation.Logger.InstallHelpers
+-- @function invokation.Logger.Extend
 -- @tparam table cls Target class
-function M.InstallHelpers(cls)
-  tablex.update(cls, M.HelpersMixin)
+function M.Extend(cls)
+  moses.extend(cls, M.HelpersMixin)
 end
 
 --- Helpers Mixin.

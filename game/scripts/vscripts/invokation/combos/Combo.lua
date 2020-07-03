@@ -1,6 +1,7 @@
 --- Combo class.
 -- @classmod invokation.combos.Combo
 
+local moses = require("moses")
 local class = require("pl.class")
 local tablex = require("pl.tablex")
 local BaseCombo = require("invokation.combos.BaseCombo")
@@ -34,7 +35,7 @@ local function abilityWait(ability)
     return ability:GetSpecialValueFor(specialKey) or 0
   end
 
-  local values = tablex.imap(getSpecialValue, WAIT_ABILITY_SPECIALS[ability.name])
+  local values = moses.map(WAIT_ABILITY_SPECIALS[ability.name], getSpecialValue)
 
   return tablex.reduce("+", values)
 end

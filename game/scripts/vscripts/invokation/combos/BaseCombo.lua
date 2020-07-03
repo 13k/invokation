@@ -1,15 +1,15 @@
 --- BaseCombo is a base class for combos.
 -- @classmod invokation.combos.BaseCombo
 
+local moses = require("moses")
 local class = require("pl.class")
-local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
 
 local M = class()
 
 local LOGGER_PROGNAME = "combo"
 
-Logger.InstallHelpers(M)
+Logger.Extend(M)
 
 M.ERR_NOT_IMPLEMENTED = "Not implemented"
 
@@ -35,7 +35,7 @@ M.ERR_NOT_IMPLEMENTED = "Not implemented"
 function M:_init(spec, options)
   options = options or {}
 
-  tablex.update(self, spec)
+  moses.extend(self, spec)
 
   self.started = false
   self.failed = false

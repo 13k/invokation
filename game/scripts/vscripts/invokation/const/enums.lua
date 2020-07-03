@@ -59,7 +59,7 @@ M.FCVAR_USERINFO = bit.lshift(1, 9)
 -- (e.g., used for player name, etc.)
 -- (1024)
 M.FCVAR_PRINTABLEONLY = bit.lshift(1, 10)
---- If this is a @{FCVAR_SERVER}, don't log changes to the log file / console if we are creating a log.
+--- If this is a server, don't log changes to the log file / console if we are creating a log.
 -- (2048)
 M.FCVAR_UNLOGGED = bit.lshift(1, 11)
 --- Never try to print.
