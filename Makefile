@@ -54,12 +54,8 @@ test-lua:
 doc-lua:
 	@ldoc --unqualified .
 
-.PHONY: build-lua
-build-lua:
-	@luarocks build
-
-.PHONY: luarocks-build
-luarocks-build: format-lua lint-lua doc-lua
+.PHONY:
+build-lua: format-lua lint-lua doc-lua
 
 .PHONY: link
 link:
