@@ -1,6 +1,6 @@
 "Invokation"
 {
-  "maps" "cottage"
+  "maps" "cottage island"
   "IsPlayable" "1"
   "TeamCount" "1"
 
