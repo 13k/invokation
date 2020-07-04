@@ -8,9 +8,8 @@ local CustomEvents = require("invokation.dota2.custom_events")
 --- Handles combos reload events.
 -- @tparam CDOTAPlayer player
 -- @tparam const.custom_events.CombosReloadPayload payload
--- luacheck: no unused args
 function GameMode:OnCombosReload(player, payload)
-  self:d("OnCombosReload")
+  self:d("OnCombosReload", {player = player:GetPlayerID(), payload = payload})
   self.combos:load()
 end
 

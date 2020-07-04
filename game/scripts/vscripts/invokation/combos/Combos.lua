@@ -230,7 +230,7 @@ end
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam Combo combo Combo
 function M:Start(player, combo)
-  self:d("Start", {player = player:GetPlayerID(), id = id})
+  self:d("Start", {player = player:GetPlayerID(), id = combo.id})
 
   local current = self.state[player].combo
 
