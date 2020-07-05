@@ -1,5 +1,6 @@
 LUA_SRC_PATH := game/scripts/vscripts
 LUA_TEST_PATH := spec
+SCRIPTS_SRC_PATH := scripts
 JS_SRC_PATH := content/panorama/scripts
 CSS_SRC_PATH := content/panorama/styles
 
@@ -22,23 +23,23 @@ doc: doc-lua
 
 .PHONY: link
 link:
-	@bash scripts/link.bash
+	@yarn run link
 
 .PHONY: build
 build: link
-	@bash scripts/build.bash
+	@yarn run build
 
 .PHONY: clean
 clean:
-	@bash scripts/clean.bash
+	@yarn run clean
 
 .PHONY: launch-game
 launch-game:
-	@bash scripts/launch_game.bash
+	@yarn run launch:game
 
 .PHONY: launch-tools
 launch-tools:
-	@bash scripts/launch_tools.bash
+	@yarn run launch:tools
 
 .PHONY: format-lua
 format-lua:
@@ -62,11 +63,11 @@ build-lua: format-lua lint-lua doc-lua
 
 .PHONY: format-js
 format-js:
-	@yarn run prettier --write "$(JS_SRC_PATH)/**/*.js"
+	@yarn run prettier --write "$(SCRIPTS_SRC_PATH)/**/*.js" "$(JS_SRC_PATH)/**/*.js"
 
 .PHONY: lint-js
 lint-js:
-	@yarn run eslint "$(JS_SRC_PATH)"
+	@yarn run eslint "$(SCRIPTS_SRC_PATH)/**/*.js" "$(JS_SRC_PATH)"
 
 .PHONY: format-css
 format-css:

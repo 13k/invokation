@@ -6,7 +6,12 @@
     "node": ">=12.11"
   },
   "scripts": {
-    "format:lua": "node scripts/format-lua.js"
+    "build": "node scripts/main.js build",
+    "clean": "node scripts/main.js clean",
+    "format:lua": "node scripts/main.js format-lua",
+    "launch:game": "node scripts/main.js launch game",
+    "launch:tools": "node scripts/main.js launch tools",
+    "link": "node scripts/main.js link"
   },
   "devDependencies": {
     "chalk": "^4.1.0",
