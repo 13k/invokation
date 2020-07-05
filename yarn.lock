@@ -985,9 +985,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "eslint@npm:7.3.0"
+"eslint@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "eslint@npm:7.4.0"
   dependencies:
     "@babel/code-frame": ^7.0.0
     ajv: ^6.10.0
@@ -1027,7 +1027,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: a9551aaa81bc22dc948f058da82d2698119b12c767f2bfa1f992126f3bbf4c8cfc03aec5614e57727f8520bda10ddb868fb83b07a4fb30fee0a25b319cd3fde0
+  checksum: ef144e684ce031b045aca156439af5c5ec8a9b843613ed2948bb28ed767dc5e106d9f057a9bf93c752071b7833656bc7affa1d28daa9609c6ea59d1311f0a8de
   languageName: node
   linkType: hard
 
@@ -1457,7 +1457,7 @@ __metadata:
     chalk: ^4.1.0
     commander: ^5.1.0
     dotenv: ^8.2.0
-    eslint: ^7.3.0
+    eslint: ^7.4.0
     glob: ^7.1.6
     js-yaml: ^3.14.0
     mkdirp: ^1.0.4
