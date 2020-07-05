@@ -2,20 +2,39 @@
   "private": true,
   "name": "invokation",
   "version": "dev",
+  "engines": {
+    "node": ">=12.11"
+  },
   "scripts": {
     "format:lua": "node scripts/format-lua.js"
   },
   "devDependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^5.1.0",
+    "dotenv": "^8.2.0",
     "eslint": "^7.3.0",
     "glob": "^7.1.6",
     "js-yaml": "^3.14.0",
     "mkdirp": "^1.0.4",
+    "node-emoji": "^1.10.0",
     "postcss-html": "^0.36.0",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
-    "stylelint-order": "^4.1.0"
+    "stylelint-order": "^4.1.0",
+    "temp": "^0.9.1",
+    "vdf-parser": "^1.1.0"
+  },
+  "dota2": {
+    "customGame": {
+      "name": "invokation",
+      "maps": [
+        "cottage",
+        "island"
+      ]
+    }
   }
 }
