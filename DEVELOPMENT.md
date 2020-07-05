@@ -12,6 +12,12 @@ All development is done within a WSL environment with the following setup:
 
 ## Setup
 
+- Create a `.env` file at the root of the project containing:
+
+```shell
+DOTA2_PATH="/WSL/path/to/dota2"
+```
+
 - Install node packages:
 
 ```shell
