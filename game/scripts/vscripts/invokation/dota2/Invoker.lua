@@ -18,7 +18,8 @@ function M:_init(hero)
 end
 
 function M:swapAbilities(ability1, ability2)
-  return self.hero:SwapAbilities(ability1.name, ability2.name, ability2.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX,
+  return self.hero:SwapAbilities(ability1.name, ability2.name,
+                                 ability2.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX,
                                  ability1.index <= INVOKER.MAX_VISIBLE_ABILITY_INDEX)
 end
 
@@ -76,8 +77,8 @@ local function reinsertSpellAbility(hero, ability)
 end
 
 local function canLevelUpAbility(hero, ability, targetLevel)
-  return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and (hero:GetAbilityPoints() > 0) and
-           (ability:GetLevel() < targetLevel)
+  return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and
+           (hero:GetAbilityPoints() > 0) and (ability:GetLevel() < targetLevel)
 end
 
 --- Ability level up option.

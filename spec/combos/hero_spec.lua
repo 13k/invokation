@@ -201,7 +201,8 @@ describe("combos.hero", function()
       end)
 
       it("heals the hero to max health", function()
-        local hero = create("dota_hero", {name = "npc_dota_hero_invoker", maxHealth = 1000.0, health = 301.25})
+        local heroAttributes = {name = "npc_dota_hero_invoker", maxHealth = 1000.0, health = 301.25}
+        local hero = create("dota_hero", heroAttributes)
         local player = create("dota_player", {id = 13, hero = hero})
 
         assert.are.equal(301.25, hero:GetHealth())
@@ -212,7 +213,8 @@ describe("combos.hero", function()
       end)
 
       it("gives the hero max mana", function()
-        local hero = create("dota_hero", {name = "npc_dota_hero_invoker", maxMana = 1000.0, mana = 301.25})
+        local heroAttributes = {name = "npc_dota_hero_invoker", maxMana = 1000.0, mana = 301.25}
+        local hero = create("dota_hero", heroAttributes)
         local player = create("dota_player", {id = 13, hero = hero})
 
         assert.are.equal(301.25, hero:GetMana())
@@ -279,14 +281,13 @@ describe("combos.hero", function()
 
       it("replaces hero with a new one", function()
         local hero = create("dota_hero", {name = "npc_dota_hero_invoker"})
-
         local player = create("dota_player", {id = 13, hero = hero})
-
         local spyHeroRemoveSelf = spy.on(hero, "RemoveSelf")
 
         CombosHero.teardown(player, {hardReset = true})
 
-        assert.stub(PlayerResource.ReplaceHeroWith).was.self.called_with(13, "npc_dota_hero_invoker", 0, 0)
+        assert.stub(PlayerResource.ReplaceHeroWith)
+          .was.self.called_with(13, "npc_dota_hero_invoker", 0, 0)
 
         assert.spy(spyHeroRemoveSelf).was.self.called()
         assert.is_true(hero:IsNull())

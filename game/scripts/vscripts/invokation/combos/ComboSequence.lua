@@ -32,11 +32,17 @@ end
 
 local function fsmDef(sequence)
   local firstStep = {name = M.STATES.INITIAL, state = M.STATES.INITIAL, next = {sequence[1].id}}
+  local preFinishStep = {
+    name = EVENTS.PRE_FINISH,
+    from = sequence[#sequence].state,
+    to = M.STATES.PRE_FINISH,
+  }
 
+  local finishStep = {name = EVENTS.FINISH, from = M.STATES.PRE_FINISH, to = M.STATES.FINISH}
   local steps = m.append({firstStep}, sequence)
-  local events = m.chain(steps):map(m.partial(stepEvents, sequence)):flatten(true):push(
-                   {name = EVENTS.PRE_FINISH, from = sequence[#sequence].state, to = M.STATES.PRE_FINISH}):push(
-                   {name = EVENTS.FINISH, from = M.STATES.PRE_FINISH, to = M.STATES.FINISH}):value()
+  local events = m.chain(steps):map(m.partial(stepEvents, sequence)):flatten(true)
+
+  events = events:push(preFinishStep):push(finishStep):value()
 
   return {initial = M.STATES.INITIAL, events = events}
 end
@@ -92,7 +98,8 @@ function M:todot()
 end
 
 function M:debugState(message)
-  self:d(message, {state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds})
+  local state = {state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds}
+  self:d(message, state)
 end
 
 --- Returns the time when the sequence entered the given state.

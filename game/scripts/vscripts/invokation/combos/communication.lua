@@ -13,6 +13,7 @@ end
 -- @tparam dota2.Ability ability Ability
 function M.sendAbilityUsed(player, ability)
   local payload = {ability = ability.name}
+
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBAT_LOG_ABILITY_USED, player, payload)
 end
 
@@ -30,6 +31,7 @@ end
 -- @tparam Combo combo Combo
 function M.sendStopped(player, combo)
   local payload = {id = combo.id}
+
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_STOPPED, player, payload)
 end
 
@@ -38,6 +40,7 @@ end
 -- @tparam Combo combo Combo
 function M.sendInProgress(player, combo)
   local payload = {id = combo.id}
+
   return CustomEvents.SendPlayer(CustomEvents.EVENT_COMBO_IN_PROGRESS, player, payload)
 end
 

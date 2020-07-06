@@ -183,5 +183,9 @@ end
 function CDOTA_BaseNPC:Hold()
 end
 
-function CDOTA_BaseNPC:Purge(removeBuffs, removeDebuffs, frameOnly, removeStuns, removeExceptions)
+function CDOTA_BaseNPC:Purge(removeBuffs,
+                             removeDebuffs,
+                             frameOnly,
+                             removeStuns,
+                             removeExceptions)
 end

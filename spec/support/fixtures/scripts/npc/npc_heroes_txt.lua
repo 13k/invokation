@@ -1,7 +1,12 @@
 return {
   npc_dota_hero_invoker = {
     Model = "models/heroes/invoker/invoker.vmdl",
-    Persona = {["1"] = {name = "npc_dota_hero_invoker_persona1", Model = "models/heroes/invoker_kid/invoker_kid.vmdl"}},
+    Persona = {
+      ["1"] = {
+        name = "npc_dota_hero_invoker_persona1",
+        Model = "models/heroes/invoker_kid/invoker_kid.vmdl",
+      },
+    },
     Enabled = 1,
     HeroUnlockOrder = 3,
     Role = "Carry,Nuker,Disabler,Escape,Pusher",

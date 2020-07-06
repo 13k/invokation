@@ -49,7 +49,8 @@ local function iterSpecials(keys)
 
   if type(specials) ~= "table" then
     if specials ~= nil then
-      print(string.format("(WARN) %s not a table [%s]", joinpath(keys.ability, "AbilitySpecial"), type(specials)))
+      print(string.format("(WARN) %s not a table [%s]", joinpath(keys.ability, "AbilitySpecial"),
+                          type(specials)))
     end
 
     keys.ability = next(abilities, keys.ability)

@@ -321,7 +321,13 @@ local M = {
     orbs = {4, 3, 4},
     talents = Talents.L10_LEFT,
     tags = {"teamfight"},
-    items = {"item_boots", "item_null_talisman", "item_null_talisman", "item_ultimate_scepter", "item_cyclone"},
+    items = {
+      "item_boots",
+      "item_null_talisman",
+      "item_null_talisman",
+      "item_ultimate_scepter",
+      "item_cyclone",
+    },
     sequence = {
       [1] = {name = "item_cyclone", required = true, next = {2}},
       [2] = {name = "invoker_sun_strike", required = true, next = {3}},
@@ -474,7 +480,8 @@ local M = {
     damageRating = 5,
     difficultyRating = 5,
     orbs = {7, 7, 7},
-    talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+    talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT,
+                             Talents.L25_RIGHT),
     tags = {"late-game"},
     items = {
       "item_travel_boots",

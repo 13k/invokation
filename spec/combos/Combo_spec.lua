@@ -225,11 +225,14 @@ describe("Combo", function()
           },
         }):value()
 
-      local abilityAlacrity = create("ability", {name = "invoker_alacrity", special = {duration = 3.5}})
+      local abilityAlacrity = create("ability",
+                                     {name = "invoker_alacrity", special = {duration = 3.5}})
 
-      local abilityColdSnap = create("ability", {name = "invoker_cold_snap", special = {duration = 1.25}})
+      local abilityColdSnap = create("ability",
+                                     {name = "invoker_cold_snap", special = {duration = 1.25}})
 
-      local abilitySunStrike = create("ability", {name = "invoker_sun_strike", special = {delay = 2.6}})
+      local abilitySunStrike = create("ability",
+                                      {name = "invoker_sun_strike", special = {delay = 2.6}})
 
       it("uses abilities special values for wait times", function()
         combo = Combo(spec, {clock = spyClock})

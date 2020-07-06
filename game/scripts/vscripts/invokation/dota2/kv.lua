@@ -192,7 +192,8 @@ function M.AbilitySpecial(value)
     return value
   end
 
-  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({2, 1}):value()
+  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({2, 1})
+                      :value()
 
   return m.map(value, castField)
 end

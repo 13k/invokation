@@ -176,7 +176,8 @@ end
 -- @tparam dota2.Ability ability Ability instance
 function M:OnAbilityUsed(player, unit, ability)
   if isIgnoredAbility(ability) then
-    self:d("OnAbilityUsed [ignored]", {player = player:GetPlayerID(), unit = unit.name, ability = ability.name})
+    self:d("OnAbilityUsed [ignored]",
+           {player = player:GetPlayerID(), unit = unit.name, ability = ability.name})
 
     return
   end

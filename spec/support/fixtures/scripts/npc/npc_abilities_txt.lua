@@ -7,7 +7,9 @@ return {
     AbilityCooldown = 0,
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
-    AbilitySpecial = {["01"] = {var_type = "FIELD_FLOAT", health_regen_per_instance = "1 3 5 7 9 11 13"}},
+    AbilitySpecial = {
+      ["01"] = {var_type = "FIELD_FLOAT", health_regen_per_instance = "1 3 5 7 9 11 13"},
+    },
   },
   invoker_wex = {
     ID = 5371,
@@ -30,7 +32,9 @@ return {
     AbilityCooldown = 0,
     AbilityManaCost = 0,
     AbilityCastAnimation = "ACT_INVALID",
-    AbilitySpecial = {["01"] = {var_type = "FIELD_INTEGER", bonus_damage_per_instance = "2 6 10 14 18 22 26"}},
+    AbilitySpecial = {
+      ["01"] = {var_type = "FIELD_INTEGER", bonus_damage_per_instance = "2 6 10 14 18 22 26"},
+    },
   },
   invoker_empty1 = {
     ID = 5373,
@@ -92,7 +96,11 @@ return {
         freeze_cooldown = "0.77 0.74 0.71 0.69 0.66 0.63 0.60 0.57",
         levelkey = "quaslevel",
       },
-      ["04"] = {var_type = "FIELD_FLOAT", freeze_damage = "8 16 24 32 40 48 56 64", levelkey = "quaslevel"},
+      ["04"] = {
+        var_type = "FIELD_FLOAT",
+        freeze_damage = "8 16 24 32 40 48 56 64",
+        levelkey = "quaslevel",
+      },
       ["05"] = {var_type = "FIELD_FLOAT", damage_trigger = 10.0},
     },
   },
@@ -111,8 +119,16 @@ return {
     AbilitySpecial = {
       ["01"] = {var_type = "FIELD_FLOAT", duration = 100.0},
       ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 400},
-      ["03"] = {var_type = "FIELD_INTEGER", enemy_slow = "-20 -25 -30 -35 -40 -45 -50 -55", levelkey = "quaslevel"},
-      ["04"] = {var_type = "FIELD_INTEGER", self_slow = "-30 -20 -10 0 10 20 30 40", levelkey = "wexlevel"},
+      ["03"] = {
+        var_type = "FIELD_INTEGER",
+        enemy_slow = "-20 -25 -30 -35 -40 -45 -50 -55",
+        levelkey = "quaslevel",
+      },
+      ["04"] = {
+        var_type = "FIELD_INTEGER",
+        self_slow = "-30 -20 -10 0 10 20 30 40",
+        levelkey = "wexlevel",
+      },
       ["05"] = {var_type = "FIELD_FLOAT", aura_fade_time = 2.0},
     },
   },
@@ -148,7 +164,11 @@ return {
       },
       ["07"] = {var_type = "FIELD_FLOAT", base_damage = 70},
       ["08"] = {var_type = "FIELD_FLOAT", quas_damage = "0 0 0 0 0 0 0", levelkey = "quaslevel"},
-      ["09"] = {var_type = "FIELD_FLOAT", wex_damage = "45 90 135 180 225 270 315 360", levelkey = "wexlevel"},
+      ["09"] = {
+        var_type = "FIELD_FLOAT",
+        wex_damage = "45 90 135 180 225 270 315 360",
+        levelkey = "wexlevel",
+      },
     },
   },
   invoker_emp = {
@@ -167,7 +187,11 @@ return {
     AbilitySpecial = {
       ["01"] = {var_type = "FIELD_FLOAT", delay = 2.9, levelkey = "wexlevel"},
       ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 675},
-      ["03"] = {var_type = "FIELD_INTEGER", mana_burned = "100 175 250 325 400 475 550 625", levelkey = "wexlevel"},
+      ["03"] = {
+        var_type = "FIELD_INTEGER",
+        mana_burned = "100 175 250 325 400 475 550 625",
+        levelkey = "wexlevel",
+      },
       ["04"] = {var_type = "FIELD_INTEGER", damage_per_mana_pct = 60},
     },
   },
@@ -262,7 +286,11 @@ return {
     AbilitySpecial = {
       ["01"] = {var_type = "FIELD_FLOAT", delay = 1.7},
       ["02"] = {var_type = "FIELD_INTEGER", area_of_effect = 175},
-      ["03"] = {var_type = "FIELD_FLOAT", damage = "100 162.5 225 287.5 350 412.5 475 537.5", levelkey = "exortlevel"},
+      ["03"] = {
+        var_type = "FIELD_FLOAT",
+        damage = "100 162.5 225 287.5 350 412.5 475 537.5",
+        levelkey = "exortlevel",
+      },
       ["04"] = {var_type = "FIELD_INTEGER", vision_distance = 400},
       ["05"] = {var_type = "FIELD_FLOAT", vision_duration = 4.0},
     },
@@ -279,16 +307,36 @@ return {
     AbilityCastPoint = 0.05,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {var_type = "FIELD_FLOAT", spirit_damage = "22 32 42 52 62 72 82 92", levelkey = "exortlevel"},
-      ["02"] = {var_type = "FIELD_INTEGER", spirit_mana = "100 150 200 250 300 350 400 450", levelkey = "exortlevel"},
-      ["03"] = {var_type = "FIELD_INTEGER", spirit_armor = "0 1 2 3 4 5 6 7", levelkey = "exortlevel"},
+      ["01"] = {
+        var_type = "FIELD_FLOAT",
+        spirit_damage = "22 32 42 52 62 72 82 92",
+        levelkey = "exortlevel",
+      },
+      ["02"] = {
+        var_type = "FIELD_INTEGER",
+        spirit_mana = "100 150 200 250 300 350 400 450",
+        levelkey = "exortlevel",
+      },
+      ["03"] = {
+        var_type = "FIELD_INTEGER",
+        spirit_armor = "0 1 2 3 4 5 6 7",
+        levelkey = "exortlevel",
+      },
       ["04"] = {
         var_type = "FIELD_FLOAT",
         spirit_attack_range = "300 365 430 495 560 625 690 755",
         levelkey = "quaslevel",
       },
-      ["05"] = {var_type = "FIELD_INTEGER", spirit_hp = "300 400 500 600 700 800 900 1000", levelkey = "quaslevel"},
-      ["06"] = {var_type = "FIELD_FLOAT", spirit_duration = "20 30 40 50 60 70 80 90", levelkey = "quaslevel"},
+      ["05"] = {
+        var_type = "FIELD_INTEGER",
+        spirit_hp = "300 400 500 600 700 800 900 1000",
+        levelkey = "quaslevel",
+      },
+      ["06"] = {
+        var_type = "FIELD_FLOAT",
+        spirit_duration = "20 30 40 50 60 70 80 90",
+        levelkey = "quaslevel",
+      },
     },
   },
   invoker_ice_wall = {
@@ -306,10 +354,22 @@ return {
     AbilityCastPoint = 0.05,
     AbilityCastAnimation = "ACT_INVALID",
     AbilitySpecial = {
-      ["01"] = {var_type = "FIELD_FLOAT", duration = "3.0 4.5 6.0 7.5 9.0 10.5 12.0 13.5", levelkey = "quaslevel"},
-      ["02"] = {var_type = "FIELD_INTEGER", slow = "-20 -40 -60 -80 -100 -120 -140 -160", levelkey = "quaslevel"},
+      ["01"] = {
+        var_type = "FIELD_FLOAT",
+        duration = "3.0 4.5 6.0 7.5 9.0 10.5 12.0 13.5",
+        levelkey = "quaslevel",
+      },
+      ["02"] = {
+        var_type = "FIELD_INTEGER",
+        slow = "-20 -40 -60 -80 -100 -120 -140 -160",
+        levelkey = "quaslevel",
+      },
       ["03"] = {var_type = "FIELD_FLOAT", slow_duration = 2.0},
-      ["04"] = {var_type = "FIELD_FLOAT", damage_per_second = "6 12 18 24 30 36 42 48", levelkey = "exortlevel"},
+      ["04"] = {
+        var_type = "FIELD_FLOAT",
+        damage_per_second = "6 12 18 24 30 36 42 48",
+        levelkey = "exortlevel",
+      },
       ["05"] = {var_type = "FIELD_INTEGER", wall_place_distance = 200},
       ["06"] = {var_type = "FIELD_INTEGER", num_wall_elements = 15},
       ["07"] = {var_type = "FIELD_INTEGER", wall_element_spacing = 80},
@@ -338,7 +398,11 @@ return {
       ["03"] = {var_type = "FIELD_INTEGER", radius_start = 175},
       ["04"] = {var_type = "FIELD_INTEGER", radius_end = 225},
       ["05"] = {var_type = "FIELD_FLOAT", end_vision_duration = 1.75},
-      ["06"] = {var_type = "FIELD_FLOAT", damage = "40 80 120 160 200 240 280 320", levelkey = "exortlevel"},
+      ["06"] = {
+        var_type = "FIELD_FLOAT",
+        damage = "40 80 120 160 200 240 280 320",
+        levelkey = "exortlevel",
+      },
       ["07"] = {
         var_type = "FIELD_FLOAT",
         knockback_duration = "0.25 0.5 0.75 1.0 1.25 1.5 1.75 2.0",

@@ -186,7 +186,7 @@ describe("Combos", function()
     describe("with an invalid id", function()
       it("throws an error", function()
         local createFn = m.bindn(combos.Create, combos, -1)
-        assert.error(createFn, 'Combo "-1" not found')
+        assert.error(createFn, "Combo \"-1\" not found")
       end)
     end)
 
@@ -251,7 +251,8 @@ describe("Combos", function()
         assert.spy(CombosSound.onDummyCreate).was.called_with(match.is_ref(dummy))
         assert.spy(CombosSound.onComboStop).was_not.called()
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
-        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(combo))
+        assert.spy(CombosComm.sendStarted).was
+          .called_with(match.is_ref(player), match.is_ref(combo))
         assert.spy(CombosComm.sendStopped).was_not.called()
       end)
     end)
@@ -293,7 +294,8 @@ describe("Combos", function()
         assert.spy(CombosSound.onComboStop).was_not.called()
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player),
+                                                           match.is_ref(comboAfter))
 
         assert.spy(CombosComm.sendStopped).was_not.called()
       end)
@@ -336,9 +338,11 @@ describe("Combos", function()
         assert.spy(CombosSound.onComboStop).was.called_with(match.is_ref(player))
         assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+        assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player),
+                                                           match.is_ref(comboAfter))
 
-        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player), match.is_ref(comboBefore))
+        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player),
+                                                           match.is_ref(comboBefore))
       end)
     end)
   end)
@@ -395,7 +399,8 @@ describe("Combos", function()
 
         assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
         assert.spy(CombosSound.onComboStop).was.called_with(match.is_ref(player))
-        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player), match.is_ref(comboBefore))
+        assert.spy(CombosComm.sendStopped).was.called_with(match.is_ref(player),
+                                                           match.is_ref(comboBefore))
       end)
     end)
   end)
@@ -469,13 +474,15 @@ describe("Combos", function()
 
           assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = false})
 
-          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player),
+                                                       match.is_ref(comboAfter))
 
           assert.spy(CombosSound.onDummyCreate).was_not.called_with(match.is_ref(dummy))
           assert.spy(CombosSound.onComboStop).was_not.called()
           assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player),
+                                                             match.is_ref(comboAfter))
 
           assert.spy(CombosComm.sendStopped).was_not.called()
         end)
@@ -512,13 +519,15 @@ describe("Combos", function()
 
           assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
 
-          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+          assert.spy(CombosHero.setup).was.called_with(match.is_ref(player),
+                                                       match.is_ref(comboAfter))
 
           assert.spy(CombosSound.onDummyCreate).was_not.called_with(match.is_ref(dummy))
           assert.spy(CombosSound.onComboStop).was_not.called()
           assert.spy(CombosSound.onComboStart).was.called_with(match.is_ref(player))
 
-          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player), match.is_ref(comboAfter))
+          assert.spy(CombosComm.sendStarted).was.called_with(match.is_ref(player),
+                                                             match.is_ref(comboAfter))
 
           assert.spy(CombosComm.sendStopped).was_not.called()
         end)
@@ -541,7 +550,8 @@ describe("Combos", function()
         tags = {"late-game"},
         items = {"item_blink"},
         orbs = {7, 7, 7},
-        talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+        talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT,
+                                 Talents.L25_RIGHT),
         sequence = {
           {id = 1, name = "invoker_cold_snap", required = true, next = {2, 3}},
           {id = 2, name = "invoker_ghost_walk", next = {3}},
@@ -662,7 +672,8 @@ describe("Combos", function()
 
           assert.spy(combos.PreFinish).was_not.called()
           assert.spy(combos.Fail).was_not.called()
-          assert.spy(CombosComm.sendProgress).was.called_with(match.is_ref(player), match.is_ref(combo))
+          assert.spy(CombosComm.sendProgress).was.called_with(match.is_ref(player),
+                                                              match.is_ref(combo))
         end)
 
         describe("when it's the first combo step", function()
@@ -671,7 +682,8 @@ describe("Combos", function()
 
             combos:Progress(player, ability)
 
-            assert.spy(CombosComm.sendInProgress).was.called_with(match.is_ref(player), match.is_ref(combo))
+            assert.spy(CombosComm.sendInProgress).was.called_with(match.is_ref(player),
+                                                                  match.is_ref(combo))
           end)
         end)
 

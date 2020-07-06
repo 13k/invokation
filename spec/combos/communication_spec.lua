@@ -33,7 +33,8 @@ describe("combos.communication", function()
 
       CombosComm.sendAbilityUsed(player, ability)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBAT_LOG_ABILITY_USED, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(
+        CustomEvents.EVENT_COMBAT_LOG_ABILITY_USED, player, payload)
     end)
   end)
 
@@ -43,7 +44,8 @@ describe("combos.communication", function()
 
       CombosComm.sendStarted(player, combo)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STARTED, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STARTED, player,
+                                                          payload)
     end)
   end)
 
@@ -53,7 +55,8 @@ describe("combos.communication", function()
 
       CombosComm.sendStopped(player, combo)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STOPPED, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STOPPED, player,
+                                                          payload)
     end)
   end)
 
@@ -63,7 +66,8 @@ describe("combos.communication", function()
 
       CombosComm.sendInProgress(player, combo)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_IN_PROGRESS, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_IN_PROGRESS,
+                                                          player, payload)
     end)
   end)
 
@@ -76,7 +80,8 @@ describe("combos.communication", function()
 
       CombosComm.sendProgress(player, combo)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PROGRESS, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PROGRESS, player,
+                                                          payload)
     end)
   end)
 
@@ -86,7 +91,8 @@ describe("combos.communication", function()
 
       CombosComm.sendStepError(player, combo, ability)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STEP_ERROR, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_STEP_ERROR,
+                                                          player, payload)
     end)
   end)
 
@@ -104,7 +110,8 @@ describe("combos.communication", function()
 
       CombosComm.sendPreFinish(player, comboWithDelay)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PRE_FINISH, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PRE_FINISH,
+                                                          player, payload)
     end)
   end)
 
@@ -121,7 +128,8 @@ describe("combos.communication", function()
 
       CombosComm.sendFinished(player, comboWithDelay)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_FINISHED, player, payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_FINISHED, player,
+                                                          payload)
     end)
   end)
 end)
