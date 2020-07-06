@@ -47,8 +47,7 @@ format-lua:
 
 .PHONY: lint-lua
 lint-lua:
-	@luacheck "$(LUA_SRC_PATH)"
-	@luacheck "$(LUA_TEST_PATH)"
+	@luacheck "$(LUA_SRC_PATH)" "$(LUA_TEST_PATH)"
 
 .PHONY: doc-lua
 doc-lua:
