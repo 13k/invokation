@@ -10,10 +10,10 @@ use_tab: false
 tab_width: 2
 # Indent width for continuations line.
 continuation_indent_width: 2
-# Transform string literals to use double quote.
-double_quote_to_single_quote: false
 # Transform string literals to use single quote.
-single_quote_to_double_quote: false
+double_quote_to_single_quote: false
+# Transform string literals to use double quote.
+single_quote_to_double_quote: true
 
 ### operators
 
