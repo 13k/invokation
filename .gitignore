@@ -1,3 +1,5 @@
+/.cov/*
+!/.cov/.keep
 /.env
 /.envrc
 /.luarocks
@@ -15,4 +17,3 @@
 /luarocks
 /node_modules
 /tmp
-luacov.*
