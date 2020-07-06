@@ -1,7 +1,7 @@
 ### general
 
 # The column limit of one line.
-column_limit: 120
+column_limit: 100
 # The number of spaces used for indentation.
 indent_width: 2
 # Use tab for indent.
