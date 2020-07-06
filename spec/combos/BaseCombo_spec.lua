@@ -14,7 +14,8 @@ local SPEC = {
   tags = {"late-game"},
   items = {"item_blink"},
   orbs = {7, 7, 7},
-  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT,
+                           Talents.L25_RIGHT),
 }
 
 describe("BaseCombo", function()

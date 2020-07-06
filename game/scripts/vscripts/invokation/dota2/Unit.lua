@@ -137,8 +137,8 @@ end
 --- Iterates over the unit's inventory, yielding each non-nil item.
 -- @tparam function callback Iterator function
 -- @tparam[opt={}] table options Options table
--- @tparam[opt={}] table options.sections Array of inventory sections to scan ("inventory", "stash", "neutral").
---   Scans the whole inventory if empty.
+-- @tparam[opt={}] table options.sections Array of inventory sections to scan ("inventory", "stash",
+--   "neutral"). Scans the whole inventory if empty.
 function M:ForEachItem(callback, options)
   if not self:HasInventory() then
     error(ERRF_UNIT_NO_INVENTORY:format(self.name))

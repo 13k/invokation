@@ -17,7 +17,12 @@ local SPEC = {
   tags = {"late-game"},
   items = {"item_blink"},
   orbs = {7, 7, 7},
-  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+  talents = Talents.Select(
+    Talents.L10_LEFT,
+    Talents.L15_RIGHT,
+    Talents.L20_RIGHT,
+    Talents.L25_RIGHT
+  ),
   sequence = {
     {id = 1, name = "step1", required = true, next = {2, 3}},
     {id = 2, name = "step2", next = {3}},

@@ -1,6 +1,5 @@
 local CombosSound = require("invokation.combos.sound")
 local SoundEvents = require("invokation.dota2.sound_events")
-local DummyTarget = require("invokation.dota2.DummyTarget")
 
 describe("combos.sound", function()
   local player = CDOTAPlayer {}
@@ -53,7 +52,8 @@ describe("combos.sound", function()
       CombosSound.onDummyCreate(dummy)
 
       assert.stub(stubRandomInt).was.called_with(1, #SoundEvents.SNDEVTS_DUMMY_CREATE)
-      assert.spy(spyEmitOnEntity).was.called_with(SoundEvents.SNDEVTS_DUMMY_CREATE[1], dummy.entity)
+      assert.spy(spyEmitOnEntity).was
+        .called_with(SoundEvents.SNDEVTS_DUMMY_CREATE[1], dummy.entity)
     end)
   end)
 

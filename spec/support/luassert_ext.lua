@@ -7,8 +7,8 @@ local namespace = require("luassert.namespaces")
 local SELF_STATE_KEY = "__self_state"
 local SPY_STATE_KEY = "payload"
 
-local function mod_self(state, arguments, level)
-  local level = (level or 1) + 1
+local function mod_self(state, _, level)
+  level = (level or 1) + 1
 
   if rawget(state, SELF_STATE_KEY) then
     error("'self' already set", level)

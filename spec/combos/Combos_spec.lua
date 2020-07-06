@@ -1,4 +1,5 @@
 local m = require("moses")
+local match = require('luassert.match')
 local create = require("support.factory").create
 
 local Combo = require("invokation.combos.Combo")
@@ -246,7 +247,6 @@ describe("Combos", function()
         assert.is_true(dummy:IsAlive())
 
         assert.spy(CombosHero.teardown).was.called_with(match.is_ref(player), {hardReset = true})
-
         assert.spy(CombosHero.setup).was.called_with(match.is_ref(player), match.is_ref(combo))
         assert.spy(CombosSound.onDummyCreate).was.called_with(match.is_ref(dummy))
         assert.spy(CombosSound.onComboStop).was_not.called()

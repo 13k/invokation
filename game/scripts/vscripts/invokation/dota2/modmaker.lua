@@ -111,12 +111,15 @@ function M.openGithub(_, msg)
 
   local url = "https://github.com/search?utf8=%E2%9C%93&q=" .. search .. "&l=" .. language ..
                 "&type=Code"
+
   local t = io.popen("start \"Browser\" \"" .. url .. "\"")
+
   t:lines()
 end
 
 function M.sendAPI()
   M.buildAPI()
+
   CustomGameEventManager:Send_ServerToAllClients("modmaker_lua_api", {api = M.api})
 end
 
@@ -133,8 +136,7 @@ function M.Start()
   M.api = {__GLOBAL__ = {}}
   M.initialized = true
 
-  Convars:RegisterCommand("modmaker_api", Dynamic_Wrap(M, "sendAPI"),
-                          "Show the ModMaker lua API for a searchable listing of the server lua vscript.",
+  Convars:RegisterCommand("modmaker_api", Dynamic_Wrap(M, "sendAPI"), "Show the ModMaker lua API",
                           FCVAR_CHEAT)
 
   CustomGameEventManager:RegisterListener("ModMaker_OpenGithub", Dynamic_Wrap(M, "openGithub"))
