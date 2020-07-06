@@ -76,7 +76,6 @@ local function reinsertSpellAbility(hero, ability)
 end
 
 local function canLevelUpAbility(hero, ability, targetLevel)
-  -- luacheck: no max line length
   return (ability:CanAbilityBeUpgraded() == ABILITY_CAN_BE_UPGRADED) and (hero:GetAbilityPoints() > 0) and
            (ability:GetLevel() < targetLevel)
 end
@@ -100,8 +99,8 @@ function M:LevelUpAbilities(options)
 
   for _, name in ipairs(INVOKER.ORB_ABILITIES) do
     if options.maxLevel or options[name] then
-      local abilityOption = options[name] or {}
       local ability = self.hero:FindAbilityByName(name)
+      local abilityOption = options[name] or {}
       local targetLevel
 
       if options.maxLevel or abilityOption.maxLevel then

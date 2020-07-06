@@ -5,6 +5,7 @@ local class = require("pl.class")
 local types = require("pl.types")
 local delegation = require("invokation.lang.delegation")
 
+local LIMITS = require("invokation.const.limits")
 local INVENTORY = require("invokation.const.inventory")
 
 local M = class()
@@ -100,6 +101,10 @@ end
 function M:HeroLevelUpTo(level, options)
   options = options or {}
 
+  if level > LIMITS.MAX_HERO_LEVEL then
+    level = LIMITS.MAX_HERO_LEVEL
+  end
+
   while self:GetLevel() < level do
     self:HeroLevelUp(types.to_bool(options.playEffects))
   end
@@ -129,29 +134,38 @@ function M:GiveGold(amount, options)
   return self.entity:ModifyGold(amount, types.to_bool(options.reliable), options.reason)
 end
 
-function M:forEachItem(callback, options)
+--- Iterates over the unit's inventory, yielding each non-nil item.
+-- @tparam function callback Iterator function
+-- @tparam[opt={}] table options Options table
+-- @tparam[opt={}] table options.sections Array of inventory sections to scan ("inventory", "stash", "neutral").
+--   Scans the whole inventory if empty.
+function M:ForEachItem(callback, options)
   if not self:HasInventory() then
     error(ERRF_UNIT_NO_INVENTORY:format(self.name))
   end
 
   options = options or {}
-  options.includeStash = options.includeStash == nil and true or options.includeStash
+  options.sections = options.sections or {"inventory", "stash", "neutral"}
 
-  local slots
+  local slots = m.chain({})
 
-  if options.onlyStash then
-    slots = INVENTORY.STASH_SLOTS
-  elseif options.includeStash then
-    slots = INVENTORY.SLOTS
-  else
-    slots = INVENTORY.INVENTORY_SLOTS
+  for _, part in ipairs(options.sections) do
+    if part == "inventory" then
+      slots = slots:append(INVENTORY.INVENTORY_SLOTS)
+    elseif part == "stash" then
+      slots = slots:append(INVENTORY.STASH_SLOTS)
+    elseif part == "neutral" then
+      slots = slots:append(INVENTORY.NEUTRAL_SLOTS)
+    end
   end
+
+  slots = slots:value()
 
   for _, slot in ipairs(slots) do
     local item = self:GetItemInSlot(slot)
 
     if item then
-      local ret = {callback(item, slot)}
+      local ret = {callback(item)}
       local continue = true
 
       if #ret > 0 then
@@ -168,17 +182,21 @@ function M:forEachItem(callback, options)
 end
 
 --- Returns an array of names of all items in the unit's inventory.
--- @tparam[opt={}] table options Options table
--- @tparam[opt=true] bool options.includeStash Including stash
--- @tparam[opt=false] bool options.onlyStash Only stash
---   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
+-- @tparam[opt={}] table options Accepts the same options as @{ForEachItem}
+-- @tparam[opt=false] bool options.sort Sorts the resulting array.
 -- @treturn {string,...} Array of item names
 function M:ItemNames(options)
   local names = {}
 
-  self:forEachItem(function(item)
+  options = options or {}
+
+  self:ForEachItem(function(item)
     table.insert(names, item:GetAbilityName())
   end, options)
+
+  if options.sort then
+    names = m.sort(names)
+  end
 
   return names
 end
@@ -195,29 +213,25 @@ function M:AddItemsByName(items, options)
   end
 
   options = options or {}
+  items = m.chain(items)
 
   if options.onlyMissing then
-    items = m.difference(items, self:ItemNames())
+    items = items:difference(self:ItemNames())
   end
 
-  local added = {}
+  items = items:map(function(name)
+    return self:AddItemByName(name)
+  end)
 
-  for _, itemName in ipairs(items) do
-    table.insert(added, self:AddItemByName(itemName))
-  end
-
-  return added
+  return items:value()
 end
 
 --- Finds item by name in inventory.
 -- @tparam string name Item name
--- @tparam[opt={}] table options Options table
--- @tparam[opt=true] bool options.includeStash Including stash
--- @tparam[opt=false] bool options.onlyStash Only stash
---   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
+-- @tparam[opt={}] table options Accepts the same options as @{ForEachItem}
 -- @treturn ?CDOTA_Item Item if found, `nil` otherwise
 function M:FindItemInInventory(name, options)
-  return self:forEachItem(function(item)
+  return self:ForEachItem(function(item)
     if item:GetAbilityName() == name then
       return false, item
     end
@@ -225,10 +239,7 @@ function M:FindItemInInventory(name, options)
 end
 
 --- Removes all items.
--- @tparam[opt={}] table options Options table
--- @tparam[opt=true] bool options.includeStash Including stash
--- @tparam[opt=false] bool options.onlyStash Only stash
---   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
+-- @tparam[opt={}] table options Accepts the same options as @{ForEachItem}
 -- @tparam[opt=false] bool options.endCooldown Reset item cooldowns before removing
 -- @treturn {CDOTA_Item,...} An array of removed items
 function M:RemoveItems(options)
@@ -236,12 +247,13 @@ function M:RemoveItems(options)
 
   local removed = {}
 
-  self:forEachItem(function(item)
+  self:ForEachItem(function(item)
     if options.endCooldown then
       item:EndCooldown()
     end
 
     self:RemoveItem(item)
+
     table.insert(removed, item)
   end, options)
 
@@ -249,12 +261,9 @@ function M:RemoveItems(options)
 end
 
 --- Clears all items cooldowns.
--- @tparam[opt={}] table options Options table
--- @tparam[opt=true] bool options.includeStash Including stash
--- @tparam[opt=false] bool options.onlyStash Only stash
---   (mutually exclusive with `includeStash`. `onlyStash` takes precedence.)
+-- @tparam[opt={}] table options Accepts the same options as @{ForEachItem}
 function M:EndItemCooldowns(options)
-  self:forEachItem(function(item)
+  self:ForEachItem(function(item)
     item:EndCooldown()
   end, options)
 end
@@ -297,15 +306,34 @@ function M:FindAbilityOrItem(name)
   return nil
 end
 
---- Clears all abilities cooldowns.
-function M:EndAbilityCooldowns()
+--- Iterates over the unit's abilities, yielding each non-nil ability.
+-- @tparam function callback Iterator function
+function M:ForEachAbility(callback)
   for i = 0, self.entity:GetAbilityCount() - 1 do
     local ability = self:GetAbilityByIndex(i)
 
     if ability ~= nil then
-      ability:EndCooldown()
+      local ret = {callback(ability)}
+      local continue = true
+
+      if #ret > 0 then
+        continue = table.remove(ret, 1)
+      end
+
+      if not continue then
+        return unpack(ret)
+      end
     end
   end
+
+  return nil
+end
+
+--- Clears all abilities cooldowns.
+function M:EndAbilityCooldowns()
+  self:ForEachAbility(function(ability)
+    ability:EndCooldown()
+  end)
 end
 
 return M

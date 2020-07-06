@@ -67,7 +67,9 @@ end
 -- @tparam Combos.Purchase purchase Purchase information
 function M.refundPurchase(player, purchase)
   player = Player(player)
+
   local unit = Unit(player.hero)
+
   unit:GiveGold(purchase.cost)
 end
 
