@@ -12,22 +12,17 @@ template = "doc"
 
 file = {
   "game/scripts/vscripts/invokation",
-  exclude = { "game/scripts/vscripts/invokation/game_mode/commands" },
+  exclude = {"game/scripts/vscripts/invokation/game_mode/commands"},
 }
 
-custom_tags = {
-  { "abstract", title = "Abstract method" },
-}
+custom_tags = {{"abstract", title = "Abstract method"}}
 
 backtick_references = true
 no_lua_ref = true
 no_space_before_args = true
 not_luadoc = true
-sort_modules = true
+sort = true
 use_markdown_titles = true
 wrap = true
 
-alias("tfield", {
-  "field",
-  modifiers = { type = "$1" },
-})
+alias("tfield", {"field", modifiers = {type = "$1"}})
