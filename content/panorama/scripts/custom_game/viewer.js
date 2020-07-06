@@ -148,11 +148,15 @@
     },
 
     renderPropertiesAction: function () {
-      return new Sequence().RemoveChildren(this.$propertiesSection).RunFunction(this, this.createPropertiesPanel);
+      return new Sequence()
+        .RemoveChildren(this.$propertiesSection)
+        .RunFunction(this, this.createPropertiesPanel);
     },
 
     renderTalentsAction: function () {
-      return new Sequence().RunFunction(this, this.resetSelectedTalents).RunFunction(this, this.selectTalents);
+      return new Sequence()
+        .RunFunction(this, this.resetSelectedTalents)
+        .RunFunction(this, this.selectTalents);
     },
 
     renderOrbsAction: function () {
@@ -163,7 +167,10 @@
     },
 
     renderSequenceAction: function () {
-      var actions = _.map(this.combo.sequence, _.bind(this.createStepPanelAction, this, this.$sequence));
+      var actions = _.map(
+        this.combo.sequence,
+        _.bind(this.createStepPanelAction, this, this.$sequence)
+      );
 
       return new Sequence().RemoveChildren(this.$sequence).Action(actions);
     },

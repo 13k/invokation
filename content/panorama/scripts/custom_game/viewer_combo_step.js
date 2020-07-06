@@ -20,7 +20,10 @@
 
     onStepChange: function () {
       var descriptionL10nKey = L10n.ComboKey(this.combo, this.step.id);
-      this.$descriptionLabel.text = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
+      this.$descriptionLabel.text = L10n.LocalizeFallback(
+        descriptionL10nKey,
+        L10N_FALLBACK_IDS.description
+      );
     },
   });
 

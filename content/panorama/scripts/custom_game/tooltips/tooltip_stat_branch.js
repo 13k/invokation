@@ -93,9 +93,13 @@
       var ability = _.get(TALENT_ABILITIES, [level, side]);
       var abilitySpecial = _.get(this.abilitiesKV, [ability, "AbilitySpecial"]);
 
-      var branchPanel = _.first(panel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_SIDES[side]));
+      var branchPanel = _.first(
+        panel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_SIDES[side])
+      );
 
-      var branchLabel = _.first(branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL));
+      var branchLabel = _.first(
+        branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL)
+      );
 
       _.each(abilitySpecial, function (special) {
         _.forOwn(special, function (value, key) {
@@ -133,7 +137,10 @@
     },
 
     renderRowsAction: function () {
-      var createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction).bind(this).unary().value();
+      var createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction)
+        .bind(this)
+        .unary()
+        .value();
 
       return _.map(LEVELS, createBranchRowPanelAction);
     },

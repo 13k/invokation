@@ -17,7 +17,10 @@ const LinkType = createEnum({
 function pwshLink({ src, dest, type = LinkType.SymbolicLink }, { log }) {
   const winSrc = wsl.windowsPath(src, { absolute: true });
   const winDest = wsl.windowsPath(dest, { absolute: true });
-  const args = ["-Command", `New-Item -ItemType '${LinkType[type]}' -Path '${winDest}' -Target '${winSrc}'`];
+  const args = [
+    "-Command",
+    `New-Item -ItemType '${LinkType[type]}' -Path '${winDest}' -Target '${winSrc}'`,
+  ];
 
   return spawn("pwsh.exe", args, { log });
 }

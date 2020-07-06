@@ -113,7 +113,11 @@
     },
 
     hideScoreAction: function () {
-      return new Sequence().RunFunction(this.$comboScore.component, this.$comboScore.component.Input, "Hide");
+      return new Sequence().RunFunction(
+        this.$comboScore.component,
+        this.$comboScore.component.Input,
+        "Hide"
+      );
     },
 
     // ----- HUD actions -----

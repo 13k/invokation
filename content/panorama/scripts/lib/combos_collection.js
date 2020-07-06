@@ -41,7 +41,10 @@
     },
 
     listenToNetTableChange: function () {
-      return this.netTable.OnKeyChange(NET_TABLE.KEYS.MAIN.COMBOS, this.onNetTableChange.bind(this));
+      return this.netTable.OnKeyChange(
+        NET_TABLE.KEYS.MAIN.COMBOS,
+        this.onNetTableChange.bind(this)
+      );
     },
 
     onNetTableChange: function (key, value) {

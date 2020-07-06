@@ -357,11 +357,20 @@
       params = params || {};
 
       if (_.isInteger(params.entityIndex)) {
-        args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX, abilityName, params.entityIndex);
+        args = args.concat(
+          UI_EVENTS.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX,
+          abilityName,
+          params.entityIndex
+        );
       } else if (_.isString(params.guide)) {
         args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_GUIDE, abilityName, params.guide);
       } else if (_.isInteger(params.hero)) {
-        args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_HERO, abilityName, params.hero, params.flag);
+        args = args.concat(
+          UI_EVENTS.SHOW_ABILITY_TOOLTIP_HERO,
+          abilityName,
+          params.hero,
+          params.flag
+        );
       } else if (_.isInteger(params.level)) {
         args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_LEVEL, abilityName, params.level);
       } else {

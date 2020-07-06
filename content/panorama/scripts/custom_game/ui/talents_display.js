@@ -86,7 +86,10 @@
     select: function (choices) {
       this.selected = choices;
 
-      var selectLevelAction = _.chain(this.selectLevelAction).bind(this, _, choices).unary().value();
+      var selectLevelAction = _.chain(this.selectLevelAction)
+        .bind(this, _, choices)
+        .unary()
+        .value();
 
       var actions = _.map(LEVELS, selectLevelAction);
       var seq = new ParallelSequence().Action(actions);

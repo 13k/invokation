@@ -69,11 +69,18 @@
     },
 
     highlight: function (items) {
-      return new Sequence().Action(this.disableItemsAction()).Action(this.enableItemsAction(items)).Start();
+      return new Sequence()
+        .Action(this.disableItemsAction())
+        .Action(this.enableItemsAction(items))
+        .Start();
     },
 
     disableItemsAction: function () {
-      var disableItemAction = _.chain(this.disableItemAction).bind(this).rearg([1, 0]).ary(2).value();
+      var disableItemAction = _.chain(this.disableItemAction)
+        .bind(this)
+        .rearg([1, 0])
+        .ary(2)
+        .value();
 
       var actions = _.map(this.itemPanels, disableItemAction);
 
@@ -145,7 +152,11 @@
     render: function () {
       this.$search.SetFocus(true);
 
-      var createGroup = _.chain(this.createGroup).bind(this, this.$groups).rearg([1, 0]).ary(2).value();
+      var createGroup = _.chain(this.createGroup)
+        .bind(this, this.$groups)
+        .rearg([1, 0])
+        .ary(2)
+        .value();
 
       _.each(CATEGORIES, createGroup);
     },

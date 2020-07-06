@@ -80,7 +80,10 @@
   };
 
   exports.LocalizeComboProperties = function (combo) {
-    var comboPropertyL10n = _.chain(exports.LocalizeComboProperty).partial(combo).rearg([1, 0]).value();
+    var comboPropertyL10n = _.chain(exports.LocalizeComboProperty)
+      .partial(combo)
+      .rearg([1, 0])
+      .value();
 
     return _.mapValues(COMBO_PROPERTIES, comboPropertyL10n);
   };

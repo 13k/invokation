@@ -62,7 +62,8 @@
     },
 
     createAbilityImage: function (parent, abilityName) {
-      var abilityId = "PopupInvokerAbilityPicker" + _.chain(abilityName).camelCase().upperFirst().value();
+      var abilityId =
+        "PopupInvokerAbilityPicker" + _.chain(abilityName).camelCase().upperFirst().value();
 
       var panel = CreateAbilityImage(parent, abilityId, abilityName);
 

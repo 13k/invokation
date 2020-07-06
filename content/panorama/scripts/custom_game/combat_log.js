@@ -162,7 +162,10 @@
     },
 
     addRow: function (rowIndex) {
-      return new Sequence().RunFunction(this, this.createRow, rowIndex).ScrollToBottom(this.$contents).Start();
+      return new Sequence()
+        .RunFunction(this, this.createRow, rowIndex)
+        .ScrollToBottom(this.$contents)
+        .Start();
     },
 
     addColumn: function (abilityName) {

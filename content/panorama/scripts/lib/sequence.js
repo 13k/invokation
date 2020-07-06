@@ -430,7 +430,9 @@
     },
 
     AnimateProgressBarWithMiddle: function (progressBar, startValue, endValue, seconds) {
-      this.Action(new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds));
+      this.Action(
+        new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds)
+      );
       return this;
     },
 

@@ -194,7 +194,9 @@ class Logger {
 
     if (fields instanceof Array) {
       if (fields.length % 2 !== 0) {
-        throw Error("Logger fields in Array form must be a flat list of key followed by value entries");
+        throw Error(
+          "Logger fields in Array form must be a flat list of key followed by value entries"
+        );
       }
 
       for (let i = 0; i < fields.length; i += 2) {
