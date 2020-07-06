@@ -49,6 +49,8 @@
     // -- libraries
 
     "bit",
+    "json",
+    "vlua",
 
     // -- functions
 
@@ -603,5 +605,9 @@
     "ACT_DOTA_CAPTURE_RARE", // (1706)
     "ACT_DOTA_AW_MAGNETIC_FIELD", // (1707)
     "ACT_DOTA_CAST_GHOST_SHIP" // (1708)
-  ]
+  ],
+  "editor.minimap.maxColumn": 100,
+  "vim.textwidth": 100,
+  "prettier.printWidth": 100,
+  "yaml.format.printWidth": 100
 }

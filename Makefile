@@ -1,5 +1,3 @@
-LUA_SRC_PATH := game/scripts/vscripts
-LUA_TEST_PATH := spec
 SCRIPTS_SRC_PATH := scripts
 JS_SRC_PATH := content/panorama/scripts
 CSS_SRC_PATH := content/panorama/styles
@@ -47,7 +45,7 @@ format-lua:
 
 .PHONY: lint-lua
 lint-lua:
-	@luacheck "$(LUA_SRC_PATH)" "$(LUA_TEST_PATH)"
+	@luacheck .
 
 .PHONY: doc-lua
 doc-lua:

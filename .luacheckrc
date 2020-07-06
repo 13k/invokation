@@ -1,20 +1,49 @@
+std = "lua51+busted+rockspec+luacheckrc"
 max_line_length = 100
 
+files["spec/support/dota2/**/*.lua"] = {ignore = {"121", "122", "212"}}
+files["spec/support/fixtures/**/*.lua"] = {ignore = {"631"}}
+
 exclude_files = {
+  ".luarocks/**",
+  "lua_modules/**",
+  "game/scripts/vscripts/fsm.lua",
   "game/scripts/vscripts/moses.lua",
   "game/scripts/vscripts/pl/**/*.lua",
+  "tmp/**",
 }
 
-new_globals = {
-  "Precache",
-  "Activate",
-  "GameRules",
-  "GameMode",
-}
+new_globals = {"Precache", "Activate", "GameRules", "GameMode"}
 
 -- https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting/API
 new_read_globals = {
-  ---- globals
+  ---- libraries
+  "bit",
+  "json",
+  "vlua",
+  ---- classes
+  "CBasePlayer",
+  "CBaseFlex",
+  "CBaseAnimating",
+  "CDOTABaseGameMode",
+  "CBaseEntity",
+  "CDOTA_BaseNPC_Hero",
+  "CDOTA_BaseNPC",
+  "CDOTA_Item",
+  "CDOTABaseAbility",
+  "CDOTAPlayer",
+  "Convars",
+  "CustomGameEventManager",
+  "CustomNetTables",
+  "CustomUI",
+  "Entities",
+  "EntityFramework",
+  "HeroList",
+  "ParticleManager",
+  "PlayerResource",
+  "Tutorial",
+  "Vector",
+  ---- functions
   "AddFOWViewer",
   "AngleDiff",
   "AppendToLogFile",
@@ -52,6 +81,7 @@ new_read_globals = {
   "DebugDrawText",
   "DebugScreenTextPretty",
   "DoCleaveAttack",
+  "DoUniqueString",
   "EntFire",
   "EntFireByHandle",
   "ScriptAssert",
@@ -199,18 +229,6 @@ new_read_globals = {
   "UTIL_ResetMessageTextAll",
   "VectorToAngles",
   "Warning",
-  ---- classes
-  "Convars",
-  "CustomGameEventManager",
-  "CustomNetTables",
-  "CustomUI",
-  "Entities",
-  "EntityFramework",
-  "HeroList",
-  "ParticleManager",
-  "PlayerResource",
-  "Tutorial",
-  "Vector",
   ---- constants
   -- AbilityLearnResult_t
   "ABILITY_CAN_BE_UPGRADED", -- (0)
@@ -243,8 +261,8 @@ new_read_globals = {
   "FCVAR_NOT_CONNECTED", -- (4194304)
   "FCVAR_VCONSOLE_SET_FOCUS", -- (1073741824)
   -- DamageCategory_t
-  "DOTA_DAMAGE_CATEGORY_ATTACK", -- (1)
   "DOTA_DAMAGE_CATEGORY_SPELL", -- (0)
+  "DOTA_DAMAGE_CATEGORY_ATTACK", -- (1)
   -- DOTA_GameState
   "DOTA_GAMERULES_STATE_INIT", -- (0)
   "DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD", -- (1)
@@ -298,6 +316,7 @@ new_read_globals = {
   "DOTA_STASH_SLOT_4", -- (12)
   "DOTA_STASH_SLOT_5", -- (13)
   "DOTA_STASH_SLOT_6", -- (14)
+  "DOTA_ITEM_NEUTRAL_SLOT", -- (16)
   -- DOTATeam_t
   "DOTA_TEAM_GOODGUYS", -- (2)
   "DOTA_TEAM_BADGUYS", -- (3)
@@ -318,8 +337,8 @@ new_read_globals = {
   "DOTA_TEAM_CUSTOM_MAX", -- (13)
   -- DOTAUnitAttackCapability_t
   "DOTA_UNIT_CAP_NO_ATTACK", -- (0) Unit is unable to attack in any way.
-  "DOTA_UNIT_CAP_MELEE_ATTACK", -- (1) Unit attacks are classified as melee (no uphill miss chance, attacks on enemies that are 350 over the attack range automatically miss).
-  "DOTA_UNIT_CAP_RANGED_ATTACK", -- (2) Unit attacks are classified as ranged (can miss on uphill, disjointable, has projectile).
+  "DOTA_UNIT_CAP_MELEE_ATTACK", -- (1) Unit attacks are classified as melee.
+  "DOTA_UNIT_CAP_RANGED_ATTACK", -- (2) Unit attacks are classified as ranged.
   -- DOTAUnitMoveCapability_t
   "DOTA_UNIT_CAP_MOVE_NONE", -- (0) Unit cannot move in any way.
   "DOTA_UNIT_CAP_MOVE_GROUND", -- (1) Unit move while being obstructed by the terrain.
