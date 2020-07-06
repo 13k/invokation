@@ -38,6 +38,8 @@ test_dependencies = {
   "busted",
   "compat53 ~> 0.7",
   "luacov",
+  "moses ~> 2.1",
+  "penlight ~> 1.7",
 }
 
 test = {
