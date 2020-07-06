@@ -37,6 +37,7 @@
     "after_each",
     "describe",
     "it",
+    "pending",
     "spy",
     "stub",
     "match",
@@ -340,6 +341,7 @@
     "DOTA_STASH_SLOT_4", // (12)
     "DOTA_STASH_SLOT_5", // (13)
     "DOTA_STASH_SLOT_6", // (14)
+    "DOTA_ITEM_NEUTRAL_SLOT", // (16)
     // DOTATeam_t
     "DOTA_TEAM_GOODGUYS", // (2)
     "DOTA_TEAM_BADGUYS", // (3)
