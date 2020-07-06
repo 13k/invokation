@@ -10,10 +10,11 @@ local M = class()
 -- @tparam string name Item name
 -- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
-  self.Name = name
+  local fields = m.extend({}, {Name = name}, kv)
 
-  m.extend(self, kv)
+  m.extend(self, fields)
 
+  self.__data = fields
   self.AbilitySpecial = KV.AbilitySpecials(kv.AbilitySpecial)
   self.AbilityBehavior = KV.Flags(kv.AbilityBehavior)
   self.ItemDeclarations = KV.Strings(kv.ItemDeclarations, "|")
@@ -26,10 +27,6 @@ end
 --- Serializes the KeyValues data
 -- @treturn {[string]=any,...} Serialized data
 function M:Serialize()
-  if self.__data == nil then
-    self.__data = m.omit(self, m.functions(self))
-  end
-
   return self.__data
 end
 

@@ -12,18 +12,16 @@ local ABILITY_KEY_PATT = "^Ability(%d+)$"
 -- @tparam string name Hero name
 -- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
-  self.Name = name
+  local fields = m.extend({}, {Name = name}, kv)
 
-  m.extend(self, kv)
+  m.extend(self, fields)
+
+  self.__data = fields
 end
 
 --- Serializes the KeyValues data
 -- @treturn {[string]=any,...} Serialized data
 function M:Serialize()
-  if self.__data == nil then
-    self.__data = m.omit(self, m.functions(self))
-  end
-
   return self.__data
 end
 
@@ -57,8 +55,8 @@ end
 -- @treturn talents.Talents Table of talent ability names
 function M:Talents()
   if self.talents == nil then
-    self.talents = Talents.NamesArrayToEnumsTable(m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact()
-                                                    :value())
+    local abilities = m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
+    self.talents = Talents.NamesArrayToEnumsTable(abilities)
   end
 
   return self.talents
