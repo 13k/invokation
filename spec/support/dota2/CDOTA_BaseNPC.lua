@@ -2,41 +2,15 @@ local m = require("moses")
 local class = require("pl.class")
 local Factory = require("support.factory")
 
-local INVENTORY_ACTIVE_SLOTS = {
-  DOTA_ITEM_SLOT_1,
-  DOTA_ITEM_SLOT_2,
-  DOTA_ITEM_SLOT_3,
-  DOTA_ITEM_SLOT_4,
-  DOTA_ITEM_SLOT_5,
-  DOTA_ITEM_SLOT_6,
-  DOTA_ITEM_SLOT_7,
-  DOTA_ITEM_SLOT_8,
-  DOTA_ITEM_SLOT_9,
-}
-
-local INVENTORY_STASH_SLOTS = {
-  DOTA_STASH_SLOT_1,
-  DOTA_STASH_SLOT_2,
-  DOTA_STASH_SLOT_3,
-  DOTA_STASH_SLOT_4,
-  DOTA_STASH_SLOT_5,
-  DOTA_STASH_SLOT_6,
-}
-
-local INVENTORY_SLOTS = m.chain({}):append(INVENTORY_ACTIVE_SLOTS):append(INVENTORY_STASH_SLOTS):value()
+local INVENTORY = require("invokation.const.inventory")
 
 CDOTA_BaseNPC = class(CBaseFlex)
 
-function CDOTA_BaseNPC:_init(attributes)
-  self:super(attributes)
+local DEFAULTS = {hasInventory = false, level = 1, maxHealth = 0, health = 0, maxMana = 0, mana = 0}
 
-  self.level = self.level or 1
-  self.maxHealth = self.maxHealth or 0
-  self.health = self.health or self.maxHealth
-  self.maxMana = self.maxMana or 0
-  self.mana = self.mana or self.maxMana
-  self.abilities = {}
-  self.inventory = {}
+function CDOTA_BaseNPC:_init(attributes)
+  local baseAttributes = {abilities = {}, inventory = {}}
+  self:super(m.extend(baseAttributes, DEFAULTS, attributes or {}))
 end
 
 function CDOTA_BaseNPC:GetUnitName()
@@ -55,7 +29,7 @@ function CDOTA_BaseNPC:GetLevel()
   return self.level
 end
 
--- does not exist in original API
+-- not part of Dota2's scripting API
 function CDOTA_BaseNPC:SetLevel(level)
   self.level = level
 end
@@ -106,7 +80,13 @@ function CDOTA_BaseNPC:FindAbilityByName(name)
 end
 
 function CDOTA_BaseNPC:AddAbility(name)
-  local ability = Factory.create("dota_ability", {name = name})
+  local ability = self:FindAbilityByName(name)
+
+  if ability ~= nil then
+    return ability
+  end
+
+  ability = Factory.create("dota_ability", {name = name})
 
   table.insert(self.abilities, ability)
   ability:SetAbilityIndex(#self.abilities)
@@ -118,28 +98,13 @@ function CDOTA_BaseNPC:HasInventory()
   return self.hasInventory
 end
 
--- does not exist in engine's API
-function CDOTA_BaseNPC:findFreeInventorySlot()
-  if not self.hasInventory then
-    return nil
-  end
-
-  for _, slot in ipairs(INVENTORY_SLOTS) do
-    if self.inventory[slot] == nil then
-      return slot
-    end
-  end
-
-  return nil
-end
-
--- does not exist in engine's API
+-- not part of Dota2's scripting API
 function CDOTA_BaseNPC:findInventorySlot(predicate)
-  if not self.hasInventory then
+  if not self:HasInventory() then
     return nil
   end
 
-  for _, slot in ipairs(INVENTORY_SLOTS) do
+  for _, slot in ipairs(INVENTORY.SLOTS) do
     if predicate(self.inventory[slot], slot) then
       return slot
     end
@@ -148,14 +113,21 @@ function CDOTA_BaseNPC:findInventorySlot(predicate)
   return nil
 end
 
--- does not exist in engine's API
+-- not part of Dota2's scripting API
+function CDOTA_BaseNPC:findFreeInventorySlot()
+  return self:findInventorySlot(function(item)
+    return item == nil
+  end)
+end
+
+-- not part of Dota2's scripting API
 function CDOTA_BaseNPC:findItemSlot(item)
   return self:findInventorySlot(function(it)
     return it ~= nil and (it:GetEntityIndex() == item:GetEntityIndex())
   end)
 end
 
--- does not exist in engine's API
+-- not part of Dota2's scripting API
 function CDOTA_BaseNPC:findItemSlotByName(name)
   return self:findInventorySlot(function(it)
     return it ~= nil and (it:GetAbilityName() == name)
@@ -167,7 +139,7 @@ function CDOTA_BaseNPC:HasItemInInventory(name)
 end
 
 function CDOTA_BaseNPC:GetItemInSlot(slot)
-  if not self.hasInventory then
+  if not self:HasInventory() then
     return nil
   end
 
@@ -175,7 +147,7 @@ function CDOTA_BaseNPC:GetItemInSlot(slot)
 end
 
 function CDOTA_BaseNPC:AddItemByName(name)
-  if not self.hasInventory then
+  if not self:HasInventory() then
     return nil
   end
 
@@ -185,13 +157,13 @@ function CDOTA_BaseNPC:AddItemByName(name)
     return nil
   end
 
-  self.inventory[slot] = CDOTA_Item {name = name}
+  self.inventory[slot] = CDOTA_Item({name = name})
 
   return self.inventory[slot]
 end
 
 function CDOTA_BaseNPC:RemoveItem(item)
-  if not self.hasInventory then
+  if not self:HasInventory() then
     return
   end
 

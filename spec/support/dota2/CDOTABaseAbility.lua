@@ -3,9 +3,10 @@ local class = require("pl.class")
 
 CDOTABaseAbility = class(CBaseEntity)
 
+local DEFAULTS = {level = 0, MaxLevel = 1}
+
 function CDOTABaseAbility:_init(attributes)
-  self:super(attributes)
-  self.level = self.level or 0
+  self:super(m.extend({}, DEFAULTS, attributes or {}))
 end
 
 function CDOTABaseAbility:GetAbilityName()

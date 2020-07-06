@@ -1,5 +1,5 @@
-local Factory = require("support.factory")
 local m = require("moses")
+local Factory = require("support.factory")
 
 local KEY_VALUES = LoadKeyValues("scripts/npc/items.txt")
 

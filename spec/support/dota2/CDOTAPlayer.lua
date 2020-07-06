@@ -3,7 +3,7 @@ local class = require("pl.class")
 CDOTAPlayer = class(CBasePlayer)
 
 function CDOTAPlayer:_init(attributes)
-  self:super(attributes)
+  self:super(attributes or {})
 end
 
 function CDOTAPlayer:GetPlayerID()

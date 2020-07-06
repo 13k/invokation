@@ -1,8 +1,11 @@
-local Factory = require("support.factory")
 local m = require("moses")
+local Factory = require("support.factory")
 
-local KEY_VALUES = LoadKeyValues("scripts/npc/npc_abilities.txt")
+local ABILITIES = require("invokation.const.abilities")
 
 Factory.define("dota_ability", function(attributes)
-  return CDOTABaseAbility(m.extend({}, KEY_VALUES[attributes.name] or {}, attributes))
+  attributes = attributes or {}
+  attributes = m.extend({}, ABILITIES.KEY_VALUES[attributes.name] or {}, attributes)
+
+  return CDOTABaseAbility(attributes)
 end)

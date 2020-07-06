@@ -1,5 +1,5 @@
-local Factory = require("support.factory")
 local m = require("moses")
+local Factory = require("support.factory")
 
 Factory.define("vector", function(attributes)
   local coordinates
