@@ -1,13 +1,12 @@
 --- Units helpers.
 -- @module invokation.dota2.units
-local types = require("pl.types")
-local tablex = require("pl.tablex")
+local m = require("moses")
 
 local NAMES = require("invokation.const.units")
 
 local M = {}
 
-tablex.update(M, NAMES)
+m.extend(M, NAMES)
 
 --- Creates an unit by name.
 -- @tparam string name Unit name
@@ -19,9 +18,9 @@ tablex.update(M, NAMES)
 -- @tparam[opt] CDOTA_BaseNPC options.unitOwner Unit Owner
 -- @treturn CDOTA_BaseNPC Created unit
 function M.Create(name, options)
-  options.findClearSpace = options.findClearSpace ~= nil and options.findClearSpace or true
+  options = m.extend({findClearSpace = true}, options or {})
 
-  return CreateUnitByName(name, options.location, types.to_bool(options.findClearSpace),
+  return CreateUnitByName(name, options.location, m.toBoolean(options.findClearSpace),
                           options.npcOwner, options.unitOwner, options.team)
 end
 
@@ -36,9 +35,9 @@ end
 -- @tparam[opt] CDOTA_BaseNPC options.unitOwner Unit Owner
 -- @treturn int Some kind of async registration id?
 function M.CreateAsync(name, options)
-  options.findClearSpace = options.findClearSpace ~= nil and options.findClearSpace or true
+  options = m.extend({findClearSpace = true}, options or {})
 
-  return CreateUnitByNameAsync(name, options.location, types.to_bool(options.findClearSpace),
+  return CreateUnitByNameAsync(name, options.location, m.toBoolean(options.findClearSpace),
                                options.npcOwner, options.unitOwner, options.team, options.callback)
 end
 
@@ -48,6 +47,13 @@ end
 -- @treturn CDOTA_BaseNPC Created unit
 function M.CreateFromTable(definition, location)
   return CreateUnitFromTable(definition, location)
+end
+
+--- Kills and removes the given unit.
+-- @tparam unit CDOTA_BaseNPC unit Unit entity
+function M.Destroy(unit)
+  unit:ForceKill(false)
+  unit:RemoveSelf()
 end
 
 return M

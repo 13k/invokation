@@ -1,17 +1,16 @@
 --- Ability class that represents either an ability or item.
 -- @classmod invokation.dota2.Ability
+local m = require("moses")
 local class = require("pl.class")
-local types = require("pl.types")
-local tablex = require("pl.tablex")
 local delegation = require("invokation.lang.delegation")
 
 local INVOKER = require("invokation.const.invoker")
 
 local M = class()
 
-local ORB_ABILITIES = tablex.pairmap(function(_, ability)
-  return true, ability
-end, INVOKER.ORB_ABILITIES)
+local ORB_ABILITIES = m.map(INVOKER.ORB_ABILITIES, function(ability)
+  return ability, true
+end)
 
 local DELEGATES = {"GetDuration", "GetSpecialValueFor", "IsItem"}
 
@@ -28,7 +27,7 @@ end
 --- Checks if this ability is an Invoker orb ability (quas, wex or exort).
 -- @treturn bool `true` if it's an orb ability, `false` otherwise
 function M:IsOrbAbility()
-  return types.to_bool(ORB_ABILITIES[self.name])
+  return m.toBoolean(ORB_ABILITIES[self.name])
 end
 
 --- Checks if this ability is an Invoker "invocation" ability (quas, wex, exort or invoke).

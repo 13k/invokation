@@ -2,6 +2,7 @@ local m = require("moses")
 local Factory = require("support.factory")
 local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
 
+local UNITS = require("invokation.const.units")
 local HEROES = require("invokation.const.heroes")
 
 Factory.define("dota_hero", function(attributes, options)
@@ -49,4 +50,9 @@ Factory.define("dota_hero", function(attributes, options)
   end
 
   return hero
+end)
+
+Factory.define("dota_hero_invoker", function(attributes, options)
+  attributes = m.extend({}, {name = UNITS.INVOKER}, attributes or {})
+  return Factory.create("dota_hero", attributes, options)
 end)

@@ -20,36 +20,16 @@ local function createDummy(location)
 end
 
 --- Constructor.
-function M:_init()
+-- @tparam table options Options table
+-- @tparam[opt=true] bool options.spawn Spawn dummy unit immediately
+function M:_init(options)
   self.spawn = Entities:FindByName(nil, Units.DUMMY_TARGET_SPAWN)
-  self:Spawn()
-end
 
---- Spawns the dummy unit.
-function M:Spawn()
-  if self:IsAlive() then
-    return
+  options = m.extend({spawn = true}, options or {})
+
+  if options.spawn then
+    self:Spawn()
   end
-
-  self.entity = createDummy(self.spawn:GetAbsOrigin())
-  self:Hold()
-end
-
---- Kills the dummy unit.
-function M:Kill()
-  if not self:IsAlive() then
-    return
-  end
-
-  self.entity:ForceKill(false)
-  self.entity:RemoveSelf()
-  self.entity = nil
-end
-
---- Reset the dummy unit.
-function M:Reset()
-  self:Kill()
-  self:Spawn()
 end
 
 --- Checks if dummy unit is alive.
@@ -62,6 +42,32 @@ end
 -- @treturn bool
 function M:IsDead()
   return not self:IsAlive()
+end
+
+--- Spawns the dummy unit.
+function M:Spawn()
+  if self:IsAlive() then
+    return
+  end
+
+  self.entity = createDummy(self.spawn:GetAbsOrigin())
+
+  self:Hold()
+end
+
+--- Kills the dummy unit.
+function M:Kill()
+  if self:IsAlive() then
+    Units.Destroy(self.entity)
+  end
+
+  self.entity = nil
+end
+
+--- Resets the dummy unit.
+function M:Reset()
+  self:Kill()
+  self:Spawn()
 end
 
 return M

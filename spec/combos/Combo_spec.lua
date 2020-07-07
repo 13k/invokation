@@ -6,6 +6,8 @@ local Talents = require("invokation.dota2.talents")
 local BaseCombo = require("invokation.combos.BaseCombo")
 local ComboSequence = require("invokation.combos.ComboSequence")
 
+local INVOKER = require("invokation.const.invoker")
+
 local SPEC = {
   id = 13,
   specialty = "qw",
@@ -17,12 +19,8 @@ local SPEC = {
   tags = {"late-game"},
   items = {"item_blink"},
   orbs = {7, 7, 7},
-  talents = Talents.Select(
-    Talents.L10_LEFT,
-    Talents.L15_RIGHT,
-    Talents.L20_RIGHT,
-    Talents.L25_RIGHT
-  ),
+  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT,
+                           Talents.L25_RIGHT),
   sequence = {
     {id = 1, name = "step1", required = true, next = {2, 3}},
     {id = 2, name = "step2", next = {3}},
@@ -43,9 +41,7 @@ describe("Combo", function()
   end
 
   local ability1 = create("ability", {name = "step1", AbilityDuration = 0.5})
-
   local ability2 = create("ability", {name = "step2", AbilityDuration = 0.3})
-
   local ability3 = create("ability", {name = "step3", AbilityDuration = 0.25})
 
   before_each(function()
@@ -220,24 +216,27 @@ describe("Combo", function()
     end)
 
     describe("with abilities listed in the wait special table", function()
-      local spec = m.chain(SPEC):omit({"id", "sequence"}):extend(
-                     {
-          id = m.uniqueId(),
-          sequence = {
-            {id = 1, name = "invoker_alacrity", required = true, next = {2}},
-            {id = 2, name = "invoker_cold_snap", required = true, next = {3}},
-            {id = 3, name = "invoker_sun_strike", required = true},
-          },
-        }):value()
+      local specFields = {
+        id = m.uniqueId(),
+        sequence = {
+          {id = 1, name = INVOKER.ABILITY_ALACRITY, required = true, next = {2}},
+          {id = 2, name = INVOKER.ABILITY_COLD_SNAP, required = true, next = {3}},
+          {id = 3, name = INVOKER.ABILITY_SUN_STRIKE, required = true},
+        },
+      }
+
+      local spec = m.chain(SPEC):omit({"id", "sequence"}):extend(specFields):value()
 
       local abilityAlacrity = create("ability",
-                                     {name = "invoker_alacrity", special = {duration = 3.5}})
+                                     {name = INVOKER.ABILITY_ALACRITY, special = {duration = 3.5}})
 
-      local abilityColdSnap = create("ability",
-                                     {name = "invoker_cold_snap", special = {duration = 1.25}})
+      local abilityColdSnap = create("ability", {
+        name = INVOKER.ABILITY_COLD_SNAP,
+        special = {duration = 1.25},
+      })
 
       local abilitySunStrike = create("ability",
-                                      {name = "invoker_sun_strike", special = {delay = 2.6}})
+                                      {name = INVOKER.ABILITY_SUN_STRIKE, special = {delay = 2.6}})
 
       it("uses abilities special values for wait times", function()
         combo = Combo(spec, {clock = spyClock})

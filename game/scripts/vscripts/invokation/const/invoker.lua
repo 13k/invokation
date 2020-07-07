@@ -21,6 +21,10 @@ M.HERO_ID = 74
 -- @tfield string UNIT_NAME
 M.UNIT_NAME = UNITS.INVOKER
 
+--- Units spawned by Invoker
+-- Copy of @{INVOKER_SPAWNED}
+M.SPAWNED_UNITS = UNITS.INVOKER_SPAWNED
+
 --- Raw KeyValues table
 -- @table KEY_VALUES
 M.KEY_VALUES = HEROES.KEY_VALUES[M.UNIT_NAME]

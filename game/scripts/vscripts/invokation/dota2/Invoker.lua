@@ -1,15 +1,15 @@
 --- Invoker class.
 -- @classmod invokation.dota2.Invoker
+local m = require("moses")
 local List = require("pl.List")
 local class = require("pl.class")
-local tablex = require("pl.tablex")
 local Ability = require("invokation.dota2.Ability")
 
 local INVOKER = require("invokation.const.invoker")
 
 local M = class()
 
-tablex.update(M, INVOKER)
+m.extend(M, INVOKER)
 
 --- Constructor.
 -- @tparam CDOTA_BaseNPC_Hero hero Hero entity

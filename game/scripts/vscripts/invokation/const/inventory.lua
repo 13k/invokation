@@ -1,6 +1,6 @@
 --- Inventory constants.
 -- @module invokation.const.inventory
-local tablex = require("pl.tablex")
+local m = require("moses")
 
 local M = {}
 
@@ -27,10 +27,14 @@ M.STASH_SLOTS = {
   DOTA_STASH_SLOT_6,
 }
 
---- Array of all slots indices (union of @{INVENTORY_SLOTS} and @{STASH_SLOTS}).
-M.SLOTS = {}
+--- Array of neutral slots indices.
+M.NEUTRAL_SLOTS = {DOTA_ITEM_NEUTRAL_SLOT}
 
-tablex.insertvalues(M.SLOTS, M.INVENTORY_SLOTS)
-tablex.insertvalues(M.SLOTS, M.STASH_SLOTS)
+--- Array of all non-neutral slots indices (union of @{INVENTORY_SLOTS} and @{STASH_SLOTS}).
+M.NON_NEUTRAL_SLOTS = m.chain({}):append(M.INVENTORY_SLOTS):append(M.STASH_SLOTS):value()
+
+--- Array of all slots indices (union of @{INVENTORY_SLOTS}, @{STASH_SLOTS} and @{NEUTRAL_SLOTS}).
+M.SLOTS = m.chain({}):append(M.INVENTORY_SLOTS):append(M.STASH_SLOTS):append(M.NEUTRAL_SLOTS)
+            :value()
 
 return M

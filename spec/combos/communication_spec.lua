@@ -80,8 +80,8 @@ describe("combos.communication", function()
 
       CombosComm.sendProgress(player, combo)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PROGRESS, player,
-                                                          payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_PROGRESS,
+                                                          player, payload)
     end)
   end)
 
@@ -99,7 +99,6 @@ describe("combos.communication", function()
   describe(".sendPreFinish", function()
     it("sends custom event", function()
       local abilityWithWait = create("ability", {name = "ability", AbilityDuration = 3.5})
-
       local comboWithDelay = Combo(comboSpec, {clock = clock})
 
       assert.is_true(comboWithDelay:Progress(abilityWithWait))
@@ -128,8 +127,8 @@ describe("combos.communication", function()
 
       CombosComm.sendFinished(player, comboWithDelay)
 
-      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_FINISHED, player,
-                                                          payload)
+      assert.spy(CustomEvents.SendPlayer).was.called_with(CustomEvents.EVENT_COMBO_FINISHED,
+                                                          player, payload)
     end)
   end)
 end)
