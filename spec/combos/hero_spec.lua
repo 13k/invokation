@@ -1,7 +1,7 @@
 local m = require("moses")
 local create = require("support.factory").create
 
-local Combo = require("invokation.combos.combo")
+local Combo = require("invokation.combos.Combo")
 local CombosHero = require("invokation.combos.hero")
 
 local LIMITS = require("invokation.const.limits")

@@ -1,6 +1,6 @@
 local create = require("support.factory").create
 
-local Combo = require("invokation.combos.combo")
+local Combo = require("invokation.combos.Combo")
 local CombosComm = require("invokation.combos.communication")
 local CustomEvents = require("invokation.dota2.custom_events")
 
