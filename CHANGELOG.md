@@ -7,6 +7,26 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 ## [Unreleased][unreleased]
 
+## [0.4.3-beta1] - 2021-02-25
+
+### Gameplay
+
+- Fixed freestyle mode not starting
+- Update hero max level to 30
+- Updated shop
+- Changed dummy target to be more tanky
+- Fixed possible infinite loop when leveling abilities up
+- Re-enabled island map
+-
+
+### Development
+
+- Refactored a lot of lua code
+- Set up project as luarocks rock
+- Added test suite for lua code
+- Upgraded to yarn 2.x
+- Added an `.ico` image
+
 ## [0.4.2-beta1] - 2019-10-16
 
 - Fixed combo score not showing correct damage values
