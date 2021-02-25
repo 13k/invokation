@@ -14,7 +14,7 @@ async function launch(tool, toolArgs, { map }, { log, dota2, customGame }) {
       break;
     case "tools":
       cmd = dota2.toolsBinPath;
-      args.push("-addon", customGame.name);
+      args.push("-novid", "-console", "-addon", customGame.name);
       break;
     default:
       log.fatal(`Invalid tool '${tool}'`);

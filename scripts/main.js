@@ -38,7 +38,10 @@ function parseArgs(config) {
 
     args = [...args.slice(0, -1), options, config];
 
-    main(...args).catch((err) => config.log.error(err));
+    main(...args).catch((err) => {
+      config.log.error(err);
+      process.exit(1);
+    });
   };
 
   program

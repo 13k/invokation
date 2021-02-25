@@ -26,7 +26,7 @@ function wslpath(path, options) {
   }
 
   if (proc.status !== 0) {
-    throw `${WSLPATH_BIN} exited with status ${proc.status}`;
+    throw `${WSLPATH_BIN} exited with status ${proc.status}: ${proc.stderr}`;
   }
 
   return proc.stdout.trim();

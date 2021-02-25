@@ -21,7 +21,7 @@ function spawn(cmd, args, { log, ...options } = {}) {
   }
 
   if (cp.status !== 0) {
-    throw Error(`Command ${cmd} exited with status ${cp.status}`);
+    throw Error(`Command ${cmd} exited with status ${cp.status}: ${cp.stderr}`);
   }
 
   if (log != null) {
