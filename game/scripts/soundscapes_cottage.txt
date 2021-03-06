@@ -1,0 +1,81 @@
+"default_day"
+{
+  "dsp"        "0"
+  "fadetime"   "3"
+  "Soundmixer" "Default_Mix"
+
+  "playlooping"
+  {
+    "volume"     ".3"
+    "pitch"      "100"
+    "wave"       "sounds/ambient/soundscapes/waterfall_loop_01.vsnd"
+    "origin"     "-1752, -257, 45;"
+    "soundlevel" "SNDLVL_NORM"
+  }
+
+  "playlooping"
+  {
+    "volume"     ".3"
+    "pitch"      "100"
+    "wave"       "sounds/ambient/soundscapes/river_med_lp_01.vsnd"
+    "origin"     "1257, 1311, 64"
+    "soundlevel" "SNDLVL_70dB"
+  }
+
+  "playsoundscape"
+  {
+    "name"   "weather_day_default"
+    "volume" "1"
+  }
+}
+
+"default_night"
+{
+  "dsp"        "0"
+  "fadetime"   "3"
+  "Soundmixer" "Default_Mix"
+
+  "playlooping"
+  {
+    "volume"     ".3"
+    "pitch"      "100"
+    "wave"       "sounds/ambient/soundscapes/waterfall_loop_01.vsnd"
+    "origin"     "-1752, -257, 45;"
+    "soundlevel" "SNDLVL_NORM"
+  }
+
+  "playlooping"
+  {
+    "volume"     ".3"
+    "pitch"      "100"
+    "wave"       "sounds/ambient/soundscapes/river_med_lp_01.vsnd"
+    "origin"     "1257, 1311, 64"
+    "soundlevel" "SNDLVL_70dB"
+  }
+
+  "playsoundscape"
+  {
+    "name"   "weather_night_default"
+    "volume" "1"
+  }
+}
+
+"weather_day_default"
+{
+  "playlooping"
+  {
+    "volume" "0.6"
+    "pitch"  "100"
+    "wave"   "sounds/ambient/soundscapes/default_day_lp.vsnd"
+  }
+}
+
+"weather_night_default"
+{
+  "playlooping"
+  {
+    "volume" "0.2"
+    "pitch"  "100"
+    "wave"   "sounds/ambient/soundscapes/default_night_lp.vsnd"
+  }
+}
