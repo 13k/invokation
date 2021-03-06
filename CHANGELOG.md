@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 ## [Unreleased][unreleased]
 
+## [0.4.5-beta1] - 2021-03-06
+
+- UI bugfixes (talents in combo description, combo damage filter, game info popup)
+- Added ambient sound effects to cottage map
+
 ## [0.4.4-beta1] - 2021-03-06
 
 - Minor UI and map updates
@@ -85,7 +90,7 @@ Initial open beta release.
 
 Initial closed beta release.
 
-[unreleased]: https://github.com/13k/invokation/compare/v0.4.4-beta1...HEAD
+[unreleased]: https://github.com/13k/invokation/compare/v0.4.5-beta1...HEAD
 [0.1.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.1.0-beta1
 [0.2.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.2.0-beta1
 [0.3.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.3.0-beta1
@@ -94,5 +99,6 @@ Initial closed beta release.
 [0.4.2-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.2-beta1
 [0.4.3-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.3-beta1
 [0.4.4-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.4-beta1
+[0.4.5-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.5-beta1
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
