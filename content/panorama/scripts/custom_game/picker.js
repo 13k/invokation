@@ -250,7 +250,7 @@
         text = $.Localize(L10N_KEYS.PROPERTY_FILTER_OPTION_DEFAULT);
         value = "";
       } else {
-        text = L10n.LocalizeComboPropertiesKey(property, value);
+        text = L10n.LocalizeComboPropertiesKey(property, String(value));
       }
 
       panel.text = text;
