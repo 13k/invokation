@@ -47,6 +47,7 @@
       imagePanel.AddClass(ABILITY_HIGHLIGHT_CLASS);
 
       this.selected = imagePanel.abilityname;
+      this.Submit();
     },
 
     render: function () {

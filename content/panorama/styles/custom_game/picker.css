@@ -193,6 +193,10 @@ pickerClosedWidth = thumbWidth
   margin-top: 10px;
 }
 
+.PickerFilters .PickerFiltersLabel {
+  margin-bottom: 4px;
+}
+
 .PickerFilters .PickerFilterResetButton {
   width: 12px;
   height: 12px;
@@ -225,7 +229,7 @@ pickerClosedWidth = thumbWidth
 }
 
 .PickerFilters .PopupPickerLabel {
-  margin: 0;
+  margin: 0 0 4px 0;
   padding: 0;
   vertical-align: center;
 }

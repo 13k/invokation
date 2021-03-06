@@ -16,12 +16,8 @@
     <Panel id="PopupInvokerAbilityPickerAbilityList" />
 
     <Panel class="PopupButtonRow">
-      <Button class="PopupButton" onactivate="popup.Submit()">
-        <Label text="#DOTA_Ok" />
-      </Button>
-
       <Button class="PopupButton" onactivate="popup.Close()">
-        <Label text="#DOTA_Cancel" />
+        <Label text="#DOTA_Close" />
       </Button>
     </Panel>
   </Popup>

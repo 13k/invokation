@@ -30,6 +30,7 @@
     onItemSelected: function (payload) {
       this.debug("onItemSelected()", payload);
       this.selected = payload.item;
+      this.Submit();
     },
 
     // ----- Helpers -----
