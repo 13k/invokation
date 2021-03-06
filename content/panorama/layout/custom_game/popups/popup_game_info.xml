@@ -14,11 +14,7 @@
     <Panel class="GameInfoContents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
 
-      <Panel class="GameInfoOrbs">
-        <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_quas" camera="camera" particleonly="true" />
-        <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_wex" camera="camera" particleonly="true" />
-        <DOTAScenePanel class="Orb" map="custom_game/scenes/kid_invoker_orb_exort" camera="camera" particleonly="true" />
-      </Panel>
+      <DOTAScenePanel class="OrbsScene" map="custom_game/scenes/kid_invoker_orbs" camera="camera" particleonly="false" hittest="false" />
 
       <Label class="PopupDescription" text="#invokation_game_info_description" html="true" hittest="false" />
 
