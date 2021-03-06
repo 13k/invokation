@@ -46,6 +46,7 @@
   text-overflow: shrink;
   font-family: titleFont;
   font-size: 80px;
+  font-weight: semi-bold;
   color: #000;
   text-shadow: -8px 8px 6px #333;
   animation-name: TextGlow;

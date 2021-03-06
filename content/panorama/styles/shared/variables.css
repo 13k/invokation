@@ -108,7 +108,7 @@
 @define monospaceNumbersFont: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
 
 /* Default serif font, with fallbacks for other languages */
-@define titleFont: Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
+@define titleFont: Reaver,Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
 
 /* Full monospace font. Used mostly for debugging things. */
 @define monospaceFont: Courier New,Courier;
