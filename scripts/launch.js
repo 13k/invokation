@@ -10,7 +10,7 @@ async function launch(tool, toolArgs, { map }, { log, dota2, customGame }) {
     case "game":
       cmd = dota2.binPath;
       map = map || customGame.maps[0];
-      args.push("+dota_launch_custom_game", customGame.name, map);
+      args.push("-novid", "+dota_launch_custom_game", customGame.name, map);
       break;
     case "tools":
       cmd = dota2.toolsBinPath;
