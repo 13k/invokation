@@ -1,20 +1,34 @@
 @import url("s2r://panorama/styles/dotastyles.css");
+@import url("s2r://panorama/styles/dashboard_page_shared.css");
+@import url("s2r://panorama/styles/dashboard_page_hero_new.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
 .Root {
   width: 100%;
   height: 100%;
-  background-color: black;
-  background-image: loadingScreenBackground;
-  background-repeat: no-repeat;
-  background-position: -150px 0%;
-  background-size: 110% 110%;
+  background-color: #14181d;
+}
+
+.Root.Initialize {
+  background-color: gradient(
+    linear,
+    0% 0%,
+    100% 100%,
+    from(#0b0c0e),
+    color-stop(0.3, #14181d),
+    color-stop(0.303, #6c829c),
+    color-stop(0.31, #99b8dd),
+    color-stop(0.55, #99b8dd),
+    color-stop(0.56, #6c829c),
+    color-stop(0.563, #14181d),
+    to(#0b0c0e)
+  );
 }
 
 #TitleFX {
-  width: 1000px;
-  height: 600px;
-  transform: translateX(100px) translateY(100px) translateZ(-40px);
+  width: 100%;
+  height: 100%;
+  transform: translateX(64px) translateY(64px) translateZ(-40px);
   opacity: 0;
   transition-timing-function: ease-in-out;
   transition-duration: 0.4s;
@@ -26,12 +40,12 @@
 }
 
 .TitlePanel {
-  width: 500px;
-  height: 500px;
-  margin-top: 100px;
-  margin-left: 100px;
+  width: 300px;
+  height: 300px;
+  margin-top: 64px;
+  margin-left: 64px;
   background-color: invokationSunGradient;
-  animation-name: OrbColors;
+  animation-name: SunstrikeGlow;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -47,15 +61,23 @@
   font-family: titleFont;
   font-size: 80px;
   font-weight: semi-bold;
-  color: #000;
-  text-shadow: -8px 8px 6px #333;
-  animation-name: TextGlow;
-  animation-duration: 4s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+  color: #bbb6ae;
+  text-shadow: 2px 4px 4px #000;
 }
 
-@keyframes 'OrbColors' {
+#Scene {
+  width: 100%;
+  height: 100%;
+  margin-left: -200px;
+  opacity: 0;
+  transform: translateZ(-30px);
+}
+
+#Scene.SceneLoaded {
+  opacity: 1;
+}
+
+@keyframes 'SunstrikeGlow' {
   0% {
     background-color: invokationSunGradient;
   }
@@ -64,20 +86,5 @@
   }
   100% {
     background-color: invokationSunGradient;
-  }
-}
-
-@keyframes 'TextGlow' {
-  0% {
-    color: #000;
-    text-shadow: -8px 8px 6px #333;
-  }
-  50% {
-    color: #222;
-    text-shadow: -6px 8px 8px #333;
-  }
-  100% {
-    color: #000;
-    text-shadow: -8px 8px 6px #333;
   }
 }
