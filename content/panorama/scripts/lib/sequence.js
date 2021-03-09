@@ -267,6 +267,22 @@
     },
   });
 
+  var FireEntityInputAction = Class(Action, {
+    constructor: function FireEntityInputAction(panel, entityName, inputName, inputArg) {
+      FireEntityInputAction.super.call(this);
+
+      this.panel = panel;
+      this.entityName = entityName;
+      this.inputName = inputName;
+      this.inputArg = inputArg;
+    },
+
+    update: function () {
+      this.panel.FireEntityInput(this.entityName, this.inputName, this.inputArg);
+      return false;
+    },
+  });
+
   var isSequence = function (object) {
     return (
       object instanceof Sequence ||
@@ -460,6 +476,11 @@
       this.Action(new PlaySoundEffectAction(soundName));
       return this;
     },
+
+    FireEntityInput: function (panel, entityName, inputName, inputArg) {
+      this.Action(new FireEntityInputAction(panel, entityName, inputName, inputArg));
+      return this;
+    },
   };
 
   var StopSequence = Class();
@@ -593,6 +614,7 @@
     RemoveAllOptionsAction: RemoveAllOptionsAction,
     SelectOptionAction: SelectOptionAction,
     PlaySoundEffectAction: PlaySoundEffectAction,
+    FireEntityInputAction: FireEntityInputAction,
     // exceptions
     StopSequence: StopSequence,
   };
