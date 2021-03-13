@@ -1,8 +1,9 @@
 ---
 root: true
+extends: "eslint:recommended"
 env:
   node: true
   es6: true
   es2017: true
   es2020: true
-extends: "eslint:recommended"
+  es2021: true
