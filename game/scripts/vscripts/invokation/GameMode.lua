@@ -100,12 +100,6 @@ function GameMode:setupModules()
   self:d("  setup Timers")
   rand.seed()
   self:d("  setup random")
-
-  if self.env.development then
-    local ModMaker = require("invokation.dota2.modmaker")
-    ModMaker.Start()
-    self:d("  setup ModMaker")
-  end
 end
 
 --- Used to set up async precache calls at the beginning of the gameplay.
