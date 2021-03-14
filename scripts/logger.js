@@ -57,8 +57,6 @@ function colorize(color, text) {
 }
 
 class Logger {
-  static Level = Level;
-
   static parseLevel(level) {
     switch (typeof level) {
       case "string":
@@ -71,24 +69,21 @@ class Logger {
     }
   }
 
-  #_level;
-  #_fields;
-
   constructor(level = Level.Info, fields = new Map()) {
     this.level = level;
-    this.#_fields = this._parseFields(fields);
+    this._fields = this._parseFields(fields);
   }
 
   get level() {
-    return this.#_level;
+    return this._level;
   }
 
   set level(level) {
-    this.#_level = Logger.parseLevel(level);
+    this._level = Logger.parseLevel(level);
   }
 
   _copy(fields) {
-    return new Logger(this.level, this._mergeFields(this.#_fields, fields));
+    return new Logger(this.level, this._mergeFields(this._fields, fields));
   }
 
   field(key, value) {
@@ -96,7 +91,7 @@ class Logger {
   }
 
   fields(...fields) {
-    if (fields.length === 0) return this.#_fields;
+    if (fields.length === 0) return this._fields;
 
     fields = this._parseFields(fields);
 
@@ -208,11 +203,11 @@ class Logger {
   }
 
   _formatFields(color) {
-    if (this.#_fields.size === 0) return null;
+    if (this._fields.size === 0) return null;
 
     const parts = [];
 
-    for (const [key, value] of this.#_fields) {
+    for (const [key, value] of this._fields) {
       parts.push(`${colorize(color, key)}=${value.toString()}`);
     }
 
@@ -231,5 +226,7 @@ class Logger {
     return fields;
   }
 }
+
+Logger.Level = Level;
 
 module.exports = Logger;
