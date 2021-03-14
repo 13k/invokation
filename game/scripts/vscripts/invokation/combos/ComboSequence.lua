@@ -98,7 +98,11 @@ function M:todot()
 end
 
 function M:debugState(message)
-  local state = {state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds}
+  local state = {
+    state = self.fsm.current,
+    current = self.currentId or "<nil>",
+    next = self.nextIds,
+  }
   self:d(message, state)
 end
 

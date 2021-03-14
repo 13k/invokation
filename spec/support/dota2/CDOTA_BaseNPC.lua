@@ -6,7 +6,14 @@ local INVENTORY = require("invokation.const.inventory")
 
 CDOTA_BaseNPC = class(CBaseFlex)
 
-local DEFAULTS = {hasInventory = false, level = 1, maxHealth = 0, health = 0, maxMana = 0, mana = 0}
+local DEFAULTS = {
+  hasInventory = false,
+  level = 1,
+  maxHealth = 0,
+  health = 0,
+  maxMana = 0,
+  mana = 0,
+}
 
 function CDOTA_BaseNPC:_init(attributes)
   local baseAttributes = {abilities = {}, inventory = {}}
