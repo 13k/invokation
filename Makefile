@@ -1,4 +1,5 @@
 SCRIPTS_SRC_PATH := scripts
+SCRIPTS_ESLINT_CONFIG := $(SCRIPTS_SRC_PATH)/.eslintrc.yml
 JS_SRC_PATH := content/panorama/scripts
 CSS_SRC_PATH := content/panorama/styles
 
@@ -55,7 +56,7 @@ doc-lua:
 test-lua:
 	@luarocks test
 
-.PHONY:
+.PHONY: build-lua
 build-lua: format-lua lint-lua doc-lua
 
 .PHONY: format-js
@@ -63,8 +64,15 @@ format-js:
 	@yarn run prettier --write "$(SCRIPTS_SRC_PATH)/**/*.js" "$(JS_SRC_PATH)/**/*.js"
 
 .PHONY: lint-js
-lint-js:
-	@yarn run eslint "$(SCRIPTS_SRC_PATH)/**/*.js" "$(JS_SRC_PATH)"
+lint-js: lint-js-scripts lint-js-panorama
+
+.PHONY: lint-js-scripts
+lint-js-scripts:
+	@yarn run eslint -c "$(SCRIPTS_ESLINT_CONFIG)" "$(SCRIPTS_SRC_PATH)"
+
+.PHONY: lint-js-panorama
+lint-js-panorama:
+	@yarn run eslint "$(JS_SRC_PATH)"
 
 .PHONY: format-css
 format-css:
