@@ -1,7 +1,14 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
+    "dotjoshjohnson.xml",
     "esbenp.prettier-vscode",
-    "stylelint.vscode-stylelint"
+    "foxundermoon.shell-format",
+    "geekidos.vdf",
+    "koihik.vscode-lua-format",
+    "stylelint.vscode-stylelint",
+    "sumneko.lua",
+    "timonwong.shellcheck",
+    "arcanis.vscode-zipfs"
   ]
 }

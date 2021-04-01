@@ -1,15 +1,68 @@
 {
+  // line width
+  "editor.minimap.maxColumn": 100,
+  "prettier.printWidth": 100,
+  "vim.textwidth": 100,
+  // yarn 2.x config
+  "eslint.nodePath": ".yarn/sdks",
+  "eslint.packageManager": "yarn",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
+  "stylelint.packageManager": "yarn",
+  // extensions
+  "css.validate": false,
+  "eslint.lintTask.enable": true,
+  "eslint.run": "onSave",
+  "javascript.format.enable": false,
+  "vscode-lua-format.configPath": ".lua-format",
+  "xmlTools.enableXmlTreeView": true,
+  "xmlTools.enforcePrettySelfClosingTagOnFormat": true,
+  "xmlTools.xmlFormatterImplementation": "v2",
+  // file types
   "files.associations": {
+    ".env*": "shellscript",
+    ".busted": "lua",
+    ".luacheckrc": "lua",
+    ".luacov": "lua",
+    ".lua-format": "yaml",
+    "*.gameevents": "vdf",
+    "*.rockspec": "lua",
+    "*.vmat": "vdf",
+    "*.vsndevts": "vdf",
+    "config.ld": "lua",
     "**/game/**/*.txt": "vdf",
     "**/content/materials/**/*.txt": "vdf"
   },
-  "css.validate": false,
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
-  "vscode-lua-format.configPath": ".lua-format",
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "Koihik.vscode-lua-format"
+  },
+  "[makefile]": {
+    "editor.insertSpaces": false
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // lua
   "Lua.runtime.version": "Lua 5.1",
-  "Lua.runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/?.lua"],
+  "Lua.runtime.path": [
+    "game/scripts/vscripts/?.lua",
+    "game/scripts/vscripts/?/?.lua"
+  ],
   "Lua.workspace.ignoreDir": [
     ".luacheckrc",
     ".luarocks",
@@ -19,18 +72,17 @@
     "*.rockspec",
     "game/scripts/vscripts/pl"
   ],
-  "Lua.diagnostics.disable": ["emmy-lua"],
+  "Lua.diagnostics.disable": [
+    "emmy-lua"
+  ],
   "Lua.diagnostics.globals": [
     //
     // Lua
     //
-
     "_ENV",
-
     //
     // busted
     //
-
     "setup",
     "teardown",
     "before_each",
@@ -41,19 +93,14 @@
     "spy",
     "stub",
     "match",
-
     //
     // Dota2
     //
-
     // -- libraries
-
     "bit",
     "json",
     "vlua",
-
     // -- functions
-
     "AddFOWViewer",
     "AngleDiff",
     "AppendToLogFile",
@@ -238,9 +285,7 @@
     "UTIL_ResetMessageTextAll",
     "VectorToAngles",
     "Warning",
-
     // -- classes
-
     "Convars",
     "CustomGameEventManager",
     "CustomNetTables",
@@ -254,9 +299,7 @@
     "PlayerResource",
     "Tutorial",
     "Vector",
-
     // -- constants
-
     // AbilityLearnResult_t
     "ABILITY_CAN_BE_UPGRADED", // (0)
     "ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE", // (1)
@@ -606,8 +649,8 @@
     "ACT_DOTA_AW_MAGNETIC_FIELD", // (1707)
     "ACT_DOTA_CAST_GHOST_SHIP" // (1708)
   ],
-  "editor.minimap.maxColumn": 100,
-  "vim.textwidth": 100,
-  "prettier.printWidth": 100,
-  "yaml.format.printWidth": 100
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  }
 }
