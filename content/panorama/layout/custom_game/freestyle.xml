@@ -1,36 +1,38 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/freestyle.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/freestyle.css" />
   </styles>
 
-  <Panel class="FreestyleRoot Hide" hittest="false">
-    <Panel class="FreestyleControls TranslucentPanel" hittest="false">
-      <Panel class="FreestyleControlIcon">
-        <Button class="LevelUpButton FreestyleIconButton Grey" onactivate="freestyle.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
+  <Panel class="root Hide" hittest="false">
+    <Panel class="controls panel translucent" hittest="false">
+      <Panel class="control-icon">
+        <Button id="control-level-up" class="Arrow Up icon-button grey" onactivate="freestyle.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="FreestyleControlIcon">
-        <Button class="LevelMaxButton FreestyleIconButton Grey" onactivate="freestyle.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="control-icon">
+        <Button id="control-max-level-up" class="DoubleArrow Up icon-button grey" onactivate="freestyle.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="FreestyleControlIcon">
-        <Button class="RefreshButton FreestyleIconButton Blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="control-icon">
+        <Button id="control-restart" class="RefreshButton icon-button blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="FreestyleControlIcon">
-        <Button class="FullRefreshIcon FreestyleIconButton Bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="control-icon">
+        <Button id="control-full-restart" class="icon full-refresh icon-button bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
-      <Panel class="FreestyleControlIcon">
-        <Button class="CloseButton FreestyleIconButton Red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="control-icon">
+        <Button id="control-close" class="CloseButton icon-button red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 
-    <Panel id="FreestyleScore" />
+    <Panel id="score" />
   </Panel>
 </root>

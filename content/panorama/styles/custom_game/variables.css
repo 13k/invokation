@@ -1,0 +1,216 @@
+/*******************************************************************************
+ * Colors
+ ******************************************************************************/
+
+@define color_base_text: #a5ada2ff;
+@define color_base_border: #444444ff;
+@define color_off_white: #ccccccff;
+@define color_selected_text_background: #66666633;
+@define color_gold: #ffcc33;
+
+@define gradient_dota_level: gradient(linear, 0% 0%, 0% 100%, from(#bbcaea), color-stop(0.5, #ffffff), color-stop(0.5, #d9dfec), to(#bbcaea));
+@define gradient_dota_playtime: gradient(linear, 0% 0%, 0% 100%, from(#3db451), color-stop(0.5, #beffc7), color-stop(0.5, #91d69a), to(#3db451));
+
+/* Game */
+
+@define color_hero_slot0: #3375ffff;
+@define color_hero_slot1: #66ffbfff;
+@define color_hero_slot2: #bf00bfff;
+@define color_hero_slot3: #f3f00bff;
+@define color_hero_slot4: #ff6b00ff;
+@define color_hero_slot5: #fe86c2ff;
+@define color_hero_slot6: #a1b447ff;
+@define color_hero_slot7: #65d9f7ff;
+@define color_hero_slot8: #008321ff;
+@define color_hero_slot9: #a46900ff;
+
+@define color_hero_slot0_half: #3375ff33;
+@define color_hero_slot1_half: #66ffbf44;
+@define color_hero_slot2_half: #bf00bf88;
+@define color_hero_slot3_half: #f3f00b33;
+@define color_hero_slot4_half: #ff6b0033;
+@define color_hero_slot5_half: #fe86c244;
+@define color_hero_slot6_half: #a1b44766;
+@define color_hero_slot7_half: #65d9f733;
+@define color_hero_slot8_half: #00832133;
+@define color_hero_slot9_half: #a4690033;
+
+@define color_rune_dd: #82caff;
+@define color_rune_haste: #f62817;
+@define color_rune_illusion: #ffd700;
+@define color_rune_invis: #8b008b;
+@define color_rune_regen: #7fff00;
+@define color_rune_arcane: #fd3afb;
+@define color_rune_bounty: #ff7800;
+
+@define color_physical_damage: #ae2f28;
+@define color_magical_damage: #5b93d1;
+@define color_pure_damage: #d8ae53;
+
+@define color_winner_green: #88ff88;
+@define color_loser_red: #ff4433;
+
+/* Dota Plus */
+
+@define color_dota_plus_gold: #b78946;
+@define color_dota_plus_light_gold: #dcd086;
+@define color_dota_plus_brown: #433620;
+@define gradient_dota_plus_gold: gradient(linear, 0% 0%, 0% 100%, from(#b78946), to(#dcd086));
+@define gradient_dota_plus_gold_gradient_hover: gradient(linear, 0% 0%, 0% 100%, from(#d8a253), to(#ecdf90));
+@define gradient_dota_plus_gold_gradient_active: gradient(linear, 0% 0%, 0% 100%, from(#ca974d), to(#dfd388));
+@define gradient_dota_plus_bg: gradient(linear, 0% 0%, 0% 100%, from(dota_plus_brown), color-stop(0.5, #141b21ef), to(#141b21ef));
+
+/* Watch/DPC */
+
+@define color_pro_verified: #ffcc33;
+@define color_text_blue_grey_reg: #748B8B;
+@define color_text_blue_grey_dim:#485959;
+@define color_text_blue_grey_dark: #3A4444;
+@define color_text_blue_grey_bright: #e1e8f8;
+@define color_text_live_green: #86F58B;
+
+/* ECON */
+
+@define color_rarity_common: #b0c3d9;
+@define color_rarity_uncommon: #5e98d9;
+@define color_rarity_rare: #4b69ff;
+@define color_rarity_mythical: #8847ff;
+@define color_rarity_legendary: #d32ce6;
+@define color_rarity_ancient: #eb4b4b;
+@define color_rarity_immortal: #e4ae39;
+@define color_rarity_arcana: #ade55c;
+@define color_rarity_seasonal: #fff34f;
+
+/* Invokation */
+
+@define color_text_link: #9862E9;
+@define color_text_quas: #88c5e9;
+@define color_text_wex: #c284bf;
+@define color_text_exort: #c69a25;
+@define color_accent_quas: #33a7e9;
+@define color_accent_wex: #eb07e1;
+@define color_accent_exort: #e7ac10;
+
+/*******************************************************************************
+ * Fonts
+ ******************************************************************************/
+
+@define font_default: Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
+@define font_monospace_numbers: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
+@define font_title: Reaver,Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
+@define font_monospace: Courier New,Courier;
+
+/*******************************************************************************
+ * Icons
+ ******************************************************************************/
+
+@define control_icon_arrow_dropdown_up: url("file://{resources}/images/game/control_icons/arrow_dropdown_up_png.png");
+@define control_icon_arrow_dropdown: url("file://{resources}/images/game/control_icons/arrow_dropdown_png.png");
+@define control_icon_arrow_popout: url("file://{resources}/images/game/control_icons/arrow_popout_png.png");
+@define control_icon_arrow_right: url("file://{resources}/images/game/control_icons/arrow_right_png.png");
+@define control_icon_arrow_top_right: url("file://{resources}/images/game/control_icons/arrow_top_right_png.png");
+@define control_icon_check_round: url("file://{resources}/images/game/control_icons/check_64_png.png");
+@define control_icon_check: url("file://{resources}/images/game/control_icons/check_png.png");
+@define control_icon_close_bold: url("file://{resources}/images/game/control_icons/purgatory_png.png");
+@define control_icon_close_grey: url("file://{resources}/images/game/control_icons/x_close_grey_psd.png");
+@define control_icon_close: url("file://{resources}/images/game/control_icons/x_close_png.png");
+@define control_icon_dota_logo_white: url("file://{resources}/images/game/control_icons/dota_logo_white_png.png");
+@define control_icon_double_arrow_right: url("file://{resources}/images/game/control_icons/double_arrow_right_png.png");
+@define control_icon_edit: url("file://{resources}/images/game/control_icons/edit_png.png");
+@define control_icon_escalation_arrow: url("file://{resources}/images/game/control_icons/escalation_arrow_psd.png");
+@define control_icon_eye: url("file://{resources}/images/game/control_icons/eye_png.png");
+@define control_icon_filter_carry: url("file://{resources}/images/game/control_icons/filter_carry_png.png");
+@define control_icon_filter_complexity: url("file://{resources}/images/game/control_icons/filter_complexity_png.png");
+@define control_icon_filter_melee: url("file://{resources}/images/game/control_icons/filter_melee_png.png");
+@define control_icon_filter_support: url("file://{resources}/images/game/control_icons/filter_support_png.png");
+@define control_icon_gear: url("file://{resources}/images/game/control_icons/gear_png.png");
+@define control_icon_hamburger: url("file://{resources}/images/game/control_icons/hamburger_png.png");
+@define control_icon_plus_thin: url("file://{resources}/images/game/control_icons/plus_thin_png.png");
+@define control_icon_plus: url("file://{resources}/images/game/control_icons/plus_png.png");
+@define control_icon_quit: url("file://{resources}/images/game/control_icons/quit_png.png");
+@define control_icon_refresh: url("file://{resources}/images/game/control_icons/refresh_psd.png");
+@define control_icon_restore: url("file://{resources}/images/game/control_icons/restore_icon_psd.png");
+@define control_icon_search: url("file://{resources}/images/game/control_icons/icon_search_png.png");
+@define control_icon_toc: url("file://{resources}/images/game/control_icons/toc_psd.png");
+@define control_icon_maximize: url("file://{resources}/images/game/control_icons/maximize_icon_psd.png");
+@define control_icon_return_to_game: url("file://{resources}/images/game/control_icons/return_to_game_png.png");
+@define control_icon_expand_collapse: url("file://{resources}/images/game/control_icons/expand_collapse_png.png");
+
+@define status_icon_clock: url("file://{resources}/images/game/status_icons/clock_psd.png");
+@define status_icon_help: url("file://{resources}/images/game/status_icons/helpicon_psd.png");
+@define status_icon_info: url("file://{resources}/images/game/status_icons/information_psd.png");
+@define status_icon_loading_throbber_round: url("file://{resources}/images/game/status_icons/loadingthrobber_round_psd.png");
+@define status_icon_star_empty: url("file://{resources}/images/game/status_icons/icon_star_empty_png.png");
+@define status_icon_star: url("file://{resources}/images/game/status_icons/icon_star_png.png");
+
+@define dota_plus_logo: url("file://{resources}/images/game/dota_plus/dotaplus_logo_png.png");
+@define dota_plus_logo_small: url("file://{resources}/images/game/dota_plus/dotaplus_logo_small_png.png");
+@define dota_plus_icon_challenges: url("file://{resources}/images/game/dota_plus/challanges_icon_png.png");
+@define dota_plus_icon_chat_wheel: url("file://{resources}/images/game/dota_plus/icon_chatwheel_plus_reward_png.png");
+@define dota_plus_icon_currency_small: url("file://{resources}/images/game/dota_plus/currency_icon_small_png.png");
+@define dota_plus_icon_currency: url("file://{resources}/images/game/dota_plus/currency_icon_png.png");
+@define dota_plus_icon_relic: url("file://{resources}/images/game/dota_plus/relic_icon_png.png");
+
+@define icon_stance_offensive: url("file://{resources}/images/game/status_icons/modifier_kill_effect_psd.png");
+@define icon_stance_defensive: url("file://{resources}/images/game/hud/reborn/icon_armor_psd.png");
+@define icon_damage_rating: url("file://{resources}/images/game/hud/reborn/icon_damage_psd.png");
+@define icon_difficulty_rating: url("file://{resources}/images/game/hud/reborn/icon_speed_psd.png");
+
+/*******************************************************************************
+ * HUD
+ ******************************************************************************/
+
+@define hud_invoker_card: url("file://{resources}/images/game/hud/invokercard_psd.png");
+@define hud_stat_branch_select_bg: url("file://{resources}/images/game/hud/reborn/statbranch_select_bg_psd.png");
+@define hud_stat_branch_level_bg: url("file://{resources}/images/game/hud/reborn/statbranch_levelbg_psd.png");
+@define hud_timer_bg: url("file://{resources}/images/game/hud/reborn/bg_timer_psd.png");
+@define hud_ult_cooldown: url("file://{resources}/images/game/hud/reborn/ult_cooldown_psd.png");
+@define hud_ult_ready: url("file://{resources}/images/game/hud/reborn/ult_ready_psd.png");
+
+@define hud_arcana_es_chr_0: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_0_png.png");
+@define hud_arcana_es_chr_1: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_1_png.png");
+@define hud_arcana_es_chr_2: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_2_png.png");
+@define hud_arcana_es_chr_3: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_3_png.png");
+@define hud_arcana_es_chr_4: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_4_png.png");
+@define hud_arcana_es_chr_5: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_5_png.png");
+@define hud_arcana_es_chr_6: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_6_png.png");
+@define hud_arcana_es_chr_7: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_7_png.png");
+@define hud_arcana_es_chr_8: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_8_png.png");
+@define hud_arcana_es_chr_9: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_9_png.png");
+@define hud_arcana_es_chr_x: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_x_png.png");
+@define hud_arcana_es_v2_chr_0: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_0_v2_png.png");
+@define hud_arcana_es_v2_chr_1: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_1_v2_png.png");
+@define hud_arcana_es_v2_chr_2: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_2_v2_png.png");
+@define hud_arcana_es_v2_chr_3: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_3_v2_png.png");
+@define hud_arcana_es_v2_chr_4: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_4_v2_png.png");
+@define hud_arcana_es_v2_chr_5: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_5_v2_png.png");
+@define hud_arcana_es_v2_chr_6: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_6_v2_png.png");
+@define hud_arcana_es_v2_chr_7: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_7_v2_png.png");
+@define hud_arcana_es_v2_chr_8: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_8_v2_png.png");
+@define hud_arcana_es_v2_chr_9: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_9_v2_png.png");
+@define hud_arcana_es_v2_chr_x: url("file://{resources}/images/game/hud/arcana/es/numbers/combo_x_v2_png.png");
+@define hud_arcana_es_summary_background: url("file://{resources}/images/game/hud/arcana/es/es_arcana_summary_bg_png.png");
+@define hud_arcana_es_v2_summary_background: url("file://{resources}/images/game/hud/arcana/es/es_arcana_summary_bg_v2_png.png");
+
+/*******************************************************************************
+ * Backgrounds
+ ******************************************************************************/
+
+@define bg_play_button_2x: url("file://{resources}/images/game/backgrounds/background_play_button_2x_png.png");
+
+@define bg_picker: url("file://{resources}/images/game/backgrounds/gallery_background_png.png");
+@define bg_viewer: url("file://{resources}/images/game/leaf_pages/debut_kid_invoker/paper-bg_png.png");
+
+/*******************************************************************************
+ * Masks
+ ******************************************************************************/
+
+@define mask_soft_edge_box: url("file://{resources}/images/game/masks/softedge_box_png.png");
+@define mask_soft_edge_box_irregular: url("file://{resources}/images/game/masks/softedge_box_irregular_png.png");
+@define mask_soft_edge_circle: url("file://{resources}/images/game/masks/softedge_circle_png.png");
+@define mask_soft_edge_circle_sharp: url("file://{resources}/images/game/masks/softedge_circle_sharp_png.png");
+@define mask_soft_edge_circle_sharper: url("file://{resources}/images/game/masks/softedge_circle_sharper_png.png");
+@define mask_soft_edge_vscroll: url("file://{resources}/images/game/masks/softedge_vertical_vscroll_psd.png");
+@define mask_soft_edge_vscroll_wide: url("file://{resources}/images/game/masks/softedge_vertical_vscroll_wide_psd.png");
+@define mask_brush_horizontal: url("file://{resources}/images/game/masks/brush_horizontal_psd.png");
+@define mask_hero_movie_blur: url("file://{resources}/images/game/masks/heromovie_blur_mask_psd.png");

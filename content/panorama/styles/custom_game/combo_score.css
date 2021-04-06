@@ -1,155 +1,155 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
 /******************************************************************************
  * Combo Score (shamelessly rippped from ES arcana)
  *****************************************************************************/
 
-.ComboScoreRoot {
+.root {
   width: 275px;
   height: 120px;
 }
 
-.ComboScoreRoot .ComboScoreSplashBackground {
+.splash-bg {
   z-index: 0;
   width: 191px;
   height: 129px;
   horizontal-align: center;
-  background-image: arcanaShakerSummaryBackground;
+  background-image: hud_arcana_es_summary_background;
   background-size: 100%;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreSplashBackground {
-  background-image: arcanaShakerV2SummaryBackground;
+.level2 .splash-bg {
+  background-image: hud_arcana_es_v2_summary_background;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer {
+.digits-container {
   flow-children: left;
   width: 100%;
   margin-left: 20px;
   align: center center;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigitX {
+.digits-container .digit-x {
   width: 22px;
-  background-image: arcanaShakerCharX;
+  background-image: hud_arcana_es_chr_x;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigitX {
-  background-image: arcanaShakerV2CharX;
+.level2 .digits-container .digit-x {
+  background-image: hud_arcana_es_v2_chr_x;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit {
-  width: 38px;
-  height: 59px;
-  background-image: arcanaShakerChar1;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit {
-  background-image: arcanaShakerV2Char1;
-}
-
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigitHidden {
+.digits-container .digit-hidden {
   visibility: collapse;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_0 {
-  width: 28px;
-  background-image: arcanaShakerChar0;
-}
-
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_1 {
-  width: 25px;
-  background-image: arcanaShakerChar1;
-}
-
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_2 {
-  width: 34px;
-  background-image: arcanaShakerChar2;
-}
-
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_3 {
+.digits-container .digit {
   width: 38px;
-  background-image: arcanaShakerChar3;
+  height: 59px;
+  background-image: hud_arcana_es_chr_0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_4 {
+.level2 .digits-container .digit {
+  background-image: hud_arcana_es_v2_chr_0;
+}
+
+.digits-container .digit.digit-0 {
+  width: 28px;
+  background-image: hud_arcana_es_chr_0;
+}
+
+.digits-container .digit.digit-1 {
+  width: 25px;
+  background-image: hud_arcana_es_chr_1;
+}
+
+.digits-container .digit.digit-2 {
   width: 34px;
-  background-image: arcanaShakerChar4;
+  background-image: hud_arcana_es_chr_2;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_5 {
+.digits-container .digit.digit-3 {
+  width: 38px;
+  background-image: hud_arcana_es_chr_3;
+}
+
+.digits-container .digit.digit-4 {
+  width: 34px;
+  background-image: hud_arcana_es_chr_4;
+}
+
+.digits-container .digit.digit-5 {
   width: 40px;
   margin-left: -2px;
-  background-image: arcanaShakerChar5;
+  background-image: hud_arcana_es_chr_5;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_6 {
+.digits-container .digit.digit-6 {
   width: 33px;
-  background-image: arcanaShakerChar6;
+  background-image: hud_arcana_es_chr_6;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_7 {
+.digits-container .digit.digit-7 {
   width: 35px;
-  background-image: arcanaShakerChar7;
+  background-image: hud_arcana_es_chr_7;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_8 {
+.digits-container .digit.digit-8 {
   width: 30px;
-  background-image: arcanaShakerChar8;
+  background-image: hud_arcana_es_chr_8;
 }
 
-.ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigit.digit_9 {
+.digits-container .digit.digit-9 {
   width: 30px;
-  background-image: arcanaShakerChar9;
+  background-image: hud_arcana_es_chr_9;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_0 {
-  background-image: arcanaShakerV2Char0;
+.level2 .digits-container .digit.digit-0 {
+  background-image: hud_arcana_es_v2_chr_0;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_1 {
-  background-image: arcanaShakerV2Char1;
+.level2 .digits-container .digit.digit-1 {
+  background-image: hud_arcana_es_v2_chr_1;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_2 {
-  background-image: arcanaShakerV2Char2;
+.level2 .digits-container .digit.digit-2 {
+  background-image: hud_arcana_es_v2_chr_2;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_3 {
-  background-image: arcanaShakerV2Char3;
+.level2 .digits-container .digit.digit-3 {
+  background-image: hud_arcana_es_v2_chr_3;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_4 {
-  background-image: arcanaShakerV2Char4;
+.level2 .digits-container .digit.digit-4 {
+  background-image: hud_arcana_es_v2_chr_4;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_5 {
-  background-image: arcanaShakerV2Char5;
+.level2 .digits-container .digit.digit-5 {
+  background-image: hud_arcana_es_v2_chr_5;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_6 {
-  background-image: arcanaShakerV2Char6;
+.level2 .digits-container .digit.digit-6 {
+  background-image: hud_arcana_es_v2_chr_6;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_7 {
-  background-image: arcanaShakerV2Char7;
+.level2 .digits-container .digit.digit-7 {
+  background-image: hud_arcana_es_v2_chr_7;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_8 {
-  background-image: arcanaShakerV2Char8;
+.level2 .digits-container .digit.digit-8 {
+  background-image: hud_arcana_es_v2_chr_8;
 }
 
-.ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit.digit_9 {
-  background-image: arcanaShakerV2Char9;
+.level2 .digits-container .digit.digit-9 {
+  background-image: hud_arcana_es_v2_chr_9;
 }
 
-.ComboScoreRoot > .ComboScoreCounter {
+.root > .counter {
   width: 250px;
   height: 119px;
   align: center top;
@@ -159,20 +159,20 @@
   transition-property: opacity;
 }
 
-.ComboScoreRoot.ShowCounter > .ComboScoreCounter {
+.root.show-counter > .counter {
   opacity: 1;
 }
 
-.ComboScoreRoot.ShowCounter.ShowSummary > .ComboScoreCounter {
+.root.show-summary > .counter {
   opacity: 0;
 }
 
-#ComboScoreCounterFX {
+#counter-fx {
   width: 100%;
   height: 100%;
 }
 
-.ComboScoreRoot > .ComboScoreCounter > .ComboScoreContent {
+.root > .counter > .content {
   width: 100%;
   height: 90px;
   margin-bottom: 10px;
@@ -180,16 +180,16 @@
   align: center bottom;
 }
 
-#ComboScoreCounterTicker {
+#counter-ticker {
   height: 100%;
 }
 
-#ComboScoreCounterTicker.ComboScoreDigitContainer {
+#counter-ticker.digits-container {
   margin-right: 90px;
   horizontal-align: center;
 }
 
-#ComboScoreCounterTicker .ComboScoreDigitX {
+#counter-ticker .digit-x {
   width: 29px;
   height: 44.25px;
   margin-bottom: 0;
@@ -197,23 +197,23 @@
   vertical-align: bottom;
 }
 
-#ComboScoreCounterTicker .ComboScoreDigitX,
-#ComboScoreCounterTicker .ComboScoreDigit {
+#counter-ticker .digit-x,
+#counter-ticker .digit {
   align: left center;
 }
 
-#ComboScoreCounterTicker .ComboScoreDigit {
+#counter-ticker .digit {
   pre-transform-scale2d: 0.9;
   transition-timing-function: ease-in-out;
   transition-duration: 0.1s;
   transition-property: pre-transform-scale2d, background-image;
 }
 
-#ComboScoreCounterTicker.CounterBump .ComboScoreDigit {
+#counter-ticker.bump .digit {
   pre-transform-scale2d: 1.2;
 }
 
-.ComboScoreRoot > .ComboScoreCounter > .ComboScoreContent > .ComboScoreLabel {
+.root > .counter > .content > .score-label {
   z-index: 10;
   margin-top: 65px;
   horizontal-align: center;
@@ -229,7 +229,7 @@
   text-shadow: 2px 2px 0 #1b4c44;
 }
 
-.ComboScoreRoot > .ComboScoreSummary {
+.root > .summary {
   width: 275px;
   height: 120px;
   align: center top;
@@ -239,39 +239,39 @@
   transition-property: opacity;
 }
 
-.ComboScoreRoot.ShowSummary > .ComboScoreSummary {
+.root.show-summary > .summary {
   opacity: 1;
 }
 
-.ComboScoreRoot > .ComboScoreSummary .ComboScoreSplashBackground {
+.root > .summary .splash-bg {
   vertical-align: top;
 }
 
-#ComboScoreSummaryFX {
+#summary-fx {
   z-index: 100;
   width: 100%;
   height: 100%;
-  opacity-mask: softEdgeBoxMask;
+  opacity-mask: mask_soft_edge_box;
 }
 
-.ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent {
+.root > .summary > .content {
   flow-children: down;
   width: 100%;
   align: center center;
 }
 
-.ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreCount {
+.root > .summary > .content > .step-count {
   flow-children: right;
   width: 100%;
   horizontal-align: center;
 }
 
-#ComboScoreSummaryCountDisplay.ComboScoreDigitContainer {
+#summary-step-count-ticker.digits-container {
   width: 40%;
   horizontal-align: center;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigitX {
+#summary-step-count-ticker .digit-x {
   width: 10px;
   height: 22.125px;
   margin-bottom: 0;
@@ -280,52 +280,52 @@
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-#ComboScoreSummaryCountDisplay .ComboScoreDigit {
+#summary-step-count-ticker .digit {
   height: 28px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_0 {
+#summary-step-count-ticker .digit.digit-0 {
   width: 13px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_1 {
+#summary-step-count-ticker .digit.digit-1 {
   width: 12px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_2 {
+#summary-step-count-ticker .digit.digit-2 {
   width: 16px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_3 {
+#summary-step-count-ticker .digit.digit-3 {
   width: 18px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_4 {
+#summary-step-count-ticker .digit.digit-4 {
   width: 18px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_5 {
+#summary-step-count-ticker .digit.digit-5 {
   width: 19px;
   margin-left: -2px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_6 {
+#summary-step-count-ticker .digit.digit-6 {
   width: 16px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_7 {
+#summary-step-count-ticker .digit.digit-7 {
   width: 17px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_8 {
+#summary-step-count-ticker .digit.digit-8 {
   width: 14px;
 }
 
-#ComboScoreSummaryCountDisplay .ComboScoreDigit.digit_9 {
+#summary-step-count-ticker .digit.digit-9 {
   width: 14px;
 }
 
-.ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreCount > .ComboScoreLabel {
+.root > .summary > .content > .step-count > .score-label {
   margin-left: 5px;
   vertical-align: center;
   text-align: center;
@@ -337,27 +337,23 @@
   text-shadow: 2px 2px 0 #1b4c44;
 }
 
-.ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreDamage {
+.root > .summary > .content > .score-damage {
   flow-children: down;
   width: 100%;
 }
 
-#ComboScoreSummaryDamageTicker {
-  margin-right: 60px;
-  horizontal-align: right;
-}
-
-#ComboScoreSummaryDamageTicker.ComboScoreDigitContainer {
+#summary-damage-ticker {
   width: 70%;
+  margin-right: 60px;
   horizontal-align: center;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-#ComboScoreSummaryDamageTicker .ComboScoreDigit {
+#summary-damage-ticker .digit {
   margin-top: -3px;
 }
 
-.ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreDamage > .ComboScoreLabel {
+.root > .summary > .content > .score-damage > .score-label {
   margin-top: -5px;
   margin-left: 0;
   align: center center;

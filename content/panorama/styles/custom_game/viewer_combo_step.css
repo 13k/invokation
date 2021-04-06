@@ -1,26 +1,26 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-.ViewerComboStepRoot {
+.root {
   flow-children: right;
   padding: 8px;
 }
 
-.ViewerComboStepIcon {
+#ability-button {
   width: 48px;
   height: 48px;
-  box-shadow: goldColor -2px -2px 4px 4px;
+  box-shadow: goldcolor -2px -2px 4px 4px;
   background-color: #000d;
 }
 
-.ViewerComboStepRoot.ComboStepOptional .ViewerComboStepIcon {
+.optional #ability-button {
   box-shadow: #000 -2px -2px 4px 4px;
 }
 
-#ComboStepImage {
+#ability-image {
   vertical-align: center;
 }
 
-#ViewerComboStepDescription {
+#description {
   width: fill-parent-flow(1);
   margin-left: 8px;
   vertical-align: center;

@@ -1,26 +1,30 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var StaggeredSequence = global.Sequence.StaggeredSequence;
-  var AddClassAction = global.Sequence.AddClassAction;
-  var RemoveClassAction = global.Sequence.RemoveClassAction;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const {
+    Sequence,
+    ParallelSequence,
+    StaggeredSequence,
+    RunFunctionAction,
+    AddClassAction,
+    RemoveClassAction,
+  } = global.Sequence;
 
-  var DAMAGE_SPIN_ITERATIONS = 30;
-  var SPIN_DIGITS_INTERVAL = 0.05;
-  var BURST_INTENSITY_THRESHOLDS = [1000, 2000];
+  const DAMAGE_SPIN_ITERATIONS = 30;
+  const SPIN_DIGITS_INTERVAL = 0.05;
+  const BURST_INTENSITY_THRESHOLDS = [1000, 2000];
 
-  var DIGIT_CLASS = "ComboScoreDigit";
-  var DIGIT_HIDDEN_CLASS = "ComboScoreDigitHidden";
-  var COUNTER_BUMP_CLASS = "CounterBump";
-  var COUNTER_SHOW_CLASS = "ShowCounter";
-  var SUMMARY_SHOW_CLASS = "ShowSummary";
+  const CLASSES = {
+    DIGIT: "digit",
+    DIGIT_HIDDEN: "digit-hidden",
+    COUNTER_BUMP: "bump",
+    COUNTER_SHOW: "show-counter",
+    SUMMARY_SHOW: "show-summary",
+  };
 
-  var SHAKER_FX_ENTS = {
+  const SHAKER_FX_ENTS = {
     // scenes/hud/ui_es_arcana_combo_ambient
     counter: {
       level1: {
@@ -49,20 +53,18 @@
     },
   };
 
-  function digitClass(digit) {
-    return "digit_" + String(digit);
-  }
+  const digitClass = (digit) => `digit-${digit}`;
 
-  function eachUpdateDigitsOperations(container, value, callback) {
-    var panels = container.FindChildrenWithClassTraverse(DIGIT_CLASS);
-    var valueRevStr = value.toString().split("").reverse().join("");
+  const eachUpdateDigitsOperations = (container, value, callback) => {
+    const panels = container.FindChildrenWithClassTraverse(CLASSES.DIGIT);
+    const valueRevStr = value.toString().split("").reverse().join("");
 
-    for (var i = 0; i < panels.length; i++) {
-      (function () {
-        var idx = i;
-        var digit = valueRevStr[idx];
-        var panel = panels[idx];
-        var ops = {
+    for (let i = 0; i < panels.length; i++) {
+      (() => {
+        const idx = i;
+        const digit = valueRevStr[idx];
+        const panel = panels[idx];
+        const ops = {
           setAttributes: {
             __digit__: digit,
           },
@@ -75,26 +77,26 @@
         }
 
         if (digit == null) {
-          ops.addClass.push(DIGIT_HIDDEN_CLASS);
+          ops.addClass.push(CLASSES.DIGIT_HIDDEN);
         } else {
-          ops.removeClass.push(DIGIT_HIDDEN_CLASS);
+          ops.removeClass.push(CLASSES.DIGIT_HIDDEN);
           ops.addClass.push(digitClass(digit));
         }
 
         callback(panel, ops);
       })();
     }
-  }
+  };
 
-  var ComboScore = CreateComponent({
-    constructor: function ComboScore() {
-      ComboScore.super.call(this, {
+  class ComboScore extends Component {
+    constructor() {
+      super({
         elements: {
-          counterTicker: "ComboScoreCounterTicker",
-          summaryCountDisplay: "ComboScoreSummaryCountDisplay",
-          summaryDamageTicker: "ComboScoreSummaryDamageTicker",
-          counterFx: "ComboScoreCounterFX",
-          summaryFx: "ComboScoreSummaryFX",
+          counterTicker: "counter-ticker",
+          summaryCountDisplay: "summary-step-count-ticker",
+          summaryDamageTicker: "summary-damage-ticker",
+          counterFx: "counter-fx",
+          summaryFx: "summary-fx",
         },
         elementEvents: {
           counterFx: {
@@ -119,119 +121,107 @@
       this.burstIntensityThresholds = BURST_INTENSITY_THRESHOLDS.sort();
 
       this.debug("init");
-    },
+    }
 
     // ----- Helpers -----
 
-    counterFxAmbientStart: function () {
+    counterFxAmbientStart() {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.ambient, "Start", "0");
-    },
+    }
 
-    counterFxBurstStart: function () {
+    counterFxBurstStart() {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Start", "0");
-    },
+    }
 
-    counterFxBurstStop: function () {
+    counterFxBurstStop() {
       this.$counterFx.FireEntityInput(SHAKER_FX_ENTS.counter.level2.burst2, "Stop", "0");
-    },
+    }
 
-    summaryFxAmbientStart: function () {
+    summaryFxAmbientStart() {
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2.ambient, "Start", "0");
-    },
+    }
 
-    summaryFxBurstStart: function (intensity) {
-      var key = "burst" + intensity;
+    summaryFxBurstStart(intensity) {
+      const key = `burst${intensity}`;
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Start", "0");
-    },
+    }
 
-    summaryFxBurstStop: function (intensity) {
-      var key = "burst" + intensity;
+    summaryFxBurstStop(intensity) {
+      const key = `burst${intensity}`;
       this.$summaryFx.FireEntityInput(SHAKER_FX_ENTS.summary.level2[key], "Stop", "0");
-    },
+    }
 
-    burstIntensity: function (value) {
+    burstIntensity(value) {
       return _.sortedIndex(this.burstIntensityThresholds, value) + 1;
-    },
+    }
 
-    digitsValue: function (id, value) {
+    digitsValue(id, value) {
       if (arguments.length > 1) {
         this.values[id] = value;
       }
 
       return this.values[id];
-    },
+    }
 
-    spinQueue: function (id) {
+    spinQueue(id) {
       this.spinQueues[id] = this.spinQueues[id] || [];
-      return this.spinQueues[id];
-    },
 
-    consumeSpinDigits: function (id) {
-      var queue = this.spinQueue(id);
-      var options = queue.pop();
+      return this.spinQueues[id];
+    }
+
+    consumeSpinDigits(id) {
+      const queue = this.spinQueue(id);
+      const options = queue.pop();
 
       while (queue.shift());
 
       if (options) {
         this.spinDigits(options);
       }
-    },
+    }
 
-    enqueueSpinDigits: function (options) {
-      var id = options.container.id;
+    enqueueSpinDigits(options) {
+      const { id } = options.container;
 
       this.spinQueue(id).push(options);
 
       if (!this.spinning[id]) {
         this.consumeSpinDigits(id);
       }
-    },
+    }
 
-    updateDigits: function (container, value) {
-      eachUpdateDigitsOperations(container, value, function (panel, ops) {
-        _.forOwn(ops.setAttributes, function (value, key) {
+    updateDigits(container, value) {
+      eachUpdateDigitsOperations(container, value, (panel, ops) => {
+        _.forOwn(ops.setAttributes, (value, key) => {
           panel[key] = value;
         });
 
-        _.each(ops.removeClass, function (cssClass) {
-          panel.RemoveClass(cssClass);
-        });
-
-        _.each(ops.addClass, function (cssClass) {
-          panel.AddClass(cssClass);
-        });
+        _.each(ops.removeClass, (cssClass) => panel.RemoveClass(cssClass));
+        _.each(ops.addClass, (cssClass) => panel.AddClass(cssClass));
       });
 
       this.digitsValue(container.id, value);
-    },
+    }
 
     // ----- Actions -----
 
-    updateDigitsAction: function (container, value) {
-      var seq = new ParallelSequence();
+    updateDigitsAction(container, value) {
+      const seq = new ParallelSequence();
 
-      eachUpdateDigitsOperations(container, value, function (panel, ops) {
-        var panelSeq = new ParallelSequence();
+      eachUpdateDigitsOperations(container, value, (panel, ops) => {
+        const panelSeq = new ParallelSequence();
 
-        _.forOwn(ops.setAttributes, function (value, key) {
-          panelSeq.SetAttribute(panel, key, value);
-        });
-
-        _.each(ops.removeClass, function (cssClass) {
-          panelSeq.RemoveClass(panel, cssClass);
-        });
-
-        _.each(ops.addClass, function (cssClass) {
-          panelSeq.AddClass(panel, cssClass);
-        });
+        _.forOwn(ops.setAttributes, (value, key) => panelSeq.SetAttribute(panel, key, value));
+        _.each(ops.removeClass, (cssClass) => panelSeq.RemoveClass(panel, cssClass));
+        _.each(ops.addClass, (cssClass) => panelSeq.AddClass(panel, cssClass));
 
         seq.Action(panelSeq);
       });
 
-      return seq.RunFunction(this, this.digitsValue, container.id, value);
-    },
+      return seq.RunFunction(() => this.digitsValue(container.id, value));
+    }
 
-    spinDigitsAction: function (options) {
+    spinDigitsAction(options) {
       options = _.assign(
         {
           iterations: 10,
@@ -241,7 +231,7 @@
         options
       );
 
-      var id = options.container.id;
+      const { id } = options.container;
 
       options.start = Math.ceil(
         (options.start != null ? options.start : this.digitsValue(id)) || 0
@@ -250,23 +240,20 @@
       options.end = Math.ceil(options.end);
       options.increment = options.increment || (options.end - options.start) / options.iterations;
 
-      var seq = new StaggeredSequence(options.interval);
+      const seq = new StaggeredSequence(options.interval);
 
       if (_.isFunction(options.callbacks.onStart)) {
         seq.RunFunction(options.callbacks.onStart);
       }
 
-      for (var v = options.start, cond = true; cond; v += options.increment) {
-        var value = v > options.end ? options.end : v < options.start ? options.start : v;
+      for (let v = options.start, cond = true; cond; v += options.increment) {
+        const value = v > options.end ? options.end : v < options.start ? options.start : v;
         cond = options.increment > 0 ? v < options.end : v > options.start;
 
-        (function () {
-          var boundValue = Math.ceil(value);
-          var updateSeq = new Sequence().RunFunction(
-            this,
-            this.updateDigits,
-            options.container,
-            boundValue
+        (() => {
+          const boundValue = Math.ceil(value);
+          const updateSeq = new Sequence().RunFunction(() =>
+            this.updateDigits(options.container, boundValue)
           );
 
           if (_.isFunction(options.callbacks.onSpin)) {
@@ -274,7 +261,7 @@
           }
 
           seq.Action(updateSeq);
-        }.call(this));
+        })();
       }
 
       if (_.isFunction(options.callbacks.onEnd)) {
@@ -282,68 +269,63 @@
       }
 
       return new Sequence()
-        .RunFunction(this, function () {
+        .RunFunction(() => {
           this.spinning[id] = true;
         })
         .Action(seq)
-        .RunFunction(this, function () {
+        .RunFunction(() => {
           this.spinning[id] = false;
           this.consumeSpinDigits(id);
         });
-    },
+    }
 
-    updateCounterDigitsAction: function (value) {
+    updateCounterDigitsAction(value) {
       return this.updateDigitsAction(this.$counterTicker, value);
-    },
+    }
 
-    updateSummaryCounterDigitsAction: function (count) {
+    updateSummaryCounterDigitsAction(count) {
       return this.updateDigitsAction(this.$summaryCountDisplay, count);
-    },
+    }
 
-    spinSummaryDamageDigitsAction: function (options) {
-      options = _.assign(
-        {
-          callbacks: {},
-        },
-        options
-      );
+    spinSummaryDamageDigitsAction(options) {
+      options = _.assign({ callbacks: {} }, options);
 
-      var appliedFx = {};
+      const appliedFx = {};
 
-      options.callbacks.onSpin = function (damage) {
-        var intensity = this.burstIntensity(damage);
+      options.callbacks.onSpin = (damage) => {
+        const intensity = this.burstIntensity(damage);
 
         if (!(intensity in appliedFx)) {
           this.summaryFxBurstStart(intensity);
           appliedFx[intensity] = intensity;
         }
-      }.bind(this);
+      };
 
-      options.callbacks.onSpinEnd = function () {
+      options.callbacks.onSpinEnd = () => {
         _.forOwn(appliedFx, this.summaryFxBurstStop.bind(this));
-      }.bind(this);
+      };
 
-      return new RunFunctionAction(this, this.enqueueSpinDigits, options);
-    },
+      return new RunFunctionAction(() => this.enqueueSpinDigits(options));
+    }
 
-    bumpCounterTickerAction: function () {
-      return new AddClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
-    },
+    bumpCounterTickerAction() {
+      return new AddClassAction(this.$counterTicker, CLASSES.COUNTER_BUMP);
+    }
 
-    unbumpCounterTickerAction: function () {
-      return new RemoveClassAction(this.$counterTicker, COUNTER_BUMP_CLASS);
-    },
+    unbumpCounterTickerAction() {
+      return new RemoveClassAction(this.$counterTicker, CLASSES.COUNTER_BUMP);
+    }
 
-    showCounterAction: function () {
-      return new AddClassAction(this.$ctx, COUNTER_SHOW_CLASS);
-    },
+    showCounterAction() {
+      return new AddClassAction(this.$ctx, CLASSES.COUNTER_SHOW);
+    }
 
-    hideCounterAction: function () {
-      return new RemoveClassAction(this.$ctx, COUNTER_SHOW_CLASS);
-    },
+    hideCounterAction() {
+      return new RemoveClassAction(this.$ctx, CLASSES.COUNTER_SHOW);
+    }
 
-    updateCounterAction: function (count) {
-      var seq = new Sequence();
+    updateCounterAction(count) {
+      const seq = new Sequence();
 
       if (count < 1) {
         return seq;
@@ -353,30 +335,30 @@
         .Action(this.showCounterAction())
         .Wait(0.15)
         .Action(this.bumpCounterTickerAction())
-        .RunFunction(this, this.counterFxBurstStart)
+        .RunFunction(() => this.counterFxBurstStart())
         .Action(this.updateCounterDigitsAction(count))
         .Wait(0.15)
         .Action(this.unbumpCounterTickerAction())
-        .RunFunction(this, this.counterFxBurstStop);
-    },
+        .RunFunction(() => this.counterFxBurstStop());
+    }
 
-    showSummaryAction: function () {
-      return new AddClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
-    },
+    showSummaryAction() {
+      return new AddClassAction(this.$ctx, CLASSES.SUMMARY_SHOW);
+    }
 
-    hideSummaryAction: function () {
-      return new RemoveClassAction(this.$ctx, SUMMARY_SHOW_CLASS);
-    },
+    hideSummaryAction() {
+      return new RemoveClassAction(this.$ctx, CLASSES.SUMMARY_SHOW);
+    }
 
-    updateSummaryAction: function (options) {
-      var count = _.get(options, "count", 0);
-      var seq = new Sequence();
+    updateSummaryAction(options) {
+      const count = _.get(options, "count", 0);
+      const seq = new Sequence();
 
       if (count < 1) {
         return seq;
       }
 
-      var summaryDamageOptions = {
+      const summaryDamageOptions = {
         container: this.$summaryDamageTicker,
         start: options.startDamage,
         end: options.endDamage,
@@ -389,33 +371,34 @@
         .Action(this.showSummaryAction())
         .Wait(0.1)
         .Action(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
-    },
+    }
 
-    hideAction: function () {
+    hideAction() {
       return new ParallelSequence()
         .Action(this.hideCounterAction())
         .Action(this.hideSummaryAction());
-    },
+    }
 
     // ----- Action runners -----
 
-    spinDigits: function (options) {
+    spinDigits(options) {
       this.spinDigitsAction(options).Start();
-    },
+    }
 
-    updateCounter: function (payload) {
-      var count = payload.count || 0;
+    updateCounter(payload) {
+      const count = payload.count || 0;
+
       return this.updateCounterAction(count).Start();
-    },
+    }
 
-    updateSummary: function (payload) {
+    updateSummary(payload) {
       return this.updateSummaryAction(payload).Start();
-    },
+    }
 
-    hide: function () {
+    hide() {
       return this.hideAction().Start();
-    },
-  });
+    }
+  }
 
   context.score = new ComboScore();
 })(GameUI.CustomUIConfig(), this);

@@ -1,9 +1,8 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
-@import url("file://{resources}/styles/shared/rating.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
+@import url("file://{resources}/styles/custom_game/panels.css");
+@import url("file://{resources}/styles/custom_game/rating.css");
 
-.PickerComboRoot {
+.root {
   flow-children: down;
   width: 100%;
   margin-top: 10px;
@@ -11,58 +10,58 @@
   border-radius: 4px;
 }
 
-.PickerComboRoot:hover {
+.root:hover {
   background-color: #111f;
 }
 
-.PickerComboRoot.PickerComboFinished {
+.root.finished {
   background-color: #7771;
 }
 
-.PickerComboRoot.PickerComboFinished:hover {
+.root.finished:hover {
   background-color: #111f;
 }
 
-.PickerComboRoot .PanelTitleContainer {
+.panel-title-container {
   height: fit-children;
   padding: 0;
   border: 0;
   background-color: none;
 }
 
-.PickerComboRoot .PanelTitle {
+.panel-title {
   vertical-align: center;
   text-align: left;
   font-size: 14px;
 }
 
-.PickerComboRoot.PickerComboFinished .PanelTitle {
+.root.finished .panel-title {
   margin-left: 12px;
 }
 
-.PickerComboRoot .FinishedIcon {
+.finished-icon {
   visibility: collapse;
   width: 24px;
   height: 24px;
   vertical-align: center;
   tooltip-position: right;
   tooltip-body-position: 50% 10%;
-  wash-color: dotaPlusLightGold;
-  background-image: controlsCheckRoundIcon;
+  wash-color: color_dota_plus_light_gold;
+  background-image: control_icon_check_round;
   background-size: 100%;
 }
 
-.PickerComboRoot.PickerComboFinished .FinishedIcon {
+.root.finished .finished-icon {
   visibility: visible;
-  wash-color: dotaPlusGold;
+  wash-color: dotaplusgold;
 }
 
-.PickerComboRoot .PickerComboInfoContainer {
+.info-container {
   flow-children: right;
   margin-top: 8px;
 }
 
-.PickerComboRoot .PickerComboIcon {
+.picker-combo-icon {
   width: 28px;
   height: 28px;
   margin: 6px 8px;
@@ -71,28 +70,37 @@
   tooltip-body-position: 50% 10%;
 }
 
-.PickerComboRoot .InfoIcon {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-.PickerComboRoot .InfoIcon:hover {
-  wash-color: #fff;
-}
-
-.PickerComboRoot .SpecialtyIcon {
+.specialty-icon {
   border-radius: 50%;
 }
 
-.PickerComboRoot.specialty_qw .SpecialtyIcon {
-  background-color: specialtyQuasWexGradient;
+.root.specialty_qw .specialty-icon {
+  background-color: gradient(
+    linear,
+    0% 0%,
+    100% 100%,
+    from(color_accent_quas&44),
+    color-stop(0.49, color_accent_quas),
+    color-stop(0.5, #000),
+    color-stop(0.51, color_accent_wex),
+    to(color_accent_wex&44)
+  );
 }
 
-.PickerComboRoot.specialty_qe .SpecialtyIcon {
-  background-color: specialtyQuasExortGradient;
+.root.specialty_qe .specialty-icon {
+  background-color: gradient(
+    linear,
+    0% 0%,
+    100% 100%,
+    from(color_accent_quas&44),
+    color-stop(0.49, color_accent_quas),
+    color-stop(0.5, #000),
+    color-stop(0.51, color_accent_exort),
+    to(color_accent_exort&44)
+  );
 }
 
-.PickerComboRoot .StanceIcon {
+.stance-icon {
   wash-color: #888;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -102,26 +110,26 @@
   transition-property: wash-color;
 }
 
-.PickerComboRoot.stance_offensive .StanceIcon {
-  background-image: stanceOffensiveIcon;
+.root.stance_offensive .stance-icon {
+  background-image: icon_stance_offensive;
 }
 
-.PickerComboRoot.stance_defensive .StanceIcon {
-  background-image: stanceDefensiveIcon;
+.root.stance_defensive .stance-icon {
+  background-image: icon_stance_defensive;
 }
 
-.PickerComboRoot .HeroLevelIcon {
+.hero-level-icon {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background-color: #121212;
 }
 
-.PickerComboRoot:hover .HeroLevelIcon {
+.root:hover .hero-level-icon {
   background-color: #222;
 }
 
-.PickerComboRoot .HeroLevelLabel {
+.hero-level-label {
   width: 14px;
   margin-top: 3px;
   align: center center;
@@ -133,39 +141,22 @@
   text-shadow: 0 0 3px 3.7 #ec780e24;
 }
 
-.PickerComboRoot .PickerComboRatings {
+.root .ratings {
   flow-children: down;
   margin-left: 8px;
   vertical-align: center;
 }
 
-.PickerComboRoot .PickerComboRatings .AttackDamageIcon {
+.root .ratings .attack-damage-icon {
   width: 16px;
   height: 16px;
-  background-image: damageRatingIcon;
+  background-image: icon_damage_rating;
   background-size: 100%;
 }
 
-.PickerComboRoot .PickerComboRatings .DifficultyIcon {
+.root .ratings .difficulty-icon {
   width: 16px;
   height: 16px;
-  background-image: difficultyRatingIcon;
+  background-image: icon_difficulty_rating;
   background-size: 100%;
-}
-
-.PickerComboRoot .PlayButton {
-  width: 100%;
-  height: 0;
-  margin-top: 10px;
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.2s;
-  transition-property: height;
-}
-
-.PickerComboRoot:hover .PlayButton {
-  height: 24px;
-}
-
-.PickerComboRoot .PlayButton .PlayLabel {
-  horizontal-align: center;
 }

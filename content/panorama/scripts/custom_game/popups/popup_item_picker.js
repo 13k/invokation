@@ -1,61 +1,66 @@
 "use strict";
 
-(function (global, context) {
-  var EVENTS = global.Const.EVENTS;
-  var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { EVENTS, LAYOUTS } = global.Const;
 
-  var ITEM_PICKER_LAYOUT = "file://{resources}/layout/custom_game/ui/item_picker.xml";
-  var ITEM_PICKER_ID = "PopupItemPickerUIItemPicker";
+  const DYN_ELEMS = {
+    ITEM_PICKER: {
+      id: "item-picker",
+    },
+  };
 
-  var PopupItemPicker = CreateComponent({
-    constructor: function PopupItemPicker() {
-      PopupItemPicker.super.call(this, {
+  class PopupItemPicker extends Component {
+    constructor() {
+      super({
         elements: {
-          itemPickerContainer: "PopupItemPickerUIItemPickerContainer",
+          itemPickerContainer: "item-picker-container",
         },
       });
 
       this.debug("init");
-    },
+    }
 
     // ----- Event handlers -----
 
-    onLoad: function () {
+    onLoad() {
       this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
       this.debug("onLoad()", { channel: this.channel });
       this.render();
-    },
+    }
 
-    onItemSelected: function (payload) {
+    onItemSelected(payload) {
       this.debug("onItemSelected()", payload);
       this.selected = payload.item;
       this.Submit();
-    },
+    }
 
     // ----- Helpers -----
 
-    render: function () {
-      this.$itemPicker = CreatePanelWithLayout(
+    render() {
+      const { id } = DYN_ELEMS.ITEM_PICKER;
+
+      this.$itemPicker = this.createComponent(
         this.$itemPickerContainer,
-        ITEM_PICKER_ID,
-        ITEM_PICKER_LAYOUT
+        id,
+        LAYOUTS.UI.ITEM_PICKER,
+        {
+          outputs: {
+            OnSelect: "onItemSelected",
+          },
+        }
       );
 
-      this.$itemPicker.component.Outputs({
-        OnSelect: this.handler("onItemSelected"),
-      });
-
       this.debug("render()");
-    },
+    }
 
     // ----- UI methods -----
 
-    Close: function () {
+    Close() {
       this.closePopup(this.$ctx);
-    },
+    }
 
-    Submit: function () {
+    Submit() {
       this.debug("Submit()", this.selected);
 
       this.sendClientSide(EVENTS.POPUP_ITEM_PICKER_SUBMIT, {
@@ -64,8 +69,8 @@
       });
 
       this.Close();
-    },
-  });
+    }
+  }
 
   context.popup = new PopupItemPicker();
 })(GameUI.CustomUIConfig(), this);

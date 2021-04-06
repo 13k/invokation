@@ -1,48 +1,44 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/picker_combo.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/picker_combo.css" />
   </styles>
 
-  <Panel class="PickerComboRoot">
-    <Panel class="PanelTitleContainer">
-      <Button class="FinishedIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)" onmouseout="UIHideTextTooltip()" />
-      <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
+  <Panel class="root" onactivate="pickerCombo.ShowDetails()">
+    <Panel class="panel-title-container">
+      <Button class="finished-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)" onmouseout="UIHideTextTooltip()" />
+      <Label id="title" class="panel-title" hittest="false" />
     </Panel>
 
-    <Panel class="PickerComboInfoContainer">
-      <Button class="PickerComboIcon HeroLevelIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
-        <Label id="PickerComboHeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
+    <Panel class="info-container">
+      <Button class="picker-combo-icon hero-level-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
+        <Label id="hero-level-label" class="hero-level-label MonoNumbersFont" hittest="false" />
       </Button>
 
-      <Button class="PickerComboIcon InfoIcon" onactivate="pickerCombo.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
-      <Button class="PickerComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
-      <Button class="PickerComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
+      <Button class="picker-combo-icon specialty-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
+      <Button class="picker-combo-icon stance-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
 
-      <Panel class="PickerComboRatings">
-        <Panel class="LeftRightFlow">
-          <Button class="AttackDamageIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
-          <Panel id="PickerComboDamageRating" class="Rating">
-            <Panel class="RatingActive" />
+      <Panel class="ratings">
+        <Panel class="flow-right">
+          <Button class="attack-damage-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
+          <Panel id="damage-rating" class="rating">
+            <Panel class="rating-active" />
           </Panel>
         </Panel>
 
-        <Panel class="LeftRightFlow">
-          <Button class="DifficultyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
-          <Panel id="PickerComboDifficultyRating" class="Rating">
-            <Panel class="RatingActive" />
+        <Panel class="flow-right">
+          <Button class="difficulty-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
+          <Panel id="difficulty-rating" class="rating">
+            <Panel class="rating-active" />
           </Panel>
         </Panel>
       </Panel>
-
     </Panel>
-
-    <Button class="PlayButton FlatButton" onactivate="pickerCombo.Play()">
-      <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
-    </Button>
   </Panel>
 </root>

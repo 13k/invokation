@@ -1,29 +1,28 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-@define pillHeight: 36px;
+@define pill_height: 36px;
 
-.UITagSelectRoot {
+.root {
   flow-children: down;
   width: 100%;
 }
 
-#UITagSelectOptions {
+#options {
   width: 100%;
 }
 
-#UITagSelectOptions .UITagSelectOption {
+#options .option {
   width: 120px;
 }
 
-#UITagSelectTagList {
+#tags {
   flow-children: right-wrap;
   width: 100%;
 }
 
-#UITagSelectTagList .UITagSelectTag {
+#tags .tag {
   flow-children: right;
-  height: pillHeight;
+  height: pillheight;
   margin-top: 8px;
   margin-left: 8px;
   padding: 4px 6px 2px 6px;
@@ -33,26 +32,26 @@
   transition-property: opacity;
 }
 
-#UITagSelectTagList .UITagSelectTag:disabled {
+#tags .tag:disabled {
   opacity: 0;
 }
 
-#UITagSelectTagList .UITagSelectTag .UITagSelectTagLabel {
+#tags .tag .tag-label {
   margin-top: 3px;
   vertical-align: center;
   font-size: 18px;
 }
 
-#UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton {
+#tags .tag .remove-button {
   width: 14px;
   height: 14px;
   margin-left: 2px;
   vertical-align: center;
   wash-color: #ccc;
-  background-image: controlsQuitIcon;
+  background-image: control_icon_quit;
   background-size: 100%;
 }
 
-#UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton:hover {
+#tags .tag .remove-button:hover {
   wash-color: #fff;
 }

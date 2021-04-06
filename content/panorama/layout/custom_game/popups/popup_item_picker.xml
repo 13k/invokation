@@ -1,15 +1,18 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_item_picker.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/popups/popups_shared.css" />
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/popups/popup_item_picker.css" />
   </styles>
 
-  <Popup class="PopupItemPickerRoot" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
-    <Panel id="PopupItemPickerUIItemPickerContainer" />
+  <Popup class="root Popup" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
+    <Panel id="item-picker-container" />
 
     <Panel class="PopupButtonRow">
       <Button class="PopupButton" onactivate="popup.Close()">

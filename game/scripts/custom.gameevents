@@ -19,6 +19,10 @@
 
 "CustomEvents"
 {
+  "invokation_picker_toggle"
+  {
+  }
+
   "invokation_viewer_render"
   {
     "id" "uint64"

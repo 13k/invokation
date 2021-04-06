@@ -1,26 +1,28 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/combat_log.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/combat_log.css" />
   </styles>
 
-  <Panel class="CombatLogRoot Closed" hittest="false">
-    <Panel class="CombatLog TransparentPanel">
-      <Panel id="CombatLogContents" />
+  <Panel class="root closed" hittest="false">
+    <Panel id="combat-log" class="panel transparent">
+      <Panel id="contents" />
 
-      <Panel class="CombatLogBar">
-        <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="combatLog.Toggle()">
-          <Label class="CombatLogTitle" text="#invokation_combat_log_title" hittest="false" />
+      <Panel class="bar">
+        <ToggleButton class="thumb expand-collapse-toggle" onactivate="combatLog.Toggle()">
+          <Label class="title" text="#invokation_combat_log_title" hittest="false" />
         </ToggleButton>
 
-        <Panel class="CombatLogBarActions">
-          <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
+        <Panel class="actions">
+          <ToggleButton id="filter-invocations" class="action-item Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
 
-          <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="combatLog.Clear()">
+          <Button class="action-item button blue clear" onactivate="combatLog.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>

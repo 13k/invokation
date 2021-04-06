@@ -1,30 +1,26 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var IsTalentSelected = global.Util.IsTalentSelected;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { ParallelSequence } = global.Sequence;
+  const { IsTalentSelected } = global.Util;
+  const { LAYOUTS, TALENT_LEVELS } = global.Const;
 
-  var LEVELS = [10, 15, 20, 25];
+  const TOOLTIP_ID = "tooltip";
 
-  var TOOLTIP_LAYOUT = "file://{resources}/layout/custom_game/tooltips/tooltip_stat_branch.xml";
-  var TOOLTIP_ID = "TalentDisplayTooltip";
-
-  var CLASSES = {
+  const CLASSES = {
     BRANCH_SELECTED: {
       LEFT: "LeftBranchSelected",
       RIGHT: "RightBranchSelected",
     },
   };
 
-  function statRowAttr(level) {
-    return "statRow" + String(level);
-  }
+  const statRowAttr = (level) => `statRow${level}`;
 
-  var UITalentsDisplay = CreateComponent({
-    constructor: function UITalentsDisplay() {
-      UITalentsDisplay.super.call(this, {
+  class UITalentsDisplay extends Component {
+    constructor() {
+      super({
         elements: ["StatRow10", "StatRow15", "StatRow20", "StatRow25"],
         inputs: {
           Select: "onSelect",
@@ -34,35 +30,36 @@
 
       this.bindRows();
       this.debug("init");
-    },
+    }
 
     // ----- I/O -----
 
-    onSelect: function (payload) {
+    onSelect(payload) {
       this.debug("onSelect()", payload);
       this.select(payload.talents);
-    },
+    }
 
-    onReset: function () {
+    onReset() {
       this.debug("onReset()");
       this.reset();
-    },
+    }
 
     // ----- Helpers -----
 
-    bindRows: function () {
+    bindRows() {
       this.$rows = {};
-      _.each(LEVELS, this.bindRow.bind(this));
-    },
 
-    bindRow: function (level) {
+      _.each(TALENT_LEVELS, this.bindRow.bind(this));
+    }
+
+    bindRow(level) {
       this.$rows[level] = this.element(statRowAttr(level));
-    },
+    }
 
     // ----- Actions -----
 
-    selectLevelAction: function (level, choices) {
-      var seq = new ParallelSequence();
+    selectLevelAction(level, choices) {
+      const seq = new ParallelSequence();
 
       if (IsTalentSelected(level, "right", choices)) {
         seq.AddClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
@@ -73,68 +70,63 @@
       }
 
       return seq;
-    },
+    }
 
-    resetLevelAction: function (level) {
+    resetLevelAction(level) {
       return new ParallelSequence()
         .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.LEFT)
         .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
-    },
+    }
 
     // ----- Action runners -----
 
-    select: function (choices) {
+    select(choices) {
       this.selected = choices;
 
-      var selectLevelAction = _.chain(this.selectLevelAction)
+      const selectLevelAction = _.chain(this.selectLevelAction)
         .bind(this, _, choices)
         .unary()
         .value();
 
-      var actions = _.map(LEVELS, selectLevelAction);
-      var seq = new ParallelSequence().Action(actions);
+      const actions = _.map(TALENT_LEVELS, selectLevelAction);
+      const seq = new ParallelSequence().Action(actions);
 
-      this.debugFn(function () {
-        return ["select()", { choices: choices, actions: seq.size() }];
-      });
+      this.debugFn(() => ["select()", { choices, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    reset: function () {
-      var resetLevelAction = _.chain(this.resetLevelAction).bind(this).unary().value();
+    reset() {
+      const resetLevelAction = _.chain(this.resetLevelAction).bind(this).unary().value();
+      const actions = _.map(TALENT_LEVELS, resetLevelAction);
+      const seq = new ParallelSequence().Action(actions);
 
-      var actions = _.map(LEVELS, resetLevelAction);
-      var seq = new ParallelSequence().Action(actions);
-
-      this.debugFn(function () {
-        return ["reset()", { actions: seq.size() }];
-      });
+      this.debugFn(() => ["reset()", { actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    ShowTooltip: function () {
+    ShowTooltip() {
       this.tooltipId = _.uniqueId(TOOLTIP_ID);
 
-      var params = {
+      const params = {
         heroId: this.heroId,
         selected: this.selected,
       };
 
       this.debug("ShowTooltip()", this.tooltipId, params);
-      this.showTooltip(this.$ctx, this.tooltipId, TOOLTIP_LAYOUT, params);
-    },
+      this.showTooltip(this.$ctx, this.tooltipId, LAYOUTS.TOOLTIPS.STAT_BRANCH, params);
+    }
 
-    HideTooltip: function () {
+    HideTooltip() {
       if (this.tooltipId) {
         this.hideTooltip(this.$ctx, this.tooltipId);
         this.tooltipId = null;
       }
-    },
-  });
+    }
+  }
 
   context.component = new UITalentsDisplay();
 })(GameUI.CustomUIConfig(), this);

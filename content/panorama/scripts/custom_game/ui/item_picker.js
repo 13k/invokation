@@ -1,49 +1,40 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var L10n = global.L10n;
-  var NetTable = global.NetTable;
-  var LuaArrayDeep = global.Util.LuaArrayDeep;
-  var CreateItemImage = global.Util.CreateItemImage;
-  var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var NoopAction = global.Sequence.NoopAction;
-  var EnableAction = global.Sequence.EnableAction;
-  var DisableAction = global.Sequence.DisableAction;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _, L10n, NetTable } = global;
+  const { LuaArrayDeep } = global.Util;
+  const { Sequence, ParallelSequence, NoopAction, EnableAction, DisableAction } = global.Sequence;
+  const { EVENTS, NET_TABLE, SHOP_CATEGORIES } = global.Const;
 
-  var EVENTS = global.Const.EVENTS;
-  var NET_TABLE = global.Const.NET_TABLE;
-  var CATEGORIES = global.Const.SHOP_CATEGORIES;
+  const DYN_ELEMS = {
+    GROUP: {
+      snippet: "group",
+      idPrefix: "group",
+      dialogVarName: "group_name",
+      categoryListId: "categories",
+    },
+    CATEGORY: {
+      snippet: "category",
+      idPrefix: "category",
+      dialogVarName: "category_name",
+      itemListId: "items",
+    },
+    ITEM: {
+      idPrefix: "item",
+      cssClass: "item",
+      highlightClass: "highlighted",
+    },
+  };
 
-  var GROUP_SNIPPET = "UIItemPickerGroup";
-  var GROUP_ID_PREFIX = "UIItemPickerGroup";
-  var GROUP_NAME_ATTR = "group_name";
-  var GROUP_CATEGORY_LIST_ID = "CategoryList";
+  const elementId = (prefix, name) => _.chain(`${prefix}_${name}`).camelCase().upperFirst().value();
 
-  var CATEGORY_SNIPPET = "UIItemPickerCategory";
-  var CATEGORY_ID_PREFIX = "UIItemPickerCategory";
-  var CATEGORY_NAME_ATTR = "category_name";
-  var CATEGORY_ITEM_LIST_ID = "ItemList";
-
-  var ITEM_ID_PREFIX = "UIItemPicker";
-  var ITEM_CLASS = "UIItemPickerItem";
-  var ITEM_HIGHLIGHT_CLASS = "Highlighted";
-
-  function elementId(prefix, name) {
-    var suffix = _.chain(name).camelCase().upperFirst().value();
-
-    return prefix + suffix;
-  }
-
-  var UIItemPicker = CreateComponent({
-    constructor: function UIItemPicker() {
-      UIItemPicker.super.call(this, {
+  class UIItemPicker extends Component {
+    constructor() {
+      super({
         elements: {
-          search: "UIItemPickerSearchTextEntry",
-          groups: "UIItemPickerGroups",
+          search: "search-text-entry",
+          groups: "groups",
         },
         customEvents: {
           "!ITEM_PICKER_QUERY_RESPONSE": "onQueryResponse",
@@ -56,144 +47,157 @@
       this.loadItems();
       this.render();
       this.debug("init");
-    },
+    }
 
-    onImageActivate: function (imagePanel) {
+    onImageActivate(imagePanel) {
       this.debug("onImageActivate()", imagePanel.id);
       this.select(imagePanel);
-    },
+    }
 
-    onQueryResponse: function (payload) {
+    onQueryResponse(payload) {
       this.debug("onQueryResponse()");
       this.highlight(payload.items);
-    },
+    }
 
-    highlight: function (items) {
+    highlight(items) {
       return new Sequence()
         .Action(this.disableItemsAction())
         .Action(this.enableItemsAction(items))
         .Start();
-    },
+    }
 
-    disableItemsAction: function () {
-      var disableItemAction = _.chain(this.disableItemAction)
+    disableItemsAction() {
+      const disableItemAction = _.chain(this.disableItemAction)
         .bind(this)
         .rearg([1, 0])
         .ary(2)
         .value();
 
-      var actions = _.map(this.itemPanels, disableItemAction);
+      const actions = _.map(this.itemPanels, disableItemAction);
 
       return new ParallelSequence().Action(actions);
-    },
+    }
 
-    disableItemAction: function (itemName) {
-      var panels = this.itemPanels[itemName];
+    disableItemAction(itemName) {
+      const panels = this.itemPanels[itemName];
 
       if (!panels) {
         this.warn("Could not find panel for item", itemName);
         return new NoopAction();
       }
 
-      var actions = _.map(panels, function (panel) {
-        return new DisableAction(panel);
-      });
+      const actions = _.map(panels, (panel) => new DisableAction(panel));
 
       return new ParallelSequence().Action(actions);
-    },
+    }
 
-    enableItemsAction: function (items) {
-      var enableItemAction = _.chain(this.enableItemAction).bind(this).rearg([1, 0]).ary(2).value();
+    enableItemsAction(items) {
+      const enableItemAction = _.chain(this.enableItemAction)
+        .bind(this)
+        .rearg([1, 0])
+        .ary(2)
+        .value();
 
-      var actions = _.map(items, enableItemAction);
+      const actions = _.map(items, enableItemAction);
 
       return new ParallelSequence().Action(actions);
-    },
+    }
 
-    enableItemAction: function (itemName) {
-      var panels = this.itemPanels[itemName];
+    enableItemAction(itemName) {
+      const panels = this.itemPanels[itemName];
 
       if (!panels) {
         this.warn("Could not find panel for item", itemName);
         return new NoopAction();
       }
 
-      var actions = _.map(panels, function (panel) {
-        return new EnableAction(panel);
-      });
+      const actions = _.map(panels, (panel) => new EnableAction(panel));
 
       return new ParallelSequence().Action(actions);
-    },
+    }
 
-    loadItems: function () {
+    loadItems() {
       this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
-    },
+    }
 
-    select: function (imagePanel) {
-      var highlighted = this.$groups.FindChildrenWithClassTraverse(ITEM_HIGHLIGHT_CLASS);
+    select(imagePanel) {
+      const { highlightClass } = DYN_ELEMS.ITEM;
+      const highlighted = this.$groups.FindChildrenWithClassTraverse(highlightClass);
 
-      _.each(highlighted, function (panel) {
-        panel.RemoveClass(ITEM_HIGHLIGHT_CLASS);
-      });
+      _.each(highlighted, (panel) => panel.RemoveClass(highlightClass));
 
-      imagePanel.AddClass(ITEM_HIGHLIGHT_CLASS);
+      imagePanel.AddClass(highlightClass);
 
       this.runOutput("OnSelect", { item: imagePanel.itemname });
-    },
+    }
 
-    search: function (query) {
+    search(query) {
       if (_.isEmpty(query)) {
         return this.enableItemsAction(this.itemPanels).Start();
       }
 
-      return this.sendServer(EVENTS.ITEM_PICKER_QUERY, { query: query });
-    },
+      return this.sendServer(EVENTS.ITEM_PICKER_QUERY, { query });
+    }
 
-    render: function () {
+    render() {
       this.$search.SetFocus(true);
 
-      var createGroup = _.chain(this.createGroup)
+      const createGroup = _.chain(this.createGroup)
         .bind(this, this.$groups)
         .rearg([1, 0])
         .ary(2)
         .value();
 
-      _.each(CATEGORIES, createGroup);
-    },
+      _.each(SHOP_CATEGORIES, createGroup);
+    }
 
-    createGroup: function (parent, group, categories) {
-      var groupId = elementId(GROUP_ID_PREFIX, group);
-      var panel = CreatePanelWithLayoutSnippet(parent, groupId, GROUP_SNIPPET);
-      var categoriesPanel = panel.FindChild(GROUP_CATEGORY_LIST_ID);
-      var createCategory = _.chain(this.createCategory).bind(this, categoriesPanel).unary().value();
+    createGroup(parent, group, categories) {
+      const { idPrefix, snippet, dialogVarName, categoryListId } = DYN_ELEMS.GROUP;
+      const id = elementId(idPrefix, group);
+      const panel = this.renderSnippet(parent, id, snippet, {
+        dialogVars: {
+          [dialogVarName]: L10n.LocalizeShopGroup(group),
+        },
+      });
 
-      panel.SetDialogVariable(GROUP_NAME_ATTR, L10n.LocalizeShopGroup(group));
+      const categoriesPanel = panel.FindChild(categoryListId);
+      const createCategory = _.chain(this.createCategory)
+        .bind(this, categoriesPanel)
+        .unary()
+        .value();
 
       _.each(categories, createCategory);
 
       return panel;
-    },
+    }
 
-    createCategory: function (parent, category) {
-      var categoryId = elementId(CATEGORY_ID_PREFIX, category);
-      var panel = CreatePanelWithLayoutSnippet(parent, categoryId, CATEGORY_SNIPPET);
-      var itemsPanel = panel.FindChild(CATEGORY_ITEM_LIST_ID);
-      var items = this.shopItems[category];
-      var createItemImage = _.chain(this.createItemImage).bind(this, itemsPanel).unary().value();
+    createCategory(parent, category) {
+      const { idPrefix, snippet, dialogVarName, itemListId } = DYN_ELEMS.CATEGORY;
+      const id = elementId(idPrefix, category);
+      const panel = this.renderSnippet(parent, id, snippet, {
+        dialogVars: {
+          [dialogVarName]: L10n.LocalizeShopCategory(category),
+        },
+      });
 
-      panel.SetDialogVariable(CATEGORY_NAME_ATTR, L10n.LocalizeShopCategory(category));
+      const itemsPanel = panel.FindChild(itemListId);
+      const items = this.shopItems[category];
+      const createItemImage = _.chain(this.createItem).bind(this, itemsPanel).unary().value();
 
       _.each(items, createItemImage);
 
       return panel;
-    },
+    }
 
-    createItemImage: function (parent, itemName) {
-      var itemId = elementId(ITEM_ID_PREFIX, itemName);
-      var panel = CreateItemImage(parent, itemId, itemName);
-
-      panel.AddClass(ITEM_CLASS);
-      panel.SetPanelEvent("onactivate", _.partial(this.handler("onImageActivate"), panel));
+    createItem(parent, itemName) {
+      const { idPrefix, cssClass } = DYN_ELEMS.ITEM;
+      const id = elementId(idPrefix, itemName);
+      const panel = this.createItemImage(parent, id, itemName, {
+        classes: [cssClass],
+        events: {
+          onactivate: _.partial(this.handler("onImageActivate"), panel),
+        },
+      });
 
       if (itemName in this.itemPanels) {
         this.itemPanels[itemName].push(panel);
@@ -202,13 +206,13 @@
       }
 
       return panel;
-    },
+    }
 
-    Search: function () {
+    Search() {
       this.debug("Search()", this.$search.text.toString());
       this.search(this.$search.text);
-    },
-  });
+    }
+  }
 
   context.picker = new UIItemPicker();
 })(GameUI.CustomUIConfig(), this);

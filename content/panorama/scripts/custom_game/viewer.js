@@ -1,63 +1,64 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var L10n = global.L10n;
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _, L10n, COMBOS } = global;
+  const { Sequence, ParallelSequence, RunFunctionAction } = global.Sequence;
+  const { CSS_CLASSES, EVENTS, LAYOUTS } = global.Const;
 
-  var COMBOS = global.COMBOS;
-  var EVENTS = global.Const.EVENTS;
-
-  var CLASSES = {
-    CLOSED: "Hide",
+  const CLASSES = {
+    CLOSED: CSS_CLASSES.HIDE,
   };
 
-  var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
-  var TALENTS_DISPLAY_LAYOUT = "file://{resources}/layout/custom_game/ui/talents_display.xml";
-  var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
-  var PROPERTIES_ID = "ViewerProperties";
+  const PROPERTIES_ID = "viewer-properties";
 
-  var L10N_FALLBACK_IDS = {
+  const COMBO_STEP_INPUTS = {
+    SET_STEP: "SetStep",
+  };
+
+  const PROPERTIES_INPUTS = {
+    SET_COMBO: "SetCombo",
+  };
+
+  const TALENTS_INPUTS = {
+    RESET: "Reset",
+    SELECT: "Select",
+  };
+
+  const L10N_FALLBACK_IDS = {
     description: "invokation_viewer_description_lorem",
   };
 
-  var ORBS = ["quas", "wex", "exort"];
+  const ORBS = ["quas", "wex", "exort"];
 
-  function stepPanelId(step) {
-    return "combo_step_" + step.id + "_" + step.name;
-  }
+  const stepPanelId = (step) => `combo-step-${step.id}-${step.name}`;
 
-  function htmlTitle(title) {
-    return _.chain(title)
+  const htmlTitle = (title) =>
+    _.chain(title)
       .split(" - ")
-      .map(function (line, i) {
-        var heading = i === 0 ? "h1" : "h3";
-        return "<" + heading + ">" + line + "</" + heading + ">";
+      .map((line, i) => {
+        const heading = i === 0 ? "h1" : "h3";
+        return `<${heading}>${line}</${heading}>`;
       })
       .join("")
       .value();
-  }
 
-  var Viewer = CreateComponent({
-    constructor: function Viewer() {
-      Viewer.super.call(this, {
+  class Viewer extends Component {
+    constructor() {
+      super({
         elements: {
-          scrollPanel: "ViewerScrollPanel",
-          propertiesSection: "ViewerPropertiesSection",
-          titleLabel: "ViewerTitle",
-          descriptionLabel: "ViewerDescription",
-          sequence: "ViewerSequence",
-          talents: "ViewerTalents",
-          orbQuas: "ViewerOrbQuas",
-          orbQuasLabel: "ViewerOrbQuasLabel",
-          orbWex: "ViewerOrbWex",
-          orbWexLabel: "ViewerOrbWexLabel",
-          orbExort: "ViewerOrbExort",
-          orbExortLabel: "ViewerOrbExortLabel",
+          scrollPanel: "scroll-panel",
+          propertiesSection: "properties-section",
+          titleLabel: "title",
+          descriptionLabel: "description",
+          sequence: "sequence",
+          talents: "talents",
+          orbQuas: "ability-quas",
+          orbQuasLabel: "ability-quas-label",
+          orbWex: "ability-wex",
+          orbWexLabel: "ability-wex-label",
+          orbExort: "ability-exort",
+          orbExortLabel: "ability-exort-label",
         },
         customEvents: {
           "!VIEWER_RENDER": "onViewerRender",
@@ -67,67 +68,73 @@
 
       this.renderTalents();
       this.debug("init");
-    },
+    }
 
     // --- Event handlers -----
 
-    onComboStarted: function () {
+    onComboStarted() {
       this.debug("onComboStarted()");
       this.close();
-    },
+    }
 
-    onViewerRender: function (payload) {
+    onViewerRender(payload) {
       this.debug("onViewerRender()", payload);
       this.view(payload.id);
-    },
+    }
 
     // ----- Helpers -----
 
-    renderTalents: function () {
-      this.$talents.BLoadLayout(TALENTS_DISPLAY_LAYOUT, false, false);
-    },
+    renderTalents() {
+      this.$talents.BLoadLayout(LAYOUTS.UI.TALENTS_DISPLAY, false, false);
+    }
 
-    resetSelectedTalents: function () {
-      this.$talents.component.Input("Reset");
-    },
+    resetSelectedTalents() {
+      this.$talents.component.Input(TALENTS_INPUTS.RESET);
+    }
 
-    selectTalents: function () {
-      this.$talents.component.Input("Select", { talents: this.combo.talents });
-    },
+    selectTalents() {
+      this.$talents.component.Input(TALENTS_INPUTS.SELECT, { talents: this.combo.talents });
+    }
 
-    startCombo: function () {
+    startCombo() {
       this.debug("startCombo()", this.combo.id);
       this.sendServer(EVENTS.COMBO_START, { id: this.combo.id });
-    },
+    }
 
-    createStepPanel: function (parent, step) {
-      var id = stepPanelId(step);
-      var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
+    createStepPanel(parent, step) {
+      const id = stepPanelId(step);
 
-      panel.component.Input("SetStep", { combo: this.combo, step: step });
+      return this.createComponent(parent, id, LAYOUTS.VIEWER.COMBO_STEP, {
+        inputs: {
+          [COMBO_STEP_INPUTS.SET_STEP]: { combo: this.combo, step },
+        },
+      });
+    }
 
-      return panel;
-    },
-
-    createPropertiesPanel: function () {
-      var panel = CreatePanelWithLayout(this.$propertiesSection, PROPERTIES_ID, PROPERTIES_LAYOUT);
-
-      panel.component.Input("SetCombo", this.combo);
-
-      return panel;
-    },
+    createPropertiesPanel() {
+      return this.createComponent(
+        this.$propertiesSection,
+        PROPERTIES_ID,
+        LAYOUTS.VIEWER.PROPERTIES,
+        {
+          inputs: {
+            [PROPERTIES_INPUTS.SET_COMBO]: this.combo,
+          },
+        }
+      );
+    }
 
     // ----- Actions -----
 
-    openAction: function () {
+    openAction() {
       return new Sequence().RemoveClass(this.$ctx, CLASSES.CLOSED);
-    },
+    }
 
-    closeAction: function () {
+    closeAction() {
       return new Sequence().AddClass(this.$ctx, CLASSES.CLOSED);
-    },
+    }
 
-    renderAction: function () {
+    renderAction() {
       return new Sequence()
         .Action(this.renderInfoAction())
         .Action(this.renderPropertiesAction())
@@ -135,93 +142,92 @@
         .Action(this.renderOrbsAction())
         .Action(this.renderSequenceAction())
         .ScrollToTop(this.$scrollPanel);
-    },
+    }
 
-    renderInfoAction: function () {
-      var title = htmlTitle(this.combo.l10n.name);
-      var descriptionL10nKey = L10n.ComboKey(this.combo, "description");
-      var description = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
+    renderInfoAction() {
+      const title = htmlTitle(this.combo.l10n.name);
+      const descriptionL10nKey = L10n.ComboKey(this.combo, "description");
+      const description = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
 
       return new ParallelSequence()
         .SetAttribute(this.$titleLabel, "text", title)
         .SetAttribute(this.$descriptionLabel, "text", description);
-    },
+    }
 
-    renderPropertiesAction: function () {
+    renderPropertiesAction() {
       return new Sequence()
         .RemoveChildren(this.$propertiesSection)
-        .RunFunction(this, this.createPropertiesPanel);
-    },
+        .RunFunction(() => this.createPropertiesPanel());
+    }
 
-    renderTalentsAction: function () {
+    renderTalentsAction() {
       return new Sequence()
-        .RunFunction(this, this.resetSelectedTalents)
-        .RunFunction(this, this.selectTalents);
-    },
+        .RunFunction(() => this.resetSelectedTalents())
+        .RunFunction(() => this.selectTalents());
+    }
 
-    renderOrbsAction: function () {
+    renderOrbsAction() {
       return new ParallelSequence()
         .SetAttribute(this.$orbQuasLabel, "text", this.combo.orbs[0])
         .SetAttribute(this.$orbWexLabel, "text", this.combo.orbs[1])
         .SetAttribute(this.$orbExortLabel, "text", this.combo.orbs[2]);
-    },
+    }
 
-    renderSequenceAction: function () {
-      var actions = _.map(
+    renderSequenceAction() {
+      const actions = _.map(
         this.combo.sequence,
         _.bind(this.createStepPanelAction, this, this.$sequence)
       );
 
       return new Sequence().RemoveChildren(this.$sequence).Action(actions);
-    },
+    }
 
-    createStepPanelAction: function (parent, step) {
-      return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
-    },
+    createStepPanelAction(parent, step) {
+      return new RunFunctionAction(() => this.createStepPanel(parent, step));
+    }
 
     // ----- Action runners -----
 
-    view: function (id) {
+    view(id) {
       this.combo = COMBOS.Get(id);
 
-      var seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
+      const seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
 
-      this.debugFn(function () {
-        return ["view()", { id: this.combo.id, actions: seq.size() }];
-      });
+      this.debugFn(() => ["view()", { id: this.combo.id, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    close: function () {
+    close() {
       return this.closeAction().Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    Reload: function () {
+    Reload() {
       this.debug("Reload()");
       return this.renderAction().Start();
-    },
+    }
 
-    Close: function () {
+    Close() {
       return this.close();
-    },
+    }
 
-    Play: function () {
+    Play() {
       return this.startCombo();
-    },
+    }
 
-    ShowOrbTooltip: function (orb) {
-      var index = ORBS.indexOf(orb);
+    ShowOrbTooltip(orb) {
+      const index = ORBS.indexOf(orb);
 
       if (index >= 0) {
-        var attr = _.chain("orb_").concat(orb).camelCase().value();
-        var elem = this.element(attr);
+        const attr = _.camelCase(`orb_${orb}`);
+        const elem = this.element(attr);
+
         this.showAbilityTooltip(elem, elem.abilityname, { level: this.combo.orbs[index] });
       }
-    },
-  });
+    }
+  }
 
   context.component = new Viewer();
 })(GameUI.CustomUIConfig(), this);

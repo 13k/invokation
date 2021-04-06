@@ -1,24 +1,26 @@
 <root>
   <scripts>
+    <!-- global -->
+
     <include src="file://{resources}/scripts/vendor/lodash.js" />
+    <include src="file://{resources}/scripts/game/sequence_actions.js" />
 
-    <include src="file://{resources}/scripts/valve/sequence_actions.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/const.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/util.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/env.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/logger.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/l10n.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/callbacks.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/net_table.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/grid.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/custom_events.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/abilities_key_values.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/combos_collection.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/sequence.js" />
 
-    <include src="file://{resources}/scripts/lib/const.js" />
-    <include src="file://{resources}/scripts/lib/util.js" />
-    <include src="file://{resources}/scripts/lib/class.js" />
-    <include src="file://{resources}/scripts/lib/env.js" />
-    <include src="file://{resources}/scripts/lib/logger.js" />
-    <include src="file://{resources}/scripts/lib/l10n.js" />
-    <include src="file://{resources}/scripts/lib/callbacks.js" />
-    <include src="file://{resources}/scripts/lib/net_table.js" />
-    <include src="file://{resources}/scripts/lib/grid.js" />
-    <include src="file://{resources}/scripts/lib/custom_events.js" />
-    <include src="file://{resources}/scripts/lib/abilities_key_values.js" />
-    <include src="file://{resources}/scripts/lib/combos_collection.js" />
-    <include src="file://{resources}/scripts/lib/sequence.js" />
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <!-- context -->
 
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.js" />
   </scripts>
 

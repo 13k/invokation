@@ -1,24 +1,26 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/ui/tag_select.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/ui/tag_select.css" />
   </styles>
 
   <snippets>
-    <snippet name="UITagSelectTag">
-      <Panel class="UITagSelectTag" hittest="false">
-        <Label class="UITagSelectTagLabel" text="{s:value}" hittest="false" />
-        <Button id="UITagSelectTagRemoveButton" class="UITagSelectTagRemoveButton" />
+    <snippet name="tag">
+      <Panel class="tag" hittest="false">
+        <Label class="tag-label" text="{s:value}" hittest="false" />
+        <Button id="remove-button" class="remove-button" />
       </Panel>
     </snippet>
   </snippets>
 
-  <Panel class="UITagSelectRoot" hittest="false">
-    <DropDown id="UITagSelectOptions" oninputsubmit="select.onOptionSelect()" />
-    <Panel id="UITagSelectTagList" hittest="false" />
+  <Panel class="root" hittest="false">
+    <DropDown id="options" oninputsubmit="select.onOptionSelect()" />
+    <Panel id="tags" hittest="false" />
   </Panel>
 </root>

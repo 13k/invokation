@@ -1,33 +1,37 @@
 <root>
   <scripts>
+    <!-- global -->
+
     <include src="file://{resources}/scripts/vendor/lodash.js" />
+    <include src="file://{resources}/scripts/game/sequence_actions.js" />
 
-    <include src="file://{resources}/scripts/valve/sequence_actions.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/const.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/util.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/env.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/logger.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/callbacks.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/custom_events.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/sequence.js" />
 
-    <include src="file://{resources}/scripts/lib/const.js" />
-    <include src="file://{resources}/scripts/lib/util.js" />
-    <include src="file://{resources}/scripts/lib/class.js" />
-    <include src="file://{resources}/scripts/lib/env.js" />
-    <include src="file://{resources}/scripts/lib/logger.js" />
-    <include src="file://{resources}/scripts/lib/callbacks.js" />
-    <include src="file://{resources}/scripts/lib/custom_events.js" />
-    <include src="file://{resources}/scripts/lib/sequence.js" />
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <!-- context -->
 
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
   </styles>
 
-  <Panel class="Root" hittest="false">
-    <DOTAScenePanel id="TitleFX" map="backgrounds/dashboard_parallax_plus" camera="camera" renderdeferred="false" particleonly="true" require-composition-layer="true" hittest="false" />
+  <Panel class="root" hittest="false">
+    <DOTAScenePanel id="title-fx" map="backgrounds/dashboard_parallax_plus" camera="camera" renderdeferred="false" particleonly="true" require-composition-layer="true" hittest="false" />
 
-    <Panel class="TitlePanel" hittest="false">
-      <Label class="Title" text="#addon_game_name" hittest="false" />
+    <Panel class="title-panel" hittest="false">
+      <Label class="title" text="#addon_game_name" hittest="false" />
     </Panel>
 
-    <DOTAScenePanel id="Scene" map="custom_game/scenes/loading_screen" light="light" camera="camera" particleonly="false" require-composition-layer="true" hittest="false" />
+    <DOTAScenePanel id="scene" map="custom_game/scenes/loading_screen" light="light" camera="camera" particleonly="false" require-composition-layer="true" hittest="false" />
   </Panel>
 </root>

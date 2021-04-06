@@ -1,60 +1,62 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/challenge.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="ChallengeRoot HudVisible Hide" hittest="false">
-    <Panel class="ChallengeCombo" hittest="false">
-      <Panel id="ChallengeSequence" hittest="false" />
+  <Panel class="root hud-visible Hide" hittest="false">
+    <Panel class="combo" hittest="false">
+      <Panel id="sequence" hittest="false" />
     </Panel>
 
-    <Panel id="ChallengeSplash" hittest="false" hittestchildren="false">
-      <DOTAScenePanel class="ChallengeSplashFX" map="backgrounds/pregame_phase" camera="camera" renderdeferred="false" particleonly="true" hittest="false" require-composition-layer="true" />
+    <Panel id="splash" hittest="false" hittestchildren="false">
+      <DOTAScenePanel class="splash-fx" map="backgrounds/pregame_phase" camera="camera" renderdeferred="false" particleonly="true" hittest="false" require-composition-layer="true" />
 
-      <Panel class="ChallengeSplashBox">
-        <Label id="ChallengeSplashTitle" class="ChallengeSplashTitle" text="#invokation_combo_splash__start__title__1" />
-        <Label id="ChallengeSplashHelp" class="ChallengeSplashHelp" text="#invokation_combo_splash__start__help__1" />
-      </Panel>
-    </Panel>
-
-    <Panel id="ChallengeWaitProgress" class="Hide">
-      <CircularProgressBar id="ChallengeWaitProgressBar" />
-      <Panel class="ChallengeWaitProgressBarOverlay" />
-      <Label class="ChallengeWaitProgressText" text="{d:wait_seconds}" />
-    </Panel>
-
-    <Panel id="ChallengeScore" />
-
-    <Panel class="ChallengeControls TranslucentPanel" hittest="false">
-      <Panel class="ChallengeControlIcon">
-        <Button class="InfoIcon ChallengeIconButton Grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ChallengeControlIcon">
-        <Button class="EyeIcon ChallengeIconButton Grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ChallengeControlIcon">
-        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ChallengeControlIcon">
-        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
-      </Panel>
-
-      <Panel class="ChallengeControlIcon">
-        <Button class="CloseButton ChallengeIconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+      <Panel class="splash-box">
+        <Label id="splash-title" class="splash-title" text="#invokation_combo_splash__start__title__1" />
+        <Label id="splash-help" class="splash-help" text="#invokation_combo_splash__start__help__1" />
       </Panel>
     </Panel>
 
-    <Panel id="ChallengeTimer" class="Hide">
-      <Panel class="ChallengeTimerBackground" />
-      <Label id="ChallengeTimerLabel" hittest="false" />
+    <Panel id="wait-progress" class="Hide">
+      <CircularProgressBar id="wait-progressbar" />
+      <Panel class="progress-overlay" />
+      <Label class="progress-text" text="{d:wait_seconds}" />
+    </Panel>
+
+    <Panel id="score" />
+
+    <Panel class="controls panel translucent" hittest="false">
+      <Panel class="control-icon">
+        <Button class="icon info icon-button grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="control-icon">
+        <Button class="icon eye icon-button grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="control-icon">
+        <Button class="button refresh icon-button blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="control-icon">
+        <Button class="icon full-refresh icon-button bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+
+      <Panel class="control-icon">
+        <Button class="button close icon-button red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+      </Panel>
+    </Panel>
+
+    <Panel id="timer" class="Hide">
+      <Panel class="timer-bg" />
+      <Label id="timer-label" hittest="false" />
     </Panel>
   </Panel>
 </root>

@@ -1,6 +1,5 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/rating.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
+@import url("file://{resources}/styles/custom_game/rating.css");
 
 @define fgColor: #3c1b18;
 
@@ -21,7 +20,7 @@
   vertical-align: center;
   font-size: 18px;
   font-weight: semi-bold;
-  color: fgColor;
+  color: fgcolor;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon {
@@ -38,8 +37,8 @@
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.HeroLevelIcon {
-  wash-color: fgColor;
-  background-image: controlsEscalationArrowIcon;
+  wash-color: fgcolor;
+  background-image: controlsescalationarrowicon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
@@ -65,37 +64,37 @@
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.SpecialtyIcon {
-  wash-color: fgColor;
-  background-image: controlsFilterSupportIcon;
+  wash-color: fgcolor;
+  background-image: controlsfiltersupporticon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.StanceIcon {
-  wash-color: fgColor;
-  background-image: controlsFilterCarryIcon;
+  wash-color: fgcolor;
+  background-image: controlsfiltercarryicon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.AttackDamageIcon {
-  wash-color: fgColor;
-  background-image: controlsFilterMeleeIcon;
+  wash-color: fgcolor;
+  background-image: controlsfiltermeleeicon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.DifficultyIcon {
-  wash-color: fgColor;
-  background-image: controlsFilterComplexityIcon;
+  wash-color: fgcolor;
+  background-image: controlsfiltercomplexityicon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
 .ViewerPropertiesRoot .Rating .RatingActive {
-  wash-color: fgColor&99;
+  wash-color: fgcolor&99;
 }

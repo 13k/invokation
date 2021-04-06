@@ -1,23 +1,27 @@
 "use strict";
 
-(function (_global, context) {
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { EVENTS, LAYOUTS } = global.Const;
 
-  var POPUP_GAME_INFO_LAYOUT = "file://{resources}/layout/custom_game/popups/popup_game_info.xml";
-
-  var TopBar = CreateComponent({
-    constructor: function TopBar() {
-      TopBar.super.call(this);
+  class TopBar extends Component {
+    constructor() {
+      super();
       this.debug("init");
-    },
+    }
 
     // ----- UI methods -----
 
-    ShowGameInfo: function () {
+    ShowGameInfo() {
       this.debug("ShowGameInfo()");
-      return this.showPopup(this.$ctx, "PopupGameInfo", POPUP_GAME_INFO_LAYOUT);
-    },
-  });
+      return this.showPopup(this.$ctx, "PopupGameInfo", LAYOUTS.POPUPS.GAME_INFO);
+    }
+
+    TogglePicker() {
+      this.debug("TogglePicker()");
+      return this.sendClientSide(EVENTS.PICKER_TOGGLE);
+    }
+  }
 
   context.topBar = new TopBar();
 })(GameUI.CustomUIConfig(), this);

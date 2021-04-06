@@ -1,29 +1,28 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
+@import url("file://{resources}/styles/custom_game/panels.css");
 
-@define controlsMarginLeft: 80px;
+@define controls_margin_left: 80px;
 
-.FreestyleRoot {
+.root {
   width: 100%;
   height: 100%;
 }
 
-.FreestyleControls {
+.controls {
   flow-children: right;
   margin-top: 13px;
-  margin-left: controlsMarginLeft;
+  margin-left: controls_margin_left;
   align: left bottom;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
 }
 
-.FreestyleRoot.Hide .FreestyleControls {
+.root.hide .controls {
   opacity: 0;
 }
 
-.FreestyleControls .FreestyleControlIcon {
+.controls .control-icon {
   width: 64px;
   height: 64px;
   tooltip-position: top;
@@ -31,13 +30,13 @@
   transition-property: background-color;
 }
 
-.FreestyleControls .FreestyleControlIcon:hover {
+.controls .control-icon:hover {
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
-  background-color: panelTranslucentHoverGradient;
+  background-color: gradient_panel_translucent_hover;
 }
 
-.FreestyleControls .FreestyleIconButton {
+.controls .icon-button {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -47,70 +46,66 @@
   background-position: 50% 50%;
 }
 
-.FreestyleControls .FreestyleIconButton.Activated {
+.controls .icon-button.Activated {
   sound: "ui_quit_menu_fadeout";
 }
 
-.FreestyleControls .FullRefreshIcon {
-  background-image: statusLoadingThrobberRoundIcon;
+#control-level-up {
+  background-size: 48px 48px;
+}
+
+#control-max-level-up {
+  background-size: 30px 30px;
+}
+
+#control-full-restart {
   background-size: 28px 28px;
 }
 
-.FreestyleControls .FullRefreshIcon.Activated {
+#control-full-restart.Activated {
   animation-name: SpinnerRotate;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
 }
 
-.FreestyleControls .CloseButton {
+#control-close {
   background-size: 34px 34px;
 }
 
-.FreestyleControls .LevelUpButton {
-  background-image: controlsArrowDropdownUpIcon;
-  background-size: 48px 48px;
-}
-
-.FreestyleControls .LevelMaxButton {
-  transform: rotateZ(-90deg);
-  background-image: controlsDoubleArrowRightIcon;
-  background-size: 30px 30px;
-}
-
-.FreestyleControls .FreestyleControlIcon .Grey {
+.controls .control-icon .grey {
   wash-color: #aaa;
 }
 
-.FreestyleControls .FreestyleControlIcon .Grey:hover {
+.controls .control-icon .grey:hover {
   wash-color: #fff;
 }
 
-.FreestyleControls .FreestyleControlIcon .Blue {
+.controls .control-icon .blue {
   wash-color: #65a9db;
 }
 
-.FreestyleControls .FreestyleControlIcon .Blue:hover {
+.controls .control-icon .blue:hover {
   wash-color: #acc6d8;
 }
 
-.FreestyleControls .FreestyleControlIcon .Bronze {
+.controls .control-icon .bronze {
   wash-color: #dca157;
 }
 
-.FreestyleControls .FreestyleControlIcon .Bronze:hover {
+.controls .control-icon .bronze:hover {
   wash-color: #dca157;
 }
 
-.FreestyleControls .FreestyleControlIcon .Red {
+.controls .control-icon .red {
   wash-color: #db6565;
 }
 
-.FreestyleControls .FreestyleControlIcon .Red:hover {
+.controls .control-icon .red:hover {
   wash-color: #db6565;
 }
 
-#FreestyleScore {
+#score {
   margin-bottom: 230px;
   align: center bottom;
 }

@@ -3,62 +3,70 @@
 
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var CreateAbilityOrItemImage = global.Util.CreateAbilityOrItemImage;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { CreateAbilityOrItemImage } = global.Util;
 
-  var ComboStep = CreateComponent({
-    constructor: function ComboStep(options) {
-      this.options = _.defaultsDeep(options, {
-        imageId: "ComboStepImage",
+  const DEFAULT_BUTTON_ID = "ability-button";
+  const DEFAULT_IMAGE_ID = "ability-image";
+
+  const CLASSES = {
+    INVOCATION: "invocation",
+    OPTIONAL: "optional",
+  };
+
+  class ComboStep extends Component {
+    constructor(options) {
+      options = _.defaultsDeep(options, {
+        imageId: DEFAULT_IMAGE_ID,
         elements: {
-          button: "ComboStepIconButton",
+          button: DEFAULT_BUTTON_ID,
         },
         inputs: {
           SetStep: "setStep",
         },
       });
 
-      ComboStep.super.call(this, this.options);
-    },
+      super(options);
+    }
 
     // child components code can override this function
-    onStepChange: function () {},
+    onStepChange() {}
 
-    setStep: function (payload) {
+    setStep(payload) {
       this.combo = payload.combo;
       this.step = payload.step;
 
       this.$button.RemoveAndDeleteChildren();
 
       if (this.step.required) {
-        this.$ctx.RemoveClass("ComboOptional");
+        this.$ctx.RemoveClass(CLASSES.OPTIONAL);
       } else {
-        this.$ctx.AddClass("ComboOptional");
+        this.$ctx.AddClass(CLASSES.OPTIONAL);
       }
 
       if (this.step.isInvocationAbility) {
-        this.$ctx.AddClass("ComboStepInvocation");
+        this.$ctx.AddClass(CLASSES.INVOCATION);
       } else {
-        this.$ctx.RemoveClass("ComboStepInvocation");
+        this.$ctx.RemoveClass(CLASSES.INVOCATION);
       }
 
-      var image = CreateAbilityOrItemImage(this.$button, this.options.imageId, this.step.name);
+      const image = CreateAbilityOrItemImage(this.$button, this.options.imageId, this.step.name);
 
       image.hittest = false;
 
       this.onStepChange();
-    },
+    }
 
-    ShowTooltip: function () {
+    ShowTooltip() {
       this.showAbilityTooltip(this.$ctx, this.step.name);
-    },
+    }
 
-    HideTooltip: function () {
+    HideTooltip() {
       this.hideAbilityTooltip(this.$ctx);
-    },
-  });
+    }
+  }
 
   context.ComboStep = ComboStep;
 })(GameUI.CustomUIConfig(), this);

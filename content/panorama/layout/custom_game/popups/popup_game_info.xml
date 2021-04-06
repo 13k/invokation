@@ -1,38 +1,41 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_game_info.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/popups/popups_shared.css" />
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/popups/popup_game_info.css" />
   </styles>
 
-  <Popup class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="popup.Close()">
+  <Popup class="root PopupPanel" popupbackground="dim" oncancel="popup.Close()">
     <Button class="CloseButton" onactivate="popup.Close()" />
 
-    <Panel class="GameInfoContents">
+    <Panel class="contents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
 
-      <DOTAScenePanel class="OrbsScene" map="custom_game/scenes/kid_invoker_orbs" camera="camera" particleonly="false" hittest="false" />
+      <DOTAScenePanel class="orbs-scene" map="custom_game/scenes/kid_invoker_orbs" camera="camera" particleonly="false" hittest="false" />
 
       <Label class="PopupDescription" text="#invokation_game_info_description" html="true" hittest="false" />
 
-      <Panel class="GameInfoSeparator" />
+      <Panel class="separator" />
 
       <Panel class="PopupButtonRow">
-        <Panel class="GameInfoMetaItem">
-          <Label id="GameInfoVersionLabel" class="GameInfoMetaText" />
+        <Panel class="info-item">
+          <Label id="version-label" class="info-text" />
         </Panel>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="popup.OpenHomepageURL()">
-          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_home_page" />
-          <Panel class="GameInfoArrowIcon" />
+        <Button class="info-item link-button" onactivate="popup.OpenHomepageURL()">
+          <Label class="info-text" text="#invokation_game_info_home_page" />
+          <Panel class="PopoutArrow" />
         </Button>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="popup.OpenChangelogURL()">
-          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_changelog" />
-          <Panel class="GameInfoArrowIcon" />
+        <Button class="info-item link-button" onactivate="popup.OpenChangelogURL()">
+          <Label class="info-text" text="#invokation_game_info_changelog" />
+          <Panel class="PopoutArrow" />
         </Button>
       </Panel>
     </Panel>

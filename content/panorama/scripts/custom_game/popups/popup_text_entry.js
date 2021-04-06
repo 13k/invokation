@@ -1,11 +1,11 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { EVENTS } = global.Const;
 
-  var PROPERTIES = [
+  const PROPERTIES = [
     "channel",
     "title",
     "body",
@@ -17,77 +17,78 @@
     "item",
   ];
 
-  var ICON_CLASSES = {
-    IMAGE: "ImageIconEnabled",
-    ECON_ITEM: "EconItemIconEnabled",
-    HERO: "HeroIconEnabled",
-    ABILITY: "AbilityIconEnabled",
-    ITEM: "ItemIconEnabled",
+  const ICON_TYPES = {
+    IMAGE: "IMAGE",
+    ECON_ITEM: "ECON_ITEM",
+    HERO: "HERO",
+    ABILITY: "ABILITY",
+    ITEM: "ITEM",
   };
 
-  var PopupTextEntry = CreateComponent({
-    constructor: function PopupTextEntry() {
-      PopupTextEntry.super.call(this, {
+  const ICON_CLASSES = {
+    IMAGE: "image-icon-enabled",
+    ECON_ITEM: "econ-item-icon-enabled",
+    HERO: "hero-icon-enabled",
+    ABILITY: "ability-icon-enabled",
+    ITEM: "item-icon-enabled",
+  };
+
+  class PopupTextEntry extends Component {
+    constructor() {
+      super({
         elements: {
-          textEntry: "PopupTextEntryTextEntry",
-          image: "PopupTextEntryImage",
-          econItemImage: "PopupTextEntryEconItemImage",
-          heroImage: "PopupTextEntryHeroImage",
-          abilityImage: "PopupTextEntryAbilityImage",
-          itemImage: "PopupTextEntryItemImage",
+          textEntry: "text-entry",
+          image: "icon-image",
+          econItemImage: "econ-item-image",
+          heroImage: "hero-image",
+          abilityImage: "ability-image",
+          itemImage: "item-image",
         },
       });
 
       this.debug("init");
-    },
+    }
 
     // ----- Event handlers -----
 
-    onLoad: function () {
+    onLoad() {
       this.loadProperties();
-
-      this.debugFn(function () {
-        return ["onLoad()", _.pick(this, PROPERTIES)];
-      });
-
+      this.debugFn(() => ["onLoad()", _.pick(this, PROPERTIES)]);
       this.render();
-    },
+    }
 
     // ----- Helpers -----
 
-    loadProperties: function () {
-      _.each(
-        PROPERTIES,
-        function (property) {
-          this[property] = this.$ctx.GetAttributeString(property, "");
-        }.bind(this)
-      );
-    },
+    loadProperties() {
+      _.each(PROPERTIES, (property) => {
+        this[property] = this.$ctx.GetAttributeString(property, "");
+      });
+    }
 
-    render: function () {
-      var iconType;
+    render() {
+      let iconType = null;
 
       this.$ctx.SetDialogVariable("title", this.title);
       this.$ctx.SetDialogVariable("body", this.body);
 
       if (!_.isEmpty(this.image)) {
         this.$image.SetImage(this.image);
-        iconType = "IMAGE";
+        iconType = ICON_TYPES.IMAGE;
       } else if (!_.isEmpty(this.econitem)) {
         this.$econItemImage.SetItemByDefinition(parseInt(this.econitem) || 0);
-        iconType = "ECON_ITEM";
+        iconType = ICON_TYPES.ECON_ITEM;
       } else if (!_.isEmpty(this.heroid)) {
         this.$heroImage.heroid = parseInt(this.heroid) || 0;
-        iconType = "HERO";
+        iconType = ICON_TYPES.HERO;
       } else if (!_.isEmpty(this.hero)) {
         this.$heroImage.heroname = this.hero;
-        iconType = "HERO";
+        iconType = ICON_TYPES.HERO;
       } else if (!_.isEmpty(this.ability)) {
         this.$abilityImage.abilityname = this.ability;
-        iconType = "ABILITY";
+        iconType = ICON_TYPES.ABILITY;
       } else if (!_.isEmpty(this.item)) {
         this.$itemImage.itemname = this.item;
-        iconType = "ITEM";
+        iconType = ICON_TYPES.ITEM;
       }
 
       if (iconType) {
@@ -95,15 +96,15 @@
       }
 
       this.debug("render()");
-    },
+    }
 
     // ----- UI methods -----
 
-    Close: function () {
+    Close() {
       this.closePopup(this.$ctx);
-    },
+    }
 
-    Submit: function () {
+    Submit() {
       this.debug("Submit()", this.$textEntry.text);
 
       this.sendClientSide(EVENTS.POPUP_TEXT_ENTRY_SUBMIT, {
@@ -112,8 +113,8 @@
       });
 
       this.Close();
-    },
-  });
+    }
+  }
 
   context.popup = new PopupTextEntry();
 })(GameUI.CustomUIConfig(), this);

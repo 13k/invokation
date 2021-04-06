@@ -1,69 +1,71 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/viewer.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="ViewerRoot Hide" hittest="false">
-    <Panel class="Viewer" hittest="false">
+  <Panel class="root Hide" hittest="false">
+    <Panel class="viewer" hittest="false">
       <Button class="CloseButton" onactivate="component.Close()" />
       <Button class="RefreshButton" onactivate="component.Reload()" />
 
-      <Panel class="ViewerInformationBackground" hittest="false" />
+      <Panel class="viewer-bg" hittest="false" />
 
-      <Panel class="ViewerInformationBody" hittest="false">
-        <Label id="ViewerTitle" html="true" hittest="false" />
+      <Panel class="body" hittest="false">
+        <Label id="title" html="true" hittest="false" />
 
-        <Panel id="ViewerScrollPanel" class="TopBottomFlow">
-          <Panel id="ViewerPropertiesSection" class="ViewerSection" hittest="false" />
+        <Panel id="scroll-panel">
+          <Panel id="properties-section" class="section" hittest="false" />
 
-          <Label id="ViewerDescription" html="true" hittest="false" />
+          <Label id="description" html="true" hittest="false" />
 
-          <Panel class="ViewerSection ViewerAbilitiesBuildSection" hittest="false">
-            <Panel class="SectionHeader" hittest="false">
-              <Label class="SectionLabel" text="#invokation_viewer_abilities_build_title" hittest="false" />
+          <Panel class="section section-abilities" hittest="false">
+            <Panel class="section-header" hittest="false">
+              <Label class="section-label" text="#invokation_viewer_abilities_build_title" hittest="false" />
             </Panel>
 
-            <Panel class="ViewerAbilitiesBuild" hittest="false">
-              <Panel id="ViewerTalents" class="AbilityCircle" hittest="false" />
+            <Panel class="abilities-build" hittest="false">
+              <Panel id="talents" class="ability-circle" hittest="false" />
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
-                <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
+              <Panel class="ability-orb ability-circle" hittest="false">
+                <DOTAAbilityImage id="ability-quas" abilityname="invoker_quas" onmouseover="component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ability-quas-label" class="ability-orb-label" hittest="false" />
               </Panel>
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseover="component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
-                <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
+              <Panel class="ability-orb ability-circle" hittest="false">
+                <DOTAAbilityImage id="ability-wex" abilityname="invoker_wex" onmouseover="component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ability-wex-label" class="ability-orb-label" hittest="false" />
               </Panel>
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseover="component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
-                <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
+              <Panel class="ability-orb ability-circle" hittest="false">
+                <DOTAAbilityImage id="ability-exort" abilityname="invoker_exort" onmouseover="component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
+                <Label id="ability-exort-label" class="ability-orb-label" hittest="false" />
               </Panel>
             </Panel>
           </Panel>
 
-          <Panel class="ViewerSection ViewerSequenceSection" hittest="false">
-            <Panel class="SectionHeader" hittest="false">
-              <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
+          <Panel class="section" hittest="false">
+            <Panel class="section-header" hittest="false">
+              <Label class="section-label" text="#invokation_viewer_sequence_title" hittest="false" />
             </Panel>
 
-            <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
+            <Label class="section-label" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
 
-            <Panel id="ViewerSequence" hittest="false" />
+            <Panel id="sequence" hittest="false" />
           </Panel>
         </Panel>
       </Panel>
 
-      <Panel class="ViewerFooter" hittest="false">
-        <Panel class="ViewerButtons" hittest="false">
-          <Button class="PlayButton" onactivate="component.Play()">
-            <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
+      <Panel class="footer" hittest="false">
+        <Panel class="buttons" hittest="false">
+          <Button class="play-button" onactivate="component.Play()">
+            <Label class="play-label" text="#invokation_controls_play" hittest="false" />
           </Button>
         </Panel>
       </Panel>

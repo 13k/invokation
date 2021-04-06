@@ -1,30 +1,29 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
+@import url("file://{resources}/styles/custom_game/panels.css");
 
-/* clWidth = ((clCellSize + (2 * clCellMargin)) * clColumns) + (2 * clPadding) + clScrollWidth */
+/* cl_width = ((cl_cell_size + (2 * cl_cell_margin)) * cl_columns) + (2 * cl_padding) + cl_scroll_width */
 
-@define clColumns: 20;
-@define clWidth: 740px;
-@define clHeight: 200px;
-@define clPadding: 5px;
-@define clCellSize: 32px;
-@define clCellMargin: 2px;
-@define clScrollWidth: 10px;
-@define clTranslateY: -150px;
-@define clBarHeight: 50px;
-@define clThumbWidth: 19px;
-@define clThumbHeight: 19px;
+@define cl_columns: 20;
+@define cl_width: 740px;
+@define cl_height: 200px;
+@define cl_padding: 5px;
+@define cl_cell_size: 32px;
+@define cl_cell_margin: 2px;
+@define cl_scroll_width: 10px;
+@define cl_translate_y: -150px;
+@define cl_bar_height: 50px;
+@define cl_thumb_width: 19px;
+@define cl_thumb_height: 19px;
 
-.CombatLogRoot {
+.root {
   width: 100%;
   height: 100%;
 }
 
-.CombatLog {
+#combat-log {
   flow-children: down;
-  width: clWidth;
-  height: clHeight;
+  width: cl_width;
+  height: cl_height;
   align: center top;
   transform: translateY(0);
   transition-delay: 0s;
@@ -33,70 +32,70 @@
   transition-property: transform;
 }
 
-.CombatLogRoot.Closed .CombatLog {
-  transform: translateY(clTranslateY);
+.root.closed #combat-log {
+  transform: translateY(cl_translate_y);
 }
 
-#CombatLogContents {
+#contents {
   overflow: clip scroll;
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(1);
-  padding-top: clPadding;
-  padding-right: clPadding;
-  padding-left: clPadding;
+  padding-top: clpadding;
+  padding-right: clpadding;
+  padding-left: clpadding;
 }
 
-.CombatLogRow {
+.row {
   flow-children: right;
 }
 
-.CombatLogIcon {
-  width: clCellSize;
-  height: clCellSize;
-  margin: clCellMargin;
+.ability-icon {
+  width: cl_cell_size;
+  height: cl_cell_size;
+  margin: cl_cell_margin;
   box-shadow: #222 -2px -2px 4px 4px;
   background-color: #000d;
 }
 
-.CombatLogIcon .CombatLogIconImage {
+.ability-icon .ability-image {
   width: 100%;
   vertical-align: center;
 }
 
-.CombatLogBar {
+.bar {
   flow-children: right;
   width: 100%;
-  height: clBarHeight;
+  height: clbarheight;
   padding: 0 8px;
   border-top: 1px solid #222;
   background-color: #0003;
 }
 
-.CombatLogThumb {
+.thumb {
   horizontal-align: left;
   vertical-align: center;
 }
 
-.CombatLogThumb .TickBox {
-  width: clThumbWidth;
-  height: clThumbHeight;
+.thumb .TickBox {
+  width: cl_thumb_width;
+  height: cl_thumb_height;
   transform: rotateZ(180deg) translateY(-2px);
   wash-color: #d8d8d8;
 }
 
-.CombatLogThumb:selected .TickBox {
-  width: clThumbWidth;
-  height: clThumbHeight;
+.thumb:selected .TickBox {
+  width: cl_thumb_width;
+  height: cl_thumb_height;
   transform: rotateZ(0deg) translateY(2px);
   wash-color: #d8d8d8;
 }
 
-.CombatLogThumb .TickBox:hover {
+.thumb .TickBox:hover {
   wash-color: #fff;
 }
 
-.CombatLogTitle {
+.title {
   horizontal-align: left;
   vertical-align: center;
   letter-spacing: 2px;
@@ -109,21 +108,21 @@
   text-shadow: 1px 1px 0 3 #0006;
 }
 
-.CombatLogBarActions {
+.actions {
   flow-children: right;
   height: 100%;
   horizontal-align: right;
 }
 
-.CombatLogRoot.Closed .CombatLogBarActions {
+.root.closed .actions {
   visibility: collapse;
 }
 
-.CombatLogBarActions .CombatLogBarItem {
+.actions .action-item {
   margin-right: 8px;
   vertical-align: center;
 }
 
-.CombatLogBarActions .ClearButton {
+.actions .button.clear {
   margin: 0;
 }

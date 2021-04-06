@@ -1,12 +1,8 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/hudstyles.css");
-@import url("s2r://panorama/styles/hud/hud_reborn.css");
-
-.UITalentsDisplayRoot {
+.root {
   flow-children: down;
 }
 
-.StatBranchContainer {
+.container {
   width: 64px;
   height: 64px;
   horizontal-align: center;

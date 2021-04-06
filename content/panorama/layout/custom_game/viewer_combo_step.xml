@@ -1,6 +1,6 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/combo_step.js" />
     <include src="file://{resources}/scripts/custom_game/viewer_combo_step.js" />
   </scripts>
@@ -9,8 +9,8 @@
     <include src="file://{resources}/styles/custom_game/viewer_combo_step.css" />
   </styles>
 
-  <Panel class="ViewerComboStepRoot">
-    <Button id="ComboStepIconButton" class="ViewerComboStepIcon" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
-    <Label id="ViewerComboStepDescription" html="true" hittest="false" />
+  <Panel class="root">
+    <Button id="ability-button" onmouseover="comboStep.ShowTooltip()" onmouseout="comboStep.HideTooltip()" />
+    <Label id="description" html="true" hittest="false" />
   </Panel>
 </root>

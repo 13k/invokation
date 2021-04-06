@@ -1,17 +1,14 @@
 "use strict";
 
-(function (global, context) {
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { Sequence, ParallelSequence } = global.Sequence;
 
-  function ratingCssClass(value) {
-    return "rating_" + String(value);
-  }
+  const ratingCssClass = (value) => `rating_${value}`;
 
-  var ViewerProperties = CreateComponent({
-    constructor: function ViewerProperties() {
-      ViewerProperties.super.call(this, {
+  class ViewerProperties extends Component {
+    constructor() {
+      super({
         elements: {
           heroLevelLabel: "ViewerPropertiesHeroLevelLabel",
           specialtyLabel: "ViewerPropertiesSpecialtyLabel",
@@ -25,52 +22,50 @@
       });
 
       this.debug("init");
-    },
+    }
 
-    setCombo: function (combo) {
+    setCombo(combo) {
       this.combo = combo;
       this.render();
-    },
+    }
 
     // --- Actions ---
 
-    setVariablesAction: function () {
+    setVariablesAction() {
       return new ParallelSequence()
         .SetDialogVariable(this.$ctx, "hero_level", this.combo.heroLevel)
         .SetDialogVariable(this.$ctx, "specialty", this.combo.l10n.specialty)
         .SetDialogVariable(this.$ctx, "stance", this.combo.l10n.stance)
         .SetDialogVariable(this.$ctx, "damage_rating", this.combo.l10n.damageRating)
         .SetDialogVariable(this.$ctx, "difficulty_rating", this.combo.l10n.difficultyRating);
-    },
+    }
 
-    setAttributesAction: function () {
+    setAttributesAction() {
       return new ParallelSequence()
         .SetAttribute(this.$heroLevelLabel, "text", String(this.combo.heroLevel))
         .SetAttribute(this.$specialtyLabel, "text", this.combo.l10n.specialty)
         .SetAttribute(this.$stanceLabel, "text", this.combo.l10n.stance);
-    },
+    }
 
-    setClassesAction: function () {
+    setClassesAction() {
       return new ParallelSequence()
         .AddClass(this.$damageRating, ratingCssClass(this.combo.damageRating))
         .AddClass(this.$difficultyRating, ratingCssClass(this.combo.difficultyRating));
-    },
+    }
 
     // ----- Action Runners -----
 
-    render: function () {
-      var seq = new Sequence()
+    render() {
+      const seq = new Sequence()
         .Action(this.setVariablesAction())
         .Action(this.setAttributesAction())
         .Action(this.setClassesAction());
 
-      this.debugFn(function () {
-        return ["render()", { id: this.combo.id, actions: seq.size() }];
-      });
+      this.debugFn(() => ["render()", { id: this.combo.id, actions: seq.size() }]);
 
       return seq.Start();
-    },
-  });
+    }
+  }
 
   context.viewerProperties = new ViewerProperties();
 })(GameUI.CustomUIConfig(), this);

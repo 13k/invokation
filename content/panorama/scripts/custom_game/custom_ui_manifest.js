@@ -1,12 +1,11 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var CombosCollection = global.CombosCollection;
-  var AbilitiesKeyValues = global.AbilitiesKeyValues;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const _ = global.lodash;
+  const { Component } = context;
+  const { AbilitiesKeyValues, CombosCollection } = global;
 
-  var UI_CONFIG = {
+  const UI_CONFIG = {
     // [0] Time of day (clock)
     DOTA_DEFAULT_UI_TOP_TIMEOFDAY: false,
     // [1] Heroes and team score at the top of the HUD
@@ -67,12 +66,12 @@
     DOTA_DEFAULT_UI_ELEMENT_COUNT: false,
   };
 
-  var CustomUIManifest = CreateComponent({
-    constructor: function CustomUIManifest() {
-      CustomUIManifest.super.call(this);
+  class CustomUIManifest extends Component {
+    constructor() {
+      super();
 
-      _.forEach(UI_CONFIG, function (value, key) {
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t[key], value);
+      _.forEach(UI_CONFIG, (value, key) => {
+        this.setUI(key, value);
       });
 
       global.COMBOS = new CombosCollection();
@@ -82,8 +81,8 @@
       global.ABILITIES_KV.Load();
 
       this.debug("init");
-    },
-  });
+    }
+  }
 
   context.customUIManifest = new CustomUIManifest();
 })(GameUI.CustomUIConfig(), this);

@@ -132,7 +132,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_combo_hud_visibility__visible" "Visible"
-    "invokation_combo_hud_visibility__hide_sequence" "Hidden sequence"
+    "invokation_combo_hud_visibility__hide_seq" "Hidden sequence"
     "invokation_combo_hud_visibility__no_hands" "Look ma, no hands!"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

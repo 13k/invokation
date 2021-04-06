@@ -1,31 +1,20 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/dashboard_page_shared.css");
-@import url("s2r://panorama/styles/dashboard_page_hero_new.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-.Root {
+@define gradient_bg: gradient(linear, 0% 0%, 100% 100%, from(#0b0c0e), color-stop(0.3, #14181d), color-stop(0.303, #6c829c), color-stop(0.31, #99b8dd), color-stop(0.55, #99b8dd), color-stop(0.56, #6c829c), color-stop(0.563, #14181d), to(#0b0c0e));
+@define gradient_invokation_sun: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ff9100c2), to(#00000000));
+@define gradient_invokation_sun_fading: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ce7909c2), to(#00000000));
+
+.root {
   width: 100%;
   height: 100%;
   background-color: #14181d;
 }
 
-.Root.Initialize {
-  background-color: gradient(
-    linear,
-    0% 0%,
-    100% 100%,
-    from(#0b0c0e),
-    color-stop(0.3, #14181d),
-    color-stop(0.303, #6c829c),
-    color-stop(0.31, #99b8dd),
-    color-stop(0.55, #99b8dd),
-    color-stop(0.56, #6c829c),
-    color-stop(0.563, #14181d),
-    to(#0b0c0e)
-  );
+.root.initialized {
+  background-color: gradient_bg;
 }
 
-#TitleFX {
+#title-fx {
   width: 100%;
   height: 100%;
   transform: translateX(64px) translateY(64px) translateZ(-40px);
@@ -35,56 +24,56 @@
   transition-property: opacity;
 }
 
-#TitleFX.SceneLoaded {
+#title-fx.SceneLoaded {
   opacity: 1;
 }
 
-.TitlePanel {
+.title-panel {
   width: 300px;
   height: 300px;
   margin-top: 64px;
   margin-left: 64px;
-  background-color: invokationSunGradient;
-  animation-name: SunstrikeGlow;
+  background-color: gradient_invokation_sun;
+  animation-name: sunstrike-glow;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
 
-.Title {
+.title {
   width: 100%;
   align: center center;
   text-align: center;
   letter-spacing: -2px;
   text-transform: uppercase;
   text-overflow: shrink;
-  font-family: titleFont;
+  font-family: font_title;
   font-size: 80px;
   font-weight: semi-bold;
   color: #bbb6ae;
   text-shadow: 2px 4px 4px #000;
 }
 
-#Scene {
+#scene {
   width: 100%;
   height: 100%;
   margin-left: -200px;
-  opacity: 0;
   transform: translateZ(-30px);
+  opacity: 0;
 }
 
-#Scene.SceneLoaded {
+#scene.SceneLoaded {
   opacity: 1;
 }
 
-@keyframes 'SunstrikeGlow' {
+@keyframes 'sunstrike-glow' {
   0% {
-    background-color: invokationSunGradient;
+    background-color: gradient_invokation_sun;
   }
   50% {
-    background-color: invokationSunFadingGradient;
+    background-color: gradient_invokation_sun_fading;
   }
   100% {
-    background-color: invokationSunGradient;
+    background-color: gradient_invokation_sun;
   }
 }

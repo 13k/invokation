@@ -1,53 +1,56 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var Sequence = global.Sequence.Sequence;
-  var StopSequence = global.Sequence.StopSequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var AddOptionAction = global.Sequence.AddOptionAction;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { LAYOUTS } = global.Const;
+  const {
+    Sequence,
+    ParallelSequence,
+    StopSequence,
+    AddOptionAction,
+    RunFunctionAction,
+  } = global.Sequence;
 
-  var POPUP_TEXT_ENTRY_LAYOUT = "file://{resources}/layout/custom_game/popups/popup_text_entry.xml";
-  var POPUP_TEXT_ENTRY_ID = "UITagSelectPopupTextEntry";
+  const DYN_ELEMS = {
+    POPUP_TEXT_ENTRY: {
+      id: "popup-text-entry",
+    },
+    TAG: {
+      snippet: "tag",
+      idPrefix: "tag",
+      removeButtonId: "remove-button",
+      deleteDelay: 0.25,
+    },
+    OPTION: {
+      cssClass: "option",
+      idPrefix: "option",
+      emptyId: "option--empty",
+      textEntryId: "option--text-entry",
+    },
+  };
 
-  var TAG_SNIPPET = "UITagSelectTag";
-  var TAG_ID_PREFIX = "UITagSelectTag";
-  var TAG_REMOVE_BUTTON_ID = "UITagSelectTagRemoveButton";
-  var TAG_DELETE_DELAY = 0.25;
+  const OPTIONS = {
+    EMPTY: "__empty__",
+    TEXT_ENTRY: "__text_entry__",
+  };
 
-  var OPTION_CLASS = "UITagSelectOption";
-  var OPTION_ID_PREFIX = "UITagSelectOption";
-  var OPTION_EMPTY = "__empty__";
-  var OPTION_ID_EMPTY = OPTION_ID_PREFIX + OPTION_EMPTY;
-  var OPTION_TEXT_ENTRY = "__text_entry__";
-  var OPTION_ID_TEXT_ENTRY = OPTION_ID_PREFIX + OPTION_TEXT_ENTRY;
-
-  var L10N_KEYS = {
+  const L10N_KEYS = {
     OPTION_TEXT_ENTRY: "invokation_tag_select_option_text_entry",
     POPUP_TEXT_ENTRY_TITLE: "invokation_tag_select_popup_text_entry_title",
   };
 
-  function normalizeTag(tag) {
-    return _.kebabCase(tag);
-  }
+  const normalizeTag = (tag) => _.kebabCase(tag);
+  const elementId = (prefix, name) => _.kebabCase(`${prefix}_${name}`);
+  const tagId = (tag) => elementId(DYN_ELEMS.TAG.idPrefix, tag);
+  const optionId = (option) => elementId(DYN_ELEMS.OPTION.idPrefix, option);
 
-  function tagId(tag) {
-    return TAG_ID_PREFIX + _.chain(tag).camelCase().upperFirst().value();
-  }
-
-  function optionId(option) {
-    return OPTION_ID_PREFIX + _.chain(option).camelCase().upperFirst().value();
-  }
-
-  var UITagSelect = CreateComponent({
-    constructor: function UITagSelect() {
-      UITagSelect.super.call(this, {
+  class UITagSelect extends Component {
+    constructor() {
+      super({
         elements: {
-          list: "UITagSelectTagList",
-          options: "UITagSelectOptions",
+          list: "tags",
+          options: "options",
         },
         inputs: {
           SetOptions: "setOptions",
@@ -63,25 +66,25 @@
       this.tagPanels = {};
       this.popupTextEntryChannel = _.uniqueId("popup_text_entry_");
       this.debug("init");
-    },
+    }
 
     // ----- I/O -----
 
-    setOptions: function (payload) {
+    setOptions(payload) {
       this.debug("setOptions()", payload);
       this.options = payload.options;
       this.renderOptions();
-    },
+    }
 
     // ----- Event handlers -----
 
-    onTagRemove: function (tag) {
+    onTagRemove(tag) {
       this.debug("onTagRemove()", tag);
       this.removeTag(tag);
-    },
+    }
 
-    onOptionSelect: function () {
-      var selected = this.$options.GetSelected();
+    onOptionSelect() {
+      const selected = this.$options.GetSelected();
 
       this.debug("OnOptionSelect", _.get(selected, "id"));
 
@@ -89,22 +92,22 @@
         return;
       }
 
-      var option = selected.GetAttributeString("value", "");
+      const option = selected.GetAttributeString("value", "");
 
       switch (option) {
-        case OPTION_EMPTY:
+        case OPTIONS.EMPTY:
           return;
-        case OPTION_TEXT_ENTRY:
+        case OPTIONS.TEXT_ENTRY:
           this.showTagEntryPopup();
           break;
         default:
           this.addTag(option);
       }
 
-      this.$options.SetSelected(OPTION_ID_EMPTY);
-    },
+      this.$options.SetSelected(DYN_ELEMS.OPTION.emptyId);
+    }
 
-    onPopupTextEntrySubmit: function (payload) {
+    onPopupTextEntrySubmit(payload) {
       if (payload.channel !== this.popupTextEntryChannel) {
         return;
       }
@@ -114,15 +117,15 @@
       if (!_.isEmpty(payload.text)) {
         this.addTag(payload.text);
       }
-    },
+    }
 
     // ----- Helpers -----
 
-    notifyChange: function () {
+    notifyChange() {
       this.runOutput("OnChange", { tags: this.tags });
-    },
+    }
 
-    selectTag: function (tag) {
+    selectTag(tag) {
       tag = normalizeTag(tag);
 
       if (_.isEmpty(tag) || this.isTagSelected(tag)) {
@@ -130,10 +133,11 @@
       }
 
       this.tags.push(tag);
-      return tag;
-    },
 
-    deselectTag: function (tag) {
+      return tag;
+    }
+
+    deselectTag(tag) {
       tag = normalizeTag(tag);
 
       if (!this.isTagSelected(tag)) {
@@ -141,32 +145,34 @@
       }
 
       _.pull(this.tags, tag);
+
       return tag;
-    },
+    }
 
-    isTagSelected: function (tag) {
+    isTagSelected(tag) {
       return _.includes(this.tags, normalizeTag(tag));
-    },
+    }
 
-    registerTagPanel: function (tag, panel) {
+    registerTagPanel(tag, panel) {
       this.tagPanels[tag] = panel;
-    },
+    }
 
-    unregisterTagPanel: function (tag) {
+    unregisterTagPanel(tag) {
       delete this.tagPanels[tag];
-    },
+    }
 
-    createOption: function (option) {
-      var id;
-      var text;
+    createOption(option) {
+      let id = null;
+      let text = null;
+      const { cssClass, emptyId, textEntryId } = DYN_ELEMS.OPTION;
 
       switch (option) {
-        case OPTION_EMPTY:
-          id = OPTION_ID_EMPTY;
+        case OPTIONS.EMPTY:
+          id = emptyId;
           text = "";
           break;
-        case OPTION_TEXT_ENTRY:
-          id = OPTION_ID_TEXT_ENTRY;
+        case OPTIONS.TEXT_ENTRY:
+          id = textEntryId;
           text = $.Localize(L10N_KEYS.OPTION_TEXT_ENTRY);
           break;
         default:
@@ -174,76 +180,74 @@
           text = option;
       }
 
-      var panel = $.CreatePanel("Label", this.$options, id);
+      return this.createLabel(this.$options, id, text, {
+        classes: [cssClass],
+        attrs: { value: option },
+      });
+    }
 
-      panel.text = text;
-      panel.SetAttributeString("value", option);
-      panel.AddClass(OPTION_CLASS);
+    createTag(tag) {
+      const { snippet, removeButtonId } = DYN_ELEMS.TAG;
+      const id = tagId(tag);
+      const panel = this.renderSnippet(this.$list, id, snippet, {
+        dialogVars: { value: tag },
+      });
 
-      return panel;
-    },
+      const removePanel = panel.FindChildTraverse(removeButtonId);
 
-    createTag: function (tag) {
-      var id = tagId(tag);
-
-      var panel = CreatePanelWithLayoutSnippet(this.$list, id, TAG_SNIPPET);
-      var removePanel = panel.FindChildTraverse(TAG_REMOVE_BUTTON_ID);
-
-      panel.SetDialogVariable("value", tag);
       removePanel.SetPanelEvent("onactivate", _.bind(this.onTagRemove, this, tag));
 
       this.registerTagPanel(tag, panel);
 
       return panel;
-    },
+    }
 
     // ----- Actions -----
 
-    createOptionAction: function (option) {
+    createOptionAction(option) {
       return new AddOptionAction(this.$options, _.bind(this.createOption, this, option));
-    },
+    }
 
-    renderOptionsAction: function () {
-      var actions = _.chain([OPTION_EMPTY])
-        .concat(this.options, OPTION_TEXT_ENTRY)
+    renderOptionsAction() {
+      const actions = _.chain([OPTIONS.EMPTY])
+        .concat(this.options, OPTIONS.TEXT_ENTRY)
         .reject(this.isTagSelected.bind(this))
         .map(this.createOptionAction.bind(this))
         .value();
 
       return new Sequence().RemoveAllOptions(this.$options).Action(actions);
-    },
+    }
 
-    selectTagAction: function (tag) {
-      return new RunFunctionAction(this, function () {
+    selectTagAction(tag) {
+      return new RunFunctionAction(() => {
         if (!this.selectTag(tag)) {
           throw new StopSequence();
         }
       });
-    },
+    }
 
-    deselectTagAction: function (tag) {
-      return new RunFunctionAction(this, function () {
+    deselectTagAction(tag) {
+      return new RunFunctionAction(() => {
         if (!this.deselectTag(tag)) {
           throw new StopSequence();
         }
       });
-    },
+    }
 
-    createTagAction: function (tag) {
-      return new Sequence().RunFunction(this, this.createTag, tag);
-      // .RunFunction(this, this.moveOptionsAfterTag, tag);
-    },
+    createTagAction(tag) {
+      return new Sequence().RunFunction(() => this.createTag(tag));
+    }
 
-    addTagAction: function (tag) {
+    addTagAction(tag) {
       return new Sequence().Action(this.selectTagAction(tag)).Action(this.createTagAction(tag));
-    },
+    }
 
-    removeTagAction: function (tag, options) {
+    removeTagAction(tag, options) {
       options = _.assign({ immediate: false }, options);
 
-      var delay = options.immediate ? 0 : TAG_DELETE_DELAY;
-      var seq = new Sequence();
-      var panel = this.tagPanels[tag];
+      const delay = options.immediate ? 0 : DYN_ELEMS.TAG.deleteDelay;
+      const seq = new Sequence();
+      const panel = this.tagPanels[tag];
 
       if (delay) {
         seq.Disable(panel);
@@ -251,76 +255,74 @@
 
       return seq
         .Action(this.deselectTagAction(tag))
-        .RunFunction(this, this.unregisterTagPanel, tag)
+        .RunFunction(() => this.unregisterTagPanel(tag))
         .DeleteAsync(panel, delay);
-    },
+    }
 
-    clearTagsAction: function () {
-      var removeTagAction = _.chain(this.removeTagAction)
+    clearTagsAction() {
+      const removeTagAction = _.chain(this.removeTagAction)
         .bind(this, _, { immediate: true })
         .unary()
         .value();
 
-      var actions = _.map(this.tags, removeTagAction);
+      const actions = _.map(this.tags, removeTagAction);
 
       return new ParallelSequence().Action(actions);
-    },
+    }
 
     // ----- Action runners -----
 
-    renderOptions: function () {
-      var seq = new Sequence().Action(this.renderOptionsAction());
+    renderOptions() {
+      const seq = new Sequence().Action(this.renderOptionsAction());
 
-      this.debugFn(function () {
-        return ["renderOptions()", { options: this.options, actions: seq.size() }];
-      });
+      this.debugFn(() => ["renderOptions()", { options: this.options, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    addTag: function (tag) {
+    addTag(tag) {
       tag = normalizeTag(tag);
 
-      var seq = new Sequence().Action(this.addTagAction(tag)).RunFunction(this, this.notifyChange);
+      const seq = new Sequence()
+        .Action(this.addTagAction(tag))
+        .RunFunction(() => this.notifyChange());
 
-      this.debugFn(function () {
-        return ["addTag()", { tag: tag, actions: seq.size() }];
-      });
+      this.debugFn(() => ["addTag()", { tag, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    removeTag: function (tag) {
+    removeTag(tag) {
       tag = normalizeTag(tag);
 
-      var seq = new Sequence()
+      const seq = new Sequence()
         .Action(this.removeTagAction(tag))
-        .RunFunction(this, this.notifyChange);
+        .RunFunction(() => this.notifyChange());
 
-      this.debugFn(function () {
-        return ["removeTag()", { tag: tag, actions: seq.size() }];
-      });
+      this.debugFn(() => ["removeTag()", { tag, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    clearTags: function () {
-      var seq = new Sequence().Action(this.clearTagsAction()).RunFunction(this, this.notifyChange);
+    clearTags() {
+      const seq = new Sequence()
+        .Action(this.clearTagsAction())
+        .RunFunction(() => this.notifyChange());
 
-      this.debugFn(function () {
-        return ["clearTags()", { tags: this.tags.length, actions: seq.size() }];
-      });
+      this.debugFn(() => ["clearTags()", { tags: this.tags.length, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    showTagEntryPopup: function () {
-      return this.showPopup(this.$options, POPUP_TEXT_ENTRY_ID, POPUP_TEXT_ENTRY_LAYOUT, {
+    showTagEntryPopup() {
+      const { id } = DYN_ELEMS.POPUP_TEXT_ENTRY;
+
+      return this.showPopup(this.$options, id, LAYOUTS.POPUPS.TEXT_ENTRY, {
         channel: this.popupTextEntryChannel,
         title: $.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),
       });
-    },
-  });
+    }
+  }
 
   context.select = new UITagSelect();
 })(GameUI.CustomUIConfig(), this);

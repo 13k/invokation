@@ -1,88 +1,85 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var EVENTS = global.Const.EVENTS;
-  var INVOKER = global.Const.INVOKER;
-  var CreateAbilityImage = global.Util.CreateAbilityImage;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { EVENTS, INVOKER } = global.Const;
 
-  var ABILITY_CLASS = "PopupInvokerAbilityPickerAbility";
-  var ABILITY_HIGHLIGHT_CLASS = "Highlighted";
+  const ABILITY_CLASS = "ability";
+  const ABILITY_HIGHLIGHT_CLASS = "highlighted";
 
-  var PopupInvokerAbilityPicker = CreateComponent({
-    constructor: function PopupInvokerAbilityPicker() {
-      PopupInvokerAbilityPicker.super.call(this, {
+  const abilityElemId = (abilityName) => `ability-${abilityName}`;
+
+  class PopupInvokerAbilityPicker extends Component {
+    constructor() {
+      super({
         elements: {
-          abilities: "PopupInvokerAbilityPickerAbilityList",
+          abilities: "abilities",
         },
       });
 
       this.abilityPanels = {};
       this.debug("init");
-    },
+    }
 
     // ----- Event handlers -----
 
-    onLoad: function () {
+    onLoad() {
       this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
       this.debug("onLoad()", { channel: this.channel });
       this.render();
-    },
+    }
 
-    onImageActivate: function (imagePanel) {
+    onImageActivate(imagePanel) {
       this.debug("onImageActivate()", imagePanel.id);
       this.select(imagePanel);
-    },
+    }
 
     // ----- Helpers -----
 
-    select: function (imagePanel) {
-      var highlighted = this.$abilities.FindChildrenWithClassTraverse(ABILITY_HIGHLIGHT_CLASS);
+    select(imagePanel) {
+      const highlighted = this.$abilities.FindChildrenWithClassTraverse(ABILITY_HIGHLIGHT_CLASS);
 
-      _.each(highlighted, function (panel) {
-        panel.RemoveClass(ABILITY_HIGHLIGHT_CLASS);
-      });
+      _.each(highlighted, (panel) => panel.RemoveClass(ABILITY_HIGHLIGHT_CLASS));
 
       imagePanel.AddClass(ABILITY_HIGHLIGHT_CLASS);
 
       this.selected = imagePanel.abilityname;
       this.Submit();
-    },
+    }
 
-    render: function () {
-      var createAbilityImage = _.chain(this.createAbilityImage)
+    render() {
+      const createImage = _.chain(this.createImage)
         .bind(this, this.$abilities)
         .rearg([1, 0])
         .ary(2)
         .value();
 
-      _.each(INVOKER.SPELL_ABILITIES, createAbilityImage);
+      _.each(INVOKER.SPELL_ABILITIES, createImage);
 
       this.debug("render()");
-    },
+    }
 
-    createAbilityImage: function (parent, abilityName) {
-      var abilityId =
-        "PopupInvokerAbilityPicker" + _.chain(abilityName).camelCase().upperFirst().value();
+    createImage(parent, abilityName) {
+      const id = abilityElemId(abilityName);
+      const panel = this.createAbilityImage(parent, id, abilityName, {
+        classes: [ABILITY_CLASS],
+      });
 
-      var panel = CreateAbilityImage(parent, abilityId, abilityName);
-
-      panel.AddClass(ABILITY_CLASS);
       panel.SetPanelEvent("onactivate", _.partial(this.handler("onImageActivate"), panel));
 
       this.abilityPanels[abilityName] = panel;
 
       return panel;
-    },
+    }
 
     // ----- UI methods -----
 
-    Close: function () {
+    Close() {
       this.closePopup(this.$ctx);
-    },
+    }
 
-    Submit: function () {
+    Submit() {
       this.debug("Submit()", this.selected);
 
       this.sendClientSide(EVENTS.POPUP_ABILITY_PICKER_SUBMIT, {
@@ -91,8 +88,8 @@
       });
 
       this.Close();
-    },
-  });
+    }
+  }
 
   context.popup = new PopupInvokerAbilityPicker();
 })(GameUI.CustomUIConfig(), this);

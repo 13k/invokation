@@ -1,14 +1,12 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/popups/popups_shared.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-.GameInfoRoot {
+.root {
   flow-children: none;
   width: 1300px;
   align: center center;
 }
 
-.CloseButton {
+.button.close {
   width: 30px;
   height: 30px;
   margin-top: -16px;
@@ -17,55 +15,64 @@
   wash-color: #ddd;
 }
 
-.GameInfoContents {
+.contents {
   overflow: squish scroll;
   flow-children: down;
   width: 100%;
   padding: 32px;
 }
 
-.PopupTitle {
-  font-family: titleFont;
+.popup-title {
+  font-family: font_title;
   font-weight: semi-bold;
   color: white;
 }
 
-.PopupDescription {
+.popup-description {
   width: 600px;
   horizontal-align: center;
   text-align: center;
 }
 
-.OrbsScene {
+.orbs-scene {
   width: 768px;
   height: 256px;
   horizontal-align: center;
 }
 
-.GameInfoSeparator {
+.separator {
   width: 100%;
   margin-top: 30px;
   margin-bottom: 30px;
   border-top: 1px solid #444;
 }
 
-.PopupButtonRow {
+.popup-button-row {
   margin-top: 0;
 }
 
-.GameInfoMetaItem {
+.info-item {
   margin-right: 16px;
   vertical-align: center;
 }
 
-.GameInfoLinkButton {
+.info-text {
+  height: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: normal;
+  color: color_text_link;
+}
+
+.link-button {
   flow-children: right;
   padding: 12px;
   border: 1px solid transparent;
   border-radius: 2px;
 }
 
-.GameInfoLinkButton:hover {
+.link-button:hover {
   border-top: 1px solid #333;
   border-right: 1px solid #000;
   border-bottom: 1px solid #000;
@@ -73,7 +80,7 @@
   background-color: #222;
 }
 
-.GameInfoLinkButton:active {
+.link-button:active {
   border-top: 1px solid #666;
   border-right: 1px solid #333;
   border-bottom: 1px solid #333;
@@ -81,26 +88,13 @@
   background-color: #444;
 }
 
-.GameInfoMetaText {
-  height: 18px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: normal;
-  color: linkText;
-}
-
-.GameInfoArrowIcon {
+.link-button .arrow.popout {
   width: 16px;
   height: 16px;
-  margin-top: 2px;
-  margin-left: 2px;
-  vertical-align: center;
+  margin: 2px 0 0 2px;
   wash-color: #ddd;
-  background-image: controlsArrowPopoutIcon;
-  background-size: 16px 16px;
 }
 
-.GameInfoLinkButton:hover .GameInfoArrowIcon {
+.link-button:hover .arrow-popout {
   wash-color: #fff;
 }

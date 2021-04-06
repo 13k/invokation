@@ -1,17 +1,16 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var Sequence = global.Sequence.Sequence;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { Sequence, ParallelSequence } = global.Sequence;
 
-  var CLASSES = {
-    FINISHED: "PickerComboFinished",
+  const CLASSES = {
+    FINISHED: "finished",
   };
 
-  function propertyCssClass(property, value) {
-    var baseClass;
+  const propertyCssClass = (property, value) => {
+    let baseClass;
 
     switch (property) {
       case "damageRating":
@@ -22,17 +21,17 @@
         baseClass = _.snakeCase(property);
     }
 
-    return baseClass + "_" + String(value);
-  }
+    return `${baseClass}_${value}`;
+  };
 
-  var PickerCombo = CreateComponent({
-    constructor: function PickerCombo() {
-      PickerCombo.super.call(this, {
+  class PickerCombo extends Component {
+    constructor() {
+      super({
         elements: {
-          titleLabel: "PickerComboTitle",
-          heroLevelLabel: "PickerComboHeroLevelLabel",
-          damageRating: "PickerComboDamageRating",
-          difficultyRating: "PickerComboDifficultyRating",
+          titleLabel: "title",
+          heroLevelLabel: "hero-level-label",
+          damageRating: "damage-rating",
+          difficultyRating: "difficulty-rating",
         },
         inputs: {
           SetCombo: "setCombo",
@@ -40,78 +39,79 @@
           UnsetFinished: "onUnsetFinished",
         },
       });
-    },
+    }
 
     // --- Inputs ---
 
-    setCombo: function (combo) {
+    setCombo(combo) {
       this.combo = combo;
       this.render();
-    },
+    }
 
-    onSetFinished: function () {
+    onSetFinished() {
       this.$ctx.AddClass(CLASSES.FINISHED);
-    },
+    }
 
-    onUnsetFinished: function () {
+    onUnsetFinished() {
       this.$ctx.RemoveClass(CLASSES.FINISHED);
-    },
+    }
 
     // --- Actions ---
 
-    setVariablesAction: function () {
+    setVariablesAction() {
       return new ParallelSequence()
         .SetDialogVariable(this.$ctx, "hero_level", this.combo.heroLevel)
         .SetDialogVariable(this.$ctx, "specialty", this.combo.l10n.specialty)
         .SetDialogVariable(this.$ctx, "stance", this.combo.l10n.stance)
         .SetDialogVariable(this.$ctx, "damage_rating", this.combo.l10n.damageRating)
         .SetDialogVariable(this.$ctx, "difficulty_rating", this.combo.l10n.difficultyRating);
-    },
+    }
 
-    setAttributesAction: function () {
+    setAttributesAction() {
       return new ParallelSequence()
         .SetAttribute(this.$titleLabel, "text", this.combo.l10n.name)
         .SetAttribute(this.$heroLevelLabel, "text", String(this.combo.heroLevel));
-    },
+    }
 
-    setClassesAction: function () {
-      var specialtyClass = propertyCssClass("specialty", this.combo.specialty);
-      var stanceClass = propertyCssClass("stance", this.combo.stance);
-      var damageRatingClass = propertyCssClass("damageRating", this.combo.damageRating);
-      var difficultyRatingClass = propertyCssClass("difficultyRating", this.combo.difficultyRating);
+    setClassesAction() {
+      const specialtyClass = propertyCssClass("specialty", this.combo.specialty);
+      const stanceClass = propertyCssClass("stance", this.combo.stance);
+      const damageRatingClass = propertyCssClass("damageRating", this.combo.damageRating);
+      const difficultyRatingClass = propertyCssClass(
+        "difficultyRating",
+        this.combo.difficultyRating
+      );
 
       return new ParallelSequence()
         .AddClass(this.$ctx, specialtyClass)
         .AddClass(this.$ctx, stanceClass)
         .AddClass(this.$damageRating, damageRatingClass)
         .AddClass(this.$difficultyRating, difficultyRatingClass);
-    },
+    }
 
     // ----- Action Runners -----
 
-    render: function () {
-      var seq = new Sequence()
+    render() {
+      const seq = new Sequence()
         .Action(this.setVariablesAction())
         .Action(this.setAttributesAction())
         .Action(this.setClassesAction());
 
-      this.debugFn(function () {
-        return ["render()", { id: this.combo.id, actions: seq.size() }];
-      });
+      this.debugFn(() => ["render()", { id: this.combo.id, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    ShowDetails: function () {
+    ShowDetails() {
       this.debug("ShowDetails()", this.combo.id);
       this.runOutput("OnShowDetails", { id: this.combo.id });
-    },
+    }
 
-    Play: function () {
+    Play() {
       this.debug("Play()", this.combo.id);
       this.runOutput("OnPlay", { id: this.combo.id });
-    },
-  });
+    }
+  }
 
   context.pickerCombo = new PickerCombo();
 })(GameUI.CustomUIConfig(), this);

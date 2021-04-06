@@ -1,61 +1,59 @@
 "use strict";
 
-(function (global, context) {
-  var META = global.Const.META;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { ParallelSequence } = global.Sequence;
+  const { META } = global.Const;
 
-  var PopupGameInfo = CreateComponent({
-    constructor: function PopupGameInfo() {
-      PopupGameInfo.super.call(this, {
+  class PopupGameInfo extends Component {
+    constructor() {
+      super({
         elements: {
-          versionLabel: "GameInfoVersionLabel",
+          versionLabel: "version-label",
         },
       });
 
       this.render();
       this.debug("init");
-    },
+    }
 
     // ----- Event handlers -----
 
-    onLoad: function () {
+    onLoad() {
       this.debug("onLoad()");
       this.render();
-    },
+    }
 
     // ----- Helpers -----
 
-    openURL: function (url) {
+    openURL(url) {
       return this.openExternalURL(this.$ctx, url);
-    },
+    }
 
     // ----- Action runners -----
 
-    render: function () {
-      var seq = new ParallelSequence().SetAttribute(this.$versionLabel, "text", META.VERSION);
+    render() {
+      const seq = new ParallelSequence().SetAttribute(this.$versionLabel, "text", META.VERSION);
 
-      this.debugFn(function () {
-        return ["render()", { actions: seq.size() }];
-      });
+      this.debugFn(() => ["render()", { actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    Close: function () {
+    Close() {
       this.closePopup(this.$ctx);
-    },
+    }
 
-    OpenHomepageURL: function () {
+    OpenHomepageURL() {
       return this.openURL(META.URL);
-    },
+    }
 
-    OpenChangelogURL: function () {
+    OpenChangelogURL() {
       return this.openURL(META.CHANGELOG_URL);
-    },
-  });
+    }
+  }
 
   context.popup = new PopupGameInfo();
 })(GameUI.CustomUIConfig(), this);

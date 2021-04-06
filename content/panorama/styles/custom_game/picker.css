@@ -1,111 +1,209 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-/*
-pickerCombosWidth = combosWidth + thumbWidth
-pickerTotalWidth = combosWidth + filtersWidth + thumbWidth + 10
-pickerClosedWidth = thumbWidth
-*/
+@define combos_width: 320px;
+@define combo_width: 290px;
+@define filters_width: 240px;
+@define filter_row_width: 220px;
 
-@define pickerMarginTop: 100px;
-@define combosWidth: 350px;
-@define comboWidth: 320px;
-@define filtersWidth: 240px;
-@define filtersRowWidth: 220px;
-@define pickerCombosWidth: 386px;
-@define pickerTotalWidth: 636px;
-@define pickerHeight: 80%;
-@define pickerClosedWidth: 46px;
-@define thumbWidth: 36px;
-@define thumbHeight: 100%;
+.root {
+  width: 1392px;
+  height: 964px;
+  align: center middle;
+  opacity: 1;
+  transition-delay: 0s;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.35s;
+  transition-property: opacity !immediate;
+}
 
-.PickerRoot {
+.root.closed {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0s;
+  transition-property: opacity !immediate;
+}
+
+#picker {
+  flow-children: right;
   width: 100%;
   height: 100%;
+  box-shadow: -3px -3px 12px 12px rgba(27, 32, 36, 0.75);
+  border-radius: 4px;
 }
 
-#PickerSlideout {
-  flow-children: right;
-  width: pickerTotalWidth;
-  height: pickerHeight;
-  margin-top: pickerMarginTop;
-  align: left top;
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.2s;
-  transition-property: width;
-}
-
-#PickerSlideout.FiltersClosed {
-  width: pickerCombosWidth;
-}
-
-#PickerSlideout.DrawerClosed {
-  width: pickerClosedWidth;
-}
-
-.PickerContents {
+.contents {
   flow-children: down;
-  width: fill-parent-flow(1);
+  width: 100%;
   height: 100%;
-  background-image: pickerBackground;
+  background-image: bg_picker;
   background-size: 100%;
 }
 
-.PickerThumb {
-  width: thumbWidth;
-  height: thumbHeight;
+.body {
+  flow-children: right;
+  width: 100%;
+  height: 100%;
+  border-top: 1px solid #000;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#combos {
+  overflow: noclip scroll;
+  flow-children: down;
+  width: combos_width;
+  height: 100%;
+  padding: 10px 10px 10px 20px;
+  box-shadow: inset 2px 0 0 0 rgba(0, 0, 0, 0.25);
+  border-right: 1px solid #1e2325;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#combos VerticalScrollBar {
+  horizontal-align: left;
+}
+
+#combos .combo {
+  width: combo_width;
+}
+
+#combos .combo.active {
+  background-color: gradient(linear, 100% 0%, 0% 0%, from(#424a4f00), to(#2a2d42ff));
+}
+
+.filters {
+  overflow: noclip scroll;
+  flow-children: down;
+  width: filters_width;
+  height: 100%;
+  padding: 10px;
+}
+
+.filters .filter-row {
+  flow-children: down;
+  width: filter_row_width;
+  margin-top: 10px;
+}
+
+.filters .filter-label {
+  margin-bottom: 4px;
+}
+
+.filters .button.reset {
+  width: 12px;
+  height: 12px;
+  margin: 0 0 0 6px;
+  padding: 0;
   vertical-align: center;
-  box-shadow: none;
-  border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px;
-  background-color: pickerThumbGradient;
+  wash-color: #ff808088;
 }
 
-.PickerThumb:hover {
-  background-color: pickerThumbHoverGradient;
+.filters .button.reset:hover {
+  wash-color: #ff8080;
 }
 
-.PickerThumb .PanelSlideThumbArrow {
-  horizontal-align: right;
-  transform: translateX(-9px);
-  wash-color: #666;
+.filters .button.reset:disabled {
+  visibility: collapse;
 }
 
-.PickerThumb:hover .PanelSlideThumbArrow {
-  transform: translateX(-12px);
-  wash-color: black;
+#filter-tags-container {
+  width: 100%;
 }
 
-#PickerSlideout.DrawerClosed .PickerThumb .PanelSlideThumbArrow {
-  transform: rotateZ(180deg) translateX(-9px);
+.filters .filter-row.popup-picker-row {
+  flow-children: right;
+  margin-top: 20px;
 }
 
-#PickerSlideout.DrawerClosed .PickerThumb:hover .PanelSlideThumbArrow {
-  transform: translateX(6px) rotateZ(180deg);
+.filters .popup-picker-column {
+  flow-children: down;
+  margin-right: 10px;
 }
 
-.PickerTitleContainer .RefreshButton {
+.filters .popup-picker-label {
+  margin: 0 0 4px 0;
+  padding: 0;
+  vertical-align: center;
+}
+
+.filters .popup-picker-button {
+  flow-children: down;
+  padding: 1px;
+}
+
+.filters .popup-picker-button.filter-item-button {
+  min-width: 0;
+  min-height: 0;
+}
+
+#filter-item-image {
+  width: 40px;
+  height: 40px;
+  align: center center;
+}
+
+.filters .popup-picker-button.filter-ability-button {
+  min-width: 0;
+  min-height: 0;
+}
+
+#filter-ability-image {
+  width: 40px;
+  height: 40px;
+  align: center center;
+}
+
+.filters .filter-row.buttons-row {
+  flow-children: right;
+  width: fit-children;
+  margin-top: 30px;
+  horizontal-align: center;
+}
+
+.filters .filters-reset-button {
+  min-width: 142px;
+}
+
+.info {
+  flow-children: down;
+  width: 1056px;
+  height: 100%;
+  box-shadow: inset 0 -8px 8px 4px #000000b8;
+}
+
+.info .header {
+  width: 100%;
+  height: 64px;
+  background-color: gradient(linear, 100% 0%, 0% 0%, from(#0d121788), to(#070a0c88));
+}
+
+.info .header .button.refresh {
   visibility: collapse;
   width: 24px;
   height: 24px;
+  margin: 8px 0 0 8px;
   background-size: 100%;
 }
 
-.Development .PickerTitleContainer .RefreshButton {
+.development .info .header .button.refresh {
   visibility: visible;
 }
 
-.PickerHeader {
-  width: 100%;
+.info .header .button.close {
+  margin: 8px 8px 0 0;
+  horizontal-align: right;
+  wash-color: white;
 }
 
-.PickerFreestyleButton {
+.info .header .button.close:hover {
+  wash-color: color_text_wex;
+}
+
+.freestyle-button {
   width: 170px;
   height: 50px;
-  margin-top: 10px;
-  horizontal-align: center;
-  background-image: invokerCardHud;
+  margin-top: 14px;
+  horizontal-align: middle;
+  background-image: hud_invoker_card;
   background-repeat: no-repeat;
   background-size: 100%;
   transition-timing-function: ease-in-out;
@@ -113,16 +211,16 @@ pickerClosedWidth = thumbWidth
   transition-property: brightness, saturation;
 }
 
-.PickerFreestyleButton:hover {
+.freestyle-button:hover {
   brightness: 2;
   saturation: 1.3;
 }
 
-.PickerFreestyleButton:active {
+.freestyle-button:active {
   pre-transform-scale2d: 0.975;
 }
 
-.PickerFreestyleButton .PickerFreestyleLabel {
+.freestyle-button .freestyle-label {
   margin-top: 2px;
   align: center center;
   text-align: center;
@@ -134,140 +232,51 @@ pickerClosedWidth = thumbWidth
   text-shadow: 0 0 3px 3 #0003;
 }
 
-.PickerFreestyleButton:hover .PickerFreestyleLabel {
+.freestyle-button:hover .freestyle-label {
   color: #ccc;
 }
 
-.PickerFiltersButton.ExpandCollapseToggleButton {
-  margin-right: 12px;
-  align: right center;
-  wash-color: #ccc;
+.info .body {
+  overflow: clip;
+  width: 100%;
+  height: fill-parent-flow(1);
 }
 
-.PickerFiltersButton.ExpandCollapseToggleButton:hover {
-  wash-color: #fff;
+.info .body .title {
+  max-height: 80px;
+  margin-top: 16px;
+  align: center middle;
+  text-align: left;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 28px;
+  font-weight: semi-bold;
+  opacity: 1;
+  color: color_text_blue_grey_bright;
 }
 
-.PickerFiltersButton.ExpandCollapseToggleButton:selected {
-  wash-color: #eee;
+.info .body .title.hide {
+  opacity: 0;
 }
 
-.PickerFiltersButton.ExpandCollapseToggleButton:selected .TickBox {
-  transform: rotateZ(90deg);
+.info .body .description {
+  flow-children: none;
+  width: 637px;
+  height: 834px;
+  align: center middle;
+  opacity: 0;
 }
 
-.PickerBody {
-  flow-children: right;
+.info .body .description.show {
+  opacity: 1;
+}
+
+.info .body .description .description-bg {
   width: 100%;
   height: 100%;
-  border-top: 1px solid #000;
-}
-
-#PickerCombos {
-  overflow: noclip scroll;
-  flow-children: down;
-  width: combosWidth;
-  height: 100%;
-  padding: 10px 10px 10px 20px;
-}
-
-#PickerCombos VerticalScrollBar {
-  horizontal-align: left;
-}
-
-#PickerCombos .PickerCombo {
-  width: comboWidth;
-}
-
-.PickerFilters {
-  overflow: noclip scroll;
-  flow-children: down;
-  width: filtersWidth;
-  height: 100%;
-  padding: 10px;
-}
-
-.PickerFilters .PickerFiltersRow {
-  flow-children: down;
-  width: filtersRowWidth;
-  margin-top: 10px;
-}
-
-.PickerFilters .PickerFiltersLabel {
-  margin-bottom: 4px;
-}
-
-.PickerFilters .PickerFilterResetButton {
-  width: 12px;
-  height: 12px;
-  margin: 0 0 0 6px;
-  padding: 0;
-  vertical-align: center;
-  wash-color: #ff808088;
-}
-
-.PickerFilters .PickerFilterResetButton:hover {
-  wash-color: #ff8080;
-}
-
-.PickerFilters .PickerFilterResetButton:disabled {
-  visibility: collapse;
-}
-
-#PickerFilterTagsContainer {
-  width: 100%;
-}
-
-.PickerFilters .PickerFiltersRow.PopupPickersRow {
-  flow-children: right;
-  margin-top: 20px;
-}
-
-.PickerFilters .PopupPickerColumn {
-  flow-children: down;
-  margin-right: 10px;
-}
-
-.PickerFilters .PopupPickerLabel {
-  margin: 0 0 4px 0;
-  padding: 0;
-  vertical-align: center;
-}
-
-.PickerFilters .PopupPickerButton {
-  flow-children: down;
-  padding: 1px;
-}
-
-.PickerFilters .PopupPickerButton.PickerFilterItemButton {
-  min-width: 0;
-  min-height: 0;
-}
-
-#PickerFilterItemImage {
-  width: 40px;
-  height: 40px;
-  align: center center;
-}
-
-.PickerFilters .PopupPickerButton.PickerFilterAbilityButton {
-  min-width: 0;
-  min-height: 0;
-}
-
-#PickerFilterAbilityImage {
-  width: 40px;
-  height: 40px;
-  align: center center;
-}
-
-.PickerFilters .PickerFiltersRow.ButtonsRow {
-  flow-children: right;
-  width: fit-children;
-  margin-top: 30px;
-  horizontal-align: center;
-}
-
-.PickerFilters .PickerFiltersResetButton {
-  min-width: 142px;
+  opacity-mask: mask_soft_edge_box_irregular;
+  background-image: bg_viewer;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
 }

@@ -1,17 +1,17 @@
-@import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-.TopBarRoot {
+.root {
   width: 100%;
   height: 42px;
 }
 
-.TopBar {
+.topbar {
   flow-children: right;
   margin-top: 13px;
   align: left top;
 }
 
-.TopBar .TopBarButton {
+.topbar .topbar-button {
   width: 30px;
   height: 30px;
   margin-left: 16px;
@@ -22,6 +22,18 @@
   background-size: 100%;
 }
 
-.TopBar .TopBarButton:hover {
+.topbar .topbar-button:hover {
   opacity: 1;
+}
+
+.icon.hamburguer {
+  wash-color: color_text_quas;
+}
+
+.icon.hamburguer:hover {
+  wash-color: color_text_wex;
+}
+
+.icon.hamburguer.active {
+  wash-color: color_text_exort;
 }

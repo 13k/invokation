@@ -1,0 +1,40 @@
+@import url("file://{resources}/styles/custom_game/variables.css");
+
+@define gradient_panel_translucent_hover: gradient(linear, 0% 0%, 0% 100%, from(#3f4646f7), to(#191e1eff));
+
+.panel.transparent {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#292e2e80), to(#191e1edd));
+}
+
+.panel.translucent {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#292e2ef7), to(#191e1eff));
+}
+
+.panel-title-container {
+  flow-children: right;
+  width: 100%;
+  height: 32px;
+  padding-top: 6px;
+  padding-left: 5px;
+  border-bottom: 1px solid #222;
+  background-color: #0003;
+}
+
+.panel-title {
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-overflow: shrink;
+  font-family: defaultFont;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 0 3 #0006;
+}
+
+.panel-title-container .panel-title {
+  width: fill-parent-flow(1);
+  padding-top: 0;
+  padding-left: 0;
+}

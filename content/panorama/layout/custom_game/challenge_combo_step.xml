@@ -1,6 +1,6 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/combo_step.js" />
     <include src="file://{resources}/scripts/custom_game/challenge_combo_step.js" />
   </scripts>
@@ -9,7 +9,7 @@
     <include src="file://{resources}/styles/custom_game/challenge_combo_step.css" />
   </styles>
 
-  <Panel class="ChallengeComboStepRoot">
-    <Button id="ComboStepIconButton" />
+  <Panel class="root">
+    <Button id="ability-button" />
   </Panel>
 </root>

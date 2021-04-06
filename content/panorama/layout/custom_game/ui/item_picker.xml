@@ -1,39 +1,41 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
     <include src="file://{resources}/scripts/custom_game/ui/item_picker.js" />
   </scripts>
 
   <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
     <include src="file://{resources}/styles/custom_game/ui/item_picker.css" />
   </styles>
 
   <snippets>
-    <snippet name="UIItemPickerGroup">
-      <Panel class="UIItemPickerGroup">
-        <Label id="GroupName" class="UIItemPickerGroupName" text="{s:group_name}" />
-        <Panel id="CategoryList" class="UIItemPickerGroupCategories" />
+    <snippet name="group">
+      <Panel class="group">
+        <Label class="group-name" text="{s:group_name}" />
+        <Panel id="categories" class="group-categories" />
       </Panel>
     </snippet>
 
-    <snippet name="UIItemPickerCategory">
-      <Panel class="UIItemPickerCategory">
-        <Label id="CategoryName" class="UIItemPickerCategoryName" text="{s:category_name}" />
-        <Panel id="ItemList" class="UIItemPickerCategoryItems" />
+    <snippet name="category">
+      <Panel class="category">
+        <Label class="category-name" text="{s:category_name}" />
+        <Panel id="items" class="category-items" />
       </Panel>
     </snippet>
   </snippets>
 
-  <Panel class="UIItemPickerRoot">
-    <Panel class="UIItemPickerHeader">
-      <Label class="UIItemPickerSelectionChoice" text="#invokation_item_picker_choose" />
-      <Panel class="FillWidth" />
-      <Panel id="UIItemPickerSearch" class="UIItemPickerSearchBox">
-        <TextEntry id="UIItemPickerSearchTextEntry" class="UIItemPickerSearchTextEntry" placeholder="#DOTA_Shop_Search_Field_Default" oninputsubmit="picker.Search()" />
-        <Button class="UIItemPickerSearchButton" />
+  <Panel class="root">
+    <Panel class="header">
+      <Label class="choice-label" text="#invokation_item_picker_choose" />
+      <Panel class="fill-w" />
+      <Panel id="search" class="search-box">
+        <TextEntry id="search-text-entry" class="search-text-entry" placeholder="#DOTA_Shop_Search_Field_Default" oninputsubmit="picker.Search()" />
+        <Button class="search-button" />
       </Panel>
     </Panel>
 
-    <Panel id="UIItemPickerGroups" />
+    <Panel id="groups" />
   </Panel>
 </root>

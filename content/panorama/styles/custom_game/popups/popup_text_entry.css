@@ -1,42 +1,39 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/popups/popups_shared.css");
-
-.PopupTextEntryBody {
+.body {
   flow-children: right;
   horizontal-align: center;
 }
 
-.PopupTextEntryIconContainer {
+.icon-container {
   vertical-align: center;
 }
 
-.PopupTextEntryIconImage {
+.icon-image {
   visibility: collapse;
   width: 80px;
   margin-right: 15px;
 }
 
-.PopupTextEntryRoot.ImageIconEnabled #PopupTextEntryImage {
+.root.image-icon-enabled #icon-image {
   visibility: visible;
 }
 
-.PopupTextEntryRoot.EconItemIconEnabled #PopupTextEntryEconItemImage {
+.root.econ-item-icon-enabled #econ-item-image {
   visibility: visible;
 }
 
-.PopupTextEntryRoot.HeroIconEnabled #PopupTextEntryHeroImage {
+.root.hero-icon-enabled #hero-image {
   visibility: visible;
 }
 
-.PopupTextEntryRoot.AbilityIconEnabled #PopupTextEntryAbilityImage {
+.root.ability-icon-enabled #ability-image {
   visibility: visible;
 }
 
-.PopupTextEntryRoot.ItemIconEnabled #PopupTextEntryItemImage {
+.root.item-icon-enabled #item-image {
   visibility: visible;
 }
 
-.PopupTextEntryBodyLabel {
+.body-label {
   max-width: 400px;
   align: center center;
   text-align: center;
@@ -44,17 +41,17 @@
   color: #fff;
 }
 
-.PopupTextEntryRoot.EconItemIconEnabled .PopupTextEntryBodyLabel {
+.root.econ-item-icon-enabled .body-label {
   text-align: left;
 }
 
-#PopupTextEntryTextEntry {
+#text-entry {
   width: 100%;
   margin-top: 24px;
   horizontal-align: center;
 }
 
-.PopupTextEntryRoot.Multiline #PopupTextEntryTextEntry {
+.root.Multiline #text-entry {
   height: 128px;
   white-space: normal;
 }

@@ -1,40 +1,40 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/variables.css");
 
-.Rating {
+.rating {
   width: 80px;
   height: 16px;
   vertical-align: center;
-  background-image: ultCooldownHud;
+  background-image: hud_ult_cooldown;
   background-repeat: repeat-x;
   background-position: 0% 0%;
   background-size: contain;
 }
 
-.Rating .RatingActive {
+.rating .rating-active {
   width: 0;
   height: 100%;
-  background-image: ultReadyHud;
+  background-image: hud_ult_ready;
   background-repeat: repeat-x;
   background-position: 0% 0%;
   background-size: contain;
 }
 
-.Rating.rating_1 .RatingActive {
+.rating.rating_1 .rating-active {
   width: 16px;
 }
 
-.Rating.rating_2 .RatingActive {
+.rating.rating_2 .rating-active {
   width: 32px;
 }
 
-.Rating.rating_3 .RatingActive {
+.rating.rating_3 .rating-active {
   width: 48px;
 }
 
-.Rating.rating_4 .RatingActive {
+.rating.rating_4 .rating-active {
   width: 64px;
 }
 
-.Rating.rating_5 .RatingActive {
+.rating.rating_5 .rating-active {
   width: 80px;
 }

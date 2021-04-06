@@ -1,44 +1,34 @@
 "use strict";
 
-(function (global, context) {
-  var Grid = global.Grid;
-  var Sequence = global.Sequence.Sequence;
-  var IsInvocationAbility = global.Util.IsInvocationAbility;
-  var CreateAbilityOrItemImage = global.Util.CreateAbilityOrItemImage;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { Grid } = global;
+  const { Sequence } = global.Sequence;
+  const { IsInvocationAbility, CreateAbilityOrItemImage } = global.Util;
+  const { EVENTS } = global.Const;
 
-  var EVENTS = global.Const.EVENTS;
+  const ROW_ID_PREFIX = "row";
+  const ROW_CLASS = "row";
 
-  var ROW_ID_PREFIX = "CombatLogRow";
-  var ROW_CLASS = "CombatLogRow";
+  const ICON_ID_PREFIX = "ability-icon";
+  const ICON_CLASS = "ability-icon";
+  const ICON_IMAGE_ID_SUFFIX = "image";
+  const ICON_IMAGE_CLASS = "ability-image";
+  const ICON_IMAGE_SCALING = "stretch-to-fit-y-preserve-aspect";
 
-  var ICON_ID_PREFIX = "CombatLogIcon";
-  var ICON_CLASS = "CombatLogIcon";
-  var ICON_IMAGE_ID_SUFFIX = "Image";
-  var ICON_IMAGE_CLASS = "CombatLogIconImage";
-  var ICON_IMAGE_SCALING = "stretch-to-fit-y-preserve-aspect";
+  const GRID_COLUMNS = 20;
+  const CLOSED_CLASS = "closed";
 
-  var GRID_COLUMNS = 20;
-  var CLOSED_CLASS = "Closed";
+  const rowId = (index) => `${ROW_ID_PREFIX}${index}`;
+  const iconId = (row, col) => `${ICON_ID_PREFIX}_${row}_${col}`;
+  const iconImageId = (iconId) => `${iconId}_${ICON_IMAGE_ID_SUFFIX}`;
 
-  function rowId(index) {
-    return ROW_ID_PREFIX + String(index);
-  }
-
-  function iconId(row, col) {
-    return [ICON_ID_PREFIX, row, col].join("_");
-  }
-
-  function iconImageId(iconId) {
-    return iconId + "_" + ICON_IMAGE_ID_SUFFIX;
-  }
-
-  var CombatLog = CreateComponent({
-    constructor: function CombatLog() {
-      CombatLog.super.call(this, {
+  class CombatLog extends Component {
+    constructor() {
+      super({
         elements: {
-          contents: "CombatLogContents",
-          filterInvocations: "CombatLogFilterInvocations",
+          contents: "contents",
+          filterInvocations: "filter-invocations",
         },
         customEvents: {
           "!COMBAT_LOG_ABILITY_USED": "onAbilityUsed",
@@ -47,101 +37,102 @@
       });
 
       this.grid = new Grid(GRID_COLUMNS);
-      this.$row = null;
 
-      this.bindEvents();
+      this.resetRow();
       this.start();
-
       this.debug("init");
-    },
+    }
 
     // ----- Event handlers -----
 
-    onClear: function () {
+    onClear() {
       this.debug("onClear()");
       this.clear();
-    },
+    }
 
-    onGridRowChange: function (idx) {
-      this.debug("onGridRowChange()", idx);
-      this.addRow(idx);
-    },
-
-    onAbilityUsed: function (payload) {
+    onAbilityUsed(payload) {
       this.debug("onAbilityUsed()", payload);
 
-      if (this.isFilteringInvocations() && IsInvocationAbility(payload.ability)) {
+      const { ability } = payload;
+
+      if (this.isFilteringInvocations() && IsInvocationAbility(ability)) {
         return;
       }
 
-      this.addColumn(payload.ability);
-    },
+      this.addColumn(ability);
+    }
 
     // ----- Helpers -----
 
-    bindEvents: function () {
-      this.grid.OnRowChange(this.onGridRowChange.bind(this));
-    },
-
-    startCapturing: function () {
+    startCapturing() {
       this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_START);
-    },
+    }
 
-    stopCapturing: function () {
+    stopCapturing() {
       this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
-    },
+    }
 
-    isOpen: function () {
+    isOpen() {
       return !this.$ctx.BHasClass(CLOSED_CLASS);
-    },
+    }
 
-    isFilteringInvocations: function () {
+    isFilteringInvocations() {
       return this.$filterInvocations.checked;
-    },
+    }
 
-    start: function () {
+    start() {
       this.startCapturing();
-    },
+    }
 
-    stop: function () {
+    stop() {
       this.stopCapturing();
-    },
+    }
 
-    appendToGrid: function (abilityName) {
+    appendToGrid(abilityName) {
       this.grid.Add(abilityName);
-    },
 
-    clearGrid: function () {
+      if (this.grid.row !== this.rowIdx) {
+        this.addRow();
+      }
+    }
+
+    clearGrid() {
       this.grid.Clear();
-    },
+    }
 
-    resetRow: function () {
+    resetRow() {
+      this.rowIdx = -1;
       this.$row = null;
-    },
+    }
 
-    createRow: function (rowIndex) {
-      var id = rowId(rowIndex);
-      var panel = $.CreatePanel("Panel", this.$contents, id);
+    createRow() {
+      const id = rowId(this.grid.row);
+      const panel = $.CreatePanel("Panel", this.$contents, id);
 
       panel.AddClass(ROW_CLASS);
 
+      this.rowIdx = this.grid.row;
       this.$row = panel;
-      return panel;
-    },
 
-    createAbilityIcon: function (abilityName) {
-      var id = iconId(this.grid.Row(), this.grid.Column());
-      var panel = $.CreatePanel("Panel", this.$row, id);
+      this.debug("createRow()", { id, cell: this.grid.index });
+
+      return panel;
+    }
+
+    createAbilityIcon(abilityName) {
+      const id = iconId(this.grid.row, this.grid.col);
+      const panel = $.CreatePanel("Panel", this.$row, id);
 
       panel.AddClass(ICON_CLASS);
 
-      var imageId = iconImageId(id);
-      var image = CreateAbilityOrItemImage(panel, imageId, abilityName);
+      const imageId = iconImageId(id);
+      const image = CreateAbilityOrItemImage(panel, imageId, abilityName);
 
       image.AddClass(ICON_IMAGE_CLASS);
       image.scaling = ICON_IMAGE_SCALING;
 
       this.debug("createAbilityIcon()", {
+        cell: this.grid.index,
         ability: abilityName,
         iconId: panel.id,
         imageId: image.id,
@@ -149,55 +140,55 @@
       });
 
       return panel;
-    },
+    }
 
     // ----- Action runners -----
 
-    open: function () {
+    open() {
       return new Sequence().RemoveClass(this.$ctx, CLOSED_CLASS).Start();
-    },
+    }
 
-    close: function () {
+    close() {
       return new Sequence().AddClass(this.$ctx, CLOSED_CLASS).Start();
-    },
+    }
 
-    addRow: function (rowIndex) {
+    addRow() {
       return new Sequence()
-        .RunFunction(this, this.createRow, rowIndex)
+        .RunFunction(() => this.createRow())
         .ScrollToBottom(this.$contents)
         .Start();
-    },
+    }
 
-    addColumn: function (abilityName) {
+    addColumn(abilityName) {
       return new Sequence()
-        .RunFunction(this, this.appendToGrid, abilityName)
-        .RunFunction(this, this.createAbilityIcon, abilityName)
+        .RunFunction(() => this.appendToGrid(abilityName))
+        .RunFunction(() => this.createAbilityIcon(abilityName))
         .ScrollToBottom(this.$contents)
         .Start();
-    },
+    }
 
-    clear: function () {
+    clear() {
       return new Sequence()
-        .RunFunction(this, this.clearGrid)
-        .RunFunction(this, this.resetRow)
+        .RunFunction(() => this.clearGrid())
+        .RunFunction(() => this.resetRow())
         .RemoveChildren(this.$contents)
         .Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    Toggle: function () {
+    Toggle() {
       if (this.isOpen()) {
         return this.close();
       }
 
       return this.open();
-    },
+    }
 
-    Clear: function () {
+    Clear() {
       return this.clear();
-    },
-  });
+    }
+  }
 
   context.combatLog = new CombatLog();
 })(GameUI.CustomUIConfig(), this);

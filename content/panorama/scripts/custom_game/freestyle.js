@@ -1,32 +1,33 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var RemoveClassAction = global.Sequence.RemoveClassAction;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _ } = global;
+  const { CSS_CLASSES, EVENTS, FREESTYLE_COMBO_ID, LAYOUTS } = global.Const;
+  const { Sequence, ParallelSequence, RunFunctionAction, RemoveClassAction } = global.Sequence;
 
-  var EVENTS = global.Const.EVENTS;
-  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
+  const CHILDREN = {
+    COMBO_SCORE: {
+      id: "score-component",
+      cssClass: "level2",
+    },
+  };
 
-  var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
-  var COMBO_SCORE_ID = "ComboScore";
-  var COMBO_SCORE_CLASS = "Level2";
+  const START_DELAY = 0.5;
 
-  var START_DELAY = 0.5;
-
-  var SOUND_EVENTS = {
+  const SOUNDS = {
     start: "Invokation.Freestyle.Start",
   };
 
-  var Freestyle = CreateComponent({
-    constructor: function Freestyle() {
-      Freestyle.super.call(this, {
+  const SCORE_INPUTS = {
+    HIDE: "Hide",
+  };
+
+  class Freestyle extends Component {
+    constructor() {
+      super({
         elements: {
-          score: "FreestyleScore",
+          score: "score",
         },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
@@ -36,165 +37,154 @@
       });
 
       this.$comboScore = this.createComboScorePanel(this.$score);
+
       this.debug("init");
-    },
+    }
 
     // --- Event handlers -----
 
-    onComboStarted: function (payload) {
+    onComboStarted(payload) {
       if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStarted()", payload);
       this.start();
-    },
+    }
 
-    onComboStopped: function (payload) {
+    onComboStopped(payload) {
       if (payload.id !== FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStopped()", payload);
       this.stop();
-    },
+    }
 
-    onComboProgress: function (payload) {
-      if (payload.id !== FREESTYLE_COMBO_ID) {
+    onComboProgress(payload) {
+      const { id, metrics } = payload;
+
+      if (id !== FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboProgress()", payload);
-      this.progress(payload.metrics);
-    },
+      this.progress(metrics);
+    }
 
     // ----- Helpers -----
 
-    sendStop: function () {
+    sendStop() {
       this.sendServer(EVENTS.COMBO_STOP);
-    },
+    }
 
-    sendRestart: function (isHardReset) {
-      this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
-    },
+    sendRestart(hardReset) {
+      this.sendServer(EVENTS.COMBO_RESTART, { hardReset });
+    }
 
-    sendLevelUp: function (payload) {
+    sendLevelUp(payload) {
       this.sendServer(EVENTS.FREESTYLE_HERO_LEVEL_UP, payload);
-    },
+    }
 
-    createComboScorePanel: function (parent) {
-      var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
-      panel.AddClass(COMBO_SCORE_CLASS);
-      return panel;
-    },
+    createComboScorePanel(parent) {
+      const { id, cssClass } = CHILDREN.COMBO_SCORE;
+
+      return this.createComponent(parent, id, LAYOUTS.COMBO_SCORE, {
+        classes: [cssClass],
+      });
+    }
 
     // ----- Component actions -----
 
-    showAction: function () {
-      return new RemoveClassAction(this.$ctx, "Hide");
-    },
+    showAction() {
+      return new RemoveClassAction(this.$ctx, CSS_CLASSES.HIDE);
+    }
 
-    hideAction: function () {
+    hideAction() {
       return new ParallelSequence()
         .Action(this.hideScoreAction())
         .Action(this.hideShopAction())
-        .AddClass(this.$ctx, "Hide");
-    },
+        .AddClass(this.$ctx, CSS_CLASSES.HIDE);
+    }
 
     // ----- Score actions -----
 
-    updateScoreSummaryAction: function (options) {
-      return new RunFunctionAction(
-        this.$comboScore.component,
-        this.$comboScore.component.Input,
-        "UpdateSummary",
-        options
+    updateScoreSummaryAction(options) {
+      return new RunFunctionAction(() =>
+        this.$comboScore.component.Input("UpdateSummary", options)
       );
-    },
+    }
 
-    hideScoreAction: function () {
-      return new Sequence().RunFunction(
-        this.$comboScore.component,
-        this.$comboScore.component.Input,
-        "Hide"
-      );
-    },
+    hideScoreAction() {
+      return new Sequence().RunFunction(() => this.$comboScore.component.Input(SCORE_INPUTS.HIDE));
+    }
 
     // ----- HUD actions -----
 
-    showShopAction: function () {
-      return new RunFunctionAction(this, this.showInventoryShopUI);
-    },
+    showShopAction() {
+      return new RunFunctionAction(() => this.showInventoryShopUI());
+    }
 
-    hideShopAction: function () {
-      return new RunFunctionAction(this, this.hideInventoryShopUI);
-    },
+    hideShopAction() {
+      return new RunFunctionAction(() => this.hideInventoryShopUI());
+    }
 
     // ----- Action runners -----
 
-    start: function () {
-      var seq = new Sequence()
-        .PlaySoundEffect(SOUND_EVENTS.start)
+    start() {
+      const seq = new Sequence()
+        .PlaySoundEffect(SOUNDS.start)
         .Action(this.hideScoreAction())
         .Action(this.showShopAction())
         .Wait(START_DELAY)
         .Action(this.showAction());
 
-      this.debugFn(function () {
-        return ["start()", { actions: seq.size() }];
-      });
+      this.debugFn(() => ["start()", { actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    stop: function () {
-      var seq = new Sequence().Action(this.hideAction());
+    stop() {
+      const seq = new Sequence().Action(this.hideAction());
 
-      this.debugFn(function () {
-        return ["stop()", { actions: seq.size() }];
-      });
+      this.debugFn(() => ["stop()", { actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    progress: function (metrics) {
-      var options = {
+    progress(metrics) {
+      const options = {
         count: metrics.count || 0,
         endDamage: metrics.damage || 0,
       };
 
-      var seq = new Sequence().Action(this.updateScoreSummaryAction(options));
+      const seq = new Sequence().Action(this.updateScoreSummaryAction(options));
 
-      this.debugFn(function () {
-        return ["progress()", _.assign({ actions: seq.size() }, options)];
-      });
+      this.debugFn(() => ["progress()", _.assign({ actions: seq.size() }, options)]);
 
       return seq.Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    Restart: function (isHardReset) {
-      this.debugFn(function () {
-        return ["Restart()", { isHardReset: isHardReset }];
-      });
+    Restart(hardReset) {
+      this.debugFn(() => ["Restart()", { hardReset }]);
+      this.sendRestart(!!hardReset);
+    }
 
-      this.sendRestart(!!isHardReset);
-    },
-
-    Stop: function () {
+    Stop() {
       this.debug("Stop()");
       this.sendStop();
-    },
+    }
 
-    LevelUp: function () {
+    LevelUp() {
       this.sendLevelUp();
-    },
+    }
 
-    LevelMax: function () {
+    LevelMax() {
       this.sendLevelUp({ maxLevel: true });
-    },
-  });
+    }
+  }
 
   context.freestyle = new Freestyle();
 })(GameUI.CustomUIConfig(), this);

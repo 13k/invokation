@@ -1,26 +1,26 @@
 "use strict";
 
-(function (global, context) {
-  var CreateComponent = context.CreateComponent;
-  var Sequence = global.Sequence.Sequence;
+((global, context) => {
+  const { Component } = context;
+  const { Sequence } = global.Sequence;
 
-  var TIMINGS = {
+  const TIMINGS = {
     KID_SPLASH: 1.8,
   };
 
-  var CLASSES = {
+  const CLASSES = {
     SCENE_LOADED: "SceneLoaded",
-    BG_SPLASH: "Initialize",
+    BG_SPLASH: "initialized",
   };
 
-  var SOUNDS = {
+  const SOUNDS = {
     KID_STINGER: "kidvoker_takeover_stinger",
     KID_SFX: "kidvoker_takeover_sfx",
   };
 
-  var LoadingScreen = CreateComponent({
-    constructor: function LoadingScreen() {
-      LoadingScreen.super.call(this, {
+  class LoadingScreen extends Component {
+    constructor() {
+      super({
         elements: {
           scene: "Scene",
         },
@@ -28,9 +28,9 @@
 
       this.setup();
       this.debug("init");
-    },
+    }
 
-    setup: function () {
+    setup() {
       return new Sequence()
         .WaitClass(this.$scene, CLASSES.SCENE_LOADED)
         .PlaySoundEffect(SOUNDS.KID_STINGER)
@@ -40,8 +40,8 @@
         .Wait(8.2)
         .FireEntityInput(this.$scene, "kid", "SetAnimation", "debut_end")
         .Start();
-    },
-  });
+    }
+  }
 
-  context.component = new LoadingScreen();
+  context.loadingScreen = new LoadingScreen();
 })(GameUI.CustomUIConfig(), this);

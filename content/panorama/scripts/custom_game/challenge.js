@@ -1,66 +1,112 @@
 "use strict";
 
-(function (global, context) {
-  var _ = global.lodash;
-  var L10n = global.L10n;
-  var Sequence = global.Sequence.Sequence;
-  var ParallelSequence = global.Sequence.ParallelSequence;
-  var StaggeredSequence = global.Sequence.StaggeredSequence;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var AddClassAction = global.Sequence.AddClassAction;
-  var RemoveClassAction = global.Sequence.RemoveClassAction;
-  var SetDialogVariableAction = global.Sequence.SetDialogVariableAction;
-  var LuaIndexArray = global.Util.LuaIndexArray;
-  var CreatePanelWithLayout = global.Util.CreatePanelWithLayout;
-  var CreateComponent = context.CreateComponent;
+((global, context) => {
+  const { Component } = context;
+  const { lodash: _, L10n, COMBOS } = global;
+  const { LuaIndexArray } = global.Util;
+  const { CSS_CLASSES, EVENTS, FREESTYLE_COMBO_ID, LAYOUTS } = global.Const;
+  const {
+    Sequence,
+    ParallelSequence,
+    StaggeredSequence,
+    RunFunctionAction,
+    RemoveClassAction,
+    AddClassAction,
+    SetDialogVariableAction,
+  } = global.Sequence;
 
-  var COMBOS = global.COMBOS;
-  var EVENTS = global.Const.EVENTS;
-  var FREESTYLE_COMBO_ID = global.Const.FREESTYLE_COMBO_ID;
+  const CHILDREN = {
+    COMBO_SCORE: {
+      id: "score-component",
+      cssClass: "level2",
+    },
+  };
 
-  var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/challenge_combo_step.xml";
-  var COMBO_SCORE_LAYOUT = "file://{resources}/layout/custom_game/combo_score.xml";
-  var COMBO_SCORE_ID = "ComboScore";
-  var COMBO_SCORE_CLASS = "Level2";
+  const STATES = {
+    START: "start",
+    SUCCESS: "success",
+    FAILURE: "failure",
+  };
 
-  var START_DELAY = 0.5;
-  var BUMP_DELAY = 0.2;
+  const DIALOG_VARS = {
+    HUD_VISIBILITY: "hud_visibility",
+    WAIT_PROGRESS: {
+      WAIT_SECONDS: "wait_seconds",
+      MAX: "max",
+    },
+  };
 
-  var L10N_PREFIXES = {
+  const START_DELAY = 0.5;
+  const BUMP_DELAY = 0.2;
+
+  const L10N_PREFIXES = {
     HUD_VISIBILITY: "invokation_combo_hud_visibility",
     SPLASH: "invokation_combo_splash",
   };
 
-  var SOUND_EVENTS = {
-    success: "kidvoker_takeover_stinger",
-    failure: "ui.death_stinger",
+  const SOUNDS = {
+    [STATES.SUCCESS]: "kidvoker_takeover_stinger",
+    [STATES.FAILURE]: "ui.death_stinger",
   };
 
-  var SPLASH_MAX_INDICES = {
-    start: { title: 1, help: 1 },
-    success: { title: 2, help: 7 },
-    failure: { title: 3, help: 9 },
+  const SPLASH_MAX_INDICES = {
+    [STATES.START]: { title: 1, help: 1 },
+    [STATES.SUCCESS]: { title: 2, help: 7 },
+    [STATES.FAILURE]: { title: 3, help: 9 },
   };
 
-  var HUD_VISIBILITY_CLASSES = {
-    visible: "HudVisible",
-    hide_sequence: "HudHideSequence",
-    no_hands: "HudNoHands",
+  const SPLASH_CLASSES = {
+    [STATES.START]: "start",
+    [STATES.SUCCESS]: "success",
+    [STATES.FAILURE]: "failure",
   };
 
-  var Challenge = CreateComponent({
-    constructor: function Challenge() {
-      Challenge.super.call(this, {
+  const HUD_MODES = {
+    VISIBLE: "visible",
+    HIDE_SEQ: "hide_seq",
+    NO_HANDS: "no_hands",
+  };
+
+  const HUD_MODES_CLASSES = {
+    [HUD_MODES.VISIBLE]: "hud-visible",
+    [HUD_MODES.HIDE_SEQ]: "hud-hide-sequence",
+    [HUD_MODES.NO_HANDS]: "hud-no-hands",
+  };
+
+  const SCORE_CLASSES = {
+    [STATES.FAILURE]: "failed",
+  };
+
+  const SCORE_INPUTS = {
+    HIDE: "Hide",
+    UPDATE_COUNTER: "UpdateCounter",
+    UPDATE_SUMMARY: "UpdateSummary",
+  };
+
+  const COMBO_STEP_INPUTS = {
+    SET_STEP: "SetStep",
+    BUMP: "StepBump",
+    SET_ACTIVE: "SetStepActive",
+    UNSET_ACTIVE: "UnsetStepActive",
+    SET_ERROR: "SetStepError",
+    UNSET_ERROR: "UnsetStepError",
+  };
+
+  const comboStepId = ({ id, name }) => `combo_step_${name}_${id}`;
+
+  class Challenge extends Component {
+    constructor() {
+      super({
         elements: {
-          sequence: "ChallengeSequence",
-          splash: "ChallengeSplash",
-          splashTitle: "ChallengeSplashTitle",
-          splashHelp: "ChallengeSplashHelp",
-          score: "ChallengeScore",
-          timer: "ChallengeTimer",
-          timerLabel: "ChallengeTimerLabel",
-          waitProgress: "ChallengeWaitProgress",
-          waitProgressBar: "ChallengeWaitProgressBar",
+          sequence: "sequence",
+          splash: "splash",
+          splashTitle: "splash-title",
+          splashHelp: "splash-help",
+          score: "score",
+          timer: "timer",
+          timerLabel: "timer-label",
+          waitProgress: "wait-progress",
+          waitProgressBar: "wait-progressbar",
         },
         customEvents: {
           "!COMBO_STARTED": "onComboStarted",
@@ -73,7 +119,7 @@
         },
       });
 
-      this.hudMode = "visible";
+      this.hudMode = HUD_MODES.VISIBLE;
       this.timer = {
         start: null,
         update: false,
@@ -84,142 +130,158 @@
 
       this.initHudVisibility(this.hudMode);
       this.debug("init");
-    },
+    }
 
     // --- Event handlers -----
 
-    onComboStarted: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboStarted(payload) {
+      const { id, next } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStarted()", payload);
-      this.start(payload.id, LuaIndexArray(payload.next));
-    },
+      this.start(id, LuaIndexArray(next));
+    }
 
-    onComboStopped: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboStopped(payload) {
+      const { id } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStopped()", payload);
-      this.stop(payload.id);
-    },
+      this.stop(id);
+    }
 
-    onComboInProgress: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboInProgress(payload) {
+      const { id } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboInProgress()", payload);
-      this.inProgress(payload.id);
-    },
+      this.inProgress(id);
+    }
 
-    onComboProgress: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboProgress(payload) {
+      const { id, metrics, next } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboProgress()", payload);
-      this.progress(payload.id, payload.metrics, LuaIndexArray(payload.next));
-    },
+      this.progress(id, metrics, LuaIndexArray(next));
+    }
 
-    onComboStepError: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboStepError(payload) {
+      const { id, ability, expected } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboStepError()", payload);
-      this.fail(payload.id, LuaIndexArray(payload.expected), payload.ability);
-    },
+      this.fail(id, LuaIndexArray(expected), ability);
+    }
 
-    onComboPreFinish: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboPreFinish(payload) {
+      const { id, metrics, wait } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboPreFinish()", payload);
-      this.preFinish(payload.id, payload.metrics, payload.wait);
-    },
+      this.preFinish(id, metrics, wait);
+    }
 
-    onComboFinished: function (payload) {
-      if (payload.id === FREESTYLE_COMBO_ID) {
+    onComboFinished(payload) {
+      const { id, metrics } = payload;
+
+      if (id === FREESTYLE_COMBO_ID) {
         return;
       }
 
       this.debug("onComboFinished()", payload);
-      this.finish(payload.id, payload.metrics);
-    },
+      this.finish(id, metrics);
+    }
 
     // ----- Helpers -----
 
-    sendStop: function () {
+    sendStop() {
       this.sendServer(EVENTS.COMBO_STOP);
-    },
+    }
 
-    sendRestart: function (isHardReset) {
+    sendRestart(isHardReset) {
       this.sendServer(EVENTS.COMBO_RESTART, { hardReset: isHardReset });
-    },
+    }
 
-    sendRenderViewer: function (combo) {
+    sendRenderViewer(combo) {
       this.sendClientSide(EVENTS.VIEWER_RENDER, { id: combo.id });
-    },
+    }
 
-    createComboScorePanel: function (parent) {
-      var panel = CreatePanelWithLayout(parent, COMBO_SCORE_ID, COMBO_SCORE_LAYOUT);
-      panel.AddClass(COMBO_SCORE_CLASS);
-      return panel;
-    },
+    createComboScorePanel(parent) {
+      const { id, cssClass } = CHILDREN.COMBO_SCORE;
 
-    createStepPanel: function (parent, step) {
-      var id = "combo_step_" + step.name + "_" + step.id.toString();
-      var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
+      return this.createComponent(parent, id, LAYOUTS.COMBO_SCORE, {
+        classes: [cssClass],
+      });
+    }
+
+    createStepPanel(parent, step) {
+      const id = comboStepId(step);
+      const panel = this.createComponent(parent, id, LAYOUTS.CHALLENGE.COMBO_STEP);
 
       this.stepsPanels[step.id] = panel;
 
-      panel.component.Input("SetStep", { combo: this.combo, step: step });
+      panel.component.Input(COMBO_STEP_INPUTS.SET_STEP, { combo: this.combo, step });
 
       return panel;
-    },
+    }
 
-    scrollToStepPanel: function (step) {
-      var panel = this.stepsPanels[step.id];
+    scrollToStepPanel(step) {
+      const panel = this.stepsPanels[step.id];
       panel.ScrollParentToMakePanelFit(1, false);
-    },
+    }
 
-    stepPanelInput: function (step, input) {
-      var panel = this.stepsPanels[step.id];
+    stepPanelInput(step, input) {
+      const panel = this.stepsPanels[step.id];
       panel.component.Input(input);
-    },
+    }
 
-    bumpStepPanel: function (step) {
-      return this.stepPanelInput(step, "StepBump");
-    },
+    bumpStepPanel(step) {
+      return this.stepPanelInput(step, COMBO_STEP_INPUTS.BUMP);
+    }
 
-    activateStepPanel: function (step) {
-      return this.stepPanelInput(step, "SetStepActive");
-    },
+    activateStepPanel(step) {
+      return this.stepPanelInput(step, COMBO_STEP_INPUTS.SET_ACTIVE);
+    }
 
-    deactivateStepPanel: function (step) {
-      return this.stepPanelInput(step, "UnsetStepActive");
-    },
+    deactivateStepPanel(step) {
+      return this.stepPanelInput(step, COMBO_STEP_INPUTS.UNSET_ACTIVE);
+    }
 
-    failStepPanel: function (step) {
-      return this.stepPanelInput(step, "SetStepError");
-    },
+    failStepPanel(step) {
+      return this.stepPanelInput(step, COMBO_STEP_INPUTS.SET_ERROR);
+    }
 
-    clearFailedStepPanel: function (step) {
-      return this.stepPanelInput(step, "UnsetStepError");
-    },
+    clearFailedStepPanel(step) {
+      return this.stepPanelInput(step, COMBO_STEP_INPUTS.UNSET_ERROR);
+    }
 
-    startTimer: function () {
+    startTimer() {
       this.timer.start = Date.now();
       this.timer.update = true;
       this.debug("startTimer()", this.timer);
       this.updateTimer();
-    },
+    }
 
-    updateTimer: function () {
+    updateTimer() {
       if (!this.timer.update) {
         return;
       }
@@ -227,32 +289,32 @@
       this.$timerLabel.text = ((Date.now() - this.timer.start) / 1000).toFixed(1);
 
       $.Schedule(0.1, this.updateTimer.bind(this));
-    },
+    }
 
-    stopTimer: function () {
+    stopTimer() {
       this.timer.start = null;
       this.timer.update = false;
-    },
+    }
 
     // ----- Component actions -----
 
-    showAction: function () {
-      return new RemoveClassAction(this.$ctx, "Hide");
-    },
+    showAction() {
+      return new RemoveClassAction(this.$ctx, CSS_CLASSES.HIDE);
+    }
 
-    hideAction: function () {
+    hideAction() {
       return new ParallelSequence()
         .Action(this.hideSplashAction())
         .Action(this.hideScoreAction())
-        .AddClass(this.$ctx, "Hide");
-    },
+        .AddClass(this.$ctx, CSS_CLASSES.HIDE);
+    }
 
     // ----- Sequence actions -----
 
-    renderSequenceAction: function () {
+    renderSequenceAction() {
       this.stepsPanels = {};
 
-      var bumpSeq = this.staggeredSequenceOnStepPanels(
+      const bumpSeq = this.staggeredSequenceOnStepPanels(
         BUMP_DELAY,
         this.combo.sequence,
         "bumpStepPanel"
@@ -262,255 +324,245 @@
         .Action(this.resetSequenceAction())
         .Action(this.createStepPanelsAction())
         .Action(bumpSeq);
-    },
+    }
 
-    resetSequenceAction: function () {
+    resetSequenceAction() {
       return new Sequence().ScrollToTop(this.$sequence).RemoveChildren(this.$sequence);
-    },
+    }
 
-    createStepPanelsAction: function () {
-      var createActions = _.map(
+    createStepPanelsAction() {
+      const createActions = _.map(
         this.combo.sequence,
         _.bind(this.createStepPanelAction, this, this.$sequence)
       );
 
       return new Sequence().Action(createActions);
-    },
+    }
 
-    createStepPanelAction: function (parent, step) {
-      return new RunFunctionAction(this, this.createStepPanel, parent, step);
-    },
+    createStepPanelAction(parent, step) {
+      return new RunFunctionAction(() => this.createStepPanel(parent, step));
+    }
 
-    sequenceActionsOnStepPanels: function (steps, fn) {
+    sequenceActionsOnStepPanels(steps, fn) {
       fn = this.handler(fn);
 
-      return _.map(steps, function (step) {
-        return new RunFunctionAction(fn, step);
-      });
-    },
+      return _.map(steps, (step) => new RunFunctionAction(fn, step));
+    }
 
-    parallelSequenceOnStepPanels: function (steps, fn) {
+    parallelSequenceOnStepPanels(steps, fn) {
       return new ParallelSequence().Action(this.sequenceActionsOnStepPanels(steps, fn));
-    },
+    }
 
-    staggeredSequenceOnStepPanels: function (delay, steps, fn) {
+    staggeredSequenceOnStepPanels(delay, steps, fn) {
       return new StaggeredSequence(delay).Action(this.sequenceActionsOnStepPanels(steps, fn));
-    },
+    }
 
-    activateStepPanelsAction: function (steps) {
-      var seq = new Sequence();
+    activateStepPanelsAction(steps) {
+      const seq = new Sequence();
 
       if (_.isEmpty(steps)) {
         return seq;
       }
 
-      var activateSeq = this.parallelSequenceOnStepPanels(steps, "activateStepPanel");
+      const activateSeq = this.parallelSequenceOnStepPanels(steps, "activateStepPanel");
 
-      return seq.RunFunction(this, this.scrollToStepPanel, steps[0]).Action(activateSeq);
-    },
+      return seq.RunFunction(() => this.scrollToStepPanel(steps[0])).Action(activateSeq);
+    }
 
-    deactivateStepPanelsAction: function (steps) {
+    deactivateStepPanelsAction(steps) {
       return this.parallelSequenceOnStepPanels(steps, "deactivateStepPanel");
-    },
+    }
 
-    bumpStepPanelsAction: function (steps) {
+    bumpStepPanelsAction(steps) {
       return this.parallelSequenceOnStepPanels(steps, "bumpStepPanel");
-    },
+    }
 
-    failStepPanelsAction: function (steps) {
+    failStepPanelsAction(steps) {
       return this.parallelSequenceOnStepPanels(steps, "failStepPanel");
-    },
+    }
 
-    clearFailedStepPanelsAction: function (steps) {
+    clearFailedStepPanelsAction(steps) {
       return this.parallelSequenceOnStepPanels(steps, "clearFailedStepPanel");
-    },
+    }
 
     // ----- HUD actions -----
 
-    resetHudVisibilityActions: function () {
-      return _.map(
-        HUD_VISIBILITY_CLASSES,
-        function (cls) {
-          return new RemoveClassAction(this.$ctx, cls);
-        }.bind(this)
+    resetHudVisibilityActions() {
+      return _.map(HUD_MODES_CLASSES, (cls) => new RemoveClassAction(this.$ctx, cls));
+    }
+
+    updateHudVisibilityTooltipAction(mode) {
+      const hudVisibilityTooltip = L10n.LocalizeParameterized(L10N_PREFIXES.HUD_VISIBILITY, mode);
+
+      return new SetDialogVariableAction(
+        this.$ctx,
+        DIALOG_VARS.HUD_VISIBILITY,
+        hudVisibilityTooltip
       );
-    },
+    }
 
-    updateHudVisibilityTooltipAction: function (mode) {
-      var hudVisibilityTooltip = L10n.LocalizeParameterized(L10N_PREFIXES.HUD_VISIBILITY, mode);
-      return new SetDialogVariableAction(this.$ctx, "hud_visibility", hudVisibilityTooltip);
-    },
-
-    switchHudAction: function (prevMode, nextMode) {
-      var prevClass = HUD_VISIBILITY_CLASSES[prevMode];
-      var nextClass = HUD_VISIBILITY_CLASSES[nextMode];
-      var heroHudFn = nextMode === "no_hands" ? this.hideActionPanelUI : this.showActionPanelUI;
+    switchHudAction(prevMode, nextMode) {
+      const prevClass = HUD_MODES_CLASSES[prevMode];
+      const nextClass = HUD_MODES_CLASSES[nextMode];
+      const heroHudFn =
+        nextMode === HUD_MODES.NO_HANDS ? this.hideActionPanelUI : this.showActionPanelUI;
 
       return new Sequence()
         .Action(this.updateHudVisibilityTooltipAction(nextMode))
         .ReplaceClass(this.$ctx, prevClass, nextClass)
-        .RunFunction(this, heroHudFn);
-    },
+        .RunFunction(heroHudFn.bind(this));
+    }
 
     // ----- Splash actions -----
 
-    clearSplashAction: function () {
+    clearSplashAction() {
       return new ParallelSequence()
-        .RemoveClass(this.$splash, "start")
-        .RemoveClass(this.$splash, "success")
-        .RemoveClass(this.$splash, "failure");
-    },
+        .RemoveClass(this.$splash, SPLASH_CLASSES[STATES.START])
+        .RemoveClass(this.$splash, SPLASH_CLASSES[STATES.SUCCESS])
+        .RemoveClass(this.$splash, SPLASH_CLASSES[STATES.FAILURE]);
+    }
 
-    showSplashAction: function (state) {
-      var titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
-      var helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
-      var title = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "title", titleIndex]);
-      var help = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "help", helpIndex]);
+    showSplashAction(state) {
+      const titleIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "title"], 1));
+      const helpIndex = _.random(1, _.get(SPLASH_MAX_INDICES, [state, "help"], 1));
+      const title = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "title", titleIndex]);
+      const help = L10n.LocalizeParameterized(L10N_PREFIXES.SPLASH, [state, "help", helpIndex]);
 
-      var actions = new ParallelSequence()
+      const actions = new ParallelSequence()
         .Action(this.clearSplashAction())
         .SetAttribute(this.$splashTitle, "text", title)
         .SetAttribute(this.$splashHelp, "text", help)
         .AddClass(this.$splash, state);
 
-      return new Sequence().Action(actions).AddClass(this.$splash, "Show");
-    },
+      return new Sequence().Action(actions).AddClass(this.$splash, CSS_CLASSES.SHOW);
+    }
 
-    hideSplashAction: function () {
+    hideSplashAction() {
       return new ParallelSequence()
         .Action(this.clearSplashAction())
-        .RemoveClass(this.$splash, "Show");
-    },
+        .RemoveClass(this.$splash, CSS_CLASSES.SHOW);
+    }
 
     // ----- Score actions -----
 
-    updateScoreCounterAction: function (count) {
-      return new RunFunctionAction(
-        this.$comboScore.component,
-        this.$comboScore.component.Input,
-        "UpdateCounter",
-        {
-          count: count,
-        }
+    updateScoreCounterAction(count) {
+      return new RunFunctionAction(() =>
+        this.$comboScore.component.Input(SCORE_INPUTS.UPDATE_COUNTER, { count })
       );
-    },
+    }
 
-    updateScoreSummaryAction: function (options) {
-      return new RunFunctionAction(
-        this.$comboScore.component,
-        this.$comboScore.component.Input,
-        "UpdateSummary",
-        options
+    updateScoreSummaryAction(options) {
+      return new RunFunctionAction(() =>
+        this.$comboScore.component.Input(SCORE_INPUTS.UPDATE_SUMMARY, options)
       );
-    },
+    }
 
-    hideScoreAction: function () {
+    hideScoreAction() {
       return new Sequence()
-        .RemoveClass(this.$score, "Failed")
-        .RunFunction(this.$comboScore.component, this.$comboScore.component.Input, "Hide");
-    },
+        .RemoveClass(this.$score, SCORE_CLASSES[STATES.FAILURE])
+        .RunFunction(() => this.$comboScore.component.Input(SCORE_INPUTS.HIDE));
+    }
 
-    showTimerAction: function () {
-      return new RemoveClassAction(this.$timer, "Hide");
-    },
+    showTimerAction() {
+      return new RemoveClassAction(this.$timer, CSS_CLASSES.HIDE);
+    }
 
-    hideTimerAction: function () {
-      return new AddClassAction(this.$timer, "Hide");
-    },
+    hideTimerAction() {
+      return new AddClassAction(this.$timer, CSS_CLASSES.HIDE);
+    }
 
-    countdownWaitAction: function (wait) {
-      var animate = new ParallelSequence()
-        .AnimateDialogVariableInt(this.$waitProgress, "wait_seconds", wait, 0, wait)
+    countdownWaitAction(wait) {
+      const animate = new ParallelSequence()
+        .AnimateDialogVariableInt(
+          this.$waitProgress,
+          DIALOG_VARS.WAIT_PROGRESS.WAIT_SECONDS,
+          wait,
+          0,
+          wait
+        )
         .AnimateProgressBar(this.$waitProgressBar, wait, 0, wait);
 
       return new Sequence()
         .SetAttribute(this.$waitProgressBar, "max", wait)
-        .RemoveClass(this.$waitProgress, "Hide")
+        .RemoveClass(this.$waitProgress, CSS_CLASSES.HIDE)
         .Action(animate)
-        .AddClass(this.$waitProgress, "Hide");
-    },
+        .AddClass(this.$waitProgress, CSS_CLASSES.HIDE);
+    }
 
     // ----- Composite actions -----
 
-    progressWhenInProgressAction: function (metrics, next) {
-      var nextSteps = _.at(this.combo.sequence, next);
+    progressWhenInProgressAction(metrics, next) {
+      const nextSteps = _.at(this.combo.sequence, next);
 
       return new Sequence()
         .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.activateStepPanelsAction(nextSteps))
         .Action(this.updateScoreCounterAction(metrics.count));
-    },
+    }
 
-    progressWhenFinishedAction: function (metrics) {
-      var scoreSummaryOptions = {
+    progressWhenFinishedAction(metrics) {
+      const scoreSummaryOptions = {
         count: metrics.count || 0,
         endDamage: metrics.damage || 0,
       };
 
       return this.updateScoreSummaryAction(scoreSummaryOptions);
-    },
+    }
 
     // ----- Action runners -----
 
-    initHudVisibility: function (mode) {
+    initHudVisibility(mode) {
       return new Sequence()
         .Action(this.updateHudVisibilityTooltipAction(mode))
         .Action(this.resetHudVisibilityActions())
-        .AddClass(this.$ctx, HUD_VISIBILITY_CLASSES[mode])
+        .AddClass(this.$ctx, HUD_MODES_CLASSES[mode])
         .Start();
-    },
+    }
 
-    start: function (id, next) {
+    start(id, next) {
       this.combo = COMBOS.Get(id);
       this.finished = false;
 
-      var seq = new Sequence()
+      const seq = new Sequence()
         .Action(this.hideScoreAction())
         .Action(this.hideSplashAction())
         .Action(this.hideTimerAction())
         .Wait(START_DELAY)
         .Action(this.showAction())
         .Action(this.renderSequenceAction())
-        .Action(this.showSplashAction("start"))
+        .Action(this.showSplashAction(STATES.START))
         .Wait(0.25)
-        .RunFunction(this, this.progress, this.combo.id, {}, next);
+        .RunFunction(() => this.progress(this.combo.id, {}, next));
 
-      this.debugFn(function () {
-        return ["start()", { id: this.combo.id, actions: seq.size() }];
-      });
+      this.debugFn(() => ["start()", { id: this.combo.id, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    stop: function (id) {
+    stop(id) {
       this.stopTimer();
       this.combo = null;
       this.finished = false;
 
-      var seq = new Sequence().Action(this.hideAction()).Action(this.hideTimerAction());
+      const seq = new Sequence().Action(this.hideAction()).Action(this.hideTimerAction());
 
-      this.debugFn(function () {
-        return ["stop()", { id: id, actions: seq.size() }];
-      });
+      this.debugFn(() => ["stop()", { id, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    inProgress: function (id) {
-      var seq = new Sequence().Action(this.showTimerAction()).Action(this.hideSplashAction());
+    inProgress(id) {
+      const seq = new Sequence().Action(this.showTimerAction()).Action(this.hideSplashAction());
 
-      this.debugFn(function () {
-        return ["inProgress()", { id: id }];
-      });
-
+      this.debugFn(() => ["inProgress()", { id }]);
       this.startTimer();
 
       return seq.Start();
-    },
+    }
 
-    progress: function (id, metrics, next) {
-      var seq = new Sequence();
+    progress(id, metrics, next) {
+      const seq = new Sequence();
 
       if (this.finished) {
         seq.Action(this.progressWhenFinishedAction(metrics));
@@ -518,15 +570,13 @@
         seq.Action(this.progressWhenInProgressAction(metrics, next));
       }
 
-      this.debugFn(function () {
-        return ["progress()", { id: id, metrics: metrics, next: next, actions: seq.size() }];
-      });
+      this.debugFn(() => ["progress()", { id, metrics, next, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    preFinish: function (id, metrics, wait) {
-      var options = {
+    preFinish(id, metrics, wait) {
+      const options = {
         count: metrics.count || 0,
         startDamage: 0,
         endDamage: metrics.damage || 0,
@@ -534,109 +584,98 @@
 
       this.finished = true;
 
-      var seq = new Sequence()
+      const seq = new Sequence()
         .Action(this.deactivateStepPanelsAction(this.combo.sequence))
         .Action(this.bumpStepPanelsAction(this.combo.sequence))
         .Action(this.updateScoreSummaryAction(options))
         .Action(this.countdownWaitAction(wait));
 
-      this.debugFn(function () {
-        return ["preFinish()", _.assign({ id: id, actions: seq.size() }, options)];
-      });
+      this.debugFn(() => ["preFinish()", _.assign({ id, actions: seq.size() }, options)]);
 
       return seq.Start();
-    },
+    }
 
-    finish: function (id, metrics) {
+    finish(id, metrics) {
       this.stopTimer();
 
-      var options = {
+      const options = {
         count: metrics.count || 0,
         endDamage: metrics.damage || 0,
       };
 
-      var seq = new Sequence()
-        .PlaySoundEffect(SOUND_EVENTS.success)
-        .Action(this.showSplashAction("success"))
+      const seq = new Sequence()
+        .PlaySoundEffect(SOUNDS[STATES.SUCCESS])
+        .Action(this.showSplashAction(STATES.SUCCESS))
         .Action(this.updateScoreSummaryAction(options));
 
-      this.debugFn(function () {
-        return ["finish()", _.assign({ id: id, actions: seq.size() }, options)];
-      });
+      this.debugFn(() => ["finish()", _.assign({ id, actions: seq.size() }, options)]);
 
       return seq.Start();
-    },
+    }
 
-    fail: function (id, expected, ability) {
+    fail(id, expected, ability) {
       this.stopTimer();
 
-      var expectedSteps = _.at(this.combo.sequence, expected);
+      const expectedSteps = _.at(this.combo.sequence, expected);
 
-      var seq = new Sequence()
-        .PlaySoundEffect(SOUND_EVENTS.failure)
-        .Action(this.showSplashAction("failure"))
-        .AddClass(this.$score, "Failed")
+      const seq = new Sequence()
+        .PlaySoundEffect(SOUNDS.failure)
+        .Action(this.showSplashAction(STATES.FAILURE))
+        .AddClass(this.$score, SCORE_CLASSES[STATES.FAILURE])
         .Action(this.failStepPanelsAction(expectedSteps))
         .Action(this.bumpStepPanelsAction(expectedSteps))
         .Action(this.hideTimerAction());
 
-      this.debugFn(function () {
-        return ["fail()", { id: id, ability: ability, expected: expected, actions: seq.size() }];
-      });
+      this.debugFn(() => ["fail()", { id, ability, expected, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
-    toggleHUD: function () {
-      var prevMode = this.hudMode;
-      var nextMode;
+    toggleHUD() {
+      const prevMode = this.hudMode;
+      let nextMode = HUD_MODES.VISIBLE;
 
       switch (prevMode) {
-        case "visible":
-          nextMode = "hide_sequence";
+        case HUD_MODES.VISIBLE:
+          nextMode = HUD_MODES.HIDE_SEQ;
           break;
-        case "hide_sequence":
-          nextMode = "no_hands";
+        case HUD_MODES.HIDE_SEQ:
+          nextMode = HUD_MODES.NO_HANDS;
           break;
-        case "no_hands":
-          nextMode = "visible";
+        case HUD_MODES.NO_HANDS:
+          nextMode = HUD_MODES.VISIBLE;
           break;
       }
 
       this.hudMode = nextMode;
-      var seq = this.switchHudAction(prevMode, nextMode);
+      const seq = this.switchHudAction(prevMode, nextMode);
 
-      this.debugFn(function () {
-        return ["toggleHUD()", { prev: prevMode, next: nextMode, actions: seq.size() }];
-      });
+      this.debugFn(() => ["toggleHUD()", { prevMode, nextMode, actions: seq.size() }]);
 
       return seq.Start();
-    },
+    }
 
     // ----- UI methods -----
 
-    Restart: function (isHardReset) {
-      this.debugFn(function () {
-        return ["Restart()", { isHardReset: isHardReset }];
-      });
-
+    Restart(isHardReset) {
+      this.debugFn(() => ["Restart()", { isHardReset }]);
       this.sendRestart(!!isHardReset);
-    },
+    }
 
-    Stop: function () {
+    Stop() {
       this.debug("Stop()");
       this.sendStop();
-    },
+    }
 
-    ShowDetails: function () {
+    ShowDetails() {
       this.debug("ShowDetails()");
       this.sendRenderViewer(this.combo);
-    },
+    }
 
-    ToggleHUD: function () {
+    ToggleHUD() {
       this.toggleHUD();
-    },
-  });
+    }
+  }
 
   context.challenge = new Challenge();
 })(GameUI.CustomUIConfig(), this);

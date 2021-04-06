@@ -1,18 +1,17 @@
 "use strict";
 
-(function (global, context) {
-  var Class = global.Class;
-  var ComboStep = context.ComboStep;
+((_global, context) => {
+  const { ComboStep } = context;
 
-  var CLASSES = {
-    ACTIVE: "ChallengeComboStepActive",
-    ERROR: "ChallengeComboStepError",
-    BUMP: "ChallengeComboStepBump",
+  const CLASSES = {
+    ACTIVE: "active",
+    ERROR: "error",
+    BUMP: "bump",
   };
 
-  var ChallengeComboStep = Class(ComboStep, {
-    constructor: function ChallengeComboStep() {
-      ChallengeComboStep.super.call(this, {
+  class ChallengeComboStep extends ComboStep {
+    constructor() {
+      super({
         inputs: {
           SetStepActive: "onSetActive",
           UnsetStepActive: "onUnsetActive",
@@ -21,30 +20,30 @@
           StepBump: "onBump",
         },
       });
-    },
+    }
 
-    onSetActive: function () {
+    onSetActive() {
       this.$ctx.AddClass(CLASSES.ACTIVE);
-    },
+    }
 
-    onUnsetActive: function () {
+    onUnsetActive() {
       this.$ctx.RemoveClass(CLASSES.ACTIVE);
-    },
+    }
 
-    onSetError: function () {
+    onSetError() {
       this.$ctx.RemoveClass(CLASSES.ERROR);
       this.$ctx.AddClass(CLASSES.ERROR);
-    },
+    }
 
-    onUnsetError: function () {
+    onUnsetError() {
       this.$ctx.RemoveClass(CLASSES.ERROR);
-    },
+    }
 
-    onBump: function () {
+    onBump() {
       this.$ctx.RemoveClass(CLASSES.BUMP);
       this.$ctx.AddClass(CLASSES.BUMP);
-    },
-  });
+    }
+  }
 
   context.comboStep = new ChallengeComboStep();
 })(GameUI.CustomUIConfig(), this);

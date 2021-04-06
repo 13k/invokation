@@ -1,31 +1,16 @@
 "use strict";
 
-(function (global /*, context */) {
-  var _ = global.lodash;
-  var Class = global.Class;
+((global /*, context */) => {
+  const { lodash: _ } = global;
+  const { COMBO_PROPERTIES } = global.Const;
 
-  var PROPERTIES = global.Const.COMBO_PROPERTIES;
-  var SORT_ORDER = ["heroLevel", "difficultyRating", "id"];
+  const SORT_ORDER = ["heroLevel", "difficultyRating", "id"];
 
-  function isEmptyFilterValue(value) {
-    return value === "" || value == null;
-  }
-
-  function isProperty(property) {
-    return property in PROPERTIES;
-  }
-
-  function matchesTags(combo, tags) {
-    return _.intersection(combo.tags, tags).length > 0;
-  }
-
-  function matchesItem(combo, item) {
-    return _.find(combo.sequence, ["name", item]);
-  }
-
-  function matchesAbility(combo, ability) {
-    return _.find(combo.sequence, ["name", ability]);
-  }
+  const isEmptyFilterValue = (value) => value === "" || value == null;
+  const isProperty = (property) => property in COMBO_PROPERTIES;
+  const matchesTags = (combo, tags) => _.intersection(combo.tags, tags).length > 0;
+  const matchesItem = (combo, item) => _.find(combo.sequence, ["name", item]);
+  const matchesAbility = (combo, ability) => _.find(combo.sequence, ["name", ability]);
 
   function filterByProperty(seq, property, value) {
     if (!isProperty(property) || isEmptyFilterValue(value)) {
@@ -59,37 +44,37 @@
     return seq.filter(_.chain(matchesAbility).partialRight(ability).unary().value());
   }
 
-  var CombosView = Class({
-    constructor: function CombosView(combos) {
+  class CombosView {
+    constructor(combos) {
       this.setCombos(combos);
-    },
+    }
 
-    setCombos: function (combos) {
+    setCombos(combos) {
       this.combos = combos;
       this.setView(combos);
-    },
+    }
 
-    setView: function (view) {
+    setView(view) {
       this.view = view;
       this.sort();
-    },
+    }
 
-    sort: function () {
+    sort() {
       this.view = _.sortBy(this.view, SORT_ORDER);
-    },
+    }
 
-    Length: function () {
+    Length() {
       return this.view.length;
-    },
+    }
 
-    Entries: function () {
+    Entries() {
       return this.view;
-    },
+    }
 
-    Filter: function (filters) {
-      var seq = _.chain(this.combos);
+    Filter(filters) {
+      let seq = _.chain(this.combos);
 
-      _.each(filters, function (value, property) {
+      _.each(filters, (value, property) => {
         seq = filterByProperty(seq, property, value);
       });
 
@@ -98,8 +83,8 @@
       seq = filterByAbility(seq, filters.ability);
 
       this.setView(seq.value());
-    },
-  });
+    }
+  }
 
   global.CombosView = CombosView;
 })(GameUI.CustomUIConfig(), this);
