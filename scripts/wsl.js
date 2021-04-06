@@ -1,10 +1,8 @@
-"use strict";
-
-const { spawnSync } = require("child_process");
+const { run } = require("./process");
 
 const WSLPATH_BIN = "wslpath";
 
-function wslpath(path, options) {
+async function wslpath(path, { log, ...options } = {}) {
   const args = [];
 
   if (options.unix) {
@@ -19,27 +17,17 @@ function wslpath(path, options) {
 
   args.push(path);
 
-  const proc = spawnSync(WSLPATH_BIN, args, { encoding: "utf-8" });
-
-  if (proc.error) {
-    throw proc.error;
-  }
-
-  if (proc.status !== 0) {
-    throw `${WSLPATH_BIN} exited with status ${proc.status}: ${proc.stderr}`;
-  }
+  const proc = await run(WSLPATH_BIN, args, { log });
 
   return proc.stdout.trim();
 }
 
+const isWSL = () => !!process.env.WSL_DISTRO_NAME;
+const unixPath = async (path, options) => wslpath(path, { unix: true, ...options });
+const windowsPath = async (path, options) => wslpath(path, { windows: true, ...options });
+
 module.exports = {
-  isWSL() {
-    return !!process.env.WSL_DISTRO_NAME;
-  },
-  unixPath(path, options) {
-    return wslpath(path, { unix: true, ...options });
-  },
-  windowsPath(path, options) {
-    return wslpath(path, { windows: true, ...options });
-  },
+  isWSL,
+  unixPath,
+  windowsPath,
 };

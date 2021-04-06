@@ -1,14 +1,12 @@
-"use strict";
-
 const chalk = require("chalk");
 const emoji = require("node-emoji");
 
-const { createEnum } = require("./util");
+const Enum = require("./enum");
 
 const chalkOptions = chalk.supportsColor ? { level: chalk.supportsColor.level } : { level: 0 };
 const chalkInstance = new chalk.Instance(chalkOptions);
 
-const Level = createEnum({
+const Level = Enum({
   Debug: 1,
   Info: 2,
   Success: 3,
@@ -208,7 +206,7 @@ class Logger {
     const parts = [];
 
     for (const [key, value] of this._fields) {
-      parts.push(`${colorize(color, key)}=${value.toString()}`);
+      parts.push(`${colorize(color, key)}=${value}`);
     }
 
     return parts.join(" ");

@@ -1,7 +1,10 @@
-SCRIPTS_SRC_PATH := scripts
-SCRIPTS_ESLINT_CONFIG := $(SCRIPTS_SRC_PATH)/.eslintrc.yml
-JS_SRC_PATH := content/panorama/scripts
-CSS_SRC_PATH := content/panorama/styles
+SCRIPTS_PATH := scripts
+PANORAMA_JS_PATH := content/panorama/scripts
+PANORAMA_CSS_PATH := content/panorama/styles
+ESLINT_SCRIPTS_CONFIG := $(SCRIPTS_PATH)/.eslintrc.yml
+ESLINT_PANORAMA_CONFIG := $(PANORAMA_JS_PATH)/.eslintrc.yml
+ESLINT_PANORAMA_IGNORE := $(PANORAMA_JS_PATH)/.eslintignore
+STYLELINT_PANORAMA_CONFIG := $(PANORAMA_CSS_PATH)/.stylelintrc.yml
 
 .NOTPARALLEL:
 
@@ -20,25 +23,25 @@ test: test-lua
 .PHONY: doc
 doc: doc-lua
 
-.PHONY: link
-link:
-	@yarn run link
+.PHONY: clean
+clean:
+	@yarn run clean
 
 .PHONY: build
 build: link
 	@yarn run build
 
-.PHONY: clean
-clean:
-	@yarn run clean
-
-.PHONY: launch-game
-launch-game:
-	@yarn run launch:game
+.PHONY: link
+link:
+	@yarn run link
 
 .PHONY: launch-tools
 launch-tools:
 	@yarn run launch:tools
+
+.PHONY: launch-game
+launch-game:
+	@yarn run launch:game
 
 .PHONY: format-lua
 format-lua:
@@ -56,29 +59,32 @@ doc-lua:
 test-lua:
 	@luarocks test
 
-.PHONY: build-lua
-build-lua: format-lua lint-lua doc-lua
-
 .PHONY: format-js
 format-js:
-	@yarn run prettier --write "$(SCRIPTS_SRC_PATH)/**/*.js" "$(JS_SRC_PATH)/**/*.js"
+	@yarn run prettier --write "$(SCRIPTS_PATH)/**/*.js" "$(PANORAMA_JS_PATH)/**/*.js"
 
 .PHONY: lint-js
 lint-js: lint-js-scripts lint-js-panorama
 
 .PHONY: lint-js-scripts
 lint-js-scripts:
-	@yarn run eslint -c "$(SCRIPTS_ESLINT_CONFIG)" "$(SCRIPTS_SRC_PATH)"
+	@yarn run eslint \
+		-c "$(ESLINT_SCRIPTS_CONFIG)" \
+		--ignore-path "$(ESLINT_SCRIPTS_IGNORE)" \
+		"$(SCRIPTS_PATH)"
 
 .PHONY: lint-js-panorama
 lint-js-panorama:
-	@yarn run eslint "$(JS_SRC_PATH)"
+	@yarn run eslint \
+		-c "$(ESLINT_PANORAMA_CONFIG)" \
+		--ignore-path "$(ESLINT_PANORAMA_IGNORE)" \
+		"$(PANORAMA_JS_PATH)"
 
 .PHONY: format-css
 format-css:
-	@yarn run stylelint --fix "$(CSS_SRC_PATH)"
-	@yarn run prettier --write "$(CSS_SRC_PATH)/**/*.css"
+	@yarn run stylelint --fix "$(PANORAMA_CSS_PATH)"
+	@yarn run prettier --write "$(PANORAMA_CSS_PATH)/**/*.css"
 
 .PHONY: lint-css
 lint-css:
-	@yarn run stylelint "${CSS_SRC_PATH}"
+	@yarn run stylelint "${PANORAMA_CSS_PATH}"

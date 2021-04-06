@@ -34,7 +34,7 @@ rules:
     - ignoreAtRules:
         - "define"
   font-family-no-missing-generic-family-keyword: null
-  keyframes-name-pattern: "'\\w+'"
+  keyframes-name-pattern: "'[a-z-]+'"
   property-no-unknown:
     - true
     - ignoreProperties:
