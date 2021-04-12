@@ -1,4 +1,5 @@
 @import url("file://{resources}/styles/custom_game/variables.css");
+@import url("file://{resources}/styles/custom_game/ui.css");
 
 .root {
   width: 100%;
@@ -8,32 +9,59 @@
 .topbar {
   flow-children: right;
   margin-top: 13px;
-  align: left top;
+  margin-left: 50px;
 }
 
 .topbar .topbar-button {
   width: 30px;
   height: 30px;
-  margin-left: 16px;
-  vertical-align: top;
+  margin: 0 8px;
+  horizontal-align: center;
+  vertical-align: middle;
   tooltip-position: bottom;
   opacity: 0.5;
   wash-color: #cdf;
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: 100%;
+  transition-duration: 0.2s;
+  transition-property: opacity;
 }
 
-.topbar .topbar-button:hover {
+.topbar-button:hover {
   opacity: 1;
 }
 
-.icon.hamburguer {
-  wash-color: color_text_quas;
+.topbar-button:active {
+  opacity: 1;
 }
 
-.icon.hamburguer:hover {
+.button-settings {
+  margin-top: 2px;
+  background-size: 27px;
+}
+
+.button-hamburger {
+  wash-color: color_text_quas;
+  background-size: 26px;
+}
+
+.button-hamburger:hover {
   wash-color: color_text_wex;
 }
 
-.icon.hamburguer.active {
+.button-hamburger:active {
   wash-color: color_text_exort;
+}
+
+.picker-active .button-hamburger {
+  wash-color: color_text_exort;
+}
+
+.button-bug {
+  visibility: collapse;
+}
+
+.development .button-bug {
+  visibility: visible;
 }

@@ -1,6 +1,7 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/custom_game/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_invoker_ability_picker.js" />
   </scripts>
 
@@ -11,7 +12,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_invoker_ability_picker.css" />
   </styles>
 
-  <Popup class="root PopupPanel" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
+  <Popup class="root PopupPanel" popupbackground="dim" onload="popup.load()" oncancel="popup.close()">
     <Panel class="header">
       <Label class="choice-label" text="#invokation_ability_picker_choose" />
     </Panel>
@@ -19,7 +20,7 @@
     <Panel id="abilities" />
 
     <Panel class="PopupButtonRow">
-      <Button class="PopupButton" onactivate="popup.Close()">
+      <Button class="PopupButton" onactivate="popup.close()">
         <Label text="#DOTA_Close" />
       </Button>
     </Panel>

@@ -6,9 +6,9 @@
   margin-bottom: 16px;
   align: center center;
   pre-transform-scale2d: 0;
-  opacity-mask: softedgeboxmask;
+  opacity-mask: mask_soft_edge_box;
   wash-color: #666e;
-  border: 3px solid goldcolor;
+  border: 3px solid color_gold;
   background-color: #241200;
   transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
@@ -31,7 +31,7 @@
   pre-transform-scale2d: 1;
   transition-delay: 0s;
   transition-duration: 0.175s, 0.12s;
-  animation-name: bump;
+  animation-name: step-bump;
   animation-delay: 0s;
 }
 
@@ -54,7 +54,7 @@
   vertical-align: center;
 }
 
-@keyframes 'bump' {
+@keyframes 'step-bump' {
   0% {
     pre-transform-scale2d: 0;
     opacity: 0;

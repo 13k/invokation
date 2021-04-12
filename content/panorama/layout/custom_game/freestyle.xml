@@ -11,25 +11,25 @@
   </styles>
 
   <Panel class="root Hide" hittest="false">
-    <Panel class="controls panel translucent" hittest="false">
+    <Panel class="combo-controls panel-transparent" hittest="false">
       <Panel class="control-icon">
-        <Button id="control-level-up" class="Arrow Up icon-button grey" onactivate="freestyle.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
+        <Button class="icon-button button-arrow arrow-solid arrow-up pink" onactivate="freestyle.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="control-icon">
-        <Button id="control-max-level-up" class="DoubleArrow Up icon-button grey" onactivate="freestyle.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
+        <Button class="icon-button button-arrow arrow-ff arrow-up green" onactivate="freestyle.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="control-icon">
-        <Button id="control-restart" class="RefreshButton icon-button blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="icon-button RefreshButton blue" onactivate="freestyle.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="control-icon">
-        <Button id="control-full-restart" class="icon full-refresh icon-button bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="icon-button button-arrow arrow-double arrow-down bronze" onactivate="freestyle.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="control-icon">
-        <Button id="control-close" class="CloseButton icon-button red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button class="icon-button button-quit red" onactivate="freestyle.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

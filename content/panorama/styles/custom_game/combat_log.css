@@ -1,5 +1,5 @@
 @import url("file://{resources}/styles/custom_game/variables.css");
-@import url("file://{resources}/styles/custom_game/panels.css");
+@import url("file://{resources}/styles/custom_game/ui.css");
 
 /* cl_width = ((cl_cell_size + (2 * cl_cell_margin)) * cl_columns) + (2 * cl_padding) + cl_scroll_width */
 
@@ -41,9 +41,9 @@
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(1);
-  padding-top: clpadding;
-  padding-right: clpadding;
-  padding-left: clpadding;
+  padding-top: cl_padding;
+  padding-right: cl_padding;
+  padding-left: cl_padding;
 }
 
 .row {
@@ -66,7 +66,7 @@
 .bar {
   flow-children: right;
   width: 100%;
-  height: clbarheight;
+  height: cl_bar_height;
   padding: 0 8px;
   border-top: 1px solid #222;
   background-color: #0003;

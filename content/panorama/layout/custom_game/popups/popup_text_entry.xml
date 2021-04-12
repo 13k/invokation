@@ -1,6 +1,7 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/custom_game/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.js" />
   </scripts>
 
@@ -11,29 +12,31 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_text_entry.css" />
   </styles>
 
-  <Popup class="root Popup" popupbackground="dim" onload="popup.onLoad()" oncancel="popup.Close()">
-    <Label class="PopupTitle" text="{s:title}" />
+  <Popup class="root PopupPanel" popupbackground="dim" onload="popup.load()" oncancel="popup.close()">
+    <Panel class="header" hittest="false">
+      <Label class="PopupTitle title" text="{s:title}" hittest="false" />
+    </Panel>
 
     <Panel class="body" hittest="false">
       <Panel class="icon-container" hittest="false">
-        <Image id="icon-image" class="icon-image" scaling="stretch-to-fit-y-preserve-aspect" />
+        <Image id="image" class="icon-image" scaling="stretch-to-fit-y-preserve-aspect" />
         <DOTAEconItem id="econ-item-image" class="icon-image DisableInspect" scaling="stretch-to-fit-y-preserve-aspect" />
         <DOTAHeroImage id="hero-image" class="icon-image" heroimagestyle="landscape" scaling="stretch-to-fit-y-preserve-aspect" />
         <DOTAAbilityImage id="ability-image" class="icon-image" scaling="stretch-to-fit-y-preserve-aspect" />
         <DOTAItemImage id="item-image" class="icon-image" scaling="stretch-to-fit-y-preserve-aspect" />
       </Panel>
 
-      <Label class="body-label" text="{s:body}" html="true" hittest="false" />
+      <Label class="description" text="{s:description}" html="true" hittest="false" />
     </Panel>
 
-    <TextEntry id="text-entry" oninputsubmit="popup.Submit()" />
+    <TextEntry id="text-entry" oninputsubmit="popup.submit()" />
 
-    <Panel class="PopupButtonRow">
-      <Button class="PopupButton" onactivate="popup.Submit()">
+    <Panel class="PopupButtonRow footer" hittest="false">
+      <Button class="PopupButton" onactivate="popup.submit()">
         <Label text="#DOTA_Ok" />
       </Button>
 
-      <Button class="PopupButton" onactivate="popup.Close()">
+      <Button class="PopupButton" onactivate="popup.close()">
         <Label text="#DOTA_Cancel" />
       </Button>
     </Panel>

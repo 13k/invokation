@@ -97,8 +97,8 @@
 
 @define font_default: Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
 @define font_monospace_numbers: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
-@define font_title: Reaver,Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
 @define font_monospace: Courier New,Courier;
+@define font_title: Reaver,Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
 
 /*******************************************************************************
  * Icons
@@ -108,6 +108,7 @@
 @define control_icon_arrow_dropdown: url("file://{resources}/images/game/control_icons/arrow_dropdown_png.png");
 @define control_icon_arrow_popout: url("file://{resources}/images/game/control_icons/arrow_popout_png.png");
 @define control_icon_arrow_right: url("file://{resources}/images/game/control_icons/arrow_right_png.png");
+@define control_icon_arrow_solid_right: url("file://{resources}/images/game/control_icons/arrow_solid_right_png.png");
 @define control_icon_arrow_top_right: url("file://{resources}/images/game/control_icons/arrow_top_right_png.png");
 @define control_icon_check_round: url("file://{resources}/images/game/control_icons/check_64_png.png");
 @define control_icon_check: url("file://{resources}/images/game/control_icons/check_png.png");
@@ -118,6 +119,7 @@
 @define control_icon_double_arrow_right: url("file://{resources}/images/game/control_icons/double_arrow_right_png.png");
 @define control_icon_edit: url("file://{resources}/images/game/control_icons/edit_png.png");
 @define control_icon_escalation_arrow: url("file://{resources}/images/game/control_icons/escalation_arrow_psd.png");
+@define control_icon_expand_collapse: url("file://{resources}/images/game/control_icons/expand_collapse_png.png");
 @define control_icon_eye: url("file://{resources}/images/game/control_icons/eye_png.png");
 @define control_icon_filter_carry: url("file://{resources}/images/game/control_icons/filter_carry_png.png");
 @define control_icon_filter_complexity: url("file://{resources}/images/game/control_icons/filter_complexity_png.png");
@@ -125,16 +127,16 @@
 @define control_icon_filter_support: url("file://{resources}/images/game/control_icons/filter_support_png.png");
 @define control_icon_gear: url("file://{resources}/images/game/control_icons/gear_png.png");
 @define control_icon_hamburger: url("file://{resources}/images/game/control_icons/hamburger_png.png");
+@define control_icon_maximize: url("file://{resources}/images/game/control_icons/maximize_icon_psd.png");
 @define control_icon_plus_thin: url("file://{resources}/images/game/control_icons/plus_thin_png.png");
 @define control_icon_plus: url("file://{resources}/images/game/control_icons/plus_png.png");
 @define control_icon_quit: url("file://{resources}/images/game/control_icons/quit_png.png");
 @define control_icon_refresh: url("file://{resources}/images/game/control_icons/refresh_psd.png");
 @define control_icon_restore: url("file://{resources}/images/game/control_icons/restore_icon_psd.png");
+@define control_icon_return_to_game: url("file://{resources}/images/game/control_icons/return_to_game_png.png");
 @define control_icon_search: url("file://{resources}/images/game/control_icons/icon_search_png.png");
 @define control_icon_toc: url("file://{resources}/images/game/control_icons/toc_psd.png");
-@define control_icon_maximize: url("file://{resources}/images/game/control_icons/maximize_icon_psd.png");
-@define control_icon_return_to_game: url("file://{resources}/images/game/control_icons/return_to_game_png.png");
-@define control_icon_expand_collapse: url("file://{resources}/images/game/control_icons/expand_collapse_png.png");
+@define control_icon_fastforward: url("file://{resources}/images/game/control_icons/fastforward_psd.png");
 
 @define status_icon_clock: url("file://{resources}/images/game/status_icons/clock_psd.png");
 @define status_icon_help: url("file://{resources}/images/game/status_icons/helpicon_psd.png");
@@ -143,18 +145,20 @@
 @define status_icon_star_empty: url("file://{resources}/images/game/status_icons/icon_star_empty_png.png");
 @define status_icon_star: url("file://{resources}/images/game/status_icons/icon_star_png.png");
 
-@define dota_plus_logo: url("file://{resources}/images/game/dota_plus/dotaplus_logo_png.png");
-@define dota_plus_logo_small: url("file://{resources}/images/game/dota_plus/dotaplus_logo_small_png.png");
+@define topbar_icon_bug: url("file://{resources}/images/game/topbar/bug_png.png");
+
 @define dota_plus_icon_challenges: url("file://{resources}/images/game/dota_plus/challanges_icon_png.png");
 @define dota_plus_icon_chat_wheel: url("file://{resources}/images/game/dota_plus/icon_chatwheel_plus_reward_png.png");
 @define dota_plus_icon_currency_small: url("file://{resources}/images/game/dota_plus/currency_icon_small_png.png");
 @define dota_plus_icon_currency: url("file://{resources}/images/game/dota_plus/currency_icon_png.png");
 @define dota_plus_icon_relic: url("file://{resources}/images/game/dota_plus/relic_icon_png.png");
+@define dota_plus_logo_small: url("file://{resources}/images/game/dota_plus/dotaplus_logo_small_png.png");
+@define dota_plus_logo: url("file://{resources}/images/game/dota_plus/dotaplus_logo_png.png");
 
-@define icon_stance_offensive: url("file://{resources}/images/game/status_icons/modifier_kill_effect_psd.png");
-@define icon_stance_defensive: url("file://{resources}/images/game/hud/reborn/icon_armor_psd.png");
 @define icon_damage_rating: url("file://{resources}/images/game/hud/reborn/icon_damage_psd.png");
 @define icon_difficulty_rating: url("file://{resources}/images/game/hud/reborn/icon_speed_psd.png");
+@define icon_stance_defensive: url("file://{resources}/images/game/hud/reborn/icon_armor_psd.png");
+@define icon_stance_offensive: url("file://{resources}/images/game/status_icons/modifier_kill_effect_psd.png");
 
 /*******************************************************************************
  * HUD

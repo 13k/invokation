@@ -11,11 +11,12 @@
   </styles>
 
   <Panel class="root">
-    <Panel class="topbar">
-      <Button class="topbar-button button show-dashboard" onactivate="DOTAHUDShowDashboard()" onmouseover="UIShowTextTooltip(DOTA_HUD_BackToDashboard)" onmouseout="UIHideTextTooltip()" />
-      <Button class="topbar-button button settings" onactivate="DOTAShowSettingsPopup()" onmouseover="UIShowTextTooltip(DOTA_HUD_Settings)" onmouseout="UIHideTextTooltip()" />
-      <Button class="topbar-button icon info" onactivate="topBar.ShowGameInfo()" onmouseover="UIShowTextTooltip(DOTA_Custom_Game_Info)" onmouseout="UIHideTextTooltip()" />
-      <Button class="topbar-button icon hamburguer" onactivate="topBar.TogglePicker()" onmouseover="UIShowTextTooltip(invokation_picker_title)" onmouseout="UIHideTextTooltip()" />
+    <Panel class="topbar" hittest="false" require-composition-layer="true" always-cache-composition-layer="true">
+      <!-- <Button class="topbar-button button-dashboard" onactivate="DOTAHUDShowDashboard()" onmouseover="UIShowTextTooltip(DOTA_HUD_BackToDashboard)" onmouseout="UIHideTextTooltip()" /> -->
+      <Button class="topbar-button button-settings" onactivate="DOTAShowSettingsPopup()" onmouseover="UIShowTextTooltip(DOTA_HUD_Settings)" onmouseout="UIHideTextTooltip()" />
+      <Button class="topbar-button button-info" onactivate="topbar.ShowGameInfo()" onmouseover="UIShowTextTooltip(DOTA_Custom_Game_Info)" onmouseout="UIHideTextTooltip()" />
+      <Button class="topbar-button button-hamburger" onactivate="topbar.TogglePicker()" onmouseover="UIShowTextTooltip(invokation_picker_title)" onmouseout="UIHideTextTooltip()" />
+      <Button class="topbar-button button-bug" onactivate="topbar.ShowDebug()" onmouseover="UIShowTextTooltip('Debug')" onmouseout="UIHideTextTooltip()" />
     </Panel>
   </Panel>
 </root>

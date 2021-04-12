@@ -29,9 +29,9 @@
   <Panel class="root">
     <Panel class="header">
       <Label class="choice-label" text="#invokation_item_picker_choose" />
-      <Panel class="fill-w" />
+      <Panel class="FillWidth" />
       <Panel id="search" class="search-box">
-        <TextEntry id="search-text-entry" class="search-text-entry" placeholder="#DOTA_Shop_Search_Field_Default" oninputsubmit="picker.Search()" />
+        <TextEntry id="search-text-entry" class="search-text-entry" placeholder="#DOTA_Shop_Search_Field_Default" oninputsubmit="component.Search()" />
         <Button class="search-button" />
       </Panel>
     </Panel>

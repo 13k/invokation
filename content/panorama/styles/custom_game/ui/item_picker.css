@@ -1,32 +1,31 @@
 @import url("file://{resources}/styles/custom_game/variables.css");
 
 /*
-item_picker_category_width = 4 * (item_picker_item_width + item_picker_item_h_margin + 2)
-item_picker_group_width = 2 * (item_picker_category_width + item_picker_category_h_margin) + 20
-item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) + item_picker_groups_padding.right + item_picker_groups_padding.left
+category_width = 4 * (item_width + item_h_margin + 2)
+group_width = 2 * (category_width + category_h_margin) + 20
+total_width = 2 * (group_width + group_h_margin) + groups_padding.right + groups_padding.left
 */
 
-@define item_picker_width: 1032px;
-@define item_picker_height: 760px;
-@define item_picker_groups_padding: 16px 8px 0 8px;
-@define item_picker_group_width: 500px;
-@define item_picker_group_h_margin: 8px;
-@define item_picker_category_width: 232px;
-@define item_picker_category_h_margin: 8px;
-@define item_picker_item_width: 50px;
-@define item_picker_item_h_margin: 6px;
+@define total_width: 1032px;
+@define total_height: 760px;
+@define groups_padding: 16px 8px 0 8px;
+@define group_width: 500px;
+@define group_h_margin: 8px;
+@define category_width: 232px;
+@define category_h_margin: 8px;
+@define item_width: 50px;
+@define item_h_margin: 6px;
 
 .root {
   flow-children: down;
-  width: item_picker_width;
-  height: item_picker_height;
+  width: total_width;
+  height: total_height;
 }
 
 .header {
   flow-children: right;
   width: 100%;
   padding: 16px 16px 12px 16px;
-  background-color: #242d39;
 }
 
 .choice-label {
@@ -82,7 +81,7 @@ item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) +
   flow-children: right;
   width: 100%;
   height: fill-parent-flow(1);
-  padding: uiitempickergroupspadding;
+  padding: groups_padding;
 }
 
 .group-name {
@@ -104,8 +103,8 @@ item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) +
 
 .group {
   flow-children: down;
-  width: uiitempickergroupwidth;
-  margin-left: uiitempickergrouphmargin;
+  width: group_width;
+  margin-left: group_h_margin;
 }
 
 .group-categories {
@@ -117,9 +116,9 @@ item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) +
 
 .category {
   flow-children: down;
-  width: uiitempickercategorywidth;
+  width: category_width;
   margin-bottom: 8px;
-  margin-left: uiitempickercategoryhmargin;
+  margin-left: category_h_margin;
 }
 
 .category-items {
@@ -128,11 +127,11 @@ item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) +
 }
 
 .category-items .item {
-  width: uiitempickeritemwidth;
+  width: item_width;
   height: width-percentage(72.7%);
-  margin-right: uiitempickeritemhmargin;
+  margin-right: item_h_margin;
   margin-bottom: 6px;
-  box-shadow: #6ad4 -1px -1px 2px 2px;
+  border: 2px solid #6ad4;
 }
 
 .category-items .item:disabled {
@@ -147,5 +146,5 @@ item_picker_width = 2 * (item_picker_group_width + item_picker_group_h_margin) +
 }
 
 .category-items .item.highlighted {
-  box-shadow: 0 0 8px aqua;
+  border: 2px solid aqua;
 }

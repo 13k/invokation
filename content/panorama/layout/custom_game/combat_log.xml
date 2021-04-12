@@ -11,18 +11,18 @@
   </styles>
 
   <Panel class="root closed" hittest="false">
-    <Panel id="combat-log" class="panel transparent">
+    <Panel id="combat-log" class="panel-transparent">
       <Panel id="contents" />
 
       <Panel class="bar">
-        <ToggleButton class="thumb expand-collapse-toggle" onactivate="combatLog.Toggle()">
+        <ToggleButton class="thumb ExpandCollapseToggleButton" onactivate="combatLog.Toggle()">
           <Label class="title" text="#invokation_combat_log_title" hittest="false" />
         </ToggleButton>
 
         <Panel class="actions">
-          <ToggleButton id="filter-invocations" class="action-item Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
+          <ToggleButton id="filter-invocations" class="action-item" text="#invokation_combat_log_filter_invocations" selected="true" />
 
-          <Button class="action-item button blue clear" onactivate="combatLog.Clear()">
+          <Button class="action-item clear BlueButton" onactivate="combatLog.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>

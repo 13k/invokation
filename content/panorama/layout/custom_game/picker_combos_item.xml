@@ -1,0 +1,44 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/picker_combos_item.js" />
+  </scripts>
+
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.css" />
+
+    <include src="file://{resources}/styles/custom_game/picker_combos_item.css" />
+  </styles>
+
+  <Panel class="root" onactivate="combosItem.Activate()">
+    <Panel class="panel-title-container">
+      <Button class="finished-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)" onmouseout="UIHideTextTooltip()" />
+      <Label id="title" class="panel-title" hittest="false" />
+    </Panel>
+
+    <Panel class="info-container">
+      <Button class="picker-combo-icon hero-level-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
+        <Label id="hero-level-label" class="hero-level-label MonoNumbersFont" hittest="false" />
+      </Button>
+
+      <Button class="picker-combo-icon specialty-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
+      <Button class="picker-combo-icon stance-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
+
+      <Panel class="ratings">
+        <Panel class="LeftRightFlow">
+          <Button class="attack-damage-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
+          <Panel id="damage-rating" class="rating">
+            <Panel class="rating-active" />
+          </Panel>
+        </Panel>
+
+        <Panel class="LeftRightFlow">
+          <Button class="difficulty-icon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
+          <Panel id="difficulty-rating" class="rating">
+            <Panel class="rating-active" />
+          </Panel>
+        </Panel>
+      </Panel>
+    </Panel>
+  </Panel>
+</root>

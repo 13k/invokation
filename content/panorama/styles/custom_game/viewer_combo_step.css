@@ -2,18 +2,19 @@
 
 .root {
   flow-children: right;
+  height: fit-children;
   padding: 8px;
 }
 
 #ability-button {
   width: 48px;
-  height: 48px;
-  box-shadow: goldcolor -2px -2px 4px 4px;
-  background-color: #000d;
+  opacity-mask: mask_soft_edge_box;
+  border: 4px solid color_gold;
 }
 
 .optional #ability-button {
-  box-shadow: #000 -2px -2px 4px 4px;
+  wash-color: #666e;
+  border: 4px solid #000;
 }
 
 #ability-image {

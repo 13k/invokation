@@ -1,5 +1,6 @@
 @import url("file://{resources}/styles/custom_game/variables.css");
-@import url("file://{resources}/styles/custom_game/panels.css");
+@import url("file://{resources}/styles/custom_game/ui.css");
+@import url("file://{resources}/styles/custom_game/combo_controls.css");
 
 @define score_margin_top: 100px;
 @define sequence_width: 150px;
@@ -36,7 +37,7 @@
   opacity: 0;
 }
 
-.root.hide .combo {
+.Hide .combo {
   opacity: 0;
 }
 
@@ -115,107 +116,17 @@
   text-shadow: 1px 1px 2px #000;
 }
 
-.controls {
-  flow-children: right;
-  margin-left: controlsmarginleft;
+.combo-controls {
+  margin-left: controls_margin_left;
   align: left bottom;
-  opacity: 1;
-  transition-duration: 0.75s;
-  transition-property: opacity;
 }
 
-.hide .controls {
-  opacity: 0;
-}
-
-.controls .control-icon {
-  width: 64px;
-  height: 64px;
-  transition-duration: 0.2s;
-  transition-property: background-color;
-}
-
-.controls .control-icon:hover {
-  border-right: 1px solid #444b;
-  border-left: 1px solid #444b;
-  background-color: panel_translucent_hover_gradient;
-}
-
-.controls .icon-button {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  vertical-align: center;
-  tooltip-position: top;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-}
-
-.controls .icon-button.Activated {
-  sound: "ui_quit_menu_fadeout";
-}
-
-.controls .icon.info {
-  background-size: 30px 30px;
-}
-
-.controls .icon.eye {
-  background-size: 32px 32px;
-}
-
-.hud-hide-sequence .controls .control-icon .icon.eye {
+.hud-hide-sequence .control-hud-mode {
   wash-color: #646464;
 }
 
-.hud-no-hands .controls .control-icon .icon.eye {
+.hud-no-hands .control-hud-mode {
   wash-color: #3e3e3e;
-}
-
-.controls .icon.full-refresh {
-  background-size: 28px 28px;
-}
-
-.controls .icon.full-refresh.Activated {
-  animation-name: SpinnerRotate;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-}
-
-.controls .button.close {
-  background-size: 34px 34px;
-}
-
-.controls .control-icon .grey {
-  wash-color: #aaa;
-}
-
-.controls .control-icon .grey:hover {
-  wash-color: #fff;
-}
-
-.controls .control-icon .blue {
-  wash-color: #65a9db;
-}
-
-.controls .control-icon .blue:hover {
-  wash-color: #acc6d8;
-}
-
-.controls .control-icon .bronze {
-  wash-color: #dca157;
-}
-
-.controls .control-icon .bronze:hover {
-  wash-color: #dca157;
-}
-
-.controls .control-icon .red {
-  wash-color: #db6565;
-}
-
-.controls .control-icon .red:hover {
-  wash-color: #db6565;
 }
 
 #wait-progress {
@@ -279,7 +190,7 @@
   transition-property: transform;
 }
 
-#timer.hide {
+#timer.Hide {
   transform: translateY(-64px);
 }
 

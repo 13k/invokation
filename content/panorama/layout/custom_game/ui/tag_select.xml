@@ -12,15 +12,14 @@
 
   <snippets>
     <snippet name="tag">
-      <Panel class="tag" hittest="false">
+      <Panel class="tag" onmouseover="UIShowTextTooltip(invokation_tag_select_remove_tag)" onmouseout="UIHideTextTooltip()">
         <Label class="tag-label" text="{s:value}" hittest="false" />
-        <Button id="remove-button" class="remove-button" />
       </Panel>
     </snippet>
   </snippets>
 
   <Panel class="root" hittest="false">
-    <DropDown id="options" oninputsubmit="select.onOptionSelect()" />
-    <Panel id="tags" hittest="false" />
+    <DropDown id="options" oninputsubmit="component.onOptionSelect()" />
+    <Panel id="tags" />
   </Panel>
 </root>

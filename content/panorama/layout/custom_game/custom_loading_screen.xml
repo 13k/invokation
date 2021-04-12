@@ -6,6 +6,7 @@
     <include src="file://{resources}/scripts/game/sequence_actions.js" />
 
     <include src="file://{resources}/scripts/custom_game/lib/const.js" />
+    <include src="file://{resources}/scripts/custom_game/lib/panel_event.js" />
     <include src="file://{resources}/scripts/custom_game/lib/util.js" />
     <include src="file://{resources}/scripts/custom_game/lib/env.js" />
     <include src="file://{resources}/scripts/custom_game/lib/logger.js" />

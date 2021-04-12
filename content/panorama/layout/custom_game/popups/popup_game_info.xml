@@ -1,6 +1,7 @@
 <root>
   <scripts>
     <include src="file://{resources}/scripts/custom_game/lib/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_game_info.js" />
   </scripts>
 
@@ -11,13 +12,13 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_game_info.css" />
   </styles>
 
-  <Popup class="root PopupPanel" popupbackground="dim" oncancel="popup.Close()">
-    <Button class="CloseButton" onactivate="popup.Close()" />
+  <Popup class="root PopupPanel" popupbackground="dim" onload="popup.load()" oncancel="popup.close()">
+    <Button class="CloseButton" onactivate="popup.close()" />
 
     <Panel class="contents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
 
-      <DOTAScenePanel class="orbs-scene" map="custom_game/scenes/kid_invoker_orbs" camera="camera" particleonly="false" hittest="false" />
+      <DOTAScenePanel class="orbs-scene" map="custom_game/scenes/kid_invoker_orbs" camera="camera" particleonly="false" renderdeferred="true" deferredalpha="true" antialias="true" />
 
       <Label class="PopupDescription" text="#invokation_game_info_description" html="true" hittest="false" />
 
@@ -28,14 +29,14 @@
           <Label id="version-label" class="info-text" />
         </Panel>
 
-        <Button class="info-item link-button" onactivate="popup.OpenHomepageURL()">
+        <Button class="info-item link-button" onactivate="popup.openHomepageURL()">
           <Label class="info-text" text="#invokation_game_info_home_page" />
-          <Panel class="PopoutArrow" />
+          <Panel class="button-arrow arrow-popout" />
         </Button>
 
-        <Button class="info-item link-button" onactivate="popup.OpenChangelogURL()">
+        <Button class="info-item link-button" onactivate="popup.openChangelogURL()">
           <Label class="info-text" text="#invokation_game_info_changelog" />
-          <Panel class="PopoutArrow" />
+          <Panel class="button-arrow arrow-popout" />
         </Button>
       </Panel>
     </Panel>

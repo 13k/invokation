@@ -166,6 +166,7 @@
 
 #sequence {
   flow-children: down;
+  width: 100%;
   margin-top: 26px;
 }
 

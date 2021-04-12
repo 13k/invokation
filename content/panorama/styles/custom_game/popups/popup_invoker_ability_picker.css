@@ -2,16 +2,12 @@
   flow-children: down;
   padding: 0 0 20px 0;
   align: center center;
-  box-shadow: #000 -4px -4px 8px 8px;
-  border: 0;
-  background-color: #1e252f;
 }
 
 .header {
   flow-children: right;
   width: 100%;
   padding: 16px 16px 12px 16px;
-  background-color: #242d39;
 }
 
 .choice-label {

@@ -5,6 +5,8 @@
 .root {
   flow-children: down;
   width: 100%;
+  height: fit-children;
+  margin-top: 0;
 }
 
 #options {
@@ -16,18 +18,26 @@
 }
 
 #tags {
-  flow-children: right-wrap;
+  overflow: scroll clip;
+  flow-children: right;
   width: 100%;
+  border-bottom: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+#tags.overflow {
+  padding-bottom: 10px;
 }
 
 #tags .tag {
   flow-children: right;
-  height: pillheight;
-  margin-top: 8px;
-  margin-left: 8px;
+  height: pill_height;
+  margin: 8px 4px;
   padding: 4px 6px 2px 6px;
-  border: 1px solid #666;
-  border-radius: 2px;
+  tooltip-position: bottom;
+  border: 1px solid color_base_border;
+  border-radius: 6px;
+  background-color: color_selected_text_background;
   transition-duration: 0.2s;
   transition-property: opacity;
 }
@@ -36,22 +46,19 @@
   opacity: 0;
 }
 
+#tags .tag:hover {
+  wash-color: #000a;
+}
+
 #tags .tag .tag-label {
-  margin-top: 3px;
-  vertical-align: center;
-  font-size: 18px;
+  max-width: 120px;
+  margin-left: 4px;
+  align: center center;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  color: color_text_blue_grey_bright;
 }
 
-#tags .tag .remove-button {
-  width: 14px;
-  height: 14px;
-  margin-left: 2px;
-  vertical-align: center;
-  wash-color: #ccc;
-  background-image: control_icon_quit;
-  background-size: 100%;
-}
-
-#tags .tag .remove-button:hover {
-  wash-color: #fff;
+#tags .tag:hover .tag-label {
+  color: #bbb;
 }

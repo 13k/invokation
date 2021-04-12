@@ -4,10 +4,13 @@
 @define combo_width: 290px;
 @define filters_width: 240px;
 @define filter_row_width: 220px;
+@define paper_width: 637px;
+@define paper_height: 834px;
 
 .root {
   width: 1392px;
   height: 964px;
+  margin-top: 32px;
   align: center middle;
   opacity: 1;
   transition-delay: 0s;
@@ -23,51 +26,22 @@
   transition-property: opacity !immediate;
 }
 
-#picker {
+.picker {
   flow-children: right;
   width: 100%;
   height: 100%;
-  box-shadow: -3px -3px 12px 12px rgba(27, 32, 36, 0.75);
-  border-radius: 4px;
-}
-
-.contents {
-  flow-children: down;
-  width: 100%;
-  height: 100%;
+  border: 2px solid rgba(27, 32, 36, 0.75);
+  border-radius: 2px;
   background-image: bg_picker;
+  background-repeat: no-repeat;
   background-size: 100%;
-}
 
-.body {
-  flow-children: right;
-  width: 100%;
-  height: 100%;
-  border-top: 1px solid #000;
-  background-color: rgba(0, 0, 0, 0.4);
+  /* box-shadow: -6px -6px 12px 12px rgba(27, 32, 36, 0.75); */
 }
 
 #combos {
-  overflow: noclip scroll;
-  flow-children: down;
   width: combos_width;
   height: 100%;
-  padding: 10px 10px 10px 20px;
-  box-shadow: inset 2px 0 0 0 rgba(0, 0, 0, 0.25);
-  border-right: 1px solid #1e2325;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-#combos VerticalScrollBar {
-  horizontal-align: left;
-}
-
-#combos .combo {
-  width: combo_width;
-}
-
-#combos .combo.active {
-  background-color: gradient(linear, 100% 0%, 0% 0%, from(#424a4f00), to(#2a2d42ff));
 }
 
 .filters {
@@ -88,7 +62,7 @@
   margin-bottom: 4px;
 }
 
-.filters .button.reset {
+.filters .filter-reset-button {
   width: 12px;
   height: 12px;
   margin: 0 0 0 6px;
@@ -97,11 +71,11 @@
   wash-color: #ff808088;
 }
 
-.filters .button.reset:hover {
+.filters .filter-reset-button:hover {
   wash-color: #ff8080;
 }
 
-.filters .button.reset:disabled {
+.filters .filter-reset-button:disabled {
   visibility: collapse;
 }
 
@@ -111,7 +85,6 @@
 
 .filters .filter-row.popup-picker-row {
   flow-children: right;
-  margin-top: 20px;
 }
 
 .filters .popup-picker-column {
@@ -125,25 +98,20 @@
   vertical-align: center;
 }
 
-.filters .popup-picker-button {
-  flow-children: down;
-  padding: 1px;
-}
-
-.filters .popup-picker-button.filter-item-button {
-  min-width: 0;
-  min-height: 0;
+.filters .popup-picker-icon-button {
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: #555;
+  border-right-color: #404040;
+  border-bottom-color: #333;
+  border-left-color: #494949;
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#373d45), to(#4d5860));
 }
 
 #filter-item-image {
   width: 40px;
   height: 40px;
   align: center center;
-}
-
-.filters .popup-picker-button.filter-ability-button {
-  min-width: 0;
-  min-height: 0;
 }
 
 #filter-ability-image {
@@ -163,39 +131,48 @@
   min-width: 142px;
 }
 
-.info {
+.content {
   flow-children: down;
   width: 1056px;
   height: 100%;
-  box-shadow: inset 0 -8px 8px 4px #000000b8;
+  box-shadow: inset 4px 0 8px 4px #000000b8;
 }
 
-.info .header {
+.content .header {
   width: 100%;
   height: 64px;
   background-color: gradient(linear, 100% 0%, 0% 0%, from(#0d121788), to(#070a0c88));
 }
 
-.info .header .button.refresh {
+.content .header .RefreshButton {
   visibility: collapse;
   width: 24px;
   height: 24px;
-  margin: 8px 0 0 8px;
+  margin: 8px 40px 0 0;
+  horizontal-align: right;
+  wash-color: #777;
   background-size: 100%;
 }
 
-.development .info .header .button.refresh {
+.content .header .RefreshButton:hover {
+  wash-color: color_text_exort;
+}
+
+.development .content .header .RefreshButton {
   visibility: visible;
 }
 
-.info .header .button.close {
+.content .header .CloseButton {
+  width: 24px;
+  height: 24px;
   margin: 8px 8px 0 0;
   horizontal-align: right;
-  wash-color: white;
+  wash-color: #fff;
+  background-size: 100%;
 }
 
-.info .header .button.close:hover {
-  wash-color: color_text_wex;
+.content .header .CloseButton:hover {
+  wash-color: color_accent_wex;
 }
 
 .freestyle-button {
@@ -236,47 +213,102 @@
   color: #ccc;
 }
 
-.info .body {
-  overflow: clip;
+.content .body {
   width: 100%;
   height: fill-parent-flow(1);
+  border-top: 1px solid #000;
 }
 
-.info .body .title {
+.content .body .placeholder {
   max-height: 80px;
-  margin-top: 16px;
-  align: center middle;
-  text-align: left;
+  align: center center;
+  text-align: center;
   letter-spacing: 2px;
   text-transform: uppercase;
   font-size: 28px;
   font-weight: semi-bold;
   opacity: 1;
   color: color_text_blue_grey_bright;
+  transition-delay: 0s;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.35s;
+  transition-property: opacity !immediate;
 }
 
-.info .body .title.hide {
+.combo-selected .content .body .placeholder {
   opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0s;
+  transition-property: opacity !immediate;
 }
 
-.info .body .description {
+.content .body .body-fx {
+  width: 100%;
+  height: 33%;
+  vertical-align: bottom;
+  brightness: 3;
+  hue-rotation: 60deg;
+  animation-name: qwe-hue-rotation;
+  animation-duration: 30s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.content .body .description {
   flow-children: none;
-  width: 637px;
-  height: 834px;
-  align: center middle;
-  opacity: 0;
-}
-
-.info .body .description.show {
-  opacity: 1;
-}
-
-.info .body .description .description-bg {
   width: 100%;
   height: 100%;
-  opacity-mask: mask_soft_edge_box_irregular;
+  opacity: 0;
+  border-top: 1px solid #0000;
+  transition-delay: 0s;
+  transition-duration: 0s;
+  transition-property: opacity !immediate;
+}
+
+.combo-selected .content .body .description {
+  opacity: 1;
+  transition-delay: 0s;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.35s;
+  transition-property: opacity !immediate;
+}
+
+.content .body .description .description-bg {
+  width: paper_width;
+  height: paper_height;
+  align: center center;
   background-image: bg_viewer;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+}
+
+@keyframes 'qwe-hue-rotation' {
+  0% {
+    hue-rotation: 60deg;
+  }
+
+  30% {
+    hue-rotation: 60deg;
+  }
+
+  33% {
+    hue-rotation: 145deg;
+  }
+
+  63% {
+    hue-rotation: 145deg;
+  }
+
+  66% {
+    hue-rotation: 275deg;
+  }
+
+  98% {
+    hue-rotation: 275deg;
+  }
+
+  100% {
+    hue-rotation: 360deg;
+  }
 }

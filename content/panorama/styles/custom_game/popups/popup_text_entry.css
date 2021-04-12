@@ -1,6 +1,14 @@
+.type-simple.empty-description .title {
+  margin-bottom: 0;
+}
+
 .body {
   flow-children: right;
   horizontal-align: center;
+}
+
+.type-simple.empty-description .body {
+  visibility: collapse;
 }
 
 .icon-container {
@@ -13,27 +21,31 @@
   margin-right: 15px;
 }
 
-.root.image-icon-enabled #icon-image {
+.empty-description .icon-image {
+  margin: 0;
+}
+
+.type-image #icon-image {
   visibility: visible;
 }
 
-.root.econ-item-icon-enabled #econ-item-image {
+.type-econ-item #econ-item-image {
   visibility: visible;
 }
 
-.root.hero-icon-enabled #hero-image {
+.type-hero #hero-image {
   visibility: visible;
 }
 
-.root.ability-icon-enabled #ability-image {
+.type-ability #ability-image {
   visibility: visible;
 }
 
-.root.item-icon-enabled #item-image {
+.type-item #item-image {
   visibility: visible;
 }
 
-.body-label {
+.body .description {
   max-width: 400px;
   align: center center;
   text-align: center;
@@ -41,7 +53,7 @@
   color: #fff;
 }
 
-.root.econ-item-icon-enabled .body-label {
+.type-econ-item .body .description {
   text-align: left;
 }
 
@@ -51,7 +63,11 @@
   horizontal-align: center;
 }
 
-.root.Multiline #text-entry {
+.Multiline #text-entry {
   height: 128px;
   white-space: normal;
+}
+
+.footer {
+  margin-top: 15px;
 }

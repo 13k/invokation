@@ -43,7 +43,7 @@
     // Picker
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    "invokation_picker_title" "Select combo"
+    "invokation_picker_title" "Combo Selector"
     "invokation_picker_freestyle_play" "Freestyle"
     "invokation_picker_filters_reset" "Clear"
     "invokation_picker_filter_item" "Item"
@@ -53,6 +53,7 @@
     "invokation_picker_tooltip_filter_tags_reset" "Clear Tags"
     "invokation_picker_tooltip_filter_item_reset" "Clear Item"
     "invokation_picker_tooltip_filter_ability_reset" "Clear Ability"
+    "invokation_picker_selection_placeholder" "Select combo"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Combo Splash
@@ -166,7 +167,7 @@
     "invokation_item_picker_choose" "Choose an Item"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // AbilityPicker
+    // InvokerAbilityPicker
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     "invokation_ability_picker_choose" "Choose an Ability"
@@ -178,6 +179,7 @@
     "invokation_tag_select_choose" "Select Tag"
     "invokation_tag_select_option_text_entry" "Enter Tag..."
     "invokation_tag_select_popup_text_entry_title" "Enter Tag"
+    "invokation_tag_select_remove_tag" "Deselect Tag"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Combos

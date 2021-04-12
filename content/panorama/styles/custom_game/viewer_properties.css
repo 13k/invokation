@@ -1,29 +1,29 @@
 @import url("file://{resources}/styles/custom_game/variables.css");
-@import url("file://{resources}/styles/custom_game/rating.css");
+@import url("file://{resources}/styles/custom_game/ui.css");
 
-@define fgColor: #3c1b18;
+@define color_fg: #3c1b18;
 
-.ViewerPropertiesRoot {
+.root {
   flow-children: down;
   width: 100%;
   height: 230px;
   padding: 15px;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesRow {
+.row {
   flow-children: right;
   width: 100%;
   height: 40px;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesLabel {
+.property-label {
   vertical-align: center;
   font-size: 18px;
   font-weight: semi-bold;
-  color: fgcolor;
+  color: color_fg;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon {
+.property-icon {
   width: 28px;
   height: 28px;
   margin: 6px 8px;
@@ -32,26 +32,26 @@
   tooltip-body-position: 50% 10%;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesValue {
+.property-value {
   align: right center;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon.HeroLevelIcon {
-  wash-color: fgcolor;
-  background-image: controlsescalationarrowicon;
+.property-icon.hero-level-icon {
+  wash-color: color_fg;
+  background-image: control_icon_escalation_arrow;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
-.ViewerPropertiesRoot .HeroLevelBadge {
+.hero-level-badge {
   width: 30px;
   height: 32px;
   border-radius: 50%;
   background-color: #121212;
 }
 
-.ViewerPropertiesRoot .HeroLevelBadge .HeroLevelLabel {
+.hero-level-badge .hero-level-label {
   width: 14px;
   margin-top: 3px;
   align: center center;
@@ -63,38 +63,38 @@
   text-shadow: 0 0 3px 3.7 #ec780e24;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon.SpecialtyIcon {
-  wash-color: fgcolor;
-  background-image: controlsfiltersupporticon;
+.property-icon.specialty-icon {
+  wash-color: color_fg;
+  background-image: control_icon_filter_support;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon.StanceIcon {
-  wash-color: fgcolor;
-  background-image: controlsfiltercarryicon;
+.property-icon.stance-icon {
+  wash-color: color_fg;
+  background-image: control_icon_filter_carry;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon.AttackDamageIcon {
-  wash-color: fgcolor;
-  background-image: controlsfiltermeleeicon;
+.property-icon.damage-icon {
+  wash-color: color_fg;
+  background-image: control_icon_filter_melee;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
-.ViewerPropertiesRoot .ViewerPropertiesIcon.DifficultyIcon {
-  wash-color: fgcolor;
-  background-image: controlsfiltercomplexityicon;
+.property-icon.difficulty-icon {
+  wash-color: color_fg;
+  background-image: control_icon_filter_complexity;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
 }
 
-.ViewerPropertiesRoot .Rating .RatingActive {
-  wash-color: fgcolor&99;
+.rating .rating-active {
+  wash-color: color_fg&99;
 }
