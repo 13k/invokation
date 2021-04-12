@@ -1,10 +1,12 @@
----
-root: true
-extends: "eslint:recommended"
-parserOptions:
-  sourceType: "script"
+module.exports = {
+  root: true,
+  parser: require.resolve("@typescript-eslint/parser"),
+  extends: [require.resolve("./.eslintrc.plugins.js")],
+};
+
+/*
 env:
-  es6: true
+  2020: true
 globals:
   $: readonly
   Abilities: readonly
@@ -70,3 +72,4 @@ globals:
   SteamUniverse: readonly
   SteamUtils: readonly
   VRUtils: readonly
+*/

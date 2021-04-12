@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "rootDir": "../..",
+    "outDir": "../../dist",
+    "moduleResolution": "node",
+    "lib": ["es2017"],
+    "target": "es2017",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "types": ["@moddota/panorama-types"]
+  },
+  "include": ["scripts/**/*"]
+}

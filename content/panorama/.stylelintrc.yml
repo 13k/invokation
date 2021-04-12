@@ -1,4 +1,11 @@
 ---
+plugins:
+  - "stylelint-order"
+
+extends:
+  - "stylelint-config-standard"
+  - "stylelint-config-prettier"
+
 __panorama_types__: &panorama_types
   - "/^DOTA/"
   - "Button"
@@ -23,11 +30,6 @@ __panorama_types__: &panorama_types
   - "ToggleButton"
   - "VerticalScrollBar"
 
-plugins:
-  - "stylelint-order"
-extends:
-  - "stylelint-config-standard"
-  - "stylelint-config-prettier"
 rules:
   at-rule-no-unknown:
     - true
@@ -43,6 +45,7 @@ rules:
         - "contrast"
         - "flow-children"
         - "horizontal-align"
+        - "hue-rotation"
         - "opacity-mask"
         - "pre-transform-scale2d"
         - "saturation"
@@ -184,6 +187,10 @@ rules:
           - "opacity-mask"
           - "color"
           - "wash-color"
+          - "brightness"
+          - "contrast"
+          - "hue-rotation"
+          - "saturation"
           - "outline"
           - "outline-width"
           - "outline-style"
