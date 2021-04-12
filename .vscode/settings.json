@@ -1,24 +1,45 @@
 {
-  // line width
   "editor.minimap.maxColumn": 100,
   "prettier.printWidth": 100,
   "vim.textwidth": 100,
-  // yarn 2.x config
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+
+  "css.validate": false,
+  "javascript.format.enable": false,
+  "javascript.validate.enable": true,
   "eslint.nodePath": ".yarn/sdks",
-  "eslint.packageManager": "yarn",
+  "eslint.validate": ["javascript", "typescript"],
+  "eslint.run": "onType",
+  "eslint.workingDirectories": ["content/panorama", "scripts"],
+  "npm.packageManager": "yarn",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
-  "stylelint.packageManager": "yarn",
-  // extensions
-  "css.validate": false,
-  "eslint.lintTask.enable": true,
-  "eslint.run": "onSave",
-  "javascript.format.enable": false,
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.log": "off",
+  "typescript.format.enable": false,
+  "typescript.validate.enable": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEventsOnParentDirectory",
+    "watchDirectory": "useFsEvents"
+  },
+
   "vscode-lua-format.configPath": ".lua-format",
+
   "xmlTools.enableXmlTreeView": true,
   "xmlTools.enforcePrettySelfClosingTagOnFormat": true,
   "xmlTools.xmlFormatterImplementation": "v2",
-  // file types
+
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true,
+    "dist/*": true
+  },
   "files.associations": {
     ".env*": "shellscript",
     ".busted": "lua",
@@ -59,10 +80,7 @@
   },
   // lua
   "Lua.runtime.version": "Lua 5.1",
-  "Lua.runtime.path": [
-    "game/scripts/vscripts/?.lua",
-    "game/scripts/vscripts/?/?.lua"
-  ],
+  "Lua.runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/?.lua"],
   "Lua.workspace.ignoreDir": [
     ".luacheckrc",
     ".luarocks",
@@ -72,9 +90,7 @@
     "*.rockspec",
     "game/scripts/vscripts/pl"
   ],
-  "Lua.diagnostics.disable": [
-    "emmy-lua"
-  ],
+  "Lua.diagnostics.disable": ["emmy-lua"],
   "Lua.diagnostics.globals": [
     //
     // Lua
@@ -648,9 +664,5 @@
     "ACT_DOTA_CAPTURE_RARE", // (1706)
     "ACT_DOTA_AW_MAGNETIC_FIELD", // (1707)
     "ACT_DOTA_CAST_GHOST_SHIP" // (1708)
-  ],
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  }
+  ]
 }

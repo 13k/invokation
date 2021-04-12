@@ -6,6 +6,15 @@
   "engines": {
     "node": ">=14.16"
   },
+  "dota2": {
+    "customGame": {
+      "name": "invokation",
+      "maps": [
+        "cottage",
+        "island"
+      ]
+    }
+  },
   "scripts": {
     "clean": "node scripts/main.js clean",
     "build": "node scripts/main.js build",
@@ -14,7 +23,14 @@
     "launch:game": "node scripts/main.js launch game",
     "launch:tools": "node scripts/main.js launch tools"
   },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
+    "@moddota/panorama-types": "^1.8.0",
+    "@types/lodash": "^4.14.168",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
     "@yarnpkg/pnpify": "^2.4.0",
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
@@ -25,11 +41,9 @@
     "js-yaml": "^4.1.0",
     "node-emoji": "^1.10.0",
     "p-map": "^4.0.0",
-    "picomatch": "^2.2.2",
+    "picomatch": "^2.2.3",
     "postcss": "^8.2.15",
-    "postcss-html": "^0.36.0",
     "postcss-safe-parser": "^5.0.2",
-    "postcss-syntax": "^0.36.2",
     "postcss-value-parser": "^4.1.0",
     "prettier": "^2.3.0",
     "pretty-ms": "^7.0.1",
@@ -38,15 +52,7 @@
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
     "tmp-promise": "^3.0.2",
+    "typescript": "^4.2.4",
     "vdf-parser": "^1.1.0"
-  },
-  "dota2": {
-    "customGame": {
-      "name": "invokation",
-      "maps": [
-        "cottage",
-        "island"
-      ]
-    }
   }
 }
