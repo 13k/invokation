@@ -28,25 +28,25 @@ dependencies = {
 
 build_dependencies = {
   "ldoc",
-  "luacheck",
+  "luacheck ~> 0.24",
   "luaformatter",
-  "lunamark",
 }
 
 test_dependencies = {
   "bit32 ~> 5.3",
-  "busted",
+  "busted ~> 2.0",
   "compat53 ~> 0.7",
-  "luacov",
+  "luacov ~> 0.15",
   "moses ~> 2.1",
   "penlight ~> 1.7",
 }
 
 test = {
-	type = "busted",
+  type = "busted",
 }
 
 build = {
   type = "make",
-  build_target = "build-lua",
+  build_target = "rock-build",
+  install_target = "rock-install",
 }

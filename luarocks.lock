@@ -1,0 +1,14 @@
+return {
+   build_dependencies = {
+      argparse = "scm-2",
+      ldoc = "scm-2",
+      luacheck = "0.24.0-2",
+      luafilesystem = "cvs-4",
+      luaformatter = "scm-1",
+      markdown = "0.33-1",
+      penlight = "1.7.0-1"
+   },
+   dependencies = {
+      lua = "5.1-1"
+   },
+}

@@ -88,3 +88,11 @@ format-css:
 .PHONY: lint-css
 lint-css:
 	@yarn run stylelint "${PANORAMA_CSS_PATH}"
+
+# used by luarocks
+.PHONY: rock-build
+rock-build: lint-lua
+
+# used by luarocks
+.PHONY: rock-install
+rock-install: doc-lua
