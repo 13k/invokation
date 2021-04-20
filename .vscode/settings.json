@@ -88,7 +88,8 @@
     "config.ld",
     "lua_modules",
     "*.rockspec",
-    "game/scripts/vscripts/pl"
+    "game/scripts/vscripts/pl",
+    "game/scripts/vscripts/moses.lua"
   ],
   "Lua.diagnostics.disable": ["emmy-lua"],
   "Lua.diagnostics.globals": [
