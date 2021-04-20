@@ -21,24 +21,30 @@
     "link": "node scripts/main.js link",
     "format:lua": "node scripts/main.js format-lua",
     "launch:game": "node scripts/main.js launch game",
-    "launch:tools": "node scripts/main.js launch tools"
+    "launch:tools": "node scripts/main.js launch tools",
+    "test:panorama": "mocha"
   },
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@moddota/panorama-types": "^1.8.0",
+    "@types/chai": "^4.2.16",
     "@types/lodash": "^4.14.168",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.41",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
     "@yarnpkg/pnpify": "^2.4.0",
-    "chalk": "^4.1.1",
+    "chai": "^4.3.4",
+    "chalk": "^4.1.0",
     "commander": "^7.2.0",
     "dotenv": "^9.0.2",
     "eslint": "^7.26.0",
     "fs-extra": "^9.1.0",
     "globby": "^11.0.3",
     "js-yaml": "^4.1.0",
+    "mocha": "^8.3.2",
     "node-emoji": "^1.10.0",
     "p-map": "^4.0.0",
     "picomatch": "^2.2.3",
@@ -52,6 +58,7 @@
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
     "tmp-promise": "^3.0.2",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
     "vdf-parser": "^1.1.0"
   }
