@@ -19,13 +19,22 @@
 
 "CustomEvents"
 {
-  "invokation_picker_toggle"
+  "invokation_combos_reload" {}
+  "invokation_picker_toggle" {}
+
+  "invokation_combo_start"
   {
+    "id" "string"
+  }
+
+  "invokation_combo_started"
+  {
+    "id" "string"
   }
 
   "invokation_viewer_render"
   {
-    "id" "uint64"
+    "id" "string"
   }
 
   "invokation_popup_text_entry_submit"

@@ -2,7 +2,6 @@
 {
   custom_net_tables =
   [
-    "selection",
     "invokation",
   ]
 }
