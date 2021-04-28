@@ -1,10 +1,17 @@
-// const { Component } = context;
-// const { Grid } = global;
-// const { Sequence } = global.Sequence;
-// const { IsInvocationAbility } = global.Util;
-// const { EVENTS } = global.Const;
-
 import { Component } from "./lib/component";
+import { CombatLogAbilityUsedEvent, CustomEvent } from "./lib/const/events";
+import { CustomEvents } from "./lib/custom_events";
+import { Grid } from "./lib/grid";
+import { isInvocationAbility } from "./lib/invoker";
+import { SerialSequence } from "./lib/sequence";
+
+export type Inputs = never;
+export type Outputs = never;
+
+interface Elements {
+  contents: Panel;
+  filterInvocations: ToggleButton;
+}
 
 const DYN_ELEMS = {
   ROW: {
@@ -25,24 +32,28 @@ const DYN_ELEMS = {
 const GRID_COLUMNS = 20;
 const CLOSED_CLASS = "closed";
 
-const rowId = (index) => `${DYN_ELEMS.ROW.idPrefix}-${index}`;
-const iconId = (row, col) => `${DYN_ELEMS.ICON.idPrefix}-${row}-${col}`;
-const iconImageId = (iconId) => `${iconId}-${DYN_ELEMS.ICON_IMAGE.idSuffix}`;
+const rowID = (index: number) => `${DYN_ELEMS.ROW.idPrefix}-${index}`;
+const iconID = (row: number, col: number) => `${DYN_ELEMS.ICON.idPrefix}-${row}-${col}`;
+const iconImageID = (iconID: string) => `${iconID}-${DYN_ELEMS.ICON_IMAGE.idSuffix}`;
 
-class CombatLog extends Component {
+export class CombatLog extends Component {
+  #elements: Elements;
+  #grid: Grid<string>;
+  #rowIdx = -1;
+  #row: Panel | null = null;
+
   constructor() {
-    super({
-      elements: {
-        contents: "contents",
-        filterInvocations: "filter-invocations",
-      },
-      customEvents: {
-        "!COMBAT_LOG_ABILITY_USED": "onAbilityUsed",
-        "!COMBAT_LOG_CLEAR": "onClear",
-      },
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      contents: "contents",
+      filterInvocations: "filter-invocations",
     });
 
-    this.grid = new Grid(GRID_COLUMNS);
+    this.onCustomEvent(CustomEvent.COMBAT_LOG_CLEAR, this.onClear);
+    this.onCustomEvent(CustomEvent.COMBAT_LOG_ABILITY_USED, this.onAbilityUsed);
+
+    this.#grid = new Grid(GRID_COLUMNS);
 
     this.resetRow();
     this.start();
@@ -51,17 +62,17 @@ class CombatLog extends Component {
 
   // ----- Event handlers -----
 
-  onClear() {
+  onClear(): void {
     this.debug("onClear()");
     this.clear();
   }
 
-  onAbilityUsed(payload) {
+  onAbilityUsed(payload: NetworkedData<CombatLogAbilityUsedEvent>): void {
     this.debug("onAbilityUsed()", payload);
 
     const { ability } = payload;
 
-    if (this.isFilteringInvocations() && IsInvocationAbility(ability)) {
+    if (this.isFilteringInvocations() && isInvocationAbility(ability)) {
       return;
     }
 
@@ -70,88 +81,88 @@ class CombatLog extends Component {
 
   // ----- Helpers -----
 
-  startCapturing() {
-    this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_START);
+  startCapturing(): void {
+    CustomEvents.sendServer(CustomEvent.COMBAT_LOG_CAPTURE_START);
   }
 
-  stopCapturing() {
-    this.sendServer(EVENTS.COMBAT_LOG_CAPTURE_STOP);
+  stopCapturing(): void {
+    CustomEvents.sendServer(CustomEvent.COMBAT_LOG_CAPTURE_STOP);
   }
 
-  isOpen() {
-    return !this.$ctx.BHasClass(CLOSED_CLASS);
+  isOpen(): boolean {
+    return !this.ctx.BHasClass(CLOSED_CLASS);
   }
 
-  isFilteringInvocations() {
-    return this.$filterInvocations.checked;
+  isFilteringInvocations(): boolean {
+    return this.#elements.filterInvocations.checked;
   }
 
-  start() {
+  start(): void {
     this.startCapturing();
   }
 
-  stop() {
+  stop(): void {
     this.stopCapturing();
   }
 
-  appendToGrid(abilityName) {
-    this.grid.Add(abilityName);
+  appendToGrid(abilityName: string): void {
+    this.#grid.add(abilityName);
 
-    if (this.grid.row !== this.rowIdx) {
+    if (this.#grid.row !== this.#rowIdx) {
       this.addRow();
     }
   }
 
-  clearGrid() {
-    this.grid.Clear();
+  clearGrid(): void {
+    this.#grid.clear();
   }
 
-  resetRow() {
-    this.rowIdx = -1;
-    this.$row = null;
+  resetRow(): void {
+    this.#rowIdx = -1;
+    this.#row = null;
   }
 
-  createRow() {
+  createRow(): void {
     const { cssClass } = DYN_ELEMS.ROW;
 
-    const id = rowId(this.grid.row);
-    const panel = this.createPanel(this.$contents, id, {
+    const id = rowID(this.#grid.row);
+    const panel = this.createPanel(this.#elements.contents, id, {
       classes: [cssClass],
     });
 
-    this.rowIdx = this.grid.row;
-    this.$row = panel;
+    this.#rowIdx = this.#grid.row;
+    this.#row = panel;
 
-    this.debug("createRow()", { id, cell: this.grid.index });
-
-    return panel;
+    this.debug("createRow()", { id, cell: this.#grid.index });
   }
 
-  createGridItem(abilityName) {
+  createGridItem(abilityName: string): void {
+    if (this.#row == null) {
+      throw Error(`Tried to create grid item without a row`);
+    }
+
     const { cssClass } = DYN_ELEMS.ICON;
 
-    const id = iconId(this.grid.row, this.grid.col);
-    const panel = this.createPanel(this.$row, id, {
+    const id = iconID(this.#grid.row, this.#grid.col);
+    const panel = this.createPanel(this.#row, id, {
       classes: [cssClass],
     });
 
     const iconImage = this.createGridItemImage(panel, abilityName);
 
     this.debug("createAbility()", {
-      cell: this.grid.index,
+      cell: this.#grid.index,
       ability: abilityName,
       iconId: panel.id,
       imageId: iconImage.id,
       imageType: iconImage.paneltype,
     });
-
-    return panel;
   }
 
-  createGridItemImage(parent, abilityName) {
+  createGridItemImage(parent: Panel, abilityName: string): ItemImage | AbilityImage {
     const { cssClass, scaling } = DYN_ELEMS.ICON_IMAGE;
 
-    const id = iconImageId(parent.id);
+    const id = iconImageID(parent.id);
 
     return this.createAbilityOrItemImage(parent, id, abilityName, {
       classes: [cssClass],
@@ -161,49 +172,43 @@ class CombatLog extends Component {
 
   // ----- Action runners -----
 
-  open() {
-    return new Sequence().RemoveClass(this.$ctx, CLOSED_CLASS).Start();
+  open(): void {
+    new SerialSequence().RemoveClass(this.ctx, CLOSED_CLASS).run();
   }
 
-  close() {
-    return new Sequence().AddClass(this.$ctx, CLOSED_CLASS).Start();
+  close(): void {
+    new SerialSequence().AddClass(this.ctx, CLOSED_CLASS).run();
   }
 
-  addRow() {
-    return new Sequence()
+  addRow(): void {
+    new SerialSequence()
       .RunFunction(() => this.createRow())
-      .ScrollToBottom(this.$contents)
-      .Start();
+      .ScrollToBottom(this.#elements.contents)
+      .run();
   }
 
-  addColumn(abilityName) {
-    return new Sequence()
+  addColumn(abilityName: string): void {
+    new SerialSequence()
       .RunFunction(() => this.appendToGrid(abilityName))
       .RunFunction(() => this.createGridItem(abilityName))
-      .ScrollToBottom(this.$contents)
-      .Start();
+      .ScrollToBottom(this.#elements.contents)
+      .run();
   }
 
-  clear() {
-    return new Sequence()
+  clear(): void {
+    new SerialSequence()
       .RunFunction(() => this.clearGrid())
       .RunFunction(() => this.resetRow())
-      .RemoveChildren(this.$contents)
-      .Start();
+      .RemoveChildren(this.#elements.contents)
+      .run();
   }
 
-  // ----- UI methods -----
-
-  Toggle() {
+  toggle(): void {
     if (this.isOpen()) {
       return this.close();
     }
 
-    return this.open();
-  }
-
-  Clear() {
-    return this.clear();
+    this.open();
   }
 }
 

@@ -1,3 +1,11 @@
+import { mapValues, pull } from "lodash";
+import type {
+  CustomEventName,
+  CustomEventType,
+  EventListener,
+  EventName,
+  EventType,
+} from "./const/events";
 import { DeepMap } from "./deep_map";
 
 export class CustomEvents {
@@ -13,56 +21,57 @@ export class CustomEvents {
     return this.subs.set(path, []);
   }
 
-  static add(path: string, id: GameEventListenerID): GameEventListenerID {
-    this.get(path).push(id);
+  static add(path: string, listenerID: GameEventListenerID): GameEventListenerID {
+    this.get(path).push(listenerID);
 
-    return id;
+    return listenerID;
   }
 
-  static subscribe<T extends invk.Events.EventName>(
+  static remove(path: string, listenerID: GameEventListenerID): GameEventListenerID {
+    pull(this.get(path), listenerID);
+
+    return listenerID;
+  }
+
+  static subscribe<T extends EventName>(
     path: string,
     event: T,
-    listener: invk.Events.EventListener<T>
+    listener: EventListener<T>
   ): GameEventListenerID {
     return this.add(`${path}.${event}`, GameEvents.Subscribe(event, listener));
   }
 
-  // TODO: remove ids from paths
-  static unsubscribe(path: string, ...ids: GameEventListenerID[]): void {
-    ids.forEach(GameEvents.Unsubscribe);
+  static unsubscribe(path: string, ...listenerIDs: GameEventListenerID[]): GameEventListenerID[] {
+    return listenerIDs.map((listenerID) => {
+      GameEvents.Unsubscribe(listenerID);
+
+      return this.remove(path, listenerID);
+    });
   }
 
-  // TODO: implement
-  static unsubscribeSiblings(path: string): GameEventListenerID[] {
-    return [];
+  static unsubscribeSiblings(path: string): { [path: string]: GameEventListenerID[] } {
+    const siblingSubs = this.subs.getSiblings(path);
+
+    return mapValues(siblingSubs, (subs, subPath) => this.unsubscribe(subPath, ...subs));
   }
 
-  static sendServer(
-    event: invk.Events.CustomEventName,
-    payload?: invk.Events.CustomEventType<typeof event>
-  ): void {
-    GameEvents.SendCustomGameEventToServer(event, payload || {});
+  static sendServer(event: CustomEventName, payload?: CustomEventType<typeof event>): void {
+    GameEvents.SendCustomGameEventToServer(event, payload);
   }
 
-  static sendAll(
-    event: invk.Events.CustomEventName,
-    payload?: invk.Events.CustomEventType<typeof event>
-  ): void {
-    GameEvents.SendCustomGameEventToAllClients(event, payload || {});
+  static sendAll(event: CustomEventName, payload?: CustomEventType<typeof event>): void {
+    GameEvents.SendCustomGameEventToAllClients(event, payload);
   }
 
   static sendPlayer(
     playerIndex: PlayerID,
-    event: invk.Events.CustomEventName,
-    payload?: invk.Events.CustomEventType<typeof event>
+    event: CustomEventName,
+    payload?: CustomEventType<typeof event>
   ): void {
-    GameEvents.SendCustomGameEventToClient(event, playerIndex, payload || {});
+    GameEvents.SendCustomGameEventToClient(event, playerIndex, payload);
   }
 
-  static sendClientSide(
-    event: invk.Events.EventName,
-    payload?: invk.Events.EventType<typeof event>
-  ): void {
-    GameEvents.SendEventClientSide(event, payload || {});
+  static sendClientSide(event: EventName, payload?: EventType<typeof event>): void {
+    GameEvents.SendEventClientSide(event, payload);
   }
 }

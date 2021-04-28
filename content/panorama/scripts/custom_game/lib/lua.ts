@@ -1,5 +1,21 @@
 import { hasOwnEnumerableProperty, hasOwnProperty } from "./object";
 
+export interface Table {
+  [key: string]: string | number | boolean | null | Sequence<Table> | Table;
+}
+
+/**
+ * {@link https://www.lua.org/manual/5.4/manual.html#3.4.7}.
+ */
+export interface Sequence<Item> {
+  [key: number]: Item;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface Sequence<Item> {
+  n?: number;
+}
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 function hasSequenceLengthProperty<T extends {}>(obj: T): obj is T & Record<"n", number> {
   if (!hasOwnEnumerableProperty(obj, "n")) {
@@ -49,7 +65,7 @@ function hasSequenceIndices<T extends {}>(obj: T, length: number): boolean {
  *
  * Lua sequences are defined here: {@link https://www.lua.org/manual/5.4/manual.html#3.4.7}.
  */
-export function isSequence<Item>(obj: unknown): obj is invk.Lua.Sequence<Item> {
+export function isSequence<Item>(obj: unknown): obj is Sequence<Item> {
   // TODO(perf): optimize multiple iterations over object.
 
   if (typeof obj !== "object") {
@@ -80,8 +96,8 @@ export function isSequence<Item>(obj: unknown): obj is invk.Lua.Sequence<Item> {
   return length >= 0 && hasSequenceIndices(obj, length);
 }
 
-type FromSequenceItem<T> = T extends invk.Lua.Sequence<infer Item> ? Item : unknown;
-type FromSequenceResult<T, Item> = T extends invk.Lua.Sequence<Item> ? Item[] : null;
+type FromSequenceItem<T> = T extends Sequence<infer Item> ? Item : unknown;
+type FromSequenceResult<T, Item> = T extends Sequence<Item> ? Item[] : null;
 
 /**
  * Similar to `Array.from`, attempts to create an `Array` instance from an object representation of

@@ -1,58 +1,103 @@
-"use strict";
+import { transform } from "lodash";
+import { Component } from "../lib/component";
+import { UIEvents } from "../lib/ui_events";
 
-((global, context) => {
-  const { Component } = context;
-  const { lodash: _ } = global;
+export type Inputs = never;
+export type Outputs = never;
 
-  class Popup extends Component {
-    constructor(options) {
-      super(options);
+interface AttributeTypes {
+  string: string;
+  int: number;
+  uint32: number;
+  boolean: boolean;
+  heroID: HeroID;
+  heroImageStyle: HeroImage["heroimagestyle"];
+}
 
-      this._attributes = null;
-    }
+type AttributeOptions = Record<string, keyof AttributeTypes>;
 
-    get attributes() {
-      if (this._attributes) return this._attributes;
+type Attributes<T extends AttributeOptions> = {
+  [K in keyof T]: AttributeTypes[T[K]];
+};
 
-      this._attributes = _.transform(
-        this.options.attributes,
-        (attrs, type, name) => {
-          let value;
+export interface PopupComponentOptions<AttrOpts> {
+  attributes?: AttrOpts;
+}
 
-          switch (type) {
-            case "string":
-              value = this.$ctx.GetAttributeString(name, "");
-              break;
-            case "int":
-              value = this.$ctx.GetAttributeInt(name, 0);
-              break;
-            case "uint32":
-              value = this.$ctx.GetAttributeUInt32(name, 0);
-              break;
-            default:
-              throw new Error(`Invalid attribute type ${type}`);
-          }
+const CHAN_ATTR = "channel";
+const DEFAULT_CHAN = "__channel__";
 
-          attrs[name] = value;
-        },
-        {}
-      );
+export abstract class Popup<AttrOpts extends AttributeOptions> extends Component {
+  #attrOptions: AttrOpts;
+  #attributes?: Attributes<AttrOpts>;
+  channel: string = DEFAULT_CHAN;
 
-      return this._attributes;
-    }
+  constructor({ attributes }: PopupComponentOptions<AttrOpts> = {}) {
+    super();
 
-    load() {
-      this.channel = this.$ctx.GetAttributeString("channel", "<invalid>");
-      this.debugFn(() => ["load()", Object.assign({}, { channel: this.channel }, this.attributes)]);
-      this.render();
-    }
-
-    render() {}
-
-    close() {
-      this.closePopup(this.$ctx);
-    }
+    this.#attrOptions = attributes ?? ({} as AttrOpts);
   }
 
-  context.Popup = Popup;
-})(GameUI.CustomUIConfig(), this);
+  get attributes(): Attributes<AttrOpts> {
+    if (this.#attributes == null) {
+      this.#attributes = getAttributes(this.ctx, this.#attrOptions);
+    }
+
+    return this.#attributes;
+  }
+
+  load(): void {
+    this.channel = this.ctx.GetAttributeString(CHAN_ATTR, this.channel);
+    this.debugFn(() => ["load()", { channel: this.channel, ...this.attributes }]);
+    this.render();
+  }
+
+  abstract render(): void;
+
+  close(): void {
+    UIEvents.closePopup(this.ctx);
+  }
+}
+
+//   context.Popup = Popup;
+// })(GameUI.CustomUIConfig(), this);
+
+function getAttribute<T extends AttributeOptions, K extends keyof T>(
+  panel: Panel,
+  options: T,
+  attrName: K
+): AttributeTypes[T[K]] {
+  const sAttrName = String(attrName);
+  const typeName: keyof AttributeTypes = options[attrName];
+  let _exhaustiveCheck: never;
+
+  // typescript bug?
+
+  switch (typeName) {
+    case "string":
+    case "heroImageStyle":
+      return panel.GetAttributeString(sAttrName, "") as AttributeTypes[T[K]];
+    case "int":
+    case "heroID":
+      return panel.GetAttributeInt(sAttrName, 0) as AttributeTypes[T[K]];
+    case "uint32":
+      return panel.GetAttributeUInt32(sAttrName, 0) as AttributeTypes[T[K]];
+    case "boolean":
+      return (panel.GetAttributeInt(sAttrName, 0) == 1) as AttributeTypes[T[K]];
+    default:
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _exhaustiveCheck = typeName;
+  }
+
+  throw new Error(`Invalid attribute type ${typeName}`);
+}
+
+function getAttributes<T extends AttributeOptions>(panel: Panel, options: T): Attributes<T> {
+  return transform<T, Attributes<T>>(
+    options,
+    (attributes, _typeName, attrName) => {
+      attributes[attrName] = getAttribute(panel, options, attrName);
+    },
+    {} as Attributes<T>
+  );
+}

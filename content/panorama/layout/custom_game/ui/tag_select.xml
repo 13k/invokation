@@ -19,7 +19,7 @@
   </snippets>
 
   <Panel class="root" hittest="false">
-    <DropDown id="options" oninputsubmit="component.onOptionSelect()" />
+    <DropDown id="options" />
     <Panel id="tags" />
   </Panel>
 </root>

@@ -1,4 +1,37 @@
 import { transform } from "lodash";
+import type { Component } from "../component";
+
+// --------------------------------------------------
+// Helper types
+// --------------------------------------------------
+
+export type WithComponent<T extends PanelBase, C extends Component> = T & { component: C };
+export type PanelWithComponent<C extends Component> = WithComponent<Panel, C>;
+export type PanelWithText = Panel & { text: string };
+
+export type AbilityImageOwn = Omit<AbilityImage, keyof Panel>;
+export type AbilityImageOwnWritable = Writable<AbilityImageOwn>;
+
+export type ItemImageOwn = Omit<ItemImage, keyof Panel>;
+export type ItemImageOwnWritable = Writable<ItemImageOwn>;
+
+export type HeroImageOwn = Omit<HeroImage, keyof Panel>;
+export type HeroImageOwnWritable = Writable<HeroImageOwn>;
+
+export type ProgressBarOwn = Omit<ProgressBar, keyof Panel>;
+export type ProgressBarOwnWritable = Writable<ProgressBarOwn>;
+
+// --------------------------------------------------
+// Enums and constants
+// --------------------------------------------------
+
+export enum CSSClass {
+  Development = "development",
+  Hide = "Hide",
+  Show = "Show",
+  Activated = "Activated",
+  SceneLoaded = "SceneLoaded",
+}
 
 export enum PanelType {
   Panel = "Panel",
@@ -83,11 +116,3 @@ export const PANEL_TYPES = transform(
   },
   {} as { [key: string]: string }
 );
-
-export enum CSSClass {
-  Development = "development",
-  Hide = "Hide",
-  Show = "Show",
-  Activated = "Activated",
-  SceneLoaded = "SceneLoaded",
-}

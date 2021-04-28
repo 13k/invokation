@@ -1,24 +1,22 @@
 import { find, intersection, matchesProperty, sortBy } from "lodash";
 import { Callbacks } from "./callbacks";
+import type { Combo, Property } from "./combo";
+import { TraitProperty } from "./combo";
 
-const SORT_ORDER: invk.Combo.Property[] = ["heroLevel", "difficultyRating", "id"];
+const SORT_ORDER: Property[] = ["heroLevel", "difficultyRating", "id"];
 
 const isFilterValue = (value?: string | null): value is string => value != null && value !== "";
 
-const matchesTags = (tags: string[]) => (combo: invk.Combo.Combo): boolean =>
+const matchesTags = (tags: string[]) => (combo: Combo): boolean =>
   intersection(combo.tags, tags).length > 0;
 
-const matchesItem = (item: string) => (combo: invk.Combo.Combo): boolean =>
+const matchesItem = (item: string) => (combo: Combo): boolean =>
   !!find(combo.sequence, ["name", item]);
 
-const matchesAbility = (ability: string) => (combo: invk.Combo.Combo): boolean =>
+const matchesAbility = (ability: string) => (combo: Combo): boolean =>
   !!find(combo.sequence, ["name", ability]);
 
-function filterByTrait(
-  combos: invk.Combo.Combo[],
-  trait: invk.Combo.TraitProperty,
-  value?: string | null
-): invk.Combo.Combo[] {
+function filterByTrait(combos: Combo[], trait: TraitProperty, value?: string | null): Combo[] {
   if (!isFilterValue(value)) {
     return combos;
   }
@@ -26,7 +24,7 @@ function filterByTrait(
   return combos.filter(matchesProperty(trait, value));
 }
 
-function filterByTags(combos: invk.Combo.Combo[], tags?: string[] | null): invk.Combo.Combo[] {
+function filterByTags(combos: Combo[], tags?: string[] | null): Combo[] {
   if (tags == null || tags.length === 0) {
     return combos;
   }
@@ -34,7 +32,7 @@ function filterByTags(combos: invk.Combo.Combo[], tags?: string[] | null): invk.
   return combos.filter(matchesTags(tags));
 }
 
-function filterByItem(combos: invk.Combo.Combo[], item?: string | null): invk.Combo.Combo[] {
+function filterByItem(combos: Combo[], item?: string | null): Combo[] {
   if (!isFilterValue(item)) {
     return combos;
   }
@@ -42,7 +40,7 @@ function filterByItem(combos: invk.Combo.Combo[], item?: string | null): invk.Co
   return combos.filter(matchesItem(item));
 }
 
-function filterByAbility(combos: invk.Combo.Combo[], ability?: string | null): invk.Combo.Combo[] {
+function filterByAbility(combos: Combo[], ability?: string | null): Combo[] {
   if (!isFilterValue(ability)) {
     return combos;
   }
@@ -50,10 +48,10 @@ function filterByAbility(combos: invk.Combo.Combo[], ability?: string | null): i
   return combos.filter(matchesAbility(ability));
 }
 
-interface ChangeEvent {
-  combos: invk.Combo.Combo[];
-  visible: invk.Combo.Combo[];
-  hidden: invk.Combo.Combo[];
+export interface ChangeEvent {
+  combos: Combo[];
+  visible: Combo[];
+  hidden: Combo[];
 }
 
 interface CombosViewCallbacks {
@@ -61,7 +59,7 @@ interface CombosViewCallbacks {
 }
 
 export type Filters = {
-  [Property in invk.Combo.TraitProperty]?: string;
+  [Property in TraitProperty]?: string;
 } & {
   tags?: string[];
   ability?: string;
@@ -69,27 +67,29 @@ export type Filters = {
 };
 
 export class CombosView {
-  #combos: invk.Combo.Combo[];
-  #view: invk.Combo.Combo[];
-  #hidden: invk.Combo.Combo[];
+  #combos: Combo[];
+  #view: Combo[];
+  #hidden: Combo[];
   #visible: { [id: string]: boolean };
   #cb: Callbacks<CombosViewCallbacks>;
 
-  constructor(combos: invk.Combo.Combo[]) {
+  constructor(combos?: Combo[]) {
     this.#combos = [];
     this.#view = [];
     this.#hidden = [];
     this.#visible = {};
     this.#cb = new Callbacks();
 
-    this.combos = combos;
+    if (combos != null) {
+      this.combos = combos;
+    }
   }
 
-  private get _view(): invk.Combo.Combo[] {
+  private get _view(): Combo[] {
     return this.#view;
   }
 
-  private set _view(combos: invk.Combo.Combo[]) {
+  private set _view(combos: Combo[]) {
     this.#view = combos;
     this.#visible = Object.fromEntries(combos.map(({ id }): [string, boolean] => [id, true]));
     this.#hidden = this.combos.filter(({ id }) => !this.isVisible(id));
@@ -103,22 +103,26 @@ export class CombosView {
     });
   }
 
-  get combos(): invk.Combo.Combo[] {
+  get length(): number {
+    return this.visible.length;
+  }
+
+  get combos(): Combo[] {
     return this.#combos;
   }
 
-  set combos(combos: invk.Combo.Combo[]) {
+  set combos(combos: Combo[]) {
     combos = combos || [];
 
     this.#combos = combos;
     this._view = combos;
   }
 
-  get visible(): invk.Combo.Combo[] {
+  get visible(): Combo[] {
     return this._view;
   }
 
-  get hidden(): invk.Combo.Combo[] {
+  get hidden(): Combo[] {
     return this.#hidden;
   }
 
@@ -133,7 +137,7 @@ export class CombosView {
   filter(filters: Filters): void {
     let combos = this.combos;
 
-    Object.values(invk.Combo.TraitProperty).forEach((property) => {
+    Object.values(TraitProperty).forEach((property) => {
       combos = filterByTrait(combos, property, filters[property]);
     });
 

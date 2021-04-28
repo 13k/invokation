@@ -1,12 +1,45 @@
-// const { Component } = context;
-// const { lodash: _, L10n, COMBOS } = global;
-// const { Sequence, ParallelSequence, RunFunctionAction } = global.Sequence;
-// const { COMPONENTS, CSS_CLASSES, EVENTS } = global.Const;
-
+import { COMBOS } from "./custom_ui_manifest";
+import type { Combo, ComboID, Step } from "./lib/combo";
 import { Component } from "./lib/component";
+import { ComponentLayout, COMPONENTS } from "./lib/const/component";
+import { CustomEvent, ViewerRenderEvent } from "./lib/const/events";
+import type { PanelWithComponent } from "./lib/const/panorama";
+import { CSSClass } from "./lib/const/panorama";
+import { CustomEvents } from "./lib/custom_events";
+import { Orb } from "./lib/invoker";
+import { comboKey, localizeFallback } from "./lib/l10n";
+import { Action, ParallelSequence, RunFunctionAction, SerialSequence } from "./lib/sequence";
+import { UIEvents } from "./lib/ui_events";
+import type { Inputs as TalentsDisplayInputs, UITalentsDisplay } from "./ui/talents_display";
+import type { Inputs as StepInputs } from "./viewer_combo_step";
+import type { Inputs as PropertiesInputs } from "./viewer_properties";
+
+export type Inputs = never;
+export type Outputs = never;
+
+interface Elements {
+  scrollPanel: Panel;
+  propertiesSection: Panel;
+  titleLabel: LabelPanel;
+  descriptionLabel: LabelPanel;
+  sequence: Panel;
+  talents: TalentsPanel;
+  orbQuas: AbilityImage;
+  orbQuasLabel: LabelPanel;
+  orbWex: AbilityImage;
+  orbWexLabel: LabelPanel;
+  orbExort: AbilityImage;
+  orbExortLabel: LabelPanel;
+}
+
+type TalentsPanel = PanelWithComponent<UITalentsDisplay>;
+
+const { inputs: TALENTS_INPUTS } = COMPONENTS.UI_TALENTS_DISPLAY;
+const { inputs: PROPERTIES_INPUTS } = COMPONENTS.VIEWER_PROPERTIES;
+const { inputs: STEP_INPUTS } = COMPONENTS.VIEWER_COMBO_STEP;
 
 const CLASSES = {
-  CLOSED: CSS_CLASSES.HIDE,
+  CLOSED: CSSClass.Hide,
 };
 
 const PROPERTIES_ID = "viewer-properties";
@@ -15,42 +48,40 @@ const L10N_FALLBACK_IDS = {
   description: "invokation_viewer_description_lorem",
 };
 
-const ORBS = ["quas", "wex", "exort"];
-
-const stepPanelId = (step) => `combo-step-${step.id}-${step.name}`;
-
-const htmlTitle = (title) =>
-  _.chain(title)
+const stepPanelID = (step: Step) => `combo-step-${step.index}-${step.name}`;
+const htmlTitle = (title: string) =>
+  title
     .split(" - ")
     .map((line, i) => {
       const heading = i === 0 ? "h1" : "h3";
       return `<${heading}>${line}</${heading}>`;
     })
-    .join("")
-    .value();
+    .join("");
 
-class Viewer extends Component {
+export class Viewer extends Component {
+  #elements: Elements;
+  combo?: Combo;
+
   constructor() {
-    super({
-      elements: {
-        scrollPanel: "scroll-panel",
-        propertiesSection: "properties-section",
-        titleLabel: "title",
-        descriptionLabel: "description",
-        sequence: "sequence",
-        talents: "talents",
-        orbQuas: "ability-quas",
-        orbQuasLabel: "ability-quas-label",
-        orbWex: "ability-wex",
-        orbWexLabel: "ability-wex-label",
-        orbExort: "ability-exort",
-        orbExortLabel: "ability-exort-label",
-      },
-      customEvents: {
-        "!VIEWER_RENDER": "onViewerRender",
-        "!COMBO_STARTED": "onComboStarted",
-      },
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      scrollPanel: "scroll-panel",
+      propertiesSection: "properties-section",
+      titleLabel: "title",
+      descriptionLabel: "description",
+      sequence: "sequence",
+      talents: "talents",
+      orbQuas: "ability-quas",
+      orbQuasLabel: "ability-quas-label",
+      orbWex: "ability-wex",
+      orbWexLabel: "ability-wex-label",
+      orbExort: "ability-exort",
+      orbExortLabel: "ability-exort-label",
     });
+
+    this.onCustomEvent(CustomEvent.VIEWER_RENDER, this.onViewerRender);
+    this.onCustomEvent(CustomEvent.COMBO_STARTED, this.onComboStarted);
 
     this.renderTalents();
     this.debug("init");
@@ -58,165 +89,224 @@ class Viewer extends Component {
 
   // --- Event handlers -----
 
-  onComboStarted() {
+  onComboStarted(): void {
     this.debug("onComboStarted()");
     this.close();
   }
 
-  onViewerRender(payload) {
+  onViewerRender(payload: NetworkedData<ViewerRenderEvent>): void {
     this.debug("onViewerRender()", payload);
     this.view(payload.id);
   }
 
   // ----- Helpers -----
 
-  renderTalents() {
-    const { layout } = COMPONENTS.UI.TALENTS_DISPLAY;
-
-    this.loadComponent(this.$talents, layout);
+  hasCombo(): this is { combo: Combo } {
+    return this.combo != null;
   }
 
-  resetSelectedTalents() {
-    const { inputs } = COMPONENTS.UI.TALENTS_DISPLAY;
-
-    this.$talents.component.Input(inputs.RESET);
+  orbElem(orb: Orb): AbilityImage {
+    switch (orb) {
+      case Orb.Quas:
+        return this.#elements.orbQuas;
+      case Orb.Wex:
+        return this.#elements.orbWex;
+      case Orb.Exort:
+        return this.#elements.orbExort;
+    }
   }
 
-  selectTalents() {
-    const { inputs } = COMPONENTS.UI.TALENTS_DISPLAY;
-
-    this.$talents.component.Input(inputs.SELECT, { talents: this.combo.talents });
+  renderTalents(): void {
+    this.loadComponent(this.#elements.talents, ComponentLayout.UITalentsDisplay);
   }
 
-  startCombo() {
+  resetSelectedTalents(): void {
+    this.#elements.talents.component.input(TALENTS_INPUTS.RESET);
+  }
+
+  selectTalents(): void {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.selectTalents called without combo");
+    }
+
+    const payload: TalentsDisplayInputs[typeof TALENTS_INPUTS.SELECT] = {
+      talents: this.combo.talents,
+    };
+
+    this.#elements.talents.component.input(TALENTS_INPUTS.SELECT, payload);
+  }
+
+  startCombo(): void {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.startCombo called without combo");
+    }
+
     this.debug("startCombo()", this.combo.id);
-    this.sendServer(EVENTS.COMBO_START, { id: this.combo.id });
+
+    CustomEvents.sendServer(CustomEvent.COMBO_START, { id: this.combo.id });
   }
 
-  createStepPanel(parent, step) {
-    const { layout, inputs } = COMPONENTS.VIEWER.COMBO_STEP;
+  createStepPanel(parent: Panel, step: Step): void {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.createStepPanel called without combo");
+    }
 
-    const id = stepPanelId(step);
+    const id = stepPanelID(step);
+    const setStepPayload: StepInputs[typeof STEP_INPUTS.SET_STEP] = { combo: this.combo, step };
 
-    return this.createComponent(parent, id, layout, {
+    this.createComponent(parent, id, ComponentLayout.ViewerComboStep, {
       inputs: {
-        [inputs.SET_STEP]: { combo: this.combo, step },
+        [STEP_INPUTS.SET_STEP]: setStepPayload,
       },
     });
   }
 
-  createPropertiesPanel() {
-    const { layout, inputs } = COMPONENTS.VIEWER.PROPERTIES;
+  createPropertiesPanel(): void {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.createPropertiesPanel called without combo");
+    }
 
-    return this.createComponent(this.$propertiesSection, PROPERTIES_ID, layout, {
-      inputs: {
-        [inputs.SET_COMBO]: this.combo,
-      },
-    });
+    const setComboPayload: PropertiesInputs[typeof PROPERTIES_INPUTS.SET_COMBO] = {
+      combo: this.combo,
+    };
+
+    this.createComponent(
+      this.#elements.propertiesSection,
+      PROPERTIES_ID,
+      ComponentLayout.ViewerProperties,
+      {
+        inputs: {
+          [PROPERTIES_INPUTS.SET_COMBO]: setComboPayload,
+        },
+      }
+    );
   }
 
   // ----- Actions -----
 
-  openAction() {
-    return new Sequence().RemoveClass(this.$ctx, CLASSES.CLOSED);
+  openAction(): Action {
+    return new SerialSequence().RemoveClass(this.ctx, CLASSES.CLOSED);
   }
 
-  closeAction() {
-    return new Sequence().AddClass(this.$ctx, CLASSES.CLOSED);
+  closeAction(): Action {
+    return new SerialSequence().AddClass(this.ctx, CLASSES.CLOSED);
   }
 
-  renderAction() {
-    return new Sequence()
+  renderAction(): Action {
+    return new SerialSequence()
       .Action(this.renderInfoAction())
       .Action(this.renderPropertiesAction())
       .Action(this.renderTalentsAction())
       .Action(this.renderOrbsAction())
       .Action(this.renderSequenceAction())
-      .ScrollToTop(this.$scrollPanel);
+      .ScrollToTop(this.#elements.scrollPanel);
   }
 
-  renderInfoAction() {
+  renderInfoAction(): Action {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.renderInfoAction called without combo");
+    }
+
     const title = htmlTitle(this.combo.l10n.name);
-    const descriptionL10nKey = L10n.ComboKey(this.combo, "description");
-    const description = L10n.LocalizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
+    const descriptionL10nKey = comboKey(this.combo, "description");
+    const description = localizeFallback(descriptionL10nKey, L10N_FALLBACK_IDS.description);
 
     return new ParallelSequence()
-      .SetText(this.$titleLabel, title)
-      .SetText(this.$descriptionLabel, description);
+      .SetText(this.#elements.titleLabel, title)
+      .SetText(this.#elements.descriptionLabel, description);
   }
 
-  renderPropertiesAction() {
-    return new Sequence()
-      .RemoveChildren(this.$propertiesSection)
+  renderPropertiesAction(): Action {
+    return new SerialSequence()
+      .RemoveChildren(this.#elements.propertiesSection)
       .RunFunction(() => this.createPropertiesPanel());
   }
 
-  renderTalentsAction() {
-    return new Sequence()
+  renderTalentsAction(): Action {
+    return new SerialSequence()
       .RunFunction(() => this.resetSelectedTalents())
       .RunFunction(() => this.selectTalents());
   }
 
-  renderOrbsAction() {
+  renderOrbsAction(): Action {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.renderOrbsAction called without combo");
+    }
+
     return new ParallelSequence()
-      .SetText(this.$orbQuasLabel, this.combo.orbs[0])
-      .SetText(this.$orbWexLabel, this.combo.orbs[1])
-      .SetText(this.$orbExortLabel, this.combo.orbs[2]);
+      .SetText(this.#elements.orbQuasLabel, String(this.combo.orbs[0]))
+      .SetText(this.#elements.orbWexLabel, String(this.combo.orbs[1]))
+      .SetText(this.#elements.orbExortLabel, String(this.combo.orbs[2]));
   }
 
-  renderSequenceAction() {
-    const actions = _.map(
-      this.combo.sequence,
-      _.bind(this.createStepPanelAction, this, this.$sequence)
+  renderSequenceAction(): Action {
+    if (!this.hasCombo()) {
+      throw Error("Viewer.renderSequenceAction called without combo");
+    }
+
+    const actions = this.combo.sequence.map((step) =>
+      this.createStepPanelAction(this.#elements.sequence, step)
     );
 
-    return new Sequence().RemoveChildren(this.$sequence).Action(actions);
+    return new SerialSequence().RemoveChildren(this.#elements.sequence).Action(...actions);
   }
 
-  createStepPanelAction(parent, step) {
+  createStepPanelAction(parent: Panel, step: Step): Action {
     return new RunFunctionAction(() => this.createStepPanel(parent, step));
   }
 
   // ----- Action runners -----
 
-  view(id) {
-    this.combo = COMBOS.Get(id);
+  view(id: ComboID): void {
+    this.combo = COMBOS.get(id);
 
-    const seq = new Sequence().Action(this.renderAction()).Action(this.openAction());
+    const seq = new SerialSequence().Action(this.renderAction()).Action(this.openAction());
 
-    this.debugFn(() => ["view()", { id: this.combo.id, actions: seq.length }]);
+    this.debugFn(() => ["view()", { id: this.combo?.id, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  close() {
-    return this.closeAction().Start();
+  close(): void {
+    const seq = new SerialSequence().Action(this.closeAction());
+
+    this.debugFn(() => ["close()", { id: this.combo?.id, actions: seq.length }]);
+
+    seq.run();
   }
 
   // ----- UI methods -----
 
-  Reload() {
-    this.debug("Reload()");
-    return this.renderAction().Start();
+  Reload(): void {
+    const seq = new SerialSequence().Action(this.renderAction());
+
+    this.debugFn(() => ["Reload()", { id: this.combo?.id, actions: seq.length }]);
+
+    seq.run();
   }
 
-  Close() {
-    return this.close();
+  Close(): void {
+    this.close();
   }
 
-  Play() {
-    return this.startCombo();
+  Play(): void {
+    this.startCombo();
   }
 
-  ShowOrbTooltip(orb) {
-    const index = ORBS.indexOf(orb);
-
-    if (index >= 0) {
-      const attr = _.camelCase(`orb_${orb}`);
-      const elem = this.element(attr);
-
-      this.showAbilityTooltip(elem, elem.abilityname, { level: this.combo.orbs[index] });
+  ShowOrbTooltip(orb: Orb): void {
+    if (!this.hasCombo()) {
+      this.warn("Viewer.ShowOrbTooltip called without combo");
+      return;
     }
+
+    if (!(orb in Orb)) {
+      this.warn(`Viewer.ShowOrbTooltip called with invalid orb ${orb}`);
+      return;
+    }
+
+    const elem = this.orbElem(orb);
+
+    UIEvents.showAbilityTooltip(elem, elem.abilityname, { level: this.combo.orbs[orb] });
   }
 }
 

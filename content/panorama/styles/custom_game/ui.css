@@ -157,22 +157,22 @@
   background-size: contain;
 }
 
-.rating.rating_1 .rating-active {
+.rating.rating-1 .rating-active {
   width: 16px;
 }
 
-.rating.rating_2 .rating-active {
+.rating.rating-2 .rating-active {
   width: 32px;
 }
 
-.rating.rating_3 .rating-active {
+.rating.rating-3 .rating-active {
   width: 48px;
 }
 
-.rating.rating_4 .rating-active {
+.rating.rating-4 .rating-active {
   width: 64px;
 }
 
-.rating.rating_5 .rating-active {
+.rating.rating-5 .rating-active {
   width: 80px;
 }

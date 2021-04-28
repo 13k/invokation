@@ -1,128 +1,158 @@
-"use strict";
+import { uniqueId } from "lodash";
+import { Component } from "../lib/component";
+import { ComponentLayout, COMPONENTS } from "../lib/const/component";
+import { isTalentSelected, Talent, TalentSide, TalentTier } from "../lib/dota";
+import { Action, ParallelSequence } from "../lib/sequence";
+import { UIEvents } from "../lib/ui_events";
+import type { Attributes as TooltipAttrs } from "../tooltips/tooltip_stat_branch";
 
-((global, context) => {
-  const { Component } = context;
-  const { lodash: _ } = global;
-  const { ParallelSequence } = global.Sequence;
-  const { IsTalentSelected } = global.Util;
-  const { COMPONENTS, TALENT_LEVELS } = global.Const;
+export interface Inputs {
+  [INPUTS.RESET]: never;
+  [INPUTS.SELECT]: { talents: Talent };
+}
 
-  const TOOLTIP_ID_PREFIX = "ui-talents-display-tooltip";
+export type Outputs = never;
 
-  const CLASSES = {
-    BRANCH_SELECTED: {
-      LEFT: "LeftBranchSelected",
-      RIGHT: "RightBranchSelected",
-    },
-  };
+type Elements = {
+  [K in keyof typeof ELEMENTS]: Panel;
+};
 
-  const statRowAttr = (level) => `statRow${level}`;
+type TierRows = Record<TalentTier, Panel>;
 
-  class TalentsDisplay extends Component {
-    constructor() {
-      super({
-        elements: ["StatRow10", "StatRow15", "StatRow20", "StatRow25"],
-        inputs: {
-          Select: "onSelect",
-          Reset: "onReset",
-        },
-      });
+const { inputs: INPUTS } = COMPONENTS.UI_TALENTS_DISPLAY;
 
-      this.bindRows();
-      this.debug("init");
-    }
+const TOOLTIP_ID_PREFIX = "ui-talents-display-tooltip";
 
-    // ----- I/O -----
+const CLASSES = {
+  BRANCH_SELECTED: {
+    LEFT: "LeftBranchSelected",
+    RIGHT: "RightBranchSelected",
+  },
+};
 
-    onSelect(payload) {
-      this.debug("onSelect()", payload);
-      this.select(payload.talents);
-    }
+const ELEMENTS = {
+  [TalentTier.Tier1]: `StatRow${TalentTier.Tier1}`,
+  [TalentTier.Tier2]: `StatRow${TalentTier.Tier2}`,
+  [TalentTier.Tier3]: `StatRow${TalentTier.Tier3}`,
+  [TalentTier.Tier4]: `StatRow${TalentTier.Tier4}`,
+} as const;
 
-    onReset() {
-      this.debug("onReset()");
-      this.reset();
-    }
+export class UITalentsDisplay extends Component {
+  #elements: Elements;
+  #rows: TierRows;
+  #selected: Talent = Talent.NONE;
+  #tooltipID?: string;
 
-    // ----- Helpers -----
+  constructor() {
+    super();
 
-    bindRows() {
-      this.$rows = {};
+    this.#elements = this.findAll<Elements>(ELEMENTS);
 
-      TALENT_LEVELS.forEach(this.bindRow.bind(this));
-    }
-
-    bindRow(level) {
-      this.$rows[level] = this.element(statRowAttr(level));
-    }
-
-    // ----- Actions -----
-
-    selectLevelAction(level, choices) {
-      const seq = new ParallelSequence();
-
-      if (IsTalentSelected(level, "right", choices)) {
-        seq.AddClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
-        seq.RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.LEFT);
-      } else if (IsTalentSelected(level, "left", choices)) {
-        seq.RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
-        seq.AddClass(this.$rows[level], CLASSES.BRANCH_SELECTED.LEFT);
+    this.#rows = Object.values(TalentTier).reduce((rows, tier) => {
+      if (typeof tier === "number") {
+        rows[tier] = this.#elements[tier];
       }
 
-      return seq;
-    }
+      return rows;
+    }, {} as TierRows);
 
-    resetLevelAction(level) {
-      return new ParallelSequence()
-        .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.LEFT)
-        .RemoveClass(this.$rows[level], CLASSES.BRANCH_SELECTED.RIGHT);
-    }
+    this.registerInputs({
+      [INPUTS.SELECT]: this.onSelect,
+      [INPUTS.RESET]: this.onReset,
+    });
 
-    // ----- Action runners -----
-
-    select(choices) {
-      this.selected = choices;
-
-      const actions = TALENT_LEVELS.map((level) => this.selectLevelAction(level, choices));
-      const seq = new ParallelSequence().Action(actions);
-
-      this.debugFn(() => ["select()", { choices, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    reset() {
-      const actions = TALENT_LEVELS.map(this.resetLevelAction.bind(this));
-      const seq = new ParallelSequence().Action(actions);
-
-      this.debugFn(() => ["reset()", { actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    // ----- UI methods -----
-
-    ShowTooltip() {
-      const { layout } = COMPONENTS.TOOLTIPS.STAT_BRANCH;
-
-      this.tooltipId = _.uniqueId(TOOLTIP_ID_PREFIX);
-
-      const params = {
-        heroId: this.heroId,
-        selected: this.selected,
-      };
-
-      this.debug("ShowTooltip()", this.tooltipId, params);
-      this.showTooltip(this.$ctx, this.tooltipId, layout, params);
-    }
-
-    HideTooltip() {
-      if (this.tooltipId) {
-        this.hideTooltip(this.$ctx, this.tooltipId);
-        this.tooltipId = null;
-      }
-    }
+    this.debug("init");
   }
 
-  context.component = new TalentsDisplay();
-})(GameUI.CustomUIConfig(), this);
+  // ----- I/O -----
+
+  onSelect(payload: Inputs[typeof INPUTS.SELECT]): void {
+    this.debug("onSelect()", payload);
+    this.select(payload.talents);
+  }
+
+  onReset(): void {
+    this.debug("onReset()");
+    this.reset();
+  }
+
+  // ----- Actions -----
+
+  selectTierAction(tier: TalentTier, choices: Talent): Action {
+    const seq = new ParallelSequence();
+
+    if (isTalentSelected(tier, TalentSide.RIGHT, choices)) {
+      seq.AddClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.RIGHT);
+      seq.RemoveClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.LEFT);
+    } else if (isTalentSelected(tier, TalentSide.LEFT, choices)) {
+      seq.RemoveClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.RIGHT);
+      seq.AddClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.LEFT);
+    }
+
+    return seq;
+  }
+
+  resetTierAction(tier: TalentTier): Action {
+    return new ParallelSequence()
+      .RemoveClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.LEFT)
+      .RemoveClass(this.#rows[tier], CLASSES.BRANCH_SELECTED.RIGHT);
+  }
+
+  // ----- Action runners -----
+
+  select(choices: Talent): void {
+    this.#selected = choices;
+
+    const actions = Object.values(TalentTier).reduce(
+      (actions, tier) =>
+        typeof tier === "number" ? [...actions, this.selectTierAction(tier, choices)] : actions,
+      [] as Action[]
+    );
+
+    const seq = new ParallelSequence().Action(...actions);
+
+    this.debugFn(() => ["select()", { choices, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  reset(): void {
+    const actions = Object.values(TalentTier).reduce(
+      (actions, tier) =>
+        typeof tier === "number" ? [...actions, this.resetTierAction(tier)] : actions,
+      [] as Action[]
+    );
+
+    const seq = new ParallelSequence().Action(...actions);
+
+    this.debugFn(() => ["reset()", { actions: seq.length }]);
+
+    seq.run();
+  }
+
+  // ----- UI methods -----
+
+  showTooltip(): void {
+    this.#tooltipID = uniqueId(TOOLTIP_ID_PREFIX);
+
+    const params: TooltipAttrs = {
+      // heroID: this.heroId,
+      selected: this.#selected,
+    };
+
+    this.debug("showTooltip()", this.#tooltipID, params);
+
+    UIEvents.showTooltip(this.ctx, this.#tooltipID, ComponentLayout.TooltipStatBranch, params);
+  }
+
+  hideTooltip(): void {
+    if (this.#tooltipID) {
+      UIEvents.hideTooltip(this.ctx, this.#tooltipID);
+
+      this.#tooltipID = undefined;
+    }
+  }
+}
+
+//   context.component = new TalentsDisplay();
+// })(GameUI.CustomUIConfig(), this);

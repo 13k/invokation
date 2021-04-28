@@ -1,9 +1,32 @@
-// const { Component } = context;
-// const { lodash: _ } = global;
-// const { COMPONENTS } = global.Const;
-// const { Sequence, ParallelSequence } = global.Sequence;
-
+import type { Combo, ComboID } from "./lib/combo";
+import { ChangeEvent as CombosViewChangeEvent, CombosView } from "./lib/combos_view";
 import { Component } from "./lib/component";
+import { COMPONENTS } from "./lib/const/component";
+import type { PanelWithComponent } from "./lib/const/panorama";
+import { Action, ParallelSequence, SerialSequence } from "./lib/sequence";
+import type {
+  Inputs as ItemInputs,
+  Outputs as ItemOutputs,
+  PickerCombosItem,
+} from "./picker_combos_item";
+
+export type Inputs = {
+  [INPUTS.SET_COMBOS]: { combos: CombosView };
+  [INPUTS.SET_FINISHED]: { id: ComboID };
+};
+
+export type Outputs = {
+  [OUTPUTS.ON_SELECT]: { id: ComboID };
+};
+
+interface Elements {
+  combos: Panel;
+}
+
+type PickerCombosItemPanel = PanelWithComponent<PickerCombosItem>;
+
+const { inputs: INPUTS, outputs: OUTPUTS } = COMPONENTS.PICKER_COMBOS;
+const { inputs: ITEM_INPUTS, outputs: ITEM_OUTPUTS } = COMPONENTS.PICKER_COMBOS_ITEM;
 
 const DYN_ELEMS = {
   COMBO_ITEM: {
@@ -12,187 +35,201 @@ const DYN_ELEMS = {
   },
 };
 
-const comboItemId = ({ id }) => `${DYN_ELEMS.COMBO_ITEM.idPrefix}-${id}`;
+const comboItemID = ({ id }: Combo) => `${DYN_ELEMS.COMBO_ITEM.idPrefix}-${id}`;
 
-class PickerCombos extends Component {
+export class PickerCombos extends Component {
+  #elements: Elements;
+  #combos?: CombosView;
+  #selected?: ComboID;
+  #panels: Record<string, PickerCombosItemPanel> = {};
+  #finished: Record<string, boolean> = {};
+
   constructor() {
-    const { inputs, outputs } = COMPONENTS.PICKER.COMBOS;
+    super();
 
-    super({
-      elements: {
-        combos: "combos",
-      },
-      inputs: {
-        [inputs.SET_COMBOS]: "onSetCombos",
-        [inputs.SET_FINISHED]: "onSetFinished",
-      },
-      outputs: Object.values(outputs),
+    this.#elements = this.findAll<Elements>({
+      combos: "combos",
     });
 
-    this._combos = [];
-    this._selected = null;
-    this.panels = {};
-    this.finished = {};
+    this.registerInputs({
+      [INPUTS.SET_COMBOS]: this.onSetCombos,
+      [INPUTS.SET_FINISHED]: this.onSetFinished,
+    });
+
+    this.registerOutputs(Object.values(OUTPUTS));
   }
 
   // ----- Listeners -----
 
-  onSetCombos(payload) {
+  onSetCombos(payload: Inputs[typeof INPUTS.SET_COMBOS]): void {
     this.debug("onSetCombos()", payload);
     this.combos = payload.combos;
   }
 
-  onSetFinished(payload) {
+  onSetFinished(payload: Inputs[typeof INPUTS.SET_FINISHED]): void {
     this.debug("onSetFinished()", payload);
     this.setFinished(payload.id);
   }
 
-  onSelect(payload) {
+  onSelect(payload: ItemOutputs[typeof ITEM_OUTPUTS.ON_ACTIVATE]): void {
     this.debug("onSelect()", payload);
     this.selected = payload.id;
   }
 
-  onCombosChange(payload) {
-    this.debug("onCombosChange()", payload);
+  onCombosChange(ev: CombosViewChangeEvent): void {
+    this.debug("onCombosChange()", ev);
     this.update();
   }
 
   // ----- Properties -----
 
-  get combos() {
-    return this._combos;
-  }
+  set combos(combos: CombosView) {
+    this.#combos = combos;
 
-  set combos(combos) {
-    this._combos = combos;
-
-    this.combos.onChange(this.handler("onCombosChange"));
+    this.#combos.onChange(this.onCombosChange.bind(this));
 
     this.render();
   }
 
-  get selected() {
-    return this._selected;
-  }
+  set selected(id: ComboID) {
+    if (id === this.#selected) return;
 
-  set selected(id) {
-    if (id === this.selected) return;
-
-    this._selected = id;
+    this.#selected = id;
 
     this.select();
   }
 
-  get selectedPanel() {
-    return this.panels[this.selected];
-  }
-
   // ----- Helpers -----
 
-  resetPanels() {
-    this.panels = {};
+  resetPanels(): void {
+    this.#panels = {};
   }
 
-  notifySelection() {
-    const { outputs } = COMPONENTS.PICKER.COMBOS;
+  notifySelection(): void {
+    if (this.#selected == null) {
+      this.warn("PickerCombos.notifySelection called with no combo selected");
+      return;
+    }
 
-    return this.runOutput(outputs.ON_SELECT, { id: this.selected });
+    const payload: Outputs["OnSelect"] = { id: this.#selected };
+
+    this.output(OUTPUTS.ON_SELECT, payload);
   }
 
-  getPanel(id) {
-    return this.panels[id];
+  getPanel(id: ComboID): PickerCombosItemPanel {
+    return this.#panels[id];
   }
 
-  setPanel(id, panel) {
-    this.panels[id] = panel;
+  setPanel(id: ComboID, panel: PickerCombosItemPanel): void {
+    this.#panels[id] = panel;
   }
 
-  isFinished(id) {
-    return !!this.finished[id];
+  getComponent(id: ComboID): Component {
+    return this.getPanel(id).component;
   }
 
-  setFinished(id) {
-    this.finished[id] = true;
+  isFinished(id: ComboID): boolean {
+    return !!this.#finished[id];
+  }
+
+  setFinished(id: ComboID): void {
+    this.#finished[id] = true;
+
     this.finish(id);
   }
 
-  createItemPanel(parent, combo) {
-    const { layout, inputs, outputs } = COMPONENTS.PICKER.COMBOS.COMBO_ITEM;
+  createItemPanel(parent: Panel, combo: Combo): void {
+    const { layout } = COMPONENTS.PICKER_COMBOS_ITEM;
     const { cssClass } = DYN_ELEMS.COMBO_ITEM;
 
-    const id = comboItemId(combo);
+    const id = comboItemID(combo);
+    const setComboPayload: ItemInputs[typeof ITEM_INPUTS.SET_COMBO] = { combo };
     const panel = this.createComponent(parent, id, layout, {
       classes: [cssClass],
       inputs: {
-        [inputs.SET_COMBO]: combo,
+        [ITEM_INPUTS.SET_COMBO]: setComboPayload,
       },
       outputs: {
-        [outputs.ON_ACTIVATE]: "onSelect",
+        [ITEM_OUTPUTS.ON_ACTIVATE]: this.onSelect,
       },
     });
 
     this.setPanel(combo.id, panel);
-
-    return panel;
   }
 
   // ----- Actions -----
 
-  resetAction() {
-    return new Sequence().RemoveChildren(this.$combos).RunFunction(() => this.resetPanels());
+  resetAction(): Action {
+    return new SerialSequence()
+      .RemoveChildren(this.#elements.combos)
+      .RunFunction(() => this.resetPanels());
   }
 
-  renderAction() {
-    const actions = _.map(this.combos.all, (combo) =>
-      this.createItemPanelAction(this.$combos, combo)
+  renderAction(): Action {
+    if (this.#combos == null) {
+      throw Error("PickerCombos.renderAction called with no combos");
+    }
+
+    const actions = this.#combos.combos.map((combo) =>
+      this.createItemPanelAction(this.#elements.combos, combo)
     );
 
-    return new Sequence().Action(actions);
+    return new SerialSequence().Action(...actions);
   }
 
-  createItemPanelAction(parent, combo) {
-    return new Sequence().RunFunction(() => this.createItemPanel(parent, combo));
+  createItemPanelAction(parent: Panel, combo: Combo): Action {
+    return new SerialSequence().RunFunction(() => this.createItemPanel(parent, combo));
   }
 
-  updateAction() {
-    const actions = _.map(this.combos.all, ({ id }) => this.updatePanelAction(id));
+  updateAction(): Action {
+    if (this.#combos == null) {
+      throw Error("PickerCombos.renderAction called with no combos");
+    }
 
-    return new ParallelSequence().Action(actions);
+    const actions = this.#combos.combos.map(({ id }) => this.updatePanelAction(id));
+
+    return new ParallelSequence().Action(...actions);
   }
 
-  updatePanelAction(id) {
+  updatePanelAction(id: ComboID): Action {
     return new ParallelSequence()
       .Action(this.updatePanelSelectedAction(id))
       .Action(this.updatePanelFinishedAction(id))
       .Action(this.updatePanelVisibilityAction(id));
   }
 
-  updatePanelSelectedAction(id) {
-    const { inputs } = COMPONENTS.PICKER.COMBOS.COMBO_ITEM;
+  updatePanelSelectedAction(id: ComboID): Action {
+    const { inputs } = COMPONENTS.PICKER_COMBOS_ITEM;
 
-    return new Sequence().RunFunction(() => {
-      const input = id === this.selected ? inputs.SET_SELECTED : inputs.UNSET_SELECTED;
+    return new SerialSequence().RunFunction(() => {
+      const input = id === this.#selected ? inputs.SET_SELECTED : inputs.UNSET_SELECTED;
 
-      this.getPanel(id).component.Input(input);
+      this.getComponent(id).input(input);
     });
   }
 
-  updatePanelFinishedAction(id) {
-    const { inputs } = COMPONENTS.PICKER.COMBOS.COMBO_ITEM;
+  updatePanelFinishedAction(id: ComboID): Action {
+    const { inputs } = COMPONENTS.PICKER_COMBOS_ITEM;
 
-    return new Sequence().RunFunction(() => {
+    return new SerialSequence().RunFunction(() => {
       const input = this.isFinished(id) ? inputs.SET_FINISHED : inputs.UNSET_FINISHED;
 
-      this.getPanel(id).component.Input(input);
+      this.getComponent(id).input(input);
     });
   }
 
-  updatePanelVisibilityAction(id) {
-    return new Sequence().RunFunction(() => {
-      const panel = this.getPanel(id);
-      const seq = new Sequence();
+  updatePanelVisibilityAction(id: ComboID): Action {
+    return new SerialSequence().RunFunction(() => {
+      if (this.#combos == null) {
+        throw Error(
+          "PickerCombos.updatePanelVisibilityAction function action called with no combos"
+        );
+      }
 
-      if (this.combos.isVisible(id)) {
+      const panel = this.getPanel(id);
+      const seq = new SerialSequence();
+
+      if (this.#combos.isVisible(id)) {
         seq.Show(panel);
       } else {
         seq.Hide(panel);
@@ -204,41 +241,41 @@ class PickerCombos extends Component {
 
   // ----- Action runners -----
 
-  render() {
-    const seq = new Sequence()
+  render(): void {
+    const seq = new SerialSequence()
       .Action(this.resetAction())
       .Action(this.renderAction())
       .Action(this.updateAction());
 
-    this.debugFn(() => ["render()", { combos: this.combos.all.length, actions: seq.length }]);
+    this.debugFn(() => ["render()", { combos: this.#combos?.length, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  update() {
-    const seq = new Sequence().Action(this.updateAction());
+  update(): void {
+    const seq = new SerialSequence().Action(this.updateAction());
 
-    this.debugFn(() => ["update()", { combos: this.combos.all.length, actions: seq.length }]);
+    this.debugFn(() => ["update()", { combos: this.#combos?.length, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  select() {
-    const seq = new Sequence()
+  select(): void {
+    const seq = new SerialSequence()
       .Action(this.updateAction())
       .RunFunction(() => this.notifySelection());
 
-    this.debugFn(() => ["select()", { id: this.selected, actions: seq.length }]);
+    this.debugFn(() => ["select()", { id: this.#selected, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  finish(id) {
-    const seq = new Sequence().Action(this.updatePanelAction(id));
+  finish(id: ComboID): void {
+    const seq = new SerialSequence().Action(this.updatePanelAction(id));
 
     this.debugFn(() => ["finish()", { id, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 }
 

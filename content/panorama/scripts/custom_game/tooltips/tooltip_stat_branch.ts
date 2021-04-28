@@ -1,195 +1,211 @@
-"use strict";
+import { first, forOwn, get } from "lodash";
+import { ABILITIES_KV } from "../custom_ui_manifest";
+import type { ChangeEvent as AbilitiesChangeEvent } from "../lib/abilities_collection";
+import { Component } from "../lib/component";
+import type { AbilitiesKeyValues } from "../lib/dota";
+import { Talent, talentSelectedSide, TalentSide, TalentTier } from "../lib/dota";
+import { TALENTS } from "../lib/invoker";
+import { localizeAbilityTooltip } from "../lib/l10n";
+import { Action, ParallelSequence, RunFunctionAction, SerialSequence } from "../lib/sequence";
 
-((global, context) => {
-  const { Component } = context;
-  const { lodash: _, ABILITIES_KV, L10n } = global;
-  const { Sequence, ParallelSequence, RunFunctionAction } = global.Sequence;
-  const { IsTalentSelected, TalentArrayIndexToLevel, TalentArrayIndexToSide } = global.Util;
-  const { INVOKER, TALENT_LEVELS } = global.Const;
+export type Inputs = never;
+export type Outputs = never;
 
-  const DYN_ELEMS = {
-    BRANCH_ROW: {
-      name: "stat-branch-row",
-      idPrefix: "stat-branch-row",
-      dialogVarLevel: "level",
-    },
-  };
+export type Attributes = {
+  selected: Talent;
+};
 
-  const CLASSES = {
-    BRANCH_ROW_SIDES: {
-      RIGHT: "branch-right",
-      LEFT: "branch-left",
-    },
-    BRANCH_ROW_CHOICE_LABEL: "bonus-label",
-    BRANCH_SELECTED: {
-      RIGHT: "branch-right-selected",
-      LEFT: "branch-left-selected",
-    },
-  };
+interface Elements {
+  container: Panel;
+}
 
-  const LEVELS = _.reverse(TALENT_LEVELS);
-  const SIDES = ["RIGHT", "LEFT"];
-  const TALENT_ABILITIES = _.transform(
-    INVOKER.TALENT_ABILITIES,
-    (abilities, ability, i) => {
-      const level = TalentArrayIndexToLevel(i);
-      const side = _.toUpper(TalentArrayIndexToSide(i));
+type RowPanels = Record<TalentTier, Panel>;
 
-      abilities[level] = abilities[level] || {};
-      abilities[level][side] = ability;
-    },
-    {}
-  );
+const DYN_ELEMS = {
+  BRANCH_ROW: {
+    snippet: "stat-branch-row",
+    idPrefix: "stat-branch-row",
+    dialogVarLevel: "level",
+  },
+};
 
-  const branchRowId = (level) => `${DYN_ELEMS.BRANCH_ROW.idPrefix}-${level}`;
+const CLASSES = {
+  BRANCH_ROW_SIDES: {
+    [TalentSide.RIGHT]: "branch-right",
+    [TalentSide.LEFT]: "branch-left",
+  },
+  BRANCH_ROW_CHOICE_LABEL: "bonus-label",
+  BRANCH_SELECTED: {
+    [TalentSide.RIGHT]: "branch-right-selected",
+    [TalentSide.LEFT]: "branch-left-selected",
+  },
+};
 
-  class TooltipStatBranch extends Component {
-    constructor() {
-      super({
-        elements: {
-          container: "stat-branch-container",
-        },
-      });
+const branchRowID = (tier: TalentTier) => `${DYN_ELEMS.BRANCH_ROW.idPrefix}-${tier}`;
+const isTalentTier = (tier: string | TalentTier): tier is TalentTier => typeof tier === "number";
 
-      ABILITIES_KV.OnChange(this.onAbilitiesKvChange.bind(this));
+export class TooltipStatBranch extends Component {
+  #elements: Elements;
+  #rows: RowPanels = {} as RowPanels;
+  #selected: Talent = Talent.NONE;
+  #abilitiesKV?: AbilitiesKeyValues;
 
-      this.debug("init");
-    }
+  constructor() {
+    super();
 
-    // ----- Event handlers -----
+    this.#elements = this.findAll<Elements>({
+      container: "stat-branch-container",
+    });
 
-    onLoad() {
-      this.selected = this.$ctx.GetAttributeUInt32("selected", 0);
-      this.debug("onLoad()", { selected: this.selected });
-      this.update();
-    }
+    ABILITIES_KV.onChange(this.onAbilitiesKvChange.bind(this));
 
-    onAbilitiesKvChange(kv) {
-      this.abilitiesKV = kv;
-      this.debug("onAbilitiesKvChange()");
-      this.update();
-    }
+    this.debug("init");
+  }
 
-    // ----- Helpers -----
+  // ----- Event handlers -----
 
-    update() {
-      if (this.selected && this.abilitiesKV) {
-        this.render();
-      }
-    }
+  load(): void {
+    this.#selected = this.ctx.GetAttributeUInt32("selected", 0);
+    this.debug("onLoad()", { selected: this.#selected });
+    this.update();
+  }
 
-    resetRows() {
-      this.$rows = {};
-    }
+  onAbilitiesKvChange({ kv }: AbilitiesChangeEvent): void {
+    this.#abilitiesKV = kv;
+    this.debug("onAbilitiesKvChange()");
+    this.update();
+  }
 
-    localizeBranch(panel, level, side) {
-      const ability = _.get(TALENT_ABILITIES, [level, side]);
-      const abilitySpecial = _.get(this.abilitiesKV, [ability, "AbilitySpecial"]);
+  // ----- Helpers -----
 
-      const branchPanel = _.first(
-        panel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_SIDES[side])
-      );
-
-      const branchLabel = _.first(
-        branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL)
-      );
-
-      _.each(abilitySpecial, (special) => {
-        _.forOwn(special, (value, key) => {
-          if (key === "var_type") return;
-
-          branchLabel.SetDialogVariable(key, value);
-        });
-      });
-
-      branchLabel.text = L10n.LocalizeAbilityTooltip(ability, branchLabel);
-    }
-
-    createBranchRowPanel(level) {
-      const { name, dialogVarLevel } = DYN_ELEMS.BRANCH_ROW;
-      const id = branchRowId(level);
-      const panel = this.createSnippet(this.$container, id, name, {
-        dialogVars: {
-          [dialogVarLevel]: level,
-        },
-      });
-
-      const localizeBranch = _.chain(this.localizeBranch).bind(this, panel, level).unary().value();
-
-      _.each(SIDES, localizeBranch);
-
-      this.$rows[level] = panel;
-
-      return panel;
-    }
-
-    // ----- Actions -----
-
-    resetAction() {
-      return new Sequence().RemoveChildren(this.$container).RunFunction(() => this.resetRows());
-    }
-
-    createBranchRowPanelAction(level) {
-      return new RunFunctionAction(() => this.createBranchRowPanel(level));
-    }
-
-    renderRowsAction() {
-      const createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction)
-        .bind(this)
-        .unary()
-        .value();
-
-      return _.map(LEVELS, createBranchRowPanelAction);
-    }
-
-    selectBranchAction(level) {
-      const seq = new Sequence();
-      let side = null;
-
-      if (IsTalentSelected(level, "right", this.selected)) {
-        side = "RIGHT";
-      } else if (IsTalentSelected(level, "left", this.selected)) {
-        side = "LEFT";
-      }
-
-      if (side) {
-        seq.RunFunction(() => this.selectBranchSide(level, side));
-      }
-
-      return seq;
-    }
-
-    selectBranchesAction() {
-      const selectBranchAction = _.chain(this.selectBranchAction).bind(this).unary().value();
-      const actions = _.map(LEVELS, selectBranchAction);
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    // ----- Action runners -----
-
-    render() {
-      const seq = new Sequence()
-        .Action(this.resetAction())
-        .Action(this.renderRowsAction())
-        .Action(this.selectBranchesAction());
-
-      this.debugFn(() => ["render()", { selected: this.selected, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    selectBranchSide(level, side) {
-      const row = this.$rows[level];
-      const seq = new Sequence();
-
-      _.each(SIDES, (s) => seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[s]));
-
-      seq.AddClass(row, CLASSES.BRANCH_SELECTED[side]);
-
-      return seq.Start();
+  update(): void {
+    if (this.#abilitiesKV != null) {
+      this.render();
     }
   }
 
-  context.tooltip = new TooltipStatBranch();
-})(GameUI.CustomUIConfig(), this);
+  resetRows(): void {
+    this.#rows = {} as RowPanels;
+  }
+
+  localizeBranch(panel: Panel, tier: TalentTier, side: TalentSide): void {
+    const ability = get(TALENTS, [tier, side]);
+
+    if (ability == null) {
+      return;
+    }
+
+    const abilitySpecial = get(this.#abilitiesKV, [ability, "AbilitySpecial"]);
+
+    if (abilitySpecial == null) {
+      return;
+    }
+
+    const branchPanel = first(panel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_SIDES[side]));
+
+    if (branchPanel == null) {
+      return;
+    }
+
+    const branchLabel = first(
+      branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL)
+    ) as LabelPanel;
+
+    if (branchLabel == null) {
+      return;
+    }
+
+    abilitySpecial.forEach((special) => {
+      forOwn(special, (value, key) => {
+        if (key === "var_type") return;
+
+        branchLabel.SetDialogVariable(key, value);
+      });
+    });
+
+    branchLabel.text = localizeAbilityTooltip(ability, branchLabel);
+  }
+
+  createBranchRowPanel(tier: TalentTier): void {
+    const { snippet, dialogVarLevel } = DYN_ELEMS.BRANCH_ROW;
+    const id = branchRowID(tier);
+    const panel = this.createSnippet(this.#elements.container, id, snippet, {
+      dialogVars: {
+        [dialogVarLevel]: String(tier),
+      },
+    });
+
+    Object.values(TalentSide).forEach((side) => {
+      if (typeof side === "number") {
+        this.localizeBranch(panel, tier, side);
+      }
+    });
+
+    this.#rows[tier] = panel;
+  }
+
+  // ----- Actions -----
+
+  resetAction(): Action {
+    return new SerialSequence()
+      .RemoveChildren(this.#elements.container)
+      .RunFunction(() => this.resetRows());
+  }
+
+  createBranchRowPanelAction(tier: TalentTier): Action {
+    return new RunFunctionAction(() => this.createBranchRowPanel(tier));
+  }
+
+  renderRowsAction(): Action {
+    const actions = Object.values(TalentTier)
+      .filter(isTalentTier)
+      .sort()
+      .map((tier) => this.createBranchRowPanelAction(tier));
+
+    return new SerialSequence().Action(...actions);
+  }
+
+  selectBranchesAction(): Action {
+    const actions = Object.values(TalentTier)
+      .filter(isTalentTier)
+      .map((tier) => this.selectBranchAction(tier));
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  selectBranchAction(tier: TalentTier): Action {
+    const seq = new SerialSequence();
+    const side = talentSelectedSide(tier, this.#selected);
+
+    if (side != null) {
+      seq.Action(this.selectBranchSideAction(tier, side));
+    }
+
+    return seq;
+  }
+
+  selectBranchSideAction(tier: TalentTier, side: TalentSide): Action {
+    const row = this.#rows[tier];
+    const otherSide = side === TalentSide.RIGHT ? TalentSide.LEFT : TalentSide.RIGHT;
+
+    return new SerialSequence()
+      .RemoveClass(row, CLASSES.BRANCH_SELECTED[otherSide])
+      .AddClass(row, CLASSES.BRANCH_SELECTED[side]);
+  }
+
+  // ----- Action runners -----
+
+  render(): void {
+    const seq = new SerialSequence()
+      .Action(this.resetAction())
+      .Action(this.renderRowsAction())
+      .Action(this.selectBranchesAction());
+
+    this.debugFn(() => ["render()", { selected: this.#selected, actions: seq.length }]);
+
+    seq.run();
+  }
+}
+
+//   context.tooltip = new TooltipStatBranch();
+// })(GameUI.CustomUIConfig(), this);

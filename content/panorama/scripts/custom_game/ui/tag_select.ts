@@ -1,381 +1,400 @@
-"use strict";
+import { kebabCase, pull, uniqueId } from "lodash";
+import { Component } from "../lib/component";
+import { ComponentLayout, COMPONENTS } from "../lib/const/component";
+import { CustomEvent, PopupTextEntrySubmitEvent } from "../lib/const/events";
+import {
+  Action,
+  ParallelSequence,
+  RunFunctionAction,
+  SerialSequence,
+  StopSequence,
+} from "../lib/sequence";
+import { UIEvents } from "../lib/ui_events";
 
-((global, context) => {
-  const { Component } = context;
-  const { lodash: _ } = global;
-  const { COMPONENTS } = global.Const;
-  const { Sequence, ParallelSequence, StopSequence, RunFunctionAction } = global.Sequence;
+export interface Inputs {
+  [INPUTS.SET_OPTIONS]: { options: string[] };
+  [INPUTS.CLEAR]: never;
+}
 
-  const DYN_ELEMS = {
-    POPUP_TEXT_ENTRY: {
-      id: "popup-text-entry",
-    },
-    TAG: {
-      snippet: "tag",
-      idPrefix: "tag",
-      deleteDelay: 0.25,
-    },
-    OPTION: {
-      cssClass: "option",
-      idPrefix: "option",
-      emptyId: "option--empty",
-      textEntryId: "option--text-entry",
-    },
-  };
+export interface Outputs {
+  [OUTPUTS.ON_CHANGE]: { tags: string[] };
+}
 
-  const OPTIONS = {
-    EMPTY: "__empty__",
-    TEXT_ENTRY: "__text_entry__",
-  };
+interface Elements {
+  tags: Panel;
+  options: DropDown;
+}
 
-  const L10N_KEYS = {
-    OPTION_TEXT_ENTRY: "invokation_tag_select_option_text_entry",
-    POPUP_TEXT_ENTRY_TITLE: "invokation_tag_select_popup_text_entry_title",
-  };
+const { inputs: INPUTS, outputs: OUTPUTS } = COMPONENTS.UI_TAG_SELECT;
 
-  const CLASSES = {
-    TAGS_OVERFLOW: "overflow",
-  };
+const DYN_ELEMS = {
+  POPUP_TEXT_ENTRY: {
+    id: "popup-text-entry",
+  },
+  TAG: {
+    snippet: "tag",
+    idPrefix: "tag",
+    deleteDelay: 0.25,
+  },
+  OPTION: {
+    cssClass: "option",
+    idPrefix: "option",
+    emptyId: "option--empty",
+    textEntryId: "option--text-entry",
+  },
+};
 
-  const normalizeTag = (tag) => _.kebabCase(tag);
-  const elementId = (prefix, name) => _.kebabCase(`${prefix}_${name}`);
-  const tagId = (tag) => elementId(DYN_ELEMS.TAG.idPrefix, tag);
-  const optionId = (option) => elementId(DYN_ELEMS.OPTION.idPrefix, option);
+const OPTIONS = {
+  EMPTY: "__empty__",
+  TEXT_ENTRY: "__text_entry__",
+};
 
-  class TagSelect extends Component {
-    constructor() {
-      const { inputs, outputs } = COMPONENTS.UI.TAG_SELECT;
+const L10N_KEYS = {
+  OPTION_TEXT_ENTRY: "invokation_tag_select_option_text_entry",
+  POPUP_TEXT_ENTRY_TITLE: "invokation_tag_select_popup_text_entry_title",
+};
 
-      super({
-        elements: {
-          tags: "tags",
-          options: "options",
-        },
-        inputs: {
-          [inputs.SET_OPTIONS]: "setOptions",
-          [inputs.CLEAR]: "clearTags",
-        },
-        outputs: Object.values(outputs),
-        customEvents: {
-          "!POPUP_TEXT_ENTRY_SUBMIT": "onPopupTextEntrySubmit",
-        },
-      });
+const CLASSES = {
+  TAGS_OVERFLOW: "overflow",
+};
 
-      this.options = [];
-      this.tags = [];
-      this.tagPanels = {};
-      this.popupTextEntryChannel = _.uniqueId("popup_text_entry_");
-      this.debug("init");
-    }
+const normalizeTag = (tag: string) => kebabCase(tag);
+const elementID = (prefix: string, name: string) => kebabCase(`${prefix}_${name}`);
+const tagID = (tag: string) => elementID(DYN_ELEMS.TAG.idPrefix, tag);
+const optionID = (option: string) => elementID(DYN_ELEMS.OPTION.idPrefix, option);
 
-    // ----- I/O -----
+export class UITagSelect extends Component {
+  #elements: Elements;
+  #tags: string[];
+  #selected: string[];
+  #tagPanels: Record<string, Panel>;
+  #popupTextEntryChannel: string;
 
-    setOptions(payload) {
-      this.debug("setOptions()", payload);
-      this.options = payload.options;
-      this.renderOptions();
-    }
+  constructor() {
+    super();
 
-    // ----- Event handlers -----
+    this.#elements = this.findAll<Elements>({
+      tags: "tags",
+      options: "options",
+    });
 
-    onTagRemove(tag) {
-      this.debug("onTagRemove()", tag);
-      this.removeTag(tag);
-    }
+    this.registerInputs({
+      [INPUTS.SET_OPTIONS]: this.setOptions,
+      [INPUTS.CLEAR]: this.clearTags,
+    });
 
-    onOptionSelect() {
-      const selected = this.$options.GetSelected();
+    this.registerOutputs(Object.values(OUTPUTS));
 
-      this.debugFn(() => ["onOptionSelect()", { id: _.get(selected, "id") }]);
+    this.onCustomEvent(CustomEvent.POPUP_TEXT_ENTRY_SUBMIT, this.onPopupTextEntrySubmit);
+    this.onPanelEvent(this.#elements.options, "oninputsubmit", this.onOptionSelect);
 
-      if (!selected) return;
+    this.#tags = [];
+    this.#selected = [];
+    this.#tagPanels = {};
+    this.#popupTextEntryChannel = uniqueId("popup_text_entry_");
 
-      const option = selected.GetAttributeString("value", "");
+    this.debug("init");
+  }
 
-      switch (option) {
-        case OPTIONS.EMPTY:
-          return;
-        case OPTIONS.TEXT_ENTRY:
-          this.showTagEntryPopup();
-          break;
-        default:
-          this.addTag(option);
-      }
+  // ----- I/O -----
 
-      this.$options.SetSelected(DYN_ELEMS.OPTION.emptyId);
-    }
+  setOptions(payload: Inputs[typeof INPUTS.SET_OPTIONS]): void {
+    this.debug("setOptions()", payload);
+    this.#tags = payload.options;
+    this.renderOptions();
+  }
 
-    onPopupTextEntrySubmit(payload) {
-      if (payload.channel !== this.popupTextEntryChannel) {
+  // ----- Event handlers -----
+
+  onTagRemove(tag: string): void {
+    this.debug("onTagRemove()", tag);
+    this.removeTag(tag);
+  }
+
+  onOptionSelect(): void {
+    const selected = this.#elements.options.GetSelected();
+
+    this.debugFn(() => ["onOptionSelect()", { id: selected?.id }]);
+
+    if (!selected) return;
+
+    const option = selected.GetAttributeString("value", "");
+
+    switch (option) {
+      case OPTIONS.EMPTY:
         return;
-      }
-
-      this.debug("onPopupTextEntrySubmit()", payload);
-
-      if (!_.isEmpty(payload.text)) {
-        this.addTag(payload.text);
-      }
+      case OPTIONS.TEXT_ENTRY:
+        this.showTagEntryPopup();
+        break;
+      default:
+        this.addTag(option);
     }
 
-    // ----- Properties -----
+    this.#elements.options.SetSelected(DYN_ELEMS.OPTION.emptyId);
+  }
 
-    get isTagsOverflow() {
-      const { contentwidth, actuallayoutwidth } = this.$tags;
+  onPopupTextEntrySubmit(payload: NetworkedData<PopupTextEntrySubmitEvent>): void {
+    if (payload.channel !== this.#popupTextEntryChannel) return;
 
-      return contentwidth >= actuallayoutwidth;
-    }
+    this.debug("onPopupTextEntrySubmit()", payload);
 
-    // ----- Helpers -----
-
-    notifyChange() {
-      const { outputs } = COMPONENTS.UI.TAG_SELECT;
-
-      return this.runOutput(outputs.ON_CHANGE, { tags: this.tags });
-    }
-
-    selectTag(tag) {
-      tag = normalizeTag(tag);
-
-      if (_.isEmpty(tag) || this.isTagSelected(tag)) {
-        return null;
-      }
-
-      this.tags.push(tag);
-
-      return tag;
-    }
-
-    deselectTag(tag) {
-      tag = normalizeTag(tag);
-
-      if (!this.isTagSelected(tag)) {
-        return null;
-      }
-
-      _.pull(this.tags, tag);
-
-      return tag;
-    }
-
-    isTagSelected(tag) {
-      return _.includes(this.tags, normalizeTag(tag));
-    }
-
-    registerTagPanel(tag, panel) {
-      this.tagPanels[tag] = panel;
-    }
-
-    unregisterTagPanel(tag) {
-      delete this.tagPanels[tag];
-    }
-
-    createOption(option) {
-      const { cssClass, emptyId, textEntryId } = DYN_ELEMS.OPTION;
-
-      let id = null;
-      let text = null;
-
-      switch (option) {
-        case OPTIONS.EMPTY:
-          id = emptyId;
-          text = "";
-          break;
-        case OPTIONS.TEXT_ENTRY:
-          id = textEntryId;
-          text = $.Localize(L10N_KEYS.OPTION_TEXT_ENTRY);
-          break;
-        default:
-          id = optionId(option);
-          text = option;
-      }
-
-      return this.createLabel(this.$options, id, text, {
-        classes: [cssClass],
-        attrs: { value: option },
-      });
-    }
-
-    createTag(tag) {
-      const { snippet } = DYN_ELEMS.TAG;
-
-      const id = tagId(tag);
-      const panel = this.createSnippet(this.$tags, id, snippet, {
-        dialogVars: { value: tag },
-        events: {
-          onactivate: _.bind(this.onTagRemove, this, tag),
-        },
-      });
-
-      this.registerTagPanel(tag, panel);
-
-      return panel;
-    }
-
-    // ----- Actions -----
-
-    createOptionAction(option) {
-      return new Sequence().AddOption(this.$options, _.bind(this.createOption, this, option));
-    }
-
-    renderOptionsAction() {
-      const actions = _.chain([OPTIONS.EMPTY])
-        .concat(this.options, OPTIONS.TEXT_ENTRY)
-        .reject(this.isTagSelected.bind(this))
-        .map(this.createOptionAction.bind(this))
-        .value();
-
-      return new Sequence().RemoveAllOptions(this.$options).Action(actions);
-    }
-
-    selectTagAction(tag) {
-      return new RunFunctionAction(() => {
-        if (!this.selectTag(tag)) {
-          throw new StopSequence();
-        }
-      });
-    }
-
-    deselectTagAction(tag) {
-      return new RunFunctionAction(() => {
-        if (!this.deselectTag(tag)) {
-          throw new StopSequence();
-        }
-      });
-    }
-
-    createTagAction(tag) {
-      return new RunFunctionAction(() => this.createTag(tag));
-    }
-
-    addTagAction(tag) {
-      return new Sequence()
-        .Action(this.selectTagAction(tag))
-        .Action(this.createTagAction(tag))
-        .Action(this.updateTagsOverflowAction());
-    }
-
-    removeTagAction(tag, options) {
-      options = _.assign({ immediate: false }, options);
-
-      const delay = options.immediate ? 0 : DYN_ELEMS.TAG.deleteDelay;
-      const panel = this.tagPanels[tag];
-      const seq = new Sequence().Action(this.deselectTagAction(tag));
-
-      if (delay) {
-        seq.Disable(panel);
-      }
-
-      seq.RunFunction(() => this.unregisterTagPanel(tag)).DeleteAsync(panel, delay);
-
-      if (delay) {
-        seq.Wait(delay + 0.1);
-      }
-
-      seq.Action(this.updateTagsOverflowAction());
-
-      return seq;
-    }
-
-    updateTagsOverflowAction() {
-      return new RunFunctionAction(() => {
-        const isOverflow = this.isTagsOverflow;
-
-        this.debug("updateTagsOverflow()", { isOverflow });
-        this.debugTags();
-
-        if (isOverflow) {
-          this.$tags.AddClass(CLASSES.TAGS_OVERFLOW);
-        } else {
-          this.$tags.RemoveClass(CLASSES.TAGS_OVERFLOW);
-        }
-      });
-    }
-
-    clearTagsAction() {
-      const removeTagAction = _.chain(this.removeTagAction)
-        .bind(this, _, { immediate: true })
-        .unary()
-        .value();
-
-      const actions = _.map(this.tags, removeTagAction);
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    // ----- Action runners -----
-
-    renderOptions() {
-      const seq = new Sequence().Action(this.renderOptionsAction());
-
-      this.debugFn(() => ["renderOptions()", { options: this.options, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    addTag(tag) {
-      tag = normalizeTag(tag);
-
-      const seq = new Sequence()
-        .Action(this.addTagAction(tag))
-        .RunFunction(() => this.notifyChange());
-
-      this.debugFn(() => ["addTag()", { tag, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    removeTag(tag) {
-      tag = normalizeTag(tag);
-
-      const seq = new Sequence()
-        .Action(this.removeTagAction(tag))
-        .RunFunction(() => this.notifyChange());
-
-      this.debugFn(() => ["removeTag()", { tag, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    clearTags() {
-      const seq = new Sequence()
-        .Action(this.clearTagsAction())
-        .RunFunction(() => this.notifyChange());
-
-      this.debugFn(() => ["clearTags()", { tags: this.tags.length, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    showTagEntryPopup() {
-      const { layout } = COMPONENTS.POPUPS.TEXT_ENTRY;
-      const { id } = DYN_ELEMS.POPUP_TEXT_ENTRY;
-
-      return this.showPopup(this.$options, id, layout, {
-        channel: this.popupTextEntryChannel,
-        title: $.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),
-      });
-    }
-
-    debugTags() {
-      const {
-        contentwidth,
-        desiredlayoutwidth,
-        actuallayoutwidth,
-        actualxoffset,
-        scrolloffset_x,
-        actualuiscale_x,
-      } = this.$tags;
-
-      this.debug("$tags attrs", {
-        contentwidth,
-        desiredlayoutwidth,
-        actuallayoutwidth,
-        actualxoffset,
-        scrolloffset_x,
-        actualuiscale_x,
-      });
+    if (payload.text) {
+      this.addTag(payload.text);
     }
   }
 
-  context.component = new TagSelect();
-})(GameUI.CustomUIConfig(), this);
+  // ----- Properties -----
+
+  get isTagsOverflow(): boolean {
+    const { contentwidth, actuallayoutwidth } = this.#elements.tags;
+
+    return contentwidth >= actuallayoutwidth;
+  }
+
+  // ----- Helpers -----
+
+  notifyChange(): void {
+    const payload: Outputs[typeof OUTPUTS.ON_CHANGE] = { tags: this.#selected };
+
+    this.output(OUTPUTS.ON_CHANGE, payload);
+  }
+
+  selectTag(tag: string): string | null {
+    tag = normalizeTag(tag);
+
+    if (!tag || this.isTagSelected(tag)) {
+      return null;
+    }
+
+    this.#selected.push(tag);
+
+    return tag;
+  }
+
+  deselectTag(tag: string): string | null {
+    tag = normalizeTag(tag);
+
+    if (!this.isTagSelected(tag)) {
+      return null;
+    }
+
+    pull(this.#selected, tag);
+
+    return tag;
+  }
+
+  isTagSelected(tag: string): boolean {
+    return this.#selected.includes(normalizeTag(tag));
+  }
+
+  registerTagPanel(tag: string, panel: Panel): void {
+    this.#tagPanels[tag] = panel;
+  }
+
+  unregisterTagPanel(tag: string): void {
+    delete this.#tagPanels[tag];
+  }
+
+  createOption(option: string): LabelPanel {
+    const { cssClass, emptyId, textEntryId } = DYN_ELEMS.OPTION;
+
+    let id = null;
+    let text = null;
+
+    switch (option) {
+      case OPTIONS.EMPTY:
+        id = emptyId;
+        text = "";
+        break;
+      case OPTIONS.TEXT_ENTRY:
+        id = textEntryId;
+        text = $.Localize(L10N_KEYS.OPTION_TEXT_ENTRY);
+        break;
+      default:
+        id = optionID(option);
+        text = option;
+    }
+
+    return this.createLabel(this.#elements.options, id, text, {
+      classes: [cssClass],
+      attrs: { value: option },
+    });
+  }
+
+  createTag(tag: string): void {
+    const { snippet } = DYN_ELEMS.TAG;
+
+    const id = tagID(tag);
+    const panel = this.createSnippet(this.#elements.tags, id, snippet, {
+      dialogVars: { value: tag },
+      events: {
+        onactivate: this.onTagRemove.bind(this, tag),
+      },
+    });
+
+    this.registerTagPanel(tag, panel);
+  }
+
+  // ----- Actions -----
+
+  createOptionAction(option: string): Action {
+    return new SerialSequence().AddOption(
+      this.#elements.options,
+      this.createOption.bind(this, option)
+    );
+  }
+
+  renderOptionsAction(): Action {
+    const options = [OPTIONS.EMPTY, ...this.#tags, OPTIONS.TEXT_ENTRY].filter(
+      (tag) => !this.isTagSelected(tag)
+    );
+
+    const actions = options.map((tag) => this.createOptionAction(tag));
+
+    return new SerialSequence().RemoveAllOptions(this.#elements.options).Action(...actions);
+  }
+
+  selectTagAction(tag: string): Action {
+    return new RunFunctionAction(() => {
+      if (!this.selectTag(tag)) {
+        throw new StopSequence();
+      }
+    });
+  }
+
+  deselectTagAction(tag: string): Action {
+    return new RunFunctionAction(() => {
+      if (!this.deselectTag(tag)) {
+        throw new StopSequence();
+      }
+    });
+  }
+
+  createTagAction(tag: string): Action {
+    return new RunFunctionAction(() => this.createTag(tag));
+  }
+
+  addTagAction(tag: string): Action {
+    return new SerialSequence()
+      .Action(this.selectTagAction(tag))
+      .Action(this.createTagAction(tag))
+      .Action(this.updateTagsOverflowAction());
+  }
+
+  removeTagAction(tag: string, options: { immediate: boolean } = { immediate: false }): Action {
+    const delay = options.immediate ? 0 : DYN_ELEMS.TAG.deleteDelay;
+    const panel = this.#tagPanels[tag];
+    const seq = new SerialSequence().Action(this.deselectTagAction(tag));
+
+    if (delay) {
+      seq.Disable(panel);
+    }
+
+    seq.RunFunction(() => this.unregisterTagPanel(tag)).DeleteAsync(panel, delay);
+
+    if (delay) {
+      seq.Wait(delay + 0.1);
+    }
+
+    seq.Action(this.updateTagsOverflowAction());
+
+    return seq;
+  }
+
+  updateTagsOverflowAction(): Action {
+    return new RunFunctionAction(() => {
+      const isOverflow = this.isTagsOverflow;
+
+      this.debug("updateTagsOverflow()", { isOverflow });
+      this.debugTags();
+
+      if (isOverflow) {
+        this.#elements.tags.AddClass(CLASSES.TAGS_OVERFLOW);
+      } else {
+        this.#elements.tags.RemoveClass(CLASSES.TAGS_OVERFLOW);
+      }
+    });
+  }
+
+  clearTagsAction(): Action {
+    const actions = this.#selected.map((tag) => this.removeTagAction(tag, { immediate: true }));
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  // ----- Action runners -----
+
+  renderOptions(): void {
+    const seq = new SerialSequence().Action(this.renderOptionsAction());
+
+    this.debugFn(() => ["renderOptions()", { options: this.#tags, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  addTag(tag: string): void {
+    tag = normalizeTag(tag);
+
+    const seq = new SerialSequence()
+      .Action(this.addTagAction(tag))
+      .RunFunction(() => this.notifyChange());
+
+    this.debugFn(() => ["addTag()", { tag, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  removeTag(tag: string): void {
+    tag = normalizeTag(tag);
+
+    const seq = new SerialSequence()
+      .Action(this.removeTagAction(tag))
+      .RunFunction(() => this.notifyChange());
+
+    this.debugFn(() => ["removeTag()", { tag, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  clearTags(): void {
+    const seq = new SerialSequence()
+      .Action(this.clearTagsAction())
+      .RunFunction(() => this.notifyChange());
+
+    this.debugFn(() => ["clearTags()", { tags: this.#selected.length, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  showTagEntryPopup(): void {
+    const { id } = DYN_ELEMS.POPUP_TEXT_ENTRY;
+
+    UIEvents.showPopup(id, ComponentLayout.PopupTextEntry, {
+      channel: this.#popupTextEntryChannel,
+      title: $.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),
+    });
+  }
+
+  debugTags(): void {
+    const {
+      contentwidth,
+      desiredlayoutwidth,
+      actuallayoutwidth,
+      actualxoffset,
+      scrolloffset_x,
+      actualuiscale_x,
+    } = this.#elements.tags;
+
+    this.debug("$tags attrs", {
+      contentwidth,
+      desiredlayoutwidth,
+      actuallayoutwidth,
+      actualxoffset,
+      scrolloffset_x,
+      actualuiscale_x,
+    });
+  }
+}
+
+//   context.component = new TagSelect();
+// })(GameUI.CustomUIConfig(), this);

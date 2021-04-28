@@ -1,25 +1,42 @@
-// const { L10n } = global;
-// const { ComboStep } = context;
+import { ComboStep, Inputs as BaseInputs, Outputs as BaseOutputs } from "./combo_step";
+import { comboKey, localizeFallback } from "./lib/l10n";
 
-import { ComboStep } from "./combo_step";
+export type Inputs = BaseInputs;
+export type Outputs = BaseOutputs;
+
+interface Elements {
+  description: LabelPanel;
+}
 
 const L10N_FALLBACK_IDS = {
   description: "invokation_viewer_step_description_lorem",
 };
 
-class ViewerComboStep extends ComboStep {
+export class ViewerComboStep extends ComboStep {
+  #elements: Elements;
+
   constructor() {
-    super({
-      elements: {
-        description: "description",
-      },
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      description: "description",
     });
   }
 
-  onStepChange() {
-    const descriptionL10nKey = L10n.ComboKey(this.combo, this.step.id);
+  onStepChange(): void {
+    if (this.combo == null) {
+      this.warn("ViewerComboStep.onStepChange called without combo");
+      return;
+    }
 
-    this.$description.text = L10n.LocalizeFallback(
+    if (this.step == null) {
+      this.warn("ViewerComboStep.onStepChange called without step");
+      return;
+    }
+
+    const descriptionL10nKey = comboKey(this.combo, String(this.step.index));
+
+    this.#elements.description.text = localizeFallback(
       descriptionL10nKey,
       L10N_FALLBACK_IDS.description
     );

@@ -1,7 +1,17 @@
-// const { ComboStep } = context;
-// const { COMPONENTS } = global.Const;
+import { ComboStep, Inputs as BaseInputs, Outputs as BaseOutputs } from "./combo_step";
+import { COMPONENTS } from "./lib/const/component";
 
-import { ComboStep } from "./combo_step";
+export interface Inputs extends BaseInputs {
+  [INPUTS.BUMP]: never;
+  [INPUTS.SET_ACTIVE]: never;
+  [INPUTS.UNSET_ACTIVE]: never;
+  [INPUTS.SET_ERROR]: never;
+  [INPUTS.UNSET_ERROR]: never;
+}
+
+export type Outputs = BaseOutputs;
+
+const { inputs: INPUTS } = COMPONENTS.CHALLENGE_COMBO_STEP;
 
 const CLASSES = {
   ACTIVE: "active",
@@ -11,39 +21,37 @@ const CLASSES = {
 
 export class ChallengeComboStep extends ComboStep {
   constructor() {
-    const { inputs } = COMPONENTS.CHALLENGE.COMBO_STEP;
+    super();
 
-    super({
-      inputs: {
-        [inputs.BUMP]: "onBump",
-        [inputs.SET_ACTIVE]: "onSetActive",
-        [inputs.UNSET_ACTIVE]: "onUnsetActive",
-        [inputs.SET_ERROR]: "onSetError",
-        [inputs.UNSET_ERROR]: "onUnsetError",
-      },
+    this.registerInputs({
+      [INPUTS.BUMP]: this.onBump,
+      [INPUTS.SET_ACTIVE]: this.onSetActive,
+      [INPUTS.UNSET_ACTIVE]: this.onUnsetActive,
+      [INPUTS.SET_ERROR]: this.onSetError,
+      [INPUTS.UNSET_ERROR]: this.onUnsetError,
     });
   }
 
-  onBump() {
-    this.$ctx.RemoveClass(CLASSES.BUMP);
-    this.$ctx.AddClass(CLASSES.BUMP);
+  onBump(): void {
+    this.ctx.RemoveClass(CLASSES.BUMP);
+    this.ctx.AddClass(CLASSES.BUMP);
   }
 
-  onSetActive() {
-    this.$ctx.AddClass(CLASSES.ACTIVE);
+  onSetActive(): void {
+    this.ctx.AddClass(CLASSES.ACTIVE);
   }
 
-  onUnsetActive() {
-    this.$ctx.RemoveClass(CLASSES.ACTIVE);
+  onUnsetActive(): void {
+    this.ctx.RemoveClass(CLASSES.ACTIVE);
   }
 
-  onSetError() {
-    this.$ctx.RemoveClass(CLASSES.ERROR);
-    this.$ctx.AddClass(CLASSES.ERROR);
+  onSetError(): void {
+    this.ctx.RemoveClass(CLASSES.ERROR);
+    this.ctx.AddClass(CLASSES.ERROR);
   }
 
-  onUnsetError() {
-    this.$ctx.RemoveClass(CLASSES.ERROR);
+  onUnsetError(): void {
+    this.ctx.RemoveClass(CLASSES.ERROR);
   }
 }
 

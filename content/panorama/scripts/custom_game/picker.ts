@@ -1,11 +1,58 @@
-// const { Component } = context;
-// const { lodash: _, CombosView, L10n, COMBOS } = global;
-// const { COMPONENTS, EVENTS, COMBO_PROPERTIES, FREESTYLE_COMBO_ID } = global.Const;
-// const { Sequence, ParallelSequence } = global.Sequence;
-
+import { transform, uniqueId } from "lodash";
+import { COMBOS } from "./custom_ui_manifest";
+import type { Combo, ComboID } from "./lib/combo";
+import { COMBO_TRAITS, FREESTYLE_COMBO_ID, TraitProperty } from "./lib/combo";
+import type { ChangeEvent as CombosChangeEvent } from "./lib/combos_collection";
+import { CombosView, Filters } from "./lib/combos_view";
 import { Component } from "./lib/component";
+import { ComponentLayout, COMPONENTS } from "./lib/const/component";
+import {
+  ComboFinishedEvent,
+  ComboStartedEvent,
+  ComboStoppedEvent,
+  CustomEvent,
+  PickerToggleEvent,
+  PopupAbilityPickerSubmitEvent,
+  PopupItemPickerSubmitEvent,
+} from "./lib/const/events";
+import type { PanelWithComponent } from "./lib/const/panorama";
+import { CustomEvents } from "./lib/custom_events";
+import { L10N_TRAIT_PROPERTIES, localizeComboPropertiesKey } from "./lib/l10n";
+import { Action, ParallelSequence, SerialSequence } from "./lib/sequence";
+import { UI } from "./lib/ui";
+import { UIEvents } from "./lib/ui_events";
+import type {
+  Inputs as PickerCombosInputs,
+  Outputs as PickerCombosOutputs,
+  PickerCombos,
+} from "./picker_combos";
+import type {
+  Inputs as UITagSelectInputs,
+  Outputs as UITagSelectOutputs,
+  UITagSelect,
+} from "./ui/tag_select";
 
-const START_OPEN_DELAY = 1.0;
+export type Inputs = never;
+export type Outputs = never;
+
+interface Elements {
+  combos: CombosPanel;
+  filterTagsContainer: Panel;
+  filterTagsResetButton: Button;
+  filterSpecialty: DropDown;
+  filterStance: DropDown;
+  filterDamageRating: DropDown;
+  filterDifficultyRating: DropDown;
+  filterItemImage: ItemImage;
+  filterItemResetButton: Button;
+  filterAbilityImage: AbilityImage;
+  filterAbilityResetButton: Button;
+}
+
+type CombosPanel = PanelWithComponent<PickerCombos>;
+type FilterTagsPanel = PanelWithComponent<UITagSelect>;
+
+// const START_OPEN_DELAY = 1.0;
 
 const DYN_ELEMS = {
   TAG_SELECT: {
@@ -31,45 +78,42 @@ const SOUNDS = {
 };
 
 const L10N_KEYS = {
-  PROPERTY_FILTER_OPTION_DEFAULT: "invokation_picker_filter_option_all",
+  TRAIT_FILTER_OPTION_DEFAULT: "invokation_picker_filter_option_all",
 };
 
-const COMBO_PROPERTIES_TYPES = _.mapValues(COMBO_PROPERTIES, (values) => typeof values[0]);
-const PROPERTY_FILTER_OPTION_DEFAULT = "all";
+const TRAIT_FILTER_OPTION_DEFAULT = "all";
 
-const isNumericProperty = (property) => COMBO_PROPERTIES_TYPES[property] === "number";
-const propertyFilterAttr = (property) => _.camelCase(`filter_${property}`);
-const propertyFilterOptionId = (property, value) => `filter-${property}-${value}`;
+const traitFilterOptionID = (trait: TraitProperty, value: string) => `filter-${trait}-${value}`;
 
-class Picker extends Component {
+export class Picker extends Component {
+  #elements: Elements;
+  #combos: CombosView;
+  #filtering = false;
+  #tags: string[] = [];
+  #filterTags?: FilterTagsPanel;
+  #popupItemPickerChannel: string;
+  #popupAbilityPickerChannel: string;
+
   constructor() {
-    super({
-      elements: {
-        combos: "combos",
-        filterTagsContainer: "filter-tags-container",
-        filterTagsResetButton: "filter-tags-reset-button",
-        filterSpecialty: "filter-specialty",
-        filterStance: "filter-stance",
-        filterDamageRating: "filter-damage-rating",
-        filterDifficultyRating: "filter-difficulty-rating",
-        filterItemImage: "filter-item-image",
-        filterItemResetButton: "filter-item-reset-button",
-        filterAbilityImage: "filter-ability-image",
-        filterAbilityResetButton: "filter-ability-reset-button",
-      },
-      customEvents: {
-        "!PICKER_TOGGLE": "onPickerToggle",
-        "!COMBO_STARTED": "onComboStarted",
-        "!COMBO_STOPPED": "onComboStopped",
-        "!COMBO_FINISHED": "onComboFinished",
-        "!POPUP_ITEM_PICKER_SUBMIT": "onPopupItemPickerSubmit",
-        "!POPUP_ABILITY_PICKER_SUBMIT": "onPopupAbilityPickerSubmit",
-      },
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      combos: "combos",
+      filterTagsContainer: "filter-tags-container",
+      filterTagsResetButton: "filter-tags-reset-button",
+      filterSpecialty: "filter-specialty",
+      filterStance: "filter-stance",
+      filterDamageRating: "filter-damage-rating",
+      filterDifficultyRating: "filter-difficulty-rating",
+      filterItemImage: "filter-item-image",
+      filterItemResetButton: "filter-item-reset-button",
+      filterAbilityImage: "filter-ability-image",
+      filterAbilityResetButton: "filter-ability-reset-button",
     });
 
-    this._combos = new CombosView();
-    this.popupItemPickerChannel = _.uniqueId("popup_item_picker_");
-    this.popupAbilityPickerChannel = _.uniqueId("popup_ability_picker_");
+    this.#combos = new CombosView();
+    this.#popupItemPickerChannel = uniqueId("popup_item_picker_");
+    this.#popupAbilityPickerChannel = uniqueId("popup_ability_picker_");
 
     this.enableFiltering();
     this.renderCombos();
@@ -79,37 +123,37 @@ class Picker extends Component {
 
   // ----- Handlers -----
 
-  onPickerToggle(payload) {
+  onPickerToggle(payload: NetworkedData<PickerToggleEvent>): void {
     this.debug("onPickerToggle()", payload);
-    this.Toggle();
+    this.toggle();
   }
 
-  onCombosChange() {
-    this.debug("onCombosChange()");
-    this.combos = COMBOS.Entries();
+  onCombosChange(ev: CombosChangeEvent): void {
+    this.debugFn(() => ["onCombosChange()", { count: ev.combos.length }]);
+    this.setCombos(COMBOS.combos);
   }
 
-  onComboSelected(payload) {
+  onComboSelected(payload: PickerCombosOutputs["OnSelect"]): void {
     this.debug("onComboSelected()", payload);
     this.selectCombo(payload.id);
   }
 
-  onComboPlay(payload) {
+  onComboPlay(payload: { id: ComboID }): void {
     this.debug("onComboPlay()", payload);
     this.startCombo(payload.id);
   }
 
-  onComboStarted() {
-    this.debug("onComboStarted()");
+  onComboStarted(payload: NetworkedData<ComboStartedEvent>): void {
+    this.debug("onComboStarted()", payload);
     this.close();
   }
 
-  onComboStopped() {
-    this.debug("onComboStopped()");
+  onComboStopped(payload: NetworkedData<ComboStoppedEvent>): void {
+    this.debug("onComboStopped()", payload);
     this.open();
   }
 
-  onComboFinished(payload) {
+  onComboFinished(payload: NetworkedData<ComboFinishedEvent>): void {
     if (payload.id === FREESTYLE_COMBO_ID) {
       return;
     }
@@ -118,104 +162,120 @@ class Picker extends Component {
     this.finishCombo(payload.id);
   }
 
-  onFilterTagsChange(payload) {
+  onFilterTagsChange(payload: UITagSelectOutputs["OnChange"]): void {
     this.debug("onFilterTagsChange()", payload);
     this.filterByTags(payload.tags);
   }
 
-  onPopupItemPickerSubmit(payload) {
+  onPopupItemPickerSubmit(payload: NetworkedData<PopupItemPickerSubmitEvent>): void {
     const { channel, item } = payload;
 
-    if (channel !== this.popupItemPickerChannel) {
+    if (channel !== this.#popupItemPickerChannel) {
       return;
     }
 
     this.debug("onPopupItemPickerSubmit()", payload);
 
-    if (!_.isEmpty(item)) {
+    if (typeof item === "string" && item.length > 0) {
       this.filterByItem(item);
     }
   }
 
-  onPopupAbilityPickerSubmit(payload) {
+  onPopupAbilityPickerSubmit(payload: NetworkedData<PopupAbilityPickerSubmitEvent>): void {
     const { channel, ability } = payload;
 
-    if (channel !== this.popupAbilityPickerChannel) {
+    if (channel !== this.#popupAbilityPickerChannel) {
       return;
     }
 
     this.debug("onPopupAbilityPickerSubmit()", payload);
 
-    if (!_.isEmpty(ability)) {
+    if (typeof ability === "string" && ability.length > 0) {
       this.filterByAbility(ability);
     }
   }
 
   // ----- Properties -----
 
-  get isClosed() {
-    return this.$ctx.BHasClass(CLASSES.CLOSED);
+  get isClosed(): boolean {
+    return this.ctx.BHasClass(CLASSES.CLOSED);
   }
 
-  get combos() {
-    return this._combos;
-  }
-
-  set combos(combos) {
-    this._combos = new CombosView(combos);
+  setCombos(combos: Combo[]): void {
+    this.#combos = new CombosView(combos);
 
     this.updateTagsFilter();
     this.updateCombos();
   }
 
-  get comboTags() {
-    return _.chain(this.combos.entries).map("tags").flatten().uniq().sort().value();
+  get comboTags(): string[] {
+    const uniq: Record<string, boolean> = {};
+
+    this.#combos.visible.forEach((combo) => {
+      combo.tags.forEach((tag) => {
+        uniq[tag] = true;
+      });
+    });
+
+    return Object.keys(uniq).sort();
   }
 
   // ----- Helpers -----
 
-  bindEvents() {
-    COMBOS.OnChange(this.handler("onCombosChange"));
+  bindEvents(): void {
+    this.onCustomEvent(CustomEvent.PICKER_TOGGLE, this.onPickerToggle);
+    this.onCustomEvent(CustomEvent.COMBO_STARTED, this.onComboStarted);
+    this.onCustomEvent(CustomEvent.COMBO_STOPPED, this.onComboStopped);
+    this.onCustomEvent(CustomEvent.COMBO_FINISHED, this.onComboFinished);
+    this.onCustomEvent(CustomEvent.POPUP_ITEM_PICKER_SUBMIT, this.onPopupItemPickerSubmit);
+    this.onCustomEvent(CustomEvent.POPUP_ABILITY_PICKER_SUBMIT, this.onPopupAbilityPickerSubmit);
+
+    COMBOS.onChange(this.onCombosChange.bind(this));
   }
 
-  createCombos() {
-    const { layout, outputs } = COMPONENTS.PICKER.COMBOS;
+  createCombos(): void {
+    const { outputs } = COMPONENTS.PICKER_COMBOS;
 
-    return this.loadComponent(this.$combos, layout, {
+    this.loadComponent(this.#elements.combos, ComponentLayout.PickerCombos, {
       outputs: {
-        [outputs.ON_SELECT]: "onComboSelected",
+        [outputs.ON_SELECT]: this.onComboSelected,
       },
     });
   }
 
-  updateCombos() {
-    const { inputs } = COMPONENTS.PICKER.COMBOS;
+  updateCombos(): void {
+    const { inputs } = COMPONENTS.PICKER_COMBOS;
+    const payload: PickerCombosInputs["SetCombos"] = { combos: this.#combos };
 
-    this.$combos.component.Input(inputs.SET_COMBOS, { combos: this.combos });
+    this.debugFn(() => ["updateCombos()", { count: this.#combos.length }]);
+
+    this.#elements.combos.component.input(inputs.SET_COMBOS, payload);
   }
 
-  startCombo(id) {
+  startCombo(id: ComboID): void {
     this.debug("startCombo()", { id });
-    this.sendServer(EVENTS.COMBO_START, { id });
+
+    CustomEvents.sendServer(CustomEvent.COMBO_START, { id });
   }
 
-  finishCombo(id) {
-    this.debug("finishCombo()", { id });
+  finishCombo(id: ComboID): void {
+    const { inputs } = COMPONENTS.PICKER_COMBOS;
+    const payload: PickerCombosInputs["SetFinished"] = { id };
 
-    const { inputs } = COMPONENTS.PICKER.COMBOS;
+    this.debug("finishCombo()", payload);
 
-    this.$combos.Input(inputs.SET_FINISHED, { id });
+    this.#elements.combos.component.input(inputs.SET_FINISHED, { id });
   }
 
-  createPropertyFilterOption(parent, property, value) {
-    const id = propertyFilterOptionId(property, value);
+  createTraitFilterOption(parent: Panel, trait: TraitProperty, value: string): Panel {
+    const id = traitFilterOptionID(trait, value);
     let text;
 
-    if (value === PROPERTY_FILTER_OPTION_DEFAULT) {
-      text = $.Localize(L10N_KEYS.PROPERTY_FILTER_OPTION_DEFAULT);
+    if (value === TRAIT_FILTER_OPTION_DEFAULT) {
+      text = $.Localize(L10N_KEYS.TRAIT_FILTER_OPTION_DEFAULT);
       value = "";
     } else {
-      text = L10n.LocalizeComboPropertiesKey(property, String(value));
+      text = localizeComboPropertiesKey(L10N_TRAIT_PROPERTIES[trait], value);
     }
 
     return this.createLabel(parent, id, text, {
@@ -223,310 +283,337 @@ class Picker extends Component {
     });
   }
 
-  createTagsFilter() {
-    const { layout, outputs } = COMPONENTS.UI.TAG_SELECT;
+  createTagsFilter(): void {
+    const { outputs } = COMPONENTS.UI_TAG_SELECT;
     const { id } = DYN_ELEMS.TAG_SELECT;
 
-    this.$filterTags = this.createComponent(this.$filterTagsContainer, id, layout, {
-      outputs: {
-        [outputs.ON_CHANGE]: "onFilterTagsChange",
+    this.#filterTags = this.createComponent(
+      this.#elements.filterTagsContainer,
+      id,
+      ComponentLayout.UITagSelect,
+      {
+        outputs: {
+          [outputs.ON_CHANGE]: this.onFilterTagsChange,
+        },
+      }
+    );
+  }
+
+  updateTagsFilter(): void {
+    if (this.#filterTags == null) {
+      throw Error(`Picker.updateTagsFilter called without UITagSelect component`);
+    }
+
+    const { inputs } = COMPONENTS.UI_TAG_SELECT;
+    const payload: UITagSelectInputs["SetOptions"] = { options: this.comboTags };
+
+    this.#filterTags.component.input(inputs.SET_OPTIONS, payload);
+  }
+
+  resetTagsFilter(): void {
+    if (this.#filterTags == null) {
+      throw Error(`Picker.resetTagsFilter called without UITagSelect component`);
+    }
+
+    const { inputs } = COMPONENTS.UI_TAG_SELECT;
+
+    this.#filterTags.component.input(inputs.CLEAR);
+  }
+
+  enableFiltering(): void {
+    this.#filtering = true;
+  }
+
+  disableFiltering(): void {
+    this.#filtering = false;
+  }
+
+  filter(): void {
+    if (!this.#filtering) return;
+
+    const traitFilters = transform(
+      TraitProperty,
+      (f, trait) => {
+        f[trait] = this.dropDownFilterValue(this.traitFilter(trait));
       },
-    });
+      {} as Filters
+    );
 
-    return this.$filterTags;
-  }
-
-  updateTagsFilter() {
-    const { inputs } = COMPONENTS.UI.TAG_SELECT;
-
-    this.$filterTags.component.Input(inputs.SET_OPTIONS, { options: this.comboTags });
-  }
-
-  resetTagsFilter() {
-    const { inputs } = COMPONENTS.UI.TAG_SELECT;
-
-    this.$filterTags.component.Input(inputs.CLEAR);
-  }
-
-  enableFiltering() {
-    this.filtering = true;
-  }
-
-  disableFiltering() {
-    this.filtering = false;
-  }
-
-  filter() {
-    const filters = _.mapValues(COMBO_PROPERTIES, (_, prop) => this.propertyFilterValue(prop));
-
-    filters.tags = this.tagsFilterValue();
-    filters.item = this.itemFilterValue();
-    filters.ability = this.abilityFilterValue();
+    const filters: Filters = {
+      ...traitFilters,
+      tags: this.tagsFilterValue,
+      item: this.itemFilterValue,
+      ability: this.abilityFilterValue,
+    };
 
     this.debug("filter()", filters);
 
-    this.combos.filter(filters);
+    this.#combos.filter(filters);
   }
 
-  propertyFilter(property) {
-    return this.element(propertyFilterAttr(property));
-  }
-
-  propertyFilterValue(property) {
-    let value = _.chain(this)
-      .invoke("propertyFilter", property)
-      .invoke("GetSelected")
-      .invoke("GetAttributeString", "value", "")
-      .value();
-
-    if (!_.isEmpty(value) && isNumericProperty(property)) {
-      value = parseInt(value);
+  traitFilter(trait: TraitProperty): DropDown {
+    switch (trait) {
+      case TraitProperty.Specialty:
+        return this.#elements.filterSpecialty;
+      case TraitProperty.Stance:
+        return this.#elements.filterStance;
+      case TraitProperty.DamageRating:
+        return this.#elements.filterDamageRating;
+      case TraitProperty.DifficultyRating:
+        return this.#elements.filterDifficultyRating;
     }
-
-    return value;
   }
 
-  tagsFilterValue() {
-    return this.filterTags;
+  dropDownFilterValue(dropDown: DropDown): string {
+    return dropDown.GetSelected()?.GetAttributeString("value", "") ?? "";
   }
 
-  itemFilterValue() {
-    return this.$filterItemImage.itemname;
+  get tagsFilterValue(): string[] {
+    return this.#tags;
   }
 
-  abilityFilterValue() {
-    return this.$filterAbilityImage.abilityname;
+  get itemFilterValue(): string {
+    return this.#elements.filterItemImage.itemname;
+  }
+
+  get abilityFilterValue(): string {
+    return this.#elements.filterAbilityImage.abilityname;
   }
 
   // ----- Actions -----
 
-  renderCombosAction() {
-    return new Sequence().RunFunction(() => this.createCombos());
+  renderCombosAction(): Action {
+    return new SerialSequence().RunFunction(() => this.createCombos());
   }
 
-  renderFiltersAction() {
+  renderFiltersAction(): Action {
     return new ParallelSequence()
-      .Action(this.renderPropertyFiltersAction())
+      .Action(this.renderTraitFiltersAction())
       .Action(this.renderTagsFilterAction());
   }
 
-  renderPropertyFiltersAction() {
-    const actions = _.map(COMBO_PROPERTIES, (values, prop) =>
-      this.renderPropertyFilterAction(prop, values)
-    );
+  renderTraitFiltersAction(): Action {
+    const actions = Object.entries(COMBO_TRAITS).map(([trait, values]) => {
+      const strValues = values.map((v: unknown) => String(v));
 
-    return new ParallelSequence().Action(actions);
+      return this.renderTraitFilterAction(trait as TraitProperty, strValues);
+    });
+
+    return new ParallelSequence().Action(...actions);
   }
 
-  renderPropertyFilterAction(property, values) {
-    values = _.concat([PROPERTY_FILTER_OPTION_DEFAULT], values);
+  renderTraitFilterAction(trait: TraitProperty, values: string[]): Action {
+    values = [TRAIT_FILTER_OPTION_DEFAULT, ...values];
 
-    const dropDown = this.propertyFilter(property);
-    const actions = values.map((value) => this.renderPropertyFilterOptionAction(property, value));
+    const dropDown = this.traitFilter(trait);
+    const actions = values.map((value) => this.renderTraitFilterOptionAction(trait, value));
 
-    return new Sequence().RemoveAllOptions(dropDown).Action(actions);
+    return new SerialSequence().RemoveAllOptions(dropDown).Action(...actions);
   }
 
-  renderPropertyFilterOptionAction(property, value) {
-    const dropDown = this.propertyFilter(property);
-    const createPropertyFilterOption = _.bind(
-      this.createPropertyFilterOption,
-      this,
+  renderTraitFilterOptionAction(trait: TraitProperty, value: string): Action {
+    const dropDown = this.traitFilter(trait);
+
+    return new SerialSequence().AddOption(
       dropDown,
-      property,
-      value
-    );
-
-    return new Sequence().AddOption(dropDown, createPropertyFilterOption);
-  }
-
-  resetPropertyFiltersAction() {
-    const actions = _.map(COMBO_PROPERTIES, (_, prop) => this.resetPropertyFilterAction(prop));
-
-    return new ParallelSequence().Action(actions);
-  }
-
-  resetPropertyFilterAction(property) {
-    return new Sequence().SelectOption(
-      this.propertyFilter(property),
-      propertyFilterOptionId(property, PROPERTY_FILTER_OPTION_DEFAULT)
+      this.createTraitFilterOption(dropDown, trait, value)
     );
   }
 
-  renderTagsFilterAction() {
-    return new Sequence().RunFunction(() => this.createTagsFilter());
+  resetTraitFiltersAction(): Action {
+    const actions = Object.keys(COMBO_TRAITS).map((t) =>
+      this.resetTraitFilterAction(t as TraitProperty)
+    );
+
+    return new ParallelSequence().Action(...actions);
   }
 
-  resetTagsFilterAction() {
-    return new Sequence().RunFunction(() => this.resetTagsFilter());
+  resetTraitFilterAction(trait: TraitProperty): Action {
+    const dropDown = this.traitFilter(trait);
+
+    return new SerialSequence().SelectOption(
+      dropDown,
+      traitFilterOptionID(trait, TRAIT_FILTER_OPTION_DEFAULT)
+    );
   }
 
-  setItemFilterAction(name) {
-    return new Sequence().SetItemImage(this.$filterItemImage, { name });
+  renderTagsFilterAction(): Action {
+    return new SerialSequence().RunFunction(() => this.createTagsFilter());
   }
 
-  resetItemFilterAction() {
+  resetTagsFilterAction(): Action {
+    return new SerialSequence().RunFunction(() => this.resetTagsFilter());
+  }
+
+  setItemFilterAction(itemname: string): Action {
+    return new SerialSequence().SetItemImage(this.#elements.filterItemImage as ItemImage, {
+      itemname,
+    });
+  }
+
+  resetItemFilterAction(): Action {
     return new ParallelSequence()
-      .Disable(this.$filterItemResetButton)
+      .Disable(this.#elements.filterItemResetButton)
       .Action(this.setItemFilterAction(""));
   }
 
-  setAbilityFilterAction(name) {
-    return new Sequence().SetAbilityImage(this.$filterAbilityImage, { name });
+  setAbilityFilterAction(abilityname: string): Action {
+    return new SerialSequence().SetAbilityImage(this.#elements.filterAbilityImage as AbilityImage, {
+      abilityname,
+    });
   }
 
-  resetAbilityFilterAction() {
+  resetAbilityFilterAction(): Action {
     return new ParallelSequence()
-      .Disable(this.$filterAbilityResetButton)
+      .Disable(this.#elements.filterAbilityResetButton)
       .Action(this.setAbilityFilterAction(""));
   }
 
-  renderViewerAction() {
+  renderViewerAction(): Action {
     // TODO: actually render viewer inside content panel
     // return new Sequence().RunFunction(() =>
-    //   this.sendClientSide(EVENTS.VIEWER_RENDER, { id: this.selectedCombo })
+    //   this.sendClientSide(CustomEvent.VIEWER_RENDER, { id: this.selectedCombo })
     // );
-    return new Sequence();
+    return new SerialSequence();
   }
 
   // ----- Action runners -----
 
-  renderCombos() {
-    const seq = new Sequence().Action(this.renderCombosAction());
+  renderCombos(): void {
+    const seq = new SerialSequence().Action(this.renderCombosAction());
 
-    this.debugFn(() => ["renderCombos()", { combos: this.combos.all.length, actions: seq.length }]);
+    this.debugFn(() => ["renderCombos()", { combos: this.#combos.length, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  renderFilters() {
-    const seq = new Sequence().Action(this.renderFiltersAction());
+  renderFilters(): void {
+    const seq = new SerialSequence().Action(this.renderFiltersAction());
 
     this.debugFn(() => ["renderFilters()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  open() {
-    if (!this.isClosed) {
-      return;
-    }
+  open(): void {
+    if (!this.isClosed) return;
 
     const seq = new ParallelSequence()
       .PlaySoundEffect(SOUNDS.OPEN)
-      .RemoveClass(this.$ctx, CLASSES.CLOSED)
-      .RunFunction(() => this.hideActionPanelUI());
+      .RemoveClass(this.ctx, CLASSES.CLOSED)
+      .RunFunction(() => UI.hideActionPanelUI());
 
     this.debugFn(() => ["open()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  close() {
-    if (this.isClosed) {
-      return;
-    }
+  close(): void {
+    if (this.isClosed) return;
 
     const seq = new ParallelSequence()
       .PlaySoundEffect(SOUNDS.CLOSE)
-      .AddClass(this.$ctx, CLASSES.CLOSED)
-      .RunFunction(() => this.showActionPanelUI());
+      .AddClass(this.ctx, CLASSES.CLOSED)
+      .RunFunction(() => UI.showActionPanelUI());
 
     this.debugFn(() => ["close()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  selectCombo(id) {
-    const seq = new Sequence().Action(this.renderViewerAction()).PlaySoundEffect(SOUNDS.SELECT);
+  selectCombo(id: ComboID): void {
+    const seq = new SerialSequence()
+      .Action(this.renderViewerAction())
+      .PlaySoundEffect(SOUNDS.SELECT);
 
     this.debugFn(() => ["selectCombo()", { id, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  filterByTags(tags) {
-    this.filterTags = tags;
-    const seq = new Sequence();
+  filterByTags(tags: string[]): void {
+    this.#tags = tags;
 
-    if (_.isEmpty(this.filterTags)) {
-      seq.Disable(this.$filterTagsResetButton);
+    const seq = new SerialSequence();
+
+    if (this.#tags.length > 0) {
+      seq.Disable(this.#elements.filterTagsResetButton);
     } else {
-      seq.Enable(this.$filterTagsResetButton);
+      seq.Enable(this.#elements.filterTagsResetButton);
     }
 
-    seq.RunFunction(() => this.Filter());
+    seq.RunFunction(() => this.filter());
 
-    this.debugFn(() => ["filterByTags()", { tags: this.filterTags, actions: seq.length }]);
+    this.debugFn(() => ["filterByTags()", { tags: this.#tags, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  filterByItem(name) {
-    const seq = new Sequence()
+  filterByItem(name: string): void {
+    const seq = new SerialSequence()
       .Action(this.setItemFilterAction(name))
-      .Enable(this.$filterItemResetButton)
-      .RunFunction(() => this.Filter());
+      .Enable(this.#elements.filterItemResetButton)
+      .RunFunction(() => this.filter());
 
     this.debugFn(() => ["filterByItem()", { item: name, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  filterByAbility(name) {
-    const seq = new Sequence()
+  filterByAbility(name: string): void {
+    const seq = new SerialSequence()
       .Action(this.setAbilityFilterAction(name))
-      .Enable(this.$filterAbilityResetButton)
-      .RunFunction(() => this.Filter());
+      .Enable(this.#elements.filterAbilityResetButton)
+      .RunFunction(() => this.filter());
 
     this.debugFn(() => ["filterByAbility()", { ability: name, actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  resetFilters() {
-    const seq = new Sequence()
+  resetFilters(): void {
+    const seq = new SerialSequence()
       .RunFunction(() => this.disableFiltering())
-      .Action(this.resetPropertyFiltersAction())
+      .Action(this.resetTraitFiltersAction())
       .Action(this.resetTagsFilterAction())
       .Action(this.resetItemFilterAction())
       .Action(this.resetAbilityFilterAction())
       .RunFunction(() => this.enableFiltering())
-      .RunFunction(() => this.Filter());
+      .RunFunction(() => this.filter());
 
     this.debugFn(() => ["resetFilters()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  resetItemFilter() {
-    const seq = new Sequence()
+  resetItemFilter(): void {
+    const seq = new SerialSequence()
       .Action(this.resetItemFilterAction())
-      .RunFunction(() => this.Filter());
+      .RunFunction(() => this.filter());
 
     this.debugFn(() => ["resetItemFilter()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  resetAbilityFilter() {
-    const seq = new Sequence()
+  resetAbilityFilter(): void {
+    const seq = new SerialSequence()
       .Action(this.resetAbilityFilterAction())
-      .RunFunction(() => this.Filter());
+      .RunFunction(() => this.filter());
 
     this.debugFn(() => ["resetAbilityFilter()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
   // ----- UI methods -----
 
-  Reload() {
-    this.debug("Reload()");
-    COMBOS.Reload();
+  reload(): void {
+    this.debug("reload()");
+    COMBOS.reload();
   }
 
-  Toggle() {
+  toggle(): void {
     if (this.isClosed) {
       this.open();
     } else {
@@ -534,51 +621,27 @@ class Picker extends Component {
     }
   }
 
-  Freestyle() {
-    this.debug("Freestyle()");
+  freestyle(): void {
+    this.debug("freestyle()");
     this.startCombo(FREESTYLE_COMBO_ID);
   }
 
-  ShowItemFilter() {
-    const { layout } = COMPONENTS.POPUPS.ITEM_PICKER;
+  showItemFilter(): void {
+    const { layout } = COMPONENTS.POPUP_ITEM_PICKER;
     const { id } = DYN_ELEMS.ITEM_PICKER;
 
-    return this.showPopup(this.$filterItemImage, id, layout, {
-      channel: this.popupItemPickerChannel,
+    UIEvents.showPopup(id, layout, {
+      channel: this.#popupItemPickerChannel,
     });
   }
 
-  ShowAbilityFilter() {
-    const { layout } = COMPONENTS.POPUPS.INVOKER_ABILITY_PICKER;
+  showAbilityFilter(): void {
+    const { layout } = COMPONENTS.POPUP_INVOKER_ABILITY_PICKER;
     const { id } = DYN_ELEMS.ABILITY_PICKER;
 
-    return this.showPopup(this.$filterAbilityImage, id, layout, {
-      channel: this.popupAbilityPickerChannel,
+    UIEvents.showPopup(id, layout, {
+      channel: this.#popupAbilityPickerChannel,
     });
-  }
-
-  Filter() {
-    if (!this.filtering) {
-      return;
-    }
-
-    this.filter();
-  }
-
-  ResetFilters() {
-    return this.resetFilters();
-  }
-
-  ResetTagsFilter() {
-    return this.resetTagsFilter();
-  }
-
-  ResetItemFilter() {
-    return this.resetItemFilter();
-  }
-
-  ResetAbilityFilter() {
-    return this.resetAbilityFilter();
   }
 }
 

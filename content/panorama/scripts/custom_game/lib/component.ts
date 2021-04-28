@@ -1,10 +1,13 @@
-import { mapValues, uniqueId } from "lodash";
-import type { Components } from "./const/component";
+import { mapValues, transform, uniqueId } from "lodash";
+import { ComponentLayout, Components } from "./const/component";
+import { CustomEvent, EventListener } from "./const/events";
+import type { PanelWithComponent, WithComponent } from "./const/panorama";
 import { CSSClass, PanelType } from "./const/panorama";
 import { CustomEvents } from "./custom_events";
 import { Env, ENV } from "./env";
-import { InputsTrigger, IO, OutputsBinding } from "./io";
+import { InputsBinding, InputsTrigger, IO, OutputsBinding } from "./io";
 import { LogFn, Logger, LogLevel } from "./logger";
+import { PanelEventListener, PanelEvents } from "./panel_events";
 import {
   ApplyPanelOptions,
   createPanel,
@@ -12,44 +15,16 @@ import {
   isItemAbility,
   loadPanelLayout,
   prefixer,
-  toParams,
 } from "./util";
-
-type FindElements = Record<string, string>;
-type RegisterInputs = Record<string, string>;
-type RegisterOutputs = string[];
-type OnEvents = { [Event in invk.Events.EventName]?: string };
-type OnUIEvents = {
-  [elementName: string]: {
-    [eventName in invk.Events.UIEventName]?: string;
-  };
-};
-
-export interface ComponentOptions {
-  elements?: FindElements;
-  inputs?: RegisterInputs;
-  outputs?: RegisterOutputs;
-  customEvents?: OnEvents;
-  elementEvents?: OnUIEvents;
-  [key: string]: unknown;
-}
 
 interface ApplyComponentOptions {
   inputs?: Record<string, unknown>;
-  outputs?: Record<string, string>;
-}
-
-interface ComponentCreatePanelOptions extends CreatePanelOptions {
-  events?: Record<string, string>;
-}
-
-interface ComponentApplyPanelOptions extends ApplyPanelOptions {
-  events?: Record<string, string>;
+  outputs?: OutputsBinding;
 }
 
 const LAYOUT_BASE_URI = "file://{resources}/layout/custom_game";
 
-const elemIDing = (s: string): string => prefixer(s, "#");
+const elemID = (s: string): string => prefixer(s, "#");
 
 const componentLayout = (layout: string): string => {
   if (layout.startsWith("file:")) {
@@ -63,12 +38,13 @@ const componentLayout = (layout: string): string => {
   return `${LAYOUT_BASE_URI}/${layout}`;
 };
 
-const getPanelComponent = <T extends Component>(panel: PanelBase): T | undefined =>
-  (panel as any).component;
+export function getPanelComponent<T extends Component>(panel: Panel): T {
+  return (panel as PanelWithComponent<T>).component;
+}
 
-const setPanelComponent = (panel: PanelBase, component: Component): void => {
-  (panel as any).component = component;
-};
+export function setPanelComponent<T extends Component>(panel: Panel, component: T): void {
+  (panel as PanelWithComponent<T>).component = component;
+}
 
 export abstract class Component {
   id: string;
@@ -76,28 +52,20 @@ export abstract class Component {
   logger: Logger;
   io: IO;
   ctx: Panel;
-  elements: Record<string, Panel>;
 
-  constructor(public options: ComponentOptions = {}) {
+  constructor() {
     this.id = uniqueId(`${this.constructor.name}.`);
     this.env = ENV;
-    this.options = {};
     this.io = new IO();
-    this.elements = {};
     this.logger = new Logger({
       level: this.env.development ? LogLevel.DEBUG : LogLevel.INFO,
       progname: this.id,
     });
 
     this.ctx = $.GetContextPanel();
-    this.elements = this.findAll(this.options.elements);
 
     this.setupContextPanel();
-    this.registerInputs(this.options.inputs);
-    this.registerOutputs(this.options.outputs);
     this.unsubscribeAllEvents();
-    this.onEvents(this.options.customEvents);
-    this.onUIEvents(this.options.elementEvents);
 
     this.debug("init", { layout: this.ctx.layoutfile });
   }
@@ -105,7 +73,6 @@ export abstract class Component {
   // ----- Internal -----
 
   private setupContextPanel(): void {
-    // this.$ctx.component = this;
     setPanelComponent(this.ctx, this);
 
     if (this.env.development) {
@@ -141,36 +108,53 @@ export abstract class Component {
 
   // ----- Elements -----
 
-  $(element: string | Panel): Panel {
-    if (typeof element === "string") {
-      return this.elements[element];
-    }
-
-    return element;
-  }
-
-  findAll(elements?: FindElements): Record<string, Panel> {
-    if (elements == null) return {};
-
-    return mapValues(elements, (elemID) => $(elemIDing(elemID)));
+  findAll<T>(obj: { [K in keyof T]: string }): T {
+    return transform<{ [K in keyof T]: string }, T>(
+      obj,
+      (r, value, key) => {
+        r[key] = ($(elemID(value)) as unknown) as T[typeof key];
+      },
+      {} as T
+    );
   }
 
   // ----- I/O -----
 
-  handler(name: string): (...args: unknown[]) => unknown {
+  /*
+  bind(name: string): (...args: unknown[]) => unknown {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (this as any)[name].bind(this);
   }
 
-  bindHandlers(handlers: Record<string, string>): Record<string, (...args: unknown[]) => unknown> {
-    return mapValues(handlers, (handlerName) => this.handler(handlerName));
+  binds<M extends MethodMapping<this>>(
+    this: this & HasMethods<this, M>,
+    mapping: M
+  ): MethodBinding<this, M> {
+    return transform<M, MethodBinding<this, M>>(
+      mapping,
+      (binding, methodName, name) => {
+        binding[name] = this[methodName].bind(this);
+      },
+      {} as MethodBinding<this, M>
+    );
+  }
+  */
+
+  bindAll(
+    mapping: Record<string, (...args: unknown[]) => unknown>
+  ): Record<string, (...args: unknown[]) => unknown> {
+    return mapValues(mapping, (fn) => fn.bind(this));
   }
 
-  registerInputs(inputs?: RegisterInputs): void {
-    if (inputs == null) return;
-
-    const boundInputs = mapValues(inputs, (listenerName) => this.handler(listenerName));
+  // listeners are own functions
+  registerInputs(inputs: InputsBinding): void {
+    const boundInputs = this.bindAll(inputs);
 
     this.io.registerInputs(boundInputs);
+  }
+
+  input(input: string, payload?: unknown): void {
+    this.io.input(input, payload);
   }
 
   inputs(inputs?: InputsTrigger): void {
@@ -179,70 +163,41 @@ export abstract class Component {
     this.io.inputs(inputs);
   }
 
-  registerOutputs(outputs?: RegisterOutputs): void {
+  registerOutputs(outputs: string[]): void {
     this.io.registerOutputs(outputs);
   }
 
-  onOutputs(outputs?: OutputsBinding): void {
-    if (outputs == null) return;
-
+  // listeners are external functions
+  onOutputs(outputs: OutputsBinding): void {
     this.io.onOutputs(outputs);
+  }
+
+  output(output: string, payload?: unknown): void {
+    this.io.output(output, payload);
   }
 
   // ----- Events -----
 
-  onEvent<K extends invk.Events.EventName>(event: K, listenerName: string): GameEventListenerID {
-    const listener = this.handler(listenerName);
-    const listenerID = CustomEvents.subscribe(this.id, event, listener);
+  onCustomEvent<K extends CustomEvent>(event: K, listener: EventListener<K>): GameEventListenerID {
+    const listenerID = CustomEvents.subscribe(this.id, event, listener.bind(this));
 
-    this.debugFn(() => ["subscribe", listenerID]);
+    this.debugFn(() => ["subscribe", { event, listenerID }]);
 
     return listenerID;
-  }
-
-  onEvents(events?: OnEvents): void {
-    if (events == null) return;
-
-    Object.entries(events).forEach(([event, listenerName]) => {
-      if (listenerName != null) {
-        this.onEvent(event as invk.Events.EventName, listenerName);
-      }
-    });
-  }
-
-  unsubscribeEvents(...args: GameEventListenerID[]): void {
-    CustomEvents.unsubscribe(this.id, ...args);
   }
 
   unsubscribeAllEvents(): void {
     const subscriptions = CustomEvents.unsubscribeSiblings(this.id);
 
-    this.debugFn(() => (subscriptions ? ["unsubscribeAll", subscriptions] : null));
+    this.debugFn(() => ["unsubscribeAll", { subscriptions }]);
   }
 
-  onUIEvent(element: string, event: invk.UIEvents.Name, listenerName: string): void {
-    const listener = this.handler(listenerName);
-
-    $.RegisterEventHandler(event, this.$(element), listener);
-  }
-
-  onUIEvents(events?: OnUIEvents): void {
-    if (events == null) return;
-
-    Object.entries(events).forEach(([element, elemEvents]) => {
-      Object.entries(elemEvents).forEach(([event, listenerName]) => {
-        if (listenerName != null) {
-          const evValue = invk.UIEvents.Name[event as keyof typeof invk.UIEvents.Name];
-          this.onUIEvent(element, evValue, listenerName);
-        }
-      });
-    });
-  }
-
-  dispatchUIEvent(element: string | Panel, event: invk.UIEvents.Name, ...args: unknown[]): void {
-    const panel = this.$(element);
-
-    $.DispatchEvent(event, panel, ...args);
+  onPanelEvent<T extends PanelBase>(
+    panel: T,
+    event: PanelEvent,
+    listener: PanelEventListener<T>
+  ): void {
+    PanelEvents.listen(panel, event, listener.bind(this));
   }
 
   // ----- Element utils -----
@@ -252,8 +207,8 @@ export abstract class Component {
     options: ApplyComponentOptions = {}
   ): void {
     if (options.outputs) {
-      // handlers are own functions
-      const outputs = this.bindHandlers(options.outputs);
+      // listeners are own functions
+      const outputs = this.bindAll(options.outputs);
 
       component.onOutputs(outputs);
     }
@@ -265,65 +220,50 @@ export abstract class Component {
     type: K,
     parent: PanelBase,
     id: string,
-    options: ComponentCreatePanelOptions = {}
+    options: CreatePanelOptions<PanoramaPanelNameMap[K]> = {}
   ): PanoramaPanelNameMap[K] {
-    const createPanelOptions: CreatePanelOptions = { ...options };
-
-    if (options.events) {
-      createPanelOptions.events = this.bindHandlers(options.events);
-    }
-
-    return createPanel(type, parent, id, createPanelOptions);
+    return createPanel(type, parent, id, options);
   }
 
-  createPanel(parent: PanelBase, id: string, options: ComponentCreatePanelOptions = {}): Panel {
+  createPanel(parent: PanelBase, id: string, options: CreatePanelOptions<Panel> = {}): Panel {
     return this.createElement(PanelType.Panel, parent, id, options);
   }
 
-  createComponent<Layout extends keyof Components>(
+  createComponent<Layout extends ComponentLayout>(
     parent: PanelBase,
     id: string,
     layout: Layout,
-    options: ComponentCreatePanelOptions & ApplyComponentOptions = {}
-  ): Panel {
-    const panel = this.createPanel(parent, id, { layout: componentLayout(layout), ...options });
+    options: CreatePanelOptions<Panel> & ApplyComponentOptions = {}
+  ): PanelWithComponent<Components[Layout]> {
+    const panel = this.createPanel(parent, id, { ...options, layout: componentLayout(layout) });
     const component = getPanelComponent<Components[Layout]>(panel);
 
-    if (component != null) {
-      this.applyComponentOptions(component, options);
-    }
+    this.applyComponentOptions(component, options);
 
-    return panel;
+    return panel as PanelWithComponent<Components[Layout]>;
   }
 
-  loadComponent<T extends Panel, Layout extends keyof Components>(
+  loadComponent<T extends Panel, Layout extends ComponentLayout>(
     panel: T,
     layout: Layout,
-    options: ComponentApplyPanelOptions & ApplyComponentOptions = {}
-  ): T {
+    options: ApplyPanelOptions<T> & ApplyComponentOptions = {}
+  ): WithComponent<T, Components[Layout]> {
     const layoutUrl = componentLayout(layout);
-    const applyPanelOptions: ApplyPanelOptions = { ...options };
 
-    if (options.events) {
-      applyPanelOptions.events = this.bindHandlers(options.events);
-    }
-
-    loadPanelLayout(panel, layoutUrl, applyPanelOptions);
+    loadPanelLayout(panel, layoutUrl, options);
 
     const component = getPanelComponent<Components[Layout]>(panel);
 
-    if (component != null) {
-      this.applyComponentOptions(component, options);
-    }
+    this.applyComponentOptions(component, options);
 
-    return panel;
+    return panel as WithComponent<T, Components[Layout]>;
   }
 
   createSnippet(
     parent: PanelBase,
     id: string,
     snippet: string,
-    options: ComponentCreatePanelOptions = {}
+    options: CreatePanelOptions<Panel> = {}
   ): Panel {
     return this.createPanel(parent, id, { ...options, snippet });
   }
@@ -332,7 +272,7 @@ export abstract class Component {
     parent: PanelBase,
     id: string,
     text: string,
-    options: ComponentCreatePanelOptions = {}
+    options: CreatePanelOptions<LabelPanel> = {}
   ): LabelPanel {
     return this.createElement(PanelType.Label, parent, id, { ...options, props: { text } });
   }
@@ -341,7 +281,7 @@ export abstract class Component {
     parent: PanelBase,
     id: string,
     abilityname: string,
-    options: ComponentCreatePanelOptions = {}
+    options: CreatePanelOptions<AbilityImage> = {}
   ): AbilityImage {
     options = { ...options, props: { abilityname } };
 
@@ -352,7 +292,7 @@ export abstract class Component {
     parent: PanelBase,
     id: string,
     itemname: string,
-    options: ComponentCreatePanelOptions = {}
+    options: CreatePanelOptions<ItemImage> = {}
   ): ItemImage {
     options = { ...options, props: { itemname } };
 
@@ -363,107 +303,10 @@ export abstract class Component {
     parent: PanelBase,
     id: string,
     name: string,
-    options: ComponentCreatePanelOptions = {}
-  ): ItemImage | AbilityImage {
+    options: CreatePanelOptions<AbilityImage | ItemImage> = {}
+  ): AbilityImage | ItemImage {
     return isItemAbility(name)
       ? this.createItemImage(parent, id, name, options)
       : this.createAbilityImage(parent, id, name, options);
-  }
-
-  openExternalURL(element: string | Panel, url: string): void {
-    this.dispatchUIEvent(element, invk.UIEvents.Name.OpenExternalBrowser, url);
-  }
-
-  playSound(soundEvent: string): void {
-    return $.DispatchEvent(UI_EVENTS.PLAY_SOUND, soundEvent);
-  }
-
-  showTooltip(element, id, layout, params) {
-    layout = componentLayout(layout);
-
-    let args = _.chain([element]);
-
-    if (params) {
-      args = args.concat(UI_EVENTS.SHOW_TOOLTIP_PARAMS);
-    } else {
-      args = args.concat(UI_EVENTS.SHOW_TOOLTIP);
-    }
-
-    args = args.concat(id, layout);
-
-    if (params) {
-      args = args.concat(toParams(params));
-    }
-
-    return this.dispatch.apply(this, args.value());
-  }
-
-  hideTooltip(element, id) {
-    return this.dispatch(element, UI_EVENTS.HIDE_TOOLTIP, id);
-  }
-
-  showTextTooltip(element, text) {
-    return this.dispatch(element, UI_EVENTS.SHOW_TEXT_TOOLTIP, text);
-  }
-
-  hideTextTooltip(element) {
-    return this.dispatch(element, UI_EVENTS.HIDE_TEXT_TOOLTIP);
-  }
-
-  showAbilityTooltip(element, abilityName, params) {
-    params = params || {};
-
-    let args = _.chain([element]);
-
-    if (_.isInteger(params.entityIndex)) {
-      args = args.concat(
-        UI_EVENTS.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX,
-        abilityName,
-        params.entityIndex
-      );
-    } else if (_.isString(params.guide)) {
-      args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_GUIDE, abilityName, params.guide);
-    } else if (_.isInteger(params.hero)) {
-      args = args.concat(
-        UI_EVENTS.SHOW_ABILITY_TOOLTIP_HERO,
-        abilityName,
-        params.hero,
-        params.flag
-      );
-    } else if (_.isInteger(params.level)) {
-      args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP_LEVEL, abilityName, params.level);
-    } else {
-      args = args.concat(UI_EVENTS.SHOW_ABILITY_TOOLTIP, abilityName);
-    }
-
-    return this.dispatch.apply(this, args.value());
-  }
-
-  hideAbilityTooltip(element) {
-    return this.dispatch(element, UI_EVENTS.HIDE_ABILITY_TOOLTIP);
-  }
-
-  showPopup(element, popupId, layout, params) {
-    layout = componentLayout(layout);
-
-    let args = _.chain([element]);
-
-    if (params) {
-      args = args.concat(UI_EVENTS.SHOW_POPUP_PARAMS);
-    } else {
-      args = args.concat(UI_EVENTS.SHOW_POPUP);
-    }
-
-    args = args.concat(popupId, layout);
-
-    if (params) {
-      args = args.concat(toParams(params));
-    }
-
-    return this.dispatch.apply(this, args.value());
-  }
-
-  closePopup(element) {
-    return this.dispatch(element, UI_EVENTS.POPUP_BUTTON_CLICKED);
   }
 }

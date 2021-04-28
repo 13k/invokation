@@ -1,28 +1,60 @@
-import { forEach } from "lodash";
-import { INVOKER } from "./const/invoker";
+import { forOwn } from "lodash";
 import { PANEL_TYPES } from "./const/panorama";
 import { hasOwnProperty } from "./object";
-import { PanelEvent, PanelEventListener } from "./panel_event";
+import { PanelEventListener, PanelEvents } from "./panel_events";
 
-export const prefixer = (s: string, prefix: string): string =>
-  s.startsWith(prefix) ? s : prefix + s;
+export type Stringer = { toString: () => string };
 
-export const isOrbAbility = (abilityName: string): boolean => abilityName in INVOKER.ORB_ABILITIES;
+export function prefixer(s: string, prefix: string): string {
+  return s.startsWith(prefix) ? s : prefix + s;
+}
 
-export const isInvocationAbility = (abilityName: string): boolean =>
-  isOrbAbility(abilityName) || abilityName === INVOKER.ABILITY_INVOKE;
+export type QueryParams = Record<string, Stringer>;
 
-export const isItemAbility = (abilityName: string): boolean => abilityName.startsWith("item_");
+export function queryString(params: QueryParams): string {
+  return Object.entries(params)
+    .map(([key, value]) => `${key}=${value.toString()}`)
+    .join("&");
+}
+
+export function enumEntries<T extends string>(enumObj: {
+  [key: string]: T;
+}): IterableIterator<[string, T]>;
+export function enumEntries<T extends string | number>(enumObj: {
+  [key: string]: T;
+}): IterableIterator<[string, Exclude<T, string>]>;
+export function* enumEntries<T>(enumObj: { [key: string]: T }): IterableIterator<[string, T]> {
+  let isStringEnum = true;
+
+  for (const value of Object.values(enumObj)) {
+    if (typeof value === "number") {
+      isStringEnum = false;
+      break;
+    }
+  }
+
+  for (const [key, value] of Object.entries(enumObj)) {
+    if (isStringEnum || typeof value === "number") {
+      yield [key, value];
+    }
+  }
+}
+
+export function isItemAbility(abilityName: string): boolean {
+  return abilityName.startsWith("item_");
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const isPanelBase = (panel: object): panel is PanelBase =>
-  panel != null && hasOwnProperty(panel, "paneltype");
+export function isPanelBase(panel: object): panel is PanelBase {
+  return panel != null && hasOwnProperty(panel, "paneltype");
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const isPanel = (panel: object): panel is Panel =>
-  isPanelBase(panel) && panel.paneltype in PANEL_TYPES;
+export function isPanel(panel: object): panel is Panel {
+  return isPanelBase(panel) && panel.paneltype in PANEL_TYPES;
+}
 
-export interface CreatePanelOptions extends ApplyPanelOptions {
+export interface CreatePanelOptions<T> extends ApplyPanelOptions<T> {
   layout?: string;
   snippet?: string;
 }
@@ -31,7 +63,7 @@ export function createPanel<K extends keyof PanoramaPanelNameMap>(
   type: K,
   parent: PanelBase,
   id: string,
-  options: CreatePanelOptions = {}
+  options: CreatePanelOptions<PanoramaPanelNameMap[K]> = {}
 ): PanoramaPanelNameMap[K] {
   if (!type) {
     throw new Error("Error creating panel: empty 'type'");
@@ -68,11 +100,11 @@ export function createPanel<K extends keyof PanoramaPanelNameMap>(
   return panel;
 }
 
-export const loadPanelLayout = <T extends Panel>(
+export function loadPanelLayout<T extends Panel>(
   panel: T,
   layout: string,
-  options: ApplyPanelOptions = {}
-): T => {
+  options: ApplyPanelOptions<T> = {}
+): T {
   if (!isPanel(panel)) {
     throw new Error(`Error loading layout (${layout}): 'panel' is not a panel`);
   }
@@ -98,13 +130,13 @@ export const loadPanelLayout = <T extends Panel>(
   }
 
   return applyPanelOptions(panel, options);
-};
+}
 
-export const loadPanelSnippet = <T extends Panel>(
+export function loadPanelSnippet<T extends Panel>(
   panel: T,
   snippet: string,
-  options: ApplyPanelOptions = {}
-): T => {
+  options: ApplyPanelOptions<T> = {}
+): T {
   if (!isPanel(panel)) {
     throw new Error(`Error loading layout snippet (${snippet}): 'panel' is not a panel`);
   }
@@ -124,9 +156,9 @@ export const loadPanelSnippet = <T extends Panel>(
   }
 
   return applyPanelOptions(panel, options);
-};
+}
 
-export interface ApplyPanelOptions {
+export interface ApplyPanelOptions<T> {
   props?: SetPanelPropertiesOptions;
   attrs?: SetPanelAttributesOptions;
   attrsInt?: SetPanelAttributesIntOptions;
@@ -136,14 +168,14 @@ export interface ApplyPanelOptions {
   dialogVarsTime?: SetPanelDialogVarsTimeOptions;
   dialogVarsL10n?: SetPanelDialogVarsL10nOptions;
   dialogVarsL10nPlural?: SetPanelDialogVarsL10nPluralOptions;
-  events?: SetPanelEventsOptions;
+  events?: SetPanelEventsOptions<T>;
   classes?: string[];
 }
 
-export const applyPanelOptions = <T extends Panel>(
+export function applyPanelOptions<T extends Panel>(
   panel: T,
-  options: ApplyPanelOptions = {}
-): T => {
+  options: ApplyPanelOptions<T> = {}
+): T {
   if (!isPanel(panel)) {
     throw new Error(`Error applying panel options: 'panel' is not a panel`);
   }
@@ -161,117 +193,110 @@ export const applyPanelOptions = <T extends Panel>(
   addPanelClasses(panel, options.classes);
 
   return panel;
-};
-
-export const addPanelClasses = (panel: Panel, classes?: string[]): void => {
-  classes && classes.map((cls) => panel.AddClass(cls));
-};
-
-export interface SetPanelPropertiesOptions {
-  [key: string]: string | number;
 }
 
-export const setPanelProperties = (panel: Panel, props?: SetPanelPropertiesOptions): void => {
+export function addPanelClasses(panel: Panel, classes?: string[]): void {
+  classes && classes.map((cls) => panel.AddClass(cls));
+}
+
+export interface SetPanelPropertiesOptions {
+  [key: string]: string | number | boolean;
+}
+
+export function setPanelProperties(panel: Panel, props?: SetPanelPropertiesOptions): void {
   props && Object.assign(panel, props);
-};
+}
 
 export interface SetPanelAttributesOptions {
   [key: string]: string;
 }
 
-export const setPanelAttributes = (panel: Panel, attrs?: SetPanelAttributesOptions): void => {
-  forEach(attrs, (value, key) => panel.SetAttributeString(key, value));
-};
+export function setPanelAttributes(panel: Panel, attrs?: SetPanelAttributesOptions): void {
+  forOwn(attrs, (value, key) => panel.SetAttributeString(key, value));
+}
 
 export interface SetPanelAttributesIntOptions {
   [key: string]: number;
 }
 
-export const setPanelAttributesInt = (panel: Panel, attrs?: SetPanelAttributesIntOptions): void => {
-  forEach(attrs, (value, key) => panel.SetAttributeInt(key, value));
-};
+export function setPanelAttributesInt(panel: Panel, attrs?: SetPanelAttributesIntOptions): void {
+  forOwn(attrs, (value, key) => panel.SetAttributeInt(key, value));
+}
 
 export interface SetPanelAttributesUInt32Options {
   [key: string]: number;
 }
 
-export const setPanelAttributesUInt32 = (
+export function setPanelAttributesUInt32(
   panel: Panel,
   attrs?: SetPanelAttributesUInt32Options
-): void => {
-  forEach(attrs, (value, key) => panel.SetAttributeUInt32(key, value));
-};
+): void {
+  forOwn(attrs, (value, key) => panel.SetAttributeUInt32(key, value));
+}
 
 export interface SetPanelDialogVarsOptions {
   [key: string]: string;
 }
 
-export const setPanelDialogVars = (panel: Panel, vars?: SetPanelDialogVarsOptions): void => {
-  forEach(vars, (value, key) => panel.SetDialogVariable(key, value));
-};
+export function setPanelDialogVars(panel: Panel, vars?: SetPanelDialogVarsOptions): void {
+  forOwn(vars, (value, key) => panel.SetDialogVariable(key, value));
+}
 
 export interface SetPanelDialogVarsIntOptions {
   [key: string]: number;
 }
 
-export const setPanelDialogVarsInt = (panel: Panel, vars?: SetPanelDialogVarsIntOptions): void => {
-  forEach(vars, (value, key) => panel.SetDialogVariableInt(key, value));
-};
+export function setPanelDialogVarsInt(panel: Panel, vars?: SetPanelDialogVarsIntOptions): void {
+  forOwn(vars, (value, key) => panel.SetDialogVariableInt(key, value));
+}
 
 export interface SetPanelDialogVarsTimeOptions {
   [key: string]: number;
 }
 
-export const setPanelDialogVarsTime = (
-  panel: Panel,
-  vars?: SetPanelDialogVarsTimeOptions
-): void => {
-  forEach(vars, (value, key) => panel.SetDialogVariableTime(key, value));
-};
+export function setPanelDialogVarsTime(panel: Panel, vars?: SetPanelDialogVarsTimeOptions): void {
+  forOwn(vars, (value, key) => panel.SetDialogVariableTime(key, value));
+}
 
 export interface SetPanelDialogVarsL10nOptions {
   [key: string]: string;
 }
 
-export const setPanelDialogVarsL10n = (
-  panel: Panel,
-  vars?: SetPanelDialogVarsL10nOptions
-): void => {
-  forEach(vars, (value, key) => panel.SetDialogVariableLocString(key, value));
-};
+export function setPanelDialogVarsL10n(panel: Panel, vars?: SetPanelDialogVarsL10nOptions): void {
+  forOwn(vars, (value, key) => panel.SetDialogVariableLocString(key, value));
+}
 
 export interface SetPanelDialogVarsL10nPluralOptions {
   [key: string]: { value: string; count: number };
 }
 
-export const setPanelDialogVarsL10nPlural = (
+export function setPanelDialogVarsL10nPlural(
   panel: Panel,
   vars?: SetPanelDialogVarsL10nPluralOptions
-): void => {
-  forEach(vars, ({ value, count }, key) =>
+): void {
+  forOwn(vars, ({ value, count }, key) =>
     panel.SetDialogVariablePluralLocStringInt(key, value, count)
   );
+}
+
+export function setPanelEvent<T extends PanelBase>(
+  panel: T,
+  event: PanelEvent,
+  listener: PanelEventListener<T>
+): void {
+  PanelEvents.listen(panel, event, listener);
+}
+
+export type SetPanelEventsOptions<T> = {
+  [K in PanelEvent]?: PanelEventListener<T>;
 };
 
-export const setPanelEvent = (
-  panel: Panel,
-  eventName: globalThis.PanelEvent,
-  listener: PanelEventListener
-): void => panel.SetPanelEvent(eventName, () => listener(new PanelEvent(eventName, panel)));
-
-export type SetPanelEventsOptions = {
-  [eventName in globalThis.PanelEvent]?: PanelEventListener;
-};
-
-export const setPanelEvents = (panel: Panel, events?: SetPanelEventsOptions): void => {
-  forEach(
+export function setPanelEvents<T extends PanelBase>(
+  panel: T,
+  events?: SetPanelEventsOptions<T>
+): void {
+  forOwn(
     events,
-    (listener, eventName) =>
-      listener && setPanelEvent(panel, eventName as globalThis.PanelEvent, listener)
+    (listener, event) => listener && setPanelEvent(panel, event as PanelEvent, listener)
   );
-};
-
-export const toParams = (params: { [key: string]: unknown }): string =>
-  Object.entries(params)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+}

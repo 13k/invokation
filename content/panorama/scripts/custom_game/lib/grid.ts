@@ -15,7 +15,7 @@ export class Grid<T> {
   #grid: T[][];
   #cb: Callbacks<GridCallbacks>;
 
-  constructor(public width: number, public height: number) {
+  constructor(public width: number) {
     this.#grid = [];
     this.#cb = new Callbacks();
   }

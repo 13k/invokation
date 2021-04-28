@@ -1,39 +1,32 @@
-// const { Component } = context;
-// const { COMPONENTS, EVENTS } = global.Const;
-
 import { Component } from "./lib/component";
+import { ComponentLayout } from "./lib/const/component";
+import { CustomEvent } from "./lib/const/events";
+import { CustomEvents } from "./lib/custom_events";
+import { UIEvents } from "./lib/ui_events";
+
+export type Inputs = never;
+export type Outputs = never;
 
 const POPUP_GAME_INFO_ID = "popup-game-info";
 const POPUP_DEBUG_ID = "popup-debug";
 
-class TopBar extends Component {
-  constructor() {
-    super();
-    this.debug("init");
-  }
-
-  // ----- UI methods -----
-
-  ShowGameInfo() {
+export class TopBar extends Component {
+  ShowGameInfo(): void {
     this.debug("ShowGameInfo()");
 
-    const { layout } = COMPONENTS.POPUPS.GAME_INFO;
-
-    return this.showPopup(this.$ctx, POPUP_GAME_INFO_ID, layout);
+    UIEvents.showPopup(POPUP_GAME_INFO_ID, ComponentLayout.PopupGameInfo);
   }
 
-  TogglePicker() {
+  TogglePicker(): void {
     this.debug("TogglePicker()");
 
-    return this.sendClientSide(EVENTS.PICKER_TOGGLE);
+    CustomEvents.sendClientSide(CustomEvent.PICKER_TOGGLE);
   }
 
-  ShowDebug() {
+  ShowDebug(): void {
     this.debug("ShowDebug()");
 
-    const { layout } = COMPONENTS.POPUPS.DEBUG;
-
-    return this.showPopup(this.$ctx, POPUP_DEBUG_ID, layout);
+    UIEvents.showPopup(POPUP_DEBUG_ID, ComponentLayout.PopupDebug);
   }
 }
 

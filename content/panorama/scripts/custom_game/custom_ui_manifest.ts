@@ -1,10 +1,14 @@
-// const _ = global.lodash;
-// const { Component } = context;
-// const { AbilitiesKeyValues, CombosCollection } = global;
-
+import { AbilitiesCollection } from "./lib/abilities_collection";
+import { CombosCollection } from "./lib/combos_collection";
 import { Component } from "./lib/component";
+import { UI } from "./lib/ui";
 
-const UI_CONFIG = {
+export type Inputs = never;
+export type Outputs = never;
+
+type UIConfig = Partial<Record<keyof typeof DotaDefaultUIElement_t, boolean>>;
+
+const UI_CONFIG: UIConfig = {
   // [0] Time of day (clock)
   DOTA_DEFAULT_UI_TOP_TIMEOFDAY: false,
   // [1] Heroes and team score at the top of the HUD
@@ -65,19 +69,23 @@ const UI_CONFIG = {
   DOTA_DEFAULT_UI_ELEMENT_COUNT: false,
 };
 
-class CustomUIManifest extends Component {
+export const COMBOS = new CombosCollection();
+export const ABILITIES_KV = new AbilitiesCollection();
+
+export class CustomUIManifest extends Component {
   constructor() {
     super();
 
-    _.forEach(UI_CONFIG, (value, key) => {
-      this.setUI(key, value);
+    Object.entries(UI_CONFIG).forEach(([key, value]) => {
+      if (value != null) {
+        const enumValue = DotaDefaultUIElement_t[key as keyof typeof DotaDefaultUIElement_t];
+
+        UI.setUI(enumValue, value);
+      }
     });
 
-    global.COMBOS = new CombosCollection();
-    global.COMBOS.Load();
-
-    global.ABILITIES_KV = new AbilitiesKeyValues();
-    global.ABILITIES_KV.Load();
+    COMBOS.load();
+    ABILITIES_KV.load();
 
     this.debug("init");
   }

@@ -1,39 +1,42 @@
-"use strict";
+import { META } from "../lib/const/meta";
+import { SerialSequence } from "../lib/sequence";
+import { UIEvents } from "../lib/ui_events";
+import { Inputs as BaseInputs, Outputs as BaseOutputs, Popup } from "./popup";
 
-((global, context) => {
-  const { Popup } = context;
-  const { Sequence } = global.Sequence;
-  const { META } = global.Const;
+export type Inputs = BaseInputs;
+export type Outputs = BaseOutputs;
 
-  class PopupGameInfo extends Popup {
-    constructor() {
-      super({
-        elements: {
-          version: "version-label",
-        },
-      });
-    }
+interface Elements {
+  version: LabelPanel;
+}
 
-    render() {
-      const seq = new Sequence().SetText(this.$version, META.VERSION);
+export class PopupGameInfo extends Popup<never> {
+  #elements: Elements;
 
-      this.debugFn(() => ["render()", { actions: seq.length }]);
+  constructor() {
+    super();
 
-      return seq.Start();
-    }
-
-    openURL(url) {
-      return this.openExternalURL(this.$ctx, url);
-    }
-
-    openHomepageURL() {
-      return this.openURL(META.URL);
-    }
-
-    openChangelogURL() {
-      return this.openURL(META.CHANGELOG_URL);
-    }
+    this.#elements = this.findAll<Elements>({
+      version: "version-label",
+    });
   }
 
-  context.popup = new PopupGameInfo();
-})(GameUI.CustomUIConfig(), this);
+  render(): void {
+    const seq = new SerialSequence().SetText(this.#elements.version, META.version);
+
+    this.debugFn(() => ["render()", { actions: seq.length }]);
+
+    seq.run();
+  }
+
+  openHomepageURL(): void {
+    UIEvents.openExternalURL(META.url);
+  }
+
+  openChangelogURL(): void {
+    UIEvents.openExternalURL(META.changelogUrl);
+  }
+}
+
+//   context.popup = new PopupGameInfo();
+// })(GameUI.CustomUIConfig(), this);

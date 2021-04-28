@@ -1,291 +1,322 @@
-"use strict";
-
-((global, context) => {
-  const { Component } = context;
-  const { lodash: _, L10n, NetTable } = global;
-  const { LuaArrayDeep } = global.Util;
-  const {
-    Sequence,
-    ParallelSequence,
-    NoopAction,
-    EnableAction,
-    DisableAction,
-    RemoveClassAction,
-  } = global.Sequence;
-
-  const { COMPONENTS, EVENTS, NET_TABLE, SHOP_CATEGORIES } = global.Const;
-
-  const DYN_ELEMS = {
-    GROUP: {
-      snippet: "group",
-      idPrefix: "group",
-      dialogVarName: "group_name",
-      categoryListId: "categories",
-    },
-    CATEGORY: {
-      snippet: "category",
-      idPrefix: "category",
-      dialogVarName: "category_name",
-      itemListId: "items",
-    },
-    ITEM: {
-      idPrefix: "item",
-      cssClass: "item",
-      highlightClass: "highlighted",
-    },
-  };
-
-  const elementId = (prefix, name) => `${prefix}-${name}`;
-
-  class ItemPicker extends Component {
-    constructor() {
-      const { outputs } = COMPONENTS.UI.ITEM_PICKER;
-
-      super({
-        elements: {
-          search: "search-text-entry",
-          groups: "groups",
-        },
-        outputs: Object.values(outputs),
-        customEvents: {
-          "!ITEM_PICKER_QUERY_RESPONSE": "onQueryResponse",
-        },
-      });
-
-      this.netTable = new NetTable(NET_TABLE.MAIN);
-      this.groupPanels = {};
-      this.categoryPanels = {};
-      this.itemPanels = {};
-
-      this.loadItems();
-      this.render();
-      this.debug("init");
-    }
-
-    // ----- Event handlers -----
-
-    onImageActivate(event) {
-      this.debug("onImageActivate()", { event });
-      this.select(event.panel);
-    }
-
-    onQueryResponse(payload) {
-      this.debug("onQueryResponse()");
-      this.highlight(payload.items);
-    }
-
-    // ----- Helpers -----
-
-    loadItems() {
-      this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
-    }
-
-    addItemPanel(panel) {
-      const { itemname } = panel;
-
-      this.itemPanels[itemname] = this.itemPanels[itemname] || [];
-      this.itemPanels[itemname].push(panel);
-
-      return panel;
-    }
-
-    createGroup(parent, group) {
-      const { idPrefix, snippet, dialogVarName } = DYN_ELEMS.GROUP;
-
-      const id = elementId(idPrefix, group);
-      const panel = this.createSnippet(parent, id, snippet, {
-        dialogVars: {
-          [dialogVarName]: L10n.LocalizeShopGroup(group),
-        },
-      });
-
-      this.groupPanels[group] = panel;
-
-      return panel;
-    }
-
-    createCategory(parent, category) {
-      const { idPrefix, snippet, dialogVarName } = DYN_ELEMS.CATEGORY;
-      const id = elementId(idPrefix, category);
-      const panel = this.createSnippet(parent, id, snippet, {
-        dialogVars: {
-          [dialogVarName]: L10n.LocalizeShopCategory(category),
-        },
-      });
-
-      this.categoryPanels[category] = panel;
-
-      return panel;
-    }
-
-    createItem(parent, item) {
-      const { idPrefix, cssClass } = DYN_ELEMS.ITEM;
-      const id = elementId(idPrefix, item);
-      const panel = this.createItemImage(parent, id, item, {
-        classes: [cssClass],
-        events: {
-          onactivate: "onImageActivate",
-        },
-      });
-
-      return this.addItemPanel(panel);
-    }
-
-    // ----- Actions -----
-
-    createGroupAction(parent, group, categories) {
-      return new Sequence()
-        .RunFunction(() => this.createGroup(parent, group))
-        .Action(_.map(categories, (category) => this.createCategoryAction(group, category)));
-    }
-
-    createCategoryAction(group, category) {
-      const { categoryListId } = DYN_ELEMS.GROUP;
-      const items = this.shopItems[category];
-
-      return new Sequence()
-        .RunFunction(() => {
-          const groupPanel = this.groupPanels[group];
-          const categoriesPanel = groupPanel.FindChild(categoryListId);
-
-          return this.createCategory(categoriesPanel, category);
-        })
-        .Action(_.map(items, (item) => this.createItemAction(category, item)));
-    }
-
-    createItemAction(category, item) {
-      const { itemListId } = DYN_ELEMS.CATEGORY;
-
-      return new Sequence().RunFunction(() => {
-        const categoryPanel = this.categoryPanels[category];
-        const itemsPanel = categoryPanel.FindChild(itemListId);
-
-        return this.createItem(itemsPanel, item);
-      });
-    }
-
-    disableItemsAction() {
-      const disableItemAction = _.chain(this.disableItemAction)
-        .bind(this)
-        .rearg([1, 0])
-        .ary(2)
-        .value();
-
-      const actions = _.map(this.itemPanels, disableItemAction);
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    disableItemAction(itemName) {
-      const panels = this.itemPanels[itemName];
-
-      if (!panels) {
-        this.warn("Could not find panel for item", itemName);
-        return new NoopAction();
-      }
-
-      const actions = _.map(panels, (panel) => new DisableAction(panel));
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    enableItemsAction(items) {
-      const enableItemAction = _.chain(this.enableItemAction)
-        .bind(this)
-        .rearg([1, 0])
-        .ary(2)
-        .value();
-
-      const actions = _.map(items, enableItemAction);
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    enableItemAction(itemName) {
-      const panels = this.itemPanels[itemName];
-
-      if (!panels) {
-        this.warn("Could not find panel for item", itemName);
-        return new NoopAction();
-      }
-
-      const actions = _.map(panels, (panel) => new EnableAction(panel));
-
-      return new ParallelSequence().Action(actions);
-    }
-
-    highlightImagePanelAction(imagePanel) {
-      const { highlightClass } = DYN_ELEMS.ITEM;
-      const highlighted = this.$groups.FindChildrenWithClassTraverse(highlightClass);
-
-      return new ParallelSequence()
-        .Action(_.map(highlighted, (panel) => new RemoveClassAction(panel, highlightClass)))
-        .AddClass(imagePanel, highlightClass);
-    }
-
-    // ----- Action runners -----
-
-    highlight(items) {
-      const seq = new Sequence()
-        .Action(this.disableItemsAction())
-        .Action(this.enableItemsAction(items));
-
-      this.debugFn(() => ["highlight()", { actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    select(panel) {
-      const { outputs } = COMPONENTS.UI.ITEM_PICKER;
-
-      const seq = new Sequence();
-
-      // seq.Action(this.highlightImagePanelAction(panel));
-
-      seq.RunFunction(() => {
-        this.runOutput(outputs.ON_SELECT, { item: panel.itemname });
-      });
-
-      this.debugFn(() => ["select()", { item: panel.itemname, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    search(query) {
-      const seq = new Sequence();
-
-      if (_.isEmpty(query)) {
-        seq.Action(this.enableItemsAction(this.itemPanels));
-      } else {
-        seq.RunFunction(() => {
-          this.sendServer(EVENTS.ITEM_PICKER_QUERY, { query });
-        });
-      }
-
-      this.debugFn(() => ["search()", { query, actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    render() {
-      const createGroupActions = _.map(SHOP_CATEGORIES, (categories, group) =>
-        this.createGroupAction(this.$groups, group, categories)
-      );
-
-      const seq = new Sequence().Focus(this.$search).Action(createGroupActions);
-
-      this.debugFn(() => ["render()", { actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    // ----- UI methods -----
-
-    Search() {
-      this.debug("Search()", { text: this.$search.text });
-      this.search(this.$search.text);
-    }
+import { transform } from "lodash";
+import { Component } from "../lib/component";
+import { COMPONENTS } from "../lib/const/component";
+import { CustomEvent, ItemPickerQueryResponseEvent } from "../lib/const/events";
+import { InvokationShopItems, InvokationTableKey, Table } from "../lib/const/net_table";
+import { CustomEvents } from "../lib/custom_events";
+import { ShopCategories, ShopCategory, ShopGroup, SHOP_CATEGORIES } from "../lib/dota";
+import { localizeShopCategory, localizeShopGroup } from "../lib/l10n";
+import { fromSequence } from "../lib/lua";
+import { NetTable } from "../lib/net_table";
+import { PanelEvent } from "../lib/panel_events";
+import {
+  Action,
+  DisableAction,
+  EnableAction,
+  NoopAction,
+  ParallelSequence,
+  RemoveClassAction,
+  SerialSequence,
+} from "../lib/sequence";
+
+export type Inputs = never;
+
+export interface Outputs {
+  [OUTPUTS.ON_SELECT]: { item: string };
+}
+
+interface Elements {
+  search: TextEntry;
+  groups: Panel;
+}
+
+const { outputs: OUTPUTS } = COMPONENTS.UI_ITEM_PICKER;
+
+const DYN_ELEMS = {
+  GROUP: {
+    snippet: "group",
+    idPrefix: "group",
+    dialogVarName: "group_name",
+    categoryListID: "categories",
+  },
+  CATEGORY: {
+    snippet: "category",
+    idPrefix: "category",
+    dialogVarName: "category_name",
+    itemListID: "items",
+  },
+  ITEM: {
+    idPrefix: "item",
+    cssClass: "item",
+    highlightClass: "highlighted",
+  },
+};
+
+const elemID = (prefix: string, name: string) => `${prefix}-${name}`;
+
+export class UIItemPicker extends Component {
+  #elements: Elements;
+  #table: NetTable<Table.Invokation>;
+  #shopItems?: InvokationShopItems;
+  #groupPanels: Record<string, Panel> = {};
+  #categoryPanels: Record<string, Panel> = {};
+  #itemPanels: Record<string, ItemImage[]> = {};
+
+  constructor() {
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      search: "search-text-entry",
+      groups: "groups",
+    });
+
+    this.#table = new NetTable(Table.Invokation);
+
+    this.registerOutputs(Object.values(OUTPUTS));
+    this.onCustomEvent(CustomEvent.ITEM_PICKER_QUERY_RESPONSE, this.onQueryResponse);
+
+    this.loadItems();
+    this.render();
+    this.debug("init");
   }
 
-  context.component = new ItemPicker();
-})(GameUI.CustomUIConfig(), this);
+  // ----- Event handlers -----
+
+  onImageActivate(event: PanelEvent<ItemImage>): void {
+    this.debug("onImageActivate()", { event });
+    this.select(event.panel);
+  }
+
+  onQueryResponse(payload: NetworkedData<ItemPickerQueryResponseEvent>): void {
+    this.debug("onQueryResponse()", payload);
+
+    const items = fromSequence(payload.items);
+
+    this.highlight(items);
+  }
+
+  // ----- Helpers -----
+
+  loadItems(): void {
+    const shopData = this.#table.get(InvokationTableKey.ShopItems);
+
+    this.#shopItems = transform<NetworkedData<InvokationShopItems>, InvokationShopItems>(
+      shopData,
+      (shop, itemsSeq, category) => {
+        shop[category] = fromSequence(itemsSeq);
+      },
+      {} as InvokationShopItems
+    );
+  }
+
+  addItemPanel(panel: ItemImage): void {
+    const { itemname } = panel;
+
+    this.#itemPanels[itemname] ||= [];
+    this.#itemPanels[itemname].push(panel);
+  }
+
+  createGroup(parent: Panel, group: ShopGroup): void {
+    const { idPrefix, snippet, dialogVarName } = DYN_ELEMS.GROUP;
+
+    const id = elemID(idPrefix, group);
+    const panel = this.createSnippet(parent, id, snippet, {
+      dialogVars: {
+        [dialogVarName]: localizeShopGroup(group),
+      },
+    });
+
+    this.#groupPanels[group] = panel;
+  }
+
+  createCategory(parent: Panel, category: ShopCategory): void {
+    const { idPrefix, snippet, dialogVarName } = DYN_ELEMS.CATEGORY;
+    const id = elemID(idPrefix, category);
+    const panel = this.createSnippet(parent, id, snippet, {
+      dialogVars: {
+        [dialogVarName]: localizeShopCategory(category),
+      },
+    });
+
+    this.#categoryPanels[category] = panel;
+  }
+
+  createItem(parent: Panel, itemName: string): void {
+    const { idPrefix, cssClass } = DYN_ELEMS.ITEM;
+    const id = elemID(idPrefix, itemName);
+    const panel = this.createItemImage(parent, id, itemName, {
+      classes: [cssClass],
+      events: {
+        onactivate: this.onImageActivate.bind(this),
+      },
+    });
+
+    this.addItemPanel(panel);
+  }
+
+  // ----- Actions -----
+
+  createGroupAction(parent: Panel, group: ShopGroup, categories: ShopCategory[]): Action {
+    const actions = categories.map((category) => this.createCategoryAction(group, category));
+
+    return new SerialSequence()
+      .RunFunction(() => {
+        this.createGroup(parent, group);
+      })
+      .Action(...actions);
+  }
+
+  createCategoryAction(group: ShopGroup, category: ShopCategory): Action {
+    if (this.#shopItems == null) {
+      throw Error(`UIItemPicker.createCategoryAction called without loaded shop items`);
+    }
+
+    const { categoryListID } = DYN_ELEMS.GROUP;
+    const items = this.#shopItems[category];
+    const createItemActions = items.map((item) => this.createItemAction(category, item));
+
+    return new SerialSequence()
+      .RunFunction(() => {
+        const groupPanel = this.#groupPanels[group];
+        const categoriesPanel = groupPanel.FindChild(categoryListID);
+
+        if (categoriesPanel == null) {
+          throw Error(`Unable to find categories panel ${categoryListID} for group ${group}`);
+        }
+
+        this.createCategory(categoriesPanel, category);
+      })
+      .Action(...createItemActions);
+  }
+
+  createItemAction(category: ShopCategory, itemName: string): Action {
+    const { itemListID } = DYN_ELEMS.CATEGORY;
+
+    return new SerialSequence().RunFunction(() => {
+      const categoryPanel = this.#categoryPanels[category];
+      const itemsPanel = categoryPanel.FindChild(itemListID);
+
+      if (itemsPanel == null) {
+        throw Error(`Unable to find items panel ${itemListID} for category ${category}`);
+      }
+
+      this.createItem(itemsPanel, itemName);
+    });
+  }
+
+  disableItemsAction(): Action {
+    const actions = Object.keys(this.#itemPanels).map((itemName) =>
+      this.disableItemAction(itemName)
+    );
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  disableItemAction(itemName: string): Action {
+    const panels = this.#itemPanels[itemName];
+
+    if (!panels) {
+      this.warn("Could not find panel for item", itemName);
+      return new NoopAction();
+    }
+
+    const actions = panels.map((panel) => new DisableAction(panel));
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  enableItemsAction(items: string[]): Action {
+    const actions = items.map((item) => this.enableItemAction(item));
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  enableItemAction(itemName: string): Action {
+    const panels = this.#itemPanels[itemName];
+
+    if (!panels) {
+      this.warn("Could not find panel for item", itemName);
+      return new NoopAction();
+    }
+
+    const actions = panels.map((panel) => new EnableAction(panel));
+
+    return new ParallelSequence().Action(...actions);
+  }
+
+  highlightImagePanelAction(imagePanel: ItemImage): Action {
+    const { highlightClass } = DYN_ELEMS.ITEM;
+    const highlighted = this.#elements.groups.FindChildrenWithClassTraverse(highlightClass);
+    const actions = highlighted.map((panel) => new RemoveClassAction(panel, highlightClass));
+
+    return new ParallelSequence().Action(...actions).AddClass(imagePanel, highlightClass);
+  }
+
+  // ----- Action runners -----
+
+  highlight(items: string[]): void {
+    const seq = new SerialSequence()
+      .Action(this.disableItemsAction())
+      .Action(this.enableItemsAction(items));
+
+    this.debugFn(() => ["highlight()", { actions: seq.length }]);
+
+    seq.run();
+  }
+
+  select(panel: ItemImage): void {
+    const seq = new SerialSequence();
+
+    // seq.Action(this.highlightImagePanelAction(panel));
+
+    seq.RunFunction(() => {
+      this.output(OUTPUTS.ON_SELECT, { item: panel.itemname });
+    });
+
+    this.debugFn(() => ["select()", { item: panel.itemname, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  search(query: string): void {
+    const seq = new SerialSequence();
+
+    if (query) {
+      seq.RunFunction(() => {
+        CustomEvents.sendServer(CustomEvent.ITEM_PICKER_QUERY, { query });
+      });
+    } else {
+      seq.Action(this.enableItemsAction(Object.keys(this.#itemPanels)));
+    }
+
+    this.debugFn(() => ["search()", { query, actions: seq.length }]);
+
+    seq.run();
+  }
+
+  render(): void {
+    const actions = transform<ShopCategories, Action[]>(
+      SHOP_CATEGORIES,
+      (actions, categories, group) => {
+        actions.push(this.createGroupAction(this.#elements.groups, group, categories));
+      },
+      []
+    );
+
+    const seq = new SerialSequence().Focus(this.#elements.search).Action(...actions);
+
+    this.debugFn(() => ["render()", { actions: seq.length }]);
+
+    seq.run();
+  }
+
+  // ----- UI methods -----
+
+  Search(): void {
+    this.debug("Search()", { text: this.#elements.search.text });
+    this.search(this.#elements.search.text);
+  }
+}
+
+//   context.component = new ItemPicker();
+// })(GameUI.CustomUIConfig(), this);

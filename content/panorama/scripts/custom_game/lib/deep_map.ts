@@ -1,4 +1,4 @@
-import { get, setWith } from "lodash";
+import { get, setWith, transform } from "lodash";
 
 const storageSymbol = Symbol("DeepMapStorage");
 
@@ -7,16 +7,14 @@ interface DeepMapStorage<T> {
   [key: string]: T | DeepMapStorage<T>;
 }
 
-const createStorage = <T>(): DeepMapStorage<T> => ({} as DeepMapStorage<T>);
+const createStorage = <T>(): DeepMapStorage<T> => ({ [storageSymbol]: undefined });
 
 const isStorage = <T>(value: T | DeepMapStorage<T>): value is DeepMapStorage<T> =>
   storageSymbol in value;
 
-const storageKey = (path: string): string =>
-  path
-    .split(".")
-    .map((seg) => `[${seg}]`)
-    .join(".");
+const storageKeySplit = (path: string): string[] => path.split(".").map((seg) => `[${seg}]`);
+const storageKeyJoin = (atoms: string[]): string => atoms.join(".");
+const storageKey = (path: string): string => storageKeyJoin(storageKeySplit(path));
 
 export class DeepMap<T> {
   #storage: DeepMapStorage<T>;
@@ -30,7 +28,7 @@ export class DeepMap<T> {
     const value = get<DeepMapStorage<T>, string, undefined>(this.#storage, key, undefined);
 
     if (value === undefined) {
-      return value;
+      return undefined;
     }
 
     if (isStorage(value)) {
@@ -40,9 +38,35 @@ export class DeepMap<T> {
     return value;
   }
 
-  // TODO: implement
-  getSiblings(path: string): T[] | undefined {
-    return undefined;
+  getSiblings(path: string): { [path: string]: T } {
+    const pathAtoms = storageKeySplit(path);
+    const lastPathAtom = pathAtoms.pop();
+    const parentPathAtoms = pathAtoms;
+    const parentPath = storageKeyJoin(pathAtoms);
+    const parentStorage = get<DeepMapStorage<T>, string, undefined>(
+      this.#storage,
+      parentPath,
+      undefined
+    );
+
+    if (parentStorage === undefined) {
+      return {};
+    }
+
+    if (!isStorage(parentStorage)) {
+      return {};
+    }
+
+    return transform(
+      parentStorage,
+      (subs, element, pathAtom) => {
+        if (!isStorage(element) && pathAtom !== lastPathAtom) {
+          const subPath = storageKeyJoin([...parentPathAtoms, pathAtom]);
+          subs[subPath] = element;
+        }
+      },
+      {} as { [path: string]: T }
+    );
   }
 
   set(path: string, value: T): T {

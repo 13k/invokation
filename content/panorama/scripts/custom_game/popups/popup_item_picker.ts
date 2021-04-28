@@ -1,54 +1,74 @@
-"use strict";
+import { ComponentLayout, COMPONENTS } from "../lib/const/component";
+import { CustomEvent, PopupItemPickerSubmitEvent } from "../lib/const/events";
+import type { PanelWithComponent } from "../lib/const/panorama";
+import { CustomEvents } from "../lib/custom_events";
+import type { Outputs as UIItemPickerOutputs, UIItemPicker } from "../ui/item_picker";
+import { Inputs as BaseInputs, Outputs as BaseOutputs, Popup } from "./popup";
 
-((global, context) => {
-  const { Popup } = context;
-  const { COMPONENTS, EVENTS } = global.Const;
+export type Inputs = BaseInputs;
+export type Outputs = BaseOutputs;
 
-  const DYN_ELEMS = {
-    ITEM_PICKER: {
-      id: "item-picker",
-    },
-  };
+interface Elements {
+  itemPickerContainer: Panel;
+}
 
-  class PopupItemPicker extends Popup {
-    constructor() {
-      super({
-        elements: {
-          itemPickerContainer: "item-picker-container",
-        },
-      });
-    }
+const UI_ITEM_PICKER_OUTPUTS = COMPONENTS.UI_ITEM_PICKER.outputs;
 
-    render() {
-      const { layout, outputs } = COMPONENTS.UI.ITEM_PICKER;
-      const { id } = DYN_ELEMS.ITEM_PICKER;
+const DYN_ELEMS = {
+  ITEM_PICKER: {
+    id: "item-picker",
+  },
+};
 
-      this.$itemPicker = this.createComponent(this.$itemPickerContainer, id, layout, {
-        outputs: {
-          [outputs.ON_SELECT]: "onItemSelected",
-        },
-      });
+export class PopupItemPicker extends Popup<never> {
+  #elements: Elements;
+  #selected = "";
+  #itemPicker?: PanelWithComponent<UIItemPicker>;
 
-      this.debug("render()");
-    }
+  constructor() {
+    super();
 
-    onItemSelected(payload) {
-      this.debug("onItemSelected()", payload);
-      this.selected = payload.item;
-      this.submit();
-    }
-
-    submit() {
-      const payload = {
-        channel: this.channel,
-        item: this.selected,
-      };
-
-      this.debug("submit()", payload);
-      this.sendClientSide(EVENTS.POPUP_ITEM_PICKER_SUBMIT, payload);
-      this.close();
-    }
+    this.#elements = this.findAll<Elements>({
+      itemPickerContainer: "item-picker-container",
+    });
   }
 
-  context.popup = new PopupItemPicker();
-})(GameUI.CustomUIConfig(), this);
+  render(): void {
+    const { id } = DYN_ELEMS.ITEM_PICKER;
+
+    this.#itemPicker = this.createComponent(
+      this.#elements.itemPickerContainer,
+      id,
+      ComponentLayout.UIItemPicker,
+      {
+        outputs: {
+          [UI_ITEM_PICKER_OUTPUTS.ON_SELECT]: this.onItemSelected,
+        },
+      }
+    );
+
+    this.debug("render()");
+  }
+
+  onItemSelected(payload: UIItemPickerOutputs[typeof UI_ITEM_PICKER_OUTPUTS.ON_SELECT]): void {
+    this.debug("onItemSelected()", payload);
+    this.#selected = payload.item;
+    this.submit();
+  }
+
+  submit(): void {
+    const payload: PopupItemPickerSubmitEvent = {
+      channel: this.channel,
+      item: this.#selected,
+    };
+
+    this.debug("submit()", payload);
+
+    CustomEvents.sendClientSide(CustomEvent.POPUP_ITEM_PICKER_SUBMIT, payload);
+
+    this.close();
+  }
+}
+
+//   context.popup = new PopupItemPicker();
+// })(GameUI.CustomUIConfig(), this);

@@ -1,5 +1,12 @@
 import { forOwn, mapValues } from "lodash";
 import { Callbacks } from "./callbacks";
+import {
+  ChangeEvent as NetTablesChangeEvent,
+  InvokationTable,
+  InvokationTableKey,
+  Table,
+} from "./const/net_table";
+import type { AbilitiesKeyValues, AbilityKeyValues } from "./dota";
 import { ENV } from "./env";
 import { Logger, LogLevel } from "./logger";
 import { fromSequence } from "./lua";
@@ -7,22 +14,22 @@ import { NetTable } from "./net_table";
 
 const WARN_UNDEF_VALUE = "Tried to set data with an undefined value";
 
-type NetTableKeyType = invk.NetTables.Invokation[invk.NetTables.InvokationKey.AbilitiesKeyValues];
+type NetTableKeyType = InvokationTable[InvokationTableKey.AbilitiesKeyValues];
 type NetTableValueType = NetworkedData<NetTableKeyType>;
-type NetTableChangeEvent = invk.NetTables.ChangeEvent<
-  invk.NetTables.Name.INVOKATION,
-  invk.NetTables.InvokationKey.AbilitiesKeyValues
+type NetTableChangeEvent = NetTablesChangeEvent<
+  Table.Invokation,
+  InvokationTableKey.AbilitiesKeyValues
 >;
 
-interface ChangeEvent {
-  kv: dota.AbilitiesKeyValues;
+export interface ChangeEvent {
+  kv: AbilitiesKeyValues;
 }
 
 interface AbilitiesKeyValuesCallbacks {
   change: ChangeEvent;
 }
 
-const normalizeAbility = (kv: NetworkedData<dota.AbilityKeyValues>) => ({
+const normalizeAbility = (kv: NetworkedData<AbilityKeyValues>) => ({
   ...kv,
   HasScepterUpgrade: kv.HasScepterUpgrade === 1,
   AbilitySpecial: fromSequence(kv.AbilitySpecial),
@@ -31,15 +38,15 @@ const normalizeAbility = (kv: NetworkedData<dota.AbilityKeyValues>) => ({
 const normalize = (kv: NetTableValueType) => mapValues(kv, normalizeAbility);
 
 export class AbilitiesCollection {
-  #data: dota.AbilitiesKeyValues;
+  #data: AbilitiesKeyValues;
   #cb: Callbacks<AbilitiesKeyValuesCallbacks>;
-  #table: NetTable<invk.NetTables.Name.INVOKATION>;
+  #table: NetTable<Table.Invokation>;
   #log: Logger;
 
   constructor() {
     this.#data = {};
     this.#cb = new Callbacks();
-    this.#table = new NetTable(invk.NetTables.Name.INVOKATION);
+    this.#table = new NetTable(Table.Invokation);
     this.#log = new Logger({
       level: ENV.development ? LogLevel.DEBUG : LogLevel.INFO,
       progname: "abilities_kv",
@@ -50,17 +57,17 @@ export class AbilitiesCollection {
 
   private _listenToNetTableChange(): void {
     this.#table.onKeyChange(
-      invk.NetTables.InvokationKey.AbilitiesKeyValues,
+      InvokationTableKey.AbilitiesKeyValues,
       this._onNetTableChange.bind(this)
     );
   }
 
   private _loadFromNetTable(): NetTableValueType {
-    return this.#table.get(invk.NetTables.InvokationKey.AbilitiesKeyValues);
+    return this.#table.get(InvokationTableKey.AbilitiesKeyValues);
   }
 
   private _onNetTableChange(ev: NetTableChangeEvent): void {
-    if (ev.key !== invk.NetTables.InvokationKey.AbilitiesKeyValues) {
+    if (ev.key !== InvokationTableKey.AbilitiesKeyValues) {
       return;
     }
 
@@ -106,25 +113,21 @@ export class AbilitiesCollection {
     return Object.keys(this.#data);
   }
 
-  get abilities(): dota.AbilityKeyValues[] {
+  get abilities(): AbilityKeyValues[] {
     return Object.values(this.#data);
   }
 
-  get entries(): [string, dota.AbilityKeyValues][] {
+  get entries(): [string, AbilityKeyValues][] {
     return Object.entries(this.#data);
   }
 
-  get(id: string): dota.AbilityKeyValues | undefined {
+  get(id: string): AbilityKeyValues | undefined {
     return this.#data[id];
   }
 
   forEach(
-    iter: (
-      ability: dota.AbilityKeyValues,
-      name: string,
-      collection: dota.AbilitiesKeyValues
-    ) => void
-  ): dota.AbilitiesKeyValues {
+    iter: (ability: AbilityKeyValues, name: string, collection: AbilitiesKeyValues) => void
+  ): AbilitiesKeyValues {
     return forOwn(this.#data, iter);
   }
 }

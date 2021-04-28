@@ -1,5 +1,14 @@
 import { omitBy, reduce } from "lodash";
+import type {
+  AbilityImageOwnWritable,
+  HeroImageOwnWritable,
+  ItemImageOwnWritable,
+  PanelWithText,
+  ProgressBarOwnWritable,
+} from "./const/panorama";
+import type { UIPanelEvent } from "./const/ui_events";
 import { ENV } from "./env";
+import { UIEvents } from "./ui_events";
 
 //-------------------------------------------------------------------------------
 // Helpers
@@ -320,7 +329,8 @@ export class WaitActionAction extends Action {
   }
 }
 
-export class RunFunctionAction<T extends (...args: unknown[]) => Action | void> extends Action {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class RunFunctionAction<T extends (...args: any[]) => Action | void> extends Action {
   args: Parameters<T>;
 
   constructor(public fn: T, ...args: Parameters<T>) {
@@ -346,7 +356,7 @@ export class PlaySoundEffectAction extends Action {
   }
 
   update(): boolean {
-    $.DispatchEvent(invk.UIEvents.Name.PlaySound, this.soundEvent);
+    UIEvents.playSound(this.soundEvent);
 
     return false;
   }
@@ -359,7 +369,7 @@ export class PlaySoundEffectAction extends Action {
 export class WaitEventAction<T extends Panel> extends PanelAction<T> {
   receivedEvent: boolean;
 
-  constructor(panel: T, public event: string) {
+  constructor(panel: T, public event: UIPanelEvent) {
     super(panel);
 
     this.receivedEvent = false;
@@ -370,7 +380,7 @@ export class WaitEventAction<T extends Panel> extends PanelAction<T> {
 
     this.receivedEvent = false;
 
-    $.RegisterEventHandler(this.event, this.panel, () => {
+    UIEvents.listen(this.panel, this.event, () => {
       this.receivedEvent = true;
     });
   }
@@ -907,7 +917,7 @@ const isSequence = (object: unknown): object is Sequence => object instanceof Se
 const actionDeepLength = (action: Action) => (isSequence(action) ? action.deepLength : 1);
 
 /** Base sequence class. */
-abstract class Sequence extends Action {
+export abstract class Sequence extends Action {
   actions: Action[];
   interrupted: boolean;
 
@@ -1022,10 +1032,8 @@ abstract class Sequence extends Action {
     return this.Action(new WarningAction(...args));
   }
 
-  RunFunction<T extends (...args: unknown[]) => Action | void>(
-    fn: T,
-    ...args: Parameters<T>
-  ): this {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  RunFunction<T extends (...args: any[]) => Action | void>(fn: T, ...args: Parameters<T>): this {
     return this.Action(new RunFunctionAction(fn, ...args));
   }
 
@@ -1044,7 +1052,7 @@ abstract class Sequence extends Action {
     return this.Action(new WaitConditionAction(predicate, ...args));
   }
 
-  WaitEvent(panel: Panel, eventName: string): this {
+  WaitEvent(panel: Panel, eventName: UIPanelEvent): this {
     return this.Action(new WaitEventAction(panel, eventName));
   }
 
@@ -1210,7 +1218,7 @@ abstract class Sequence extends Action {
     return this.Action(new AnimateProgressBarWithMiddleAction(panel, start, end, duration));
   }
 
-  AddOption(panel: DropDown, option: Panel): this {
+  AddOption(panel: DropDown, option: Panel | (() => Panel)): this {
     return this.Action(new AddOptionAction(panel, option));
   }
 

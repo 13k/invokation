@@ -1,4 +1,24 @@
-import { Component, ComponentOptions } from "./lib/component";
+import type { Combo, Step } from "./lib/combo";
+import { Component } from "./lib/component";
+import { ABSTRACT_COMPONENTS } from "./lib/const/component";
+import { UIEvents } from "./lib/ui_events";
+
+export type Inputs = {
+  [INPUTS.SET_STEP]: { combo: Combo; step: Step };
+};
+
+export type Outputs = never;
+
+export interface Options {
+  imageID?: string;
+  buttonID?: string;
+}
+
+interface Elements {
+  button: Button;
+}
+
+const { inputs: INPUTS } = ABSTRACT_COMPONENTS.COMBO_STEP;
 
 const DEFAULT_BUTTON_ID = "ability-button";
 const DEFAULT_IMAGE_ID = "ability-image";
@@ -8,36 +28,31 @@ const CLASSES = {
   OPTIONAL: "optional",
 };
 
-export interface ComboStepOptions extends ComponentOptions {
-  imageID?: string;
-}
-
-export type ComboStepInputs = {
-  SetStep: { combo: invk.Combo.Combo; step: invk.Combo.Step };
-};
-
 /**
  * Abstract ComboStep component.
- *
- * Should be included in actual component layout and subclassed.
  */
 export abstract class ComboStep extends Component {
-  combo?: invk.Combo.Combo;
-  step?: invk.Combo.Step;
+  #elements: Elements;
+  #imageID: string;
+  combo?: Combo;
+  step?: Step;
 
-  constructor(options: ComboStepOptions = {}) {
-    options = {
-      ...options,
-      imageID: DEFAULT_IMAGE_ID,
-      elements: {
-        button: DEFAULT_BUTTON_ID,
-      },
-      inputs: {
-        SetStep: "setStep",
-      },
-    };
+  constructor({ buttonID = DEFAULT_BUTTON_ID, imageID = DEFAULT_IMAGE_ID }: Options = {}) {
+    super();
 
-    super(options);
+    this.#elements = this.findAll<Elements>({
+      button: buttonID,
+    });
+
+    this.registerInputs({
+      [INPUTS.SET_STEP]: this.setStep,
+    });
+
+    this.#imageID = imageID;
+  }
+
+  hasStep(): this is { step: Step } {
+    return this.step != null;
   }
 
   /** Child components code can override this method */
@@ -45,37 +60,39 @@ export abstract class ComboStep extends Component {
     return;
   }
 
-  setStep(payload: ComboStepInputs["SetStep"]): void {
+  setStep(payload: Inputs[typeof INPUTS.SET_STEP]): void {
     this.combo = payload.combo;
     this.step = payload.step;
 
-    this.$button.RemoveAndDeleteChildren();
+    this.#elements.button.RemoveAndDeleteChildren();
 
     if (this.step.required) {
-      this.$ctx.RemoveClass(CLASSES.OPTIONAL);
+      this.ctx.RemoveClass(CLASSES.OPTIONAL);
     } else {
-      this.$ctx.AddClass(CLASSES.OPTIONAL);
+      this.ctx.AddClass(CLASSES.OPTIONAL);
     }
 
     if (this.step.isInvocationAbility) {
-      this.$ctx.AddClass(CLASSES.INVOCATION);
+      this.ctx.AddClass(CLASSES.INVOCATION);
     } else {
-      this.$ctx.RemoveClass(CLASSES.INVOCATION);
+      this.ctx.RemoveClass(CLASSES.INVOCATION);
     }
 
-    this.createAbilityOrItemImage(this.$button, this.options.imageID, this.step.name, {
+    this.createAbilityOrItemImage(this.#elements.button, this.#imageID, this.step.name, {
       props: { hittest: false },
     });
 
     this.onStepChange();
   }
 
-  ShowTooltip(): void {
-    this.showAbilityTooltip(this.$ctx, this.step.name);
+  showTooltip(): void {
+    if (!this.hasStep()) return;
+
+    UIEvents.showAbilityTooltip(this.ctx, this.step.name);
   }
 
-  HideTooltip(): void {
-    this.hideAbilityTooltip(this.$ctx);
+  hideTooltip(): void {
+    UIEvents.hideAbilityTooltip(this.ctx);
   }
 }
 

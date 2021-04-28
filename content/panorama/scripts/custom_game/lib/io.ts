@@ -1,7 +1,7 @@
 import { Callbacks } from "./callbacks";
 
-export type InputsBinding = Record<string, (...args: unknown[]) => unknown>;
-export type OutputsBinding = Record<string, (...args: unknown[]) => unknown>;
+export type InputsBinding = Record<string, (...args: any[]) => void>;
+export type OutputsBinding = Record<string, (...args: any[]) => void>;
 export type InputsTrigger = Record<string, unknown>;
 
 type Inputs = Record<string, unknown>;

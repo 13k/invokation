@@ -1,27 +1,33 @@
 import { forOwn, mapValues } from "lodash";
 import { Callbacks } from "./callbacks";
+import type { Combo, ComboKeyValues, Step, StepKeyValues } from "./combo";
+import { CustomEvent } from "./const/events";
+import {
+  ChangeEvent as NetTablesChangeEvent,
+  InvokationTable,
+  InvokationTableKey,
+  Table,
+} from "./const/net_table";
 import { CustomEvents } from "./custom_events";
 import { ENV } from "./env";
+import { isInvocationAbility, isOrbAbility } from "./invoker";
 import { localizeComboProperties } from "./l10n";
 import { Logger, LogLevel } from "./logger";
 import { fromSequence } from "./lua";
 import { NetTable } from "./net_table";
-import { isInvocationAbility, isItemAbility, isOrbAbility } from "./util";
+import { isItemAbility } from "./util";
 
 const WARN_UNDEF_VALUE = "Tried to set data with an undefined value";
 
 interface Combos {
-  [id: string]: invk.Combo.Combo;
+  [id: string]: Combo;
 }
 
-type NetTableKeyType = invk.NetTables.Invokation[invk.NetTables.InvokationKey.Combos];
+type NetTableKeyType = InvokationTable[InvokationTableKey.Combos];
 type NetTableValueType = NetworkedData<NetTableKeyType>;
-type NetTableChangeEvent = invk.NetTables.ChangeEvent<
-  invk.NetTables.Name.INVOKATION,
-  invk.NetTables.InvokationKey.Combos
->;
+type NetTableChangeEvent = NetTablesChangeEvent<Table.Invokation, InvokationTableKey.Combos>;
 
-interface ChangeEvent {
+export interface ChangeEvent {
   combos: Combos;
 }
 
@@ -29,8 +35,9 @@ interface CombosCallbacks {
   change: ChangeEvent;
 }
 
-const normalizeStep = (kv: NetworkedData<invk.Combo.StepKeyValues>): invk.Combo.Step => ({
+const normalizeStep = (kv: NetworkedData<StepKeyValues>, index: number): Step => ({
   ...kv,
+  index,
   required: kv.required === 1,
   next: fromSequence(kv.next),
   isOrbAbility: isOrbAbility(kv.name),
@@ -38,14 +45,12 @@ const normalizeStep = (kv: NetworkedData<invk.Combo.StepKeyValues>): invk.Combo.
   isItem: isItemAbility(kv.name),
 });
 
-const normalizeOrbs = (
-  kv: NetworkedData<invk.Combo.ComboKeyValues["orbs"]>
-): [number, number, number] => {
+const normalizeOrbs = (kv: NetworkedData<ComboKeyValues["orbs"]>): [number, number, number] => {
   const [quas, wex, exort] = fromSequence(kv);
   return [quas, wex, exort];
 };
 
-const normalizeCombo = (kv: NetworkedData<invk.Combo.ComboKeyValues>): invk.Combo.Combo => ({
+const normalizeCombo = (kv: NetworkedData<ComboKeyValues>): Combo => ({
   ...kv,
   orbs: normalizeOrbs(kv.orbs),
   tags: fromSequence(kv.tags),
@@ -59,13 +64,13 @@ const normalize = (kv: NetTableValueType): Combos => mapValues(kv, normalizeComb
 export class CombosCollection {
   #data: Combos;
   #cb: Callbacks<CombosCallbacks>;
-  #table: NetTable<invk.NetTables.Name.INVOKATION>;
+  #table: NetTable<Table.Invokation>;
   #log: Logger;
 
   constructor() {
     this.#data = {};
     this.#cb = new Callbacks();
-    this.#table = new NetTable(invk.NetTables.Name.INVOKATION);
+    this.#table = new NetTable(Table.Invokation);
     this.#log = new Logger({
       level: ENV.development ? LogLevel.DEBUG : LogLevel.INFO,
       progname: "combos_collection",
@@ -75,19 +80,19 @@ export class CombosCollection {
   }
 
   private _sendReloadToServer(): void {
-    CustomEvents.sendServer(invk.CustomEvents.Name.COMBOS_RELOAD);
+    CustomEvents.sendServer(CustomEvent.COMBOS_RELOAD);
   }
 
   private _loadFromNetTable(): NetTableValueType {
-    return this.#table.get(invk.NetTables.InvokationKey.Combos);
+    return this.#table.get(InvokationTableKey.Combos);
   }
 
   private _listenToNetTableChange(): void {
-    this.#table.onKeyChange(invk.NetTables.InvokationKey.Combos, this._onNetTableChange.bind(this));
+    this.#table.onKeyChange(InvokationTableKey.Combos, this._onNetTableChange.bind(this));
   }
 
   private _onNetTableChange(ev: NetTableChangeEvent): void {
-    if (ev.key !== invk.NetTables.InvokationKey.Combos) {
+    if (ev.key !== InvokationTableKey.Combos) {
       return;
     }
 
@@ -137,23 +142,27 @@ export class CombosCollection {
     }
   }
 
+  get length(): number {
+    return this.ids.length;
+  }
+
   get ids(): string[] {
     return Object.keys(this.#data);
   }
 
-  get combos(): invk.Combo.Combo[] {
+  get combos(): Combo[] {
     return Object.values(this.#data);
   }
 
-  entries(): [string, invk.Combo.Combo][] {
+  entries(): [string, Combo][] {
     return Object.entries(this.#data);
   }
 
-  get(id: string): invk.Combo.Combo | undefined {
+  get(id: string): Combo | undefined {
     return this.#data[id];
   }
 
-  forEach(iter: (combo: invk.Combo.Combo, id: string, collection: Combos) => void): Combos {
+  forEach(iter: (combo: Combo, id: string, collection: Combos) => void): Combos {
     return forOwn(this.#data, iter);
   }
 }

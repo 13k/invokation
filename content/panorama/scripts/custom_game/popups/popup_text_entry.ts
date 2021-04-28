@@ -1,166 +1,173 @@
-"use strict";
+import { CustomEvent, PopupTextEntrySubmitEvent } from "../lib/const/events";
+import { CustomEvents } from "../lib/custom_events";
+import { ParallelSequence } from "../lib/sequence";
+import { Inputs as BaseInputs, Outputs as BaseOutputs, Popup } from "./popup";
 
-((global, context) => {
-  const { Popup } = context;
-  const { ParallelSequence } = global.Sequence;
-  const { Enum } = global.Util;
-  const { EVENTS } = global.Const;
+export type Inputs = BaseInputs;
+export type Outputs = BaseOutputs;
 
-  const DIALOG_VARS = {
-    TITLE: "title",
-    DESCRIPTION: "description",
-  };
+interface Elements {
+  textEntry: TextEntry;
+  image: ImagePanel;
+  econItemImage: EconItemPanel;
+  heroImage: HeroImage;
+  abilityImage: AbilityImage;
+  itemImage: ItemImage;
+}
 
-  const PopupType = Enum({
-    SIMPLE: 1,
-    IMAGE: 2,
-    ECON_ITEM: 3,
-    HERO: 4,
-    ABILITY: 5,
-    ITEM: 6,
-  });
+const ATTRIBUTES = {
+  title: "string",
+  description: "string",
+  image: "string",
+  econItem: "int",
+  econItemStyle: "int",
+  hero: "string",
+  heroID: "heroID",
+  heroStyle: "heroImageStyle",
+  ability: "string",
+  item: "string",
+} as const;
 
-  const TYPE_CLASSES = {
-    [PopupType.SIMPLE]: "type-simple",
-    [PopupType.IMAGE]: "type-image",
-    [PopupType.ECON_ITEM]: "type-econ-item",
-    [PopupType.HERO]: "type-hero",
-    [PopupType.ABILITY]: "type-ability",
-    [PopupType.ITEM]: "type-item",
-  };
+const DIALOG_VARS = {
+  TITLE: "title",
+  DESCRIPTION: "description",
+};
 
-  const CLASSES = {
-    EMPTY_DESCRIPTION: "empty-description",
-  };
+enum PopupType {
+  None,
+  Image,
+  EconItem,
+  Hero,
+  Ability,
+  Item,
+}
 
-  class PopupTextEntry extends Popup {
-    constructor() {
-      super({
-        attributes: {
-          title: "string",
-          description: "string",
-          image: "string",
-          econItem: "int",
-          econItemStyle: "int",
-          hero: "string",
-          heroId: "int",
-          heroStyle: "string",
-          heroPersona: "string",
-          ability: "string",
-          abilityId: "int",
-          abilityLevel: "int",
-          item: "string",
-        },
-        elements: {
-          textEntry: "text-entry",
-          image: "image",
-          econItemImage: "econ-item-image",
-          heroImage: "hero-image",
-          abilityImage: "ability-image",
-          itemImage: "item-image",
-        },
-      });
-    }
+const TYPE_CLASSES = {
+  [PopupType.None]: "type-simple",
+  [PopupType.Image]: "type-image",
+  [PopupType.EconItem]: "type-econ-item",
+  [PopupType.Hero]: "type-hero",
+  [PopupType.Ability]: "type-ability",
+  [PopupType.Item]: "type-item",
+};
 
-    // ----- Properties -----
+const CLASSES = {
+  EMPTY_DESCRIPTION: "empty-description",
+};
 
-    get type() {
-      const { image, econItem, hero, heroId, ability, abilityId, item } = this.attributes;
+export class PopupTextEntry extends Popup<typeof ATTRIBUTES> {
+  #elements: Elements;
 
-      if (image) return PopupType.IMAGE;
-      if (econItem) return PopupType.ECON_ITEM;
-      if (heroId || hero) return PopupType.HERO;
-      if (abilityId || ability) return PopupType.ABILITY;
-      if (item) return PopupType.ITEM;
+  constructor() {
+    super({
+      attributes: ATTRIBUTES,
+    });
 
-      return PopupType.SIMPLE;
-    }
-
-    get typeClass() {
-      return TYPE_CLASSES[this.type];
-    }
-
-    // ----- Helpers -----
-
-    render() {
-      const {
-        title,
-        description,
-        image,
-        econItem,
-        econItemStyle,
-        hero,
-        heroId,
-        heroPersona,
-        heroStyle,
-        ability,
-        abilityId,
-        abilityLevel,
-        item,
-      } = this.attributes;
-
-      const seq = new ParallelSequence()
-        .SetDialogVariable(this.$ctx, DIALOG_VARS.TITLE, title)
-        .SetDialogVariable(this.$ctx, DIALOG_VARS.DESCRIPTION, description);
-
-      switch (this.type) {
-        case PopupType.IMAGE:
-          seq.SetImage(this.$image, image);
-
-          break;
-        case PopupType.ECON_ITEM:
-          seq.SetEconItem(this.$econItemImage, { id: econItem, style: econItemStyle });
-
-          break;
-        case PopupType.HERO:
-          seq.SetHeroImage(this.$heroImage, {
-            id: heroId,
-            name: hero,
-            style: heroStyle,
-            persona: heroPersona,
-          });
-
-          break;
-        case PopupType.ABILITY:
-          seq.SetAbilityImage(this.$abilityImage, {
-            id: abilityId,
-            name: ability,
-            level: abilityLevel,
-          });
-
-          break;
-        case PopupType.ITEM:
-          seq.SetItemImage(this.$itemImage, { name: item });
-
-          break;
-      }
-
-      if (this.typeClass) {
-        seq.AddClass(this.$ctx, this.typeClass);
-      }
-
-      if (!description) {
-        seq.AddClass(this.$ctx, CLASSES.EMPTY_DESCRIPTION);
-      }
-
-      seq.Focus(this.$textEntry);
-
-      this.debugFn(() => ["render()", { actions: seq.length }]);
-
-      return seq.Start();
-    }
-
-    submit() {
-      const payload = {
-        channel: this.channel,
-        text: this.$textEntry.text,
-      };
-
-      this.debug("submit()", payload);
-      this.sendClientSide(EVENTS.POPUP_TEXT_ENTRY_SUBMIT, payload);
-      this.close();
-    }
+    this.#elements = this.findAll<Elements>({
+      textEntry: "text-entry",
+      image: "image",
+      econItemImage: "econ-item-image",
+      heroImage: "hero-image",
+      abilityImage: "ability-image",
+      itemImage: "item-image",
+    });
   }
 
-  context.popup = new PopupTextEntry();
-})(GameUI.CustomUIConfig(), this);
+  get type(): PopupType {
+    const { image, econItem, hero, heroID, ability, item } = this.attributes;
+
+    if (image) return PopupType.Image;
+    if (econItem) return PopupType.EconItem;
+    if (heroID || hero) return PopupType.Hero;
+    if (ability) return PopupType.Ability;
+    if (item) return PopupType.Item;
+
+    return PopupType.None;
+  }
+
+  get typeClass(): string {
+    return TYPE_CLASSES[this.type];
+  }
+
+  get text(): string {
+    return this.#elements.textEntry.text;
+  }
+
+  render(): void {
+    const {
+      title,
+      description,
+      image,
+      econItem,
+      econItemStyle,
+      hero,
+      heroID,
+      heroStyle,
+      ability,
+      item,
+    } = this.attributes;
+
+    const seq = new ParallelSequence()
+      .SetDialogVariable(this.ctx, DIALOG_VARS.TITLE, title)
+      .SetDialogVariable(this.ctx, DIALOG_VARS.DESCRIPTION, description);
+
+    switch (this.type) {
+      case PopupType.Image:
+        seq.SetImage(this.#elements.image, image);
+
+        break;
+      case PopupType.EconItem:
+        seq.SetEconItem(this.#elements.econItemImage, { id: econItem, style: econItemStyle });
+
+        break;
+      case PopupType.Hero:
+        seq.SetHeroImage(this.#elements.heroImage, {
+          heroid: heroID,
+          heroname: hero,
+          heroimagestyle: heroStyle,
+        });
+
+        break;
+      case PopupType.Ability:
+        seq.SetAbilityImage(this.#elements.abilityImage, {
+          abilityname: ability,
+        });
+
+        break;
+      case PopupType.Item:
+        seq.SetItemImage(this.#elements.itemImage, { itemname: item });
+
+        break;
+    }
+
+    if (this.typeClass) {
+      seq.AddClass(this.ctx, this.typeClass);
+    }
+
+    if (!description) {
+      seq.AddClass(this.ctx, CLASSES.EMPTY_DESCRIPTION);
+    }
+
+    seq.Focus(this.#elements.textEntry);
+
+    this.debugFn(() => ["render()", { actions: seq.length }]);
+
+    seq.run();
+  }
+
+  submit(): void {
+    const payload: PopupTextEntrySubmitEvent = {
+      channel: this.channel,
+      text: this.text,
+    };
+
+    this.debug("submit()", payload);
+
+    CustomEvents.sendClientSide(CustomEvent.POPUP_TEXT_ENTRY_SUBMIT, payload);
+
+    this.close();
+  }
+}
+
+//   context.popup = new PopupTextEntry();
+// })(GameUI.CustomUIConfig(), this);

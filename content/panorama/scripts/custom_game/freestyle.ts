@@ -1,9 +1,38 @@
-// const { Component } = context;
-// const { lodash: _ } = global;
-// const { COMPONENTS, CSS_CLASSES, EVENTS, FREESTYLE_COMBO_ID } = global.Const;
-// const { Sequence, ParallelSequence, RunFunctionAction, RemoveClassAction } = global.Sequence;
-
+import type { ComboScore, Inputs as ComboScoreInputs } from "./combo_score";
+import type { ProgressMetrics, ScoreSummaryMetrics } from "./lib/combo";
+import { FREESTYLE_COMBO_ID } from "./lib/combo";
 import { Component } from "./lib/component";
+import { COMPONENTS } from "./lib/const/component";
+import {
+  ComboProgressEvent,
+  ComboRestartEvent,
+  ComboStartedEvent,
+  ComboStoppedEvent,
+  CustomEvent,
+  FreestyleHeroLevelUpEvent,
+} from "./lib/const/events";
+import type { PanelWithComponent } from "./lib/const/panorama";
+import { CSSClass } from "./lib/const/panorama";
+import { CustomEvents } from "./lib/custom_events";
+import {
+  Action,
+  ParallelSequence,
+  RemoveClassAction,
+  RunFunctionAction,
+  SerialSequence,
+} from "./lib/sequence";
+import { UI } from "./lib/ui";
+
+export type Inputs = never;
+export type Outputs = never;
+
+interface Elements {
+  score: Panel;
+}
+
+type ComboScorePanel = PanelWithComponent<ComboScore>;
+
+const { inputs: SCORE_INPUTS } = COMPONENTS.COMBO_SCORE;
 
 const DYN_ELEMS = {
   COMBO_SCORE: {
@@ -18,27 +47,29 @@ const SOUNDS = {
   start: "Invokation.Freestyle.Start",
 };
 
-class Freestyle extends Component {
+export class Freestyle extends Component {
+  #elements: Elements;
+  #comboScore: ComboScorePanel;
+
   constructor() {
-    super({
-      elements: {
-        score: "score",
-      },
-      customEvents: {
-        "!COMBO_STARTED": "onComboStarted",
-        "!COMBO_STOPPED": "onComboStopped",
-        "!COMBO_PROGRESS": "onComboProgress",
-      },
+    super();
+
+    this.#elements = this.findAll<Elements>({
+      score: "score",
     });
 
-    this.$comboScore = this.createComboScorePanel(this.$score);
+    this.#comboScore = this.createComboScorePanel(this.#elements.score);
+
+    this.onCustomEvent(CustomEvent.COMBO_STARTED, this.onComboStarted);
+    this.onCustomEvent(CustomEvent.COMBO_STOPPED, this.onComboStopped);
+    this.onCustomEvent(CustomEvent.COMBO_PROGRESS, this.onComboProgress);
 
     this.debug("init");
   }
 
   // --- Event handlers -----
 
-  onComboStarted(payload) {
+  onComboStarted(payload: NetworkedData<ComboStartedEvent>): void {
     if (payload.id !== FREESTYLE_COMBO_ID) {
       return;
     }
@@ -47,7 +78,7 @@ class Freestyle extends Component {
     this.start();
   }
 
-  onComboStopped(payload) {
+  onComboStopped(payload: NetworkedData<ComboStoppedEvent>): void {
     if (payload.id !== FREESTYLE_COMBO_ID) {
       return;
     }
@@ -56,7 +87,7 @@ class Freestyle extends Component {
     this.stop();
   }
 
-  onComboProgress(payload) {
+  onComboProgress(payload: NetworkedData<ComboProgressEvent>): void {
     const { id, metrics } = payload;
 
     if (id !== FREESTYLE_COMBO_ID) {
@@ -69,19 +100,19 @@ class Freestyle extends Component {
 
   // ----- Helpers -----
 
-  sendStop() {
-    this.sendServer(EVENTS.COMBO_STOP);
+  sendStop(): void {
+    CustomEvents.sendServer(CustomEvent.COMBO_STOP);
   }
 
-  sendRestart(hardReset) {
-    this.sendServer(EVENTS.COMBO_RESTART, { hardReset });
+  sendRestart(payload: ComboRestartEvent): void {
+    CustomEvents.sendServer(CustomEvent.COMBO_RESTART, payload);
   }
 
-  sendLevelUp(payload) {
-    this.sendServer(EVENTS.FREESTYLE_HERO_LEVEL_UP, payload);
+  sendLevelUp(payload: FreestyleHeroLevelUpEvent): void {
+    CustomEvents.sendServer(CustomEvent.FREESTYLE_HERO_LEVEL_UP, payload);
   }
 
-  createComboScorePanel(parent) {
+  createComboScorePanel(parent: Panel): ComboScorePanel {
     const { layout } = COMPONENTS.COMBO_SCORE;
     const { id, cssClass } = DYN_ELEMS.COMBO_SCORE;
 
@@ -92,43 +123,45 @@ class Freestyle extends Component {
 
   // ----- Component actions -----
 
-  showAction() {
-    return new RemoveClassAction(this.$ctx, CSS_CLASSES.HIDE);
+  showAction(): Action {
+    return new RemoveClassAction(this.ctx, CSSClass.Hide);
   }
 
-  hideAction() {
+  hideAction(): Action {
     return new ParallelSequence()
       .Action(this.hideScoreAction())
       .Action(this.hideShopAction())
-      .AddClass(this.$ctx, CSS_CLASSES.HIDE);
+      .AddClass(this.ctx, CSSClass.Hide);
   }
 
   // ----- Score actions -----
 
-  updateScoreSummaryAction(options) {
-    return new RunFunctionAction(() => this.$comboScore.component.Input("UpdateSummary", options));
+  updateScoreSummaryAction(metrics: ComboScoreInputs[typeof SCORE_INPUTS.UPDATE_SUMMARY]): Action {
+    return new RunFunctionAction(() => {
+      this.#comboScore.component.input(SCORE_INPUTS.UPDATE_SUMMARY, metrics);
+    });
   }
 
-  hideScoreAction() {
-    const { inputs } = COMPONENTS.COMBO_SCORE;
-
-    return new Sequence().RunFunction(() => this.$comboScore.component.Input(inputs.HIDE));
+  hideScoreAction(): Action {
+    return new SerialSequence().RunFunction(() => {
+      this.#comboScore.component.input(SCORE_INPUTS.HIDE);
+    });
   }
 
   // ----- HUD actions -----
 
-  showShopAction() {
-    return new RunFunctionAction(() => this.showInventoryShopUI());
+  showShopAction(): Action {
+    return new RunFunctionAction(() => UI.showInventoryShopUI());
   }
 
-  hideShopAction() {
-    return new RunFunctionAction(() => this.hideInventoryShopUI());
+  hideShopAction(): Action {
+    return new RunFunctionAction(() => UI.hideInventoryShopUI());
   }
 
   // ----- Action runners -----
 
-  start() {
-    const seq = new Sequence()
+  start(): void {
+    const seq = new SerialSequence()
       .PlaySoundEffect(SOUNDS.start)
       .Action(this.hideScoreAction())
       .Action(this.showShopAction())
@@ -137,47 +170,47 @@ class Freestyle extends Component {
 
     this.debugFn(() => ["start()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  stop() {
-    const seq = new Sequence().Action(this.hideAction());
+  stop(): void {
+    const seq = new SerialSequence().Action(this.hideAction());
 
     this.debugFn(() => ["stop()", { actions: seq.length }]);
 
-    return seq.Start();
+    seq.run();
   }
 
-  progress(metrics) {
-    const options = {
+  progress(metrics: ProgressMetrics): void {
+    const scoreSummaryMetrics: ScoreSummaryMetrics = {
       count: metrics.count || 0,
       endDamage: metrics.damage || 0,
     };
 
-    const seq = new Sequence().Action(this.updateScoreSummaryAction(options));
+    const seq = new SerialSequence().Action(this.updateScoreSummaryAction(scoreSummaryMetrics));
 
-    this.debugFn(() => ["progress()", _.assign({ actions: seq.length }, options)]);
+    this.debugFn(() => ["progress()", { actions: seq.length, ...scoreSummaryMetrics }]);
 
-    return seq.Start();
+    seq.run();
   }
 
   // ----- UI methods -----
 
-  Restart(hardReset) {
+  Restart(hardReset: boolean): void {
     this.debugFn(() => ["Restart()", { hardReset }]);
-    this.sendRestart(!!hardReset);
+    this.sendRestart({ hardReset });
   }
 
-  Stop() {
+  Stop(): void {
     this.debug("Stop()");
     this.sendStop();
   }
 
-  LevelUp() {
-    this.sendLevelUp();
+  LevelUp(): void {
+    this.sendLevelUp({ maxLevel: false });
   }
 
-  LevelMax() {
+  LevelMax(): void {
     this.sendLevelUp({ maxLevel: true });
   }
 }
