@@ -27,7 +27,7 @@ class FormatLuaCommand {
     };
   }
 
-  constructor(_, options, { log, rootPath }) {
+  constructor(_args, options, { log, rootPath }) {
     this.log = log;
     this.options = options;
     this.rootPath = rootPath;

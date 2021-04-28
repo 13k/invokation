@@ -31,7 +31,7 @@ class LinkCommand {
     };
   }
 
-  constructor(_, { noop }, { log, ...config }) {
+  constructor(_args, { noop }, { log, ...config }) {
     this.noop = noop;
     this.config = config;
     this.log = log;

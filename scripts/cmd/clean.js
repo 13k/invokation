@@ -15,7 +15,7 @@ class CleanCommand {
     };
   }
 
-  constructor(_, { noop }, { log, customGame: { contentPath, gamePath } }) {
+  constructor(_args, { noop }, { log, customGame: { contentPath, gamePath } }) {
     this.log = log;
     this.contentPath = contentPath;
     this.gamePath = gamePath;

@@ -65,9 +65,9 @@ class Config {
       this.requirePath(this.sources.contentPath),
       this.requirePath(this.sources.gamePath),
       this.requirePath(this.dota2.path),
-      this.requirePath(this.dota2.binPath),
-      this.requirePath(this.dota2.toolsBinPath),
-      this.requirePath(this.dota2.resCompilerBinPath),
+      // this.requirePath(this.dota2.binPath),
+      // this.requirePath(this.dota2.toolsBinPath),
+      // this.requirePath(this.dota2.resCompilerBinPath),
       this.requirePath(this.dota2.addonsContentPath),
       this.requirePath(this.dota2.addonsGamePath),
     ]);

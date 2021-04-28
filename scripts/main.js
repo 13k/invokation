@@ -1,30 +1,17 @@
 const path = require("path");
 
-const dotenv = require("dotenv");
-const fse = require("fs-extra");
 const globby = require("globby");
 const { program, Option } = require("commander");
 
+const { load: loadDotenv } = require("./env");
 const Config = require("./config");
 const Logger = require("./logger");
-const wsl = require("./wsl");
+// const wsl = require("./wsl");
 
 const ROOT_PATH = path.dirname(__dirname);
 const DOTENV_PATH = path.join(ROOT_PATH, ".env");
 const CMDS_PATH = path.join(__dirname, "cmd");
 const LOG = new Logger();
-
-async function loadDotenv() {
-  if (!(await fse.pathExists(DOTENV_PATH))) return;
-
-  const result = dotenv.config({ path: DOTENV_PATH });
-
-  if (result.error) {
-    throw result.error;
-  }
-
-  return result;
-}
 
 function arrayWrapIfDefined(value) {
   if (value === undefined) return value;
@@ -93,12 +80,12 @@ async function parseArgs(config) {
 }
 
 async function main() {
-  if (!wsl.isWSL()) {
-    LOG.fatal("This script must be run within WSL");
-    process.exit(1);
-  }
+  // if (!wsl.isWSL()) {
+  //   LOG.fatal("This script must be run within WSL");
+  //   process.exit(1);
+  // }
 
-  await loadDotenv();
+  await loadDotenv(DOTENV_PATH);
 
   if (!process.env.DOTA2_PATH) {
     LOG.fatal("DOTA2_PATH environment variable must be set");

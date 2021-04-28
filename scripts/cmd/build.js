@@ -18,7 +18,7 @@ class BuildCommand {
     };
   }
 
-  constructor(_, options, { log, ...config }) {
+  constructor(_args, options, { log, ...config }) {
     const {
       sources: { contentPath },
     } = config;

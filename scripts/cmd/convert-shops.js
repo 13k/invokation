@@ -17,7 +17,7 @@ class ConvertShopsCommand {
     };
   }
 
-  constructor([input, output], _, { log }) {
+  constructor([input, output], _options, { log }) {
     this.input = input;
     this.output = output;
     this.log = log;

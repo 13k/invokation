@@ -1,0 +1,85 @@
+{
+  "PlaySoundEffect": {
+    "description": "Plays a sound effect.",
+    "panelEvent": false,
+    "args": [{ "name": "soundEvent", "type": "string" }]
+  },
+  "Activated": {
+    "description": "Received when a Button is activated.",
+    "panelEvent": true,
+    "args": []
+  },
+  "SetCarouselSelectedChild": {
+    "description": "Received when a Carousel child panel is selected.",
+    "panelEvent": true,
+    "args": [{ "name": "selectedPanel", "type": "Panel" }]
+  },
+  "TabSelected": {
+    "description": "Received when a TabButton is checked.",
+    "panelEvent": true,
+    "args": []
+  },
+  "UIHideCustomLayoutTooltip": {
+    "description": "Hides a custom layout tooltip.",
+    "panelEvent": true,
+    "args": [{ "name": "id", "type": "string" }]
+  },
+  "UIShowCustomLayoutTooltip": {
+    "description": "Shows a custom layout tooltip.",
+    "panelEvent": true,
+    "args": [
+      { "name": "id", "type": "string" },
+      { "name": "layoutPath", "type": "string" }
+    ]
+  },
+  "UIShowCustomLayoutParametersTooltip": {
+    "description": "Shows a custom layout tooltip with parameters (query string format).",
+    "panelEvent": true,
+    "args": [
+      { "name": "id", "type": "string" },
+      { "name": "layoutPath", "type": "string" },
+      { "name": "parameters", "type": "string" }
+    ]
+  },
+  "UIPopupButtonClicked": {
+    "description": "Dismisses a popup.",
+    "panelEvent": true,
+    "args": []
+  },
+  "UIShowCustomLayoutPopup": {
+    "description": "Shows a popup with a custom layout.",
+    "panelEvent": false,
+    "args": [
+      { "name": "id", "type": "string" },
+      { "name": "layoutPath", "type": "string" }
+    ]
+  },
+  "UIShowCustomLayoutPopupParameters": {
+    "description": "Shows a popup with a custom layout and parameters (query string format).",
+    "panelEvent": false,
+    "args": [
+      { "name": "id", "type": "string" },
+      { "name": "layoutPath", "type": "string" },
+      { "name": "parameters", "type": "string" }
+    ]
+  },
+  "DOTASceneFireEntityInput": {
+    "description": "Fires an entity input within a DOTAScenelPanel.",
+    "panelEvent": true,
+    "args": [
+      { "name": "entityID", "type": "string" },
+      { "name": "inputName", "type": "string" },
+      { "name": "value", "type": "string" }
+    ]
+  },
+  "DOTAScenePanelSceneLoaded": {
+    "description": "Received when a DOTAScenePanel finished loading.",
+    "panelEvent": true,
+    "args": []
+  },
+  "DOTAScenePanelSceneUnloaded": {
+    "description": "Received when a DOTAScenePanel unloaded.",
+    "panelEvent": true,
+    "args": []
+  }
+}
