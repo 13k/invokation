@@ -12,6 +12,7 @@
 !/.yarn/releases
 !/.yarn/sdks
 !/.yarn/versions
+/build
 /dist
 /doc/ldoc
 /lua
