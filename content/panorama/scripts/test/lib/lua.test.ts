@@ -1,7 +1,8 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
 import { inspect } from "util";
-import { fromSequence, isSequence } from "../../custom_game/lib/lua";
+
+import { fromSequence, isSequence } from "../../lib/lua";
 
 interface isSequenceTestCase {
   desc: string;

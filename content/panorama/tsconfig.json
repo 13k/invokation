@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["@moddota/panorama-types"],
+    "module": "ES2015",
+    "types": ["@moddota/panorama-types"]
   },
-  "include": ["scripts/typings", "scripts/custom_game"]
+  "include": ["components", "layouts/custom_game", "scripts/typings", "scripts/lib"]
 }

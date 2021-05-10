@@ -2,3 +2,7 @@ endOfLine: "lf"
 printWidth: 100
 tabWidth: 2
 trailingComma: "es5"
+overrides:
+  - files: "*.scss"
+    options:
+      singleQuote: true

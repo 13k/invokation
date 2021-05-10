@@ -1,0 +1,258 @@
+// *******************************************************************************
+// * Colors
+// *******************************************************************************
+
+$color-base-text: #a5ada2ff;
+$color-base-border: #444f;
+$color-off-white: #cccf;
+$color-selected-text-background: #6663;
+$color-gold: #fc3;
+
+$gradient-dota-level: gradient(
+  linear,
+  0% 0%,
+  0% 100%,
+  from(#bbcaea),
+  color-stop(0.5, #fff),
+  color-stop(0.5, #d9dfec),
+  to(#bbcaea)
+);
+
+$gradient-dota-playtime: gradient(
+  linear,
+  0% 0%,
+  0% 100%,
+  from(#3db451),
+  color-stop(0.5, #beffc7),
+  color-stop(0.5, #91d69a),
+  to(#3db451)
+);
+
+// Game
+
+$color-hero-slot0: #3375ffff;
+$color-hero-slot1: #66ffbfff;
+$color-hero-slot2: #bf00bfff;
+$color-hero-slot3: #f3f00bff;
+$color-hero-slot4: #ff6b00ff;
+$color-hero-slot5: #fe86c2ff;
+$color-hero-slot6: #a1b447ff;
+$color-hero-slot7: #65d9f7ff;
+$color-hero-slot8: #008321ff;
+$color-hero-slot9: #a46900ff;
+
+$color-hero-slot0-half: #3375ff33;
+$color-hero-slot1-half: #66ffbf44;
+$color-hero-slot2-half: #bf00bf88;
+$color-hero-slot3-half: #f3f00b33;
+$color-hero-slot4-half: #ff6b0033;
+$color-hero-slot5-half: #fe86c244;
+$color-hero-slot6-half: #a1b44766;
+$color-hero-slot7-half: #65d9f733;
+$color-hero-slot8-half: #00832133;
+$color-hero-slot9-half: #a4690033;
+
+$color-rune-dd: #82caff;
+$color-rune-haste: #f62817;
+$color-rune-illusion: #ffd700;
+$color-rune-invis: #8b008b;
+$color-rune-regen: #7fff00;
+$color-rune-arcane: #fd3afb;
+$color-rune-bounty: #ff7800;
+
+$color-physical-damage: #ae2f28;
+$color-magical-damage: #5b93d1;
+$color-pure-damage: #d8ae53;
+
+$color-winner-green: #8f8;
+$color-loser-red: #f43;
+
+// Dota Plus
+
+$color-dota-plus-gold: #b78946;
+$color-dota-plus-light-gold: #dcd086;
+$color-dota-plus-brown: #433620;
+$gradient-dota-plus-gold: gradient(linear, 0% 0%, 0% 100%, from(#b78946), to(#dcd086));
+
+$gradient-dota-plus-gold-gradient-hover: gradient(
+  linear,
+  0% 0%,
+  0% 100%,
+  from(#d8a253),
+  to(#ecdf90)
+);
+
+$gradient-dota-plus-gold-gradient-active: gradient(
+  linear,
+  0% 0%,
+  0% 100%,
+  from(#ca974d),
+  to(#dfd388)
+);
+
+$gradient-dota-plus-bg: gradient(
+  linear,
+  0% 0%,
+  0% 100%,
+  from(dota_plus_brown),
+  color-stop(0.5, #141b21ef),
+  to(#141b21ef)
+);
+
+// Watch/DPC
+
+$color-pro-verified: #fc3;
+$color-text-blue-grey-reg: #748b8b;
+$color-text-blue-grey-dim: #485959;
+$color-text-blue-grey-dark: #3a4444;
+$color-text-blue-grey-bright: #e1e8f8;
+$color-text-live-green: #86f58b;
+
+// ECON
+
+$color-rarity-common: #b0c3d9;
+$color-rarity-uncommon: #5e98d9;
+$color-rarity-rare: #4b69ff;
+$color-rarity-mythical: #8847ff;
+$color-rarity-legendary: #d32ce6;
+$color-rarity-ancient: #eb4b4b;
+$color-rarity-immortal: #e4ae39;
+$color-rarity-arcana: #ade55c;
+$color-rarity-seasonal: #fff34f;
+
+// Invokation
+
+$color-text-link: #9862e9;
+$color-text-quas: #88c5e9;
+$color-text-wex: #c284bf;
+$color-text-exort: #c69a25;
+$color-accent-quas: #33a7e9;
+$color-accent-wex: #eb07e1;
+$color-accent-exort: #e7ac10;
+
+// *******************************************************************************
+// * Fonts
+// *******************************************************************************
+
+$font-default: 'Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU';
+$font-monospace-numbers: 'RadianceM, Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU';
+$font-monospace: 'Courier New, Courier';
+$font-title: 'Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540';
+
+// *******************************************************************************
+// * Icons
+// *******************************************************************************
+
+$control-icon-arrow-dropdown-up: url('../images/game/control_icons/arrow_dropdown_up_png.png');
+$control-icon-arrow-dropdown: url('../images/game/control_icons/arrow_dropdown_png.png');
+$control-icon-arrow-popout: url('../images/game/control_icons/arrow_popout_png.png');
+$control-icon-arrow-right: url('../images/game/control_icons/arrow_right_png.png');
+$control-icon-arrow-solid-right: url('../images/game/control_icons/arrow_solid_right_png.png');
+$control-icon-arrow-top-right: url('../images/game/control_icons/arrow_top_right_png.png');
+$control-icon-check-round: url('../images/game/control_icons/check_64_png.png');
+$control-icon-check: url('../images/game/control_icons/check_png.png');
+$control-icon-close-bold: url('../images/game/control_icons/purgatory_png.png');
+$control-icon-close-grey: url('../images/game/control_icons/x_close_grey_psd.png');
+$control-icon-close: url('../images/game/control_icons/x_close_png.png');
+$control-icon-dota-logo-white: url('../images/game/control_icons/dota_logo_white_png.png');
+$control-icon-double-arrow-right: url('../images/game/control_icons/double_arrow_right_png.png');
+$control-icon-edit: url('../images/game/control_icons/edit_png.png');
+$control-icon-escalation-arrow: url('../images/game/control_icons/escalation_arrow_psd.png');
+$control-icon-expand-collapse: url('../images/game/control_icons/expand_collapse_png.png');
+$control-icon-eye: url('../images/game/control_icons/eye_png.png');
+$control-icon-filter-carry: url('../images/game/control_icons/filter_carry_png.png');
+$control-icon-filter-complexity: url('../images/game/control_icons/filter_complexity_png.png');
+$control-icon-filter-melee: url('../images/game/control_icons/filter_melee_png.png');
+$control-icon-filter-support: url('../images/game/control_icons/filter_support_png.png');
+$control-icon-gear: url('../images/game/control_icons/gear_png.png');
+$control-icon-hamburger: url('../images/game/control_icons/hamburger_png.png');
+$control-icon-maximize: url('../images/game/control_icons/maximize_icon_psd.png');
+$control-icon-plus-thin: url('../images/game/control_icons/plus_thin_png.png');
+$control-icon-plus: url('../images/game/control_icons/plus_png.png');
+$control-icon-quit: url('../images/game/control_icons/quit_png.png');
+$control-icon-refresh: url('../images/game/control_icons/refresh_psd.png');
+$control-icon-restore: url('../images/game/control_icons/restore_icon_psd.png');
+$control-icon-return-to-game: url('../images/game/control_icons/return_to_game_png.png');
+$control-icon-search: url('../images/game/control_icons/icon_search_png.png');
+$control-icon-toc: url('../images/game/control_icons/toc_psd.png');
+$control-icon-fastforward: url('../images/game/control_icons/fastforward_psd.png');
+
+$status-icon-clock: url('../images/game/status_icons/clock_psd.png');
+$status-icon-help: url('../images/game/status_icons/helpicon_psd.png');
+$status-icon-info: url('../images/game/status_icons/information_psd.png');
+$status-icon-loading-throbber-round: url('../images/game/status_icons/loadingthrobber_round_psd.png');
+$status-icon-star-empty: url('../images/game/status_icons/icon_star_empty_png.png');
+$status-icon-star: url('../images/game/status_icons/icon_star_png.png');
+
+$topbar-icon-bug: url('../images/game/topbar/bug_png.png');
+
+$dota-plus-icon-challenges: url('../images/game/dota_plus/challanges_icon_png.png');
+$dota-plus-icon-chat-wheel: url('../images/game/dota_plus/icon_chatwheel_plus_reward_png.png');
+$dota-plus-icon-currency-small: url('../images/game/dota_plus/currency_icon_small_png.png');
+$dota-plus-icon-currency: url('../images/game/dota_plus/currency_icon_png.png');
+$dota-plus-icon-relic: url('../images/game/dota_plus/relic_icon_png.png');
+$dota-plus-logo-small: url('../images/game/dota_plus/dotaplus_logo_small_png.png');
+$dota-plus-logo: url('../images/game/dota_plus/dotaplus_logo_png.png');
+
+$icon-damage-rating: url('../images/game/hud/reborn/icon_damage_psd.png');
+$icon-difficulty-rating: url('../images/game/hud/reborn/icon_speed_psd.png');
+$icon-stance-defensive: url('../images/game/hud/reborn/icon_armor_psd.png');
+$icon-stance-offensive: url('../images/game/status_icons/modifier_kill_effect_psd.png');
+
+// *******************************************************************************
+// * HUD
+// *******************************************************************************
+
+$hud-invoker-card: url('../images/game/hud/invokercard_psd.png');
+$hud-stat-branch-select-bg: url('../images/game/hud/reborn/statbranch_select_bg_psd.png');
+$hud-stat-branch-level-bg: url('../images/game/hud/reborn/statbranch_levelbg_psd.png');
+$hud-timer-bg: url('../images/game/hud/reborn/bg_timer_psd.png');
+$hud-ult-cooldown: url('../images/game/hud/reborn/ult_cooldown_psd.png');
+$hud-ult-ready: url('../images/game/hud/reborn/ult_ready_psd.png');
+
+$hud-arcana-es-chr-0: url('../images/game/hud/arcana/es/numbers/combo_0_png.png');
+$hud-arcana-es-chr-1: url('../images/game/hud/arcana/es/numbers/combo_1_png.png');
+$hud-arcana-es-chr-2: url('../images/game/hud/arcana/es/numbers/combo_2_png.png');
+$hud-arcana-es-chr-3: url('../images/game/hud/arcana/es/numbers/combo_3_png.png');
+$hud-arcana-es-chr-4: url('../images/game/hud/arcana/es/numbers/combo_4_png.png');
+$hud-arcana-es-chr-5: url('../images/game/hud/arcana/es/numbers/combo_5_png.png');
+$hud-arcana-es-chr-6: url('../images/game/hud/arcana/es/numbers/combo_6_png.png');
+$hud-arcana-es-chr-7: url('../images/game/hud/arcana/es/numbers/combo_7_png.png');
+$hud-arcana-es-chr-8: url('../images/game/hud/arcana/es/numbers/combo_8_png.png');
+$hud-arcana-es-chr-9: url('../images/game/hud/arcana/es/numbers/combo_9_png.png');
+$hud-arcana-es-chr-x: url('../images/game/hud/arcana/es/numbers/combo_x_png.png');
+$hud-arcana-es-v2-chr-0: url('../images/game/hud/arcana/es/numbers/combo_0_v2_png.png');
+$hud-arcana-es-v2-chr-1: url('../images/game/hud/arcana/es/numbers/combo_1_v2_png.png');
+$hud-arcana-es-v2-chr-2: url('../images/game/hud/arcana/es/numbers/combo_2_v2_png.png');
+$hud-arcana-es-v2-chr-3: url('../images/game/hud/arcana/es/numbers/combo_3_v2_png.png');
+$hud-arcana-es-v2-chr-4: url('../images/game/hud/arcana/es/numbers/combo_4_v2_png.png');
+$hud-arcana-es-v2-chr-5: url('../images/game/hud/arcana/es/numbers/combo_5_v2_png.png');
+$hud-arcana-es-v2-chr-6: url('../images/game/hud/arcana/es/numbers/combo_6_v2_png.png');
+$hud-arcana-es-v2-chr-7: url('../images/game/hud/arcana/es/numbers/combo_7_v2_png.png');
+$hud-arcana-es-v2-chr-8: url('../images/game/hud/arcana/es/numbers/combo_8_v2_png.png');
+$hud-arcana-es-v2-chr-9: url('../images/game/hud/arcana/es/numbers/combo_9_v2_png.png');
+$hud-arcana-es-v2-chr-x: url('../images/game/hud/arcana/es/numbers/combo_x_v2_png.png');
+$hud-arcana-es-summary-background: url('../images/game/hud/arcana/es/es_arcana_summary_bg_png.png');
+$hud-arcana-es-v2-summary-background: url('../images/game/hud/arcana/es/es_arcana_summary_bg_v2_png.png');
+
+// *******************************************************************************
+// * Backgrounds
+// *******************************************************************************
+
+$bg-play-button-2x: url('../images/game/backgrounds/background_play_button_2x_png.png');
+$bg-picker: url('../images/game/backgrounds/gallery_background_png.png');
+$bg-viewer: url('../images/game/leaf_pages/debut_kid_invoker/paper-bg_png.png');
+
+// *******************************************************************************
+// * Masks
+// *******************************************************************************
+
+$mask-soft-edge-box: url('../images/game/masks/softedge_box_png.png');
+$mask-soft-edge-box-irregular: url('../images/game/masks/softedge_box_irregular_png.png');
+$mask-soft-edge-circle: url('../images/game/masks/softedge_circle_png.png');
+$mask-soft-edge-circle-sharp: url('../images/game/masks/softedge_circle_sharp_png.png');
+$mask-soft-edge-circle-sharper: url('../images/game/masks/softedge_circle_sharper_png.png');
+$mask-soft-edge-vscroll: url('../images/game/masks/softedge_vertical_vscroll_psd.png');
+$mask-soft-edge-vscroll-wide: url('../images/game/masks/softedge_vertical_vscroll_wide_psd.png');
+$mask-brush-horizontal: url('../images/game/masks/brush_horizontal_psd.png');
+$mask-hero-movie-blur: url('../images/game/masks/heromovie_blur_mask_psd.png');
