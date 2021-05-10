@@ -40,7 +40,8 @@ const $ = ts.factory;
  * @property {string} enumKey
  */
 
-const DEFAULT_OUTPUT_RELPATH = path.join("custom_game", "lib", "const", "ui_events.ts");
+// relative to "<root>/content/panorama/scripts"
+const DEFAULT_OUTPUT_RELPATH = path.join("lib", "const", "ui_events.ts");
 
 /** @type EventsDocFile */
 const PKG_DOC_FILE = {
@@ -50,7 +51,7 @@ const PKG_DOC_FILE = {
 
 // paths relative to "<root>/content/panorama/scripts"
 const IMPORT_PATHS = {
-  dota: path.join("custom_game", "lib", "dota"),
+  dota: path.join("lib", "dota"),
 };
 
 const GLOBAL_EVENTS_ENUM_DOC = "Global events";

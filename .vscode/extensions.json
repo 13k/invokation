@@ -1,14 +1,15 @@
 {
   "recommendations": [
+    "arcanis.vscode-zipfs",
     "dbaeumer.vscode-eslint",
     "dotjoshjohnson.xml",
     "esbenp.prettier-vscode",
     "foxundermoon.shell-format",
     "geekidos.vdf",
     "koihik.vscode-lua-format",
+    "octref.vetur",
     "stylelint.vscode-stylelint",
     "sumneko.lua",
-    "timonwong.shellcheck",
-    "arcanis.vscode-zipfs"
+    "timonwong.shellcheck"
   ]
 }

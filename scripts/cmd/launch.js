@@ -4,6 +4,7 @@ const TOOLS = ["game", "tools"];
 
 class LaunchCommand {
   static cliOptions(config) {
+    const mapChoices = config.customGame.mapNames;
     const toolChoices = TOOLS.map((t) => `"${t}"`).join(", ");
 
     return {
@@ -19,8 +20,8 @@ class LaunchCommand {
         {
           flags: "-m, --map <map>",
           description: 'Map name for "game" tool',
-          default: config.customGame.maps[0],
-          choices: config.customGame.maps,
+          default: mapChoices[0],
+          choices: mapChoices,
         },
       ],
     };
@@ -53,7 +54,7 @@ class LaunchCommand {
       "-console",
       "+dota_launch_custom_game",
       customGame.name,
-      this.map || customGame.maps[0],
+      this.map || customGame.mapNames[0],
     ];
 
     return run(dota2.binPath, [...args, ...this.toolArgs], { cwd: dota2.path });

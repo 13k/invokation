@@ -3,30 +3,36 @@
   "prettier.printWidth": 100,
   "vim.textwidth": 100,
 
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
-  },
-
-  "css.validate": false,
-  "javascript.format.enable": false,
-  "javascript.validate.enable": true,
-  "eslint.nodePath": ".yarn/sdks",
-  "eslint.validate": ["javascript", "typescript"],
-  "eslint.run": "onType",
-  "eslint.workingDirectories": ["content/panorama", "scripts"],
   "npm.packageManager": "yarn",
+  "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
+
+  "css.validate": false,
+  "sass.lint.enable": false,
+  "scss.validate": false,
+  "javascript.format.enable": false,
+  "javascript.validate.enable": true,
+  "eslint.run": "onType",
+  "eslint.validate": ["javascript", "typescript", "vue"],
+  "eslint.workingDirectories": ["content/panorama", "scripts"],
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsserver.log": "off",
   "typescript.format.enable": false,
-  "typescript.validate.enable": true,
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.tsserver.log": "off",
+  "typescript.validate.enable": true,
   "typescript.tsserver.watchOptions": {
     "watchFile": "useFsEventsOnParentDirectory",
     "watchDirectory": "useFsEvents"
+  },
+
+  "vetur.validation.interpolation": false,
+  "vetur.validation.script": false, // provided by eslint
+  "vetur.validation.style": true,
+  "vetur.validation.template": false, // provided by eslint
+  "vetur.grammar.customBlocks": {
+    "layout": "xml"
   },
 
   "vscode-lua-format.configPath": ".lua-format",
@@ -40,6 +46,7 @@
     "**/.pnp.*": true,
     "dist/*": true
   },
+
   "files.associations": {
     ".env*": "shellscript",
     ".busted": "lua",
@@ -54,6 +61,7 @@
     "**/game/**/*.txt": "vdf",
     "**/content/materials/**/*.txt": "vdf"
   },
+
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

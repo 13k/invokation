@@ -9,18 +9,18 @@ const { run } = require("../process");
 
 tmp.setGracefulCleanup();
 
-class BuildCommand {
+class BuildGameCommand {
   static cliOptions(/* config */) {
     return {
-      usage: "build",
-      description: "Build custom game resources",
+      usage: "build-game",
+      description: "Build game resources",
       options: [{ flags: "-f, --force", description: "Force rebuild", default: false }],
     };
   }
 
   constructor(_args, options, { log, ...config }) {
     const {
-      sources: { contentPath },
+      customGame: { contentPath },
     } = config;
 
     this.log = log;
@@ -52,23 +52,19 @@ class BuildCommand {
   }
 
   resourceRelPath(filename) {
-    const { sources, dota2, customGame } = this.config;
-    const relPath = path.relative(sources.contentPath, filename);
-    const customGameFilename = path.join(customGame.contentPath, relPath);
-
-    return path.relative(dota2.path, customGameFilename);
+    return path.relative(this.config.dota2.path, filename);
   }
 
   async compile(args) {
     const {
-      dota2: { resCompilerBinPath, path: dota2Path },
+      dota2: { compilerPath, path: dota2Path },
     } = this.config;
 
     if (this.options.force) {
       args.push("-fshallow");
     }
 
-    return run(resCompilerBinPath, args, { log: this.log, cwd: dota2Path });
+    return run(compilerPath, args, { log: this.log, cwd: dota2Path });
   }
 
   async compileMaps() {
@@ -78,10 +74,8 @@ class BuildCommand {
   }
 
   async compileMap(filename) {
-    const { rootPath } = this.config;
-    const customGameRelPath = this.resourceRelPath(filename);
-    const args = ["-i", customGameRelPath];
-    const relPath = path.relative(rootPath, filename);
+    const relPath = this.resourceRelPath(filename);
+    const args = ["-i", relPath];
 
     this.log.info(relPath, { label: "compile" });
 
@@ -101,12 +95,19 @@ class BuildCommand {
   }
 
   async compileResources() {
-    const { rootPath, sources } = this.config;
+    const contentRelPath = path.relative(
+      this.config.dota2.path,
+      this.config.customGame.contentPath
+    );
+
     const resFiles = await this.findResFiles();
     const tmpFile = await this.createResListFile(resFiles);
-    const tmpFileWinPath = await wsl.windowsPath(tmpFile.path, { absolute: true, log: this.log });
-    const args = ["-filelist", tmpFileWinPath];
-    const contentRelPath = path.relative(rootPath, sources.contentPath);
+    const tmpFilePath =
+      this.config.platform === "wsl"
+        ? await wsl.windowsPath(tmpFile.path, { absolute: true, log: this.log })
+        : tmpFile.path;
+
+    const args = ["-filelist", tmpFilePath];
 
     this.log
       .field("count", resFiles.length)
@@ -118,4 +119,4 @@ class BuildCommand {
   }
 }
 
-module.exports = BuildCommand;
+module.exports = BuildGameCommand;
