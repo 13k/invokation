@@ -34,7 +34,7 @@ end
 local function selectAbilityEntry(key, value)
   local mAbilityId = key:match(ABILITY_KEY_PATT)
 
-  if mAbilityId ~= nil then
+  if mAbilityId ~= nil and value ~= "" then
     return tonumber(mAbilityId), value
   end
 
