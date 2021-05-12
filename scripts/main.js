@@ -26,27 +26,27 @@ function loadDotenv(path) {
   return result;
 }
 
-function parseArgs(config) {
+async function parseArgs(config) {
   const choicesTool = `game|tools`;
   const choicesMap = config.customGame.maps.join("|");
   const defaultMap = config.customGame.maps[0];
 
-  const createCommand = (name) => (...args) => {
-    const main = require(`./${name}`);
-    const cmd = args[args.length - 1];
-    const options = { ...program.opts(), ...cmd.opts() };
+  const createCommand =
+    (name) =>
+    (...args) => {
+      const main = require(`./${name}`);
 
-    args = [...args.slice(0, -1), options, config];
+      args.pop(); // cmd object
 
-    main(...args).catch((err) => {
-      config.log.error(err);
-      process.exit(1);
-    });
-  };
+      const cmdOptions = args.pop();
+      const options = { ...program.opts(), ...cmdOptions };
+      const actionArgs = [...args, options, config];
+
+      return main(...actionArgs);
+    };
 
   program
     .name("tasks")
-    .storeOptionsAsProperties(false)
     .option(`-v, --verbose`, `Be verbose`, false)
     .on("option:verbose", () => (LOG.level = Logger.Level.Debug));
 
@@ -85,10 +85,10 @@ function parseArgs(config) {
     .option(`-n, --noop`, `Only print paths that would be linked`, false)
     .action(createCommand("link"));
 
-  program.parse(process.argv);
+  return program.parseAsync(process.argv);
 }
 
-function main() {
+async function main() {
   if (!wsl.isWSL()) {
     LOG.fatal(`This script must be run within WSL`);
     process.exit(1);
@@ -108,7 +108,10 @@ function main() {
     process.exit(1);
   }
 
-  parseArgs(config);
+  return parseArgs(config);
 }
 
-main();
+main().catch((err) => {
+  LOG.error(err);
+  process.exit(1);
+});
