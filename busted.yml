@@ -1,0 +1,194 @@
+---
+globals:
+  insulate:
+    args:
+      - type: string
+      - type: function
+  expose:
+    args:
+      - type: string
+      - type: function
+  randomize:
+    args:
+      - type: bool
+        required: false
+  setup:
+    args:
+      - type: function
+  teardown:
+    args:
+      - type: function
+  before_each:
+    args:
+      - type: function
+  after_each:
+    args:
+      - type: function
+  finally:
+    args:
+      - type: function
+  describe:
+    args:
+      - type: string
+      - type: function
+  it:
+    args:
+      - type: string
+      - type: function
+  pending:
+    args:
+      - type: string
+  spy.new:
+    args:
+      - type: function
+  spy.on:
+    args:
+      - type: table
+      - type: string
+  stub:
+    args:
+      - type: table
+      - type: string
+  stub.new:
+    args:
+      - type: table
+      - type: string
+      - type: any
+        required: false
+  mock:
+    args:
+      - type: table
+      - type: bool
+        required: false
+  mock.revert:
+    args:
+      - type: table
+
+  match._:
+    property: read-only
+
+  # true
+  # false
+  # boolean
+  # number
+  # string
+  # table
+  # nil
+  # userdata
+  # function
+  # thread
+  # returned_arguments
+  # same
+  # matches
+  # match
+  # near
+  # equals
+  # equal
+  # unique
+  # error
+  # errors
+  # error_matches
+  # error_match
+  # matches_error
+  # match_error
+  # truthy
+  # falsy
+
+  assert.is_true:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_not_true:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_false:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_not_false:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_nil:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_not_nil:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_table:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_not_table:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_function:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.is_not_function:
+    args:
+      - type: any
+      - type: string
+        required: false
+  assert.error:
+    args:
+      - type: function
+      - type: string
+  assert.has_error:
+    args:
+      - type: function
+      - type: string
+  assert.has_property:
+    args:
+      - type: string
+      - type: table
+      - type: string
+        required: false
+  assert.spy:
+    args:
+      - type: function
+  assert.stub:
+    args:
+      - type: function
+  assert.is.same:
+    args:
+      - type: any
+      - type: any
+      - type: string
+        required: false
+  assert.are.equal:
+    args:
+      - type: any
+      - type: any
+      - type: string
+        required: false
+  assert.are_not.equal:
+    args:
+      - type: any
+      - type: any
+      - type: string
+        required: false
+  assert.are.same:
+    args:
+      - type: any
+      - type: any
+      - type: string
+        required: false
+  assert.has.errors:
+    args:
+      - type: function
+      - type: string
