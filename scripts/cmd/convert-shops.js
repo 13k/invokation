@@ -1,7 +1,7 @@
 const assert = require("assert");
 
 const fse = require("fs-extra");
-const vdf = require("vdf-parser");
+const vdf = require("@node-steam/vdf");
 
 class ConvertShopsCommand {
   static cliOptions(/* config */) {

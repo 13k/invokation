@@ -1,12 +1,14 @@
 const path = require("path");
+const winpath = require("path/win32");
 const fse = require("fs-extra");
-const wsl = require("./wsl");
+
+const { Platform, PLATFORM } = require("./platform");
 const kv = require("./kv");
 
 const DOTA2_BIN_WINDOWS = {
-  binPath: path.join("game", "bin", "win64", "dota2.exe"),
-  toolsPath: path.join("game", "bin", "win64", "dota2cfg.exe"),
-  compilerPath: path.join("game", "bin", "win64", "resourcecompiler.exe"),
+  binPath: winpath.join("game", "bin", "win64", "dota2.exe"),
+  toolsPath: winpath.join("game", "bin", "win64", "dota2cfg.exe"),
+  compilerPath: winpath.join("game", "bin", "win64", "resourcecompiler.exe"),
 };
 
 const DOTA2_BIN_LINUX = {
@@ -22,10 +24,10 @@ const DOTA2_BIN_MACOS = {
 };
 
 const DOTA2_BIN = {
-  darwin: DOTA2_BIN_MACOS,
-  linux: DOTA2_BIN_LINUX,
-  win32: DOTA2_BIN_WINDOWS,
-  wsl: DOTA2_BIN_WINDOWS,
+  [Platform.Darwin]: DOTA2_BIN_MACOS,
+  [Platform.Linux]: DOTA2_BIN_LINUX,
+  [Platform.Windows]: DOTA2_BIN_WINDOWS,
+  [Platform.WSL]: DOTA2_BIN_WINDOWS,
 };
 
 class Config {
@@ -56,12 +58,11 @@ class Config {
    * @param {import('./logger')} options.log
    */
   constructor({ rootPath, dota2Path, customGame, log }) {
-    this.platform = wsl.isWSL() ? "wsl" : process.platform;
-
-    if (!(this.platform in DOTA2_BIN)) {
-      throw Error(`Platform '${this.platform}' not supported`);
+    if (!(PLATFORM in DOTA2_BIN)) {
+      throw Error(`Platform '${PLATFORM}' not supported`);
     }
 
+    this.binaries = DOTA2_BIN[PLATFORM];
     this.log = log;
     this.rootPath = rootPath;
     this.buildPath = path.join(rootPath, "build");
@@ -90,8 +91,8 @@ class Config {
       addonsGamePath: path.join(dota2Path, "game", "dota_addons"),
     };
 
-    for (const pathKey of Object.keys(DOTA2_BIN[this.platform])) {
-      const relPath = DOTA2_BIN[this.platform][pathKey];
+    for (const pathKey of Object.keys(this.binaries)) {
+      const relPath = this.binaries[pathKey];
 
       dota2[pathKey] = relPath && path.join(dota2Path, relPath);
     }
@@ -103,7 +104,7 @@ class Config {
    * @param {string} customGameName
    */
   _customGameConfig(customGameName) {
-    const customGameInfo = this._parseAddonInfo(customGameName);
+    const customGameInfo = this._parseAddonInfo();
 
     return {
       name: customGameName,
@@ -113,25 +114,10 @@ class Config {
     };
   }
 
-  /**
-   * @param {string} customGameName
-   */
-  _parseAddonInfo(customGameName) {
+  _parseAddonInfo() {
     const addonInfoPath = path.join(this.sources.gamePath, "addoninfo.txt");
-    const addonInfo = kv.parseFile(addonInfoPath);
-
-    if (!(customGameName in addonInfo)) {
-      throw new Error(
-        `KeyValues file ${addonInfoPath} doesn't contain information for addon ${customGameName}`
-      );
-    }
-
-    return this._parseAddonInfoCustomGame(addonInfo[customGameName]);
-  }
-
-  _parseAddonInfoCustomGame(customGameInfo) {
-    /** @type {string[]} */
-    const mapNames = (customGameInfo.maps || "").split(" ");
+    const customGameInfo = kv.parseFile(addonInfoPath);
+    const mapNames = customGameInfo.maps || [];
 
     return {
       mapNames,
@@ -142,22 +128,25 @@ class Config {
   }
 
   _parseAddonInfoMaps(customGameInfo, mapNames) {
+    const mapsOptions = customGameInfo.map_options || [];
     const maps = {};
 
     for (const mapName of mapNames) {
-      maps[mapName] = this._parseAddonInfoMap(customGameInfo[mapName]);
+      const mapOptions = mapsOptions.find((options) => options.map === mapName);
+
+      maps[mapName] = this._parseAddonInfoMap(mapOptions);
     }
 
     return maps;
   }
 
-  _parseAddonInfoMap(mapInfo) {
-    if (mapInfo == null) {
+  _parseAddonInfoMap(mapOptions) {
+    if (mapOptions == null) {
       return {};
     }
 
     return {
-      maxPlayers: kv.getNumber(mapInfo, "MaxPlayers"),
+      maxPlayers: kv.getNumber(mapOptions, "MaxPlayers"),
     };
   }
 

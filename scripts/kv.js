@@ -1,4 +1,5 @@
-const { deserialize, deserializeFile } = require("valve-kv");
+const fs = require("fs");
+const { parse } = require("kv3tojs");
 
 function getBoolean(kv, key, defaultValue) {
   const value = kv[key];
@@ -16,9 +17,15 @@ function getNumber(kv, key, defaultValue) {
   return typeof value === "string" ? +value : defaultValue;
 }
 
+function parseFile(filename) {
+  const src = fs.readFileSync(filename, { encoding: "utf-8" });
+
+  return parse(src);
+}
+
 module.exports = {
   getBoolean,
   getNumber,
-  parse: deserialize,
-  parseFile: deserializeFile,
+  parse,
+  parseFile,
 };
