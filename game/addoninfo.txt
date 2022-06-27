@@ -1,42 +1,43 @@
 <!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+
 {
-	CheckAFKPlayers = false
-	Default_Keys = []
-	DefaultMap = "cottage"
-	DisableIK = false
-	EnablePickRules = false
-	EventGame = false
-	ForceDefaultGuide = false
-	HeroGuidesSupported = true
-	HideInTools = false
-	IsPlayable = true
-	IsTemplate = false
-	MaxPlayers = 1
-	MinimalPrecache = false
-	MinPlayers = 1
-	PenaltiesEnabled = false
-	TeamCount = 1
+  CheckAFKPlayers = false
+  Default_Keys = []
+  DefaultMap = "cottage"
+  DisableIK = false
+  EnablePickRules = false
+  EventGame = false
+  ForceDefaultGuide = false
+  HeroGuidesSupported = true
+  HideInTools = false
+  IsPlayable = true
+  IsTemplate = false
+  MaxPlayers = 1
+  MinimalPrecache = false
+  MinPlayers = 1
+  PenaltiesEnabled = false
+  TeamCount = 1
 
-	maps =
-	[
-		"cottage",
-		"island",
-	]
+  maps =
+  [
+    "cottage",
+    "island",
+  ]
 
-	map_options =
-	[
-		{
-			map = "cottage"
-			MaxPlayers = 1
-		},
-		{
-			map = "island"
-			MaxPlayers = 1
-		},
-	]
+  map_options =
+  [
+    {
+      map = "cottage"
+      MaxPlayers = 1
+    },
+    {
+      map = "island"
+      MaxPlayers = 1
+    },
+  ]
 
-	hero_picker =
-	{
-		background_map = ""
-	}
+  hero_picker =
+  {
+    background_map = ""
+  }
 }
