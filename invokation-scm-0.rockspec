@@ -28,8 +28,6 @@ dependencies = {
 
 build_dependencies = {
   "ldoc",
-  "luacheck ~> 0.24",
-  "luaformatter",
 }
 
 test_dependencies = {
