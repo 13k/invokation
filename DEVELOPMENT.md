@@ -8,7 +8,7 @@ All development is done within a WSL environment with the following setup:
 - luarocks
 - node LTS
 - yarn >= 1.22.4 (installed globally)
-  - yarn 2.x will be installed and used in project
+  - yarn 3.x will be installed and used in project
 
 ## Setup
 
@@ -28,15 +28,6 @@ yarn install
 
 ```shell
 luarocks init
-```
-
-- Edit `.luarocks/config-5.1.lua` and add:
-
-```lua
-rocks_servers = {
-  "https://luarocks.org/repositories/rocks",
-  "https://luarocks.org/dev",
-}
 ```
 
 - Add `<project_dir>/lua_modules/bin` to the `PATH`.
