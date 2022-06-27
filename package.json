@@ -3,6 +3,7 @@
   "name": "invokation",
   "version": "dev",
   "type": "commonjs",
+  "packageManager": "yarn@3.2.1",
   "engines": {
     "node": ">=14.16"
   },
