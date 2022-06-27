@@ -15,6 +15,10 @@
 /build
 /dist
 /doc/ldoc
+/game/*
+!/game/addoninfo.txt
+!/game/resource
+!/game/scripts
 /lua
 /lua_modules
 /luarocks
