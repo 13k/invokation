@@ -2,7 +2,7 @@ const path = require("path");
 const globby = require("globby");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const { VueLoaderPlugin } = require("vue-loader");
 
 /** @typedef {import('webpack').Configuration} WebpackConfiguration */
 /** @typedef {import('../config')} CustomGameConfiguration */
@@ -48,6 +48,7 @@ async function createWebpackConfig(customGameConfig) {
     output: {
       path: outputPath,
       publicPath: "file://{resources}/",
+      chunkFormat: "array-push",
     },
     resolve: {
       extensions: [".ts"],
