@@ -6,6 +6,9 @@
 /.lua-version
 /.nvmrc
 /.pnp.*
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
 /.yarn/*
 !/.yarn/patches
 !/.yarn/plugins
@@ -15,10 +18,6 @@
 /build
 /dist
 /doc/ldoc
-/game/*
-!/game/addoninfo.txt
-!/game/resource
-!/game/scripts
 /lua
 /lua_modules
 /luarocks
