@@ -1,0 +1,5 @@
+---
+globals:
+  GameRules.Invokation:
+    property: override-fields
+    any: true

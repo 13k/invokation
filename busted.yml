@@ -1,194 +1,2471 @@
 ---
 globals:
-  insulate:
-    args:
-      - type: string
-      - type: function
-  expose:
-    args:
-      - type: string
-      - type: function
-  randomize:
-    args:
-      - type: bool
-        required: false
-  setup:
-    args:
-      - type: function
-  teardown:
-    args:
-      - type: function
-  before_each:
-    args:
-      - type: function
   after_each:
     args:
-      - type: function
-  finally:
+    - type: function
+  assert.are.boolean:
     args:
-      - type: function
-  describe:
-    args:
-      - type: string
-      - type: function
-  it:
-    args:
-      - type: string
-      - type: function
-  pending:
-    args:
-      - type: string
-  spy.new:
-    args:
-      - type: function
-  spy.on:
-    args:
-      - type: table
-      - type: string
-  stub:
-    args:
-      - type: table
-      - type: string
-  stub.new:
-    args:
-      - type: table
-      - type: string
-      - type: any
-        required: false
-  mock:
-    args:
-      - type: table
-      - type: bool
-        required: false
-  mock.revert:
-    args:
-      - type: table
-
-  match._:
-    property: read-only
-
-  # true
-  # false
-  # boolean
-  # number
-  # string
-  # table
-  # nil
-  # userdata
-  # function
-  # thread
-  # returned_arguments
-  # same
-  # matches
-  # match
-  # near
-  # equals
-  # equal
-  # unique
-  # error
-  # errors
-  # error_matches
-  # error_match
-  # matches_error
-  # match_error
-  # truthy
-  # falsy
-
-  assert.is_true:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_not_true:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_false:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_not_false:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_nil:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_not_nil:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_table:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_not_table:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_function:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.is_not_function:
-    args:
-      - type: any
-      - type: string
-        required: false
-  assert.error:
-    args:
-      - type: function
-      - type: string
-  assert.has_error:
-    args:
-      - type: function
-      - type: string
-  assert.has_property:
-    args:
-      - type: string
-      - type: table
-      - type: string
-        required: false
-  assert.spy:
-    args:
-      - type: function
-  assert.stub:
-    args:
-      - type: function
-  assert.is.same:
-    args:
-      - type: any
-      - type: any
-      - type: string
-        required: false
+    - type: any
+    - required: false
+      type: string
   assert.are.equal:
     args:
-      - type: any
-      - type: any
-      - type: string
-        required: false
-  assert.are_not.equal:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.equals:
     args:
-      - type: any
-      - type: any
-      - type: string
-        required: false
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
   assert.are.same:
     args:
-      - type: any
-      - type: any
-      - type: string
-        required: false
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.are_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.are_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.array_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.array_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.does_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.does_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
   assert.has.errors:
     args:
-      - type: function
-      - type: string
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.has_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.has_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.is_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.is_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.message:
+    args:
+    - type: string
+  assert.no.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.no_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.no_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.not_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.not_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was.unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was.userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_boolean:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_equal:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_equals:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_error_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_error_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_errors:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_false:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_falsy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_function:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_holes:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_match:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_match_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_matches:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_matches_error:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_near:
+    args:
+    - type: any
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_nil:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_number:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_returned_arguments:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_same:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_string:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_table:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_thread:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_true:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_truthy:
+    args:
+    - type: any
+    - required: false
+      type: string
+  assert.was_unique:
+    args:
+    - type: any
+    - type: any
+    - required: false
+      type: string
+  assert.was_userdata:
+    args:
+    - type: any
+    - required: false
+      type: string
+  before_each:
+    args:
+    - type: function
+  describe:
+    args:
+    - type: string
+    - type: function
+  expose:
+    args:
+    - type: string
+    - type: function
+  finally:
+    args:
+    - type: function
+  insulate:
+    args:
+    - type: string
+    - type: function
+  it:
+    args:
+    - type: string
+    - type: function
+  match._:
+    property: read-only
+  mock:
+    args:
+    - type: table
+    - required: false
+      type: bool
+  mock.revert:
+    args:
+    - type: table
+  pending:
+    args:
+    - type: string
+  randomize:
+    args:
+    - required: false
+      type: bool
+  setup:
+    args:
+    - type: function
+  spy.new:
+    args:
+    - type: function
+  spy.on:
+    args:
+    - type: table
+    - type: string
+  stub:
+    args:
+    - type: table
+    - type: string
+  stub.new:
+    args:
+    - type: table
+    - type: string
+    - required: false
+      type: any
+  teardown:
+    args:
+    - type: function
+...

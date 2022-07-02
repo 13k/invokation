@@ -2764,27 +2764,39 @@ globals:
     property: read-only
   AE_WPN_SECONDARYATTACK:
     property: read-only
+  Activate:
+    args: []
   AddFOWViewer:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
   AngleDiff:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
   AnglesToVector:
     args:
       - type:
           display: QAngle
+        observes: read
   AppendToLogFile:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     deprecated:
       message: AppendToLogFile is deprecated. Print to the console for logging instead.
       replace: []
@@ -2792,49 +2804,72 @@ globals:
     args:
       - type:
           display: ApplyDamageOptions
+        observes: read
   AxisAngleToQuaternion:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   CalcClosestPointOnEntityOBB:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: Vector
+        observes: read
   CalcDistanceBetweenEntityOBB:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   CalcDistanceToLineSegment2D:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
   CancelEntityIOEvents:
     args:
       - type:
           display: ehandle
+        observes: read
   CenterCameraOnUnit:
     args:
       - type:
           display: PlayerID
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
+  Clamp:
+    args:
+      - type: number
+      - type: number
+      - type: number
   ClearTeamCustomHealthbarColor:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
+  ConnectOutputs:
+    args:
+      - type: table
   Convars.GetBool:
     args:
       - type: string
+        observes: read
     method: true
   Convars.GetCommandClient:
     args: []
@@ -2845,278 +2880,390 @@ globals:
   Convars.GetFloat:
     args:
       - type: string
+        observes: read
     method: true
   Convars.GetInt:
     args:
       - type: string
+        observes: read
     method: true
   Convars.GetStr:
     args:
       - type: string
+        observes: read
     method: true
   Convars.RegisterCommand:
     args:
       - type: string
+        observes: read
       - type: function
+        observes: read
       - type: string
+        observes: read
       - type:
           display: ConVarFlags
+        observes: read
     method: true
   Convars.RegisterConvar:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: ConVarFlags
+        observes: read
     method: true
   Convars.SetBool:
     args:
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
   Convars.SetFloat:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
     method: true
   Convars.SetInt:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
     method: true
   Convars.SetStr:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   CreateDamageInfo:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   CreateEffect:
     args:
       - type:
           display: handle
+        observes: read
   CreateHTTPRequest:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
   CreateHTTPRequestScriptVM:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
   CreateHeroForPlayer:
     args:
       - type: string
+        observes: read
       - type:
           display: CDOTAPlayerController
+        observes: read
   CreateIllusions:
     args:
       - type:
           display: CBaseEntity
+        observes: read
       - type:
           display: CDOTA_BaseNPC_Hero
+        observes: read
       - type:
           display: CreateIllusionsModifierKeys
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: bool
+        observes: read
   CreateItem:
     args:
       - type: string
+        observes: read
       - required: false
         type:
           display: CDOTAPlayerController
+        observes: read
       - required: false
         type:
           display: CDOTAPlayerController
+        observes: read
   CreateItemOnPositionForLaunch:
     args:
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CDOTA_Item
+        observes: read
   CreateItemOnPositionSync:
     args:
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CDOTA_Item
+        observes: read
   CreateModifierThinker:
     args:
       - required: false
         type:
           display: CDOTA_BaseNPC
+        observes: read
       - required: false
         type:
           display: CDOTABaseAbility
+        observes: read
       - type: string
+        observes: read
       - required: false
         type: table
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: bool
+        observes: read
   CreateRune:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: DOTA_RUNES
+        observes: read
   CreateSceneEntity:
     args:
       - type: string
+        observes: read
   CreateTempTree:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   CreateTempTreeWithModel:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
   CreateTrigger:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
   CreateTriggerRadiusApproximate:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   CreateUniformRandomStream:
     args:
       - type: number
+        observes: read
   CreateUnitByName:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
   CreateUnitByNameAsync:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: function
+        observes: read
   CreateUnitFromTable:
     args:
       - type:
           display: CreateUnitFromTableOptions
+        observes: read
       - type:
           display: Vector
+        observes: read
   CrossVectors:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
   CustomGameEventManager.RegisterListener:
     args:
       - type: string
+        observes: read
       - type: function
+        observes: read
     method: true
   CustomGameEventManager.Send_ServerToAllClients:
     args:
       - type: string
+        observes: read
       - type: table
+        observes: read
     method: true
   CustomGameEventManager.Send_ServerToPlayer:
     args:
       - type:
           display: CDOTAPlayerController
+        observes: read
       - type: string
+        observes: read
       - type: table
+        observes: read
     method: true
   CustomGameEventManager.Send_ServerToTeam:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type: table
+        observes: read
     method: true
   CustomGameEventManager.UnregisterListener:
     args:
       - type:
           display: CustomGameEventListenerID
+        observes: read
     method: true
   CustomNetTables.GetTableValue:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   CustomNetTables.SetTableValue:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
     method: true
   CustomUI.DynamicHud_Create:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
     method: true
   CustomUI.DynamicHud_Destroy:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
     method: true
   CustomUI.DynamicHud_SetDialogVariables:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
     method: true
   CustomUI.DynamicHud_SetVisible:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
   DAMAGE_TYPE_ABILITY_DEFINED:
     property: read-only
@@ -3187,22 +3334,27 @@ globals:
   DOTAGameManager.GetHeroDataByName_Script:
     args:
       - type: string
+        observes: read
     method: true
   DOTAGameManager.GetHeroIDByName:
     args:
       - type: string
+        observes: read
     method: true
   DOTAGameManager.GetHeroNameByID:
     args:
       - type: number
+        observes: read
     method: true
   DOTAGameManager.GetHeroNameForUnitName:
     args:
       - type: string
+        observes: read
     method: true
   DOTAGameManager.GetHeroUnitNameByID:
     args:
       - type: number
+        observes: read
     method: true
   DOTA_ABILITY_BEHAVIOR_AOE:
     property: read-only
@@ -4161,13 +4313,19 @@ globals:
   DOTA_SpawnMapAtPosition:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
       - type: function
+        observes: read
       - type: function
+        observes: read
       - required: false
         type: table
+        observes: read
   DOTA_TEAM_BADGUYS:
     property: read-only
   DOTA_TEAM_COUNT:
@@ -4380,191 +4538,301 @@ globals:
     args:
       - type:
           display: CDOTAPlayerController
+        observes: read
       - type: string
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: bool
+        observes: read
       - type: function
+        observes: read
   DebugDrawBox:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   DebugDrawBoxDirection:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   DebugDrawCircle:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
   DebugDrawClear:
     args: []
   DebugDrawLine:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
   DebugDrawLine_vCol:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
   DebugDrawScreenTextLine:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   DebugDrawSphere:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
   DebugDrawText:
     args:
       - type:
           display: Vector
+        observes: read
       - type: string
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
   DebugScreenTextPretty:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
   DeepPrintTable:
     args:
       - required: false
         type: table
+        observes: read
+  Deg2Rad:
+    args:
+      - type: number
   DestroyDamageInfo:
     args:
       - type:
           display: CTakeDamageInfo
+        observes: read
   DisconnectClient:
     args:
       - type: number
+        observes: read
       - type: bool
+        observes: read
   DoCleaveAttack:
     args:
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - required: false
         type:
           display: CDOTABaseAbility
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
   DoEntFire:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   DoEntFireByInstanceHandle:
     args:
       - type:
           display: handle
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   DoIncludeScript:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   DoScriptAssert:
     args:
       - type: bool
+        observes: read
       - type: string
+        observes: read
   DoUniqueString:
     args:
       - type: string
+        observes: read
   DotProduct:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
   DropNeutralItemAtPositionForHero:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
   Dynamic_Wrap:
     args:
       - type: table
+        observes: read
       - type: string
+        observes: read
   EF_NODRAW:
     property: read-only
   EMPTY:
@@ -4572,186 +4840,280 @@ globals:
   EmitAnnouncerSound:
     args:
       - type: string
+        observes: read
   EmitAnnouncerSoundForPlayer:
     args:
       - type: string
+        observes: read
       - type:
           display: PlayerID
+        observes: read
   EmitAnnouncerSoundForTeam:
     args:
       - type: string
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
   EmitAnnouncerSoundForTeamOnLocation:
     args:
       - type: string
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: Vector
+        observes: read
   EmitGlobalSound:
     args:
       - type: string
+        observes: read
   EmitSoundOn:
     args:
       - type: string
+        observes: read
       - type:
           display: CBaseEntity
+        observes: read
   EmitSoundOnClient:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   EmitSoundOnEntityForPlayer:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
       - type: number
+        observes: read
   EmitSoundOnLocationForAllies:
     args:
       - type:
           display: Vector
+        observes: read
       - type: string
+        observes: read
       - type:
           display: CBaseEntity
+        observes: read
   EmitSoundOnLocationForPlayer:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   EmitSoundOnLocationWithCaster:
     args:
       - type:
           display: Vector
+        observes: read
       - type: string
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
+  EntFire:
+    args:
+      - type:
+          display: CBaseEntity
+      - type: string
+      - type: string
+      - required: false
+        type: string
+      - required: false
+        type: number
+      - required: false
+        type:
+          display: handle
+  EntFireByHandle:
+    args:
+      - type:
+          display: CBaseEntity
+      - type: string
+      - type: string
+      - required: false
+        type: string
+      - required: false
+        type: number
+      - required: false
+        type:
+          display: handle
   EntIndexToHScript:
     args:
       - type:
           display: EntityIndex
+        observes: read
   Entities.CreateByClassname:
     args:
       - type: string
+        observes: read
     method: true
   Entities.FindAllByClassname:
     args:
       - type: string
+        observes: read
     method: true
   Entities.FindAllByClassnameWithin:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindAllByModel:
     args:
       - type: string
+        observes: read
     method: true
   Entities.FindAllByName:
     args:
       - type: string
+        observes: read
     method: true
   Entities.FindAllByNameWithin:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindAllByTarget:
     args:
       - type: string
+        observes: read
     method: true
   Entities.FindAllInSphere:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByClassname:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
     method: true
   Entities.FindByClassnameNearest:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByClassnameWithin:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByModel:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
     method: true
   Entities.FindByModelWithin:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByName:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
     method: true
   Entities.FindByNameNearest:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByNameWithin:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.FindByTarget:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
     method: true
   Entities.FindInSphere:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   Entities.First:
     args: []
@@ -4770,16 +5132,31 @@ globals:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
+    method: true
+  EntityFramework.CreateCppClassProxy:
+    args:
+      - type: string
+    method: true
+  EntityFramework.CreateEntity:
+    args:
+      - type: string
+      - type:
+          display: CBaseEntity
     method: true
   ExecuteOrderFromTable:
     args:
       - type:
           display: ExecuteOrderOptions
+        observes: read
   ExponentialDecay:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   FCVAR_ARCHIVE:
     property: read-only
   FCVAR_CHEAT:
@@ -4830,172 +5207,254 @@ globals:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
       - type: number
+        observes: read
   FindClearSpaceForUnit:
     args:
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
   FindSpawnEntityForTeam:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
   FindUnitsInLine:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: number
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TEAM
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TYPE
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_FLAGS
+        observes: read
   FindUnitsInRadius:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: number
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TEAM
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TYPE
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_FLAGS
+        observes: read
       - type:
           display: FindOrder
+        observes: read
       - type: bool
+        observes: read
   FireEntityIOInputNameOnly:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: string
+        observes: read
   FireEntityIOInputString:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
   FireEntityIOInputVec:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
   FireGameEvent:
     args:
       - type: string
+        observes: read
       - type: table
+        observes: read
   FireGameEventLocal:
     args:
       - type: string
+        observes: read
       - type: table
+        observes: read
   FrameTime:
     args: []
   GameRules.AddBotPlayerWithEntityScript:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
   GameRules.AddEventMetadataLeaderboardEntry:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.AddEventMetadataLeaderboardEntryRawScore:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.AddHeroIDToBlacklist:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.AddHeroIDToWhitelist:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.AddHeroToBlacklist:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.AddHeroToPlayerAvailability:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.AddHeroToWhitelist:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.AddItemToWhiteList:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.AddMinimapDebugPoint:
     args:
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.AddMinimapDebugPointForTeam:
     args:
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.BeginNightstalkerNight:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.BeginTemporaryNight:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.BotPopulate:
     args: []
@@ -5009,6 +5468,7 @@ globals:
   GameRules.ClearPlayerHeroAvailability:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.ClearRiverPaint:
     args: []
@@ -5022,17 +5482,23 @@ globals:
   GameRules.EnableCustomGameSetupAutoLaunch:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.ExecuteTeamPing:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: any
+        observes: read
     method: true
   GameRules.FinishCustomGameSetup:
     args: []
@@ -5047,6 +5513,7 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   GameRules.GetBannedHeroIDs:
     args: []
@@ -5061,11 +5528,14 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   GameRules.GetDOTATime:
     args:
       - type: bool
+        observes: read
       - type: bool
+        observes: read
     method: true
   GameRules.GetDifficulty:
     args: []
@@ -5073,6 +5543,7 @@ globals:
   GameRules.GetDroppedItem:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.GetGameFrameTime:
     args: []
@@ -5083,7 +5554,9 @@ globals:
   GameRules.GetGameSessionConfigValue:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   GameRules.GetGameTime:
     args: []
@@ -5091,24 +5564,33 @@ globals:
   GameRules.GetIetmStockDuration:
     args:
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.GetItemStockCount:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   GameRules.GetItemStockTime:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   GameRules.GetMatchSignoutComplete:
     args: []
@@ -5126,6 +5608,7 @@ globals:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
     deprecated:
       message: Unreleased.
@@ -5143,10 +5626,14 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   GameRules.IsCheatMode:
     args: []
@@ -5163,6 +5650,7 @@ globals:
   GameRules.IsHeroEnabledViaLists:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.IsHeroRespawnEnabled:
     args: []
@@ -5173,6 +5661,7 @@ globals:
   GameRules.IsItemInWhiteList:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.IsNightstalkerNight:
     args: []
@@ -5183,20 +5672,26 @@ globals:
   GameRules.LockCustomGameSetupTeamAssignment:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.MakeTeamLose:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   GameRules.ModifyGoldFiltered:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type:
           display: EDOTA_ModifyGold_Reason
+        observes: read
     method: true
   GameRules.NumDroppedItems:
     args: []
@@ -5205,6 +5700,7 @@ globals:
     args:
       - type:
           display: CDOTAPlayerController
+        observes: read
     method: true
   GameRules.Playtesting_UpdateAddOnKeyValues:
     args: []
@@ -5212,31 +5708,38 @@ globals:
   GameRules.PrepareSpawners:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.RemoveFakeClient:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   GameRules.RemoveHeroFromBlacklist:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.RemoveHeroFromWhitelist:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.RemoveHeroIDFromBlacklist:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.RemoveHeroIDFromWhitelist:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.RemoveItemFromWhiteList:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.ResetDefeated:
     args: []
@@ -5256,34 +5759,46 @@ globals:
   GameRules.SendCustomMessage:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SendCustomMessageToTeam:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SetAllowOutpostBonuses:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCreepMinimapIconScale:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCreepSpawningEnabled:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCustomGameAccountRecordSaveFunction:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
     method: true
     deprecated:
       message: Unreleased.
@@ -5291,226 +5806,285 @@ globals:
   GameRules.SetCustomGameAllowBattleMusic:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCustomGameAllowHeroPickMusic:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCustomGameAllowMusicAtGameStart:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCustomGameAllowSecondaryAbilitiesOnOtherUnits:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetCustomGameBansPerTeam:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameDifficulty:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameEndDelay:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameSetupAutoLaunchDelay:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameSetupRemainingTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameSetupTimeout:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomGameTeamMaxPlayers:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SetCustomVictoryMessage:
     args:
       - type: string
+        observes: read
     method: true
   GameRules.SetCustomVictoryMessageDuration:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetEnableAlternateHeroGrids:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetEventMetadataCustomTable:
     args:
       - type:
           display: handle
+        observes: read
     method: true
   GameRules.SetEventSignoutCustomTable:
     args:
       - type:
           display: handle
+        observes: read
     method: true
   GameRules.SetFilterMoreGold:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetFirstBloodActive:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetGameTimeFrozen:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetGameWinner:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   GameRules.SetGlyphCooldown:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SetGoldPerTick:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetGoldTickTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetHeroMinimapIconScale:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetHeroRespawnEnabled:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetHeroSelectPenaltyTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetHeroSelectionTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetHideBlacklistedHeroes:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetHideKillMessageHeaders:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetIgnoreLobbyTeamsInCustomGame:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetItemStockCount:
     args:
       - type: number
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: string
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   GameRules.SetNextBountyRuneSpawnTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetNextRuneSpawnTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetOverlayHealthBarUnit:
     args:
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SetPostGameTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetPreGameTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetRiverPaint:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   GameRules.SetRuneMinimapIconScale:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetRuneSpawnTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetSafeToLeave:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetSameHeroSelectionEnabled:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetShowcaseTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetSpeechUseSpawnInsteadOfRespawnConcept:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetStartingGold:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetStrategyTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetTimeOfDay:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetTreeRegrowTime:
     args:
       - type: number
+        observes: read
     method: true
   GameRules.SetUseBaseGoldBountyOnHeroes:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetUseCustomHeroXPValues:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetUseUniversalShopMode:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.SetWeatherWindDirection:
     args:
       - type:
           display: Vector
+        observes: read
     method: true
   GameRules.SetWhiteListEnabled:
     args:
       - type: bool
+        observes: read
     method: true
   GameRules.ShouldHideBlacklistedHeroes:
     args: []
@@ -5527,50 +6101,64 @@ globals:
   GetAbilityKeyValuesByName:
     args:
       - type: string
+        observes: read
   GetAbilityTextureNameForAbility:
     args:
       - type: string
+        observes: read
   GetActiveSpawnGroupHandle:
     args: []
   GetDedicatedServerKey:
     args:
       - type: string
+        observes: read
     deprecated:
       message: "This function is unsafe. Prefer using `GetDedicatedServerKeyV2` instead."
       replace: []
   GetDedicatedServerKeyV2:
     args:
       - type: string
+        observes: read
   GetEntityIndexForTreeId:
     args:
       - type: number
+        observes: read
   GetFrameCount:
     args: []
   GetGroundHeight:
     args:
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CDOTA_BaseNPC
+        observes: read
   GetGroundPosition:
     args:
       - type:
           display: Vector
+        observes: read
       - required: false
         type:
           display: CDOTA_BaseNPC
+        observes: read
   GetItemCost:
     args:
       - type: string
+        observes: read
   GetItemDefOwnedCount:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
   GetItemDefQuantity:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
   GetListenServerHost:
     args: []
   GetLobbyEventGameDetails:
@@ -5580,26 +6168,33 @@ globals:
   GetLocalPlayerTeam:
     args:
       - type: number
+        observes: read
   GetMapName:
     args: []
   GetMaxOutputDelay:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: string
+        observes: read
   GetPhysAngularVelocity:
     args:
       - type:
           display: handle
+        observes: read
   GetPhysVelocity:
     args:
       - type:
           display: handle
+        observes: read
   GetPotentialNeutralItemDrop:
     args:
       - type: number
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
   GetSystemDate:
     args: []
   GetSystemTime:
@@ -5609,38 +6204,56 @@ globals:
   GetTargetAOELocation:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   GetTargetLinearLocation:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   GetTeamHeroKills:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
   GetTeamName:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
   GetTreeIdForEntityIndex:
     args:
       - type:
           display: EntityIndex
+        observes: read
   GetUnitKeyValuesByName:
     args:
       - type: string
+        observes: read
   GetWorldMaxX:
     args: []
   GetWorldMaxY:
@@ -5652,77 +6265,102 @@ globals:
   GetXPNeededToReachNextLevel:
     args:
       - type: number
+        observes: read
   GlobalSys.CommandLineCheck:
     args:
       - type: string
+        observes: read
     method: true
   GlobalSys.CommandLineFloat:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
     method: true
   GlobalSys.CommandLineInt:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
     method: true
   GlobalSys.CommandLineStr:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   GridNav.CanFindPath:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   GridNav.DestroyTreesAroundPoint:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   GridNav.FindPathLength:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   GridNav.GetAllTreesAroundPoint:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   GridNav.GridPosToWorldCenterX:
     args:
       - type: number
+        observes: read
     method: true
   GridNav.GridPosToWorldCenterY:
     args:
       - type: number
+        observes: read
     method: true
   GridNav.IsBlocked:
     args:
       - type:
           display: Vector
+        observes: read
     method: true
   GridNav.IsNearbyTree:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   GridNav.IsTraversable:
     args:
       - type:
           display: Vector
+        observes: read
     method: true
   GridNav.RegrowAllTrees:
     args: []
@@ -5730,10 +6368,12 @@ globals:
   GridNav.WorldToGridPosX:
     args:
       - type: number
+        observes: read
     method: true
   GridNav.WorldToGridPosY:
     args:
       - type: number
+        observes: read
     method: true
   HeroList.GetAllHeroes:
     args: []
@@ -5741,6 +6381,7 @@ globals:
   HeroList.GetHero:
     args:
       - type: number
+        observes: read
     method: true
   HeroList.GetHeroCount:
     args: []
@@ -5749,6 +6390,7 @@ globals:
     args:
       - type:
           display: handle
+        observes: read
   ITEM_FULLY_SHAREABLE:
     property: read-only
   ITEM_NOT_SHAREABLE:
@@ -5758,7 +6400,9 @@ globals:
   InitLogFile:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     deprecated:
       message: InitLogFile is deprecated. Print to the console for logging instead.
       replace: []
@@ -5772,26 +6416,32 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: Vector
+        observes: read
   IsMangoTree:
     args:
       - type:
           display: CBaseEntity
+        observes: read
   IsMarkedForDeletion:
     args:
       - type:
           display: CBaseEntity
+        observes: read
   IsServer:
     args: []
   IsUnitInValidPosition:
     args:
       - type:
           display: CBaseEntity
+        observes: read
   IsValidEntity:
     args:
       - required: false
         type: table
+        observes: read
   LUA_MODIFIER_INVALID:
     property: read-only
   LUA_MODIFIER_MOTION_BOTH:
@@ -5802,34 +6452,51 @@ globals:
     property: read-only
   LUA_MODIFIER_MOTION_VERTICAL:
     property: read-only
+  Lerp:
+    args:
+      - type: number
+      - type: number
+      - type: number
   LerpVectors:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   LimitPathingSearchDepth:
     args:
       - type: number
+        observes: read
   LinkLuaModifier:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: LuaModifierType
+        observes: read
   ListenToGameEvent:
     args:
       - type: string
+        observes: read
       - type: function
+        observes: read
       - required: false
         type: table
+        observes: read
   LoadKeyValues:
     args:
       - type: string
+        observes: read
   LoadKeyValuesFromString:
     args:
       - type: string
+        observes: read
   LocalTime:
     args: []
   MAX_PATTACH_TYPES:
@@ -6479,24 +7146,37 @@ globals:
   MakeStringToken:
     args:
       - type: string
+        observes: read
   ManuallyTriggerSpawnGroupCompletion:
     args:
       - type:
           display: SpawnGroupHandle
+        observes: read
+  Merge:
+    args:
+      - type: table
+      - type: table
   MinimapEvent:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: CBaseEntity
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: DOTAMinimapEvent_t
+        observes: read
       - type: number
+        observes: read
   Msg:
     args:
       - type: string
+        observes: read
   OVERHEAD_ALERT_BLOCK:
     property: read-only
   OVERHEAD_ALERT_BLOCKED:
@@ -6590,443 +7270,567 @@ globals:
   ParticleManager.CreateParticle:
     args:
       - type: string
+        observes: read
       - type:
           display: ParticleAttachment_t
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
     method: true
   ParticleManager.CreateParticleForPlayer:
     args:
       - type: string
+        observes: read
       - type:
           display: ParticleAttachment_t
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type:
           display: CDOTAPlayerController
+        observes: read
     method: true
   ParticleManager.CreateParticleForTeam:
     args:
       - type: string
+        observes: read
       - type:
           display: ParticleAttachment_t
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   ParticleManager.DestroyParticle:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: bool
+        observes: read
     method: true
   ParticleManager.GetParticleReplacement:
     args:
       - type: string
+        observes: read
       - required: false
         type:
           display: CDOTA_BaseNPC_Hero
+        observes: read
     method: true
   ParticleManager.ReleaseParticleIndex:
     args:
       - type:
           display: ParticleID
+        observes: read
     method: true
   ParticleManager.SetParticleAlwaysSimulate:
     args:
       - type:
           display: ParticleID
+        observes: read
     method: true
   ParticleManager.SetParticleControl:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   ParticleManager.SetParticleControlEnt:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: CBaseEntity
+        observes: read
       - type:
           display: ParticleAttachment_t
+        observes: read
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: bool
+        observes: read
     method: true
   ParticleManager.SetParticleControlFallback:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   ParticleManager.SetParticleControlForward:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   ParticleManager.SetParticleControlOrientation:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   ParticleManager.SetParticleControlOrientationFLU:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
     method: true
   ParticleManager.SetParticleFoWProperties:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   ParticleManager.SetParticleShouldCheckFoW:
     args:
       - type:
           display: ParticleID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PauseGame:
     args:
       - type: bool
+        observes: read
   Plat_FloatTime:
     args: []
   PlayerInstanceFromIndex:
     args:
       - type:
           display: EntityIndex
+        observes: read
   PlayerResource.AddAegisPickup:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.AddCandyEvent:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.AddClaimedFarm:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.AddGoldSpentOnSupport:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.AddNeutralItemToStash:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: CDOTA_Item
+        observes: read
     method: true
   PlayerResource.AddRunePickup:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.AreUnitsSharedWithPlayerID:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.CanRepick:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ClearKillsMatrix:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ClearLastHitMultikill:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ClearLastHitStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ClearRawPlayerDamageMatrix:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ClearStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetAegisPickups:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetAssists:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetBroadcasterChannel:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetBroadcasterChannelSlot:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetClaimedDenies:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetClaimedFarm:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.GetClaimedMisses:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetConnectionState:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetCreepDamageTaken:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.GetCustomBuybackCooldown:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetCustomBuybackCost:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetCustomTeamAssignment:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetDamageDoneToHero:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetDeaths:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetDenies:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetEventGameCustomActionClaimCount:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.GetEventGameCustomActionClaimCountByName:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
     method: true
   PlayerResource.GetEventGameUpgrades:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetEventPointsForPlayerID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetEventPremiumPoints:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetEventRanks:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGold:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldLostToDeath:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldPerMin:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldSpentOnBuybacks:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldSpentOnConsumables:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldSpentOnItems:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetGoldSpentOnSupport:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetHealing:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetHeroDamageTaken:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.GetKills:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetKillsDoneToHero:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLabyrinthEventGameHeroUnlocks:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLastHitMultikill:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLastHitStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLastHits:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLevel:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetLiveSpectatorTeam:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetMisses:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetNearbyCreepDeaths:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetNetWorth:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetNthCourierForTeam:
     args:
       - type: number
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   PlayerResource.GetNthPlayerIDOnTeam:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.GetNumConnectedHumanPlayers:
     args: []
@@ -7035,26 +7839,31 @@ globals:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetNumCouriersForTeam:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   PlayerResource.GetNumItemsPurchased:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetPartyID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetPlayer:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetPlayerCount:
     args: []
@@ -7063,91 +7872,109 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   PlayerResource.GetPlayerLoadedCompletely:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetPlayerName:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetPreferredCourierForPlayer:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetRawPlayerDamage:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetReliableGold:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetRespawnSeconds:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetRoshanKills:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetRunePickups:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetSelectedHeroEntity:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetSelectedHeroID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetSelectedHeroName:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetSteamAccountID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetSteamID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetStuns:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTeam:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTeamKills:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   PlayerResource.GetTeamPlayerCount:
     args: []
@@ -7156,74 +7983,90 @@ globals:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTimeOfLastDeath:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTimeOfLastItemPurchase:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTotalEarnedGold:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTotalEarnedXP:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTotalGoldSpent:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetTowerDamageTaken:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.GetTowerKills:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetUnitShareMaskForPlayer:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetUnreliableGold:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.GetXPPerMin:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.HasCustomGameTicketForPlayerID:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.HasRandomed:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.HasSelectedHero:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.HasSetEventGameCustomActionClaimCount:
     args: []
@@ -7235,138 +8078,181 @@ globals:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IncrementClaimedDenies:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementClaimedMisses:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementDeaths:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IncrementDenies:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementKills:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IncrementLastHitMultikill:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementLastHitStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementLastHits:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementMisses:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementNearbyCreepDeaths:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementStreak:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.IncrementTotalEarnedXP:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: EDOTA_ModifyXP_Reason
+        observes: read
     method: true
   PlayerResource.IsBroadcaster:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IsDisableHelpSetForPlayerID:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IsFakeClient:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IsHeroSelected:
     args:
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.IsHeroSharedWithPlayerID:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.IsValidPlayer:
     args:
       - type: number
+        observes: read
     method: true
   PlayerResource.IsValidPlayerID:
     args:
       - type: number
+        observes: read
     method: true
   PlayerResource.IsValidTeamPlayer:
     args:
       - type: number
+        observes: read
     method: true
   PlayerResource.IsValidTeamPlayerID:
     args:
       - type: number
+        observes: read
     method: true
   PlayerResource.ModifyGold:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type:
           display: EDOTA_ModifyGold_Reason
+        observes: read
     method: true
   PlayerResource.NumPlayers:
     args: []
@@ -7378,301 +8264,412 @@ globals:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.RecordEventActionGrant:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.RecordEventActionGrantForPrimaryEvent:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.ReplaceHeroWith:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.ReplaceHeroWithNoTransfer:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.ResetBuybackCostTime:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.ResetTotalEarnedGold:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.SetBuybackCooldownTime:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetBuybackGoldLimitTime:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetCameraTarget:
     args:
       - type:
           display: PlayerID
+        observes: read
       - required: false
         type:
           display: CBaseEntity
+        observes: read
     method: true
   PlayerResource.SetCanRepick:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.SetCustomBuybackCooldown:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetCustomBuybackCost:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetCustomIntParam:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetCustomPlayerColor:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetCustomTeamAssignment:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
     method: true
   PlayerResource.SetGold:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.SetHasRandomed:
     args:
       - type:
           display: PlayerID
+        observes: read
     method: true
   PlayerResource.SetLastBuybackTime:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.SetOverrideSelectionEntity:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
     method: true
   PlayerResource.SetUnitShareMaskForPlayer:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   PlayerResource.SpendGold:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type:
           display: EDOTA_ModifyGold_Reason
+        observes: read
     method: true
   PlayerResource.UpdateTeamSlot:
     args:
       - type:
           display: PlayerID
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
     method: true
   PlayerResource.WhoSelectedHero:
     args:
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
+  Precache:
+    args:
+      - type: table
   PrecacheEntityFromTable:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrecacheEntityListFromTable:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrecacheItemByNameAsync:
     args:
       - type: string
+        observes: read
       - type: function
+        observes: read
   PrecacheItemByNameSync:
     args:
       - type: string
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrecacheModel:
     args:
       - type: string
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrecacheResource:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrecacheUnitByNameAsync:
     args:
       - type: string
+        observes: read
       - type: function
+        observes: read
       - required: false
         type:
           display: PlayerID
+        observes: read
   PrecacheUnitByNameSync:
     args:
       - type: string
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
       - required: false
         type:
           display: PlayerID
+        observes: read
   PrecacheUnitFromTableAsync:
     args:
       - type:
           display: handle
+        observes: read
       - type: function
+        observes: read
   PrecacheUnitFromTableSync:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: CScriptPrecacheContext
+        observes: read
   PrintLinkedConsoleMessage:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
   ProjectileManager.ChangeTrackingProjectileSpeed:
     args:
       - type:
           display: CDOTABaseAbility
+        observes: read
       - type: number
+        observes: read
     method: true
   ProjectileManager.CreateLinearProjectile:
     args:
       - type:
           display: CreateLinearProjectileOptions
+        observes: read
     method: true
   ProjectileManager.CreateTrackingProjectile:
     args:
       - type:
           display: CreateTrackingProjectileOptions
+        observes: read
     method: true
   ProjectileManager.DestroyLinearProjectile:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.DestroyTrackingProjectile:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.GetLinearProjectileLocation:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.GetLinearProjectileRadius:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.GetLinearProjectileVelocity:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.GetTrackingProjectileLocation:
     args:
       - type:
           display: ProjectileID
+        observes: read
     method: true
   ProjectileManager.IsValidProjectile:
     args:
       - type: number
+        observes: read
     method: true
   ProjectileManager.ProjectileDodge:
     args:
       - type:
           display: CDOTA_BaseNPC
+        observes: read
     method: true
   ProjectileManager.UpdateLinearProjectileDirection:
     args:
       - type:
           display: ProjectileID
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
     method: true
   QSlerp:
     args:
       - type:
           display: QAngle
+        observes: read
       - type:
           display: QAngle
+        observes: read
       - type: number
+        observes: read
   QUEST_NUM_TEXT_REPLACE_VALUES:
     property: read-only
   QUEST_TEXT_REPLACE_VALUE_CURRENT_VALUE:
@@ -7685,90 +8682,134 @@ globals:
     property: read-only
   RELOAD:
     property: read-only
+  Rad2Deg:
+    args:
+      - type: number
   RandomFloat:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
   RandomInt:
     args:
       - type: number
+        observes: read
       - type: number
+        observes: read
   RandomVector:
     args:
       - type: number
+        observes: read
   RegisterCustomAnimationScriptForModel:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
   RegisterSpawnGroupFilterProxy:
     args:
       - type: string
+        observes: read
   ReloadMOTD:
     args: []
-  RemapValClamped:
+  RemapVal:
     args:
       - type: number
       - type: number
       - type: number
       - type: number
       - type: number
+  RemapValClamped:
+    args:
+      - type: number
+        observes: read
+      - type: number
+        observes: read
+      - type: number
+        observes: read
+      - type: number
+        observes: read
+      - type: number
+        observes: read
   RemoveFOWViewer:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type:
           display: ViewerID
+        observes: read
   RemoveSpawnGroupFilterProxy:
     args:
       - type: string
+        observes: read
   ResolveNPCPositions:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   RollPercentage:
     args:
       - type: number
+        observes: read
   RollPseudoRandomPercentage:
     args:
       - type: number
+        observes: read
       - type:
           display: PseudoRandom
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
   RotateOrientation:
     args:
       - type:
           display: QAngle
+        observes: read
       - type:
           display: QAngle
+        observes: read
   RotatePosition:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: QAngle
+        observes: read
       - type:
           display: Vector
+        observes: read
   RotateQuaternionByAxisAngle:
     args:
       - type:
           display: Quaternion
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   RotationDelta:
     args:
       - type:
           display: QAngle
+        observes: read
       - type:
           display: QAngle
+        observes: read
   RotationDeltaAsAngularVelocity:
     args:
       - type:
           display: QAngle
+        observes: read
       - type:
           display: QAngle
+        observes: read
   SINGLE_SHOT:
     property: read-only
   SPAWN_GROUP_HANDLE_INVALID:
@@ -7790,68 +8831,105 @@ globals:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
       - type: string
+        observes: read
       - type: bool
+        observes: read
   ScreenShake:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: any
+        observes: read
       - type: bool
+        observes: read
+  ScriptAssert:
+    args:
+      - type: any
+      - required: false
+        type: string
   SendOverheadEventMessage:
     args:
       - required: false
         type:
           display: CDOTAPlayerController
+        observes: read
       - type:
           display: DOTA_OVERHEAD_ALERT
+        observes: read
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type: number
+        observes: read
       - required: false
         type:
           display: CDOTAPlayerController
+        observes: read
   SendToConsole:
     args:
       - type: string
+        observes: read
   SendToServerConsole:
     args:
       - type: string
+        observes: read
   SetOpvarFloatAll:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
   SetOpvarFloatPlayer:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type:
           display: handle
+        observes: read
   SetPhysAngularVelocity:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: Vector
+        observes: read
   SetQuestName:
     args:
       - type: string
+        observes: read
   SetQuestPhase:
     args:
       - type: number
+        observes: read
   SetRenderingEnabled:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: bool
+        observes: read
     deprecated:
       message: Instantly crashes the game.
       replace: []
@@ -7859,133 +8937,197 @@ globals:
     args:
       - type:
           display: DOTATeam_t
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   ShowCustomHeaderMessage:
     args:
       - type: string
+        observes: read
       - type:
           display: PlayerID
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   ShowGenericPopup:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
   ShowGenericPopupToPlayer:
     args:
       - type:
           display: handle
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
   ShowMessage:
     args:
       - type: string
+        observes: read
   SpawnDOTAShopTriggerRadiusApproximate:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   SpawnEffigyOfUnitOrModel:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   SpawnEntityFromTableAsynchronous:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   SpawnEntityFromTableSynchronous:
     args:
       - type: string
+        observes: read
       - type: table
+        observes: read
   SpawnEntityGroupFromTable:
     args:
       - type:
           display: handle
+        observes: read
       - type: bool
+        observes: read
       - type:
           display: handle
+        observes: read
   SpawnEntityListFromTableAsynchronous:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   SpawnEntityListFromTableSynchronous:
     args:
       - type:
           display: handle
+        observes: read
   SpawnMangoTree:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   SplineQuaternions:
     args:
       - type:
           display: Quaternion
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
   SplineVectors:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
   StartSoundEvent:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   StartSoundEventFromPosition:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
   StartSoundEventFromPositionReliable:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
   StartSoundEventFromPositionUnreliable:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector
+        observes: read
   StartSoundEventReliable:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   StartSoundEventUnreliable:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   SteamInfo.IsPublicUniverse:
     args: []
     method: true
@@ -7993,80 +9135,106 @@ globals:
     args:
       - type:
           display: handle
+        observes: read
       - type: string
+        observes: read
   StopGlobalSound:
     args:
       - type: string
+        observes: read
   StopListeningToAllGameEvents:
     args:
       - type:
           display: handle
+        observes: read
   StopListeningToGameEvent:
     args:
       - type:
           display: EventListenerID
+        observes: read
   StopSoundEvent:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   StopSoundOn:
     args:
       - type: string
+        observes: read
       - type:
           display: handle
+        observes: read
   Time:
     args: []
   TraceCollideable:
     args:
       - type:
           display: TraceCollideableInputs
+        observes: read
   TraceHull:
     args:
       - type:
           display: TraceHullInputs
+        observes: read
   TraceLine:
     args:
       - type:
           display: TraceLineInputs
+        observes: read
   Tutorial.AddBot:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
       - type: bool
+        observes: read
     method: true
   Tutorial.AddQuest:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   Tutorial.AddShopWhitelistItem:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.CompleteQuest:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.CreateLocationTask:
     args:
       - type:
           display: Vector
+        observes: read
     method: true
   Tutorial.EnableCreepAggroViz:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.EnablePlayerOffscreenTip:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.EnableTowerAggroViz:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.FinishTutorial:
     args: []
@@ -8080,52 +9248,66 @@ globals:
   Tutorial.IsItemInWhiteList:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.RemoveShopWhitelistItem:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.SelectHero:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.SelectPlayerTeam:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.SetItemGuide:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.SetOrModifyPlayerGold:
     args:
       - type: number
+        observes: read
       - type: bool
+        observes: read
     method: true
   Tutorial.SetQuickBuy:
     args:
       - type: string
+        observes: read
     method: true
   Tutorial.SetShopOpen:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.SetTimeFrozen:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.SetTutorialConvar:
     args:
       - type: string
+        observes: read
       - type: string
+        observes: read
     method: true
   Tutorial.SetTutorialUI:
     args:
       - type: number
+        observes: read
     method: true
   Tutorial.SetWhiteListEnabled:
     args:
       - type: bool
+        observes: read
     method: true
   Tutorial.StartTutorialMode:
     args: []
@@ -8133,6 +9315,7 @@ globals:
   Tutorial.UpgradePlayerAbility:
     args:
       - type: string
+        observes: read
     method: true
   UF_FAIL_ANCIENT:
     property: read-only
@@ -8195,344 +9378,627 @@ globals:
   UTIL_MessageText:
     args:
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   UTIL_MessageTextAll:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
   UTIL_MessageTextAll_WithContext:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: handle
+        observes: read
   UTIL_MessageText_WithContext:
     args:
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: handle
+        observes: read
   UTIL_Remove:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
   UTIL_RemoveImmediate:
     args:
       - required: false
         type:
           display: CBaseEntity
+        observes: read
   UTIL_ResetMessageText:
     args:
       - type: number
+        observes: read
   UTIL_ResetMessageTextAll:
     args: []
+  UniqueString:
+    args:
+      - type: string
   UnitFilter:
     args:
       - type:
           display: CDOTA_BaseNPC
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TEAM
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_TYPE
+        observes: read
       - type:
           display: DOTA_UNIT_TARGET_FLAGS
+        observes: read
       - type:
           display: DOTATeam_t
+        observes: read
   UnloadSpawnGroup:
     args:
       - type: string
+        observes: read
   UnloadSpawnGroupByHandle:
     args:
       - type:
           display: SpawnGroupHandle
+        observes: read
   UpdateEventPoints:
     args:
       - type:
           display: handle
+        observes: read
   UserIDToControllerHScript:
     args:
       - type: number
+        observes: read
   VectorAngles:
     args:
+      - type:
+          display: Vector
+        observes: read
+  VectorDistance:
+    args:
+      - type:
+          display: Vector
+      - type:
+          display: Vector
+  VectorDistanceSq:
+    args:
+      - type:
+          display: Vector
+      - type:
+          display: Vector
+  VectorIsZero:
+    args:
+      - type:
+          display: Vector
+  VectorLerp:
+    args:
+      - type: number
+      - type:
+          display: Vector
       - type:
           display: Vector
   VectorToAngles:
     args:
       - type:
           display: Vector
+        observes: read
   VoteSystem.StartVote:
     args:
       - type:
           display: handle
+        observes: read
     method: true
   Warning:
     args:
       - type: string
+        observes: read
+  _ENV:
+    property: new-fields
+  abs:
+    args:
+      - type: number
+  bit.arshift:
+    args:
+      - type: number
+      - type: number
+  bit.band:
+    args:
+      - type: number
+      - type: "..."
+  bit.bnot:
+    args:
+      - type: number
+  bit.bor:
+    args:
+      - type: number
+      - type: "..."
+  bit.btest:
+    args:
+      - type: number
+      - type: "..."
+  bit.bxor:
+    args:
+      - type: number
+      - type: "..."
+  bit.extract:
+    args:
+      - type: number
+      - type: number
+      - required: false
+        type: number
+  bit.lrotate:
+    args:
+      - type: number
+      - type: number
+  bit.lshift:
+    args:
+      - type: number
+      - type: number
+  bit.replace:
+    args:
+      - type: number
+      - type: number
+      - type: number
+      - required: false
+        type: number
+  bit.rrotate:
+    args:
+      - type: number
+      - type: number
+  bit.rshift:
+    args:
+      - type: number
+      - type: number
+  class:
+    args:
+      - type: table
+      - required: false
+        type: table
+      - required: false
+        type: table
   cvar_getf:
     args:
       - type: string
+        observes: read
   cvar_setf:
     args:
       - type: string
+        observes: read
       - type: number
+        observes: read
   debugoverlay.Axis:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Box:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.BoxAngles:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Capsule:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Circle:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.CircleScreenOriented:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Cone:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Cross:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Cross3D:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Cross3DOriented:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.DrawTickMarkedLine:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.EntityAttachments:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.EntityAxis:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.EntityBounds:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.EntitySkeleton:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.EntityText:
     args:
       - type:
           display: ehandle
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.FilledRect2D:
     args:
       - type:
           display: Vector2D
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.HorzArrow:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Line:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Line2D:
     args:
       - type:
           display: Vector2D
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.PopDebugOverlayScope:
     args: []
@@ -8540,164 +10006,366 @@ globals:
   debugoverlay.PushAndClearDebugOverlayScope:
     args:
       - type: string
+        observes: read
     method: true
   debugoverlay.PushDebugOverlayScope:
     args:
       - type: string
+        observes: read
     method: true
   debugoverlay.RemoveAllInScope:
     args:
       - type: string
+        observes: read
     method: true
   debugoverlay.SolidCone:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Sphere:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.SweptBox:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Text:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Texture:
     args:
       - type: string
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type:
           display: Vector2D
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.Triangle:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.VectorText3D:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Quaternion
+        observes: read
       - type: string
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.VertArrow:
     args:
       - type:
           display: Vector
+        observes: read
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
   debugoverlay.YawArrow:
     args:
       - type:
           display: Vector
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: number
+        observes: read
       - type: bool
+        observes: read
       - type: number
+        observes: read
     method: true
+  getbase:
+    args:
+      - type: table
+  getclass:
+    args:
+      - type: table
+  instanceof:
+    args:
+      - type: table
+      - type: table
+  isclass:
+    args:
+      - type: table
+  json.decode:
+    args:
+      - type: string
+      - required: false
+        type: number
+      - required: false
+        type: any
+      - required: false
+        type: table
+      - required: false
+        type: table
+  json.encode:
+    args:
+      - type: any
+      - required: false
+        type: table
+  json.null:
+    property: read-only
+  json.version:
+    property: read-only
+  max:
+    args:
+      - type: number
+      - type: number
+  min:
+    args:
+      - type: number
+      - type: number
   rr_AddDecisionRule:
     args:
       - type:
           display: handle
+        observes: read
   rr_CommitAIResponse:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
   rr_GetResponseTargets:
     args: []
   rr_QueryBestResponse:
     args:
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
       - type:
           display: handle
+        observes: read
+  vlua.clear:
+    args:
+      - type: table
+  vlua.clone:
+    args:
+      - type: table
+  vlua.compare:
+    args:
+      - type: number
+      - type: number
+  vlua.contains:
+    args:
+      - type: table
+      - type: any
+  vlua.delete:
+    args:
+      - type: table
+      - type: any
+  vlua.extend:
+    args:
+      - type: table
+      - type: table
+  vlua.find:
+    args:
+      - type: table
+      - type: any
+      - type: "..."
+  vlua.map:
+    args:
+      - type: table
+      - type: function
+  vlua.rawdelete:
+    args:
+      - type: table
+      - type: any
+  vlua.rawin:
+    args:
+      - type: table
+      - type: any
+  vlua.reduce:
+    args:
+      - type: table
+      - type: function
+  vlua.resize:
+    args:
+      - type: table
+      - type: number
+  vlua.reverse:
+    args:
+      - type: table
+  vlua.select:
+    args:
+      - type: any
+      - type: any
+      - type: any
+  vlua.slice:
+    args:
+      - type: table
+      - type: number
+      - type: "..."
+  vlua.split:
+    args:
+      - type: string
+      - type: string
+  vlua.tableadd:
+    args:
+      - type: table
+      - type: table
