@@ -1,6 +1,7 @@
 /.cov/*
 !/.cov/.keep
 /.env*
+/.luarc.json
 /.luarocks
 /.lua-version
 /.pnp.*
