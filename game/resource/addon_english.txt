@@ -4,7 +4,8 @@
   "Tokens"
   {
     "addon_game_name" "Invokation"
-    "game_mode_15" "Invokation"
+    "DOTA_GameMode_15" "Invokation"
+    "DOTA_GameMode_19" "Invokation"
 
     "npc_invokation_dummy_target" "Dummy"
 
