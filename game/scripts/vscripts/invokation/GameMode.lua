@@ -13,7 +13,7 @@ require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
 
 local m = require("moses")
-local Env = require("invokation.game_mode.Env")
+local Env = require("invokation.game_mode.env")
 local func = require("invokation.lang.function")
 local rand = require("invokation.lang.random")
 local Combos = require("invokation.combos.Combos")
@@ -64,7 +64,7 @@ function GameMode:_init(options)
   self.logger = Logger(LOGGER_PROGNAME, self.env.development and Logger.DEBUG or Logger.INFO)
   self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
-  self.combos = Combos({logger = self.logger, netTable = self.netTable})
+  self.combos = Combos({ logger = self.logger, netTable = self.netTable })
 end
 
 function GameMode:fnHandler(methodName)
