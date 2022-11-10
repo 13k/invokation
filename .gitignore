@@ -13,6 +13,10 @@
 !/.yarn/versions
 /build
 /doc/ldoc
+/game/*
+!/game/addoninfo.txt
+!/game/resource
+!/game/scripts
 /lua
 /lua_modules
 /luarocks
