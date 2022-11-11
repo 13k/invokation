@@ -247,7 +247,7 @@
       var text;
 
       if (value === PROPERTY_FILTER_OPTION_DEFAULT) {
-        text = $.Localize(L10N_KEYS.PROPERTY_FILTER_OPTION_DEFAULT);
+        text = L10n.Localize(L10N_KEYS.PROPERTY_FILTER_OPTION_DEFAULT);
         value = "";
       } else {
         text = L10n.LocalizeComboPropertiesKey(property, String(value));

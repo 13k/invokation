@@ -2,6 +2,7 @@
 
 (function (global, context) {
   var _ = global.lodash;
+  var L10n = global.L10n;
   var Sequence = global.Sequence.Sequence;
   var StopSequence = global.Sequence.StopSequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
@@ -167,7 +168,7 @@
           break;
         case OPTION_TEXT_ENTRY:
           id = OPTION_ID_TEXT_ENTRY;
-          text = $.Localize(L10N_KEYS.OPTION_TEXT_ENTRY);
+          text = L10n.Localize(L10N_KEYS.OPTION_TEXT_ENTRY);
           break;
         default:
           id = optionId(option);
@@ -317,7 +318,7 @@
     showTagEntryPopup: function () {
       return this.showPopup(this.$options, POPUP_TEXT_ENTRY_ID, POPUP_TEXT_ENTRY_LAYOUT, {
         channel: this.popupTextEntryChannel,
-        title: $.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),
+        title: L10n.Localize(L10N_KEYS.POPUP_TEXT_ENTRY_TITLE),
       });
     },
   });
