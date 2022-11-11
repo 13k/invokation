@@ -124,14 +124,15 @@
         selected: this.selected,
       };
 
-      this.debug("ShowTooltip()", this.tooltipId, params);
       this.showTooltip(this.$ctx, this.tooltipId, TOOLTIP_LAYOUT, params);
+      this.debug("ShowTooltip()", this.tooltipId, params);
     },
 
     HideTooltip: function () {
       if (this.tooltipId) {
         this.hideTooltip(this.$ctx, this.tooltipId);
         this.tooltipId = null;
+        this.debug("HideTooltip()", this.tooltipId);
       }
     },
   });

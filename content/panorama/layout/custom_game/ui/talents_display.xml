@@ -10,7 +10,7 @@
 
   <Panel class="UITalentsDisplayRoot" onmouseover="component.ShowTooltip()" onmouseout="component.HideTooltip()">
     <Panel class="StatBranchContainer">
-      <Panel id="StatBranchBG" />
+      <Panel id="StatBranchBGBranchWell" />
 
       <Panel id="StatBranchGraphics" require-composition-layer="true" always-cache-composition-layer="true">
         <Panel id="StatBranchChannel">
