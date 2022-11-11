@@ -6,8 +6,6 @@
   "css.validate": false,
   "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
-  "vscode-lua-format.configPath": ".lua-format",
   "Lua.runtime.version": "Lua 5.1",
   "Lua.runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/?.lua"],
   "Lua.workspace.ignoreDir": [
@@ -24,13 +22,10 @@
     //
     // Lua
     //
-
     "_ENV",
-
     //
     // busted
     //
-
     "setup",
     "teardown",
     "before_each",
@@ -41,19 +36,14 @@
     "spy",
     "stub",
     "match",
-
     //
     // Dota2
     //
-
     // -- libraries
-
     "bit",
     "json",
     "vlua",
-
     // -- functions
-
     "AddFOWViewer",
     "AngleDiff",
     "AppendToLogFile",
@@ -238,9 +228,7 @@
     "UTIL_ResetMessageTextAll",
     "VectorToAngles",
     "Warning",
-
     // -- classes
-
     "Convars",
     "CustomGameEventManager",
     "CustomNetTables",
@@ -254,9 +242,7 @@
     "PlayerResource",
     "Tutorial",
     "Vector",
-
     // -- constants
-
     // AbilityLearnResult_t
     "ABILITY_CAN_BE_UPGRADED", // (0)
     "ABILITY_CANNOT_BE_UPGRADED_NOT_UPGRADABLE", // (1)
@@ -609,5 +595,9 @@
   "editor.minimap.maxColumn": 100,
   "vim.textwidth": 100,
   "prettier.printWidth": 100,
-  "yaml.format.printWidth": 100
+  "yaml.format.printWidth": 100,
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  }
 }
