@@ -35,11 +35,22 @@ rules:
         - "define"
   font-family-no-missing-generic-family-keyword: null
   keyframes-name-pattern: "'\\w+'"
+  function-no-unknown:
+    - true
+    - ignoreFunctions:
+        - "color-stop"
+        - "fill-parent-flow"
+        - "from"
+        - "gaussian"
+        - "gradient"
+        - "to"
+        - "width-percentage"
   property-no-unknown:
     - true
     - ignoreProperties:
         - "align"
         - "brightness"
+        - "blur"
         - "contrast"
         - "flow-children"
         - "horizontal-align"
@@ -50,6 +61,8 @@ rules:
         - "tooltip-body-position"
         - "tooltip-position"
         - "wash-color"
+  selector-id-pattern: "[a-zA-Z-]+"
+  selector-class-pattern: "[a-zA-Z-]+"
   selector-pseudo-class-no-unknown:
     - true
     - ignorePseudoClasses:
