@@ -5,8 +5,8 @@ const path = require("path");
 const glob = require("glob");
 const mkdirp = require("mkdirp");
 
-const wsl = require("./wsl");
-const { spawn, createEnum } = require("./util");
+const wsl = require("../wsl");
+const { spawn, createEnum } = require("../util");
 
 const LinkType = createEnum({
   SymbolicLink: 1,

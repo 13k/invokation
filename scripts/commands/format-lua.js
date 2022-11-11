@@ -5,7 +5,7 @@ const path = require("path");
 const yaml = require("js-yaml");
 const { readFileSync } = require("fs");
 
-const { spawn } = require("./util");
+const { spawn } = require("../util");
 
 const LUAFORMATTER_BIN = "lua-format";
 const LUAFORMATTER_CONFIG = ".lua-format";
@@ -21,7 +21,7 @@ function loadFormatConfig(filename) {
     return {};
   }
 
-  return yaml.safeLoad(data);
+  return yaml.load(data);
 }
 
 function findFiles(fmtConfig, { rootPath }) {

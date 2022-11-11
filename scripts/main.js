@@ -26,24 +26,24 @@ function loadDotenv(path) {
   return result;
 }
 
+function createCommand(name, config) {
+  return (...args) => {
+    const main = require(`./commands/${name}`);
+
+    args.pop(); // cmd object
+
+    const cmdOptions = args.pop();
+    const options = { ...program.opts(), ...cmdOptions };
+    const actionArgs = [...args, options, config];
+
+    return main(...actionArgs);
+  };
+}
+
 async function parseArgs(config) {
   const choicesTool = `game|tools`;
   const choicesMap = config.customGame.maps.join("|");
   const defaultMap = config.customGame.maps[0];
-
-  const createCommand =
-    (name) =>
-    (...args) => {
-      const main = require(`./${name}`);
-
-      args.pop(); // cmd object
-
-      const cmdOptions = args.pop();
-      const options = { ...program.opts(), ...cmdOptions };
-      const actionArgs = [...args, options, config];
-
-      return main(...actionArgs);
-    };
 
   program
     .name("tasks")
@@ -54,36 +54,36 @@ async function parseArgs(config) {
     .command("build")
     .description(`Build custom game resources`)
     .option(`-f, --force`, `Force rebuild`, false)
-    .action(createCommand("build"));
+    .action(createCommand("build", config));
 
   program
     .command("clean")
     .description(`Remove custom game resources and unlink source code`)
     .option(`-n, --noop`, `Only print paths that would be removed`, false)
-    .action(createCommand("clean"));
+    .action(createCommand("clean", config));
 
   program
     .command("convert-shops <input> <output>")
     .description(`Convert a game KeyValues shops.txt file to custom game KeyValues shops.txt`)
-    .action(createCommand("convert-shops"));
+    .action(createCommand("convert-shops", config));
 
   program
     .command("format-lua")
     .description("Format Lua (vscript) source files")
     .option(`-n, --noop`, `Only print paths that would be formatted`, false)
-    .action(createCommand("format-lua"));
+    .action(createCommand("format-lua", config));
 
   program
     .command(`launch <tool> [toolArgs...]`)
     .description(`Launches the given tool (${choicesTool})`)
     .option(`-m, --map <map>`, `Map name for 'game' tool (${choicesMap})`, defaultMap)
-    .action(createCommand("launch"));
+    .action(createCommand("launch", config));
 
   program
     .command("link")
     .description(`Link source code paths to Dota 2 addon paths`)
     .option(`-n, --noop`, `Only print paths that would be linked`, false)
-    .action(createCommand("link"));
+    .action(createCommand("link", config));
 
   return program.parseAsync(process.argv);
 }

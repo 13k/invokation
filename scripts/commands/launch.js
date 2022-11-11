@@ -1,6 +1,6 @@
 "use strict";
 
-const { spawn } = require("./util");
+const { spawn } = require("../util");
 
 async function launch(tool, toolArgs, { map }, { log, dota2, customGame }) {
   let cmd;
