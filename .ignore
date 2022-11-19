@@ -1,5 +1,10 @@
-content/panorama/scripts/vendor
-game/scripts/vscripts/pl
-game/scripts/vscripts/moses.lua
-game/scripts/vscripts/fsm.lua
-images
+/.cov
+/.luarocks
+/.yarn
+/content/panorama/scripts/vendor
+/game/scripts/vscripts/pl
+/game/scripts/vscripts/moses.lua
+/game/scripts/vscripts/fsm.lua
+/images
+/lua_modules
+/tmp
