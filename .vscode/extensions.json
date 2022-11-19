@@ -1,8 +1,11 @@
 {
   "recommendations": [
+    "arcanis.vscode-zipfs",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
+    "JohnnyMorganz.stylua",
+    "Kampfkarren.selene-vscode",
     "stylelint.vscode-stylelint",
-    "arcanis.vscode-zipfs"
+    "sumneko.lua"
   ]
 }
