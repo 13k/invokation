@@ -40,7 +40,8 @@ Original code: [https://github.com/bmddota/barebones](https://github.com/bmddota
 @author 13k (updates)
 @license Apache License 2.0
 @copyright bmddota
-]] local M = {_VERSION = "0.80"}
+]]
+local M = { _VERSION = "0.80" }
 
 local function GetAPI(t, sub, done)
   if type(t) ~= "table" then
@@ -90,9 +91,9 @@ local function GetAPI(t, sub, done)
         if t.FDesc and t.FDesc[v] then
           local func, desc = string.match(tostring(t.FDesc[v]), "(.*)\n(.*)")
           if sub == M.api then
-            M.api.__GLOBAL__[v] = {f = func, d = desc}
+            M.api.__GLOBAL__[v] = { f = func, d = desc }
           else
-            sub[v] = {f = func, d = desc}
+            sub[v] = { f = func, d = desc }
           end
           ret = true
         end
@@ -109,10 +110,9 @@ function M.openGithub(_, msg)
 
   print("[ModMaker] OpenGithub", search, language)
 
-  local url = "https://github.com/search?utf8=%E2%9C%93&q=" .. search .. "&l=" .. language ..
-                "&type=Code"
+  local url = "https://github.com/search?utf8=%E2%9C%93&q=" .. search .. "&l=" .. language .. "&type=Code"
 
-  local t = io.popen("start \"Browser\" \"" .. url .. "\"")
+  local t = io.popen('start "Browser" "' .. url .. '"')
 
   t:lines()
 end
@@ -120,7 +120,7 @@ end
 function M.sendAPI()
   M.buildAPI()
 
-  CustomGameEventManager:Send_ServerToAllClients("modmaker_lua_api", {api = M.api})
+  CustomGameEventManager:Send_ServerToAllClients("modmaker_lua_api", { api = M.api })
 end
 
 function M.buildAPI()
@@ -133,11 +133,10 @@ end
 
 --- Initializes ModMaker.
 function M.Start()
-  M.api = {__GLOBAL__ = {}}
+  M.api = { __GLOBAL__ = {} }
   M.initialized = true
 
-  Convars:RegisterCommand("modmaker_api", Dynamic_Wrap(M, "sendAPI"), "Show the ModMaker lua API",
-                          FCVAR_CHEAT)
+  Convars:RegisterCommand("modmaker_api", Dynamic_Wrap(M, "sendAPI"), "Show the ModMaker lua API", FCVAR_CHEAT)
 
   CustomGameEventManager:RegisterListener("ModMaker_OpenGithub", Dynamic_Wrap(M, "openGithub"))
 end

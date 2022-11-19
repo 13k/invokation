@@ -23,7 +23,7 @@
     constructor: function CombosCollection() {
       this.data = null;
       this.callbacks = new Callbacks();
-      this.netTable = new NetTable(NET_TABLE.MAIN);
+      this.netTable = new NetTable(NET_TABLE.MAIN.NAME);
       this.logger = new Logger({
         level: ENV.development ? Logger.DEBUG : Logger.INFO,
         progname: "combos_collection",
@@ -37,18 +37,18 @@
     },
 
     loadFromNetTable: function () {
-      return this.netTable.Get(NET_TABLE.KEYS.MAIN.COMBOS);
+      return this.netTable.Get(NET_TABLE.MAIN.KEYS.COMBOS);
     },
 
     listenToNetTableChange: function () {
       return this.netTable.OnKeyChange(
-        NET_TABLE.KEYS.MAIN.COMBOS,
+        NET_TABLE.MAIN.KEYS.COMBOS,
         this.onNetTableChange.bind(this)
       );
     },
 
     onNetTableChange: function (key, value) {
-      if (key !== NET_TABLE.KEYS.MAIN.COMBOS) {
+      if (key !== NET_TABLE.MAIN.KEYS.COMBOS) {
         return;
       }
 

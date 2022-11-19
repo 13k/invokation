@@ -15,9 +15,9 @@ Logger.Extend(M)
 -- @tfield string INITIAL Initial
 -- @tfield string PRE_FINISH Pre finish
 -- @tfield string FINISH Finish
-M.STATES = {INITIAL = "start", PRE_FINISH = "pre_finish", FINISH = "finish"}
+M.STATES = { INITIAL = "start", PRE_FINISH = "pre_finish", FINISH = "finish" }
 
-local EVENTS = {PRE_FINISH = "pre_finish", FINISH = "finish"}
+local EVENTS = { PRE_FINISH = "pre_finish", FINISH = "finish" }
 
 -- @todo Use an LRU cache
 local CACHE = {}
@@ -26,25 +26,25 @@ local function stepEvents(sequence, step)
   return m.map(step.next or {}, function(nextId)
     local nextStep = sequence[nextId]
 
-    return {name = nextStep.event, from = step.state, to = nextStep.state}
+    return { name = nextStep.event, from = step.state, to = nextStep.state }
   end)
 end
 
 local function fsmDef(sequence)
-  local firstStep = {name = M.STATES.INITIAL, state = M.STATES.INITIAL, next = {sequence[1].id}}
+  local firstStep = { name = M.STATES.INITIAL, state = M.STATES.INITIAL, next = { sequence[1].id } }
   local preFinishStep = {
     name = EVENTS.PRE_FINISH,
     from = sequence[#sequence].state,
     to = M.STATES.PRE_FINISH,
   }
 
-  local finishStep = {name = EVENTS.FINISH, from = M.STATES.PRE_FINISH, to = M.STATES.FINISH}
-  local steps = m.append({firstStep}, sequence)
+  local finishStep = { name = EVENTS.FINISH, from = M.STATES.PRE_FINISH, to = M.STATES.FINISH }
+  local steps = m.append({ firstStep }, sequence)
   local events = m.chain(steps):map(m.partial(stepEvents, sequence)):flatten(true)
 
   events = events:push(preFinishStep):push(finishStep):value()
 
-  return {initial = M.STATES.INITIAL, events = events}
+  return { initial = M.STATES.INITIAL, events = events }
 end
 
 --- Constructor.
@@ -60,8 +60,8 @@ function M:_init(id, sequence, options)
   self.logger = options.logger
   self.clock = options.clock
   self.sequence = m.map(sequence, ComboStep)
-  self.nextIds = {self.sequence[1].id}
-  self.next = {self.sequence[1]}
+  self.nextIds = { self.sequence[1].id }
+  self.next = { self.sequence[1] }
   self.enterTimes = {}
   self.leaveTimes = {}
 
@@ -98,7 +98,7 @@ function M:todot()
 end
 
 function M:debugState(message)
-  local state = {state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds}
+  local state = { state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds }
   self:d(message, state)
 end
 

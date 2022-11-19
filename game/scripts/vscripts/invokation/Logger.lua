@@ -91,7 +91,7 @@ end
 -- @tparam string progname Child program name
 -- @treturn Logger Child instance
 function M:Child(progname)
-  return M({self.progname, progname}, self.level, self.format)
+  return M({ self.progname, progname }, self.level, self.format)
 end
 
 --- Logs a message if the current logger level is lower than the given level.
@@ -113,7 +113,7 @@ function M:Log(level, ...)
     return
   end
 
-  local values = {...}
+  local values = { ... }
   local formatted = {}
 
   -- Explicitly iterate with actual arguments array size to correctly print `nil`

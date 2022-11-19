@@ -7,7 +7,7 @@
 -- @author 13k (updates)
 -- @license Apache License 2.0
 -- @copyright bmddota
-local M = {_VERSION = "1.06"}
+local M = { _VERSION = "1.06" }
 
 local THINK_NAME = "timers"
 local THINK_INTERVAL = 0.01

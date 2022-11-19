@@ -10,7 +10,7 @@ local M = class()
 -- @tparam string name Item name
 -- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
-  local fields = m.extend({}, {Name = name}, kv)
+  local fields = m.extend({}, { Name = name }, kv)
 
   m.extend(self, fields)
 
@@ -48,8 +48,8 @@ end
 function M:MatchesQuery(query)
   local matcher = m.chain(string.match):partialRight(query):unary():value()
 
-  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher)) or
-           (m.isTable(self.ItemAliases) and m.findIndex(self.ItemAliases, matcher))
+  return (m.isTable(self.ItemShopTags) and m.findIndex(self.ItemShopTags, matcher))
+    or (m.isTable(self.ItemAliases) and m.findIndex(self.ItemAliases, matcher))
 end
 
 return M

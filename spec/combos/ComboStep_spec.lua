@@ -1,7 +1,7 @@
 local ComboStep = require("invokation.combos.ComboStep")
 
 describe("ComboStep", function()
-  local data = {id = 1, name = "step_name", required = true, next = {2, 3}}
+  local data = { id = 1, name = "step_name", required = true, next = { 2, 3 } }
 
   local step
 
@@ -11,35 +11,35 @@ describe("ComboStep", function()
 
   describe(".StateName", function()
     it("generates a state name", function()
-      assert.are.equal("1:step_name", ComboStep.StateName(step))
+      assert.equal("1:step_name", ComboStep.StateName(step))
 
       step.id = 2
 
-      assert.are.equal("2:step_name", ComboStep.StateName(step))
+      assert.equal("2:step_name", ComboStep.StateName(step))
 
       step.id = 3
       step.name = "another_step"
 
-      assert.are.equal("3:another_step", ComboStep.StateName(step))
+      assert.equal("3:another_step", ComboStep.StateName(step))
     end)
   end)
 
   describe(".EventName", function()
     it("generates an event name", function()
-      assert.are.equal("step_name", ComboStep.EventName(step))
+      assert.equal("step_name", ComboStep.EventName(step))
 
       step.name = "another_step"
 
-      assert.are.equal("another_step", ComboStep.EventName(step))
+      assert.equal("another_step", ComboStep.EventName(step))
     end)
   end)
 
   describe(".StepId", function()
     describe("with valid state name", function()
       it("extracts a numeric step id from a state name", function()
-        assert.are.equal(13, ComboStep.StepId("13:step_name"))
-        assert.are.equal(31, ComboStep.StepId("31:another_step"))
-        assert.are.equal(44, ComboStep.StepId("44:yet_another_step"))
+        assert.equal(13, ComboStep.StepId("13:step_name"))
+        assert.equal(31, ComboStep.StepId("31:another_step"))
+        assert.equal(44, ComboStep.StepId("44:yet_another_step"))
       end)
     end)
 
@@ -54,8 +54,8 @@ describe("ComboStep", function()
 
   describe("constructor", function()
     it("initializes attributes", function()
-      assert.are.equal(ComboStep.StateName(step), step.state)
-      assert.are.equal(ComboStep.EventName(step), step.event)
+      assert.equal(ComboStep.StateName(step), step.state)
+      assert.equal(ComboStep.EventName(step), step.event)
     end)
   end)
 end)

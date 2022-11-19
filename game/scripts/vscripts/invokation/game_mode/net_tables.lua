@@ -1,5 +1,6 @@
 --- NetTables
 -- @submodule invokation.GameMode
+
 local m = require("moses")
 
 local INVOKER = require("invokation.const.invoker")
@@ -10,20 +11,43 @@ local SHOP_ITEMS = require("invokation.const.shop_items")
 -- @section net_tables
 
 function GameMode:setupNetTables()
+  self:setupNetTableMain()
+  self:setupNetTableHeroKV()
+  self:setupNetTableAbilitiesKV()
+end
+
+function GameMode:setupNetTableMain()
   self:setupNetTableShopItems()
-  self:setupNetTableAbilities()
+  self:setupNetTableHeroData()
 end
 
 function GameMode:setupNetTableShopItems()
-  self.netTable:Set(NET_TABLE.MAIN_KEYS.SHOP_ITEMS, SHOP_ITEMS.KEY_VALUES)
-  self:d("  setup shop items NetTable data")
+  self.netTables.MAIN:Set(NET_TABLE.MAIN.KEYS.SHOP_ITEMS, SHOP_ITEMS.KEY_VALUES)
+  self:d("  setup net tables: shop items")
 end
 
-function GameMode:setupNetTableAbilities()
-  local serialize = m.chain(m.result):partialRight("Serialize"):unary():value()
-  local abilities = m.map(INVOKER.ABILITIES_KEY_VALUES, serialize)
+function GameMode:setupNetTableHeroData()
+  local value = INVOKER:Serialize()
 
-  self.netTable:Set(NET_TABLE.MAIN_KEYS.ABILITIES_KEY_VALUES, abilities)
+  self.netTables.MAIN:Set(NET_TABLE.MAIN.KEYS.HERO_DATA, value)
 
-  self:d("  setup abilities NetTable data")
+  self:d("  setup net tables: hero data")
+end
+
+function GameMode:setupNetTableHeroKV()
+  local value = INVOKER.HERO_KEY_VALUES:Serialize()
+
+  self.netTables.HERO:Set(NET_TABLE.HERO.KEYS.KEY_VALUES, value)
+
+  self:d("  setup net tables: hero keyvalues")
+end
+
+function GameMode:setupNetTableAbilitiesKV()
+  local value = m.map(INVOKER.ABILITIES_KEY_VALUES, function(kv)
+    return kv:Serialize()
+  end)
+
+  self.netTables.ABILITIES:Set(NET_TABLE.ABILITIES.KEYS.KEY_VALUES, value)
+
+  self:d("  setup net tables: abilities keyvalues")
 end

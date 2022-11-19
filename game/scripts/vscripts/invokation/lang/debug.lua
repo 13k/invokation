@@ -1,8 +1,10 @@
 --- Debugging helpers.
 -- @module invokation.lang.debug
+
 local M = {}
 
 --- Toggles function call debugging.
+-- selene: allow(global_usage)
 function M.debugcalls()
   if not _G.__debugCalls then
     print("Starting DebugCalls")

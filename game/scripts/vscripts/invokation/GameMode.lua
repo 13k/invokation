@@ -1,7 +1,10 @@
 --- Main class for the game.
 -- @classmod invokation.GameMode
+
+local class = require("pl.class")
+
+-- selene: allow(global_usage)
 if _G.GameMode == nil then
-  local class = require("pl.class")
   _G.GameMode = class()
 end
 
@@ -23,13 +26,16 @@ local NetTable = require("invokation.dota2.NetTable")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
 
 local PRECACHE = require("invokation.const.precache")
+local NET_TABLE = require("invokation.const.net_table")
 
 local LOGGER_PROGNAME = "invokation"
 
 --- Initialization
 -- @section init
 
+-- selene: allow(unscoped_variables)
 GameMode.META = require("invokation.const.metadata")
+-- selene: allow(unscoped_variables)
 GameMode._VERSION = GameMode.META.version
 
 Logger.Extend(GameMode)
@@ -62,9 +68,13 @@ function GameMode:_init(options)
   self.players = {}
   self.env = Env(options.env)
   self.logger = Logger(LOGGER_PROGNAME, self.env.development and Logger.DEBUG or Logger.INFO)
-  self.netTable = NetTable(NetTable.MAIN)
   self.itemsKV = ItemsKeyValues()
-  self.combos = Combos({ logger = self.logger, netTable = self.netTable })
+
+  self.netTables = m.map(NET_TABLE, function(t)
+    return NetTable(t.NAME)
+  end)
+
+  self.combos = Combos(self.netTables.MAIN, { logger = self.logger })
 end
 
 function GameMode:fnHandler(methodName)

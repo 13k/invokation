@@ -9,9 +9,28 @@ local UNITS = require("invokation.const.units")
 local HEROES = require("invokation.const.heroes")
 local ABILITIES = require("invokation.const.abilities")
 
-local M = {}
-
 local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_L%d_%s"
+
+---@class invokation.const.Invoker
+local M = {
+  _serialized = nil,
+}
+
+---@return invokation.const.Invoker
+function M:Serialize()
+  if self._serialized == nil then
+    local serialized = m.clone(self)
+
+    serialized._serialized = nil
+    serialized.KEY_VALUES = nil
+    serialized.HERO_KEY_VALUES = nil
+    serialized.ABILITIES_KEY_VALUES = nil
+
+    self._serialized = serialized
+  end
+
+  return self._serialized
+end
 
 --- Hero id
 -- @tfield int HERO_ID
@@ -115,7 +134,7 @@ end
 -- @tfield string 1 Quas
 -- @tfield string 2 Wex
 -- @tfield string 3 Exort
-M.ORB_ABILITIES = {M.ABILITY_QUAS, M.ABILITY_WEX, M.ABILITY_EXORT}
+M.ORB_ABILITIES = { M.ABILITY_QUAS, M.ABILITY_WEX, M.ABILITY_EXORT }
 
 --- Array of orb abilities names.
 -- @table SPELL_ABILITIES
@@ -180,18 +199,15 @@ M.TALENT_ABILITIES = m.values(M.HERO_KEY_VALUES:Talents())
 M.ABILITIES_KEY_VALUES = {}
 
 for _, abilityName in ipairs(M.ORB_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName,
-                                                         ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.SPELL_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName,
-                                                         ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.TALENT_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName,
-                                                         ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 --- Table of orb abilities composition ("recipes") of spell abilities.
@@ -207,16 +223,16 @@ end
 -- @tfield {string,...} ABILITY_CHAOS_METEOR Chaos Meteor
 -- @tfield {string,...} ABILITY_DEAFENING_BLAST Deafening Blast
 M.SPELL_COMPOSITION = {
-  [M.ABILITY_COLD_SNAP] = {M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_QUAS},
-  [M.ABILITY_GHOST_WALK] = {M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_WEX},
-  [M.ABILITY_ICE_WALL] = {M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_EXORT},
-  [M.ABILITY_EMP] = {M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_WEX},
-  [M.ABILITY_TORNADO] = {M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_QUAS},
-  [M.ABILITY_ALACRITY] = {M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_EXORT},
-  [M.ABILITY_SUN_STRIKE] = {M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_EXORT},
-  [M.ABILITY_FORGE_SPIRIT] = {M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_QUAS},
-  [M.ABILITY_CHAOS_METEOR] = {M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_WEX},
-  [M.ABILITY_DEAFENING_BLAST] = {M.ABILITY_QUAS, M.ABILITY_WEX, M.ABILITY_EXORT},
+  [M.ABILITY_COLD_SNAP] = { M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_QUAS },
+  [M.ABILITY_GHOST_WALK] = { M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_WEX },
+  [M.ABILITY_ICE_WALL] = { M.ABILITY_QUAS, M.ABILITY_QUAS, M.ABILITY_EXORT },
+  [M.ABILITY_EMP] = { M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_WEX },
+  [M.ABILITY_TORNADO] = { M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_QUAS },
+  [M.ABILITY_ALACRITY] = { M.ABILITY_WEX, M.ABILITY_WEX, M.ABILITY_EXORT },
+  [M.ABILITY_SUN_STRIKE] = { M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_EXORT },
+  [M.ABILITY_FORGE_SPIRIT] = { M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_QUAS },
+  [M.ABILITY_CHAOS_METEOR] = { M.ABILITY_EXORT, M.ABILITY_EXORT, M.ABILITY_WEX },
+  [M.ABILITY_DEAFENING_BLAST] = { M.ABILITY_QUAS, M.ABILITY_WEX, M.ABILITY_EXORT },
 }
 
 -- empty1 and empty2 can change indices, we're using them only to reference spell slots

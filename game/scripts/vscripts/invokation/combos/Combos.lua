@@ -78,11 +78,13 @@ local function gameTime()
 end
 
 --- Constructor.
+-- @tparam dota2.NetTable netTable NetTable instance
 -- @tparam table options Options table
 -- @tparam Logger options.logger Logger instance
--- @tparam dota2.NetTable options.netTable NetTable instance
-function M:_init(options)
-  self.netTable = options.netTable
+function M:_init(netTable, options)
+  options = options or {}
+
+  self.netTable = netTable
   self.state = PlayerStates()
 
   if options.logger then
@@ -95,23 +97,25 @@ end
 function M:load()
   self:d("Loading")
   self.specs = loadSpecs()
-  self.netTable:Set(NET_TABLE.MAIN_KEYS.COMBOS, self.specs)
+
+  self.netTable:Set(NET_TABLE.MAIN.KEYS.COMBOS, self.specs)
 end
 
 function M:Create(id)
   if id == FreestyleCombo.COMBO_ID then
-    return FreestyleCombo({logger = self.logger})
+    return FreestyleCombo({ logger = self.logger })
   end
 
   local spec = self.specs[id]
 
   if spec == nil then
     local err = ERRF_COMBO_NOT_FOUND:format(id)
+
     self:err(err)
     error(err)
   end
 
-  return Combo(spec, {logger = self.logger, clock = gameTime})
+  return Combo(spec, { logger = self.logger, clock = gameTime })
 end
 
 function M:requireCombo(player)
@@ -119,6 +123,7 @@ function M:requireCombo(player)
 
   if combo == nil then
     local err = ERRF_COMBO_NOT_ACTIVE:format(player:GetPlayerID())
+
     self:err(err)
     error(err)
   end
@@ -136,6 +141,7 @@ function M:setup(player, combo)
   if dummy == nil then
     dummy = DummyTarget()
     self.state[player].dummy = dummy
+
     CombosSound.onDummyCreate(dummy)
   end
 
@@ -164,7 +170,7 @@ function M:start(player, combo)
 end
 
 function M:stop(player, combo)
-  self:teardown(player, {hardReset = true})
+  self:teardown(player, { hardReset = true })
 
   CombosSound.onComboStop(player)
   CombosComm.sendStopped(player, combo)
@@ -176,13 +182,12 @@ end
 -- @tparam dota2.Ability ability Ability instance
 function M:OnAbilityUsed(player, unit, ability)
   if isIgnoredAbility(ability) then
-    self:d("OnAbilityUsed [ignored]",
-           {player = player:GetPlayerID(), unit = unit.name, ability = ability.name})
+    self:d("OnAbilityUsed [ignored]", { player = player:GetPlayerID(), unit = unit.name, ability = ability.name })
 
     return
   end
 
-  self:d("OnAbilityUsed", {player = player:GetPlayerID(), unit = unit.name, ability = ability.name})
+  self:d("OnAbilityUsed", { player = player:GetPlayerID(), unit = unit.name, ability = ability.name })
 
   self:CaptureAbility(player, ability)
   self:Progress(player, ability)
@@ -194,7 +199,7 @@ function M:OnEntityHurt(damage)
   local player = damage:AttackerPlayerOwner()
 
   if player == nil then
-    self:d("OnEntityHurt [ignored]", {category = damage.category, amount = damage.amount})
+    self:d("OnEntityHurt [ignored]", { category = damage.category, amount = damage.amount })
 
     return
   end
@@ -217,12 +222,12 @@ function M:OnItemPurchased(player, purchase)
   local combo = self.state[player].combo
 
   if not isFreestyle(combo) then
-    self:d("OnItemPurchased [ignored]", {player = player:GetPlayerID(), purchase = purchase})
+    self:d("OnItemPurchased [ignored]", { player = player:GetPlayerID(), purchase = purchase })
 
     return
   end
 
-  self:d("OnItemPurchased", {player = player:GetPlayerID(), purchase = purchase})
+  self:d("OnItemPurchased", { player = player:GetPlayerID(), purchase = purchase })
 
   CombosHero.refundPurchase(player, purchase)
 end
@@ -231,14 +236,14 @@ end
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam Combo combo Combo
 function M:Start(player, combo)
-  self:d("Start", {player = player:GetPlayerID(), id = combo.id})
+  self:d("Start", { player = player:GetPlayerID(), id = combo.id })
 
   local current = self.state[player].combo
 
   if current ~= nil and current.id ~= combo.id then
     self:stop(player, current)
   else
-    self:teardown(player, {hardReset = current == nil})
+    self:teardown(player, { hardReset = current == nil })
   end
 
   self:start(player, combo)
@@ -247,7 +252,7 @@ end
 --- Stops currently active combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:Stop(player)
-  self:d("Stop", {player = player:GetPlayerID()})
+  self:d("Stop", { player = player:GetPlayerID() })
 
   local combo = self:requireCombo(player)
 
@@ -259,7 +264,7 @@ end
 -- @tparam table options Options table
 -- @tparam[opt=false] bool options.hardReset Hard reset
 function M:Restart(player, options)
-  self:d("Restart", {player = player:GetPlayerID(), options = options})
+  self:d("Restart", { player = player:GetPlayerID(), options = options })
 
   local combo = self:requireCombo(player)
 
@@ -277,12 +282,12 @@ function M:Progress(player, ability)
   local combo = self.state[player].combo
 
   if not isProgressingAbilities(combo) then
-    self:d("Progress [ignored]", {player = player:GetPlayerID(), ability = ability.name})
+    self:d("Progress [ignored]", { player = player:GetPlayerID(), ability = ability.name })
 
     return
   end
 
-  self:d("Progress", {player = player:GetPlayerID(), ability = ability.name})
+  self:d("Progress", { player = player:GetPlayerID(), ability = ability.name })
 
   if combo:Progress(ability) then
     if combo.count == 1 then
@@ -306,8 +311,10 @@ function M:ProgressDamage(player, damage)
   local combo = self.state[player].combo
 
   if not isProgressingDamage(combo) then
-    self:d("ProgressDamage [ignored]",
-           {player = player:GetPlayerID(), category = damage.category, amount = damage.amount})
+    self:d(
+      "ProgressDamage [ignored]",
+      { player = player:GetPlayerID(), category = damage.category, amount = damage.amount }
+    )
 
     return
   end
@@ -331,7 +338,7 @@ end
 -- @tparam CDOTAPlayer player Player instance
 -- @tparam dota2.Ability ability Ability instance
 function M:Fail(player, ability)
-  self:d("Fail", {player = player:GetPlayerID()})
+  self:d("Fail", { player = player:GetPlayerID() })
 
   local combo = self:requireCombo(player)
 
@@ -344,19 +351,19 @@ end
 --- Preemptively finishes a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:PreFinish(player)
-  self:d("PreFinish", {player = player:GetPlayerID()})
+  self:d("PreFinish", { player = player:GetPlayerID() })
 
   local combo = self:requireCombo(player)
 
   CombosComm.sendPreFinish(player, combo)
 
-  Timers:Create({delay = combo.waitDuration, callback = self.Finish, args = {self, player}})
+  Timers:Create({ delay = combo.waitDuration, callback = self.Finish, args = { self, player } })
 end
 
 --- Finishes a combo for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:Finish(player)
-  self:d("Finish", {player = player:GetPlayerID()})
+  self:d("Finish", { player = player:GetPlayerID() })
 
   local combo = self:requireCombo(player)
 
@@ -365,7 +372,7 @@ function M:Finish(player)
     return
   end
 
-  self:d("Finished", {id = combo.id, now = gameTime()})
+  self:d("Finished", { id = combo.id, now = gameTime() })
 
   CombosSound.onComboFinished(player)
   CombosComm.sendFinished(player, combo)
@@ -374,14 +381,14 @@ end
 --- Starts capturing ability usage for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:StartCapturingAbilities(player)
-  self:d("StartCapturingAbilities", {player = player:GetPlayerID()})
+  self:d("StartCapturingAbilities", { player = player:GetPlayerID() })
   self.state[player].capturing = true
 end
 
 --- Stops capturing ability usage for the given player.
 -- @tparam CDOTAPlayer player Player instance
 function M:StopCapturingAbilities(player)
-  self:d("StopCapturingAbilities", {player = player:GetPlayerID()})
+  self:d("StopCapturingAbilities", { player = player:GetPlayerID() })
   self.state[player].capturing = nil
 end
 
@@ -401,11 +408,11 @@ function M:FreestyleHeroLevelUp(player, options)
   local combo = self.state[player].combo
 
   if not isFreestyle(combo) then
-    self:d("FreestyleHeroLevelUp [ignored]", {player = player:GetPlayerID(), options = options})
+    self:d("FreestyleHeroLevelUp [ignored]", { player = player:GetPlayerID(), options = options })
     return
   end
 
-  self:d("FreestyleHeroLevelUp", {player = player:GetPlayerID(), options = options})
+  self:d("FreestyleHeroLevelUp", { player = player:GetPlayerID(), options = options })
 
   CombosHero.levelUp(player, options)
 end

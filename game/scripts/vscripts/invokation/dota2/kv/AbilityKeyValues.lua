@@ -10,7 +10,7 @@ local M = class()
 -- @tparam string name Ability name
 -- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
-  local fields = m.extend({}, {Name = name}, kv)
+  local fields = m.extend({}, { Name = name }, kv)
 
   m.extend(self, fields)
 

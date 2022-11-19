@@ -8,12 +8,24 @@
   };
 
   var NET_TABLE = {
-    MAIN: "invokation",
-    KEYS: {
-      MAIN: {
+    MAIN: {
+      NAME: "invokation",
+      KEYS: {
         COMBOS: "combos",
-        ABILITIES_KEY_VALUES: "abilities_kv",
         SHOP_ITEMS: "shop_items",
+        HERO_DATA: "hero_data",
+      },
+    },
+    HERO: {
+      NAME: "hero",
+      KEYS: {
+        KEY_VALUES: "kv",
+      },
+    },
+    ABILITIES: {
+      NAME: "abilities",
+      KEYS: {
+        KEY_VALUES: "kv",
       },
     },
   };

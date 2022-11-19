@@ -7,12 +7,12 @@ local delegation = require("invokation.lang.delegation")
 
 local M = class()
 
-local DELEGATES = {"Hold"}
+local DELEGATES = { "Hold" }
 
 delegation.delegate(M, "entity", DELEGATES)
 
 local function createDummy(location)
-  local unit = Units.Create(Units.DUMMY_TARGET, {location = location, team = DOTA_TEAM_BADGUYS})
+  local unit = Units.Create(Units.DUMMY_TARGET, { location = location, team = DOTA_TEAM_BADGUYS })
 
   unit:SetIdleAcquire(false)
 
@@ -25,7 +25,7 @@ end
 function M:_init(options)
   self.spawn = Entities:FindByName(nil, Units.DUMMY_TARGET_SPAWN)
 
-  options = m.extend({spawn = true}, options or {})
+  options = m.extend({ spawn = true }, options or {})
 
   if options.spawn then
     self:Spawn()

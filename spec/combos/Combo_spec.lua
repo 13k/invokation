@@ -16,15 +16,14 @@ local SPEC = {
   damageRating = 5,
   difficultyRating = 5,
   gold = 1234,
-  tags = {"late-game"},
-  items = {"item_blink"},
-  orbs = {7, 7, 7},
-  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT,
-                           Talents.L25_RIGHT),
+  tags = { "late-game" },
+  items = { "item_blink" },
+  orbs = { 7, 7, 7 },
+  talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
   sequence = {
-    {id = 1, name = "step1", required = true, next = {2, 3}},
-    {id = 2, name = "step2", next = {3}},
-    {id = 3, name = "step3", required = true},
+    { id = 1, name = "step1", required = true, next = { 2, 3 } },
+    { id = 2, name = "step2", next = { 3 } },
+    { id = 3, name = "step3", required = true },
   },
 }
 
@@ -40,13 +39,13 @@ describe("Combo", function()
     return m.map(arr, getId)
   end
 
-  local ability1 = create("ability", {name = "step1", AbilityDuration = 0.5})
-  local ability2 = create("ability", {name = "step2", AbilityDuration = 0.3})
-  local ability3 = create("ability", {name = "step3", AbilityDuration = 0.25})
+  local ability1 = create("ability", { name = "step1", AbilityDuration = 0.5 })
+  local ability2 = create("ability", { name = "step2", AbilityDuration = 0.3 })
+  local ability3 = create("ability", { name = "step3", AbilityDuration = 0.25 })
 
   before_each(function()
     spyClock = spy.new(clock)
-    combo = Combo(SPEC, {clock = spyClock})
+    combo = Combo(SPEC, { clock = spyClock })
   end)
 
   it("inherits from BaseCombo", function()
@@ -55,16 +54,16 @@ describe("Combo", function()
 
   describe("constructor", function()
     it("initializes attributes", function()
-      for key, value in pairs(m.omit(SPEC, {"sequence"})) do
-        assert.are.same(SPEC[key], value)
+      for key, value in pairs(m.omit(SPEC, { "sequence" })) do
+        assert.same(SPEC[key], value)
       end
 
       assert.is_false(combo.started)
       assert.is_false(combo.failed)
       assert.is_false(combo.finished)
-      assert.are.equal(0, combo.count)
-      assert.are.equal(0, combo.damage)
-      assert.are.equal(spyClock, combo.clock)
+      assert.equal(0, combo.count)
+      assert.equal(0, combo.damage)
+      assert.equal(spyClock, combo.clock)
       assert.is_true(ComboSequence:class_of(combo.sequence))
     end)
   end)
@@ -81,11 +80,11 @@ describe("Combo", function()
     it("returns the current step id", function()
       assert.is_nil(combo:CurrentStepId())
       assert.is_true(combo:Progress(ability1))
-      assert.are.equal(1, combo:CurrentStepId())
+      assert.equal(1, combo:CurrentStepId())
       assert.is_true(combo:Progress(ability2))
-      assert.are.equal(2, combo:CurrentStepId())
+      assert.equal(2, combo:CurrentStepId())
       assert.is_true(combo:Progress(ability3))
-      assert.are.equal(3, combo:CurrentStepId())
+      assert.equal(3, combo:CurrentStepId())
       assert.is_true(combo:PreFinish())
       assert.is_nil(combo:CurrentStepId())
       assert.is_true(combo:Finish())
@@ -99,18 +98,18 @@ describe("Combo", function()
 
       assert.is_true(combo:Progress(ability1))
       assert.is_table(combo:CurrentStep())
-      assert.are.equal(1, combo:CurrentStep().id)
-      assert.are.equal("step1", combo:CurrentStep().name)
+      assert.equal(1, combo:CurrentStep().id)
+      assert.equal("step1", combo:CurrentStep().name)
 
       assert.is_true(combo:Progress(ability2))
       assert.is_table(combo:CurrentStep())
-      assert.are.equal(2, combo:CurrentStep().id)
-      assert.are.equal("step2", combo:CurrentStep().name)
+      assert.equal(2, combo:CurrentStep().id)
+      assert.equal("step2", combo:CurrentStep().name)
 
       assert.is_true(combo:Progress(ability3))
       assert.is_table(combo:CurrentStep())
-      assert.are.equal(3, combo:CurrentStep().id)
-      assert.are.equal("step3", combo:CurrentStep().name)
+      assert.equal(3, combo:CurrentStep().id)
+      assert.equal("step3", combo:CurrentStep().name)
 
       assert.is_true(combo:PreFinish())
       assert.is_nil(combo:CurrentStep())
@@ -121,33 +120,33 @@ describe("Combo", function()
 
   describe("#NextStepsIds", function()
     it("returns the next steps ids", function()
-      assert.are.same({1}, combo:NextStepsIds())
+      assert.same({ 1 }, combo:NextStepsIds())
       assert.is_true(combo:Progress(ability1))
-      assert.are.same({2, 3}, combo:NextStepsIds())
+      assert.same({ 2, 3 }, combo:NextStepsIds())
       assert.is_true(combo:Progress(ability2))
-      assert.are.same({3}, combo:NextStepsIds())
+      assert.same({ 3 }, combo:NextStepsIds())
       assert.is_true(combo:Progress(ability3))
-      assert.are.same({}, combo:NextStepsIds())
+      assert.same({}, combo:NextStepsIds())
       assert.is_true(combo:PreFinish())
-      assert.are.same({}, combo:NextStepsIds())
+      assert.same({}, combo:NextStepsIds())
       assert.is_true(combo:Finish())
-      assert.are.same({}, combo:NextStepsIds())
+      assert.same({}, combo:NextStepsIds())
     end)
   end)
 
   describe("#NextSteps", function()
     it("returns the next steps", function()
-      assert.are.same({1}, stepsIds(combo:NextSteps()))
+      assert.same({ 1 }, stepsIds(combo:NextSteps()))
       assert.is_true(combo:Progress(ability1))
-      assert.are.same({2, 3}, stepsIds(combo:NextSteps()))
+      assert.same({ 2, 3 }, stepsIds(combo:NextSteps()))
       assert.is_true(combo:Progress(ability2))
-      assert.are.same({3}, stepsIds(combo:NextSteps()))
+      assert.same({ 3 }, stepsIds(combo:NextSteps()))
       assert.is_true(combo:Progress(ability3))
-      assert.are.same({}, combo:NextSteps())
+      assert.same({}, combo:NextSteps())
       assert.is_true(combo:PreFinish())
-      assert.are.same({}, combo:NextSteps())
+      assert.same({}, combo:NextSteps())
       assert.is_true(combo:Finish())
-      assert.are.same({}, combo:NextSteps())
+      assert.same({}, combo:NextSteps())
     end)
   end)
 
@@ -158,13 +157,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(0, combo.count)
-        assert.are.same({}, combo.waitQueue)
+        assert.equal(0, combo.count)
+        assert.same({}, combo.waitQueue)
         assert.spy(combo.clock).was_not_called()
         assert.is_nil(combo:CurrentStep())
         assert.is_nil(combo:CurrentStepId())
-        assert.are.same({1}, combo:NextStepsIds())
-        assert.are.same({1}, stepsIds(combo:NextSteps()))
+        assert.same({ 1 }, combo:NextStepsIds())
+        assert.same({ 1 }, stepsIds(combo:NextSteps()))
 
         assert.is_true(combo:Progress(ability1))
 
@@ -172,13 +171,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(1, combo.count)
-        assert.are.same({10.5}, combo.waitQueue)
+        assert.equal(1, combo.count)
+        assert.same({ 10.5 }, combo.waitQueue)
         assert.spy(combo.clock).was_called(2)
-        assert.are.same(1, combo:CurrentStep().id)
-        assert.are.equal(1, combo:CurrentStepId())
-        assert.are.same({2, 3}, combo:NextStepsIds())
-        assert.are.same({2, 3}, stepsIds(combo:NextSteps()))
+        assert.same(1, combo:CurrentStep().id)
+        assert.equal(1, combo:CurrentStepId())
+        assert.same({ 2, 3 }, combo:NextStepsIds())
+        assert.same({ 2, 3 }, stepsIds(combo:NextSteps()))
 
         assert.is_true(combo:Progress(ability2))
 
@@ -186,13 +185,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(2, combo.count)
-        assert.are.same({10.5, 10.3}, combo.waitQueue)
+        assert.equal(2, combo.count)
+        assert.same({ 10.5, 10.3 }, combo.waitQueue)
         assert.spy(combo.clock).was_called(4)
-        assert.are.same(2, combo:CurrentStep().id)
-        assert.are.equal(2, combo:CurrentStepId())
-        assert.are.same({3}, combo:NextStepsIds())
-        assert.are.same({3}, stepsIds(combo:NextSteps()))
+        assert.same(2, combo:CurrentStep().id)
+        assert.equal(2, combo:CurrentStepId())
+        assert.same({ 3 }, combo:NextStepsIds())
+        assert.same({ 3 }, stepsIds(combo:NextSteps()))
 
         assert.is_true(combo:Progress(ability3))
 
@@ -200,13 +199,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(3, combo.count)
-        assert.are.same({10.5, 10.3, 10.25}, combo.waitQueue)
+        assert.equal(3, combo.count)
+        assert.same({ 10.5, 10.3, 10.25 }, combo.waitQueue)
         assert.spy(combo.clock).was_called(6)
-        assert.are.same(3, combo:CurrentStep().id)
-        assert.are.equal(3, combo:CurrentStepId())
-        assert.are.same({}, combo:NextStepsIds())
-        assert.are.same({}, stepsIds(combo:NextSteps()))
+        assert.same(3, combo:CurrentStep().id)
+        assert.equal(3, combo:CurrentStepId())
+        assert.same({}, combo:NextStepsIds())
+        assert.same({}, stepsIds(combo:NextSteps()))
       end)
 
       it("enables skipping optional steps", function()
@@ -219,56 +218,54 @@ describe("Combo", function()
       local specFields = {
         id = m.uniqueId(),
         sequence = {
-          {id = 1, name = INVOKER.ABILITY_ALACRITY, required = true, next = {2}},
-          {id = 2, name = INVOKER.ABILITY_COLD_SNAP, required = true, next = {3}},
-          {id = 3, name = INVOKER.ABILITY_SUN_STRIKE, required = true},
+          { id = 1, name = INVOKER.ABILITY_ALACRITY, required = true, next = { 2 } },
+          { id = 2, name = INVOKER.ABILITY_COLD_SNAP, required = true, next = { 3 } },
+          { id = 3, name = INVOKER.ABILITY_SUN_STRIKE, required = true },
         },
       }
 
-      local spec = m.chain(SPEC):omit({"id", "sequence"}):extend(specFields):value()
+      local spec = m.chain(SPEC):omit({ "id", "sequence" }):extend(specFields):value()
 
-      local abilityAlacrity = create("ability",
-                                     {name = INVOKER.ABILITY_ALACRITY, special = {duration = 3.5}})
+      local abilityAlacrity = create("ability", { name = INVOKER.ABILITY_ALACRITY, special = { duration = 3.5 } })
 
       local abilityColdSnap = create("ability", {
         name = INVOKER.ABILITY_COLD_SNAP,
-        special = {duration = 1.25},
+        special = { duration = 1.25 },
       })
 
-      local abilitySunStrike = create("ability",
-                                      {name = INVOKER.ABILITY_SUN_STRIKE, special = {delay = 2.6}})
+      local abilitySunStrike = create("ability", { name = INVOKER.ABILITY_SUN_STRIKE, special = { delay = 2.6 } })
 
       it("uses abilities special values for wait times", function()
-        combo = Combo(spec, {clock = spyClock})
+        combo = Combo(spec, { clock = spyClock })
 
-        assert.are.same({}, combo.waitQueue)
+        assert.same({}, combo.waitQueue)
 
         assert.is_true(combo:Progress(abilityAlacrity))
-        assert.are.same({13.5}, combo.waitQueue)
+        assert.same({ 13.5 }, combo.waitQueue)
 
         assert.is_true(combo:Progress(abilityColdSnap))
-        assert.are.same({13.5, 11.25}, combo.waitQueue)
+        assert.same({ 13.5, 11.25 }, combo.waitQueue)
 
         assert.is_true(combo:Progress(abilitySunStrike))
-        assert.are.same({13.5, 11.25, 12.6}, combo.waitQueue)
+        assert.same({ 13.5, 11.25, 12.6 }, combo.waitQueue)
       end)
     end)
 
     describe("with invalid abilities", function()
-      local invalidAbility = create("ability", {name = "invalid", AbilityDuration = 0.5})
+      local invalidAbility = create("ability", { name = "invalid", AbilityDuration = 0.5 })
 
       it("does NOT progress the combo", function()
         assert.is_false(combo.started)
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(0, combo.count)
-        assert.are.same({}, combo.waitQueue)
+        assert.equal(0, combo.count)
+        assert.same({}, combo.waitQueue)
         assert.spy(combo.clock).was_not_called()
         assert.is_nil(combo:CurrentStep())
         assert.is_nil(combo:CurrentStepId())
-        assert.are.same({1}, combo:NextStepsIds())
-        assert.are.same({1}, stepsIds(combo:NextSteps()))
+        assert.same({ 1 }, combo:NextStepsIds())
+        assert.same({ 1 }, stepsIds(combo:NextSteps()))
 
         assert.is_false(combo:Progress(invalidAbility))
 
@@ -276,13 +273,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(0, combo.count)
-        assert.are.same({}, combo.waitQueue)
+        assert.equal(0, combo.count)
+        assert.same({}, combo.waitQueue)
         assert.spy(combo.clock).was_not_called()
         assert.is_nil(combo:CurrentStep())
         assert.is_nil(combo:CurrentStepId())
-        assert.are.same({1}, combo:NextStepsIds())
-        assert.are.same({1}, stepsIds(combo:NextSteps()))
+        assert.same({ 1 }, combo:NextStepsIds())
+        assert.same({ 1 }, stepsIds(combo:NextSteps()))
 
         assert.is_true(combo:Progress(ability1))
 
@@ -290,13 +287,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(1, combo.count)
-        assert.are.same({10.5}, combo.waitQueue)
+        assert.equal(1, combo.count)
+        assert.same({ 10.5 }, combo.waitQueue)
         assert.spy(combo.clock).was_called(2)
-        assert.are.same(1, combo:CurrentStep().id)
-        assert.are.equal(1, combo:CurrentStepId())
-        assert.are.same({2, 3}, combo:NextStepsIds())
-        assert.are.same({2, 3}, stepsIds(combo:NextSteps()))
+        assert.same(1, combo:CurrentStep().id)
+        assert.equal(1, combo:CurrentStepId())
+        assert.same({ 2, 3 }, combo:NextStepsIds())
+        assert.same({ 2, 3 }, stepsIds(combo:NextSteps()))
 
         assert.is_false(combo:Progress(invalidAbility))
 
@@ -304,13 +301,13 @@ describe("Combo", function()
         assert.is_false(combo.failed)
         assert.is_false(combo.preFinished)
         assert.is_false(combo.finished)
-        assert.are.equal(1, combo.count)
-        assert.are.same({10.5}, combo.waitQueue)
+        assert.equal(1, combo.count)
+        assert.same({ 10.5 }, combo.waitQueue)
         assert.spy(combo.clock).was_called(2)
-        assert.are.same(1, combo:CurrentStep().id)
-        assert.are.equal(1, combo:CurrentStepId())
-        assert.are.same({2, 3}, combo:NextStepsIds())
-        assert.are.same({2, 3}, stepsIds(combo:NextSteps()))
+        assert.same(1, combo:CurrentStep().id)
+        assert.equal(1, combo:CurrentStepId())
+        assert.same({ 2, 3 }, combo:NextStepsIds())
+        assert.same({ 2, 3 }, stepsIds(combo:NextSteps()))
       end)
     end)
   end)
@@ -343,8 +340,8 @@ describe("Combo", function()
       assert.is_true(combo:Progress(ability2))
       assert.is_true(combo:Progress(ability3))
       assert.is_true(combo:PreFinish())
-      assert.are.equal(10.5, combo.waitTime)
-      assert.are.equal(0.5, combo.waitDuration)
+      assert.equal(10.5, combo.waitTime)
+      assert.equal(0.5, combo.waitDuration)
     end)
   end)
 
@@ -373,23 +370,23 @@ describe("Combo", function()
         return clockIdx
       end
 
-      combo = Combo(SPEC, {clock = incrClock})
+      combo = Combo(SPEC, { clock = incrClock })
 
       assert.is_true(combo:Progress(ability1))
       assert.is_true(combo:Progress(ability2))
       assert.is_true(combo:Progress(ability3))
       assert.is_true(combo:PreFinish())
       assert.is_true(combo:Finish())
-      assert.are.equal(7, combo.duration)
+      assert.equal(7, combo.duration)
     end)
   end)
 
   describe("#IncrementDamage", function()
     it("increments the damage accumulator and returns the accumulated value", function()
-      assert.are.equal(13, combo:IncrementDamage(13))
-      assert.are.equal(13, combo.damage)
-      assert.are.equal(44, combo:IncrementDamage(31))
-      assert.are.equal(44, combo.damage)
+      assert.equal(13, combo:IncrementDamage(13))
+      assert.equal(13, combo.damage)
+      assert.equal(44, combo:IncrementDamage(31))
+      assert.equal(44, combo.damage)
     end)
   end)
 end)

@@ -50,7 +50,7 @@
         },
       });
 
-      this.netTable = new NetTable(NET_TABLE.MAIN);
+      this.netTable = new NetTable(NET_TABLE.MAIN.NAME);
       this.itemPanels = {};
 
       this.loadItems();
@@ -126,7 +126,7 @@
     },
 
     loadItems: function () {
-      this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.KEYS.MAIN.SHOP_ITEMS));
+      this.shopItems = LuaArrayDeep(this.netTable.Get(NET_TABLE.MAIN.KEYS.SHOP_ITEMS));
     },
 
     select: function (imagePanel) {

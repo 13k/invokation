@@ -1,10 +1,12 @@
 --- GameMode Setup
 -- @submodule invokation.GameMode
+
 local S = require("invokation.const.settings")
 
 --- GameMode Setup
 -- @section game_mode
 
+-- selene: allow(unused_variable)
 function GameMode:setupGameMode()
   self.gameMode = GameRules:GetGameModeEntity()
 

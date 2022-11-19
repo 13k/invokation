@@ -1,4 +1,6 @@
 -- globals
+
+-- selene: allow(incorrect_standard_library_use)
 bit = require("bit32")
 
 require("support.dota2.enum")

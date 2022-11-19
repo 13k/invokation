@@ -5,10 +5,11 @@ local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
 
 local LIMITS = require("invokation.const.limits")
 
+-- selene: allow(incorrect_standard_library_use)
 CDOTA_BaseNPC_Hero = class(CDOTA_BaseNPC)
 
-local ATTRIBUTES = {hasInventory = true}
-local DEFAULTS = {abilityPoints = 1, goldReliable = 0, goldUnreliable = 0}
+local ATTRIBUTES = { hasInventory = true }
+local DEFAULTS = { abilityPoints = 1, goldReliable = 0, goldUnreliable = 0 }
 
 function CDOTA_BaseNPC_Hero:_init(attributes)
   attributes = m.extend({}, ATTRIBUTES, DEFAULTS, attributes or {})
@@ -17,7 +18,7 @@ function CDOTA_BaseNPC_Hero:_init(attributes)
   self.__attributes = attributes
 end
 
-function CDOTA_BaseNPC_Hero:HeroLevelUp(playEffects)
+function CDOTA_BaseNPC_Hero:HeroLevelUp(_playEffects)
   if self:GetLevel() == LIMITS.MAX_HERO_LEVEL then
     return
   end
@@ -43,7 +44,7 @@ function CDOTA_BaseNPC_Hero:SetGold(amount, isReliable)
   end
 end
 
-function CDOTA_BaseNPC_Hero:ModifyGold(amount, isReliable, reason)
+function CDOTA_BaseNPC_Hero:ModifyGold(amount, isReliable, _reason)
   if isReliable then
     self.goldReliable = self.goldReliable + amount
   else

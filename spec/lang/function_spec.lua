@@ -13,8 +13,8 @@ describe("function", function()
       local fn = func.lookupbyname(t, "greet")
 
       assert.is_function(fn)
-      assert.are_not.equal(t.greet, fn)
-      assert.are.equal("Greetings, Alice", fn("Alice"))
+      assert.not_equal(t.greet, fn)
+      assert.equal("Greetings, Alice", fn("Alice"))
       assert.spy(greetSpy).was.called_with("Alice")
 
       t.greet = function(name)
@@ -23,7 +23,7 @@ describe("function", function()
 
       greetSpy = spy.on(t, "greet")
 
-      assert.are.equal("Welcome, Bob", fn("Bob"))
+      assert.equal("Welcome, Bob", fn("Bob"))
       assert.spy(greetSpy).was.called_with("Bob")
     end)
   end)
