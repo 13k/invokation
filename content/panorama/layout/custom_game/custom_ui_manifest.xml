@@ -30,7 +30,5 @@
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/viewer.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/challenge.xml" />
     <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/freestyle.xml" />
-
-    <CustomUIElement type="Hud" layoutfile="file://{resources}/layout/custom_game/modmaker/modmaker.xml" />
   </Panel>
 </root>
