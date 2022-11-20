@@ -8,8 +8,10 @@
 
   var LEVELS = [10, 15, 20, 25];
 
+  /*
   var TOOLTIP_LAYOUT = "file://{resources}/layout/custom_game/tooltips/tooltip_stat_branch.xml";
   var TOOLTIP_ID = "TalentDisplayTooltip";
+  */
 
   var CLASSES = {
     BRANCH_SELECTED: {
@@ -116,6 +118,7 @@
 
     // ----- UI methods -----
 
+    /*
     ShowTooltip: function () {
       this.tooltipId = _.uniqueId(TOOLTIP_ID);
 
@@ -135,6 +138,7 @@
         this.debug("HideTooltip()", this.tooltipId);
       }
     },
+    */
   });
 
   context.component = new UITalentsDisplay();

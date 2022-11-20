@@ -3,17 +3,14 @@
 (function (global, context) {
   var _ = global.lodash;
   var L10n = global.L10n;
+  var Util = global.Util;
   var Sequence = global.Sequence.Sequence;
   var ParallelSequence = global.Sequence.ParallelSequence;
-  var RunFunctionAction = global.Sequence.RunFunctionAction;
-  var CreatePanelWithLayoutSnippet = global.Util.CreatePanelWithLayoutSnippet;
-  var IsTalentSelected = global.Util.IsTalentSelected;
-  var TalentArrayIndexToLevel = global.Util.TalentArrayIndexToLevel;
-  var TalentArrayIndexToSide = global.Util.TalentArrayIndexToSide;
+  // var RunFunctionAction = global.Sequence.RunFunctionAction;
   var CreateComponent = context.CreateComponent;
 
-  var ABILITIES_KV = global.ABILITIES_KV;
-  var INVOKER = global.Const.INVOKER;
+  var HERO_DATA = global.HERO_DATA;
+  // var INVOKER = global.Const.INVOKER;
 
   var LEVELS = [25, 20, 15, 10];
   var SIDES = ["RIGHT", "LEFT"];
@@ -34,18 +31,6 @@
     },
   };
 
-  var TALENT_ABILITIES = _.transform(
-    INVOKER.TALENT_ABILITIES,
-    function (abilities, ability, i) {
-      var level = TalentArrayIndexToLevel(i);
-      var side = _.toUpper(TalentArrayIndexToSide(i));
-
-      abilities[level] = abilities[level] || {};
-      abilities[level][side] = ability;
-    },
-    {}
-  );
-
   function branchRowId(level) {
     return BRANCH_ROW_ID_PREFIX + _.toString(level);
   }
@@ -58,7 +43,7 @@
         },
       });
 
-      ABILITIES_KV.OnChange(this.onAbilitiesKvChange.bind(this));
+      HERO_DATA.OnChange(this.onHeroDataChange.bind(this));
 
       this.debug("init");
     },
@@ -71,16 +56,29 @@
       this.update();
     },
 
-    onAbilitiesKvChange: function (kv) {
-      this.abilitiesKV = kv;
-      this.debug("onAbilitiesKvChange()");
+    onHeroDataChange: function (kv) {
+      this.heroData = kv;
+
+      this.talents = _.transform(
+        this.heroData.TALENT_ABILITIES,
+        function (abilities, ability, i) {
+          var level = Util.TalentArrayIndexToLevel(i);
+          var side = _.toUpper(Util.TalentArrayIndexToSide(i));
+
+          abilities[level] = abilities[level] || {};
+          abilities[level][side] = ability;
+        },
+        {}
+      );
+
+      this.debug("onHeroDataChange()");
       this.update();
     },
 
     // ----- Helpers -----
 
     update: function () {
-      if (this.selected != null && this.abilitiesKV != null) {
+      if (this.selected != null && this.heroData != null) {
         this.render();
       }
     },
@@ -90,38 +88,104 @@
     },
 
     localizeBranch: function (panel, level, side) {
-      var ability = _.get(TALENT_ABILITIES, [level, side]);
-      var abilitySpecial = _.get(this.abilitiesKV, [ability, "AbilitySpecial"]);
+      this.debug("localizeBranch()", { level: level, side: side });
+
+      var ability = _.get(this.talents, [level, side]);
+
+      if (ability == null) {
+        this.error(
+          "could not find ability for talent level " + _.toString(level) + " and side " + side
+        );
+
+        return;
+      }
+
+      /*
+      var abilitySpecial = _.get(this.heroData, [ability, "AbilitySpecial"]);
+
+      if (abilitySpecial == null) {
+        this.error("could not find AbilitySpecial for ability " + ability);
+        return;
+      }
+      */
+
+      this.debug("localizeBranch()", {
+        ability: ability || "UNDEFINED!!!",
+        // abilitySpecial: abilitySpecial || "UNDEFINED!!!",
+      });
+
+      this.debug("localizeBranch() : FindChildrenWithClassTraverse [panel]", {
+        class: CLASSES.BRANCH_ROW_SIDES[side],
+      });
 
       var branchPanel = _.first(
         panel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_SIDES[side])
       );
 
+      this.debug("localizeBranch()", { branchPanel: branchPanel });
+      this.debug("localizeBranch() : FindChildrenWithClassTraverse [label]", {
+        class: CLASSES.BRANCH_ROW_CHOICE_LABEL,
+      });
+
       var branchLabel = _.first(
         branchPanel.FindChildrenWithClassTraverse(CLASSES.BRANCH_ROW_CHOICE_LABEL)
       );
 
+      this.debug("localizeBranch()", { branchLabel: branchLabel });
+
+      /*
       _.each(abilitySpecial, function (special) {
         _.forOwn(special, function (value, key) {
           if (key === "var_type") return;
+
+          this.debug("localizeBranch() : SetDialogVariable", { key: key, value: value });
+
           branchLabel.SetDialogVariable(key, value);
         });
       });
+      */
 
-      branchLabel.text = L10n.LocalizeAbilityTooltip(ability, branchLabel);
+      this.debug("localizeBranch() : L10n.LocalizeAbilityTooltip()", {
+        ability: ability,
+        branchLabel: branchLabel,
+      });
+
+      var labelText = L10n.LocalizeAbilityTooltip(ability, branchLabel);
+
+      this.debug("localizeBranch() : set branchLabel.text", { labelText: labelText });
+
+      branchLabel.text = labelText;
     },
 
     createBranchRowPanel: function (level) {
+      this.debug("createBranchRowPanel()", { level: level });
+
       var id = branchRowId(level);
-      var panel = CreatePanelWithLayoutSnippet(this.$container, id, BRANCH_ROW_SNIPPET);
+
+      this.debug("createBranchRowPanel() : CreatePanelWithLayoutSnippet()", {
+        id: id,
+        snippet: BRANCH_ROW_SNIPPET,
+      });
+
+      var panel = Util.CreatePanelWithLayoutSnippet(this.$container, id, BRANCH_ROW_SNIPPET);
+
+      this.debug("createBranchRowPanel() : SetDialogVariable", {
+        var_name: BRANCH_ROW_VAR_LEVEL,
+        value: level,
+      });
 
       panel.SetDialogVariable(BRANCH_ROW_VAR_LEVEL, level);
 
-      var localizeBranch = _.chain(this.localizeBranch).bind(this, panel, level).unary().value();
-
-      _.each(SIDES, localizeBranch);
+      _.each(
+        SIDES,
+        function (side) {
+          this.localizeBranch(panel, level, side);
+        }.bind(this)
+      );
 
       this.$rows[level] = panel;
+
+      this.debug("createBranchRowPanel() : panel created");
 
       return panel;
     },
@@ -129,43 +193,52 @@
     // ----- Actions -----
 
     resetAction: function () {
-      return new Sequence().RemoveChildren(this.$container).RunFunction(this, this.resetRows);
+      return new Sequence()
+        .RunFunction(this, function () {
+          this.debug("resetAction() : RemoveChildren");
+        })
+        .RemoveChildren(this.$container)
+        .RunFunction(this, function () {
+          this.debug("resetAction() : resetRows()");
+        })
+        .RunFunction(this, this.resetRows);
     },
 
     createBranchRowPanelAction: function (level) {
-      return new RunFunctionAction(this, this.createBranchRowPanel, level);
+      return new Sequence()
+        .RunFunction(this, function () {
+          this.debug("createBranchRowPanelAction()", { level: level });
+        })
+        .RunFunction(this, this.createBranchRowPanel, level);
     },
 
     renderRowsAction: function () {
-      var createBranchRowPanelAction = _.chain(this.createBranchRowPanelAction)
-        .bind(this)
-        .unary()
-        .value();
-
-      return _.map(LEVELS, createBranchRowPanelAction);
+      return _.map(LEVELS, this.createBranchRowPanelAction.bind(this));
     },
 
     selectBranchAction: function (level) {
       var seq = new Sequence();
       var side;
 
-      if (IsTalentSelected(level, "right", this.selected)) {
+      if (Util.IsTalentSelected(level, "right", this.selected)) {
         side = "RIGHT";
-      } else if (IsTalentSelected(level, "left", this.selected)) {
+      } else if (Util.IsTalentSelected(level, "left", this.selected)) {
         side = "LEFT";
       }
 
+      seq = seq.RunFunction(this, function () {
+        this.debug("selectBranchAction()", { level: level, side: side });
+      });
+
       if (side) {
-        seq.RunFunction(this, this.selectBranchSide, level, side);
+        seq = seq.RunFunction(this, this.selectBranchSide, level, side);
       }
 
       return seq;
     },
 
     selectBranchesAction: function () {
-      var selectBranchAction = _.chain(this.selectBranchAction).bind(this).unary().value();
-
-      var actions = _.map(LEVELS, selectBranchAction);
+      var actions = _.map(LEVELS, this.selectBranchAction.bind(this));
 
       return new ParallelSequence().Action(actions);
     },
@@ -190,7 +263,23 @@
       var seq = new Sequence();
 
       _.each(SIDES, function (s) {
+        seq.RunFunction(this, function () {
+          this.debug("selectBranchSide() : RemoveClass", {
+            level: level,
+            side: s,
+            class: CLASSES.BRANCH_SELECTED[s],
+          });
+        });
+
         seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[s]);
+      });
+
+      seq.RunFunction(this, function () {
+        this.debug("selectBranchSide() : AddClass", {
+          level: level,
+          side: side,
+          class: CLASSES.BRANCH_SELECTED[side],
+        });
       });
 
       seq.AddClass(row, CLASSES.BRANCH_SELECTED[side]);
