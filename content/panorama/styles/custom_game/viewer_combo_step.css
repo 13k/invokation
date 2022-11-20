@@ -8,12 +8,12 @@
 .ViewerComboStepIcon {
   width: 48px;
   height: 48px;
-  box-shadow: goldColor -2px -2px 4px 4px;
+  box-shadow: goldColor&cc 0 0 2px 2px;
   background-color: #000d;
 }
 
 .ViewerComboStepRoot.ComboStepOptional .ViewerComboStepIcon {
-  box-shadow: #000 -2px -2px 4px 4px;
+  box-shadow: #000 0 0 2px 2px;
 }
 
 #ComboStepImage {

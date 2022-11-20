@@ -12,10 +12,6 @@
   var COMBOS = global.COMBOS;
   var EVENTS = global.Const.EVENTS;
 
-  var CLASSES = {
-    CLOSED: "Hide",
-  };
-
   var COMBO_STEP_LAYOUT = "file://{resources}/layout/custom_game/viewer_combo_step.xml";
   var TALENTS_DISPLAY_LAYOUT = "file://{resources}/layout/custom_game/ui/talents_display.xml";
   var PROPERTIES_LAYOUT = "file://{resources}/layout/custom_game/viewer_properties.xml";
@@ -26,6 +22,11 @@
   };
 
   var ORBS = ["quas", "wex", "exort"];
+
+  var CLASSES = {
+    CLOSED: "Hide",
+    OPTIONAL_STEP: "ComboStepOptional",
+  };
 
   function stepPanelId(step) {
     return "combo_step_" + step.id + "_" + step.name;
@@ -103,6 +104,10 @@
     createStepPanel: function (parent, step) {
       var id = stepPanelId(step);
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
+
+      if (!step.required) {
+        panel.AddClass(CLASSES.OPTIONAL_STEP);
+      }
 
       panel.component.Input("SetStep", { combo: this.combo, step: step });
 
