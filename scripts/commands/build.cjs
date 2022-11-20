@@ -1,12 +1,10 @@
-"use strict";
-
 const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
 const temp = require("temp");
 
-const wsl = require("../wsl");
-const { spawn } = require("../util");
+const wsl = require("../wsl.cjs");
+const { spawn } = require("../util.cjs");
 
 temp.track();
 

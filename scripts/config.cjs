@@ -1,5 +1,3 @@
-"use strict";
-
 const path = require("path");
 
 function createConfig(rootPath, dota2Path, log) {
@@ -34,4 +32,6 @@ function createConfig(rootPath, dota2Path, log) {
   };
 }
 
-module.exports = createConfig;
+module.exports = {
+  createConfig,
+};

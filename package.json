@@ -6,12 +6,11 @@
     "node": ">=12.11"
   },
   "scripts": {
-    "build": "node scripts/main.js build",
-    "clean": "node scripts/main.js clean",
-    "format:lua": "node scripts/main.js format-lua",
-    "launch:game": "node scripts/main.js launch game",
-    "launch:tools": "node scripts/main.js launch tools",
-    "link": "node scripts/main.js link"
+    "build": "node scripts/main.cjs build",
+    "clean": "node scripts/main.cjs clean",
+    "launch:game": "node scripts/main.cjs launch game",
+    "launch:tools": "node scripts/main.cjs launch tools",
+    "link": "node scripts/main.cjs link"
   },
   "devDependencies": {
     "@yarnpkg/sdks": "^3.0.0-rc.28",

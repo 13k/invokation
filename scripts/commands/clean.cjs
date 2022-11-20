@@ -1,5 +1,3 @@
-"use strict";
-
 const rmrf = require("rimraf");
 
 async function clean({ noop }, { log, customGame: { contentPath, gamePath } }) {
