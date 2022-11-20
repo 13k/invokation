@@ -1,5 +1,3 @@
-"use strict";
-
 const { spawnSync } = require("child_process");
 
 const WSLPATH_BIN = "wslpath";
@@ -36,9 +34,11 @@ module.exports = {
   isWSL() {
     return !!process.env.WSL_DISTRO_NAME;
   },
+
   unixPath(path, options) {
     return wslpath(path, { unix: true, ...options });
   },
+
   windowsPath(path, options) {
     return wslpath(path, { windows: true, ...options });
   },

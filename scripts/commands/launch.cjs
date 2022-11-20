@@ -1,5 +1,3 @@
-"use strict";
-
 const { spawn } = require("../util");
 
 const NOBREAKPAD_APPIDS = [375360];

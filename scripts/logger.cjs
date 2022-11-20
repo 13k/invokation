@@ -1,9 +1,7 @@
-"use strict";
-
 const chalk = require("chalk");
 const emoji = require("node-emoji");
 
-const { createEnum } = require("./util");
+const { createEnum } = require("./util.cjs");
 
 const chalkOptions = chalk.supportsColor ? { level: chalk.supportsColor.level } : { level: 0 };
 const chalkInstance = new chalk.Instance(chalkOptions);
@@ -232,4 +230,6 @@ class Logger {
   }
 }
 
-module.exports = Logger;
+module.exports = {
+  Logger,
+};

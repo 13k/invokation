@@ -1,13 +1,11 @@
-"use strict";
-
 const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
 const { program } = require("commander");
 
-const createConfig = require("./config");
-const Logger = require("./logger");
-const wsl = require("./wsl");
+const wsl = require("./wsl.cjs");
+const { createConfig } = require("./config.cjs");
+const { Logger } = require("./logger.cjs");
 
 const ROOT_PATH = path.dirname(__dirname);
 const LOG = new Logger();
@@ -28,7 +26,7 @@ function loadDotenv(path) {
 
 function createCommand(name, config) {
   return (...args) => {
-    const main = require(`./commands/${name}`);
+    const main = require(`./commands/${name}.cjs`);
 
     args.pop(); // cmd object
 
@@ -66,12 +64,6 @@ async function parseArgs(config) {
     .command("convert-shops <input> <output>")
     .description(`Convert a game KeyValues shops.txt file to custom game KeyValues shops.txt`)
     .action(createCommand("convert-shops", config));
-
-  program
-    .command("format-lua")
-    .description("Format Lua (vscript) source files")
-    .option(`-n, --noop`, `Only print paths that would be formatted`, false)
-    .action(createCommand("format-lua", config));
 
   program
     .command(`launch <tool> [toolArgs...]`)

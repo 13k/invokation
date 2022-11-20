@@ -1,5 +1,3 @@
-"use strict";
-
 const { spawnSync } = require("child_process");
 
 function createEnum(valuesByName) {
