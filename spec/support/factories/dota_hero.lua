@@ -14,7 +14,7 @@ Factory.define("dota_hero", function(attributes, options)
   options = options or {}
 
   local kv = HeroKeyValues(attributes.name, attributes)
-  local hero = CDOTA_BaseNPC_Hero(attributes, {kv = kv})
+  local hero = CDOTA_BaseNPC_Hero(attributes, { kv = kv })
 
   if m.isTable(options.gold) then
     if m.isNumber(options.gold.reliable) then
@@ -53,6 +53,6 @@ Factory.define("dota_hero", function(attributes, options)
 end)
 
 Factory.define("dota_hero_invoker", function(attributes, options)
-  attributes = m.extend({}, {name = UNITS.INVOKER}, attributes or {})
+  attributes = m.extend({}, { name = UNITS.INVOKER }, attributes or {})
   return Factory.create("dota_hero", attributes, options)
 end)

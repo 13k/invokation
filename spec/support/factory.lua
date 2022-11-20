@@ -1,4 +1,4 @@
-local M = {definitions = {}}
+local M = { definitions = {} }
 
 local ERRF_NOT_DEFINED = "Factory %q not defined"
 
