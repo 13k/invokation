@@ -2,9 +2,11 @@
 
 (function (global, context) {
   var _ = global.lodash;
+  var NetTableListener = global.NetTableListener;
   var CombosCollection = global.CombosCollection;
-  var AbilitiesKeyValues = global.AbilitiesKeyValues;
   var CreateComponent = context.CreateComponent;
+
+  var NET_TABLE = global.Const.NET_TABLE;
 
   var UI_CONFIG = {
     // [0] Time of day (clock)
@@ -76,9 +78,16 @@
       });
 
       global.COMBOS = new CombosCollection();
-      global.COMBOS.Load();
+      global.HERO_DATA = new NetTableListener(NET_TABLE.MAIN.NAME, NET_TABLE.MAIN.KEYS.HERO_DATA);
+      global.HERO_KV = new NetTableListener(NET_TABLE.HERO.NAME, NET_TABLE.HERO.KEYS.KEY_VALUES);
+      global.ABILITIES_KV = new NetTableListener(
+        NET_TABLE.ABILITIES.NAME,
+        NET_TABLE.ABILITIES.KEYS.KEY_VALUES
+      );
 
-      global.ABILITIES_KV = new AbilitiesKeyValues();
+      global.COMBOS.Load();
+      global.HERO_DATA.Load();
+      global.HERO_KV.Load();
       global.ABILITIES_KV.Load();
 
       this.debug("init");

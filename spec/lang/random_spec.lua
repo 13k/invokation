@@ -22,6 +22,7 @@ describe("function", function()
       local stubTime
 
       before_each(function()
+        -- selene: allow(global_usage)
         stubTime = stub.new(_G, "Time", 31)
       end)
 

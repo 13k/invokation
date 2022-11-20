@@ -1,9 +1,10 @@
 local m = require("moses")
 local class = require("pl.class")
 
+-- selene: allow(incorrect_standard_library_use)
 CDOTABaseAbility = class(CBaseEntity)
 
-local DEFAULTS = {level = 0, MaxLevel = 1}
+local DEFAULTS = { level = 0, MaxLevel = 1 }
 
 function CDOTABaseAbility:_init(attributes)
   self:super(m.extend({}, DEFAULTS, attributes or {}))
@@ -37,7 +38,7 @@ function CDOTABaseAbility:SetLevel(level)
   self.level = level
 end
 
-function CDOTABaseAbility:UpgradeAbility(supressSpeech)
+function CDOTABaseAbility:UpgradeAbility(_supressSpeech)
   if self:CanAbilityBeUpgraded() then
     self:SetLevel(self:GetLevel() + 1)
   end
@@ -63,5 +64,4 @@ function CDOTABaseAbility:GetSpecialValueFor(key)
   return m.path(self, "special", key)
 end
 
-function CDOTABaseAbility:EndCooldown()
-end
+function CDOTABaseAbility:EndCooldown() end

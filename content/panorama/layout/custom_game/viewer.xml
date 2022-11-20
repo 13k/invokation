@@ -29,7 +29,9 @@
             </Panel>
 
             <Panel class="ViewerAbilitiesBuild" hittest="false">
-              <Panel id="ViewerTalents" class="AbilityCircle" hittest="false" />
+              <Panel id="ViewerTalents" class="AbilityCircle" />
+              <!-- <DOTAUITalentDisplay id="TalentTree" onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)" onmouseout="DOTAHUDHideStatBranchTooltip()" /> -->
+              <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
                 <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />

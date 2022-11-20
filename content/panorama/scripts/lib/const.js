@@ -8,12 +8,24 @@
   };
 
   var NET_TABLE = {
-    MAIN: "invokation",
-    KEYS: {
-      MAIN: {
+    MAIN: {
+      NAME: "invokation",
+      KEYS: {
         COMBOS: "combos",
-        ABILITIES_KEY_VALUES: "abilities_kv",
         SHOP_ITEMS: "shop_items",
+        HERO_DATA: "hero_data",
+      },
+    },
+    HERO: {
+      NAME: "hero",
+      KEYS: {
+        KEY_VALUES: "kv",
+      },
+    },
+    ABILITIES: {
+      NAME: "abilities",
+      KEYS: {
+        KEY_VALUES: "kv",
       },
     },
   };
@@ -101,13 +113,13 @@
   // VScript dynamically parses the hero KeyValues for these names.
 
   INVOKER.ABILITY_TALENT_L10_RIGHT = "special_bonus_unique_invoker_10";
-  INVOKER.ABILITY_TALENT_L10_LEFT = "special_bonus_unique_invoker_6";
-  INVOKER.ABILITY_TALENT_L15_RIGHT = "special_bonus_unique_invoker_13";
+  INVOKER.ABILITY_TALENT_L10_LEFT = "special_bonus_unique_invoker_3";
+  INVOKER.ABILITY_TALENT_L15_RIGHT = "special_bonus_unique_invoker_11";
   INVOKER.ABILITY_TALENT_L15_LEFT = "special_bonus_unique_invoker_9";
-  INVOKER.ABILITY_TALENT_L20_RIGHT = "special_bonus_unique_invoker_3";
+  INVOKER.ABILITY_TALENT_L20_RIGHT = "special_bonus_unique_invoker_6";
   INVOKER.ABILITY_TALENT_L20_LEFT = "special_bonus_unique_invoker_5";
   INVOKER.ABILITY_TALENT_L25_RIGHT = "special_bonus_unique_invoker_2";
-  INVOKER.ABILITY_TALENT_L25_LEFT = "special_bonus_unique_invoker_11";
+  INVOKER.ABILITY_TALENT_L25_LEFT = "special_bonus_unique_invoker_13";
 
   INVOKER.ORB_ABILITIES = {};
   INVOKER.ORB_ABILITIES[INVOKER.ABILITY_QUAS] = INVOKER.ABILITY_QUAS;

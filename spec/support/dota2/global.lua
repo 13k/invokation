@@ -35,7 +35,7 @@ function LoadKeyValues(filename)
   return Fixtures.require(filename)
 end
 
-function CreateUnitByName(name, location, findClearSpace, npcOwner, unitOwner, teamNumber)
+function CreateUnitByName(name, location, _findClearSpace, npcOwner, unitOwner, teamNumber)
   return Factory.create("dota_unit", {
     name = name,
     origin = location,
@@ -45,29 +45,12 @@ function CreateUnitByName(name, location, findClearSpace, npcOwner, unitOwner, t
   })
 end
 
-function EmitGlobalSound(event)
-end
-
-function EmitSoundOnClient(event, player)
-end
-
-function EmitSoundOn(event, entity)
-end
-
-function EmitSoundOnLocationWithCaster(location, event, entity)
-end
-
-function EmitSoundOnLocationForAllies(location, event, entity)
-end
-
-function EmitAnnouncerSound(event)
-end
-
-function EmitAnnouncerSoundForPlayer(event, playerId)
-end
-
-function EmitAnnouncerSoundForTeam(event, team)
-end
-
-function EmitAnnouncerSoundForTeamOnLocation(event, team, location)
-end
+function EmitGlobalSound(_event) end
+function EmitSoundOnClient(_event, _player) end
+function EmitSoundOn(_event, _entity) end
+function EmitSoundOnLocationWithCaster(_location, _event, _entity) end
+function EmitSoundOnLocationForAllies(_location, _event, _entity) end
+function EmitAnnouncerSound(_event) end
+function EmitAnnouncerSoundForPlayer(_event, _playerId) end
+function EmitAnnouncerSoundForTeam(_event, _team) end
+function EmitAnnouncerSoundForTeamOnLocation(_event, _team, _location) end

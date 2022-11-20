@@ -1,3 +1,4 @@
+-- selene: allow(incorrect_standard_library_use)
 GameRules = {}
 
 function GameRules:GetGameModeEntity()
@@ -16,6 +17,6 @@ function GameRules:NumDroppedItems()
   return 0
 end
 
-function GameRules:GetDroppedItem(i)
+function GameRules:GetDroppedItem(_i)
   return nil
 end

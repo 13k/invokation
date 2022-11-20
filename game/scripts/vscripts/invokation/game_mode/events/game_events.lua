@@ -13,7 +13,7 @@ local ERRF_ABILITY_OR_ITEM_NOT_FOUND = "Could not find ability or item named '%q
 -- @tparam string state
 -- @tparam table payload
 function GameMode:OnGameRulesStateChange(state, payload)
-	self:d("OnGameRulesStateChange", { state = state, payload = payload })
+  self:d("OnGameRulesStateChange", { state = state, payload = payload })
 end
 
 --- Called 1 to 2 times as the player connects initially but before they have
@@ -21,14 +21,14 @@ end
 --
 -- @tparam table payload
 function GameMode:OnPlayerConnect(payload)
-	self:d("OnPlayerConnect", { payload = payload })
+  self:d("OnPlayerConnect", { payload = payload })
 end
 
 --- Called once when the player fully connects and becomes "Ready" during
 -- loading.
 -- @tparam CDOTAPlayer player
 function GameMode:OnConnectFull(player)
-	self:d("OnConnectFull", { player = player:GetPlayerID() })
+  self:d("OnConnectFull", { player = player:GetPlayerID() })
 end
 
 --- Called once and only once as soon as the first player (almost certain to be
@@ -37,7 +37,7 @@ end
 -- It can be used to initialize state that isn't initializeable in @{Activate}
 -- but needs to be done before everyone loads in.
 function GameMode:OnFirstPlayerLoaded()
-	self:d("OnFirstPlayerLoaded")
+  self:d("OnFirstPlayerLoaded")
 end
 
 --- Called once and only once after all players have loaded into the game,
@@ -46,7 +46,7 @@ end
 -- It can be used to initialize non-hero player state or adjust the hero
 -- selection (i.e. force random etc)
 function GameMode:OnAllPlayersLoaded()
-	self:d("OnAllPlayersLoaded")
+  self:d("OnAllPlayersLoaded")
 end
 
 --- Cleanup a player when they leave.
@@ -56,7 +56,7 @@ end
 -- @tparam string payload.reason
 -- @tparam int payload.userid
 function GameMode:OnDisconnect(payload)
-	self:d("OnDisconnect", { payload = payload })
+  self:d("OnDisconnect", { payload = payload })
 end
 
 --- A player has reconnected to the game.
@@ -66,17 +66,17 @@ end
 --
 -- @tparam table payload
 function GameMode:OnPlayerReconnect(payload)
-	self:d("OnPlayerReconnect", { payload = payload })
+  self:d("OnPlayerReconnect", { payload = payload })
 end
 
 --- An NPC has spawned (including heroes).
 -- @tparam CDOTA_BaseNPC unit Spawned unit
 function GameMode:OnNPCSpawned(unit)
-	self:d("OnNPCSpawned", {
-		unitname = unit:GetName(),
-		classname = unit:GetClassname(),
-		ownername = unit:GetOwner() and unit:GetOwner():GetName(),
-	})
+  self:d("OnNPCSpawned", {
+    unitname = unit:GetName(),
+    classname = unit:GetClassname(),
+    ownername = unit:GetOwner() and unit:GetOwner():GetName(),
+  })
 end
 
 --- Called once and only once for every player when they spawn into the game
@@ -89,7 +89,7 @@ end
 --
 -- @tparam CDOTA_BaseNPC_Hero hero
 function GameMode:OnHeroInGame(hero)
-	self:d("OnHeroInGame", { hero = hero:GetUnitName() })
+  self:d("OnHeroInGame", { hero = hero:GetUnitName() })
 end
 
 --[[--
@@ -103,7 +103,7 @@ This function is useful for starting any game logic timers/thinkers,
 beginning the first round, etc.
 ]]
 function GameMode:OnGameInProgress()
-	self:d("OnGameInProgress")
+  self:d("OnGameInProgress")
 end
 
 --- An entity has been hurt.
@@ -113,26 +113,26 @@ end
 -- @tparam[opt] int payload.entindex_attacker Attacker (unit) entity index
 -- @tparam[opt] int payload.entindex_inflictor Inflictor (item, ability, etc) entity index
 function GameMode:OnEntityHurt(payload)
-	self:d("OnEntityHurt", { payload = payload })
+  self:d("OnEntityHurt", { payload = payload })
 
-	local victim = Unit(EntIndexToHScript(payload.entindex_killed))
+  local victim = Unit(EntIndexToHScript(payload.entindex_killed))
 
-	local attacker
-	if payload.entindex_attacker ~= nil then
-		attacker = Unit(EntIndexToHScript(payload.entindex_attacker))
-	end
+  local attacker
+  if payload.entindex_attacker ~= nil then
+    attacker = Unit(EntIndexToHScript(payload.entindex_attacker))
+  end
 
-	local inflictor
-	-- FIXME: This is a hack to fix an issue when an entity is killed with `ForceKill`,
-	-- FIXME: which will trigger this event. I'm not sure which enum `damagebits` is using,
-	-- FIXME: but regular damage seems to always set it to 0 while `ForceKill` sets it to 4096
-	if payload.entindex_inflictor ~= nil and payload.damagebits == 0 then
-		inflictor = Ability(EntIndexToHScript(payload.entindex_inflictor))
-	end
+  local inflictor
+  -- FIXME: This is a hack to fix an issue when an entity is killed with `ForceKill`,
+  -- FIXME: which will trigger this event. I'm not sure which enum `damagebits` is using,
+  -- FIXME: but regular damage seems to always set it to 0 while `ForceKill` sets it to 4096
+  if payload.entindex_inflictor ~= nil and payload.damagebits == 0 then
+    inflictor = Ability(EntIndexToHScript(payload.entindex_inflictor))
+  end
 
-	local damage = DamageInstance(victim, payload.damage, attacker, inflictor)
+  local damage = DamageInstance(victim, payload.damage, attacker, inflictor)
 
-	self.combos:OnEntityHurt(damage)
+  self.combos:OnEntityHurt(damage)
 end
 
 --- An item was picked up off the ground.
@@ -143,7 +143,7 @@ end
 -- @tparam[opt] int payload.UnitEntityIndex Unit entity index
 -- @tparam[opt] int payload.HeroEntityIndex Hero entity index
 function GameMode:OnItemPickedUp(payload)
-	self:d("OnItemPickedUp", { payload = payload })
+  self:d("OnItemPickedUp", { payload = payload })
 end
 
 --- An item was purchased by a player.
@@ -152,11 +152,11 @@ end
 -- @tparam string payload.itemname Item name
 -- @tparam number payload.itemcost Item cost
 function GameMode:OnItemPurchased(payload)
-	self:d("OnItemPurchased", { payload = payload })
+  self:d("OnItemPurchased", { payload = payload })
 
-	local player = PlayerResource:GetPlayer(payload.PlayerID)
+  local player = PlayerResource:GetPlayer(payload.PlayerID)
 
-	self.combos:OnItemPurchased(player, { item = payload.itemname, cost = payload.itemcost })
+  self.combos:OnItemPurchased(player, { item = payload.itemname, cost = payload.itemcost })
 end
 
 --- An ability was used by a player (including items).
@@ -165,20 +165,20 @@ end
 -- @tparam int payload.caster_entindex Caster (unit) entity index
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnAbilityUsed(payload)
-	self:d("OnAbilityUsed", { payload = payload })
+  self:d("OnAbilityUsed", { payload = payload })
 
-	local player = PlayerResource:GetPlayer(payload.PlayerID)
-	local caster = Unit(EntIndexToHScript(payload.caster_entindex))
-	local abilityEnt = caster:FindAbilityOrItem(payload.abilityname)
+  local player = PlayerResource:GetPlayer(payload.PlayerID)
+  local caster = Unit(EntIndexToHScript(payload.caster_entindex))
+  local abilityEnt = caster:FindAbilityOrItem(payload.abilityname)
 
-	if abilityEnt == nil then
-		local err = ERRF_ABILITY_OR_ITEM_NOT_FOUND:format(payload.abilityname, caster.name)
-		error(err)
-	end
+  if abilityEnt == nil then
+    local err = ERRF_ABILITY_OR_ITEM_NOT_FOUND:format(payload.abilityname, caster.name)
+    error(err)
+  end
 
-	local ability = Ability(abilityEnt)
+  local ability = Ability(abilityEnt)
 
-	self.combos:OnAbilityUsed(player, caster, ability)
+  self.combos:OnAbilityUsed(player, caster, ability)
 end
 
 --- A non-player entity (necro-book, chen creep, etc) used an ability.
@@ -186,7 +186,7 @@ end
 -- @tparam int payload.caster_entindex Caster (unit) entity index
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnNonPlayerUsedAbility(payload)
-	self:d("OnNonPlayerUsedAbility", { payload = payload })
+  self:d("OnNonPlayerUsedAbility", { payload = payload })
 end
 
 --- A player changed their name.
@@ -194,7 +194,7 @@ end
 -- @tparam string payload.newname New name
 -- @tparam string payload.oldName Old name
 function GameMode:OnPlayerChangedName(payload)
-	self:d("OnPlayerChangedName", { payload = payload })
+  self:d("OnPlayerChangedName", { payload = payload })
 end
 
 --- A player leveled up an ability.
@@ -202,7 +202,7 @@ end
 -- @tparam int payload.player Player entity index
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnPlayerLearnedAbility(payload)
-	self:d("OnPlayerLearnedAbility", { payload = payload })
+  self:d("OnPlayerLearnedAbility", { payload = payload })
 end
 
 --- A channelled ability finished by either completing or being interrupted.
@@ -210,7 +210,7 @@ end
 -- @tparam string payload.abilityname Ability name
 -- @tparam int payload.interrupted `1` if ability was interrupted
 function GameMode:OnAbilityChannelFinished(payload)
-	self:d("OnAbilityChannelFinished", { payload = payload })
+  self:d("OnAbilityChannelFinished", { payload = payload })
 end
 
 --- A player leveled up.
@@ -218,7 +218,7 @@ end
 -- @tparam int payload.player Player entity index
 -- @tparam int payload.level Level
 function GameMode:OnPlayerLevelUp(payload)
-	self:d("OnPlayerLevelUp", { payload = payload })
+  self:d("OnPlayerLevelUp", { payload = payload })
 end
 
 --- A player last hit a creep, a tower, or a hero.
@@ -229,7 +229,7 @@ end
 -- @tparam int payload.HeroKill `1` if last hit was a hero kill
 -- @tparam int payload.TowerKill `1` if last hit was a tower kill
 function GameMode:OnLastHit(payload)
-	self:d("OnLastHit", { payload = payload })
+  self:d("OnLastHit", { payload = payload })
 end
 
 --- A tree was cut down by tango, quelling blade, etc.
@@ -237,7 +237,7 @@ end
 -- @tparam number payload.tree_x X component of tree's coordinate
 -- @tparam number payload.tree_y Y component of tree's coordinate
 function GameMode:OnTreeCut(payload)
-	self:d("OnTreeCut", { payload = payload })
+  self:d("OnTreeCut", { payload = payload })
 end
 
 --- A rune was activated by a player.
@@ -245,7 +245,7 @@ end
 -- @tparam int payload.PlayerID Player id
 -- @tparam int payload.rune Rune id (`DOTA_RUNE_*` constants)
 function GameMode:OnRuneActivated(payload)
-	self:d("OnRuneActivated", { payload = payload })
+  self:d("OnRuneActivated", { payload = payload })
 end
 
 --- A player took damage from a tower.
@@ -253,7 +253,7 @@ end
 -- @tparam int payload.PlayerID Player id
 -- @tparam number payload.damage Damage amount
 function GameMode:OnPlayerTakeTowerDamage(payload)
-	self:d("OnPlayerTakeTowerDamage", { payload = payload })
+  self:d("OnPlayerTakeTowerDamage", { payload = payload })
 end
 
 --- A player picked a hero.
@@ -262,7 +262,7 @@ end
 -- @tparam int payload.heroindex Hero entity index
 -- @tparam string payload.hero Hero class
 function GameMode:OnPlayerPickHero(payload)
-	self:d("OnPlayerPickHero", { payload = payload })
+  self:d("OnPlayerPickHero", { payload = payload })
 end
 
 --- A player killed another player in a multi-team context.
@@ -272,7 +272,7 @@ end
 -- @tparam int payload.herokills Number of kills?
 -- @tparam int payload.teamnumber Team number
 function GameMode:OnTeamKillCredit(payload)
-	self:d("OnTeamKillCredit", { payload = payload })
+  self:d("OnTeamKillCredit", { payload = payload })
 end
 
 --- An entity died.
@@ -280,18 +280,18 @@ end
 -- @tparam[opt] CDOTA_BaseNPC attacker Attacker unit
 -- @tparam[opt] CDOTABaseAbility inflictor Inflictor ability
 function GameMode:OnEntityKilled(killed, attacker, inflictor)
-	self:d("OnEntityKilled", {
-		killed = killed:GetName(),
-		attacker = attacker and attacker:GetName(),
-		inflictor = inflictor and inflictor:GetName(),
-	})
+  self:d("OnEntityKilled", {
+    killed = killed:GetName(),
+    attacker = attacker and attacker:GetName(),
+    inflictor = inflictor and inflictor:GetName(),
+  })
 end
 
 --- Called whenever illusions are created and tells you which was/is the original entity.
 -- @tparam table payload
 -- @tparam int payload.original_entindex Original unit entity index
 function GameMode:OnIllusionsCreated(payload)
-	self:d("OnIllusionsCreated", { payload = payload })
+  self:d("OnIllusionsCreated", { payload = payload })
 end
 
 --- Called whenever an item is combined to create a new item.
@@ -300,7 +300,7 @@ end
 -- @tparam number payload.itemcost Item cost
 -- @tparam[opt] int payload.PlayerID Player id
 function GameMode:OnItemCombined(payload)
-	self:d("OnItemCombined", { payload = payload })
+  self:d("OnItemCombined", { payload = payload })
 end
 
 --- Called whenever an ability begins its PhaseStart phase (but before it is actually cast).
@@ -308,7 +308,7 @@ end
 -- @tparam int payload.PlayerID Player id
 -- @tparam string payload.abilityname Ability name
 function GameMode:OnAbilityCastBegins(payload)
-	self:d("OnAbilityCastBegins", { payload = payload })
+  self:d("OnAbilityCastBegins", { payload = payload })
 end
 
 --- Called whenever a tower is killed.
@@ -317,7 +317,7 @@ end
 -- @tparam int payload.gold Gold gained amount
 -- @tparam int payload.teamnumber Team number
 function GameMode:OnTowerKill(payload)
-	self:d("OnTowerKill", { payload = payload })
+  self:d("OnTowerKill", { payload = payload })
 end
 
 --- Called whenever a player changes their custom team selection during Game Setup.
@@ -326,7 +326,7 @@ end
 -- @tparam int payload.success `1` if change was successful
 -- @tparam int payload.team_id Team number
 function GameMode:OnPlayerSelectedCustomTeam(payload)
-	self:d("OnPlayerSelectedCustomTeam", { payload = payload })
+  self:d("OnPlayerSelectedCustomTeam", { payload = payload })
 end
 
 --- Called whenever an NPC reaches its goal position/target.
@@ -335,7 +335,7 @@ end
 -- @tparam int payload.goal_entindex Goal entity index
 -- @tparam int payload.next_goal_entindex Next goal entity index
 function GameMode:OnNPCGoalReached(payload)
-	self:d("OnNPCGoalReached", { payload = payload })
+  self:d("OnNPCGoalReached", { payload = payload })
 end
 
 --- Called whenever any player sends a chat message.
@@ -345,5 +345,5 @@ end
 -- @tparam string payload.text Message
 -- @tparam int payload.teamonly `1` if message was sent to allies only
 function GameMode:OnPlayerChat(payload)
-	self:d("OnPlayerChat", { payload = payload })
+  self:d("OnPlayerChat", { payload = payload })
 end

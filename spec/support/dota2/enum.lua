@@ -1,3 +1,5 @@
+--# selene: allow(incorrect_standard_library_use)
+
 DOTA_TEAM_GOODGUYS = 2
 DOTA_TEAM_BADGUYS = 3
 DOTA_TEAM_NEUTRALS = 4

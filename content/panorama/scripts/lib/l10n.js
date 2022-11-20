@@ -56,16 +56,22 @@
     return exports.ParameterizedKey(COMBO_PROPERTIES_PREFIX, params);
   };
 
-  exports.Localize = function (key) {
-    return $.Localize(exports.Key(key));
-  };
-
-  exports.LocalizeFallback = function (key, fallbackKey) {
+  exports.Localize = function (key, panel) {
     key = exports.Key(key);
 
-    var l10n = exports.Localize(key);
+    if (panel) {
+      return $.Localize(key, panel);
+    }
 
-    return l10n === key ? exports.Localize(fallbackKey) : l10n;
+    return $.Localize(key);
+  };
+
+  exports.LocalizeFallback = function (key, fallbackKey, panel) {
+    key = exports.Key(key);
+
+    var l10n = exports.Localize(key, panel);
+
+    return l10n === key ? exports.Localize(fallbackKey, panel) : l10n;
   };
 
   exports.LocalizeParameterized = function (prefix, params) {

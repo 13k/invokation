@@ -5,12 +5,10 @@ describe("delegation", function()
   describe(".delegate", function()
     local Engine = class()
 
-    -- luacheck: no self
     function Engine:start()
       return "engine started"
     end
 
-    -- luacheck: no self
     function Engine:shutdown()
       return "engine stopped"
     end
@@ -21,7 +19,7 @@ describe("delegation", function()
       self.engine = e
     end
 
-    delegation.delegate(Car, "engine", {"start", "shutdown"})
+    delegation.delegate(Car, "engine", { "start", "shutdown" })
 
     local engine, car
     local spyStart, spyShutdown
@@ -46,8 +44,8 @@ describe("delegation", function()
     end)
 
     it("creates methods that delegate to the named attribute", function()
-      assert.are.equal("engine started", car:start())
-      assert.are.equal("engine stopped", car:shutdown())
+      assert.equal("engine started", car:start())
+      assert.equal("engine stopped", car:shutdown())
 
       assert.spy(spyStart).was.called_with(engine)
       assert.spy(spyShutdown).was.called_with(engine)

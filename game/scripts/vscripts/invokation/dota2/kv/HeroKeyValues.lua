@@ -12,7 +12,7 @@ local ABILITY_KEY_PATT = "^Ability(%d+)$"
 -- @tparam string name Hero name
 -- @tparam {[string]=any,...} kv KeyValues data
 function M:_init(name, kv)
-  local fields = m.extend({}, {Name = name}, kv)
+  local fields = m.extend({}, { Name = name }, kv)
 
   m.extend(self, fields)
 
@@ -45,7 +45,7 @@ end
 -- @treturn {string,...} Array of ability names
 function M:Abilities()
   if self.abilities == nil then
-    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, {2, 1}))
+    self.abilities = m.map(self:Serialize(), m.rearg(selectAbilityEntry, { 2, 1 }))
   end
 
   return self.abilities

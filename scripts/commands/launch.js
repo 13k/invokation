@@ -2,26 +2,44 @@
 
 const { spawn } = require("../util");
 
+const NOBREAKPAD_APPIDS = [375360];
+
+const LAUNCH_OPTIONS = {
+  __common__: ["-novid", "-dev", "-uidev", "-nominidumps", "-condebug", "-toconsole", "-vconsole"],
+  game: [],
+  tools: ["-tools"],
+};
+
 async function launch(tool, toolArgs, { map }, { log, dota2, customGame }) {
-  let cmd;
-  const args = [];
+  const cmd = dota2.binPath;
+  let args = [];
 
   switch (tool) {
     case "game":
-      cmd = dota2.binPath;
       map = map || customGame.maps[0];
-      args.push("-novid", "+dota_launch_custom_game", customGame.name, map);
+
+      args.push("+dota_launch_custom_game", customGame.name, map);
+
       break;
     case "tools":
-      cmd = dota2.toolsBinPath;
-      args.push("-novid", "-console", "-addon", customGame.name);
+      args.push("-addon", customGame.name);
+
       break;
     default:
       log.fatal(`Invalid tool '${tool}'`);
+
       return;
   }
 
-  spawn(cmd, [...args, ...toolArgs], { cwd: dota2.path });
+  args = [...args, ...LAUNCH_OPTIONS["__common__"], ...LAUNCH_OPTIONS[tool], ...toolArgs];
+
+  NOBREAKPAD_APPIDS.forEach((appID) => {
+    args.push("-nobreakpad", appID.toString());
+  });
+
+  log.field("command", [cmd, ...args].join(" ")).info(`Launching ${tool}`);
+
+  spawn(cmd, args, { cwd: dota2.path });
 }
 
 module.exports = (tool, toolArgs, options, config) => launch(tool, toolArgs, options, config);

@@ -2,6 +2,7 @@ local m = require("moses")
 local class = require("pl.class")
 local Factory = require("support.factory")
 
+-- selene: allow(incorrect_standard_library_use)
 CBaseEntity = class()
 
 CBaseEntity.entIdx = 0
@@ -15,7 +16,7 @@ function CBaseEntity:_init(attributes)
   end
 
   self.team = self.team or DOTA_TEAM_NOTEAM
-  self.origin = self.origin or Factory.create("vector", {0, 0, 0})
+  self.origin = self.origin or Factory.create("vector", { 0, 0, 0 })
 
   if self.removed == nil then
     self.removed = false
@@ -74,8 +75,5 @@ function CBaseEntity:GetTeamNumber()
   return self.team
 end
 
-function CBaseEntity:StopSound(soundEvent)
-end
-
-function CBaseEntity:SetThink(...)
-end
+function CBaseEntity:StopSound(_soundEvent) end
+function CBaseEntity:SetThink() end

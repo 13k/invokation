@@ -1,5 +1,6 @@
 local class = require("pl.class")
 
+-- selene: allow(incorrect_standard_library_use)
 CDOTAPlayer = class(CBasePlayer)
 
 function CDOTAPlayer:_init(attributes)
@@ -14,5 +15,4 @@ function CDOTAPlayer:GetAssignedHero()
   return self.hero
 end
 
-function CDOTAPlayer:SetMusicStatus(status, intensity)
-end
+function CDOTAPlayer:SetMusicStatus(_status, _intensity) end

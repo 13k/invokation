@@ -158,7 +158,7 @@
     "invokation_viewer_abilities_build_title" "Recommended skill build"
 
     "invokation_viewer_sequence_title" "Sequence"
-    "invokation_viewer_sequence_disclaimer" "(Golden steps are required, others are optional)"
+    "invokation_viewer_sequence_disclaimer" "(Highlighted steps are required, others are optional)"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // ItemPicker

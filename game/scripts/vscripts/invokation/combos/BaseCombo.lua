@@ -51,7 +51,6 @@ end
 --- Returns the current step id.
 -- @treturn ?int The current step id or `nil`
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:CurrentStepId()
   error(M.ERR_NOT_IMPLEMENTED)
 end
@@ -59,7 +58,6 @@ end
 --- Returns the current step.
 -- @treturn ?combos.ComboStep The current step or `nil`
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:CurrentStep()
   error(M.ERR_NOT_IMPLEMENTED)
 end
@@ -67,7 +65,6 @@ end
 --- Returns the current next steps ids.
 -- @treturn {int,...} Array of next steps ids
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:NextStepsIds()
   error(M.ERR_NOT_IMPLEMENTED)
 end
@@ -75,7 +72,6 @@ end
 --- Returns the current next steps.
 -- @treturn {ComboStep,...} Array of next steps
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:NextSteps()
   error(M.ERR_NOT_IMPLEMENTED)
 end
@@ -84,8 +80,7 @@ end
 -- @tparam dota2.Ability ability Ability instance
 -- @treturn bool `true` if succeeded, `false` otherwise
 -- @abstract Subclasses must override it.
--- luacheck: no unused args
-function M:Progress(ability)
+function M:Progress(_ability)
   error(M.ERR_NOT_IMPLEMENTED)
 end
 
@@ -97,7 +92,6 @@ end
 --- Progresses combo to pre finish if possible.
 -- @treturn bool `true` if succeeded, `false` otherwise
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:PreFinish()
   error(M.ERR_NOT_IMPLEMENTED)
 end
@@ -105,7 +99,6 @@ end
 --- Finishes the combo if possible.
 -- @treturn bool `true` if succeeded, `false` otherwise
 -- @abstract Subclasses must override it.
--- luacheck: no self
 function M:Finish()
   error(M.ERR_NOT_IMPLEMENTED)
 end

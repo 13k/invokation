@@ -4,12 +4,13 @@ local Factory = require("support.factory")
 
 local INVENTORY = require("invokation.const.inventory")
 
+-- selene: allow(incorrect_standard_library_use)
 CDOTA_BaseNPC = class(CBaseFlex)
 
-local DEFAULTS = {hasInventory = false, level = 1, maxHealth = 0, health = 0, maxMana = 0, mana = 0}
+local DEFAULTS = { hasInventory = false, level = 1, maxHealth = 0, health = 0, maxMana = 0, mana = 0 }
 
 function CDOTA_BaseNPC:_init(attributes)
-  local baseAttributes = {abilities = {}, inventory = {}}
+  local baseAttributes = { abilities = {}, inventory = {} }
   self:super(m.extend(baseAttributes, DEFAULTS, attributes or {}))
 end
 
@@ -42,7 +43,7 @@ function CDOTA_BaseNPC:GetHealth()
   return self.health
 end
 
-function CDOTA_BaseNPC:Heal(amount, source)
+function CDOTA_BaseNPC:Heal(amount, _source)
   local health = self.health + amount
   self.health = health > self.maxHealth and self.maxHealth or health
 end
@@ -86,7 +87,7 @@ function CDOTA_BaseNPC:AddAbility(name)
     return ability
   end
 
-  ability = Factory.create("dota_ability", {name = name})
+  ability = Factory.create("dota_ability", { name = name })
 
   table.insert(self.abilities, ability)
   ability:SetAbilityIndex(#self.abilities)
@@ -157,7 +158,7 @@ function CDOTA_BaseNPC:AddItemByName(name)
     return nil
   end
 
-  self.inventory[slot] = CDOTA_Item({name = name})
+  self.inventory[slot] = CDOTA_Item({ name = name })
 
   return self.inventory[slot]
 end
@@ -180,12 +181,5 @@ function CDOTA_BaseNPC:SetIdleAcquire(value)
   self.idleAcquire = value
 end
 
-function CDOTA_BaseNPC:Hold()
-end
-
-function CDOTA_BaseNPC:Purge(removeBuffs,
-                             removeDebuffs,
-                             frameOnly,
-                             removeStuns,
-                             removeExceptions)
-end
+function CDOTA_BaseNPC:Hold() end
+function CDOTA_BaseNPC:Purge(_removeBuffs, _removeDebuffs, _frameOnly, _removeStuns, _removeExceptions) end

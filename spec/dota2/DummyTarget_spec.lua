@@ -9,11 +9,11 @@ describe("dota2.DummyTarget", function()
 
     stub.new(Units, "Create", function()
       i = i + 1
-      return create("dota_unit", {name = Units.DUMMY_TARGET, __test_index = i})
+      return create("dota_unit", { name = Units.DUMMY_TARGET, __test_index = i })
     end)
   end
 
-  local spawn = create("entity", {name = Units.DUMMY_TARGET_SPAWN})
+  local spawn = create("entity", { name = Units.DUMMY_TARGET_SPAWN })
 
   before_each(function()
     stub.new(Entities, "FindByName", function()
@@ -28,6 +28,7 @@ describe("dota2.DummyTarget", function()
   end)
 
   after_each(function()
+    -- selene: allow(incorrect_standard_library_use)
     Entities.FindByName:revert()
     Units.Create:revert()
     Units.Destroy:revert()
@@ -35,21 +36,21 @@ describe("dota2.DummyTarget", function()
 
   describe("constructor", function()
     it("finds and sets the spawn point entity", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
 
-      assert.are.equal(spawn, dummy.spawn)
+      assert.equal(spawn, dummy.spawn)
     end)
   end)
 
   describe("#IsAlive", function()
     it("returns true if the dummy unit exists", function()
-      local dummy = DummyTarget({spawn = true})
+      local dummy = DummyTarget({ spawn = true })
 
       assert.is_true(dummy:IsAlive())
     end)
 
     it("returns false if the dummy unit doesn't exist", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
 
       assert.is_false(dummy:IsAlive())
     end)
@@ -57,13 +58,13 @@ describe("dota2.DummyTarget", function()
 
   describe("#IsDead", function()
     it("returns false if the dummy unit exists", function()
-      local dummy = DummyTarget({spawn = true})
+      local dummy = DummyTarget({ spawn = true })
 
       assert.is_false(dummy:IsDead())
     end)
 
     it("returns true if the dummy unit doesn't exist", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
 
       assert.is_true(dummy:IsDead())
     end)
@@ -71,15 +72,15 @@ describe("dota2.DummyTarget", function()
 
   describe("#Spawn", function()
     it("does NOT spawn the dummy unit if it exists", function()
-      local dummy = DummyTarget({spawn = true})
+      local dummy = DummyTarget({ spawn = true })
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(1, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(1, dummy.entity.__test_index)
 
       dummy:Spawn()
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(1, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(1, dummy.entity.__test_index)
       assert.spy(Units.Create).was.called(1)
       assert.spy(Units.Create).was.called_with(Units.DUMMY_TARGET, {
         location = spawn:GetAbsOrigin(),
@@ -88,14 +89,14 @@ describe("dota2.DummyTarget", function()
     end)
 
     it("spawns the dummy unit if it doesn't exist", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
 
       assert.is_nil(dummy.entity)
 
       dummy:Spawn()
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(1, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(1, dummy.entity.__test_index)
       assert.spy(Units.Create).was.called(1)
       assert.spy(Units.Create).was.called_with(Units.DUMMY_TARGET, {
         location = spawn:GetAbsOrigin(),
@@ -106,7 +107,7 @@ describe("dota2.DummyTarget", function()
 
   describe("#Kill", function()
     it("does NOT kill the dummy unit if it doesn't exist", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
 
       assert.is_nil(dummy.entity)
 
@@ -117,9 +118,9 @@ describe("dota2.DummyTarget", function()
     end)
 
     it("kills the dummy unit if it exists", function()
-      local dummy = DummyTarget({spawn = true})
+      local dummy = DummyTarget({ spawn = true })
 
-      assert.is_not_nil(dummy.entity)
+      assert.not_nil(dummy.entity)
 
       dummy:Kill()
 
@@ -130,7 +131,7 @@ describe("dota2.DummyTarget", function()
 
   describe("#Reset", function()
     it("spawns the dummy unit if it doesn't exist", function()
-      local dummy = DummyTarget({spawn = false})
+      local dummy = DummyTarget({ spawn = false })
       local killSpy = spy.on(dummy, "Kill")
       local spawnSpy = spy.on(dummy, "Spawn")
 
@@ -138,24 +139,24 @@ describe("dota2.DummyTarget", function()
 
       dummy:Reset()
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(1, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(1, dummy.entity.__test_index)
       assert.spy(killSpy).was.called(1)
       assert.spy(spawnSpy).was.called(1)
     end)
 
     it("respawns the dummy unit if it exists", function()
-      local dummy = DummyTarget({spawn = true})
+      local dummy = DummyTarget({ spawn = true })
       local killSpy = spy.on(dummy, "Kill")
       local spawnSpy = spy.on(dummy, "Spawn")
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(1, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(1, dummy.entity.__test_index)
 
       dummy:Reset()
 
-      assert.is_not_nil(dummy.entity)
-      assert.are.equal(2, dummy.entity.__test_index)
+      assert.not_nil(dummy.entity)
+      assert.equal(2, dummy.entity.__test_index)
       assert.spy(killSpy).was.called(1)
       assert.spy(spawnSpy).was.called(1)
     end)

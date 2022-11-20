@@ -42,6 +42,10 @@
     failure: { title: 3, help: 9 },
   };
 
+  var CLASSES = {
+    OPTIONAL_STEP: "ComboStepOptional",
+  };
+
   var HUD_VISIBILITY_CLASSES = {
     visible: "HudVisible",
     hide_sequence: "HudHideSequence",
@@ -174,6 +178,10 @@
     createStepPanel: function (parent, step) {
       var id = "combo_step_" + step.name + "_" + step.id.toString();
       var panel = CreatePanelWithLayout(parent, id, COMBO_STEP_LAYOUT);
+
+      if (!step.required) {
+        panel.AddClass(CLASSES.OPTIONAL_STEP);
+      }
 
       this.stepsPanels[step.id] = panel;
 

@@ -1,5 +1,6 @@
 local class = require("pl.class")
 
+-- selene: allow(incorrect_standard_library_use)
 CDOTA_Item = class(CDOTABaseAbility)
 
 function CDOTA_Item:_init(attributes)

@@ -2,9 +2,9 @@ local CombosSound = require("invokation.combos.sound")
 local SoundEvents = require("invokation.dota2.sound_events")
 
 describe("combos.sound", function()
-  local player = CDOTAPlayer {}
+  local player = CDOTAPlayer({})
   local entity = {}
-  local dummy = {entity = entity}
+  local dummy = { entity = entity }
 
   local stubRandomInt
   local spyEmitOnEntity
@@ -12,6 +12,7 @@ describe("combos.sound", function()
   local spySetMusicStatus
 
   before_each(function()
+    -- selene: allow(global_usage)
     stubRandomInt = stub.new(_G, "RandomInt", 1)
     spyEmitOnEntity = spy.on(SoundEvents, "EmitOnEntity")
     spyEmitOnPlayer = spy.on(SoundEvents, "EmitOnPlayer")
@@ -27,7 +28,7 @@ describe("combos.sound", function()
 
   describe(".emitRandomEventOnEntity", function()
     it("emits random sound event on entity", function()
-      local events = {"a", "b", "c"}
+      local events = { "a", "b", "c" }
 
       CombosSound.emitRandomEventOnEntity(entity, events)
 
@@ -38,7 +39,7 @@ describe("combos.sound", function()
 
   describe(".emitRandomEventOnPlayer", function()
     it("emits random sound event on player", function()
-      local events = {"a", "b", "c"}
+      local events = { "a", "b", "c" }
 
       CombosSound.emitRandomEventOnPlayer(player, events)
 
@@ -52,8 +53,7 @@ describe("combos.sound", function()
       CombosSound.onDummyCreate(dummy)
 
       assert.stub(stubRandomInt).was.called_with(1, #SoundEvents.SNDEVTS_DUMMY_CREATE)
-      assert.spy(spyEmitOnEntity).was
-        .called_with(SoundEvents.SNDEVTS_DUMMY_CREATE[1], dummy.entity)
+      assert.spy(spyEmitOnEntity).was.called_with(SoundEvents.SNDEVTS_DUMMY_CREATE[1], dummy.entity)
     end)
   end)
 

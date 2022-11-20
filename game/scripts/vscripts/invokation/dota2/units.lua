@@ -18,10 +18,16 @@ m.extend(M, NAMES)
 -- @tparam[opt] CDOTA_BaseNPC options.unitOwner Unit Owner
 -- @treturn CDOTA_BaseNPC Created unit
 function M.Create(name, options)
-  options = m.extend({findClearSpace = true}, options or {})
+  options = m.extend({ findClearSpace = true }, options or {})
 
-  return CreateUnitByName(name, options.location, m.toBoolean(options.findClearSpace),
-                          options.npcOwner, options.unitOwner, options.team)
+  return CreateUnitByName(
+    name,
+    options.location,
+    m.toBoolean(options.findClearSpace),
+    options.npcOwner,
+    options.unitOwner,
+    options.team
+  )
 end
 
 --- Creates an unit by name (async).
@@ -35,10 +41,17 @@ end
 -- @tparam[opt] CDOTA_BaseNPC options.unitOwner Unit Owner
 -- @treturn int Some kind of async registration id?
 function M.CreateAsync(name, options)
-  options = m.extend({findClearSpace = true}, options or {})
+  options = m.extend({ findClearSpace = true }, options or {})
 
-  return CreateUnitByNameAsync(name, options.location, m.toBoolean(options.findClearSpace),
-                               options.npcOwner, options.unitOwner, options.team, options.callback)
+  return CreateUnitByNameAsync(
+    name,
+    options.location,
+    m.toBoolean(options.findClearSpace),
+    options.npcOwner,
+    options.unitOwner,
+    options.team,
+    options.callback
+  )
 end
 
 --- Creates a new data-driven unit with the given table.

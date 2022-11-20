@@ -12,7 +12,7 @@ local ORB_ABILITIES = m.map(INVOKER.ORB_ABILITIES, function(ability)
   return ability, true
 end)
 
-local DELEGATES = {"GetDuration", "GetSpecialValueFor", "IsItem"}
+local DELEGATES = { "GetDuration", "GetSpecialValueFor", "IsItem" }
 
 delegation.delegate(M, "entity", DELEGATES)
 

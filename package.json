@@ -14,6 +14,7 @@
     "link": "node scripts/main.js link"
   },
   "devDependencies": {
+    "@yarnpkg/sdks": "^3.0.0-rc.28",
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "dotenv": "^9.0.2",
@@ -27,10 +28,10 @@
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.3.0",
     "rimraf": "^3.0.2",
-    "stylelint": "^13.13.1",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-standard": "^22.0.0",
-    "stylelint-order": "^4.1.0",
+    "stylelint": "^14.14.1",
+    "stylelint-config-prettier": "^9.0.4",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-order": "^5.0.0",
     "temp": "^0.9.4",
     "vdf-parser": "^1.1.0"
   },

@@ -1,5 +1,6 @@
 --- Console Commands
 -- @submodule invokation.GameMode
+
 local pp = require("pl.pretty")
 local tablex = require("pl.tablex")
 local Logger = require("invokation.Logger")
@@ -39,8 +40,7 @@ end
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam ?string arg `"1"`: enables debugging, `"0"`: disables debugging,
 --   `nil`: prints debugging value.
--- luacheck: no unused args
-function GameMode:CommandSetDebug(player, arg)
+function GameMode:CommandSetDebug(_player, arg)
   if arg == "1" then
     self.logger.level = Logger.DEBUG
   elseif arg == "0" then
@@ -56,9 +56,8 @@ end
 --
 -- @tparam CDOTAPlayer player Player who issued this console command.
 -- @param[opt] ... varargs.
--- luacheck: no unused args
-function GameMode:CommandDebugMisc(player, ...)
-end
+-- selene: allow(unused_variable)
+function GameMode:CommandDebugMisc(_player, ...) end
 
 --- Dumps Lua version.
 -- @tparam CDOTAPlayer player Player who issued this console command
@@ -69,12 +68,12 @@ end
 --- Dumps global value.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string name Dot-separated value name
--- luacheck: no unused args
-function GameMode:CommandDumpGlobal(player, name)
+function GameMode:CommandDumpGlobal(_player, name)
   if not name then
     return
   end
 
+  -- selene: allow(global_usage)
   local value = _G
 
   for segment in name:gmatch("([^.]+)%.?") do
@@ -95,14 +94,14 @@ end
 --- Searches a global value.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string pattern Name pattern (uses `string.match` for matching)
--- luacheck: no unused args
-function GameMode:CommandFindGlobal(player, pattern)
+function GameMode:CommandFindGlobal(_player, pattern)
   if not pattern then
     return
   end
 
   local matches = {}
 
+  -- selene: allow(global_usage)
   for name, _ in pairs(_G) do
     if name:match(pattern) then
       table.insert(matches, name)
@@ -123,8 +122,7 @@ end
 --- Queries items.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string query Query string
--- luacheck: no unused args
-function GameMode:CommandItemQuery(player, query)
+function GameMode:CommandItemQuery(_player, query)
   if not query then
     return
   end
@@ -148,7 +146,7 @@ local function debugAbility(a, simple)
   end
 
   if simple then
-    return {a:GetAbilityIndex(), a:GetAbilityName(), a:GetLevel()}
+    return { a:GetAbilityIndex(), a:GetAbilityName(), a:GetLevel() }
   end
 
   return {
@@ -180,7 +178,6 @@ end
 --- Dumps current hero abilities.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam[opt] string simple Simple version or verbose
--- luacheck: no unused args
 function GameMode:CommandDumpAbilities(player, simple)
   local hero = player:GetAssignedHero()
 
@@ -194,7 +191,6 @@ end
 --- Invokes ability by name.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string ability Ability name
--- luacheck: no unused args
 function GameMode:CommandInvokeAbility(player, ability)
   if not ability then
     return
@@ -209,8 +205,7 @@ end
 --- Dumps combo graph in DOT format.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string id Combo id
--- luacheck: no unused args
-function GameMode:CommandDumpComboGraph(player, id)
+function GameMode:CommandDumpComboGraph(_player, id)
   if not id then
     return
   end
@@ -229,7 +224,6 @@ end
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string status Music status
 -- @tparam string intensity Music intensity
--- luacheck: no unused args
 function GameMode:CommandChangeMusicStatus(player, status, intensity)
   if not status or not intensity then
     return
@@ -244,10 +238,9 @@ end
 --- Dumps Invoker ability specials values.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam[opt] string onlyScaling Dump only values that scale, ignoring fixed values
--- luacheck: no unused args
 function GameMode:CommandDumpSpecials(player, onlyScaling)
   local cmd = require("invokation.game_mode.commands.dump_specials")
-  cmd.dump(player, {onlyScaling = onlyScaling ~= nil})
+  cmd.dump(player, { onlyScaling = onlyScaling ~= nil })
 end
 
 --- Debug operations on ability specials KeyValues.
@@ -255,8 +248,7 @@ end
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string op Operation name (dump, findKeys, findValues)
 -- @tparam string query Operation query (dump: path, findKeys: pattern, findValues: pattern)
--- luacheck: no self
-function GameMode:CommandDebugSpecials(player, op, query)
+function GameMode:CommandDebugSpecials(_player, op, query)
   local cmd = require("invokation.game_mode.commands.debug_specials")
 
   if op == "dump" then
@@ -271,7 +263,6 @@ end
 --- Reinserts an ability into the current hero.
 -- @tparam CDOTAPlayer player Player who issued this console command
 -- @tparam string name Ability name
--- luacheck: no unused args
 function GameMode:CommandReinsertAbility(player, name)
   if not name then
     return

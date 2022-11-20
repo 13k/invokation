@@ -1,10 +1,12 @@
 --- GameRules Setup
 -- @submodule invokation.GameMode
+
 local S = require("invokation.const.settings")
 
 --- GameRules Setup
 -- @section game_rules
 
+-- selene: allow(unused_variable)
 function GameMode:setupGameRules()
   GameRules:SetCreepMinimapIconScale(S.MINIMAP_CREEP_ICON_SCALE)
   GameRules:SetCreepSpawningEnabled(S.ENABLE_CREEP_SPAWN)

@@ -6,7 +6,7 @@ local ABILITIES = require("invokation.const.abilities")
 local M = {}
 
 local function joinpath(...)
-  local path = {...}
+  local path = { ... }
 
   if #path == 0 then
     return ""
@@ -49,8 +49,7 @@ local function iterSpecials(keys)
 
   if type(specials) ~= "table" then
     if specials ~= nil then
-      print(string.format("(WARN) %s not a table [%s]", joinpath(keys.ability, "AbilitySpecial"),
-                          type(specials)))
+      print(string.format("(WARN) %s not a table [%s]", joinpath(keys.ability, "AbilitySpecial"), type(specials)))
     end
 
     keys.ability = next(abilities, keys.ability)
@@ -74,7 +73,7 @@ local function iterSpecials(keys)
     return iterSpecials(keys)
   end
 
-  local path = {keys.ability, "AbilitySpecial", keys.special}
+  local path = { keys.ability, "AbilitySpecial", keys.special }
 
   if type(special) ~= "table" then
     if special ~= nil then

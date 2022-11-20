@@ -45,14 +45,14 @@ M.ENUM = {
 }
 
 local LEVEL_SIDE = {
-  [M.L10_RIGHT] = {10, "RIGHT"},
-  [M.L10_LEFT] = {10, "LEFT"},
-  [M.L15_RIGHT] = {15, "RIGHT"},
-  [M.L15_LEFT] = {15, "LEFT"},
-  [M.L20_RIGHT] = {20, "RIGHT"},
-  [M.L20_LEFT] = {20, "LEFT"},
-  [M.L25_RIGHT] = {25, "RIGHT"},
-  [M.L25_LEFT] = {25, "LEFT"},
+  [M.L10_RIGHT] = { 10, "RIGHT" },
+  [M.L10_LEFT] = { 10, "LEFT" },
+  [M.L15_RIGHT] = { 15, "RIGHT" },
+  [M.L15_LEFT] = { 15, "LEFT" },
+  [M.L20_RIGHT] = { 20, "RIGHT" },
+  [M.L20_LEFT] = { 20, "LEFT" },
+  [M.L25_RIGHT] = { 25, "RIGHT" },
+  [M.L25_LEFT] = { 25, "LEFT" },
 }
 
 --- Returns the bitwise OR'ed values
@@ -90,7 +90,7 @@ end
 -- @treturn ?int Level if value is valid, `nil` otherwise
 -- @treturn ?string Side if value is valid, `nil` otherwise
 function M.LevelAndSide(value)
-  return unpack(LEVEL_SIDE[value] or {nil, nil})
+  return unpack(LEVEL_SIDE[value] or { nil, nil })
 end
 
 return M

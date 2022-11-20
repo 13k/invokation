@@ -29,7 +29,7 @@ M.description = {
   homepage = "https://github.com/13k/invokation",
   issues_url = "https://github.com/13k/invokation/issues",
   maintainer = "Kiyoshi Murata <kbmurata@gmail.com>",
-  labels = {"dota2", "dota2-addon", "dota2-custom-game", "invoker", "invoker-trainer"},
+  labels = { "dota2", "dota2-addon", "dota2-custom-game", "invoker", "invoker-trainer" },
 }
 
 return M

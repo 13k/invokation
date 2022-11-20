@@ -68,8 +68,11 @@ function M:Respawn(options)
   options = options or {}
 
   if self:IsHero() then
-    return self:RespawnHero(types.to_bool(options.buyback), types.to_bool(options.isFirst),
-                            types.to_bool(options.penalty))
+    return self:RespawnHero(
+      types.to_bool(options.buyback),
+      types.to_bool(options.isFirst),
+      types.to_bool(options.penalty)
+    )
   end
 
   return self:RespawnUnit()
@@ -89,9 +92,13 @@ function M:Purge(options)
   options.stuns = options.stuns == nil and true or options.stuns
   options.exceptions = options.exceptions == nil and true or options.exceptions
 
-  return self.entity:Purge(types.to_bool(options.buffs), types.to_bool(options.debuffs),
-                           types.to_bool(options.frameOnly), types.to_bool(options.stuns),
-                           types.to_bool(options.exceptions))
+  return self.entity:Purge(
+    types.to_bool(options.buffs),
+    types.to_bool(options.debuffs),
+    types.to_bool(options.frameOnly),
+    types.to_bool(options.stuns),
+    types.to_bool(options.exceptions)
+  )
 end
 
 --- Levels up the hero unit.
@@ -145,7 +152,7 @@ function M:ForEachItem(callback, options)
   end
 
   options = options or {}
-  options.sections = options.sections or {"inventory", "stash", "neutral"}
+  options.sections = options.sections or { "inventory", "stash", "neutral" }
 
   local slots = m.chain({})
 
@@ -165,7 +172,7 @@ function M:ForEachItem(callback, options)
     local item = self:GetItemInSlot(slot)
 
     if item then
-      local ret = {callback(item)}
+      local ret = { callback(item) }
       local continue = true
 
       if #ret > 0 then
@@ -313,7 +320,7 @@ function M:ForEachAbility(callback)
     local ability = self:GetAbilityByIndex(i)
 
     if ability ~= nil then
-      local ret = {callback(ability)}
+      local ret = { callback(ability) }
       local continue = true
 
       if #ret > 0 then

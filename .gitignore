@@ -1,11 +1,9 @@
 /.cov/*
 !/.cov/.keep
 /.env*
-/.luarc.json
 /.luarocks
 /.lua-version
 /.pnp.*
-/.vscode
 /.yarn/*
 !/.yarn/plugins
 !/.yarn/releases

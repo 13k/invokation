@@ -2,7 +2,6 @@
 -- @submodule invokation.GameMode
 local S = require("invokation.const.settings")
 
--- luacheck: no max line length
 local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
 
@@ -50,7 +49,7 @@ end
 -- @tparam int payload.PlayerID Player id
 -- @tparam int payload.userid User id
 function GameMode:_OnConnectFull(payload)
-  self:d("_OnConnectFull", {payload = payload})
+  self:d("_OnConnectFull", { payload = payload })
 
   if GameMode._reentrantCheck then
     return
@@ -75,7 +74,7 @@ end
 -- @tparam table payload
 -- @tparam int payload.entindex Unit entity index
 function GameMode:_OnNPCSpawned(payload)
-  self:d("_OnNPCSpawned", {payload = payload})
+  self:d("_OnNPCSpawned", { payload = payload })
 
   if GameMode._reentrantCheck then
     return
@@ -99,7 +98,7 @@ end
 -- @tparam[opt] int payload.entindex_attacker Attacker (unit) entity index
 -- @tparam[opt] int payload.entindex_inflictor Inflictor (item, ability, etc) entity index
 function GameMode:_OnEntityKilled(payload)
-  self:d("_OnEntityKilled", {payload = payload})
+  self:d("_OnEntityKilled", { payload = payload })
 
   if GameMode._reentrantCheck then
     return
@@ -127,10 +126,8 @@ function GameMode:_OnEntityKilled(payload)
     end
 
     if S.SHOW_KILLS_ON_TOPBAR then
-      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_BADGUYS,
-                                                       GetTeamHeroKills(DOTA_TEAM_BADGUYS))
-      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_GOODGUYS,
-                                                       GetTeamHeroKills(DOTA_TEAM_GOODGUYS))
+      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_BADGUYS, GetTeamHeroKills(DOTA_TEAM_BADGUYS))
+      GameRules:GetGameModeEntity():SetTopBarTeamValue(DOTA_TEAM_GOODGUYS, GetTeamHeroKills(DOTA_TEAM_GOODGUYS))
     end
   end
 

@@ -1,5 +1,6 @@
 --- KeyValue utils.
 -- @module invokation.dota2.kv
+
 local m = require("moses")
 local stringx = require("pl.stringx")
 
@@ -83,6 +84,7 @@ function M.EnumValue(name)
     return 0
   end
 
+  -- selene: allow(global_usage)
   local value = _G[name] or ENUMS[name]
 
   if value == nil then
@@ -129,7 +131,7 @@ function M.Flags(value)
   return m.reduce(value, bit.bor)
 end
 
-local ABILITY_SPECIAL_CAST = {FIELD_FLOAT = M.Numbers, FIELD_INTEGER = M.Numbers}
+local ABILITY_SPECIAL_CAST = { FIELD_FLOAT = M.Numbers, FIELD_INTEGER = M.Numbers }
 
 --- Table of known extra fields to be converted in @{AbilitySpecial}.
 -- @table ABILITY_SPECIAL_EXTRA
@@ -192,8 +194,7 @@ function M.AbilitySpecial(value)
     return value
   end
 
-  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({2, 1})
-                      :value()
+  local castField = m.chain(castAbilitySpecialField):partialRight(value.var_type):rearg({ 2, 1 }):value()
 
   return m.map(value, castField)
 end

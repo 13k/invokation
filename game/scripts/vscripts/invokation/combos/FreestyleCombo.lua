@@ -9,7 +9,7 @@ local M = class(BaseCombo)
 -- @tfield string COMBO_ID
 M.COMBO_ID = "freestyle"
 
-local SPEC = {id = M.COMBO_ID, heroLevel = 1, gold = 99999, items = {}}
+local SPEC = { id = M.COMBO_ID, heroLevel = 1, gold = 99999, items = {} }
 
 --- Constructor.
 -- @tparam[opt] table options Options
@@ -21,28 +21,24 @@ end
 
 --- Freestyle combos have no steps.
 -- @treturn nil
--- luacheck: no self
 function M:CurrentStepId()
   return nil
 end
 
 --- Freestyle combos have no steps.
 -- @treturn nil
--- luacheck: no self
 function M:CurrentStep()
   return nil
 end
 
 --- Freestyle combos have no steps.
 -- @treturn {int,...} Always returns an empty array
--- luacheck: no self
 function M:NextStepsIds()
   return {}
 end
 
 --- Freestyle combos have no steps.
 -- @treturn {int,...} Always returns an empty array
--- luacheck: no self
 function M:NextSteps()
   return {}
 end
@@ -61,21 +57,18 @@ function M:Progress(ability)
 end
 
 --- Freestyle combos never fail.
--- luacheck: no self
 function M:Fail()
   return
 end
 
 --- Freestyle combos never pre finish.
 -- @treturn bool `false`
--- luacheck: no self
 function M:PreFinish()
   return false
 end
 
 --- Freestyle combos never finish.
 -- @treturn bool `false`
--- luacheck: no self
 function M:Finish()
   return false
 end
