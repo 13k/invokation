@@ -2,7 +2,7 @@
 
 (function (global /*, context */) {
   var META = {
-    VERSION: "v0.4.6-beta1",
+    VERSION: "v0.4.7",
     URL: "https://github.com/13k/invokation",
     CHANGELOG_URL: "https://github.com/13k/invokation/blob/master/CHANGELOG.md",
   };

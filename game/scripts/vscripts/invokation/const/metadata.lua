@@ -5,6 +5,7 @@
 -- [rockspec]: https://github.com/luarocks/luarocks/wiki/Rockspec-format
 --
 -- @module invokation.const.metadata
+
 local M = {}
 
 --- Package name
@@ -13,7 +14,7 @@ M.package = "Invokation"
 
 --- Package version
 -- @tfield string version
-M.version = "0.4.6-beta1"
+M.version = "0.4.7"
 
 --- Package description
 -- @table description
