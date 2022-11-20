@@ -7,6 +7,29 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 ## [Unreleased][unreleased]
 
+Latest commits not yet released.
+
+## [0.4.7] - 2022-11-20
+
+### Gameplay
+
+- Added new items to items filter (#20)
+
+### UI
+
+- Fixed localization (#17)
+- Improved borders appearence (#18)
+- Fixed talents not showing properly in combo viewer (#19)
+
+### Development
+
+- Replaced luacheck with [selene](https://github.com/Kampfkarren/selene)
+- Replaced lua-format with [stylua](https://github.com/JohnnyMorganz/StyLua)
+- Use [sumneko/lua-language-server](https://github.com/sumneko/lua-language-server) as language server
+- Upgraded styling
+- Upgraded yarn
+- Refactor scripts
+
 ## [0.4.6-beta1] - 2021-05-12
 
 ### Gameplay
@@ -96,7 +119,7 @@ Initial open beta release.
 
 Initial closed beta release.
 
-[unreleased]: https://github.com/13k/invokation/compare/v0.4.6-beta1...HEAD
+[unreleased]: https://github.com/13k/invokation/compare/v0.4.7...HEAD
 [0.1.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.1.0-beta1
 [0.2.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.2.0-beta1
 [0.3.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.3.0-beta1
@@ -107,5 +130,6 @@ Initial closed beta release.
 [0.4.4-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.4-beta1
 [0.4.5-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.5-beta1
 [0.4.6-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.6-beta1
+[0.4.7]: https://github.com/13k/invokation/releases/tag/v0.4.7
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
