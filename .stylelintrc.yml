@@ -73,6 +73,7 @@ rules:
   selector-type-no-unknown:
     - true
     - ignoreTypes: *panorama_types
+  value-keyword-case: null
   order/properties-order:
     - - properties:
           - "position"

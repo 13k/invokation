@@ -18,4 +18,5 @@
 /lua
 /lua_modules
 /luarocks
+/node_modules
 /tmp
