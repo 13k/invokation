@@ -1,8 +1,8 @@
 <!-- Combo Score (shamelessly rippped from ES arcana) -->
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/combo_score.js" />
+    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
+    <include src="file://{resources}/scripts/custom_game/combo_score.ts" />
   </scripts>
 
   <styles>

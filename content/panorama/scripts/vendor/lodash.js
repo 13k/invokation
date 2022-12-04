@@ -7,7 +7,7 @@
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-(function() {
+(function(CustomUIConfig) {
   "use strict";
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
@@ -17239,8 +17239,5 @@
 
   /*--------------------------------------------------------------------------*/
 
-  // Export to game's global context.
-  root.lodash = runInContext();
-}.call(this));
-
-GameUI.CustomUIConfig().lodash = lodash;
+  CustomUIConfig.lodash = runInContext();
+})(GameUI.CustomUIConfig());
