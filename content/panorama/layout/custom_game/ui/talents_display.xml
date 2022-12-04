@@ -1,15 +1,15 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/ui/talents_display.js" />
+    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
+    <include src="file://{resources}/scripts/custom_game/ui/talents_display.ts" />
   </scripts>
 
   <styles>
     <include src="file://{resources}/styles/custom_game/ui/talents_display.css" />
   </styles>
 
-  <!-- <Panel class="UITalentsDisplayRoot" onmouseover="component.ShowTooltip()" onmouseout="component.HideTooltip()"> -->
-  <Panel class="UITalentsDisplayRoot" onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)" onmouseout="DOTAHUDHideStatBranchTooltip()">
+  <Panel class="UITalentsDisplayRoot" onmouseover="component.ShowTooltip()" onmouseout="component.HideTooltip()">
+    <!-- <Panel class="UITalentsDisplayRoot" onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)" onmouseout="DOTAHUDHideStatBranchTooltip()"> -->
     <Panel class="StatBranchContainer">
       <Panel id="StatBranchBGBranchWell" />
 

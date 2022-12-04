@@ -1,7 +1,7 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/top_bar.js" />
+    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
+    <include src="file://{resources}/scripts/custom_game/top_bar.ts" />
   </scripts>
 
   <styles>
@@ -12,7 +12,7 @@
     <Panel class="TopBar">
       <Button class="TopBarButton DOTAShowDashboardButton" onactivate="DOTAHUDShowDashboard()" onmouseover="UIShowTextTooltip(#DOTA_HUD_BackToDashboard)" onmouseout="UIHideTextTooltip()" />
       <Button class="TopBarButton SettingsButton" onactivate="DOTAShowSettingsPopup()" onmouseover="UIShowTextTooltip(#DOTA_HUD_Settings)" onmouseout="UIHideTextTooltip()" />
-      <Button class="TopBarButton InfoIcon" onactivate="topBar.ShowGameInfo()" onmouseover="UIShowTextTooltip(#DOTA_Custom_Game_Info)" onmouseout="UIHideTextTooltip()" />
+      <Button class="TopBarButton InfoIcon" onactivate="component.ShowGameInfo()" onmouseover="UIShowTextTooltip(#DOTA_Custom_Game_Info)" onmouseout="UIHideTextTooltip()" />
     </Panel>
   </Panel>
 </root>

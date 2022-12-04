@@ -1,8 +1,8 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/combo_step.js" />
-    <include src="file://{resources}/scripts/custom_game/challenge_combo_step.js" />
+    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
+    <include src="file://{resources}/scripts/custom_game/combo_step.ts" />
+    <include src="file://{resources}/scripts/custom_game/challenge_combo_step.ts" />
   </scripts>
 
   <styles>

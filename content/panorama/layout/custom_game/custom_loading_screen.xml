@@ -1,20 +1,30 @@
 <root>
   <scripts>
+    <!--
+      vendored libs
+      -->
+
     <include src="file://{resources}/scripts/vendor/lodash.js" />
 
-    <include src="file://{resources}/scripts/valve/sequence_actions.js" />
+    <!--
+      "global" modules
+      -->
 
-    <include src="file://{resources}/scripts/lib/const.js" />
-    <include src="file://{resources}/scripts/lib/util.js" />
-    <include src="file://{resources}/scripts/lib/class.js" />
-    <include src="file://{resources}/scripts/lib/env.js" />
-    <include src="file://{resources}/scripts/lib/logger.js" />
-    <include src="file://{resources}/scripts/lib/callbacks.js" />
-    <include src="file://{resources}/scripts/lib/custom_events.js" />
-    <include src="file://{resources}/scripts/lib/sequence.js" />
-    <include src="file://{resources}/scripts/lib/component.js" />
+    <!-- must be first -->
+    <include src="file://{resources}/scripts/lib/custom_ui_config.ts" />
 
-    <include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
+    <include src="file://{resources}/scripts/lib/const.ts" />
+    <include src="file://{resources}/scripts/lib/env.ts" />
+    <include src="file://{resources}/scripts/lib/logger.ts" />
+
+    <include src="file://{resources}/scripts/lib/callbacks.ts" />
+    <include src="file://{resources}/scripts/lib/custom_events.ts" />
+    <include src="file://{resources}/scripts/lib/sequence.ts" />
+    <include src="file://{resources}/scripts/lib/util.ts" />
+
+    <include src="file://{resources}/scripts/lib/component.ts" />
+
+    <include src="file://{resources}/scripts/custom_game/custom_loading_screen.ts" />
   </scripts>
 
   <styles>

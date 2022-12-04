@@ -1,7 +1,7 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib/component.js" />
-    <include src="file://{resources}/scripts/custom_game/challenge.js" />
+    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
+    <include src="file://{resources}/scripts/custom_game/challenge.ts" />
   </scripts>
 
   <styles>
@@ -32,23 +32,23 @@
 
     <Panel class="ChallengeControls TranslucentPanel" hittest="false">
       <Panel class="ChallengeControlIcon">
-        <Button class="InfoIcon ChallengeIconButton Grey" onactivate="challenge.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+        <Button class="InfoIcon ChallengeIconButton Grey" onactivate="component.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="EyeIcon ChallengeIconButton Grey" onactivate="challenge.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
+        <Button class="EyeIcon ChallengeIconButton Grey" onactivate="component.ToggleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="challenge.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="component.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="challenge.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="component.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="CloseButton ChallengeIconButton Red" onactivate="challenge.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button class="CloseButton ChallengeIconButton Red" onactivate="component.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 
