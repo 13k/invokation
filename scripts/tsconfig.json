@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node-lts-strictest/tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".dist",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "allowSyntheticDefaultImports": true,
+    "checkJs": false,
+    "noEmit": true,
+    "resolveJsonModule": true
+  }
+}
