@@ -1,9 +1,11 @@
+-- vim: ft=lua
+
 return {
   --- Filename to store collected stats. Default: "luacov.stats.out".
-  statsfile = ".cov/luacov.stats.out",
+  statsfile = "tmp/luacov.stats.txt",
 
   --- Filename to store report. Default: "luacov.report.out".
-  reportfile = ".cov/luacov.report.out",
+  reportfile = "tmp/luacov.report.txt",
 
   --- Enable saving coverage data after every `savestepsize` lines?
   -- Setting this flag to `true` in config is equivalent to running LuaCov

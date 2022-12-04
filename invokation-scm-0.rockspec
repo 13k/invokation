@@ -26,13 +26,6 @@ dependencies = {
   "lua == 5.1",
 }
 
-build_dependencies = {
-  "ldoc",
-  "luacheck",
-  "luaformatter",
-  "lunamark",
-}
-
 test_dependencies = {
   "bit32 ~> 5.3",
   "busted",
@@ -43,10 +36,10 @@ test_dependencies = {
 }
 
 test = {
-	type = "busted",
+  type = "busted",
 }
 
 build = {
   type = "make",
-  build_target = "build-lua",
+  build_target = "build-luarocks",
 }
