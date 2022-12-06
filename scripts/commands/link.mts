@@ -51,25 +51,18 @@ export default class LinkCommand extends Base<Options> {
       .field("dest", dota2.path)
       .debug(":link: base directories");
 
-    const links = await this.findLinks();
+    const links = this.findLinks();
 
     await asyncEach(links, async (link) => await this.mklink(link));
   }
 
-  async pwshLink({ src, dest, type }: Link) {
-    const linkType = type || LinkType.SymbolicLink;
-    const winSrc = await this.windowsPath(src, { absolute: true });
-    const destDir = path.dirname(dest);
-    const winDestDir = await this.windowsPath(destDir, { absolute: true });
-    const winDest = `${winDestDir}\\${path.basename(dest)}`;
-    const args = [
-      "-Command",
-      `New-Item -ItemType '${linkType}' -Path '${winDest}' -Target '${winSrc}'`,
+  findLinks() {
+    const { sources, customGame } = this.config;
+
+    return [
+      { src: sources.contentPath, dest: customGame.contentPath },
+      { src: sources.gamePath, dest: customGame.gamePath },
     ];
-
-    this.log.field("cmd", inspect([POWERSHELL_BIN, ...args])).debug("pwsh link");
-
-    await this.exec(POWERSHELL_BIN, args);
   }
 
   async mklink(link: Link) {
@@ -101,29 +94,28 @@ export default class LinkCommand extends Base<Options> {
       await this.pwshLink(link);
     } else if (srcSt.isFile()) {
       link.type = LinkType.HardLink;
-
+      // it seems regular hard-link from WSL works, so avoid spawning a process
       await fse.ensureLink(link.src, link.dest);
     } else {
       throw new Error(`${src}: invalid link source (not a file or directory)`);
     }
 
-    // await fse.mkdirp(path.dirname(dest));
-    // await this.pwshLink(link);
-
     log.field("type", link.type).info(`created`);
   }
 
-  async findLinks() {
-    const { sources, customGame } = this.config;
-    const contentLinks: Link[] = [{ src: sources.contentPath, dest: customGame.contentPath }];
-    const gameFiles = await this.glob(path.join(sources.gamePath, "*"), { strict: true });
-    const gameLinks: Link[] = gameFiles.map((src) => {
-      const relPath = path.relative(sources.gamePath, src);
-      const dest = path.join(customGame.gamePath, relPath);
+  async pwshLink({ src, dest, type }: Link) {
+    const linkType = type || LinkType.SymbolicLink;
+    const winSrc = await this.windowsPath(src, { absolute: true });
+    const destDir = path.dirname(dest);
+    const winDestDir = await this.windowsPath(destDir, { absolute: true });
+    const winDest = `${winDestDir}\\${path.basename(dest)}`;
+    const args = [
+      "-Command",
+      `New-Item -ItemType '${linkType}' -Path '${winDest}' -Target '${winSrc}'`,
+    ];
 
-      return { src, dest };
-    });
+    this.log.field("cmd", inspect([POWERSHELL_BIN, ...args])).debug("pwsh link");
 
-    return [...contentLinks, ...gameLinks];
+    await this.exec(POWERSHELL_BIN, args);
   }
 }

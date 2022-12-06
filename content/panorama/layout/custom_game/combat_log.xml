@@ -1,7 +1,7 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/combat_log.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/combat_log.js" />
   </scripts>
 
   <styles>
@@ -13,14 +13,14 @@
       <Panel id="CombatLogContents" />
 
       <Panel class="CombatLogBar">
-        <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="component.Toggle()">
+        <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="invk.Components.CombatLog.component.Toggle()">
           <Label class="CombatLogTitle" text="#invokation_combat_log_title" hittest="false" />
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
           <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
 
-          <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="component.Clear()">
+          <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="invk.Components.CombatLog.component.Clear()">
             <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>

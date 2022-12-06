@@ -92,7 +92,7 @@
     "invokation_combo_tooltip_details" "Details"
     "invokation_combo_tooltip_specialty" "Specialty: {s:specialty}"
     "invokation_combo_tooltip_stance" "Stance: {s:stance}"
-    "invokation_combo_tooltip_hero_level" "Hero level: {s:hero_level}"
+    "invokation_combo_tooltip_hero_level" "Hero level: {d:hero_level}"
     "invokation_combo_tooltip_damage_rating" "Damage: {s:damage_rating}"
     "invokation_combo_tooltip_difficulty_rating" "Difficulty: {s:difficulty_rating}"
     "invokation_combo_tooltip_finished" "Finished!"

@@ -1,6 +1,6 @@
 TASKS_SRC_PATH := scripts
 VSCRIPTS_SRC_PATH := game/scripts/vscripts
-PANORAMA_SCRIPTS_SRC_PATH := content/panorama/scripts
+PANORAMA_SCRIPTS_SRC_PATH := src/panorama/scripts
 PANORAMA_STYLES_SRC_PATH := content/panorama/styles
 
 .NOTPARALLEL:
@@ -53,23 +53,23 @@ build-luarocks: build-vscripts
 
 .PHONY: lint-tasks
 lint-tasks:
-	@npx eslint "$(TASKS_SRC_PATH)"
+	@npm exec -- eslint "$(TASKS_SRC_PATH)"
 
 .PHONY: lint-panorama
 lint-panorama: lint-panorama-scripts lint-panorama-styles
 
 .PHONY: lint-panorama-scripts
 lint-panorama-scripts:
-	@npx eslint "$(PANORAMA_SCRIPTS_SRC_PATH)"
+	@npm exec -- eslint "$(PANORAMA_SCRIPTS_SRC_PATH)"
 
 .PHONY: lint-panorama-styles
 lint-panorama-styles:
-	@npx stylelint "${PANORAMA_STYLES_SRC_PATH}"
+	@npm exec -- stylelint "${PANORAMA_STYLES_SRC_PATH}"
 
 .PHONY: format-panorama
 format-panorama: format-panorama-styles
 
 .PHONY: format-panorama-styles
 format-panorama-styles:
-	@npx stylelint --fix "$(PANORAMA_STYLES_SRC_PATH)"
-	@npx prettier --write "$(PANORAMA_STYLES_SRC_PATH)/**/*.css"
+	@npm exec -- stylelint --fix "$(PANORAMA_STYLES_SRC_PATH)"
+	@npm exec -- prettier --write "$(PANORAMA_STYLES_SRC_PATH)/**/*.css"

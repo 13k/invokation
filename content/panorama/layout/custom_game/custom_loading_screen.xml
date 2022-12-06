@@ -1,30 +1,8 @@
 <root>
   <scripts>
-    <!--
-      vendored libs
-      -->
-
-    <include src="file://{resources}/scripts/vendor/lodash.js" />
-
-    <!--
-      "global" modules
-      -->
-
-    <!-- must be first -->
-    <include src="file://{resources}/scripts/lib/custom_ui_config.ts" />
-
-    <include src="file://{resources}/scripts/lib/const.ts" />
-    <include src="file://{resources}/scripts/lib/env.ts" />
-    <include src="file://{resources}/scripts/lib/logger.ts" />
-
-    <include src="file://{resources}/scripts/lib/callbacks.ts" />
-    <include src="file://{resources}/scripts/lib/custom_events.ts" />
-    <include src="file://{resources}/scripts/lib/sequence.ts" />
-    <include src="file://{resources}/scripts/lib/util.ts" />
-
-    <include src="file://{resources}/scripts/lib/component.ts" />
-
-    <include src="file://{resources}/scripts/custom_game/custom_loading_screen.ts" />
+    <include src="file://{resources}/scripts/lib.js" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
   </scripts>
 
   <styles>

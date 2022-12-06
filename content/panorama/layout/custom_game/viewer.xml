@@ -1,7 +1,7 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/viewer.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/viewer.js" />
   </scripts>
 
   <styles>
@@ -10,8 +10,8 @@
 
   <Panel class="ViewerRoot Hide" hittest="false">
     <Panel class="Viewer" hittest="false">
-      <Button class="CloseButton" onactivate="component.Close()" />
-      <Button class="RefreshButton" onactivate="component.Reload()" />
+      <Button class="CloseButton" onactivate="invk.Components.Viewer.component.Close()" />
+      <Button class="RefreshButton" onactivate="invk.Components.Viewer.component.Reload()" />
 
       <Panel class="ViewerInformationBackground" hittest="false" />
 
@@ -34,17 +34,17 @@
               <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseover="component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseover="component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
             </Panel>
@@ -64,7 +64,7 @@
 
       <Panel class="ViewerFooter" hittest="false">
         <Panel class="ViewerButtons" hittest="false">
-          <Button class="PlayButton" onactivate="component.Play()">
+          <Button class="PlayButton" onactivate="invk.Components.Viewer.component.Play()">
             <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
           </Button>
         </Panel>

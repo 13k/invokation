@@ -1,8 +1,7 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <!-- <include src="file://{resources}/scripts/lib/combos_view.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/picker.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/picker.js" />
   </scripts>
 
   <styles>
@@ -13,14 +12,14 @@
     <Panel id="PickerSlideout" class="DrawerClosed FiltersClosed" hittest="false">
       <Panel class="PickerContents TranslucentPanel" hittest="false">
         <Panel class="PickerTitleContainer PanelTitleContainer">
-          <Button class="RefreshButton" onactivate="component.Reload()" />
+          <Button class="RefreshButton" onactivate="invk.Components.Picker.component.Reload()" />
           <Label class="PickerTitle PanelTitle" text="#invokation_picker_title" hittest="false" />
         </Panel>
 
         <Panel class="PickerHeader">
-          <ToggleButton class="PickerFiltersButton ExpandCollapseToggleButton" onactivate="component.ToggleFilters()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)" onmouseout="UIHideTextTooltip()" />
+          <ToggleButton class="PickerFiltersButton ExpandCollapseToggleButton" onactivate="invk.Components.Picker.component.ToggleFilters()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)" onmouseout="UIHideTextTooltip()" />
 
-          <Button class="PickerFreestyleButton" onactivate="component.Freestyle()">
+          <Button class="PickerFreestyleButton" onactivate="invk.Components.Picker.component.Freestyle()">
             <Label class="PickerFreestyleLabel" text="#invokation_picker_freestyle_play" hittest="false" />
           </Button>
         </Panel>
@@ -32,39 +31,39 @@
             <Panel class="PickerFiltersRow" hittest="false">
               <Panel class="LeftRightFlow">
                 <Label class="PickerFiltersLabel" text="#invokation_combo_properties__tags" hittest="false" />
-                <Button id="PickerFilterTagsResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="component.ResetTagsFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)" onmouseout="UIHideTextTooltip()" />
+                <Button id="PickerFilterTagsResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="invk.Components.Picker.component.ResetTagsFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)" onmouseout="UIHideTextTooltip()" />
               </Panel>
               <Panel id="PickerFilterTagsContainer" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__specialty" hittest="false" />
-              <DropDown id="PickerFilterSpecialty" oninputsubmit="component.Filter()" />
+              <DropDown id="PickerFilterSpecialty" oninputsubmit="invk.Components.Picker.component.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__stance" hittest="false" />
-              <DropDown id="PickerFilterStance" oninputsubmit="component.Filter()" />
+              <DropDown id="PickerFilterStance" oninputsubmit="invk.Components.Picker.component.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__damage_rating" hittest="false" />
-              <DropDown id="PickerFilterDamageRating" oninputsubmit="component.Filter()" />
+              <DropDown id="PickerFilterDamageRating" oninputsubmit="invk.Components.Picker.component.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
               <Label class="PickerFiltersLabel" text="#invokation_combo_properties__difficulty_rating" hittest="false" />
-              <DropDown id="PickerFilterDifficultyRating" oninputsubmit="component.Filter()" />
+              <DropDown id="PickerFilterDifficultyRating" oninputsubmit="invk.Components.Picker.component.Filter()" />
             </Panel>
 
             <Panel class="PickerFiltersRow PopupPickersRow" hittest="false">
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
                   <Label class="PopupPickerLabel" text="#invokation_picker_filter_item" hittest="false" />
-                  <Button id="PickerFilterItemResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="component.ResetItemFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Button id="PickerFilterItemResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="invk.Components.Picker.component.ResetItemFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)" onmouseout="UIHideTextTooltip()" />
                 </Panel>
 
-                <Button class="PickerFilterItemButton PopupPickerButton ButtonBevel" onactivate="component.ShowItemFilter()">
+                <Button class="PickerFilterItemButton PopupPickerButton ButtonBevel" onactivate="invk.Components.Picker.component.ShowItemFilter()">
                   <DOTAItemImage id="PickerFilterItemImage" />
                 </Button>
               </Panel>
@@ -72,17 +71,17 @@
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
                   <Label class="PopupPickerLabel" text="#invokation_picker_filter_ability" hittest="false" />
-                  <Button id="PickerFilterAbilityResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="component.ResetAbilityFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Button id="PickerFilterAbilityResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onactivate="invk.Components.Picker.component.ResetAbilityFilter()" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)" onmouseout="UIHideTextTooltip()" />
                 </Panel>
 
-                <Button class="PickerFilterAbilityButton PopupPickerButton ButtonBevel" onactivate="component.ShowAbilityFilter()">
+                <Button class="PickerFilterAbilityButton PopupPickerButton ButtonBevel" onactivate="invk.Components.Picker.component.ShowAbilityFilter()">
                   <DOTAAbilityImage id="PickerFilterAbilityImage" />
                 </Button>
               </Panel>
             </Panel>
 
             <Panel class="PickerFiltersRow ButtonsRow" hittest="false">
-              <Button class="PickerFiltersResetButton ButtonDark" onactivate="component.ResetFilters()">
+              <Button class="PickerFiltersResetButton ButtonDark" onactivate="invk.Components.Picker.component.ResetFilters()">
                 <Label text="#invokation_picker_filters_reset" hittest="false" />
               </Button>
             </Panel>
@@ -90,7 +89,7 @@
         </Panel>
       </Panel>
 
-      <Button class="PickerThumb PanelSlideThumb" onactivate="component.Toggle()">
+      <Button class="PickerThumb PanelSlideThumb" onactivate="invk.Components.Picker.component.Toggle()">
         <Panel class="PanelSlideThumbArrow" />
       </Button>
     </Panel>

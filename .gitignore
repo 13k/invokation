@@ -1,22 +1,18 @@
-/.cov/*
-!/.cov/.keep
+# project
 /.env*
-/.luarocks
+/tmp/*
+!/tmp/.keep
+# lua
 /.lua-version
-/.pnp.*
-/.yarn/*
-!/.yarn/plugins
-!/.yarn/releases
-!/.yarn/sdks
-!/.yarn/versions
-/build
-/doc/ldoc
-/game/*
-!/game/addoninfo.txt
-!/game/resource
-!/game/scripts
+/.luarocks
 /lua
 /lua_modules
 /luarocks
+# javascript/typescript
 /node_modules
-/tmp
+# game
+/content/panorama/scripts/*
+/game/*
+!/game/resource
+!/game/scripts
+!/game/addoninfo.txt

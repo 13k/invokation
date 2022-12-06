@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    "types": ["@moddota/panorama-types", "@types/lodash"],
+    "target": "es2017",
+    "lib": ["es2017"],
+    "esModuleInterop": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "removeComments": true
+  }
+}
