@@ -1,15 +1,15 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/popups/popup_game_info.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup_game_info.js" />
   </scripts>
 
   <styles>
     <include src="file://{resources}/styles/custom_game/popups/popup_game_info.css" />
   </styles>
 
-  <Popup class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="component.Close()">
-    <Button class="CloseButton" onactivate="component.Close()" />
+  <Popup class="GameInfoRoot PopupPanel Hidden" popupbackground="dim" oncancel="invk.Components.Popups.PopupGameInfo.component.Close()">
+    <Button class="CloseButton" onactivate="invk.Components.Popups.PopupGameInfo.component.Close()" />
 
     <Panel class="GameInfoContents">
       <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
@@ -25,12 +25,12 @@
           <Label id="GameInfoVersionLabel" class="GameInfoMetaText" />
         </Panel>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="component.OpenHomepageURL()">
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="invk.Components.Popups.PopupGameInfo.component.OpenHomepageURL()">
           <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_home_page" />
           <Panel class="GameInfoArrowIcon" />
         </Button>
 
-        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="component.OpenChangelogURL()">
+        <Button class="GameInfoMetaItem GameInfoLinkButton" onactivate="invk.Components.Popups.PopupGameInfo.component.OpenChangelogURL()">
           <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_changelog" />
           <Panel class="GameInfoArrowIcon" />
         </Button>

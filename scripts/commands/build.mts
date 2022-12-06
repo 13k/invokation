@@ -12,7 +12,7 @@ export interface Options {
   force?: boolean;
 }
 
-const IGNORED_RESOURCES = ["panorama/scripts/{.eslintrc.yml,tsconfig.json}"];
+const IGNORED_RESOURCES: string[] = [];
 
 export default class BuildCommand extends Base<Options> {
   static subcommand(parent: Command, configOptions: ConfigOptions) {
@@ -28,8 +28,13 @@ export default class BuildCommand extends Base<Options> {
   }
 
   override async run() {
+    await this.transpileScripts();
     await this.compileMaps();
     await this.compileResources();
+  }
+
+  contentGlobPattern(relPattern: string) {
+    return path.join(this.config.sources.contentPath, relPattern);
   }
 
   addonContentRelPath(filename: string) {
@@ -40,8 +45,15 @@ export default class BuildCommand extends Base<Options> {
     return path.relative(dota2.path, customGameFilename);
   }
 
-  contentGlobPattern(relPattern: string) {
-    return path.join(this.config.sources.contentPath, relPattern);
+  async transpileScripts() {
+    const srcPanoramaScriptsPath = path.join(this.config.sources.srcPath, "panorama", "scripts");
+
+    this.log.label(Label.Generate).info("transpiling panorama scripts");
+
+    await this.exec("npm", ["exec", "--", "tsc", "-b", srcPanoramaScriptsPath], {
+      echo: true,
+      log: this.log,
+    });
   }
 
   async compileMaps() {
@@ -55,11 +67,18 @@ export default class BuildCommand extends Base<Options> {
   }
 
   async compileResources() {
-    const filenames = await this.findResources();
+    const resourcesDirs = await this.glob(this.contentGlobPattern("*"), {
+      ignore: [this.contentGlobPattern("maps")],
+    });
 
-    this.log.label(Label.Compile).fields({ count: filenames.length }).info("resources");
+    const inputArgs = resourcesDirs.flatMap((p) => [
+      "-i",
+      path.join(this.addonContentRelPath(p), "*"),
+    ]);
 
-    await this.compileFilelist(filenames);
+    this.log.label(Label.Compile).info("resources");
+
+    await this.compile(["-r", ...inputArgs]);
   }
 
   async compile(args: string[]) {

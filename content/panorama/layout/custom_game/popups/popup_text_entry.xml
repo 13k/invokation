@@ -1,14 +1,14 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.js" />
   </scripts>
 
   <styles>
     <include src="file://{resources}/styles/custom_game/popups/popup_text_entry.css" />
   </styles>
 
-  <Popup class="PopupTextEntryRoot PopupPanel Hidden" popupbackground="dim" onload="component.onLoad()" oncancel="component.Close()">
+  <Popup class="PopupTextEntryRoot PopupPanel Hidden" popupbackground="dim" onload="invk.Components.Popups.PopupTextEntry.component.onLoad()" oncancel="invk.Components.Popups.PopupTextEntry.component.Close()">
     <Label class="PopupTitle" text="{s:title}" />
 
     <Panel class="PopupTextEntryBody" hittest="false">
@@ -23,14 +23,14 @@
       <Label class="PopupTextEntryBodyLabel" text="{s:body}" html="true" hittest="false" />
     </Panel>
 
-    <TextEntry id="PopupTextEntryTextEntry" oninputsubmit="component.Submit()" />
+    <TextEntry id="PopupTextEntryTextEntry" oninputsubmit="invk.Components.Popups.PopupTextEntry.component.Submit()" />
 
     <Panel class="PopupButtonRow">
-      <Button class="PopupButton" onactivate="component.Submit()">
+      <Button class="PopupButton" onactivate="invk.Components.Popups.PopupTextEntry.component.Submit()">
         <Label text="#DOTA_Ok" />
       </Button>
 
-      <Button class="PopupButton" onactivate="component.Close()">
+      <Button class="PopupButton" onactivate="invk.Components.Popups.PopupTextEntry.component.Close()">
         <Label text="#DOTA_Cancel" />
       </Button>
     </Panel>

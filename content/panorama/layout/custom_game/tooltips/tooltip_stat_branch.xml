@@ -1,7 +1,7 @@
 <root>
   <scripts>
-    <!-- <include src="file://{resources}/scripts/lib/component.ts" /> -->
-    <include src="file://{resources}/scripts/custom_game/tooltips/tooltip_stat_branch.ts" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/tooltips/tooltip_stat_branch.js" />
   </scripts>
 
   <styles>
@@ -32,7 +32,7 @@
     </snippet>
   </snippets>
 
-  <Tooltip class="TooltipStatBranchRoot" onload="component.onLoad()">
+  <Tooltip class="TooltipStatBranchRoot" onload="invk.Components.Tooltips.TooltipStatBranch.component.onLoad()">
     <Label class="TooltipStatBranchTitle" text="#DOTA_StatBranch_TooltipTitle" />
     <Panel id="TooltipStatBranchContainer" />
   </Tooltip>

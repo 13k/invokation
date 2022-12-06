@@ -1,0 +1,4 @@
+{
+  "references": [{ "path": "./lib" }, { "path": "./custom_game" }],
+  "files": []
+}

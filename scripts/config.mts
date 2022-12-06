@@ -29,11 +29,9 @@ export interface Config {
 }
 
 export interface ConfigSources {
+  srcPath: string;
   contentPath: string;
-  panoramaScriptsPath: string;
-  panoramaStylesPath: string;
   gamePath: string;
-  vscriptsPath: string;
 }
 
 export interface ConfigDota2 {
@@ -60,18 +58,10 @@ export function createConfig({ rootPath, dota2Path }: ConfigOptions): Config {
     dota2: { customGame: pkgCustomGame },
   } = PACKAGE;
 
-  const contentPath = path.join(rootPath, "content");
-  const panoramaPath = path.join(contentPath, "panorama");
-  const gamePath = path.join(rootPath, "game");
-  const scriptsPath = path.join(gamePath, "scripts");
   const sources = {
-    contentPath,
-    panoramaPath,
-    panoramaScriptsPath: path.join(panoramaPath, "scripts"),
-    panoramaStylesPath: path.join(panoramaPath, "styles"),
-    gamePath,
-    scriptsPath,
-    vscriptsPath: path.join(scriptsPath, "vscripts"),
+    srcPath: path.join(rootPath, "src"),
+    contentPath: path.join(rootPath, "content"),
+    gamePath: path.join(rootPath, "game"),
   };
 
   const dota2BinDir = path.join(dota2Path, "game", "bin", "win64");

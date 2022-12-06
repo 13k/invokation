@@ -1,44 +1,9 @@
 <root>
   <scripts>
-    <!--
-      vendored libs
-      -->
-
-    <include src="file://{resources}/scripts/vendor/lodash.js" />
-
-    <!--
-      "global" modules
-      -->
-
-    <!-- must be first -->
-    <include src="file://{resources}/scripts/lib/custom_ui_config.ts" />
-
-    <include src="file://{resources}/scripts/lib/env.ts" />
-    <include src="file://{resources}/scripts/lib/logger.ts" />
-
-    <include src="file://{resources}/scripts/lib/callbacks.ts" />
-    <include src="file://{resources}/scripts/lib/net_table.ts" />
-    <include src="file://{resources}/scripts/lib/net_table_listener.ts" />
-    <include src="file://{resources}/scripts/lib/combos_collection.ts" />
-    <include src="file://{resources}/scripts/lib/grid.ts" />
-
-    <include src="file://{resources}/scripts/lib/cache.ts" />
-    <include src="file://{resources}/scripts/lib/custom_events.ts" />
-
-    <include src="file://{resources}/scripts/lib/combo.ts" />
-    <include src="file://{resources}/scripts/lib/combos_view.ts" />
-    <include src="file://{resources}/scripts/lib/const.ts" />
-    <include src="file://{resources}/scripts/lib/dota2.ts" />
-    <include src="file://{resources}/scripts/lib/l10n.ts" />
-    <include src="file://{resources}/scripts/lib/layout.ts" />
-    <include src="file://{resources}/scripts/lib/lua.ts" />
-    <include src="file://{resources}/scripts/lib/panorama.ts" />
-    <include src="file://{resources}/scripts/lib/sequence.ts" />
-    <include src="file://{resources}/scripts/lib/util.ts" />
-
-    <include src="file://{resources}/scripts/lib/component.ts" />
-
-    <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.ts" />
+    <!-- vendor -->
+    <include src="file://{resources}/scripts/lib.js" />
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.js" />
   </scripts>
 
   <Panel>
