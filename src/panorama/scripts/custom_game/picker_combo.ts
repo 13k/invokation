@@ -20,7 +20,7 @@ namespace invk {
       }
 
       const {
-        Combo: { PropertyName },
+        Combo: { Property },
         Sequence: { Sequence, ParallelSequence, NoopAction },
         Vendor: { lodash: _ },
       } = GameUI.CustomUIConfig().invk;
@@ -103,15 +103,15 @@ namespace invk {
           }
 
           return new ParallelSequence()
-            .AddClass(this.panel, propertyCssClass(PropertyName.Specialty, this.combo.specialty))
-            .AddClass(this.panel, propertyCssClass(PropertyName.Stance, this.combo.stance))
+            .AddClass(this.panel, propertyCssClass(Property.Specialty, this.combo.specialty))
+            .AddClass(this.panel, propertyCssClass(Property.Stance, this.combo.stance))
             .AddClass(
               this.elements.damageRating,
-              propertyCssClass(PropertyName.DamageRating, this.combo.damageRating)
+              propertyCssClass(Property.DamageRating, this.combo.damageRating)
             )
             .AddClass(
               this.elements.difficultyRating,
-              propertyCssClass(PropertyName.DifficultyRating, this.combo.difficultyRating)
+              propertyCssClass(Property.DifficultyRating, this.combo.difficultyRating)
             );
         }
 
@@ -166,8 +166,8 @@ namespace invk {
         let baseClass: string;
 
         switch (prop) {
-          case PropertyName.DamageRating:
-          case PropertyName.DifficultyRating:
+          case Property.DamageRating:
+          case Property.DifficultyRating:
             baseClass = "rating";
             break;
           default:

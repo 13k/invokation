@@ -3,7 +3,7 @@
 namespace invk {
   export namespace CombosView {
     const {
-      Combo: { matchesAbility, matchesItem, matchesTags, PropertyName },
+      Combo: { matchesAbility, matchesItem, matchesTags, Property },
     } = invk;
 
     import Combo = invk.Combo.Combo;
@@ -66,7 +66,7 @@ namespace invk {
     const filterByProperties = (seq: CombosChain, properties?: PropertiesFilter) =>
       _.isEmpty(properties)
         ? seq
-        : _.reduce(PropertyName, (seq, prop) => filterByProperty(seq, prop, properties[prop]), seq);
+        : _.reduce(Property, (seq, prop) => filterByProperty(seq, prop, properties[prop]), seq);
 
     const filterByProperty = <K extends keyof Properties>(
       seq: CombosChain,

@@ -41,11 +41,29 @@ namespace invk {
       Exort = "exort",
     }
 
-    export enum PropertyName {
+    export enum Property {
       Specialty = "specialty",
       Stance = "stance",
       DamageRating = "damageRating",
       DifficultyRating = "difficultyRating",
+    }
+
+    export enum PropertyType {
+      String,
+      Integer,
+    }
+
+    export interface PropertyTypes {
+      [Property.Specialty]: PropertyType.String;
+      [Property.Stance]: PropertyType.String;
+      [Property.DamageRating]: PropertyType.Integer;
+      [Property.DifficultyRating]: PropertyType.Integer;
+    }
+
+    export interface PropertyDescriptor<K extends keyof Properties> {
+      name: K;
+      type: PropertyTypes[K];
+      values: Properties[K][];
     }
 
     export interface Base {
@@ -57,10 +75,10 @@ namespace invk {
     }
 
     export interface Properties {
-      [PropertyName.Specialty]: Specialty;
-      [PropertyName.Stance]: Stance;
-      [PropertyName.DamageRating]: DamageRating;
-      [PropertyName.DifficultyRating]: DifficultyRating;
+      [Property.Specialty]: Specialty;
+      [Property.Stance]: Stance;
+      [Property.DamageRating]: DamageRating;
+      [Property.DifficultyRating]: DifficultyRating;
     }
 
     export type PropertiesL10n = {
@@ -103,27 +121,47 @@ namespace invk {
       damage?: number;
     }
 
-    export const PROPERTIES: { [K in keyof Properties]: Properties[K][] } = {
-      [PropertyName.Specialty]: [Specialty.QuasWex, Specialty.QuasExort],
-      [PropertyName.Stance]: [Stance.Defensive, Stance.Offensive],
-      [PropertyName.DamageRating]: [
-        DamageRating.None,
-        DamageRating.Light,
-        DamageRating.Considerable,
-        DamageRating.Lethal,
-        DamageRating.Exceptional,
-        DamageRating.Brutal,
-      ],
-      [PropertyName.DifficultyRating]: [
-        DifficultyRating.VeryEasy,
-        DifficultyRating.Easy,
-        DifficultyRating.Medium,
-        DifficultyRating.Hard,
-        DifficultyRating.LiterallyUnplayable,
-      ],
+    export type PropertyList = {
+      [K in keyof Properties]: PropertyDescriptor<K>;
     };
 
-    export function isProperty(property: string): property is PropertyName {
+    export const PROPERTIES: PropertyList = {
+      [Property.Specialty]: {
+        name: Property.Specialty,
+        type: PropertyType.String,
+        values: [Specialty.QuasWex, Specialty.QuasExort],
+      },
+      [Property.Stance]: {
+        name: Property.Stance,
+        type: PropertyType.String,
+        values: [Stance.Defensive, Stance.Offensive],
+      },
+      [Property.DamageRating]: {
+        name: Property.DamageRating,
+        type: PropertyType.Integer,
+        values: [
+          DamageRating.None,
+          DamageRating.Light,
+          DamageRating.Considerable,
+          DamageRating.Lethal,
+          DamageRating.Exceptional,
+          DamageRating.Brutal,
+        ],
+      },
+      [Property.DifficultyRating]: {
+        name: Property.DifficultyRating,
+        type: PropertyType.Integer,
+        values: [
+          DifficultyRating.VeryEasy,
+          DifficultyRating.Easy,
+          DifficultyRating.Medium,
+          DifficultyRating.Hard,
+          DifficultyRating.LiterallyUnplayable,
+        ],
+      },
+    };
+
+    export function isProperty(property: string): property is Property {
       return property in PROPERTIES;
     }
 

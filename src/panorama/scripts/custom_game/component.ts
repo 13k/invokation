@@ -369,8 +369,6 @@ namespace invk {
       // findElements({ name1: "elem1", name2: "Elmen2", ... })
       //   -> { name1: $("#elem1"), name2: $("#Elem2"), ... }
       findElements(options?: ElementsOption<E>): E {
-        this.debug("findElements()", options);
-
         if (!options) {
           return {} as E;
         }
