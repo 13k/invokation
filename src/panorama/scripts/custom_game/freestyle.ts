@@ -7,6 +7,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         Combo: { StaticID },
@@ -30,7 +31,7 @@ namespace invk {
         StartDelay = 0.5,
       }
 
-      export class Freestyle extends Component.Component<Elements, Inputs, Outputs> {
+      export class Freestyle extends Component.Component<Elements, Inputs, Outputs, Params> {
         comboScore: ComboScore.ComboScore;
 
         constructor() {

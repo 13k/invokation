@@ -21,6 +21,8 @@ namespace invk {
           Vendor: { lodash: _ },
         } = GameUI.CustomUIConfig().invk;
 
+        const { ParamType } = Component;
+
         enum PanelID {
           AbilityImagePrefix = "PopupInvokerAbilityPicker",
         }
@@ -39,16 +41,19 @@ namespace invk {
         export class PopupInvokerAbilityPicker extends Component.Component<
           Elements,
           Inputs,
-          Outputs
+          Outputs,
+          Params
         > {
           abilityPanels: Record<string, AbilityImage> = {};
-          channel: string = INVALID_CHANNEL;
           selected: string = INVALID_ABILITY;
 
           constructor() {
             super({
               elements: {
                 abilities: "PopupInvokerAbilityPickerAbilityList",
+              },
+              params: {
+                channel: { type: ParamType.String, default: INVALID_CHANNEL },
               },
             });
 
@@ -57,10 +62,8 @@ namespace invk {
 
           // ----- Event handlers -----
 
-          onLoad() {
-            this.channel = this.panel.GetAttributeString("channel", INVALID_CHANNEL);
-
-            this.debug("onLoad()", { channel: this.channel });
+          override onLoad(): void {
+            this.debug("onLoad()", this.params);
             this.render();
           }
 
@@ -110,7 +113,11 @@ namespace invk {
           }
 
           Submit() {
-            const { channel, selected: ability } = this;
+            const {
+              params: { channel },
+              selected: ability,
+            } = this;
+
             const payload = { channel, ability };
 
             this.debug("Submit()", payload);

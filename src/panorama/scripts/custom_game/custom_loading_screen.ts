@@ -7,6 +7,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         Sequence: { Sequence },
@@ -22,7 +23,12 @@ namespace invk {
         KidSplash = 1.8,
       }
 
-      export class CustomLoadingScreen extends Component.Component<Elements, Inputs, Outputs> {
+      export class CustomLoadingScreen extends Component.Component<
+        Elements,
+        Inputs,
+        Outputs,
+        Params
+      > {
         constructor() {
           super({
             elements: {

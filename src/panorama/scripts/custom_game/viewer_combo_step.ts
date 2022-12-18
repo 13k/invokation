@@ -7,10 +7,11 @@ namespace invk {
 
       export type Inputs = ComboStep.Inputs;
       export type Outputs = never;
+      export type Params = never;
 
       const { L10n } = GameUI.CustomUIConfig().invk;
 
-      export class ViewerComboStep extends ComboStep.ComboStep<Elements, Inputs, Outputs> {
+      export class ViewerComboStep extends ComboStep.ComboStep<Elements, Inputs, Outputs, Params> {
         constructor() {
           super({
             elements: {

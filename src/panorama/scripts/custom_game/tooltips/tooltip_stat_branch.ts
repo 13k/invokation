@@ -27,6 +27,8 @@ namespace invk {
           },
         } = GameUI.CustomUIConfig().invk;
 
+        const { ParamType } = Component;
+
         const LEVELS = [Level.Tier4, Level.Tier3, Level.Tier2, Level.Tier1];
         const SIDES = [Side.Right, Side.Left];
 
@@ -48,7 +50,12 @@ namespace invk {
 
         const branchRowId = (level: Dota2.Talent.Level) => `${BRANCH_ROW_ID_PREFIX}${level}`;
 
-        export class TooltipStatBranch extends Component.Component<Elements, Inputs, Outputs> {
+        export class TooltipStatBranch extends Component.Component<
+          Elements,
+          Inputs,
+          Outputs,
+          Params
+        > {
           selected?: Dota2.Talent.Selection;
           selectedSplit?: Dota2.Talent.Map<boolean>;
           talents?: Dota2.Talent.Map<Dota2.Invoker.Ability>;
@@ -59,6 +66,10 @@ namespace invk {
             super({
               elements: {
                 container: "TooltipStatBranchContainer",
+              },
+              params: {
+                heroID: { type: ParamType.UInt32, default: 0 },
+                selected: { type: ParamType.UInt32, default: 0 },
               },
             });
 
@@ -71,8 +82,8 @@ namespace invk {
 
           // ----- Event handlers -----
 
-          onLoad() {
-            this.selected = this.attrUint32("selected", 0);
+          override onLoad(): void {
+            this.selected = this.params.selected;
             this.selectedSplit = Talent.splitSelection(this.selected);
 
             this.debug("onLoad()", { selected: this.selected, selectedSplit: this.selectedSplit });

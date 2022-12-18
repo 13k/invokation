@@ -28,13 +28,14 @@ namespace invk {
       export type Elements = never;
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         Const: { UI_CONFIG },
         Vendor: { lodash: _ },
       } = GameUI.CustomUIConfig().invk;
 
-      export class CustomUIManifest extends Component.Component<Elements, Inputs, Outputs> {
+      export class CustomUIManifest extends Component.Component<Elements, Inputs, Outputs, Params> {
         constructor() {
           super();
 

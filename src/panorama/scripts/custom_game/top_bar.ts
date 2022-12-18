@@ -4,6 +4,7 @@ namespace invk {
       export type Elements = never;
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const { Layout } = GameUI.CustomUIConfig().invk;
 
@@ -11,7 +12,7 @@ namespace invk {
         PopupGameInfo = "PopupGameInfo",
       }
 
-      export class TopBar extends Component.Component<Elements, Inputs, Outputs> {
+      export class TopBar extends Component.Component<Elements, Inputs, Outputs, Params> {
         constructor() {
           super();
           this.debug("init");

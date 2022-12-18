@@ -22,6 +22,7 @@ namespace invk {
       }
 
       export type Outputs = never;
+      export type Params = never;
 
       const {
         Vendor: { lodash: _ },
@@ -109,7 +110,7 @@ namespace invk {
         },
       } as const;
 
-      export class ComboScore extends Component.Component<Elements, Inputs, Outputs> {
+      export class ComboScore extends Component.Component<Elements, Inputs, Outputs, Params> {
         values: Record<string, number>;
         spinQueues: Record<string, SpinDigitOptions[]>;
         spinning: Record<string, boolean>;

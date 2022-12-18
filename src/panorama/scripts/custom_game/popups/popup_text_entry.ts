@@ -14,16 +14,26 @@ namespace invk {
         export type Inputs = never;
         export type Outputs = never;
 
-        export type Params = {
-          [K in keyof typeof Attribute as typeof Attribute[K]]?: string;
-        };
+        export interface Params extends Component.Params {
+          [Param.Channel]: string;
+          [Param.Title]?: string;
+          [Param.Body]?: string;
+          [Param.Image]?: string;
+          [Param.EconItem]?: number;
+          [Param.HeroId]?: number;
+          [Param.Hero]?: string;
+          [Param.Ability]?: string;
+          [Param.Item]?: string;
+        }
 
         const {
           CustomEvents: { Name: CustomEventName },
           Vendor: { lodash: _ },
         } = GameUI.CustomUIConfig().invk;
 
-        enum Attribute {
+        const { ParamType } = Component;
+
+        enum Param {
           Channel = "channel",
           Title = "title",
           Body = "body",
@@ -48,9 +58,7 @@ namespace invk {
           Body = "body",
         }
 
-        export class PopupTextEntry extends Component.Component<Elements, Inputs, Outputs> {
-          attributes: Record<Attribute, string>;
-
+        export class PopupTextEntry extends Component.Component<Elements, Inputs, Outputs, Params> {
           constructor() {
             super({
               elements: {
@@ -61,64 +69,61 @@ namespace invk {
                 abilityImage: "PopupTextEntryAbilityImage",
                 itemImage: "PopupTextEntryItemImage",
               },
+              params: {
+                [Param.Channel]: { type: ParamType.String, default: "" },
+                [Param.Title]: { type: ParamType.String, default: "" },
+                [Param.Body]: { type: ParamType.String, default: "" },
+                [Param.Image]: { type: ParamType.String, default: "" },
+                [Param.EconItem]: { type: ParamType.UInt32, default: 0 },
+                [Param.HeroId]: { type: ParamType.UInt32, default: 0 },
+                [Param.Hero]: { type: ParamType.String, default: "" },
+                [Param.Ability]: { type: ParamType.String, default: "" },
+                [Param.Item]: { type: ParamType.String, default: "" },
+              },
             });
-
-            this.attributes = {
-              [Attribute.Channel]: "",
-              [Attribute.Title]: "",
-              [Attribute.Body]: "",
-              [Attribute.Image]: "",
-              [Attribute.EconItem]: "",
-              [Attribute.HeroId]: "",
-              [Attribute.Hero]: "",
-              [Attribute.Ability]: "",
-              [Attribute.Item]: "",
-            };
 
             this.debug("init");
           }
 
           // ----- Event handlers -----
 
-          onLoad() {
-            this.loadAttributes();
-            this.debugFn(() => ["onLoad()", this.attributes]);
+          override onLoad(): void {
+            this.debugFn(() => ["onLoad()", this.params]);
             this.render();
           }
 
           // ----- Helpers -----
 
-          loadAttributes() {
-            _.each(this.attributes, (_val, property) => {
-              this.attributes[property as Attribute] = this.panel.GetAttributeString(property, "");
-            });
-          }
-
           render() {
             let iconClass: IconClass | null = null;
 
-            this.panel.SetDialogVariable(DialogVariable.Title, this.attributes[Attribute.Title]);
-            this.panel.SetDialogVariable(DialogVariable.Body, this.attributes[Attribute.Body]);
+            this.panel.SetDialogVariable(DialogVariable.Title, this.params[Param.Title] || "");
+            this.panel.SetDialogVariable(DialogVariable.Body, this.params[Param.Body] || "");
 
-            if (!_.isEmpty(this.attributes[Attribute.Image])) {
-              this.elements.image.SetImage(this.attributes[Attribute.Image]);
+            const image = this.params[Param.Image];
+            const econItem = this.params[Param.EconItem];
+            const heroID = this.params[Param.HeroId];
+            const hero = this.params[Param.Hero];
+            const ability = this.params[Param.Ability];
+            const item = this.params[Param.Item];
+
+            if (_.isString(image) && !_.isEmpty(image)) {
+              this.elements.image.SetImage(image);
               iconClass = IconClass.IMAGE;
-            } else if (!_.isEmpty(this.attributes[Attribute.EconItem])) {
-              const id = _.toInteger(this.attributes[Attribute.EconItem]);
-              this.elements.econItemImage.SetItemByDefinition(id);
+            } else if (_.isNumber(econItem) && !_.isEmpty(econItem)) {
+              this.elements.econItemImage.SetItemByDefinition(econItem);
               iconClass = IconClass.ECON_ITEM;
-            } else if (!_.isEmpty(this.attributes[Attribute.HeroId])) {
-              const id = _.toInteger(this.attributes[Attribute.HeroId]) as HeroID;
-              this.elements.heroImage.heroid = id;
+            } else if (_.isNumber(heroID) && !_.isEmpty(heroID)) {
+              this.elements.heroImage.heroid = heroID as HeroID;
               iconClass = IconClass.HERO;
-            } else if (!_.isEmpty(this.attributes[Attribute.Hero])) {
-              this.elements.heroImage.heroname = this.attributes[Attribute.Hero];
+            } else if (_.isString(hero) && !_.isEmpty(hero)) {
+              this.elements.heroImage.heroname = hero;
               iconClass = IconClass.HERO;
-            } else if (!_.isEmpty(this.attributes[Attribute.Ability])) {
-              this.elements.abilityImage.abilityname = this.attributes[Attribute.Ability];
+            } else if (_.isString(ability) && !_.isEmpty(ability)) {
+              this.elements.abilityImage.abilityname = ability;
               iconClass = IconClass.ABILITY;
-            } else if (!_.isEmpty(this.attributes[Attribute.Item])) {
-              this.elements.itemImage.itemname = this.attributes[Attribute.Item];
+            } else if (_.isString(item) && !_.isEmpty(item)) {
+              this.elements.itemImage.itemname = item;
               iconClass = IconClass.ITEM;
             }
 
@@ -137,7 +142,7 @@ namespace invk {
 
           Submit() {
             const {
-              attributes: { channel },
+              params: { [Param.Channel]: channel },
               elements: {
                 textEntry: { text },
               },

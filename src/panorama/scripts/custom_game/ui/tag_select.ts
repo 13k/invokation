@@ -70,7 +70,7 @@ namespace invk {
         const tagId = (tag: string): string => pascalCase(`${PanelID.TagPrefix}${tag}`);
         const optionId = (option: string): string => pascalCase(`${PanelID.OptionPrefix}${option}`);
 
-        export class TagSelect extends Component.Component<Elements, Inputs, Outputs> {
+        export class TagSelect extends Component.Component<Elements, Inputs, Outputs, Params> {
           options: string[];
           tags: string[];
           tagPanels: Record<string, Panel>;

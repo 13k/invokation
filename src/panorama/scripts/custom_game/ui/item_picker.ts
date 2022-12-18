@@ -47,7 +47,7 @@ namespace invk {
 
         const elementId = (prefix: string, name: string) => `${prefix}${pascalCase(name)}`;
 
-        export class ItemPicker extends Component.Component<Elements, Inputs, Outputs> {
+        export class ItemPicker extends Component.Component<Elements, Inputs, Outputs, Params> {
           netTable: NetTable.NetTable<CustomNetTables.Name.Invokation>;
           itemPanels: Record<string, ItemImage[]>;
           shopItems?: Record<Dota2.Shop.Category, string[]>;

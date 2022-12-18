@@ -15,6 +15,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         L10n,
@@ -115,7 +116,7 @@ namespace invk {
         schedule?: number;
       }
 
-      export class Challenge extends Component.Component<Elements, Inputs, Outputs> {
+      export class Challenge extends Component.Component<Elements, Inputs, Outputs, Params> {
         combo?: Combo.Combo | undefined;
         comboScore: ComboScore.ComboScore;
         comboSteps: Record<Combo.StepID, ChallengeComboStep.ChallengeComboStep>;

@@ -19,6 +19,8 @@ namespace invk {
         OnShowDetails: { id: Combo.ID };
       }
 
+      export type Params = never;
+
       const {
         Combo: { Property },
         Sequence: { Sequence, ParallelSequence, NoopAction },
@@ -37,7 +39,7 @@ namespace invk {
         DifficultyRating = "difficulty_rating",
       }
 
-      export class PickerCombo extends Component.Component<Elements, Inputs, Outputs> {
+      export class PickerCombo extends Component.Component<Elements, Inputs, Outputs, Params> {
         combo?: Combo.Combo;
 
         constructor() {
