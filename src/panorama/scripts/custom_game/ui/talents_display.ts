@@ -46,7 +46,7 @@ namespace invk {
           [Side.Right]: CssClass.BranchSelectedRight,
         };
 
-        export class TalentsDisplay extends Component.Component<Elements, Inputs, Outputs> {
+        export class TalentsDisplay extends Component.Component<Elements, Inputs, Outputs, Params> {
           selected?: Dota2.Talent.Selection;
           heroID?: HeroID;
           tooltipID?: string;

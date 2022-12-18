@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_invoker_ability_picker.css" />
   </styles>
 
-  <Popup class="PopupInvokerAbilityPickerRoot" popupbackground="dim" onload="invk.Components.Popups.PopupInvokerAbilityPicker.component.onLoad()" oncancel="invk.Components.Popups.PopupInvokerAbilityPicker.component.Close()">
+  <Popup class="PopupInvokerAbilityPickerRoot" popupbackground="dim" oncancel="invk.Components.Popups.PopupInvokerAbilityPicker.component.Close()">
     <Panel class="PopupInvokerAbilityPickerHeader">
       <Label class="PopupInvokerAbilityPickerSelectionChoice" text="#invokation_ability_picker_choose" />
     </Panel>

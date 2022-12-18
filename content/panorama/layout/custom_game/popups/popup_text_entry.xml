@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_text_entry.css" />
   </styles>
 
-  <Popup class="PopupTextEntryRoot PopupPanel Hidden" popupbackground="dim" onload="invk.Components.Popups.PopupTextEntry.component.onLoad()" oncancel="invk.Components.Popups.PopupTextEntry.component.Close()">
+  <Popup class="PopupTextEntryRoot PopupPanel Hidden" popupbackground="dim" oncancel="invk.Components.Popups.PopupTextEntry.component.Close()">
     <Label class="PopupTitle" text="{s:title}" />
 
     <Panel class="PopupTextEntryBody" hittest="false">

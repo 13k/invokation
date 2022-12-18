@@ -15,7 +15,7 @@ namespace invk {
           Sequence: { ParallelSequence },
         } = GameUI.CustomUIConfig().invk;
 
-        export class PopupGameInfo extends Component.Component<Elements, Inputs, Outputs> {
+        export class PopupGameInfo extends Component.Component<Elements, Inputs, Outputs, Params> {
           constructor() {
             super({
               elements: {
@@ -29,7 +29,7 @@ namespace invk {
 
           // ----- Event handlers -----
 
-          onLoad(this: this) {
+          override onLoad(): void {
             this.debug("onLoad()");
             this.render();
           }

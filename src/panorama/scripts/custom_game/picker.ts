@@ -1,4 +1,5 @@
 namespace invk {
+  // test
   export namespace Components {
     export namespace Picker {
       export interface Elements extends Component.Elements {
@@ -18,6 +19,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         L10n,
@@ -70,7 +72,7 @@ namespace invk {
         [Property.DifficultyRating]: -1,
       } as const;
 
-      export class Picker extends Component.Component<Elements, Inputs, Outputs> {
+      export class Picker extends Component.Component<Elements, Inputs, Outputs, Params> {
         combosView?: CombosView.CombosView;
         pickerCombos: Record<Combo.ID, PickerCombo.PickerCombo>;
         finishedCombos: Record<Combo.ID, boolean>;

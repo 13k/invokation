@@ -18,6 +18,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         L10n,
@@ -38,7 +39,7 @@ namespace invk {
         OptionalStep = "ComboStepOptional",
       }
 
-      export class Viewer extends Component.Component<Elements, Inputs, Outputs> {
+      export class Viewer extends Component.Component<Elements, Inputs, Outputs, Params> {
         combo?: Combo.Combo | undefined;
         talents: Components.UI.TalentsDisplay.TalentsDisplay;
 

@@ -14,6 +14,7 @@ namespace invk {
       }
 
       export type Outputs = never;
+      export type Params = never;
 
       const {
         Sequence: { Sequence, ParallelSequence, NoopAction },
@@ -30,7 +31,7 @@ namespace invk {
 
       const ratingCssClass = (value: number) => `rating_${value}`;
 
-      export class ViewerProperties extends Component.Component<Elements, Inputs, Outputs> {
+      export class ViewerProperties extends Component.Component<Elements, Inputs, Outputs, Params> {
         combo?: Combo.Combo;
 
         constructor() {

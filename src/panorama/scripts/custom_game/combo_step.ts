@@ -12,8 +12,8 @@ namespace invk {
         };
       }
 
-      export interface Options<E extends Elements, I extends Inputs>
-        extends Component.Options<E, I> {
+      export interface Options<E extends Elements, I extends Inputs, P extends Component.Params>
+        extends Component.Options<E, I, P> {
         imageId?: string;
       }
 
@@ -39,7 +39,7 @@ namespace invk {
         SetStep: "setStep",
       };
 
-      export const DEFAULT_OPTIONS: Options<Elements, Inputs> = {
+      export const DEFAULT_OPTIONS: Options<Elements, Inputs, Component.Params> = {
         elements: DEFAULT_ELEMENTS,
         inputs: DEFAULT_INPUTS,
       };
@@ -49,13 +49,14 @@ namespace invk {
       export class ComboStep<
         E extends Elements,
         I extends Inputs,
-        O extends Component.Outputs
-      > extends Component.Component<E, I, O> {
+        O extends Component.Outputs,
+        P extends Component.Params
+      > extends Component.Component<E, I, O, P> {
         imageId: string;
         combo?: Combo.Combo;
         step?: Combo.Step;
 
-        constructor({ imageId, ...options }: Options<E, I> = {}) {
+        constructor({ imageId, ...options }: Options<E, I, P> = {}) {
           options = _.defaultsDeep(options, DEFAULT_OPTIONS);
 
           super(options);

@@ -32,7 +32,7 @@
     </snippet>
   </snippets>
 
-  <Tooltip class="TooltipStatBranchRoot" onload="invk.Components.Tooltips.TooltipStatBranch.component.onLoad()">
+  <Tooltip class="TooltipStatBranchRoot">
     <Label class="TooltipStatBranchTitle" text="#DOTA_StatBranch_TooltipTitle" />
     <Panel id="TooltipStatBranchContainer" />
   </Tooltip>

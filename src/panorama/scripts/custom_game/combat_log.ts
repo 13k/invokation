@@ -8,6 +8,7 @@ namespace invk {
 
       export type Inputs = never;
       export type Outputs = never;
+      export type Params = never;
 
       const {
         CustomEvents: { Name: CustomEventName },
@@ -39,7 +40,7 @@ namespace invk {
       const iconId = (row: number, col: number) => [PanelID.IconPrefix, row, col].join("_");
       const iconImageId = (iconId: string) => `${iconId}_${PanelID.IconImagePrefix}`;
 
-      export class CombatLog extends Component.Component<Elements, Inputs, Outputs> {
+      export class CombatLog extends Component.Component<Elements, Inputs, Outputs, Params> {
         grid: Grid.Grid<string>;
         row?: Panel | null;
 

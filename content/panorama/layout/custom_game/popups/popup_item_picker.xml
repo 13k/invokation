@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_item_picker.css" />
   </styles>
 
-  <Popup class="PopupItemPickerRoot" popupbackground="dim" onload="invk.Components.Popups.PopupItemPicker.component.onLoad()" oncancel="invk.Components.Popups.PopupItemPicker.component.Close()">
+  <Popup class="PopupItemPickerRoot" popupbackground="dim" oncancel="invk.Components.Popups.PopupItemPicker.component.Close()">
     <Panel id="PopupItemPickerUIItemPickerContainer" />
 
     <Panel class="PopupButtonRow">

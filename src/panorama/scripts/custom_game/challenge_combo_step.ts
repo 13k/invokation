@@ -12,6 +12,7 @@ namespace invk {
       }
 
       export type Outputs = never;
+      export type Params = never;
 
       enum CssClass {
         Active = "ChallengeComboStepActive",
@@ -19,7 +20,12 @@ namespace invk {
         Bump = "ChallengeComboStepBump",
       }
 
-      export class ChallengeComboStep extends ComboStep.ComboStep<Elements, Inputs, Outputs> {
+      export class ChallengeComboStep extends ComboStep.ComboStep<
+        Elements,
+        Inputs,
+        Outputs,
+        Params
+      > {
         constructor() {
           super({
             inputs: {

@@ -18,6 +18,8 @@ namespace invk {
           CustomEvents: { Name: CustomEventName },
         } = GameUI.CustomUIConfig().invk;
 
+        const { ParamType } = Component;
+
         enum PanelID {
           ItemPicker = "PopupItemPickerUIItemPicker",
         }
@@ -25,8 +27,12 @@ namespace invk {
         const INVALID_CHANNEL = "<invalid>";
         const INVALID_ITEM = "<invalid>";
 
-        export class PopupItemPicker extends Component.Component<Elements, Inputs, Outputs> {
-          channel: string;
+        export class PopupItemPicker extends Component.Component<
+          Elements,
+          Inputs,
+          Outputs,
+          Params
+        > {
           selected: string;
           itemPicker?: Components.UI.ItemPicker.ItemPicker;
 
@@ -35,9 +41,11 @@ namespace invk {
               elements: {
                 itemPickerContainer: "PopupItemPickerUIItemPickerContainer",
               },
+              params: {
+                channel: { type: ParamType.String, default: INVALID_CHANNEL },
+              },
             });
 
-            this.channel = INVALID_CHANNEL;
             this.selected = INVALID_ITEM;
 
             this.debug("init");
@@ -45,10 +53,8 @@ namespace invk {
 
           // ----- Event handlers -----
 
-          onLoad() {
-            this.channel = this.panel.GetAttributeString("channel", INVALID_CHANNEL);
-
-            this.debug("onLoad()", { channel: this.channel });
+          override onLoad(): void {
+            this.debug("onLoad()", this.params);
             this.render();
           }
 
@@ -83,7 +89,11 @@ namespace invk {
           }
 
           Submit() {
-            const { channel, selected: item } = this;
+            const {
+              params: { channel },
+              selected: item,
+            } = this;
+
             const payload = { channel, item };
 
             this.debug("Submit()", payload);

@@ -1,43 +1,30 @@
 namespace invk {
   export namespace Layout {
     export interface Components {
-      [Layout.ID.Challenge]: invk.Components.Challenge.Challenge;
-      [Layout.ID.ChallengeComboStep]: invk.Components.ChallengeComboStep.ChallengeComboStep;
-      [Layout.ID.CombatLog]: invk.Components.CombatLog.CombatLog;
-      [Layout.ID.ComboScore]: invk.Components.ComboScore.ComboScore;
-      [Layout.ID.CustomLoadingScreen]: invk.Components.CustomLoadingScreen.CustomLoadingScreen;
-      [Layout.ID.CustomUIManifest]: invk.Components.CustomUIManifest.CustomUIManifest;
-      [Layout.ID.Freestyle]: invk.Components.Freestyle.Freestyle;
-      [Layout.ID.Picker]: invk.Components.Picker.Picker;
-      [Layout.ID.PickerCombo]: invk.Components.PickerCombo.PickerCombo;
-      [Layout.ID.TopBar]: invk.Components.TopBar.TopBar;
-      [Layout.ID.Viewer]: invk.Components.Viewer.Viewer;
-      [Layout.ID.ViewerComboStep]: invk.Components.ViewerComboStep.ViewerComboStep;
-      [Layout.ID.ViewerProperties]: invk.Components.ViewerProperties.ViewerProperties;
+      [ID.Challenge]: Components.Challenge.Challenge;
+      [ID.ChallengeComboStep]: Components.ChallengeComboStep.ChallengeComboStep;
+      [ID.CombatLog]: Components.CombatLog.CombatLog;
+      [ID.ComboScore]: Components.ComboScore.ComboScore;
+      [ID.CustomLoadingScreen]: Components.CustomLoadingScreen.CustomLoadingScreen;
+      [ID.CustomUIManifest]: Components.CustomUIManifest.CustomUIManifest;
+      [ID.Freestyle]: Components.Freestyle.Freestyle;
+      [ID.Picker]: Components.Picker.Picker;
+      [ID.PickerCombo]: Components.PickerCombo.PickerCombo;
+      [ID.TopBar]: Components.TopBar.TopBar;
+      [ID.Viewer]: Components.Viewer.Viewer;
+      [ID.ViewerComboStep]: Components.ViewerComboStep.ViewerComboStep;
+      [ID.ViewerProperties]: Components.ViewerProperties.ViewerProperties;
       // UI
-      [Layout.ID.UIItemPicker]: invk.Components.UI.ItemPicker.ItemPicker;
-      [Layout.ID.UITagSelect]: invk.Components.UI.TagSelect.TagSelect;
-      [Layout.ID.UITalentsDisplay]: invk.Components.UI.TalentsDisplay.TalentsDisplay;
+      [ID.UIItemPicker]: Components.UI.ItemPicker.ItemPicker;
+      [ID.UITagSelect]: Components.UI.TagSelect.TagSelect;
+      [ID.UITalentsDisplay]: Components.UI.TalentsDisplay.TalentsDisplay;
       // Popups
-      [Layout.ID.PopupGameInfo]: invk.Components.Popups.PopupGameInfo.PopupGameInfo;
-      [Layout.ID
-        .PopupInvokerAbilityPicker]: invk.Components.Popups.PopupInvokerAbilityPicker.PopupInvokerAbilityPicker;
-      [Layout.ID.PopupItemPicker]: invk.Components.Popups.PopupItemPicker.PopupItemPicker;
-      [Layout.ID.PopupTextEntry]: invk.Components.Popups.PopupTextEntry.PopupTextEntry;
+      [ID.PopupGameInfo]: Components.Popups.PopupGameInfo.PopupGameInfo;
+      [ID.PopupInvokerAbilityPicker]: Components.Popups.PopupInvokerAbilityPicker.PopupInvokerAbilityPicker;
+      [ID.PopupItemPicker]: Components.Popups.PopupItemPicker.PopupItemPicker;
+      [ID.PopupTextEntry]: Components.Popups.PopupTextEntry.PopupTextEntry;
       // Tooltips
-      [Layout.ID.TooltipStatBranch]: invk.Components.Tooltips.TooltipStatBranch.TooltipStatBranch;
-    }
-
-    export interface PopupParams {
-      [Layout.ID.PopupGameInfo]: invk.Components.Popups.PopupGameInfo.Params;
-      [Layout.ID
-        .PopupInvokerAbilityPicker]: invk.Components.Popups.PopupInvokerAbilityPicker.Params;
-      [Layout.ID.PopupItemPicker]: invk.Components.Popups.PopupItemPicker.Params;
-      [Layout.ID.PopupTextEntry]: invk.Components.Popups.PopupTextEntry.Params;
-    }
-
-    export interface TooltipParams {
-      [Layout.ID.TooltipStatBranch]: invk.Components.Tooltips.TooltipStatBranch.Params;
+      [ID.TooltipStatBranch]: Components.Tooltips.TooltipStatBranch.TooltipStatBranch;
     }
   }
 
@@ -57,32 +44,34 @@ namespace invk {
     export type Elements = Record<string, Panel>;
     export type Inputs = object;
     export type Outputs = object;
-    // TODO: parameterize component with Params and auto-load parameters (attach OnLoad event in setup?)
-    export type Params = object;
+    export type Params = Record<string, unknown>;
 
     interface Data<
-      C extends Component<E, I, O>,
+      C extends Component<E, I, O, P>,
       E extends Elements,
       I extends Inputs,
-      O extends Outputs
+      O extends Outputs,
+      P extends Params
     > {
       component: C;
     }
 
     interface DataPanel<
-      C extends Component<E, I, O>,
+      C extends Component<E, I, O, P>,
       E extends Elements,
       I extends Inputs,
-      O extends Outputs
+      O extends Outputs,
+      P extends Params
     > extends Panel {
-      Data<T = Data<C, E, I, O>>(): T;
+      Data<T = Data<C, E, I, O, P>>(): T;
     }
 
-    export interface Options<E extends Elements, I extends Inputs> {
+    export interface Options<E extends Elements, I extends Inputs, P extends Params> {
       elements?: ElementsOption<E>;
       inputs?: InputsOption<I>;
       customEvents?: CustomEventsOption;
       elementEvents?: ElementEventsOption<E>;
+      params?: ParamsOption<P>;
     }
 
     export type ElementsOption<E extends Elements> = { [K in keyof E]: string };
@@ -91,13 +80,15 @@ namespace invk {
     // TODO: parameterize payloads
     export type OutputsOption<O extends Outputs> = { [K in keyof O]?: (payload: O[K]) => void };
     // TODO: parameterize payloads
-    export type CustomEventsOption = { [K in keyof typeof CustomEvents.Name]?: HandlerOption };
+    export type CustomEventsOption = { [K in keyof typeof CustomEventName]?: HandlerOption };
     // TODO: parameterize payloads
     export type ElementEventsOption<E extends Elements> = {
       [K in keyof E]?: {
         [K in keyof typeof Panorama.UIEvent]?: HandlerOption;
       };
     };
+
+    export type ParamsOption<P extends Params> = { [K in keyof P]: ParamDescriptor };
 
     export type HandlerOption = string | HandlerFn;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,37 +98,60 @@ namespace invk {
       Layout.Components[K],
       Layout.Components[K]["elements"],
       Inputs,
-      Outputs
+      Outputs,
+      Layout.Components[K]["params"]
     >;
+
+    export enum ParamType {
+      String,
+      Int,
+      UInt32,
+    }
+
+    export interface AttributeTypes {
+      [ParamType.String]: string;
+      [ParamType.Int]: number;
+      [ParamType.UInt32]: number;
+    }
+
+    export interface ParamDescriptor {
+      type: ParamType;
+      default?: AttributeTypes[this["type"]];
+    }
 
     enum CssClass {
       Development = "Development",
     }
 
-    export class Component<E extends Elements, I extends Inputs, O extends Outputs> {
+    export class Component<
+      E extends Elements,
+      I extends Inputs,
+      O extends Outputs,
+      P extends Params
+    > {
       id: string;
       env: Env.Env;
-      panel: DataPanel<this, E, I, O>;
+      panel: DataPanel<this, E, I, O, P>;
       elements: E;
+      params: P;
 
       private inputsCB: Callbacks.Callbacks<I>;
       private outputsCB: Callbacks.Callbacks<O>;
       private logger: Logger.Logger;
+      private paramsOptions?: ParamsOption<P> | undefined;
 
-      constructor(options: Options<E, I> = {}) {
+      constructor(options: Options<E, I, P> = {}) {
         this.id = _.uniqueId(`${this.constructor.name}.`);
+        this.logger = new Logger({ name: this.id });
         this.env = ENV;
+
         this.panel = $.GetContextPanel();
+        this.elements = this.findElements(options.elements);
+        this.paramsOptions = options.params;
+        this.params = {} as P;
 
         this.inputsCB = new Callbacks();
         this.outputsCB = new Callbacks();
-
-        this.logger = new Logger({
-          level: this.env.development ? Logger.Level.Debug : Logger.Level.Info,
-          name: this.id,
-        });
-
-        this.elements = this.findElements(options.elements);
 
         this.setup();
         this.registerInputs(options.inputs);
@@ -150,8 +164,8 @@ namespace invk {
        * Internal
        ******************************/
 
-      get data(): Data<this, E, I, O> {
-        return this.panel.Data<Data<this, E, I, O>>();
+      get data(): Data<this, E, I, O, P> {
+        return this.panel.Data<Data<this, E, I, O, P>>();
       }
 
       setup() {
@@ -160,6 +174,17 @@ namespace invk {
         if (this.env.development) {
           this.panel.AddClass(CssClass.Development);
         }
+
+        this.panel.SetPanelEvent("onload", () => this._onLoad());
+      }
+
+      private _onLoad(): void {
+        this.params = this.loadParams(this.paramsOptions);
+        this.onLoad();
+      }
+
+      protected onLoad(): void {
+        return;
       }
 
       handler(fnOpt: HandlerOption): HandlerFn {
@@ -377,7 +402,6 @@ namespace invk {
           options,
           (result, id, name) => {
             const idpfx = prefixer(id, "#");
-
             const panel = $.FindChildInContext(idpfx) as E[keyof E];
 
             if (panel == null) {
@@ -400,6 +424,45 @@ namespace invk {
 
       attrUint32<T>(attr: string, defaultValue: number): T {
         return this.panel.GetAttributeUInt32(attr, defaultValue) as T;
+      }
+
+      loadParams(options?: ParamsOption<P>): P {
+        if (!options) {
+          return {} as P;
+        }
+
+        this.debug("loadParams()", options);
+
+        return _.transform(
+          options,
+          (params, v, k) => {
+            switch (v.type) {
+              case ParamType.String:
+                params[k as keyof P] = this.attrStr(
+                  k,
+                  (v.default == null ? "" : v.default) as string
+                );
+                break;
+              case ParamType.Int:
+                params[k as keyof P] = this.attrInt(
+                  k,
+                  (v.default == null ? 0 : v.default) as number
+                );
+                break;
+              case ParamType.UInt32:
+                params[k as keyof P] = this.attrUint32(
+                  k,
+                  (v.default == null ? 0 : v.default) as number
+                );
+                break;
+              default:
+                // eslint-disable-next-line no-var
+                var _check: never = v.type;
+                throw new Error(`component param ${k} with unknown type ${_check}`);
+            }
+          },
+          {} as P
+        );
       }
 
       create<K extends Layout.ID & keyof Layout.Components>(
@@ -481,11 +544,11 @@ namespace invk {
         $.DispatchEvent(UIEvent.PLAY_SOUND, soundEvent);
       }
 
-      showTooltip<K extends Layout.ID & keyof Layout.TooltipParams>(
+      showTooltip<K extends Layout.ID>(
         parent: Panel,
         layoutID: K,
         id: string,
-        params?: Layout.TooltipParams[K]
+        params?: Layout.Components[K]["params"]
       ): void {
         const layout = Layout.path(layoutID);
 
@@ -545,11 +608,11 @@ namespace invk {
         this.dispatch(parent, UIEvent.HIDE_ABILITY_TOOLTIP);
       }
 
-      showPopup<K extends Layout.ID & keyof Layout.PopupParams>(
+      showPopup<K extends Layout.ID>(
         parent: Panel,
         layoutID: K,
         id: string,
-        params?: Layout.PopupParams[K]
+        params?: Layout.Components[K]["params"]
       ): void {
         const layout = Layout.path(layoutID);
 
