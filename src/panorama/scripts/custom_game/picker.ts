@@ -32,7 +32,7 @@ namespace invk {
           PROPERTIES,
           DamageRating,
           DifficultyRating,
-          PropertyName,
+          Property,
           Specialty,
           Stance,
           StaticID,
@@ -64,9 +64,11 @@ namespace invk {
       const PROPERTY_FILTER_ATTRIBUTE = "value";
       const PROPERTY_FILTER_OPTION_DEFAULT = "all";
       const PROPERTY_FILTER_NOT_SELECTED = {
-        str: "",
-        int: -1,
-      };
+        [Property.Stance]: "",
+        [Property.Specialty]: "",
+        [Property.DamageRating]: -1,
+        [Property.DifficultyRating]: -1,
+      } as const;
 
       export class Picker extends Component.Component<Elements, Inputs, Outputs> {
         combosView?: CombosView.CombosView;
@@ -257,25 +259,19 @@ namespace invk {
 
         createPropertyFilterOption<K extends keyof Combo.Properties>(
           parent: Panel,
-          property: K,
-          value: Combo.Properties[K] | typeof PROPERTY_FILTER_OPTION_DEFAULT
+          prop: K,
+          value?: Combo.Properties[K]
         ) {
-          const id = propertyFilterOptionID(property, value);
+          const id = propertyFilterOptionID(prop, value);
           const panel = $.CreatePanel(PanelType.Label, parent, id);
 
-          let attr: string;
-          let text: string;
+          setPropertyFilterAttr(panel, prop, value);
 
-          if (value === PROPERTY_FILTER_OPTION_DEFAULT) {
-            attr = "";
-            text = L10n.l(L10n.Key.PickerDefaultOption);
+          if (value === undefined) {
+            panel.text = L10n.l(L10n.Key.PickerDefaultOption);
           } else {
-            attr = _.toString(value);
-            text = L10n.comboPropValue(property, value);
+            panel.text = L10n.comboPropValue(prop, value);
           }
-
-          panel.SetAttributeString(PROPERTY_FILTER_ATTRIBUTE, attr);
-          panel.text = text;
 
           return panel;
         }
@@ -331,26 +327,30 @@ namespace invk {
           const dropDown = this.propertyFilter(prop);
           const option = dropDown.GetSelected();
 
+          if (option == null) {
+            return undefined;
+          }
+
           switch (prop) {
-            case PropertyName.Specialty:
+            case Property.Specialty:
               return parseEnumValue(
                 Specialty,
-                getFilterAttrStr(option)
+                getPropertyFilterAttr(option, prop)
               ) as Partial<Combo.Properties>[K];
-            case PropertyName.Stance:
+            case Property.Stance:
               return parseEnumValue(
                 Stance,
-                getFilterAttrStr(option)
+                getPropertyFilterAttr(option, prop)
               ) as Partial<Combo.Properties>[K];
-            case PropertyName.DamageRating:
+            case Property.DamageRating:
               return parseEnumValue(
                 DamageRating,
-                getFilterAttrInt(option)
+                getPropertyFilterAttr(option, prop)
               ) as Partial<Combo.Properties>[K];
-            case PropertyName.DifficultyRating:
+            case Property.DifficultyRating:
               return parseEnumValue(
                 DifficultyRating,
-                getFilterAttrInt(option)
+                getPropertyFilterAttr(option, prop)
               ) as Partial<Combo.Properties>[K];
             default:
               // eslint-disable-next-line no-var
@@ -360,18 +360,22 @@ namespace invk {
         }
 
         propertyFilterValues(): Partial<Combo.Properties> {
-          const setProp = <K extends Combo.PropertyName>(
+          const setProp = <K extends Combo.Property>(
             props: Partial<Combo.Properties>,
             prop: K,
             value?: Combo.Properties[K]
           ): void => {
-            if (value == null) return;
+            if (value === undefined) {
+              return undefined;
+            }
+
             props[prop] = value;
           };
 
           return _.transform(
-            PropertyName,
-            (props, prop) => setProp(props, prop, this.propertyFilterValue(prop)),
+            PROPERTIES,
+            (props, descriptor) =>
+              setProp(props, descriptor.name, this.propertyFilterValue(descriptor.name)),
             {} as Partial<Combo.Properties>
           );
         }
@@ -427,33 +431,36 @@ namespace invk {
         }
 
         renderPropertyFiltersAction() {
-          const actions = _.map(PROPERTIES, (values, prop) =>
-            this.renderPropertyFilterAction(prop as keyof Combo.Properties, values)
+          const actions = _.map(PROPERTIES, (descriptor) =>
+            this.renderPropertyFilterAction(descriptor)
           );
 
           return new ParallelSequence().Action(...actions);
         }
 
         renderPropertyFilterAction<K extends keyof Combo.Properties>(
-          prop: K,
-          values: Combo.Properties[K][]
+          descriptor: Combo.PropertyDescriptor<K>
         ) {
-          const valuesWithDefault: (Combo.Properties[K] | typeof PROPERTY_FILTER_OPTION_DEFAULT)[] =
-            [PROPERTY_FILTER_OPTION_DEFAULT, ...values];
-
-          const dropDown = this.propertyFilter(prop);
+          const dropDown = this.propertyFilter(descriptor.name);
           const actions = _.map(
-            valuesWithDefault,
+            descriptor.values,
             (value) =>
-              new AddOptionAction(dropDown, this.createPropertyFilterOption(dropDown, prop, value))
+              new AddOptionAction(dropDown, () =>
+                this.createPropertyFilterOption(dropDown, descriptor.name, value)
+              )
           );
 
-          return new Sequence().RemoveAllOptions(dropDown).Action(...actions);
+          return new Sequence()
+            .RemoveAllOptions(dropDown)
+            .AddOption(dropDown, () =>
+              this.createPropertyFilterOption(dropDown, descriptor.name, undefined)
+            )
+            .Action(...actions);
         }
 
         resetPropertyFiltersAction() {
-          const actions = _.map(PROPERTIES, (_, prop) =>
-            this.resetPropertyFilterAction(prop as keyof Combo.Properties)
+          const actions = _.map(PROPERTIES, (descriptor) =>
+            this.resetPropertyFilterAction(descriptor.name)
           );
 
           return new ParallelSequence().Action(...actions);
@@ -462,7 +469,7 @@ namespace invk {
         resetPropertyFilterAction<K extends keyof Combo.Properties>(prop: K) {
           return new SelectOptionAction(
             this.propertyFilter(prop),
-            propertyFilterOptionID(prop, PROPERTY_FILTER_OPTION_DEFAULT)
+            propertyFilterOptionID(prop, undefined)
           );
         }
 
@@ -724,25 +731,83 @@ namespace invk {
       ): `filter${Capitalize<K>}` => _.camelCase(`filter_${k}`) as `filter${Capitalize<K>}`;
 
       const propertyFilterOptionID = <K extends keyof Combo.Properties>(
-        property: K,
-        value: Combo.Properties[K] | typeof PROPERTY_FILTER_OPTION_DEFAULT
-      ) => pascalCase(`picker_filter_${property}_${value}`);
+        prop: K,
+        value?: Combo.Properties[K]
+      ): string => {
+        const valueID = value == null ? PROPERTY_FILTER_OPTION_DEFAULT : _.toString(value);
 
-      const getFilterAttrStr = <T>(selected?: Panel) =>
-        selected
-          ? (selected.GetAttributeString(
-              PROPERTY_FILTER_ATTRIBUTE,
-              PROPERTY_FILTER_NOT_SELECTED.str
-            ) as T)
-          : undefined;
+        return pascalCase(`picker_filter_${prop}_${valueID}`);
+      };
 
-      const getFilterAttrInt = <T>(selected?: Panel) =>
-        selected
-          ? (selected.GetAttributeInt(
+      const setPropertyFilterAttr = <K extends keyof Combo.Properties>(
+        panel: Panel,
+        prop: K,
+        value?: Combo.Properties[K]
+      ): void => {
+        switch (prop) {
+          case Property.Stance:
+            panel.SetAttributeString(
               PROPERTY_FILTER_ATTRIBUTE,
-              PROPERTY_FILTER_NOT_SELECTED.int
-            ) as T)
-          : undefined;
+              (value == null ? PROPERTY_FILTER_NOT_SELECTED[Property.Stance] : value) as string
+            );
+            break;
+          case Property.Specialty:
+            panel.SetAttributeString(
+              PROPERTY_FILTER_ATTRIBUTE,
+              (value == null ? PROPERTY_FILTER_NOT_SELECTED[Property.Specialty] : value) as string
+            );
+            break;
+          case Property.DamageRating:
+            panel.SetAttributeInt(
+              PROPERTY_FILTER_ATTRIBUTE,
+              (value == null
+                ? PROPERTY_FILTER_NOT_SELECTED[Property.DamageRating]
+                : value) as number
+            );
+            break;
+          case Property.DifficultyRating:
+            panel.SetAttributeInt(
+              PROPERTY_FILTER_ATTRIBUTE,
+              (value == null
+                ? PROPERTY_FILTER_NOT_SELECTED[Property.DifficultyRating]
+                : value) as number
+            );
+            break;
+          default:
+            // eslint-disable-next-line no-var
+            var _check: never = prop;
+            throw new Error(`invalid property ${_check}`);
+        }
+      };
+
+      const getPropertyFilterAttr = <K extends keyof Combo.Properties>(panel: Panel, prop: K) => {
+        switch (prop) {
+          case Property.Stance:
+            return panel.GetAttributeString(
+              PROPERTY_FILTER_ATTRIBUTE,
+              PROPERTY_FILTER_NOT_SELECTED[Property.Stance]
+            );
+          case Property.Specialty:
+            return panel.GetAttributeString(
+              PROPERTY_FILTER_ATTRIBUTE,
+              PROPERTY_FILTER_NOT_SELECTED[Property.Specialty]
+            );
+          case Property.DamageRating:
+            return panel.GetAttributeInt(
+              PROPERTY_FILTER_ATTRIBUTE,
+              PROPERTY_FILTER_NOT_SELECTED[Property.DamageRating]
+            );
+          case Property.DifficultyRating:
+            return panel.GetAttributeInt(
+              PROPERTY_FILTER_ATTRIBUTE,
+              PROPERTY_FILTER_NOT_SELECTED[Property.DifficultyRating]
+            );
+          default:
+            // eslint-disable-next-line no-var
+            var _check: never = prop;
+            throw new Error(`invalid property ${_check}`);
+        }
+      };
 
       export const component = new Picker();
     }

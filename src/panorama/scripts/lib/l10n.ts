@@ -5,7 +5,7 @@
 namespace invk {
   export namespace L10n {
     const {
-      Combo: { PropertyName },
+      Combo: { Property },
       Util: { prefixer },
     } = invk;
 
@@ -109,7 +109,7 @@ namespace invk {
 
     export function comboProps(combo: Combo.Properties): Combo.PropertiesL10n {
       return _.transform(
-        PropertyName,
+        Property,
         (props, p) => (props[p] = comboProp(combo, p)),
         {} as Combo.PropertiesL10n
       );
