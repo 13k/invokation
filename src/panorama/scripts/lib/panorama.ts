@@ -1,6 +1,7 @@
 /// <reference path="./vendor/lodash.js" />
 /// <reference path="dota2.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Panorama {
     const {

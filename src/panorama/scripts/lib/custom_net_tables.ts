@@ -1,5 +1,6 @@
 const CCustomNetTables = CustomNetTables;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace CustomNetTables {
     export enum Name {

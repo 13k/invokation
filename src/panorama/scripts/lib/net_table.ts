@@ -1,5 +1,6 @@
 /// <reference path="custom_net_tables.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace NetTable {
     type Names = keyof CustomNetTableDeclarations;

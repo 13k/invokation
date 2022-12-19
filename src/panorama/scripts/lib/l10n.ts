@@ -2,6 +2,7 @@
 /// <reference path="combo.ts" />
 /// <reference path="util.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace L10n {
     const {
