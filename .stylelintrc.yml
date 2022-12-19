@@ -33,6 +33,8 @@ rules:
     - true
     - ignoreAtRules:
         - "define"
+  alpha-value-notation: "number"
+  color-function-notation: "legacy"
   font-family-no-missing-generic-family-keyword: null
   keyframes-name-pattern: "'\\w+'"
   function-no-unknown:
