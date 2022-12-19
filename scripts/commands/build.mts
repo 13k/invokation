@@ -1,8 +1,7 @@
 import * as path from "node:path";
+import { inspect } from "node:util";
 
 import type { Command } from "commander";
-import * as temp from "temp";
-import fse from "fs-extra";
 
 import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
@@ -12,25 +11,71 @@ export interface Options {
   force?: boolean;
 }
 
-const IGNORED_RESOURCES: string[] = [];
+enum BuildPart {
+  PanoramaScripts = "panorama-scripts",
+  Maps = "maps",
+  Resources = "resources",
+}
+
+function parseBuildPart(value: string): BuildPart {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [_, v] of Object.entries(BuildPart)) {
+    if (value === v) {
+      return v;
+    }
+  }
+
+  throw new Error(`Invalid build part: ${inspect(value)}`);
+}
+
+function parseBuildParts(value: string, parts: BuildPart[] | undefined) {
+  if (parts == null) {
+    parts = [];
+  }
+
+  parts.push(parseBuildPart(value));
+
+  return parts;
+}
 
 export default class BuildCommand extends Base<Options> {
+  #parts: BuildPart[];
+
   static subcommand(parent: Command, configOptions: ConfigOptions) {
+    const partChoices = Object.values(BuildPart).join(", ");
     const command = parent
       .command("build")
       .description(`Build custom game resources`)
       .option(`-f, --force`, `Force rebuild`, false)
-      .action(async () => await new BuildCommand(command.opts(), configOptions).run());
+      .argument(
+        "[parts...]",
+        `Only build specific parts (choices: ${partChoices})`,
+        parseBuildParts
+      )
+      .action(
+        async (parts: BuildPart[]) =>
+          await new BuildCommand(parts, command.opts(), configOptions).run()
+      );
   }
 
-  constructor(options: Options, configOptions: ConfigOptions) {
-    super([], options, configOptions);
+  constructor(parts: BuildPart[], options: Options, configOptions: ConfigOptions) {
+    super(parts, options, configOptions);
+
+    this.#parts = parts;
   }
 
   override async run() {
-    await this.transpileScripts();
-    await this.compileMaps();
-    await this.compileResources();
+    if (this.#parts.indexOf(BuildPart.PanoramaScripts) >= 0) {
+      await this.transpileScripts();
+    }
+
+    if (this.#parts.indexOf(BuildPart.Maps) >= 0) {
+      await this.compileMaps();
+    }
+
+    if (this.#parts.indexOf(BuildPart.Resources) >= 0) {
+      await this.compileResources();
+    }
   }
 
   contentGlobPattern(relPattern: string) {
@@ -48,7 +93,7 @@ export default class BuildCommand extends Base<Options> {
   async transpileScripts() {
     const srcPanoramaScriptsPath = path.join(this.config.sources.srcPath, "panorama", "scripts");
 
-    this.log.label(Label.Generate).info("transpiling panorama scripts");
+    this.log.label(Label.Generate).info("panorama scripts");
 
     await this.exec("npm", ["exec", "--", "tsc", "-b", srcPanoramaScriptsPath], {
       echo: true,
@@ -57,7 +102,7 @@ export default class BuildCommand extends Base<Options> {
   }
 
   async compileMaps() {
-    const mapsPath = this.contentGlobPattern("maps/*");
+    const mapsPath = this.contentGlobPattern(path.join("maps", "*"));
     const relPath = this.addonContentRelPath(mapsPath);
 
     this.log.fields({ mapsPath, relPath }).debug("compileMaps()");
@@ -95,50 +140,5 @@ export default class BuildCommand extends Base<Options> {
       log: this.log,
       cwd: dota2.path,
     });
-  }
-
-  async compileFile(filename: string) {
-    const { rootPath } = this.config;
-    const customGameRelPath = this.addonContentRelPath(filename);
-    const args = ["-i", customGameRelPath];
-    const relPath = path.relative(rootPath, filename);
-
-    this.log.label(Label.Compile).info(relPath);
-
-    await this.compile(args);
-  }
-
-  async compileFilelist(filenames: string[]) {
-    const tmpFilePath = await this.writeResourcesList(filenames);
-    const tmpFileWinPath = await this.windowsPath(tmpFilePath, { absolute: true });
-    const args = ["-filelist", tmpFileWinPath];
-
-    await this.compile(args);
-  }
-
-  async findResources() {
-    const ignore = ["maps/**/*.vmap", ...IGNORED_RESOURCES].map((pattern) =>
-      this.contentGlobPattern(pattern)
-    );
-
-    return await this.glob(this.contentGlobPattern("**/*"), {
-      strict: true,
-      nodir: true,
-      ignore,
-    });
-  }
-
-  async writeResourcesList(paths: string[]) {
-    const tmpFile = await temp.open();
-
-    this.log.field("tmpfile", tmpFile.path).debug("writing resources list to temporary file");
-
-    const lines = paths.map((path) => this.addonContentRelPath(path));
-    const data = lines.join("\n");
-
-    await this.writeFile(tmpFile.fd, data);
-    await fse.close(tmpFile.fd);
-
-    return tmpFile.path;
   }
 }

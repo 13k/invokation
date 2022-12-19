@@ -31,9 +31,9 @@ export interface Options {
   [Option.Padding]?: number;
 }
 
-export type Fields = Map<string, any>;
+export type Fields = Map<string, unknown>;
 export const Fields: new (fields?: FieldsLike) => Fields = Map;
-export type FieldsLike = Iterable<[string, any]>;
+export type FieldsLike = Iterable<[string, unknown]>;
 
 const LEVELS = config.cli.levels;
 const LEVEL_COLORS = config.cli.colors;
@@ -123,7 +123,7 @@ export class Logger {
     return this;
   }
 
-  #addField(key: string, value: any): this {
+  #addField(key: string, value: unknown): this {
     this.#fields.set(key, value);
 
     return this;
@@ -157,7 +157,7 @@ export class Logger {
     return this.#fork({ [Option.Padding]: value });
   }
 
-  field(key: string, value: any): Logger {
+  field(key: string, value: unknown): Logger {
     const log = this.#fork();
 
     log.#fields.set(key, value);
@@ -165,7 +165,7 @@ export class Logger {
     return log;
   }
 
-  fields(fields: FieldsLike | Record<string, any>): Logger {
+  fields(fields: FieldsLike | Record<string, unknown>): Logger {
     const it: FieldsLike =
       Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
 
@@ -244,12 +244,12 @@ export class Logger {
 
 interface Info extends TransformableInfo {
   [LEVEL]: string;
-  [SPLAT]: any[];
+  [SPLAT]: unknown[];
 
   metadata?: Metadata;
 }
 
-interface Metadata extends Record<string, any> {
+interface Metadata extends Record<string, unknown> {
   stack?: string;
   cause?: Error;
 }
@@ -281,16 +281,16 @@ function parseInfo(info: Info) {
 
   let fields = new Fields();
   let options: Options = {};
-  let last: any = _.last(splat);
+  let last: unknown = _.last(splat);
 
   if (last instanceof Map) {
-    fields = splat.pop();
+    fields = splat.pop() as Fields;
   }
 
   last = _.last(splat);
 
   if (_.isObject(last) && _.isPlainObject(last)) {
-    options = splat.pop();
+    options = splat.pop() as Options;
   }
 
   return { level, levelOut, message, metadata, fields, options };
@@ -320,7 +320,7 @@ function formatLabel(labelOpt?: string) {
   return label;
 }
 
-function formatMessage(message: any, emojify?: boolean) {
+function formatMessage(message: unknown, emojify?: boolean) {
   let sMessage = _.toString(message);
 
   if (emojify) {

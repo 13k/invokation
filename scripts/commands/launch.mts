@@ -75,9 +75,9 @@ export default class LaunchCommand extends Base<Options> {
       case Tool.Tools:
         break;
       default:
-        // eslint-disable-next-line no-var,@typescript-eslint/no-unused-vars
+        // eslint-disable-next-line no-var
         var _check: never = tool;
-        throw new Error(`Invalid tool: ${inspect(toolName)}`);
+        throw new Error(`Invalid tool: ${inspect(_check)}`);
     }
 
     this.#tool = tool;
@@ -107,9 +107,9 @@ export default class LaunchCommand extends Base<Options> {
 
         break;
       default:
-        // eslint-disable-next-line no-var,@typescript-eslint/no-unused-vars
+        // eslint-disable-next-line no-var
         var _check: never = this.#tool;
-        break;
+        throw new Error(`Invalid tool: ${inspect(_check)}`);
     }
 
     args = [...launchOptions(this.#tool), ...args, ...this.#toolArgs];

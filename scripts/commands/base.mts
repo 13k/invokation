@@ -41,7 +41,7 @@ export default abstract class Base<Options> {
     return await fse.readFile(file, { encoding: "utf-8", ...options });
   }
 
-  async writeFile(file: number | fse.PathLike, data: any, options?: fse.WriteFileOptions) {
+  async writeFile(file: number | fse.PathLike, data: string, options?: fse.WriteFileOptions) {
     return await fse.writeFile(file, data, { encoding: "utf-8", ...options });
   }
 
