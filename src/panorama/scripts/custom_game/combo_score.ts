@@ -53,18 +53,18 @@ namespace invk {
         };
       }
 
-      interface Operations {
-        data: PanelData;
+      interface DigitsOperations {
+        data: PanelDigitData;
         addClass: string[];
         removeClass: string[];
       }
 
-      interface PanelData {
+      interface PanelDigitData {
         digit?: string | undefined;
       }
 
-      interface PanelWithData extends Panel {
-        Data<T = PanelData>(): T;
+      interface PanelWithDigit extends Panel {
+        Data<T = PanelDigitData>(): T;
       }
 
       enum CssClass {
@@ -237,7 +237,7 @@ namespace invk {
         updateDigits(container: Panel, value: number) {
           eachUpdateDigitsOperations(container, value, (panel, ops) => {
             _.forOwn(ops.data, (value, key) => {
-              panel.Data()[key as keyof PanelData] = value;
+              panel.Data()[key as keyof PanelDigitData] = value;
             });
 
             _.each(ops.removeClass, (cssClass) => panel.RemoveClass(cssClass));
@@ -250,14 +250,14 @@ namespace invk {
         // ----- Actions -----
 
         updateDigitsAction(container: Panel, value: number) {
-          const seq = new ParallelSequence();
+          const seq = new ParallelSequence().Function(() => this.digitsValue(container.id, value));
 
           eachUpdateDigitsOperations(container, value, (panel, ops) => {
             const panelSeq = new ParallelSequence();
 
             _.forOwn(ops.data, (value, key) =>
               panelSeq.Function(() => {
-                panel.Data()[key as keyof PanelData] = value;
+                panel.Data()[key as keyof PanelDigitData] = value;
               })
             );
 
@@ -267,7 +267,7 @@ namespace invk {
             seq.Action(panelSeq);
           });
 
-          return seq.Function(() => this.digitsValue(container.id, value));
+          return seq;
         }
 
         spinDigitsAction(options: SpinDigitOptions) {
@@ -280,7 +280,7 @@ namespace invk {
             options
           );
 
-          const id = options.container.id;
+          const { id } = options.container;
           const onStart = options.callbacks?.onStart;
           const onSpin = options.callbacks?.onSpin;
           const onEnd = options.callbacks?.onEnd;
@@ -292,6 +292,8 @@ namespace invk {
           options.end = Math.ceil(options.end);
           options.increment =
             options.increment || (options.end - options.start) / options.iterations;
+
+          // this.debugFn(() => ["spinDigitsAction()", _.omit(options, ["container"])]);
 
           const seq = new StaggeredSequence(options.interval);
 
@@ -329,7 +331,6 @@ namespace invk {
             .Action(seq)
             .Function(() => {
               this.spinning[id] = false;
-
               this.consumeSpinDigits(id);
             });
         }
@@ -444,12 +445,14 @@ namespace invk {
         }
 
         updateCounter(payload: Inputs["UpdateCounter"]) {
+          // this.debug("updateCounter()", payload);
           const count = _.get(payload, "count", 0);
 
           this.updateCounterAction(count).Run();
         }
 
         updateSummary(payload: Inputs["UpdateSummary"]) {
+          // this.debug("updateSummary()", payload);
           this.updateSummaryAction(payload).Run();
         }
 
@@ -463,23 +466,25 @@ namespace invk {
       const eachUpdateDigitsOperations = (
         container: Panel,
         value: number,
-        callback: (panel: PanelWithData, operations: Operations) => void
+        callback: (panel: PanelWithDigit, operations: DigitsOperations) => void
       ) => {
-        const panels = container.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithData[];
+        const panels = container.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithDigit[];
+
+        if (_.isEmpty(panels)) {
+          throw new Error(`Could not find digit panels`);
+        }
+
         const valueRevStr = value.toString().split("").reverse();
 
-        for (let i = 0; i < valueRevStr.length; i++) {
+        for (let idx = 0; idx < panels.length; idx++) {
           (() => {
-            const idx = i;
-            const digit = valueRevStr[idx];
-            const panel = panels[idx];
+            const boundIdx = idx;
+            const panel = panels[boundIdx];
+            const digit = valueRevStr[boundIdx];
 
-            if (!digit) throw "unreachable";
-            if (!panel) {
-              throw new Error(`Could not find panel for digit at reverse index ${i}`);
-            }
+            if (!panel) throw "unreachable";
 
-            const ops: Operations = {
+            const ops: DigitsOperations = {
               data: {
                 digit: digit,
               },
@@ -487,10 +492,10 @@ namespace invk {
               addClass: [],
             };
 
-            const panelDigit = panel.Data().digit;
+            const prevDigit = panel.Data().digit;
 
-            if (panelDigit) {
-              ops.removeClass.push(digitClass(panelDigit));
+            if (prevDigit) {
+              ops.removeClass.push(digitClass(prevDigit));
             }
 
             if (digit == null) {

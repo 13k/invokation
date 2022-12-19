@@ -27,8 +27,9 @@
     </Panel>
 
     <Panel class="ComboScoreSummary">
-      <DOTAScenePanel id="ComboScoreSummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
-      <Panel class="ComboScoreSplashBackground" />
+      <Panel class="ComboScoreSplashBackground">
+        <DOTAScenePanel id="ComboScoreSummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
+      </Panel>
 
       <Panel class="ComboScoreContent">
         <Panel class="ComboScoreCount">

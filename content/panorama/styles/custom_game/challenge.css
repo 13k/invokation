@@ -2,6 +2,8 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
+@define scoreWidth: 250px;
+@define scoreHeight: 120px;
 @define scoreMarginTop: 100px;
 @define sequenceWidth: 150px;
 @define splashHeight: 200px;
@@ -260,6 +262,8 @@
 }
 
 #ChallengeScore {
+  width: scoreWidth;
+  height: scoreHeight;
   margin-top: scoreMarginTop;
   align: center top;
 }
