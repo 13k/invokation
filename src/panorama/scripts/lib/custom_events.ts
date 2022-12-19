@@ -191,7 +191,7 @@ namespace invk {
     }
 
     export interface ItemPickerQueryResponse {
-      items: string[];
+      items: Record<string, Dota2.KeyValues>;
     }
 
     export interface PopupTextEntrySubmit {

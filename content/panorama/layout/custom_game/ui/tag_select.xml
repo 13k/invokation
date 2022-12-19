@@ -18,7 +18,7 @@
   </snippets>
 
   <Panel class="UITagSelectRoot" hittest="false">
-    <DropDown id="UITagSelectOptions" oninputsubmit="invk.Components.UI.TagSelect.component.onOptionSelect()" />
+    <DropDown id="UITagSelectOptions" />
     <Panel id="UITagSelectTagList" hittest="false" />
   </Panel>
 </root>

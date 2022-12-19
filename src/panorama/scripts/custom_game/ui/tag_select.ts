@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace UI {
@@ -83,11 +84,16 @@ namespace invk {
                 options: "UITagSelectOptions",
               },
               inputs: {
-                SetOptions: "setOptions",
-                Clear: "clearTags",
+                SetOptions: (payload: Inputs["SetOptions"]) => this.setOptions(payload),
+                Clear: (payload: Inputs["Clear"]) => this.clearTags(payload),
               },
               customEvents: {
-                POPUP_TEXT_ENTRY_SUBMIT: "onPopupTextEntrySubmit",
+                POPUP_TEXT_ENTRY_SUBMIT: (payload) => this.onPopupTextEntrySubmit(payload),
+              },
+              panelEvents: {
+                options: {
+                  oninputsubmit: () => this.onOptionSelect(),
+                },
               },
             });
 
@@ -349,12 +355,15 @@ namespace invk {
             seq.Run();
           }
 
-          clearTags() {
+          clearTags(payload: Inputs["Clear"]) {
             const seq = new Sequence()
               .Action(this.clearTagsAction())
               .Function(this.notifyChange.bind(this));
 
-            this.debugFn(() => ["clearTags()", { tags: this.tags.length, actions: seq.size() }]);
+            this.debugFn(() => [
+              "clearTags()",
+              { payload, tags: this.tags.length, actions: seq.size() },
+            ]);
 
             seq.Run();
           }

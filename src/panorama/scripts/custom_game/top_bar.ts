@@ -1,7 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace TopBar {
-      export type Elements = never;
+      export interface Elements extends Component.Elements {
+        btnShowGameInfo: Button;
+      }
+
       export type Inputs = never;
       export type Outputs = never;
       export type Params = never;
@@ -14,7 +18,14 @@ namespace invk {
 
       export class TopBar extends Component.Component<Elements, Inputs, Outputs, Params> {
         constructor() {
-          super();
+          super({
+            elements: {
+              btnShowGameInfo: "BtnShowGameInfo",
+            },
+            panelEvents: {
+              btnShowGameInfo: { onactivate: () => this.ShowGameInfo() },
+            },
+          });
           this.debug("init");
         }
 

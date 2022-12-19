@@ -1,9 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace CombatLog {
       export interface Elements extends Component.Elements {
         contents: Panel;
         filterInvocations: Panel;
+        btnToggle: ToggleButton;
+        btnClear: Button;
       }
 
       export type Inputs = never;
@@ -49,10 +52,16 @@ namespace invk {
             elements: {
               contents: "CombatLogContents",
               filterInvocations: "CombatLogFilterInvocations",
+              btnToggle: "BtnToggle",
+              btnClear: "BtnClear",
             },
             customEvents: {
-              COMBAT_LOG_ABILITY_USED: "onAbilityUsed",
-              COMBAT_LOG_CLEAR: "onClear",
+              COMBAT_LOG_ABILITY_USED: (payload) => this.onAbilityUsed(payload),
+              COMBAT_LOG_CLEAR: (payload) => this.onClear(payload),
+            },
+            panelEvents: {
+              btnToggle: { onactivate: () => this.Toggle() },
+              btnClear: { onactivate: () => this.Clear() },
             },
           });
 
@@ -65,8 +74,8 @@ namespace invk {
 
         // ----- Event handlers -----
 
-        onClear() {
-          this.debug("onClear()");
+        onClear(payload: CustomEvents.CombatLogClear) {
+          this.debug("onClear()", payload);
           this.clear();
         }
 

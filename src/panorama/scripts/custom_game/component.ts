@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Layout {
     export interface Components {
@@ -70,29 +71,34 @@ namespace invk {
       elements?: ElementsOption<E>;
       inputs?: InputsOption<I>;
       customEvents?: CustomEventsOption;
-      elementEvents?: ElementEventsOption<E>;
+      elementEvents?: UIEventsOption<E>;
+      panelEvents?: PanelEventsOption<E>;
       params?: ParamsOption<P>;
     }
 
     export type ElementsOption<E extends Elements> = { [K in keyof E]: string };
     // TODO: parameterize payloads
-    export type InputsOption<I extends Inputs> = { [K in keyof I]: HandlerOption };
+    export type InputsOption<I extends Inputs> = { [K in keyof I]: HandlerFn };
     // TODO: parameterize payloads
     export type OutputsOption<O extends Outputs> = { [K in keyof O]?: (payload: O[K]) => void };
     // TODO: parameterize payloads
-    export type CustomEventsOption = { [K in keyof typeof CustomEventName]?: HandlerOption };
+    export type CustomEventsOption = { [K in keyof typeof CustomEventName]?: HandlerFn };
     // TODO: parameterize payloads
-    export type ElementEventsOption<E extends Elements> = {
+    export type UIEventsOption<E extends Elements> = {
       [K in keyof E]?: {
-        [K in keyof typeof Panorama.UIEvent]?: HandlerOption;
+        [K in keyof typeof Panorama.UIEvent]?: HandlerFn;
+      };
+    };
+    export type PanelEventsOption<E extends Elements> = {
+      [K in keyof E]?: {
+        [K in PanelEvent]?: HandlerFn;
       };
     };
 
     export type ParamsOption<P extends Params> = { [K in keyof P]: ParamDescriptor };
 
-    export type HandlerOption = string | HandlerFn;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    export type HandlerFn = (...args: any[]) => void;
+    export type HandlerFn = (...args: any) => void;
 
     type LayoutData<K extends keyof Layout.Components> = Data<
       Layout.Components[K],
@@ -158,6 +164,7 @@ namespace invk {
         this.unsubscribeAllSiblings();
         this.subscribeAll(options.customEvents);
         this.listenAll(options.elementEvents);
+        this.setPanelEvents(options.panelEvents);
       }
 
       /******************************
@@ -185,14 +192,6 @@ namespace invk {
 
       protected onLoad(): void {
         return;
-      }
-
-      handler(fnOpt: HandlerOption): HandlerFn {
-        if (_.isString(fnOpt)) {
-          fnOpt = _.bindKey(this, fnOpt);
-        }
-
-        return fnOpt;
       }
 
       /******************************
@@ -242,8 +241,8 @@ namespace invk {
       }
 
       // TODO: rename to registerOutput
-      Output<K extends keyof O>(name: K, fn: HandlerFn): void {
-        this.outputsCB.on(name, fn);
+      Output<K extends keyof O>(name: K, handler: HandlerFn): void {
+        this.outputsCB.on(name, handler);
       }
 
       // TODO: rename to registerOutputs
@@ -251,8 +250,8 @@ namespace invk {
         _.each(outputs, (fn, name) => (fn ? this.Output(name as keyof O, fn) : undefined));
       }
 
-      registerInput<K extends keyof I>(name: K, fnOpt: HandlerOption): void {
-        this.inputsCB.on(name, this.handler(fnOpt));
+      registerInput<K extends keyof I>(name: K, handler: HandlerFn): void {
+        this.inputsCB.on(name, handler);
       }
 
       registerInputs(inputs?: InputsOption<I>): void {
@@ -282,17 +281,17 @@ namespace invk {
 
       subscribe<K extends keyof typeof CustomEvents.Name>(
         event: K | CustomEvents.Name,
-        fnOpt: HandlerOption
+        listener: HandlerFn
       ): GameEventListenerID {
-        return CustomEvents.subscribe(this.id, this.customEventName(event), this.handler(fnOpt));
+        return CustomEvents.subscribe(this.id, this.customEventName(event), listener);
       }
 
-      subscribeAll(events?: CustomEventsOption): void {
-        if (!events) return;
+      subscribeAll(options?: CustomEventsOption): void {
+        if (!options) return;
 
-        _.each(events, (fnOpt, event) =>
-          fnOpt ? this.subscribe(event as keyof typeof CustomEvents.Name, fnOpt) : null
-        );
+        for (const [event, listener] of Object.entries(options)) {
+          this.subscribe(event as keyof typeof CustomEvents.Name, listener);
+        }
       }
 
       unsubscribe(id: GameEventListenerID): void {
@@ -507,29 +506,35 @@ namespace invk {
       listen<K extends keyof typeof Panorama.UIEvent>(
         element: Panel,
         event: K | Panorama.UIEvent,
-        fnOpt: HandlerOption
+        listener: HandlerFn
       ): void {
         event = this.uiEventName(event);
         this.debug("registering element event listener", { event, element });
-        $.RegisterEventHandler(event, element, this.handler(fnOpt));
+        $.RegisterEventHandler(event, element, listener);
       }
 
-      listenAll(events?: ElementEventsOption<E>): void {
-        if (!events) return;
+      listenAll(options?: UIEventsOption<E>): void {
+        if (!options) return;
 
-        const specs = _.flatMap(events, (elemEvents, element) =>
-          _.map(elemEvents, (handler, event) => ({ element, event, handler }))
-        );
+        for (const [element, events] of Object.entries(options)) {
+          for (const [event, listener] of Object.entries(events || {})) {
+            this.listen(this.element(element), event as keyof typeof Panorama.UIEvent, listener);
+          }
+        }
+      }
 
-        _.each(specs, (spec) =>
-          spec.handler
-            ? this.listen(
-                this.element(spec.element),
-                spec.event as keyof typeof Panorama.UIEvent,
-                spec.handler
-              )
-            : undefined
-        );
+      setPanelEvent(event: PanelEvent, listener: HandlerFn): void {
+        this.panel.SetPanelEvent(event, listener);
+      }
+
+      setPanelEvents(options?: PanelEventsOption<E>): void {
+        if (!options) return;
+
+        for (const [element, events] of Object.entries(options)) {
+          for (const [event, listener] of Object.entries(events || {})) {
+            this.element(element).SetPanelEvent(event as PanelEvent, listener);
+          }
+        }
       }
 
       dispatch(element: Panel, event: string, ...args: unknown[]): void {

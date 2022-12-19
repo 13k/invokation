@@ -1,9 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Popups {
       export namespace PopupGameInfo {
         export interface Elements extends Component.Elements {
           versionLabel: LabelPanel;
+          btnClose: Button;
+          btnOpenHomepage: Button;
+          btnOpenChangelog: Button;
         }
 
         export type Inputs = never;
@@ -20,10 +24,24 @@ namespace invk {
             super({
               elements: {
                 versionLabel: "GameInfoVersionLabel",
+                btnClose: "GameInfoClose",
+                btnOpenHomepage: "GameInfoOpenHomepage",
+                btnOpenChangelog: "GameInfoOpenChangelog",
+              },
+              panelEvents: {
+                btnClose: {
+                  onactivate: () => this.Close(),
+                },
+                btnOpenHomepage: {
+                  onactivate: () => this.OpenHomepageURL(),
+                },
+                btnOpenChangelog: {
+                  onactivate: () => this.OpenChangelogURL(),
+                },
               },
             });
 
-            this.render();
+            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 

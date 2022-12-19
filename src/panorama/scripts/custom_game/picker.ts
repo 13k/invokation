@@ -1,5 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  // test
   export namespace Components {
     export namespace Picker {
       export interface Elements extends Component.Elements {
@@ -15,6 +15,13 @@ namespace invk {
         filterItemResetButton: Panel;
         filterAbilityImage: AbilityImage;
         filterAbilityResetButton: Panel;
+        btnReload: Button;
+        btnToggleFilters: ToggleButton;
+        btnFreestyle: Button;
+        btnShowItemFilter: Button;
+        btnShowAbilityFilter: Button;
+        btnResetFilters: Button;
+        btnToggle: Button;
       }
 
       export type Inputs = never;
@@ -97,13 +104,36 @@ namespace invk {
               filterItemResetButton: "PickerFilterItemResetButton",
               filterAbilityImage: "PickerFilterAbilityImage",
               filterAbilityResetButton: "PickerFilterAbilityResetButton",
+              btnReload: "BtnReload",
+              btnToggleFilters: "BtnToggleFilters",
+              btnFreestyle: "BtnFreestyle",
+              btnShowItemFilter: "BtnShowItemFilter",
+              btnShowAbilityFilter: "BtnShowAbilityFilter",
+              btnResetFilters: "BtnResetFilters",
+              btnToggle: "BtnToggle",
             },
             customEvents: {
-              COMBO_STARTED: "onComboStarted",
-              COMBO_STOPPED: "onComboStopped",
-              COMBO_FINISHED: "onComboFinished",
-              POPUP_ITEM_PICKER_SUBMIT: "onPopupItemPickerSubmit",
-              POPUP_ABILITY_PICKER_SUBMIT: "onPopupAbilityPickerSubmit",
+              COMBO_STARTED: (payload) => this.onComboStarted(payload),
+              COMBO_STOPPED: (payload) => this.onComboStopped(payload),
+              COMBO_FINISHED: (payload) => this.onComboFinished(payload),
+              POPUP_ITEM_PICKER_SUBMIT: (payload) => this.onPopupItemPickerSubmit(payload),
+              POPUP_ABILITY_PICKER_SUBMIT: (payload) => this.onPopupAbilityPickerSubmit(payload),
+            },
+            panelEvents: {
+              btnReload: { onactivate: () => this.Reload() },
+              btnToggleFilters: { onactivate: () => this.ToggleFilters() },
+              btnFreestyle: { onactivate: () => this.Freestyle() },
+              filterTagsResetButton: { onactivate: () => this.ResetTagsFilter() },
+              filterSpecialty: { oninputsubmit: () => this.Filter() },
+              filterStance: { oninputsubmit: () => this.Filter() },
+              filterDamageRating: { oninputsubmit: () => this.Filter() },
+              filterDifficultyRating: { oninputsubmit: () => this.Filter() },
+              filterItemResetButton: { onactivate: () => this.ResetItemFilter() },
+              btnShowItemFilter: { onactivate: () => this.ShowItemFilter() },
+              filterAbilityResetButton: { onactivate: () => this.ResetAbilityFilter() },
+              btnShowAbilityFilter: { onactivate: () => this.ShowAbilityFilter() },
+              btnResetFilters: { onactivate: () => this.ResetFilters() },
+              btnToggle: { onactivate: () => this.Toggle() },
             },
           });
 
@@ -145,13 +175,13 @@ namespace invk {
           this.startCombo(payload.id);
         }
 
-        onComboStarted() {
-          this.debug("onComboStarted()");
+        onComboStarted(payload: CustomEvents.ComboStarted) {
+          this.debug("onComboStarted()", payload);
           this.close();
         }
 
-        onComboStopped() {
-          this.debug("onComboStopped()");
+        onComboStopped(payload: CustomEvents.ComboStopped) {
+          this.debug("onComboStopped()", payload);
           this.open();
         }
 
@@ -812,8 +842,8 @@ namespace invk {
       };
 
       export const component = new Picker();
+
+      component.open();
     }
   }
 }
-
-invk.Components.Picker.component.open();

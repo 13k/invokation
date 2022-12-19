@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace CustomLoadingScreen {
@@ -36,7 +37,7 @@ namespace invk {
             },
             elementEvents: {
               scene: {
-                SCENE_PANEL_LOADED: "start",
+                SCENE_PANEL_LOADED: () => this.start(),
               },
             },
           });

@@ -10,8 +10,8 @@
 
   <Panel class="ViewerRoot Hide" hittest="false">
     <Panel class="Viewer" hittest="false">
-      <Button class="CloseButton" onactivate="invk.Components.Viewer.component.Close()" />
-      <Button class="RefreshButton" onactivate="invk.Components.Viewer.component.Reload()" />
+      <Button id="BtnClose" class="CloseButton" />
+      <Button id="BtnReload" class="RefreshButton" />
 
       <Panel class="ViewerInformationBackground" hittest="false" />
 
@@ -34,17 +34,17 @@
               <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('quas')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('wex')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseover="invk.Components.Viewer.component.ShowOrbTooltip('exort')" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseout="DOTAHideAbilityTooltip()" />
                 <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
             </Panel>
@@ -64,7 +64,7 @@
 
       <Panel class="ViewerFooter" hittest="false">
         <Panel class="ViewerButtons" hittest="false">
-          <Button class="PlayButton" onactivate="invk.Components.Viewer.component.Play()">
+          <Button id="BtnPlay" class="PlayButton">
             <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
           </Button>
         </Panel>

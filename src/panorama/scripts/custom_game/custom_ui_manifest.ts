@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Static {
     const {
@@ -39,12 +40,12 @@ namespace invk {
         constructor() {
           super();
 
-          _.each(UI_CONFIG, (value, key) => {
+          for (const [key, value] of Object.entries(UI_CONFIG)) {
             GameUI.SetDefaultUIEnabled(
               DotaDefaultUIElement_t[key as keyof typeof DotaDefaultUIElement_t],
               value
             );
-          });
+          }
 
           this.debug("init");
         }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace PickerCombo {
@@ -6,6 +7,8 @@ namespace invk {
         heroLevelLabel: LabelPanel;
         damageRating: Panel;
         difficultyRating: Panel;
+        btnShowDetails: Button;
+        btnPlay: Button;
       }
 
       export interface Inputs extends Component.Inputs {
@@ -49,28 +52,36 @@ namespace invk {
               heroLevelLabel: "PickerComboHeroLevelLabel",
               damageRating: "PickerComboDamageRating",
               difficultyRating: "PickerComboDifficultyRating",
+              btnShowDetails: "BtnShowDetails",
+              btnPlay: "BtnPlay",
+            },
+            panelEvents: {
+              btnShowDetails: { onactivate: () => this.ShowDetails() },
+              btnPlay: { onactivate: () => this.Play() },
             },
             inputs: {
-              SetCombo: "setCombo",
-              SetFinished: "onSetFinished",
-              UnsetFinished: "onUnsetFinished",
+              SetCombo: (payload: Inputs["SetCombo"]) => this.setCombo(payload),
+              SetFinished: (payload: Inputs["SetFinished"]) => this.onSetFinished(payload),
+              UnsetFinished: (payload: Inputs["UnsetFinished"]) => this.onUnsetFinished(payload),
             },
           });
         }
 
         // --- Inputs ---
 
-        setCombo(combo: Combo.Combo) {
-          this.combo = combo;
+        setCombo(payload: Inputs["SetCombo"]) {
+          this.combo = payload;
 
           this.render();
         }
 
-        onSetFinished() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onSetFinished(_payload: Inputs["SetFinished"]) {
           this.panel.AddClass(CssClass.Finished);
         }
 
-        onUnsetFinished() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onUnsetFinished(_payload: Inputs["UnsetFinished"]) {
           this.panel.RemoveClass(CssClass.Finished);
         }
 

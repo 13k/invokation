@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace ComboStep {
@@ -31,19 +32,6 @@ namespace invk {
         StepInvocation = "ComboStepInvocation",
       }
 
-      export const DEFAULT_ELEMENTS: Component.ElementsOption<Elements> = {
-        button: "ComboStepIconButton",
-      };
-
-      export const DEFAULT_INPUTS: Component.InputsOption<Inputs> = {
-        SetStep: "setStep",
-      };
-
-      export const DEFAULT_OPTIONS: Options<Elements, Inputs, Component.Params> = {
-        elements: DEFAULT_ELEMENTS,
-        inputs: DEFAULT_INPUTS,
-      };
-
       // Abstract ComboStep component.
       // Should be included in the actual component layout and subclassed.
       export class ComboStep<
@@ -57,7 +45,14 @@ namespace invk {
         step?: Combo.Step;
 
         constructor({ imageId, ...options }: Options<E, I, P> = {}) {
-          options = _.defaultsDeep(options, DEFAULT_OPTIONS);
+          options = _.defaultsDeep(options, {
+            elements: {
+              button: "ComboStepIconButton",
+            },
+            inputs: {
+              SetStep: (payload: Inputs["SetStep"]) => this.setStep(payload),
+            },
+          });
 
           super(options);
 

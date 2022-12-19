@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Popups {
       export namespace PopupInvokerAbilityPicker {
         export interface Elements extends Component.Elements {
           abilities: Panel;
+          btnClose: Button;
         }
 
         export type Inputs = never;
@@ -51,12 +53,19 @@ namespace invk {
             super({
               elements: {
                 abilities: "PopupInvokerAbilityPickerAbilityList",
+                btnClose: "PopupInvokerAbilityPickerClose",
+              },
+              panelEvents: {
+                btnClose: {
+                  onactivate: () => this.Close(),
+                },
               },
               params: {
                 channel: { type: ParamType.String, default: INVALID_CHANNEL },
               },
             });
 
+            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 

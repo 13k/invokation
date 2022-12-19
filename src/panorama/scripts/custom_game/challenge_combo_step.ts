@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace ChallengeComboStep {
@@ -29,34 +30,39 @@ namespace invk {
         constructor() {
           super({
             inputs: {
-              ...ComboStep.DEFAULT_INPUTS,
-              SetStepActive: "onSetActive",
-              UnsetStepActive: "onUnsetActive",
-              SetStepError: "onSetError",
-              UnsetStepError: "onUnsetError",
-              StepBump: "onBump",
+              SetStep: (payload: Inputs["SetStep"]) => this.setStep(payload),
+              SetStepActive: (payload: Inputs["SetStepActive"]) => this.onSetActive(payload),
+              UnsetStepActive: (payload: Inputs["UnsetStepActive"]) => this.onUnsetActive(payload),
+              SetStepError: (payload: Inputs["SetStepError"]) => this.onSetError(payload),
+              UnsetStepError: (payload: Inputs["UnsetStepError"]) => this.onUnsetError(payload),
+              StepBump: (payload: Inputs["StepBump"]) => this.onBump(payload),
             },
           });
         }
 
-        onSetActive() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onSetActive(_payload: Inputs["SetStepActive"]) {
           this.panel.AddClass(CssClass.Active);
         }
 
-        onUnsetActive() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onUnsetActive(_payload: Inputs["UnsetStepActive"]) {
           this.panel.RemoveClass(CssClass.Active);
         }
 
-        onSetError() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onSetError(_payload: Inputs["SetStepError"]) {
           this.panel.RemoveClass(CssClass.Error);
           this.panel.AddClass(CssClass.Error);
         }
 
-        onUnsetError() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onUnsetError(_payload: Inputs["UnsetStepError"]) {
           this.panel.RemoveClass(CssClass.Error);
         }
 
-        onBump() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onBump(_payload: Inputs["StepBump"]) {
           this.panel.RemoveClass(CssClass.Bump);
           this.panel.AddClass(CssClass.Bump);
         }

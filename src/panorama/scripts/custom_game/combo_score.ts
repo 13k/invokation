@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace ComboScore {
@@ -126,16 +127,16 @@ namespace invk {
             },
             elementEvents: {
               counterFx: {
-                SCENE_PANEL_LOADED: "counterFxAmbientStart",
+                SCENE_PANEL_LOADED: () => this.counterFxAmbientStart(),
               },
               summaryFx: {
-                SCENE_PANEL_LOADED: "summaryFxAmbientStart",
+                SCENE_PANEL_LOADED: () => this.summaryFxAmbientStart(),
               },
             },
             inputs: {
-              UpdateCounter: "updateCounter",
-              UpdateSummary: "updateSummary",
-              Hide: "hide",
+              UpdateCounter: (payload: Inputs["UpdateCounter"]) => this.updateCounter(payload),
+              UpdateSummary: (payload: Inputs["UpdateSummary"]) => this.updateSummary(payload),
+              Hide: (payload: Inputs["Hide"]) => this.hide(payload),
             },
           });
 
@@ -452,7 +453,8 @@ namespace invk {
           this.updateSummaryAction(payload).Run();
         }
 
-        hide() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        hide(_payload: Inputs["Hide"]) {
           this.hideAction().Run();
         }
       }
