@@ -1,6 +1,7 @@
 /// <reference path="./vendor/lodash.js" />
 /// <reference path="./static.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Logger {
     const {

@@ -7,6 +7,7 @@
 /// <reference path="./lua.ts" />
 /// <reference path="./net_table_listener.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace CombosCollection {
     const {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Callbacks {
     export type Callback<T, K extends keyof T> = (payload: T[K]) => void;

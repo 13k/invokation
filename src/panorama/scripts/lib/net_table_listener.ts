@@ -3,6 +3,7 @@
 /// <reference path="lua.ts" />
 /// <reference path="net_table.ts" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace NetTableListener {
     const {

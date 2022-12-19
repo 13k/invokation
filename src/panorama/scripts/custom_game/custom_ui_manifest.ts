@@ -33,7 +33,6 @@ namespace invk {
 
       const {
         Const: { UI_CONFIG },
-        Vendor: { lodash: _ },
       } = GameUI.CustomUIConfig().invk;
 
       export class CustomUIManifest extends Component.Component<Elements, Inputs, Outputs, Params> {
