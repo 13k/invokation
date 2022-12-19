@@ -3,7 +3,7 @@ namespace invk {
     export const META = {
       VERSION: "v0.4.7",
       URL: "https://github.com/13k/invokation",
-      CHANGELOG_URL: "https://github.com/13k/invokation/blob/master/CHANGELOG.md",
+      CHANGELOG_URL: "https://github.com/13k/invokation/blob/main/CHANGELOG.md",
     };
 
     export const UI_CONFIG: { [K in keyof typeof DotaDefaultUIElement_t]: boolean } = {
