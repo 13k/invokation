@@ -4,7 +4,7 @@ version = "scm-0"
 
 source = {
   url = "git+https://github.com/13k/invokation",
-  branch = "master",
+  branch = "main",
 }
 
 description = {
