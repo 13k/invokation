@@ -1,19 +1,27 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
+@define counterWidth: 250px;
+@define counterHeight: 120px;
+@define counterMarginTop: 100px;
+@define summaryWidth: 275px;
+@define summaryHeight: 120px;
+@define summaryMarginBottom: 230px;
+
 /******************************************************************************
  * Combo Score (shamelessly rippped from ES arcana)
  *****************************************************************************/
 
 .ComboScoreRoot {
-  width: 275px;
-  height: 120px;
+  width: 100%;
+  height: 100%;
 }
 
 .ComboScoreRoot .ComboScoreSplashBackground {
   z-index: 0;
-  width: 191px;
-  height: 129px;
-  horizontal-align: center;
+  width: 100%;
+  height: 100%;
+  opacity-mask: softEdgeBoxIrregularMask;
+  background-color: rgba(95, 55, 3, 0.1);
   background-image: arcanaShakerSummaryBackground;
   background-size: 100%;
 }
@@ -150,9 +158,8 @@
 }
 
 .ComboScoreRoot > .ComboScoreCounter {
-  width: 250px;
-  height: 119px;
-  align: center top;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
@@ -168,6 +175,7 @@
 }
 
 #ComboScoreCounterFX {
+  z-index: 100;
   width: 100%;
   height: 100%;
 }
@@ -230,9 +238,8 @@
 }
 
 .ComboScoreRoot > .ComboScoreSummary {
-  width: 275px;
-  height: 120px;
-  align: center top;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
@@ -251,7 +258,6 @@
   z-index: 100;
   width: 100%;
   height: 100%;
-  opacity-mask: softEdgeBoxMask;
 }
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent {

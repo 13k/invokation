@@ -2,6 +2,9 @@
 @import url("file://{resources}/styles/shared/variables.css");
 @import url("file://{resources}/styles/shared/panelstyles.css");
 
+@define scoreWidth: 275px;
+@define scoreHeight: 120px;
+@define scoreMarginBottom: 230px;
 @define controlsMarginLeft: 80px;
 
 .FreestyleRoot {
@@ -111,6 +114,8 @@
 }
 
 #FreestyleScore {
-  margin-bottom: 230px;
+  width: scoreWidth;
+  height: scoreHeight;
+  margin-bottom: scoreMarginBottom;
   align: center bottom;
 }
