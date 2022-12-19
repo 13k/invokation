@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Popups {
@@ -9,6 +10,8 @@ namespace invk {
           heroImage: HeroImage;
           abilityImage: AbilityImage;
           itemImage: ItemImage;
+          btnSubmit: Button;
+          btnCancel: Button;
         }
 
         export type Inputs = never;
@@ -68,6 +71,19 @@ namespace invk {
                 heroImage: "PopupTextEntryHeroImage",
                 abilityImage: "PopupTextEntryAbilityImage",
                 itemImage: "PopupTextEntryItemImage",
+                btnSubmit: "PopupTextEntrySubmit",
+                btnCancel: "PopupTextEntryCancel",
+              },
+              panelEvents: {
+                textEntry: {
+                  oninputsubmit: () => this.Submit(),
+                },
+                btnSubmit: {
+                  onactivate: () => this.Submit(),
+                },
+                btnCancel: {
+                  onactivate: () => this.Close(),
+                },
               },
               params: {
                 [Param.Channel]: { type: ParamType.String, default: "" },
@@ -82,6 +98,7 @@ namespace invk {
               },
             });
 
+            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 

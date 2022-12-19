@@ -29,7 +29,7 @@
       <Label class="UIItemPickerSelectionChoice" text="#invokation_item_picker_choose" />
       <Panel class="FillWidth" />
       <Panel id="UIItemPickerSearch" class="UIItemPickerSearchBox">
-        <TextEntry id="UIItemPickerSearchTextEntry" class="UIItemPickerSearchTextEntry" placeholder="#DOTA_Shop_Search_Field_Default" oninputsubmit="invk.Components.UI.ItemPicker.component.Search()" />
+        <TextEntry id="UIItemPickerSearchTextEntry" class="UIItemPickerSearchTextEntry" placeholder="#DOTA_Shop_Search_Field_Default" />
         <Button class="UIItemPickerSearchButton" />
       </Panel>
     </Panel>

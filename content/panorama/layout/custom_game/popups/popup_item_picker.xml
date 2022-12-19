@@ -8,11 +8,11 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_item_picker.css" />
   </styles>
 
-  <Popup class="PopupItemPickerRoot" popupbackground="dim" oncancel="invk.Components.Popups.PopupItemPicker.component.Close()">
+  <Popup class="PopupItemPickerRoot" popupbackground="dim">
     <Panel id="PopupItemPickerUIItemPickerContainer" />
 
     <Panel class="PopupButtonRow">
-      <Button class="PopupButton" onactivate="invk.Components.Popups.PopupItemPicker.component.Close()">
+      <Button id="PopupItemPickerClose" class="PopupButton">
         <Label text="#DOTA_Close" />
       </Button>
     </Panel>

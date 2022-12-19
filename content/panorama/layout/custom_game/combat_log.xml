@@ -13,14 +13,14 @@
       <Panel id="CombatLogContents" />
 
       <Panel class="CombatLogBar">
-        <ToggleButton class="CombatLogThumb ExpandCollapseToggleButton" onactivate="invk.Components.CombatLog.component.Toggle()">
+        <ToggleButton id="BtnToggle" class="CombatLogThumb ExpandCollapseToggleButton">
           <Label class="CombatLogTitle" text="#invokation_combat_log_title" hittest="false" />
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
           <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
 
-          <Button class="CombatLogBarItem ClearButton BlueButton" onactivate="invk.Components.CombatLog.component.Clear()">
+          <Button id="BtnClear" class="CombatLogBarItem ClearButton BlueButton">
             <Label text="#invokation_combat_log_clear" hittest="false" />
           </Button>
         </Panel>

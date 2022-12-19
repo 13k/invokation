@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace UI {
@@ -60,11 +61,13 @@ namespace invk {
                 statRow25: "StatRow25",
               },
               inputs: {
-                Select: "onSelect",
-                Reset: "onReset",
+                Select: (payload: Inputs["Select"]) => this.onSelect(payload),
+                Reset: (payload: Inputs["Reset"]) => this.onReset(payload),
               },
             });
 
+            this.setPanelEvent("onmouseover", () => this.ShowTooltip());
+            this.setPanelEvent("onmouseout", () => this.HideTooltip());
             this.debug("init");
           }
 
@@ -85,8 +88,8 @@ namespace invk {
             this.render();
           }
 
-          onReset() {
-            this.debug("onReset()");
+          onReset(payload: Inputs["Reset"]) {
+            this.debug("onReset()", payload);
             this.reset();
           }
 
@@ -114,7 +117,7 @@ namespace invk {
           // ----- Action runners -----
 
           render() {
-            if (!this.heroID || !this.selected) {
+            if (this.heroID == null || this.selected == null) {
               this.warn("tried to render() without hero ID or selected talents");
               return;
             }

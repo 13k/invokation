@@ -32,23 +32,23 @@
 
     <Panel class="ChallengeControls TranslucentPanel" hittest="false">
       <Panel class="ChallengeControlIcon">
-        <Button class="InfoIcon ChallengeIconButton Grey" onactivate="invk.Components.Challenge.component.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnShowDetails" class="InfoIcon ChallengeIconButton Grey" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="EyeIcon ChallengeIconButton Grey" onactivate="invk.Components.Challenge.component.CycleHUD()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnCycleHUD" class="EyeIcon ChallengeIconButton Grey" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="RefreshButton ChallengeIconButton Blue" onactivate="invk.Components.Challenge.component.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnRestart" class="RefreshButton ChallengeIconButton Blue" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="FullRefreshIcon ChallengeIconButton Bronze" onactivate="invk.Components.Challenge.component.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnFullRestart" class="FullRefreshIcon ChallengeIconButton Bronze" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="ChallengeControlIcon">
-        <Button class="CloseButton ChallengeIconButton Red" onactivate="invk.Components.Challenge.component.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnStop" class="CloseButton ChallengeIconButton Red" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

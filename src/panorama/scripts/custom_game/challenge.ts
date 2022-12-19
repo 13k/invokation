@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Challenge {
@@ -11,6 +12,11 @@ namespace invk {
         timerLabel: LabelPanel;
         waitProgress: ProgressBar;
         waitProgressBar: ProgressBar;
+        btnShowDetails: Button;
+        btnCycleHUD: Button;
+        btnRestart: Button;
+        btnFullRestart: Button;
+        btnStop: Button;
       }
 
       export type Inputs = never;
@@ -136,15 +142,27 @@ namespace invk {
               timerLabel: "ChallengeTimerLabel",
               waitProgress: "ChallengeWaitProgress",
               waitProgressBar: "ChallengeWaitProgressBar",
+              btnShowDetails: "BtnShowDetails",
+              btnCycleHUD: "BtnCycleHUD",
+              btnRestart: "BtnRestart",
+              btnFullRestart: "BtnFullRestart",
+              btnStop: "BtnStop",
             },
             customEvents: {
-              COMBO_STARTED: "onComboStarted",
-              COMBO_STOPPED: "onComboStopped",
-              COMBO_IN_PROGRESS: "onComboInProgress",
-              COMBO_PROGRESS: "onComboProgress",
-              COMBO_STEP_ERROR: "onComboStepError",
-              COMBO_PRE_FINISH: "onComboPreFinish",
-              COMBO_FINISHED: "onComboFinished",
+              COMBO_STARTED: (payload) => this.onComboStarted(payload),
+              COMBO_STOPPED: (payload) => this.onComboStopped(payload),
+              COMBO_IN_PROGRESS: (payload) => this.onComboInProgress(payload),
+              COMBO_PROGRESS: (payload) => this.onComboProgress(payload),
+              COMBO_STEP_ERROR: (payload) => this.onComboStepError(payload),
+              COMBO_PRE_FINISH: (payload) => this.onComboPreFinish(payload),
+              COMBO_FINISHED: (payload) => this.onComboFinished(payload),
+            },
+            panelEvents: {
+              btnShowDetails: { onactivate: () => this.ShowDetails() },
+              btnCycleHUD: { onactivate: () => this.CycleHUD() },
+              btnRestart: { onactivate: () => this.Restart(false) },
+              btnFullRestart: { onactivate: () => this.Restart(true) },
+              btnStop: { onactivate: () => this.Stop() },
             },
           });
 

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace ViewerComboStep {
@@ -15,8 +16,14 @@ namespace invk {
         constructor() {
           super({
             elements: {
-              ...ComboStep.DEFAULT_ELEMENTS,
+              button: "ComboStepIconButton",
               descriptionLabel: "ViewerComboStepDescription",
+            },
+            panelEvents: {
+              button: {
+                onmouseover: () => this.ShowTooltip(),
+                onmouseout: () => this.HideTooltip(),
+              },
             },
           });
         }

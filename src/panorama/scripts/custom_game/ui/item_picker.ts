@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace UI {
@@ -20,6 +21,7 @@ namespace invk {
         const {
           CustomNetTables,
           L10n,
+          CustomEvents: { Name: CustomEventName },
           Lua: { fromArrayDeep },
           NetTable: { NetTable },
           Panorama: { createItemImage, createPanelSnippet },
@@ -59,7 +61,12 @@ namespace invk {
                 groups: "UIItemPickerGroups",
               },
               customEvents: {
-                ITEM_PICKER_QUERY_RESPONSE: "onQueryResponse",
+                ITEM_PICKER_QUERY_RESPONSE: (payload) => this.onQueryResponse(payload),
+              },
+              panelEvents: {
+                search: {
+                  oninputsubmit: () => this.Search(),
+                },
               },
             });
 
@@ -77,8 +84,10 @@ namespace invk {
           }
 
           onQueryResponse(payload: CustomEvents.ItemPickerQueryResponse) {
-            this.debug("onQueryResponse()");
-            this.highlight(payload.items);
+            const itemNames = _.keys(payload.items);
+
+            this.debug("onQueryResponse()", itemNames);
+            this.highlight(itemNames);
           }
 
           highlight(items: string[]) {
@@ -130,6 +139,8 @@ namespace invk {
             this.shopItems = fromArrayDeep(
               this.netTable.get(CustomNetTables.Invokation.Key.ShopItems)
             );
+
+            this.debug("loadItems()", this.shopItems);
           }
 
           select(imagePanel: ItemImage) {
@@ -149,7 +160,7 @@ namespace invk {
               return;
             }
 
-            this.sendServer(CustomEvents.Name.ITEM_PICKER_QUERY, { query: query });
+            this.sendServer(CustomEventName.ITEM_PICKER_QUERY, { query: query });
           }
 
           render() {

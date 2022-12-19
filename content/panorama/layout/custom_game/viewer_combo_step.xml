@@ -10,7 +10,7 @@
   </styles>
 
   <Panel class="ViewerComboStepRoot">
-    <Button id="ComboStepIconButton" class="ViewerComboStepIcon" onmouseover="invk.Components.ViewerComboStep.component.ShowTooltip()" onmouseout="invk.Components.ViewerComboStep.component.HideTooltip()" />
+    <Button id="ComboStepIconButton" class="ViewerComboStepIcon" />
     <Label id="ViewerComboStepDescription" html="true" hittest="false" />
   </Panel>
 </root>

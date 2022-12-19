@@ -19,7 +19,7 @@
         <Label id="PickerComboHeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
       </Button>
 
-      <Button class="PickerComboIcon InfoIcon" onactivate="invk.Components.PickerCombo.component.ShowDetails()" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
+      <Button id="BtnShowDetails" class="PickerComboIcon InfoIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
       <Button class="PickerComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
       <Button class="PickerComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
 
@@ -41,7 +41,7 @@
 
     </Panel>
 
-    <Button class="PlayButton FlatButton" onactivate="invk.Components.PickerCombo.component.Play()">
+    <Button id="BtnPlay" class="PlayButton FlatButton">
       <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
     </Button>
   </Panel>

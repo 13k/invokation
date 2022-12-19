@@ -1,8 +1,14 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Freestyle {
       export interface Elements extends Component.Elements {
         score: Panel;
+        btnLevelUp: Button;
+        btnLevelMax: Button;
+        btnRestart: Button;
+        btnFullRestart: Button;
+        btnStop: Button;
       }
 
       export type Inputs = never;
@@ -38,11 +44,23 @@ namespace invk {
           super({
             elements: {
               score: "FreestyleScore",
+              btnLevelUp: "BtnLevelUp",
+              btnLevelMax: "BtnLevelMax",
+              btnRestart: "BtnRestart",
+              btnFullRestart: "BtnFullRestart",
+              btnStop: "BtnStop",
             },
             customEvents: {
-              COMBO_STARTED: "onComboStarted",
-              COMBO_STOPPED: "onComboStopped",
-              COMBO_PROGRESS: "onComboProgress",
+              COMBO_STARTED: (payload) => this.onComboStarted(payload),
+              COMBO_STOPPED: (payload) => this.onComboStopped(payload),
+              COMBO_PROGRESS: (payload) => this.onComboProgress(payload),
+            },
+            panelEvents: {
+              btnLevelUp: { onactivate: () => this.LevelUp() },
+              btnLevelMax: { onactivate: () => this.LevelMax() },
+              btnRestart: { onactivate: () => this.Restart(false) },
+              btnFullRestart: { onactivate: () => this.Restart(true) },
+              btnStop: { onactivate: () => this.Stop() },
             },
           });
 

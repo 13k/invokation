@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace Viewer {
@@ -14,6 +15,9 @@ namespace invk {
         orbWexLabel: LabelPanel;
         orbExort: AbilityImage;
         orbExortLabel: LabelPanel;
+        btnClose: Button;
+        btnReload: Button;
+        btnPlay: Button;
       }
 
       export type Inputs = never;
@@ -23,6 +27,7 @@ namespace invk {
       const {
         L10n,
         Layout,
+        Combo: { OrbName },
         CustomEvents: { Name: CustomEventName },
         Dota2: { Invoker },
         Sequence: { Sequence, ParallelSequence, RunFunctionAction, NoopAction },
@@ -58,10 +63,21 @@ namespace invk {
               orbWexLabel: "ViewerOrbWexLabel",
               orbExort: "ViewerOrbExort",
               orbExortLabel: "ViewerOrbExortLabel",
+              btnClose: "BtnClose",
+              btnReload: "BtnReload",
+              btnPlay: "BtnPlay",
             },
             customEvents: {
-              VIEWER_RENDER: "onViewerRender",
-              COMBO_STARTED: "onComboStarted",
+              VIEWER_RENDER: (payload) => this.onViewerRender(payload),
+              COMBO_STARTED: (payload) => this.onComboStarted(payload),
+            },
+            panelEvents: {
+              btnClose: { onactivate: () => this.Close() },
+              btnReload: { onactivate: () => this.Reload() },
+              btnPlay: { onactivate: () => this.Play() },
+              orbQuas: { onmouseover: () => this.ShowOrbTooltip(OrbName.Quas) },
+              orbWex: { onmouseover: () => this.ShowOrbTooltip(OrbName.Wex) },
+              orbExort: { onmouseover: () => this.ShowOrbTooltip(OrbName.Exort) },
             },
           });
 
@@ -72,8 +88,8 @@ namespace invk {
 
         // --- Event handlers -----
 
-        onComboStarted() {
-          this.debug("onComboStarted()");
+        onComboStarted(payload: CustomEvents.ComboStarted) {
+          this.debug("onComboStarted()", payload);
           this.close();
         }
 

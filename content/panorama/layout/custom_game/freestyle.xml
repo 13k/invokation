@@ -11,23 +11,23 @@
   <Panel class="FreestyleRoot Hide" hittest="false">
     <Panel class="FreestyleControls TranslucentPanel" hittest="false">
       <Panel class="FreestyleControlIcon">
-        <Button class="LevelUpButton FreestyleIconButton Grey" onactivate="invk.Components.Freestyle.component.LevelUp()" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnLevelUp" class="LevelUpButton FreestyleIconButton Grey" onmouseover="UIShowTextTooltip(#invokation_controls_level_up)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="LevelMaxButton FreestyleIconButton Grey" onactivate="invk.Components.Freestyle.component.LevelMax()" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnLevelMax" class="LevelMaxButton FreestyleIconButton Grey" onmouseover="UIShowTextTooltip(#invokation_controls_level_max)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="RefreshButton FreestyleIconButton Blue" onactivate="invk.Components.Freestyle.component.Restart()" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnRestart" class="RefreshButton FreestyleIconButton Blue" onmouseover="UIShowTextTooltip(#invokation_controls_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="FullRefreshIcon FreestyleIconButton Bronze" onactivate="invk.Components.Freestyle.component.Restart(true)" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnFullRestart" class="FullRefreshIcon FreestyleIconButton Bronze" onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)" onmouseout="UIHideTextTooltip()" />
       </Panel>
 
       <Panel class="FreestyleControlIcon">
-        <Button class="CloseButton FreestyleIconButton Red" onactivate="invk.Components.Freestyle.component.Stop()" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
+        <Button id="BtnStop" class="CloseButton FreestyleIconButton Red" onmouseover="UIShowTextTooltip(#invokation_controls_stop)" onmouseout="UIHideTextTooltip()" />
       </Panel>
     </Panel>
 

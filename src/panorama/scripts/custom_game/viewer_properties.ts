@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
   export namespace Components {
     export namespace ViewerProperties {
@@ -44,15 +45,15 @@ namespace invk {
               difficultyRating: "ViewerPropertiesDifficultyRating",
             },
             inputs: {
-              SetCombo: "setCombo",
+              SetCombo: (payload: Inputs["SetCombo"]) => this.setCombo(payload),
             },
           });
 
           this.debug("init");
         }
 
-        setCombo(combo: Combo.Combo) {
-          this.combo = combo;
+        setCombo(payload: Inputs["SetCombo"]) {
+          this.combo = payload;
 
           this.render();
         }

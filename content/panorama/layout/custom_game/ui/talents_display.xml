@@ -8,8 +8,7 @@
     <include src="file://{resources}/styles/custom_game/ui/talents_display.css" />
   </styles>
 
-  <Panel class="UITalentsDisplayRoot" onmouseover="invk.Components.UI.TalentsDisplay.component.ShowTooltip()" onmouseout="invk.Components.UI.TalentsDisplay.component.HideTooltip()">
-    <!-- <Panel class="UITalentsDisplayRoot" onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)" onmouseout="DOTAHUDHideStatBranchTooltip()"> -->
+  <Panel class="UITalentsDisplayRoot">
     <Panel class="StatBranchContainer">
       <Panel id="StatBranchBGBranchWell" />
 
