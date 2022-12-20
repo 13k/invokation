@@ -5,7 +5,7 @@ import type { Command } from "commander";
 
 import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
-import Base from "./base.mjs";
+import BaseCommand from "./base.mjs";
 
 export interface Options {
   force?: boolean;
@@ -17,28 +17,9 @@ enum BuildPart {
   Resources = "resources",
 }
 
-function parseBuildPart(value: string): BuildPart {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const [_, v] of Object.entries(BuildPart)) {
-    if (value === v) {
-      return v;
-    }
-  }
+const ALL_PARTS = [BuildPart.PanoramaScripts, BuildPart.Maps, BuildPart.Resources];
 
-  throw new Error(`Invalid build part: ${inspect(value)}`);
-}
-
-function parseBuildParts(value: string, parts: BuildPart[] | undefined) {
-  if (parts == null) {
-    parts = [];
-  }
-
-  parts.push(parseBuildPart(value));
-
-  return parts;
-}
-
-export default class BuildCommand extends Base<Options> {
+export default class BuildCommand extends BaseCommand<Options> {
   #parts: BuildPart[];
 
   static subcommand(parent: Command, configOptions: ConfigOptions) {
@@ -60,6 +41,10 @@ export default class BuildCommand extends Base<Options> {
 
   constructor(parts: BuildPart[], options: Options, configOptions: ConfigOptions) {
     super(parts, options, configOptions);
+
+    if (parts.length === 0) {
+      parts = ALL_PARTS;
+    }
 
     this.#parts = parts;
   }
@@ -91,11 +76,22 @@ export default class BuildCommand extends Base<Options> {
   }
 
   async transpileScripts() {
-    const srcPanoramaScriptsPath = path.join(this.config.sources.srcPath, "panorama", "scripts");
+    const srcPanoramaScriptsPath = path.join(
+      this.config.sources.srcPath,
+      "content",
+      "panorama",
+      "scripts"
+    );
 
     this.log.label(Label.Generate).info("panorama scripts");
 
-    await this.exec("npm", ["exec", "--", "tsc", "-b", srcPanoramaScriptsPath], {
+    const args = ["exec", "--", "tsc", "--build", srcPanoramaScriptsPath, "--verbose"];
+
+    if (this.options.force) {
+      args.push("--force");
+    }
+
+    await this.exec("npm", args, {
       echo: true,
       log: this.log,
     });
@@ -141,4 +137,25 @@ export default class BuildCommand extends Base<Options> {
       cwd: dota2.path,
     });
   }
+}
+
+function parseBuildPart(value: string): BuildPart {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [_, v] of Object.entries(BuildPart)) {
+    if (value === v) {
+      return v;
+    }
+  }
+
+  throw new Error(`Invalid build part: ${inspect(value)}`);
+}
+
+function parseBuildParts(value: string, parts: BuildPart[] | undefined) {
+  if (parts == null) {
+    parts = [];
+  }
+
+  parts.push(parseBuildPart(value));
+
+  return parts;
 }

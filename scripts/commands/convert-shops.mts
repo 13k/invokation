@@ -5,7 +5,7 @@ import * as vdf from "vdf-parser";
 
 import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
-import Base from "./base.mjs";
+import BaseCommand from "./base.mjs";
 
 export type Options = Record<string, never>;
 
@@ -25,7 +25,7 @@ interface CustomGameShops {
 
 const INVALID_ITEMS = [/item_river_paint/];
 
-export default class ConvertShopsCommand extends Base<Options> {
+export default class ConvertShopsCommand extends BaseCommand<Options> {
   #input: string;
   #output: string;
 

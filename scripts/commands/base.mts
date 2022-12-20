@@ -14,17 +14,19 @@ import { unixPath, windowsPath } from "../wsl.mjs";
 
 const globP = promisify(glob);
 
-export default abstract class Base<Options> {
+export default abstract class BaseCommand<Options> {
   protected config: Config;
   protected log: Logger;
 
   constructor(protected args: string[], protected options: Options, configOptions: ConfigOptions) {
     this.log = log;
     this.config = createConfig(configOptions);
+    this.init();
   }
 
   async init() {
     const path = this.config.dota2.binPath;
+
     try {
       await fse.stat(path);
     } catch (error) {

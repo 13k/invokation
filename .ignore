@@ -1,10 +1,8 @@
-/.cov
 /.luarocks
-/.yarn
-/content/panorama/scripts/vendor
 /game/scripts/vscripts/pl
 /game/scripts/vscripts/moses.lua
 /game/scripts/vscripts/fsm.lua
+/src/content/panorama/scripts/lib/vendor
 /images
 /lua_modules
 /node_modules

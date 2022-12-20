@@ -8,7 +8,7 @@ import * as fse from "fs-extra";
 
 import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
-import Base from "./base.mjs";
+import BaseCommand from "./base.mjs";
 
 export interface Options {
   dryRun?: boolean;
@@ -28,7 +28,7 @@ interface Link {
 
 const POWERSHELL_BIN = "pwsh.exe";
 
-export default class LinkCommand extends Base<Options> {
+export default class LinkCommand extends BaseCommand<Options> {
   static subcommand(parent: Command, configOptions: ConfigOptions) {
     const command = parent
       .command("link")

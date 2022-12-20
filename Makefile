@@ -1,6 +1,6 @@
 TASKS_SRC_PATH := scripts
 VSCRIPTS_SRC_PATH := game/scripts/vscripts
-PANORAMA_SCRIPTS_SRC_PATH := src/panorama/scripts
+PANORAMA_SCRIPTS_SRC_PATH := src/content/panorama/scripts
 PANORAMA_STYLES_SRC_PATH := content/panorama/styles
 
 .NOTPARALLEL:
