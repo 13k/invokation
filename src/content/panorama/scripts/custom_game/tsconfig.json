@@ -2,7 +2,7 @@
   "extends": "../tsconfig.common.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "../../../../content/panorama/scripts/custom_game",
+    "outDir": "../../../../../content/panorama/scripts/custom_game",
     "module": "None"
   },
   "references": [{ "path": "../lib" }]
