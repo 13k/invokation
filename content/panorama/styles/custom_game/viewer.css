@@ -1,11 +1,13 @@
+/**
+ * Shamelessly ripped from Valve's Invoker kid persona leaf page.
+ **/
+
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
 @define fgColor: #3c1b18;
-
-/**
- * Shamelessly ripped from Valve's Invoker kid persona leaf page.
- **/
+@define abilityCircleSize: 64px;
+@define abilityCircleBorderRadius: 32px;
 
 .ViewerRoot {
   width: 100%;
@@ -147,11 +149,10 @@
 }
 
 .ViewerAbilitiesBuild .AbilityCircle {
-  width: 68px;
-  height: 68px;
-  padding: 4px;
-  opacity-mask: softEdgeCircleSharperMask;
-  background-color: fgColor&dd;
+  width: abilityCircleSize;
+  height: abilityCircleSize;
+  box-shadow: #1c1d20ee 0 0 8px 0;
+  border-radius: abilityCircleBorderRadius;
 }
 
 .ViewerAbilitiesBuildSection .ViewerOrb {
@@ -170,8 +171,8 @@
 }
 
 #ViewerTalents {
-  width: 68px;
-  height: 68px;
+  width: abilityCircleSize;
+  height: abilityCircleSize;
   horizontal-align: middle;
   vertical-align: middle;
   tooltip-position: left;
@@ -188,20 +189,20 @@
   height: 250px;
   margin-top: 20px;
   margin-bottom: 20px;
-  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 60%);
+  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
 }
 
 .ViewerImage {
   max-width: 500px;
   margin-top: 20px;
   margin-bottom: 20px;
-  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 60%);
+  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
 }
 
 .ViewerInlineImage {
   max-height: 200px;
   margin: 8px 10px 20px 0;
-  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 60%);
+  box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
 }
 
 .ViewerFooter {
@@ -254,12 +255,14 @@
  * Classes used within HTML content
  *****/
 
-.Viewer .sub-title {
+#ViewerTitle .sub-title,
+#ViewerDescription .sub-title {
   font-size: 18px;
   font-weight: bold;
 }
 
-.Viewer .intro-text {
+#ViewerTitle .intro-text,
+#ViewerDescription .intro-text {
   font-size: 21px;
   font-weight: bold;
 }
