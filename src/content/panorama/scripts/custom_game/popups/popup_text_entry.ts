@@ -23,7 +23,7 @@ namespace invk {
           [Param.Body]?: string;
           [Param.Image]?: string;
           [Param.EconItem]?: number;
-          [Param.HeroId]?: number;
+          [Param.HeroID]?: number;
           [Param.Hero]?: string;
           [Param.Ability]?: string;
           [Param.Item]?: string;
@@ -42,18 +42,19 @@ namespace invk {
           Body = "body",
           Image = "image",
           EconItem = "econitem",
-          HeroId = "heroid",
+          HeroID = "heroid",
           Hero = "hero",
           Ability = "ability",
           Item = "item",
         }
 
-        enum IconClass {
-          IMAGE = "ImageIconEnabled",
-          ECON_ITEM = "EconItemIconEnabled",
-          HERO = "HeroIconEnabled",
-          ABILITY = "AbilityIconEnabled",
-          ITEM = "ItemIconEnabled",
+        enum CssClass {
+          BodyEnabled = "BodyEnabled",
+          ImageEnabled = "ImageIconEnabled",
+          EconItemEnabled = "EconItemIconEnabled",
+          HeroEnabled = "HeroIconEnabled",
+          AbilityEnabled = "AbilityIconEnabled",
+          ItemEnabled = "ItemIconEnabled",
         }
 
         enum DialogVariable {
@@ -91,7 +92,7 @@ namespace invk {
                 [Param.Body]: { type: ParamType.String, default: "" },
                 [Param.Image]: { type: ParamType.String, default: "" },
                 [Param.EconItem]: { type: ParamType.UInt32, default: 0 },
-                [Param.HeroId]: { type: ParamType.UInt32, default: 0 },
+                [Param.HeroID]: { type: ParamType.UInt32, default: 0 },
                 [Param.Hero]: { type: ParamType.String, default: "" },
                 [Param.Ability]: { type: ParamType.String, default: "" },
                 [Param.Item]: { type: ParamType.String, default: "" },
@@ -111,42 +112,113 @@ namespace invk {
 
           // ----- Helpers -----
 
+          get title(): string | undefined {
+            return this.params[Param.Title];
+          }
+
+          get body(): string | undefined {
+            return this.params[Param.Body];
+          }
+
+          get image(): string | undefined {
+            return this.params[Param.Image];
+          }
+
+          get econItem(): number | undefined {
+            return this.params[Param.EconItem];
+          }
+
+          get heroID(): number | undefined {
+            return this.params[Param.HeroID];
+          }
+
+          get hero(): string | undefined {
+            return this.params[Param.Hero];
+          }
+
+          get ability(): string | undefined {
+            return this.params[Param.Ability];
+          }
+
+          get item(): string | undefined {
+            return this.params[Param.Item];
+          }
+
+          get hasBodyElement(): boolean {
+            return (
+              this.hasBody() ||
+              this.hasImage() ||
+              this.hasEconItem() ||
+              this.hasHeroID() ||
+              this.hasHero() ||
+              this.hasAbility() ||
+              this.hasItem()
+            );
+          }
+
+          hasBody(): this is { body: string } {
+            return this.body != null && this.body !== "";
+          }
+
+          hasImage(): this is { image: string } {
+            return this.image != null && this.image !== "";
+          }
+
+          hasEconItem(): this is { econItem: number } {
+            return this.econItem != null && this.econItem > 0;
+          }
+
+          hasHeroID(): this is { heroID: number } {
+            return this.heroID != null && this.heroID > 0;
+          }
+
+          hasHero(): this is { hero: string } {
+            return this.hero != null && this.hero !== "";
+          }
+
+          hasAbility(): this is { ability: string } {
+            return this.ability != null && this.ability !== "";
+          }
+
+          hasItem(): this is { item: string } {
+            return this.item != null && this.item !== "";
+          }
+
           render() {
-            let iconClass: IconClass | null = null;
+            let iconClass: CssClass | null = null;
 
-            this.panel.SetDialogVariable(DialogVariable.Title, this.params[Param.Title] || "");
-            this.panel.SetDialogVariable(DialogVariable.Body, this.params[Param.Body] || "");
+            this.panel.SetDialogVariable(DialogVariable.Title, this.title || "");
+            this.panel.SetDialogVariable(DialogVariable.Body, this.body || "");
 
-            const image = this.params[Param.Image];
-            const econItem = this.params[Param.EconItem];
-            const heroID = this.params[Param.HeroId];
-            const hero = this.params[Param.Hero];
-            const ability = this.params[Param.Ability];
-            const item = this.params[Param.Item];
+            if (this.hasImage()) {
+              this.elements.image.SetImage(this.image);
+              iconClass = CssClass.ImageEnabled;
+            } else if (this.hasEconItem()) {
+              this.elements.econItemImage.SetItemByDefinition(this.econItem);
+              iconClass = CssClass.EconItemEnabled;
+            } else if (this.hasHeroID()) {
+              this.elements.heroImage.heroid = this.heroID as HeroID;
+              iconClass = CssClass.HeroEnabled;
+            } else if (this.hasHero()) {
+              this.elements.heroImage.heroname = this.hero;
+              iconClass = CssClass.HeroEnabled;
+            } else if (this.hasAbility()) {
+              this.elements.abilityImage.abilityname = this.ability;
+              iconClass = CssClass.AbilityEnabled;
+            } else if (this.hasItem()) {
+              this.elements.itemImage.itemname = this.item;
+              iconClass = CssClass.ItemEnabled;
+            }
 
-            if (_.isString(image) && !_.isEmpty(image)) {
-              this.elements.image.SetImage(image);
-              iconClass = IconClass.IMAGE;
-            } else if (_.isNumber(econItem) && !_.isEmpty(econItem)) {
-              this.elements.econItemImage.SetItemByDefinition(econItem);
-              iconClass = IconClass.ECON_ITEM;
-            } else if (_.isNumber(heroID) && !_.isEmpty(heroID)) {
-              this.elements.heroImage.heroid = heroID as HeroID;
-              iconClass = IconClass.HERO;
-            } else if (_.isString(hero) && !_.isEmpty(hero)) {
-              this.elements.heroImage.heroname = hero;
-              iconClass = IconClass.HERO;
-            } else if (_.isString(ability) && !_.isEmpty(ability)) {
-              this.elements.abilityImage.abilityname = ability;
-              iconClass = IconClass.ABILITY;
-            } else if (_.isString(item) && !_.isEmpty(item)) {
-              this.elements.itemImage.itemname = item;
-              iconClass = IconClass.ITEM;
+            if (this.hasBodyElement) {
+              this.panel.AddClass(CssClass.BodyEnabled);
             }
 
             if (iconClass) {
               this.panel.AddClass(iconClass);
             }
+
+            this.elements.textEntry.SetFocus();
 
             this.debug("render()");
           }

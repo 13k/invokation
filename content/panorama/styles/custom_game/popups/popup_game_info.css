@@ -1,6 +1,6 @@
 @import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/popups/popups_shared.css");
 @import url("file://{resources}/styles/shared/variables.css");
+@import url("file://{resources}/styles/custom_game/popups/popups_shared.css");
 
 .GameInfoRoot {
   flow-children: none;

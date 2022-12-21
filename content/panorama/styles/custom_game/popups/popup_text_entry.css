@@ -1,9 +1,14 @@
 @import url("s2r://panorama/styles/dotastyles.css");
-@import url("s2r://panorama/styles/popups/popups_shared.css");
+@import url("file://{resources}/styles/custom_game/popups/popups_shared.css");
 
 .PopupTextEntryBody {
+  visibility: collapse;
   flow-children: right;
   horizontal-align: center;
+}
+
+.PopupTextEntryRoot.BodyEnabled .PopupTextEntryBody {
+  visibility: visible;
 }
 
 .PopupTextEntryIconContainer {

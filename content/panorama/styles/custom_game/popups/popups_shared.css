@@ -1,0 +1,26 @@
+@import url("s2r://panorama/styles/popups/popups_shared.css");
+
+@define backgroundColor: gradient(linear, 0% 0%, 0% 25%, from(#232326), to(#1c1d20));
+@define backgroundColorStep0: gradient(linear, 0% 0%, 0% 25%, from(#32383677), to(#000e));
+@define backgroundColorStep1: backgroundColor;
+@define backgroundColorStep2: backgroundColor;
+
+.PopupPanel {
+  box-shadow: #0009 0 0 8px 0;
+  border: 2px solid #32383677;
+  background-color: backgroundColor;
+}
+
+@keyframes 'links-and-more-button-focus' {
+  0% {
+    background-color: backgroundColorStep0;
+  }
+
+  75% {
+    background-color: backgroundColorStep1;
+  }
+
+  100% {
+    background-color: backgroundColorStep2;
+  }
+}

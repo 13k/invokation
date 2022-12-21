@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_invoker_ability_picker.css" />
   </styles>
 
-  <Popup class="PopupInvokerAbilityPickerRoot" popupbackground="dim">
+  <Popup class="PopupInvokerAbilityPickerRoot PopupPanel" popupbackground="dim">
     <Panel class="PopupInvokerAbilityPickerHeader">
       <Label class="PopupInvokerAbilityPickerSelectionChoice" text="#invokation_ability_picker_choose" />
     </Panel>
