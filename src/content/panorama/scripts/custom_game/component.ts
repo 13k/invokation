@@ -16,6 +16,7 @@ namespace invk {
       [ID.ViewerComboStep]: Components.ViewerComboStep.ViewerComboStep;
       [ID.ViewerProperties]: Components.ViewerProperties.ViewerProperties;
       // UI
+      [ID.UIInvokerSpellCard]: Components.UI.InvokerSpellCard.InvokerSpellCard;
       [ID.UIItemPicker]: Components.UI.ItemPicker.ItemPicker;
       [ID.UITagSelect]: Components.UI.TagSelect.TagSelect;
       [ID.UITalentsDisplay]: Components.UI.TalentsDisplay.TalentsDisplay;
@@ -52,7 +53,7 @@ namespace invk {
       E extends Elements,
       I extends Inputs,
       O extends Outputs,
-      P extends Params
+      P extends Params,
     > {
       component: C;
     }
@@ -62,7 +63,7 @@ namespace invk {
       E extends Elements,
       I extends Inputs,
       O extends Outputs,
-      P extends Params
+      P extends Params,
     > extends Panel {
       Data<T = Data<C, E, I, O, P>>(): T;
     }
@@ -133,7 +134,7 @@ namespace invk {
       E extends Elements,
       I extends Inputs,
       O extends Outputs,
-      P extends Params
+      P extends Params,
     > {
       id: string;
       env: Env.Env;
@@ -270,7 +271,7 @@ namespace invk {
        ******************************/
 
       customEventName<K extends keyof typeof CustomEvents.Name>(
-        event: K | CustomEvents.Name
+        event: K | CustomEvents.Name,
       ): CustomEvents.Name {
         if (event in CustomEventName) {
           return CustomEventName[event as K];
@@ -281,7 +282,7 @@ namespace invk {
 
       subscribe<K extends keyof typeof CustomEvents.Name>(
         event: K | CustomEvents.Name,
-        listener: HandlerFn
+        listener: HandlerFn,
       ): GameEventListenerID {
         return CustomEvents.subscribe(this.id, this.customEventName(event), listener);
       }
@@ -306,14 +307,14 @@ namespace invk {
 
       sendServer<K extends keyof CustomGameEventDeclarations>(
         name: K,
-        payload: GameEvents.InferCustomGameEventType<K, never>
+        payload: GameEvents.InferCustomGameEventType<K, never>,
       ): void {
         CustomEvents.sendServer(name, payload);
       }
 
       sendAll<K extends keyof CustomGameEventDeclarations>(
         name: K,
-        payload: GameEvents.InferCustomGameEventType<K, never>
+        payload: GameEvents.InferCustomGameEventType<K, never>,
       ): void {
         CustomEvents.sendAll(name, payload);
       }
@@ -321,14 +322,14 @@ namespace invk {
       sendPlayer<K extends keyof CustomGameEventDeclarations>(
         playerID: PlayerID,
         name: K,
-        payload: GameEvents.InferCustomGameEventType<K, never>
+        payload: GameEvents.InferCustomGameEventType<K, never>,
       ): void {
         CustomEvents.sendPlayer(playerID, name, payload);
       }
 
       sendClientSide<K extends keyof GameEventDeclarations>(
         name: K,
-        payload: GameEventDeclarations[K]
+        payload: GameEventDeclarations[K],
       ): void {
         CustomEvents.sendClientSide(name, payload);
       }
@@ -343,7 +344,7 @@ namespace invk {
 
       setUI<K extends keyof typeof DotaDefaultUIElement_t>(
         elementType: K | DotaDefaultUIElement_t,
-        state: boolean
+        state: boolean,
       ): void {
         if (_.isString(elementType)) {
           elementType = DotaDefaultUIElement_t[elementType];
@@ -353,13 +354,13 @@ namespace invk {
       }
 
       showUI<K extends keyof typeof DotaDefaultUIElement_t>(
-        elementType: K | DotaDefaultUIElement_t
+        elementType: K | DotaDefaultUIElement_t,
       ): void {
         this.setUI(elementType, true);
       }
 
       hideUI<K extends keyof typeof DotaDefaultUIElement_t>(
-        elementType: K | DotaDefaultUIElement_t
+        elementType: K | DotaDefaultUIElement_t,
       ): void {
         this.setUI(elementType, false);
       }
@@ -409,7 +410,7 @@ namespace invk {
 
             result[name as keyof E] = panel;
           },
-          {} as E
+          {} as E,
         );
       }
 
@@ -439,19 +440,19 @@ namespace invk {
               case ParamType.String:
                 params[k as keyof P] = this.attrStr(
                   k,
-                  (v.default == null ? "" : v.default) as string
+                  (v.default == null ? "" : v.default) as string,
                 );
                 break;
               case ParamType.Int:
                 params[k as keyof P] = this.attrInt(
                   k,
-                  (v.default == null ? 0 : v.default) as number
+                  (v.default == null ? 0 : v.default) as number,
                 );
                 break;
               case ParamType.UInt32:
                 params[k as keyof P] = this.attrUint32(
                   k,
-                  (v.default == null ? 0 : v.default) as number
+                  (v.default == null ? 0 : v.default) as number,
                 );
                 break;
               default:
@@ -460,14 +461,14 @@ namespace invk {
                 throw new Error(`component param ${k} with unknown type ${_check}`);
             }
           },
-          {} as P
+          {} as P,
         );
       }
 
       create<K extends Layout.ID & keyof Layout.Components>(
         layoutID: K,
         elemID: string,
-        parent: Panel = this.panel
+        parent: Panel = this.panel,
       ): Layout.Components[K] {
         const panel = createPanel(parent, elemID, Layout.path(layoutID));
 
@@ -480,7 +481,7 @@ namespace invk {
         panel: Panel,
         layoutID: K,
         override = false,
-        partial = false
+        partial = false,
       ): Layout.Components[K] {
         panel.BLoadLayout(Layout.path(layoutID), override, partial);
 
@@ -494,7 +495,7 @@ namespace invk {
        ******************************/
 
       uiEventName<K extends keyof typeof Panorama.UIEvent>(
-        event: K | Panorama.UIEvent
+        event: K | Panorama.UIEvent,
       ): Panorama.UIEvent {
         if (event in UIEvent) {
           return UIEvent[event as K];
@@ -506,7 +507,7 @@ namespace invk {
       listen<K extends keyof typeof Panorama.UIEvent>(
         element: Panel,
         event: K | Panorama.UIEvent,
-        listener: HandlerFn
+        listener: HandlerFn,
       ): void {
         event = this.uiEventName(event);
         this.debug("registering element event listener", { event, element });
@@ -553,7 +554,7 @@ namespace invk {
         parent: Panel,
         layoutID: K,
         id: string,
-        params?: Layout.Components[K]["params"]
+        params?: Layout.Components[K]["params"],
       ): void {
         const layout = Layout.path(layoutID);
 
@@ -580,7 +581,7 @@ namespace invk {
       showAbilityTooltip(
         parent: Panel,
         abilityName: string,
-        params?: Panorama.AbilityTooltipParams
+        params?: Panorama.AbilityTooltipParams,
       ): void {
         if (!params) {
           this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP, abilityName);
@@ -592,7 +593,7 @@ namespace invk {
             parent,
             UIEvent.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX,
             abilityName,
-            params.entityIndex
+            params.entityIndex,
           );
         } else if ("guide" in params) {
           this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP_GUIDE, abilityName, params.guide);
@@ -602,7 +603,7 @@ namespace invk {
             UIEvent.SHOW_ABILITY_TOOLTIP_HERO,
             abilityName,
             params.hero,
-            params.flag
+            params.flag,
           );
         } else if ("level" in params) {
           this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP_LEVEL, abilityName, params.level);
@@ -617,7 +618,7 @@ namespace invk {
         parent: Panel,
         layoutID: K,
         id: string,
-        params?: Layout.Components[K]["params"]
+        params?: Layout.Components[K]["params"],
       ): void {
         const layout = Layout.path(layoutID);
 

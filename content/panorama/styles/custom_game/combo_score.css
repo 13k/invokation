@@ -227,14 +227,14 @@
   horizontal-align: center;
   vertical-align: bottom;
   text-align: center;
-  letter-spacing: 2.5px;
+  text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
+  letter-spacing: 2.5px;
   font-size: 13px;
   font-weight: bold;
   font-style: italic;
   line-height: 13px;
   color: #d5f9fe;
-  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 .ComboScoreRoot > .ComboScoreSummary {
@@ -335,12 +335,12 @@
   margin-left: 5px;
   vertical-align: center;
   text-align: center;
-  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
+  letter-spacing: 2px;
   font-size: 13px;
   font-weight: bolder;
   color: #fff;
-  text-shadow: 2px 2px 0 #1b4c44;
 }
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreDamage {
@@ -368,10 +368,10 @@
   margin-left: 0;
   align: center center;
   text-align: center;
-  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
+  letter-spacing: 2px;
   font-size: 13px;
   font-weight: bolder;
   color: #fff;
-  text-shadow: 2px 2px 0 #1b4c44;
 }

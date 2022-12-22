@@ -1,0 +1,108 @@
+@import url("file://{resources}/styles/shared/variables.css");
+
+.root {
+  align: center center;
+}
+
+#rows {
+  flow-children: down;
+  width: fit-children;
+  height: fit-children;
+}
+
+.row {
+  z-index: 2;
+  flow-children: right;
+  horizontal-align: center;
+}
+
+.column {
+  flow-children: down;
+  width: 246px;
+  margin: 4px;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.22s;
+  transition-property: width;
+}
+
+.ability {
+  width: 100%;
+  height: 38px;
+  margin-top: 6px;
+  opacity-mask: gradientLeftRightMask;
+  transition: border 0.2s ease-in-out 0s;
+}
+
+.ability:hover {
+  border-bottom: 2px solid white;
+}
+
+.ability.quas {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#35559f22), to(#10176322));
+}
+
+.ability.wex {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#3e105044), to(#20062b44));
+}
+
+.ability.exort {
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#8b480a22), to(#28140122));
+}
+
+.ability.qwe {
+  background-color: gradient(
+    linear,
+    0% 100%,
+    100% 100%,
+    from(quasAccentColor&07),
+    color-stop(0.5, wexAccentColor&07),
+    to(exortAccentColor&07)
+  );
+}
+
+.ability-button {
+  flow-children: right;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.1s ease-in-out 0s;
+}
+
+.ability:hover .ability-button {
+  background-color: #ffffff07;
+}
+
+.ability-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.ability-name {
+  width: fill-parent-flow(1);
+  margin-left: 8px;
+  vertical-align: center;
+  text-overflow: shrink;
+  text-shadow: 2px 2px 0 1 #222;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: color 0.2s ease-in-out 0s;
+}
+
+.ability.quas .ability-name {
+  color: #88c5e9;
+}
+
+.ability.wex .ability-name {
+  color: #c284bf;
+}
+
+.ability.exort .ability-name {
+  color: #c69a25;
+}
+
+.ability.qwe .ability-name {
+  color: #aaa;
+}
+
+.ability:hover .ability-button .ability-name {
+  color: white;
+}

@@ -203,12 +203,21 @@
  * Masks
  ******************************************************************************/
 
-@define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
+@define bgVignetteMask: url("s2r://panorama/images/masks/bg_vignette_psd.vtex");
+@define brushHorizontalMask: url("s2r://panorama/images/masks/brush_horizontal_psd.vtex");
+@define fadeTopBottomMask: url("s2r://panorama/images/masks/fade_topbottom_psd.vtex");
+@define heroMovieBlurMask: url("s2r://panorama/images/masks/heromovie_blur_mask_psd.vtex");
+@define gradientBottomUpMask: url("s2r://panorama/images/masks/gradient_bottomup_png.vtex");
+@define gradientLeftRightMask: url("s2r://panorama/images/masks/gradient_leftright_png.vtex");
+@define gradientRightLeftMask: url("s2r://panorama/images/masks/gradient_rightleft_png.vtex");
+@define gradientTopDownMask: url("s2r://panorama/images/masks/gradient_topdown_png.vtex");
 @define softEdgeBoxIrregularMask: url("s2r://panorama/images/masks/softedge_box_irregular_png.vtex");
+@define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
 @define softEdgeCircleMask: url("s2r://panorama/images/masks/softedge_circle_png.vtex");
-@define softEdgeCircleSharpMask: url("s2r://panorama/images/masks/softedge_circle_sharp_png.vtex");
 @define softEdgeCircleSharperMask: url("s2r://panorama/images/masks/softedge_circle_sharper_png.vtex");
+@define softEdgeCircleSharpMask: url("s2r://panorama/images/masks/softedge_circle_sharp_png.vtex");
+@define softEdgeVerticalMask: url("s2r://panorama/images/masks/softedge_vertical_png.vtex");
+@define softEdgeVerticalSofterMask: url("s2r://panorama/images/masks/softedge_vertical_softer_png.vtex");
 @define softEdgeVScrollMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_psd.vtex");
 @define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
-@define brushHorizontalMask: url("s2r://panorama/images/masks/brush_horizontal_psd.vtex");
-@define heroMovieBlurMask: url("s2r://panorama/images/masks/heromovie_blur_mask_psd.vtex");
+@define textVignetteMask: url("s2r://panorama/images/masks/textvignette_psd.vtex");

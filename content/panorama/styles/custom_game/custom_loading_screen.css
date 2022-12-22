@@ -55,22 +55,22 @@
   width: 100%;
   align: center center;
   text-align: center;
-  letter-spacing: -2px;
-  text-transform: uppercase;
   text-overflow: shrink;
+  text-shadow: 2px 4px 4px #000;
+  text-transform: uppercase;
+  letter-spacing: -2px;
   font-family: titleFont;
   font-size: 80px;
   font-weight: semi-bold;
   color: #bbb6ae;
-  text-shadow: 2px 4px 4px #000;
 }
 
 #Scene {
   width: 100%;
   height: 100%;
   margin-left: -200px;
-  opacity: 0;
   transform: translateZ(-30px);
+  opacity: 0;
 }
 
 #Scene.SceneLoaded {
@@ -81,9 +81,11 @@
   0% {
     background-color: invokationSunGradient;
   }
+
   50% {
     background-color: invokationSunFadingGradient;
   }
+
   100% {
     background-color: invokationSunGradient;
   }

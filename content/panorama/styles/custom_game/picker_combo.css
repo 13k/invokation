@@ -127,10 +127,10 @@
   align: center center;
   text-align: center;
   text-overflow: shrink;
+  text-shadow: 0 0 3px 3.7 #ec780e24;
   font-size: 14px;
   font-weight: normal;
   color: #e7d291;
-  text-shadow: 0 0 3px 3.7 #ec780e24;
 }
 
 .PickerComboRoot .PickerComboRatings {

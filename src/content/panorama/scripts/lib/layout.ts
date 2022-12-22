@@ -16,6 +16,7 @@ namespace invk {
       ViewerComboStep = "viewer_combo_step",
       ViewerProperties = "viewer_properties",
       // UI
+      UIInvokerSpellCard = "ui/invoker_spell_card",
       UIItemPicker = "ui/item_picker",
       UITagSelect = "ui/tag_select",
       UITalentsDisplay = "ui/talents_display",

@@ -3,7 +3,7 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
 #Contents {
-  padding: 12px 12px 8px 12px;
+  padding: 12px 12px 8px;
   background-color: gradient(linear, 0% 0%, 0% 100%, from (#181b1d), to (#22292f));
 }
 
@@ -19,10 +19,10 @@
   margin-bottom: 4px;
   horizontal-align: center;
   vertical-align: top;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #e1e1e1;
   text-shadow: 0 0 4px 2 #000;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #e1e1e1;
 }
 
 #TooltipStatBranchContainer {
@@ -37,7 +37,7 @@
 .TooltipStatBranchRow .Branch {
   width: 50%;
   height: 45px;
-  padding: 8px 4px 0 4px;
+  padding: 8px 4px 0;
 }
 
 .TooltipStatBranchRow .Branch.BranchLeft {
@@ -66,16 +66,16 @@
   vertical-align: middle;
   text-align: center;
   text-overflow: clip;
+  text-shadow: 1px 1px 2px 2 #0006;
   font-size: 15px;
   line-height: 16px;
   color: #676e70;
-  text-shadow: 1px 1px 2px 2 #0006;
 }
 
 .TooltipStatBranchRow.BranchRightSelected .Branch.BranchRight .StatBonusLabel,
 .TooltipStatBranchRow.BranchLeftSelected .Branch.BranchLeft .StatBonusLabel {
-  color: #e7d291c8;
   text-shadow: 0 0 1px 1.3 #ec780e24;
+  color: #e7d291c8;
 }
 
 .TooltipStatBranchRow .CenterNode {
@@ -100,9 +100,9 @@
   margin-right: 1px;
   horizontal-align: center;
   text-align: center;
+  text-shadow: 0 0 3px 3.7 #ec780e24;
   font-family: monospaceNumbersFont;
   font-size: 20px;
   font-weight: normal;
   color: #e7d291;
-  text-shadow: 0 0 3px 3.7 #ec780e24;
 }

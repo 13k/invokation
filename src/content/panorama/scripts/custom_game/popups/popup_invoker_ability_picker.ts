@@ -17,28 +17,13 @@ namespace invk {
 
         const {
           CustomEvents: { Name: CustomEventName },
-          Dota2: { Invoker },
-          Panorama: { createAbilityImage },
-          Util: { pascalCase },
-          Vendor: { lodash: _ },
+          Layout: { ID: LayoutID },
         } = GameUI.CustomUIConfig().invk;
 
         const { ParamType } = Component;
 
-        enum PanelID {
-          AbilityImagePrefix = "PopupInvokerAbilityPicker",
-        }
-
-        enum CssClass {
-          Ability = "PopupInvokerAbilityPickerAbility",
-          AbilityHighlight = "Highlighted",
-        }
-
         const INVALID_CHANNEL = "<invalid>";
         const INVALID_ABILITY = "<invalid>";
-
-        const abilityImageID = (name: string): string =>
-          `${PanelID.AbilityImagePrefix}${pascalCase(name)}`;
 
         export class PopupInvokerAbilityPicker extends Component.Component<
           Elements,
@@ -46,7 +31,7 @@ namespace invk {
           Outputs,
           Params
         > {
-          abilityPanels: Record<string, AbilityImage> = {};
+          spellCard?: UI.InvokerSpellCard.InvokerSpellCard;
           selected: string = INVALID_ABILITY;
 
           constructor() {
@@ -76,43 +61,28 @@ namespace invk {
             this.render();
           }
 
-          onImageActivate(imagePanel: AbilityImage) {
-            this.debug("onImageActivate()", imagePanel.id);
-            this.select(imagePanel);
+          onSelect(payload: UI.InvokerSpellCard.Outputs["OnSelect"]) {
+            this.debug("onSelect()", payload);
+            this.select(payload.ability);
           }
 
           // ----- Helpers -----
 
-          select(imagePanel: AbilityImage) {
-            const highlighted = this.elements.abilities.FindChildrenWithClassTraverse(
-              CssClass.AbilityHighlight
-            );
-
-            _.each(highlighted, (panel) => panel.RemoveClass(CssClass.AbilityHighlight));
-
-            imagePanel.AddClass(CssClass.AbilityHighlight);
-
-            this.selected = imagePanel.abilityname;
-
+          select(ability: string) {
+            this.selected = ability;
             this.Submit();
           }
 
           render() {
-            _.each(Invoker.SPELL_ABILITIES, (ability) =>
-              this.createAbilityImage(this.elements.abilities, ability)
+            this.spellCard = this.create(
+              LayoutID.UIInvokerSpellCard,
+              "spell-card",
+              this.elements.abilities,
             );
 
+            this.spellCard.Output("OnSelect", this.onSelect.bind(this));
+
             this.debug("render()");
-          }
-
-          createAbilityImage(parent: Panel, abilityName: string) {
-            const abilityId = abilityImageID(abilityName);
-            const panel = createAbilityImage(parent, abilityId, abilityName);
-
-            panel.AddClass(CssClass.Ability);
-            panel.SetPanelEvent("onactivate", () => this.onImageActivate(panel));
-
-            this.abilityPanels[abilityName] = panel;
           }
 
           // ----- UI methods -----

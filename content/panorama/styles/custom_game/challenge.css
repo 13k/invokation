@@ -89,24 +89,24 @@
   margin-top: 70px;
   margin-left: -50px;
   text-align: center;
-  letter-spacing: 10px;
-  text-transform: uppercase;
   text-overflow: shrink;
+  text-shadow: 3px 3px 6px #04272c;
+  text-transform: uppercase;
+  letter-spacing: 10px;
   font-size: 48px;
   font-weight: black;
   font-style: italic;
   color: #bd42cf;
-  text-shadow: 3px 3px 6px #04272c;
 }
 
 #ChallengeSplash.success .ChallengeSplashTitle {
-  color: #42cf49;
   text-shadow: 3px 3px 6px #162c5a;
+  color: #42cf49;
 }
 
 #ChallengeSplash.failure .ChallengeSplashTitle {
-  color: #d44b21;
   text-shadow: 3px 3px 6px #474303;
+  color: #d44b21;
 }
 
 #ChallengeSplash .ChallengeSplashHelp {
@@ -114,8 +114,8 @@
   margin-left: 280px;
   horizontal-align: left;
   text-align: left;
-  color: #ccc;
   text-shadow: 1px 1px 2px #000;
+  color: #ccc;
 }
 
 .ChallengeControls {
@@ -302,7 +302,7 @@
   margin-top: 12px;
   text-align: center;
   text-overflow: shrink;
+  text-shadow: -1px 2px 1px 2 #333333b0;
   font-size: 26px;
   color: white;
-  text-shadow: -1px 2px 1px 2 #333333b0;
 }

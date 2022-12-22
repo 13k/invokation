@@ -31,7 +31,6 @@ namespace invk {
 
         const {
           CustomEvents: { Name: CustomEventName },
-          Vendor: { lodash: _ },
         } = GameUI.CustomUIConfig().invk;
 
         const { ParamType } = Component;

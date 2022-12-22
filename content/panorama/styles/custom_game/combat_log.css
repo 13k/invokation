@@ -27,10 +27,7 @@
   height: clHeight;
   align: center top;
   transform: translateY(0);
-  transition-delay: 0s;
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.25s;
-  transition-property: transform;
+  transition: transform 0.25s ease-in-out 0s;
 }
 
 .CombatLogRoot.Closed .CombatLog {
@@ -99,14 +96,14 @@
 .CombatLogTitle {
   horizontal-align: left;
   vertical-align: center;
-  letter-spacing: 2px;
-  text-transform: uppercase;
   text-overflow: shrink;
+  text-shadow: 1px 1px 0 3 #0006;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   font-family: defaultFont;
   font-size: 16px;
   font-weight: bold;
   color: white;
-  text-shadow: 1px 1px 0 3 #0006;
 }
 
 .CombatLogBarActions {

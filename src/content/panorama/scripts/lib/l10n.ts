@@ -52,21 +52,21 @@ namespace invk {
 
     export function comboKey<K extends keyof Combo.ComboL10n>(
       id: Combo.ID,
-      attr: K | Combo.StepID
+      attr: K | Combo.StepID,
     ): string {
       return pKey(KeyPrefix.Combo, id, _.snakeCase(_.toString(attr)));
     }
 
     export function comboPropKey<K extends keyof Combo.Properties>(
       prop: K,
-      value: Combo.Properties[K]
+      value: Combo.Properties[K],
     ): string {
       return pKey(KeyPrefix.ComboProperties, _.snakeCase(prop), _.toString(value));
     }
 
     export function l(
       k: string,
-      { fk, panel }: { fk?: string | undefined; panel?: Panel } = {}
+      { fk, panel }: { fk?: string | undefined; panel?: Panel | undefined } = {},
     ): string {
       const loc = (k: string) => (panel ? $.Localize(k, panel) : $.Localize(k));
 
@@ -89,21 +89,21 @@ namespace invk {
     export function comboAttrName<K extends keyof Combo.ComboL10n>(
       id: Combo.ID,
       attr: K | Combo.StepID,
-      fk?: string
+      fk?: string,
     ): string {
       return l(comboKey(id, attr), { fk });
     }
 
     export function comboPropValue<K extends keyof Combo.Properties>(
       prop: K,
-      value: Combo.Properties[K]
+      value: Combo.Properties[K],
     ): string {
       return l(comboPropKey(prop, value));
     }
 
     export function comboProp<K extends keyof Combo.Properties>(
       combo: Combo.Properties,
-      prop: K
+      prop: K,
     ): string {
       return comboPropValue(prop, combo[prop]);
     }
@@ -112,7 +112,7 @@ namespace invk {
       return _.transform(
         Property,
         (props, p) => (props[p] = comboProp(combo, p)),
-        {} as Combo.PropertiesL10n
+        {} as Combo.PropertiesL10n,
       );
     }
 
@@ -124,7 +124,7 @@ namespace invk {
       return l(shopCategoryKey(category));
     }
 
-    export function abilityTooltip(ability: string, panel: Panel): string {
+    export function abilityTooltip(ability: string, panel?: Panel): string {
       return l(abilityTooltipKey(ability), { panel });
     }
   }

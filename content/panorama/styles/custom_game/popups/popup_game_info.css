@@ -83,8 +83,8 @@
 
 .GameInfoMetaText {
   height: 18px;
-  letter-spacing: 2px;
   text-transform: uppercase;
+  letter-spacing: 2px;
   font-size: 18px;
   font-weight: normal;
   color: linkText;

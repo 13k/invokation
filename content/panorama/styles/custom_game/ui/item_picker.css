@@ -33,9 +33,9 @@ uiItemPickerWidth = 2 * (uiItemPickerGroupWidth + uiItemPickerGroupHMargin) + ui
 .UIItemPickerSelectionChoice {
   vertical-align: center;
   text-align: left;
-  letter-spacing: 2px;
-  text-transform: uppercase;
   text-overflow: shrink;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   font-size: 22px;
   color: #bfd2ee;
 }
@@ -96,8 +96,8 @@ uiItemPickerWidth = 2 * (uiItemPickerGroupWidth + uiItemPickerGroupHMargin) + ui
 .UIItemPickerGroupName,
 .UIItemPickerCategoryName {
   margin-bottom: 8px;
-  letter-spacing: 1px;
   text-transform: uppercase;
+  letter-spacing: 1px;
   font-size: 14px;
   font-weight: bold;
   color: white;

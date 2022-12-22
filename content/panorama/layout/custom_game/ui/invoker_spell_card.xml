@@ -1,0 +1,25 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/component.js" />
+    <include src="file://{resources}/scripts/custom_game/ui/invoker_spell_card.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/ui/invoker_spell_card.css" />
+  </styles>
+
+  <snippets>
+    <snippet name="ability">
+      <Panel class="ability" hittest="false">
+        <Button id="button" class="ability-button" hittest="true">
+          <DOTAAbilityImage id="icon" class="ability-icon" hittest="true" showtooltip="true" />
+          <Label class="ability-name" text="{s:ability_name}" hittest="false" />
+        </Button>
+      </Panel>
+    </snippet>
+  </snippets>
+
+  <Panel class="root">
+    <Panel id="rows" />
+  </Panel>
+</root>
