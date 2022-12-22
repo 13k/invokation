@@ -1,1 +1,2 @@
-src/content/panorama/scripts/lib/vendor/*
+/content/panorama/scripts/*
+/src/content/panorama/scripts/lib/vendor/*

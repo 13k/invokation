@@ -1,4 +1,13 @@
-endOfLine: "lf"
-printWidth: 100
-tabWidth: 2
-trailingComma: "es5"
+arrowParens: always
+bracketSameLine: false
+bracketSpacing: true
+editorconfig: true
+embeddedLanguageFormatting: auto
+htmlWhitespaceSensitivity: ignore
+quoteProps: consistent
+semi: true
+singleAttributePerLine: false
+singleQuote: false
+trailingComma: all
+xmlSelfClosingSpace: true
+xmlWhitespaceSensitivity: ignore
