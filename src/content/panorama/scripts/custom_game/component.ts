@@ -163,8 +163,8 @@ namespace invk {
         this.outputsCB = new Callbacks();
 
         this.setup();
+        this.unsubscribeSiblings();
         this.registerInputs(options.inputs);
-        this.unsubscribeAllSiblings();
         this.subscribeAll(options.customEvents);
         this.listenAll(options.uiEvents);
         this.setPanelEvents(options.panelEvents);
@@ -301,10 +301,10 @@ namespace invk {
         CustomEvents.unsubscribe(id);
       }
 
-      unsubscribeAllSiblings(): void {
+      unsubscribeSiblings(): void {
         const subscriptions = CustomEvents.unsubscribeAllSiblings(this.id);
 
-        this.debugFn(() => (subscriptions ? ["unsubscribeAll", subscriptions] : null));
+        this.debugFn(() => (!_.isEmpty(subscriptions) ? ["unsubscribeAll", subscriptions] : null));
       }
 
       sendServer<K extends keyof CustomGameEventDeclarations>(
@@ -521,7 +521,7 @@ namespace invk {
         listener: HandlerFn,
       ): void {
         event = this.uiEventName(event);
-        this.debug("registering element event listener", { event, element });
+
         $.RegisterEventHandler(event, element, listener);
       }
 

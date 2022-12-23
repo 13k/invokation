@@ -17,7 +17,7 @@ namespace invk {
     export function subscribe<K extends CustomEventName>(
       key: string,
       name: K,
-      listener: (event: Payload<K>) => void
+      listener: (event: Payload<K>) => void,
     ): GameEventListenerID {
       key = `${key}.${name}`;
 
@@ -43,7 +43,7 @@ namespace invk {
     }
 
     export function unsubscribeAllSiblings(
-      key: string
+      key: string,
     ): Record<string, GameEventListenerID[]> | undefined {
       const siblings = subscriptions.siblings(key);
 
@@ -52,25 +52,25 @@ namespace invk {
         (result, key) => {
           const ids = subscriptions.get(key);
 
-          if (ids) {
+          if (ids && !_.isEmpty(ids)) {
             unsubscribeAll(ids);
             result[key] = ids;
           }
         },
-        {} as Record<string, GameEventListenerID[]>
+        {} as Record<string, GameEventListenerID[]>,
       );
     }
 
     export function sendServer<K extends keyof CustomGameEventDeclarations>(
       name: K,
-      payload: GameEvents.InferCustomGameEventType<K, never>
+      payload: GameEvents.InferCustomGameEventType<K, never>,
     ): void {
       GameEvents.SendCustomGameEventToServer(name, payload);
     }
 
     export function sendAll<K extends keyof CustomGameEventDeclarations>(
       name: K,
-      payload: GameEvents.InferCustomGameEventType<K, never>
+      payload: GameEvents.InferCustomGameEventType<K, never>,
     ): void {
       GameEvents.SendCustomGameEventToAllClients(name, payload);
     }
@@ -78,14 +78,14 @@ namespace invk {
     export function sendPlayer<K extends keyof CustomGameEventDeclarations>(
       playerID: PlayerID,
       name: K,
-      payload: GameEvents.InferCustomGameEventType<K, never>
+      payload: GameEvents.InferCustomGameEventType<K, never>,
     ): void {
       GameEvents.SendCustomGameEventToClient(name, playerID, payload);
     }
 
     export function sendClientSide<K extends keyof GameEventDeclarations>(
       name: K,
-      payload: GameEventDeclarations[K]
+      payload: GameEventDeclarations[K],
     ): void {
       GameEvents.SendEventClientSide(name, payload);
     }
