@@ -35,7 +35,7 @@ namespace invk {
             elements: {
               scene: "Scene",
             },
-            elementEvents: {
+            uiEvents: {
               scene: {
                 SCENE_PANEL_LOADED: () => this.start(),
               },

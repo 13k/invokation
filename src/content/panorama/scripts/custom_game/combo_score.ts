@@ -125,7 +125,7 @@ namespace invk {
               counterFx: "ComboScoreCounterFX",
               summaryFx: "ComboScoreSummaryFX",
             },
-            elementEvents: {
+            uiEvents: {
               counterFx: {
                 SCENE_PANEL_LOADED: () => this.counterFxAmbientStart(),
               },
@@ -151,7 +151,7 @@ namespace invk {
 
         counterFxFire<K extends keyof typeof SHAKER_FX_ENTS.counter.level2>(
           key: K,
-          input: "Start" | "Stop"
+          input: "Start" | "Stop",
         ) {
           const event = SHAKER_FX_ENTS.counter.level2[key];
 
@@ -160,7 +160,7 @@ namespace invk {
 
         summaryFxFire<K extends keyof typeof SHAKER_FX_ENTS.summary.level2>(
           key: K,
-          input: "Start" | "Stop"
+          input: "Start" | "Stop",
         ) {
           const event = SHAKER_FX_ENTS.summary.level2[key];
 
@@ -258,7 +258,7 @@ namespace invk {
             _.forOwn(ops.data, (value, key) =>
               panelSeq.Function(() => {
                 panel.Data()[key as keyof PanelDigitData] = value;
-              })
+              }),
             );
 
             _.each(ops.removeClass, (cssClass) => panelSeq.RemoveClass(panel, cssClass));
@@ -277,7 +277,7 @@ namespace invk {
               interval: 0.1,
               callbacks: {},
             },
-            options
+            options,
           );
 
           const { id } = options.container;
@@ -286,7 +286,7 @@ namespace invk {
           const onEnd = options.callbacks?.onEnd;
 
           options.start = Math.ceil(
-            (options.start != null ? options.start : this.digitsValue(id)) || 0
+            (options.start != null ? options.start : this.digitsValue(id)) || 0,
           );
 
           options.end = Math.ceil(options.end);
@@ -309,7 +309,7 @@ namespace invk {
             (() => {
               const boundValue = Math.ceil(value);
               const updateSeq = new Sequence().Function(() =>
-                this.updateDigits(options.container, boundValue)
+                this.updateDigits(options.container, boundValue),
               );
 
               if (_.isFunction(onSpin)) {
@@ -466,7 +466,7 @@ namespace invk {
       const eachUpdateDigitsOperations = (
         container: Panel,
         value: number,
-        callback: (panel: PanelWithDigit, operations: DigitsOperations) => void
+        callback: (panel: PanelWithDigit, operations: DigitsOperations) => void,
       ) => {
         const panels = container.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithDigit[];
 

@@ -72,7 +72,7 @@ namespace invk {
       elements?: ElementsOption<E>;
       inputs?: InputsOption<I>;
       customEvents?: CustomEventsOption;
-      elementEvents?: UIEventsOption<E>;
+      uiEvents?: UIEventsOption<E>;
       panelEvents?: PanelEventsOption<E>;
       params?: ParamsOption<P>;
     }
@@ -164,7 +164,7 @@ namespace invk {
         this.registerInputs(options.inputs);
         this.unsubscribeAllSiblings();
         this.subscribeAll(options.customEvents);
-        this.listenAll(options.elementEvents);
+        this.listenAll(options.uiEvents);
         this.setPanelEvents(options.panelEvents);
       }
 
