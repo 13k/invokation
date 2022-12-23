@@ -1,7 +1,6 @@
 arrowParens: always
 bracketSameLine: false
 bracketSpacing: true
-editorconfig: true
 embeddedLanguageFormatting: auto
 htmlWhitespaceSensitivity: ignore
 quoteProps: consistent
