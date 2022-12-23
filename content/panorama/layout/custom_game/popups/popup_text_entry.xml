@@ -13,11 +13,32 @@
 
     <Panel class="PopupTextEntryBody" hittest="false">
       <Panel class="PopupTextEntryIconContainer" hittest="false">
-        <Image id="PopupTextEntryImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
-        <DOTAEconItem id="PopupTextEntryEconItemImage" class="PopupTextEntryIconImage DisableInspect" scaling="stretch-to-fit-y-preserve-aspect" />
-        <DOTAHeroImage id="PopupTextEntryHeroImage" class="PopupTextEntryIconImage" heroimagestyle="landscape" scaling="stretch-to-fit-y-preserve-aspect" />
-        <DOTAAbilityImage id="PopupTextEntryAbilityImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
-        <DOTAItemImage id="PopupTextEntryItemImage" class="PopupTextEntryIconImage" scaling="stretch-to-fit-y-preserve-aspect" />
+        <Image
+          id="PopupTextEntryImage"
+          class="PopupTextEntryIconImage"
+          scaling="stretch-to-fit-y-preserve-aspect"
+        />
+        <DOTAEconItem
+          id="PopupTextEntryEconItemImage"
+          class="PopupTextEntryIconImage DisableInspect"
+          scaling="stretch-to-fit-y-preserve-aspect"
+        />
+        <DOTAHeroImage
+          id="PopupTextEntryHeroImage"
+          class="PopupTextEntryIconImage"
+          heroimagestyle="landscape"
+          scaling="stretch-to-fit-y-preserve-aspect"
+        />
+        <DOTAAbilityImage
+          id="PopupTextEntryAbilityImage"
+          class="PopupTextEntryIconImage"
+          scaling="stretch-to-fit-y-preserve-aspect"
+        />
+        <DOTAItemImage
+          id="PopupTextEntryItemImage"
+          class="PopupTextEntryIconImage"
+          scaling="stretch-to-fit-y-preserve-aspect"
+        />
       </Panel>
 
       <Label class="PopupTextEntryBodyLabel" text="{s:body}" html="true" hittest="false" />

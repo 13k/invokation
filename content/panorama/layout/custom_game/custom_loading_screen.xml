@@ -10,12 +10,28 @@
   </styles>
 
   <Panel class="Root" hittest="false">
-    <DOTAScenePanel id="TitleFX" map="backgrounds/dashboard_parallax_plus" camera="camera" renderdeferred="false" particleonly="true" require-composition-layer="true" hittest="false" />
+    <DOTAScenePanel
+      id="TitleFX"
+      map="backgrounds/dashboard_parallax_plus"
+      camera="camera"
+      renderdeferred="false"
+      particleonly="true"
+      require-composition-layer="true"
+      hittest="false"
+    />
 
     <Panel class="TitlePanel" hittest="false">
       <Label class="Title" text="#addon_game_name" hittest="false" />
     </Panel>
 
-    <DOTAScenePanel id="Scene" map="custom_game/scenes/loading_screen" light="light" camera="camera" particleonly="false" require-composition-layer="true" hittest="false" />
+    <DOTAScenePanel
+      id="Scene"
+      map="custom_game/scenes/loading_screen"
+      light="light"
+      camera="camera"
+      particleonly="false"
+      require-composition-layer="true"
+      hittest="false"
+    />
   </Panel>
 </root>

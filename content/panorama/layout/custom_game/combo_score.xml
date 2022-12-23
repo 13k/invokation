@@ -12,7 +12,15 @@
   <Panel class="ComboScoreRoot" hittest="false" hittestchildren="false">
     <Panel class="ComboScoreCounter">
       <Panel class="ComboScoreSplashBackground">
-        <DOTAScenePanel id="ComboScoreCounterFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_ambient" require-composition-layer="true" />
+        <DOTAScenePanel
+          id="ComboScoreCounterFX"
+          camera="camera"
+          renderdeferred="false"
+          rendershadows="false"
+          particleonly="true"
+          map="scenes/hud/ui_es_arcana_combo_ambient"
+          require-composition-layer="true"
+        />
       </Panel>
 
       <Panel class="ComboScoreContent">
@@ -28,7 +36,15 @@
 
     <Panel class="ComboScoreSummary">
       <Panel class="ComboScoreSplashBackground">
-        <DOTAScenePanel id="ComboScoreSummaryFX" camera="camera" renderdeferred="false" rendershadows="false" particleonly="true" map="scenes/hud/ui_es_arcana_combo_summary" require-composition-layer="true" />
+        <DOTAScenePanel
+          id="ComboScoreSummaryFX"
+          camera="camera"
+          renderdeferred="false"
+          rendershadows="false"
+          particleonly="true"
+          map="scenes/hud/ui_es_arcana_combo_summary"
+          require-composition-layer="true"
+        />
       </Panel>
 
       <Panel class="ComboScoreContent">

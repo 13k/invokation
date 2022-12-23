@@ -25,7 +25,11 @@
 
           <Panel class="ViewerSection ViewerAbilitiesBuildSection" hittest="false">
             <Panel class="SectionHeader" hittest="false">
-              <Label class="SectionLabel" text="#invokation_viewer_abilities_build_title" hittest="false" />
+              <Label
+                class="SectionLabel"
+                text="#invokation_viewer_abilities_build_title"
+                hittest="false"
+              />
             </Panel>
 
             <Panel class="ViewerAbilitiesBuild" hittest="false">
@@ -34,17 +38,29 @@
               <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbQuas" abilityname="invoker_quas" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage
+                  id="ViewerOrbQuas"
+                  abilityname="invoker_quas"
+                  onmouseout="DOTAHideAbilityTooltip()"
+                />
                 <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbWex" abilityname="invoker_wex" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage
+                  id="ViewerOrbWex"
+                  abilityname="invoker_wex"
+                  onmouseout="DOTAHideAbilityTooltip()"
+                />
                 <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
-                <DOTAAbilityImage id="ViewerOrbExort" abilityname="invoker_exort" onmouseout="DOTAHideAbilityTooltip()" />
+                <DOTAAbilityImage
+                  id="ViewerOrbExort"
+                  abilityname="invoker_exort"
+                  onmouseout="DOTAHideAbilityTooltip()"
+                />
                 <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
               </Panel>
             </Panel>
@@ -52,10 +68,18 @@
 
           <Panel class="ViewerSection ViewerSequenceSection" hittest="false">
             <Panel class="SectionHeader" hittest="false">
-              <Label class="SectionLabel" text="#invokation_viewer_sequence_title" hittest="false" />
+              <Label
+                class="SectionLabel"
+                text="#invokation_viewer_sequence_title"
+                hittest="false"
+              />
             </Panel>
 
-            <Label class="SectionLabel" text="#invokation_viewer_sequence_disclaimer" hittest="false" />
+            <Label
+              class="SectionLabel"
+              text="#invokation_viewer_sequence_disclaimer"
+              hittest="false"
+            />
 
             <Panel id="ViewerSequence" hittest="false" />
           </Panel>

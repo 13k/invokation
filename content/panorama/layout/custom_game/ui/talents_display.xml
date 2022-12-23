@@ -12,7 +12,11 @@
     <Panel class="StatBranchContainer">
       <Panel id="StatBranchBGBranchWell" />
 
-      <Panel id="StatBranchGraphics" require-composition-layer="true" always-cache-composition-layer="true">
+      <Panel
+        id="StatBranchGraphics"
+        require-composition-layer="true"
+        always-cache-composition-layer="true"
+      >
         <Panel id="StatBranchChannel">
           <Panel id="StatPipContainer">
             <Panel id="StatRow25" class="StatBranchRow">

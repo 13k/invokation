@@ -10,35 +10,67 @@
 
   <Panel class="PickerComboRoot">
     <Panel class="PanelTitleContainer">
-      <Button class="FinishedIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)" onmouseout="UIHideTextTooltip()" />
+      <Button
+        class="FinishedIcon"
+        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)"
+        onmouseout="UIHideTextTooltip()"
+      />
       <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
     </Panel>
 
     <Panel class="PickerComboInfoContainer">
-      <Button class="PickerComboIcon HeroLevelIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)" onmouseout="UIHideTextTooltip()">
-        <Label id="PickerComboHeroLevelLabel" class="HeroLevelLabel MonoNumbersFont" hittest="false" />
+      <Button
+        class="PickerComboIcon HeroLevelIcon"
+        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)"
+        onmouseout="UIHideTextTooltip()"
+      >
+        <Label
+          id="PickerComboHeroLevelLabel"
+          class="HeroLevelLabel MonoNumbersFont"
+          hittest="false"
+        />
       </Button>
 
-      <Button id="BtnShowDetails" class="PickerComboIcon InfoIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)" onmouseout="UIHideTextTooltip()" />
-      <Button class="PickerComboIcon SpecialtyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)" onmouseout="UIHideTextTooltip()" />
-      <Button class="PickerComboIcon StanceIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)" onmouseout="UIHideTextTooltip()" />
+      <Button
+        id="BtnShowDetails"
+        class="PickerComboIcon InfoIcon"
+        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)"
+        onmouseout="UIHideTextTooltip()"
+      />
+      <Button
+        class="PickerComboIcon SpecialtyIcon"
+        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)"
+        onmouseout="UIHideTextTooltip()"
+      />
+      <Button
+        class="PickerComboIcon StanceIcon"
+        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)"
+        onmouseout="UIHideTextTooltip()"
+      />
 
       <Panel class="PickerComboRatings">
         <Panel class="LeftRightFlow">
-          <Button class="AttackDamageIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)" onmouseout="UIHideTextTooltip()" />
+          <Button
+            class="AttackDamageIcon"
+            onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)"
+            onmouseout="UIHideTextTooltip()"
+          />
           <Panel id="PickerComboDamageRating" class="Rating">
             <Panel class="RatingActive" />
           </Panel>
         </Panel>
 
         <Panel class="LeftRightFlow">
-          <Button class="DifficultyIcon" onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)" onmouseout="UIHideTextTooltip()" />
+          <Button
+            class="DifficultyIcon"
+            onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)"
+            onmouseout="UIHideTextTooltip()"
+          />
           <Panel id="PickerComboDifficultyRating" class="Rating">
             <Panel class="RatingActive" />
           </Panel>
         </Panel>
       </Panel>
-
     </Panel>
 
     <Button id="BtnPlay" class="PlayButton FlatButton">

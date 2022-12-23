@@ -17,10 +17,19 @@
         </Panel>
 
         <Panel class="PickerHeader">
-          <ToggleButton id="BtnToggleFilters" class="PickerFiltersButton ExpandCollapseToggleButton" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)" onmouseout="UIHideTextTooltip()" />
+          <ToggleButton
+            id="BtnToggleFilters"
+            class="PickerFiltersButton ExpandCollapseToggleButton"
+            onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)"
+            onmouseout="UIHideTextTooltip()"
+          />
 
           <Button id="BtnFreestyle" class="PickerFreestyleButton">
-            <Label class="PickerFreestyleLabel" text="#invokation_picker_freestyle_play" hittest="false" />
+            <Label
+              class="PickerFreestyleLabel"
+              text="#invokation_picker_freestyle_play"
+              hittest="false"
+            />
           </Button>
         </Panel>
 
@@ -30,51 +39,103 @@
           <Panel class="PickerFilters" hittest="false">
             <Panel class="PickerFiltersRow" hittest="false">
               <Panel class="LeftRightFlow">
-                <Label class="PickerFiltersLabel" text="#invokation_combo_properties__tags" hittest="false" />
-                <Button id="PickerFilterTagsResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)" onmouseout="UIHideTextTooltip()" />
+                <Label
+                  class="PickerFiltersLabel"
+                  text="#invokation_combo_properties__tags"
+                  hittest="false"
+                />
+                <Button
+                  id="PickerFilterTagsResetButton"
+                  class="PickerFilterResetButton CloseButton"
+                  disabled="true"
+                  onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)"
+                  onmouseout="UIHideTextTooltip()"
+                />
               </Panel>
               <Panel id="PickerFilterTagsContainer" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
-              <Label class="PickerFiltersLabel" text="#invokation_combo_properties__specialty" hittest="false" />
+              <Label
+                class="PickerFiltersLabel"
+                text="#invokation_combo_properties__specialty"
+                hittest="false"
+              />
               <DropDown id="PickerFilterSpecialty" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
-              <Label class="PickerFiltersLabel" text="#invokation_combo_properties__stance" hittest="false" />
+              <Label
+                class="PickerFiltersLabel"
+                text="#invokation_combo_properties__stance"
+                hittest="false"
+              />
               <DropDown id="PickerFilterStance" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
-              <Label class="PickerFiltersLabel" text="#invokation_combo_properties__damage_rating" hittest="false" />
+              <Label
+                class="PickerFiltersLabel"
+                text="#invokation_combo_properties__damage_rating"
+                hittest="false"
+              />
               <DropDown id="PickerFilterDamageRating" />
             </Panel>
 
             <Panel class="PickerFiltersRow" hittest="false">
-              <Label class="PickerFiltersLabel" text="#invokation_combo_properties__difficulty_rating" hittest="false" />
+              <Label
+                class="PickerFiltersLabel"
+                text="#invokation_combo_properties__difficulty_rating"
+                hittest="false"
+              />
               <DropDown id="PickerFilterDifficultyRating" />
             </Panel>
 
             <Panel class="PickerFiltersRow PopupPickersRow" hittest="false">
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
-                  <Label class="PopupPickerLabel" text="#invokation_picker_filter_item" hittest="false" />
-                  <Button id="PickerFilterItemResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Label
+                    class="PopupPickerLabel"
+                    text="#invokation_picker_filter_item"
+                    hittest="false"
+                  />
+                  <Button
+                    id="PickerFilterItemResetButton"
+                    class="PickerFilterResetButton CloseButton"
+                    disabled="true"
+                    onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)"
+                    onmouseout="UIHideTextTooltip()"
+                  />
                 </Panel>
 
-                <Button id="BtnShowItemFilter" class="PickerFilterItemButton PopupPickerButton ButtonBevel">
+                <Button
+                  id="BtnShowItemFilter"
+                  class="PickerFilterItemButton PopupPickerButton ButtonBevel"
+                >
                   <DOTAItemImage id="PickerFilterItemImage" />
                 </Button>
               </Panel>
 
               <Panel class="PopupPickerColumn">
                 <Panel class="LeftRightFlow">
-                  <Label class="PopupPickerLabel" text="#invokation_picker_filter_ability" hittest="false" />
-                  <Button id="PickerFilterAbilityResetButton" class="PickerFilterResetButton CloseButton" disabled="true" onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)" onmouseout="UIHideTextTooltip()" />
+                  <Label
+                    class="PopupPickerLabel"
+                    text="#invokation_picker_filter_ability"
+                    hittest="false"
+                  />
+                  <Button
+                    id="PickerFilterAbilityResetButton"
+                    class="PickerFilterResetButton CloseButton"
+                    disabled="true"
+                    onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)"
+                    onmouseout="UIHideTextTooltip()"
+                  />
                 </Panel>
 
-                <Button id="BtnShowAbilityFilter" class="PickerFilterAbilityButton PopupPickerButton ButtonBevel">
+                <Button
+                  id="BtnShowAbilityFilter"
+                  class="PickerFilterAbilityButton PopupPickerButton ButtonBevel"
+                >
                   <DOTAAbilityImage id="PickerFilterAbilityImage" />
                 </Button>
               </Panel>

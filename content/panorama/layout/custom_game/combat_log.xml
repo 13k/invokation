@@ -18,7 +18,12 @@
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
-          <ToggleButton id="CombatLogFilterInvocations" class="CombatLogBarItem Checkbox" text="#invokation_combat_log_filter_invocations" selected="true" />
+          <ToggleButton
+            id="CombatLogFilterInvocations"
+            class="CombatLogBarItem Checkbox"
+            text="#invokation_combat_log_filter_invocations"
+            selected="true"
+          />
 
           <Button id="BtnClear" class="CombatLogBarItem ClearButton BlueButton">
             <Label text="#invokation_combat_log_clear" hittest="false" />
