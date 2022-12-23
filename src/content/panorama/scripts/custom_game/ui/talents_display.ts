@@ -60,14 +60,18 @@ namespace invk {
                 statRow20: "StatRow20",
                 statRow25: "StatRow25",
               },
+              panelEvents: {
+                $: {
+                  onmouseover: () => this.ShowTooltip(),
+                  onmouseout: () => this.HideTooltip(),
+                },
+              },
               inputs: {
                 Select: (payload: Inputs["Select"]) => this.onSelect(payload),
                 Reset: (payload: Inputs["Reset"]) => this.onReset(payload),
               },
             });
 
-            this.setPanelEvent("onmouseover", () => this.ShowTooltip());
-            this.setPanelEvent("onmouseout", () => this.HideTooltip());
             this.debug("init");
           }
 
@@ -102,7 +106,7 @@ namespace invk {
                 isSelected(level, side, selected)
                   ? seq.AddClass(this.row(level), BranchRowClass[side])
                   : seq.RemoveClass(this.row(level), BranchRowClass[side]),
-              new ParallelSequence()
+              new ParallelSequence(),
             );
           }
 
@@ -110,7 +114,7 @@ namespace invk {
             return _.reduce(
               Object.entries(Side),
               (seq, [, side]) => seq.RemoveClass(this.row(level), BranchRowClass[side]),
-              new ParallelSequence()
+              new ParallelSequence(),
             );
           }
 

@@ -29,6 +29,9 @@ namespace invk {
                 btnOpenChangelog: "GameInfoOpenChangelog",
               },
               panelEvents: {
+                $: {
+                  oncancel: () => this.Close(),
+                },
                 btnClose: {
                   onactivate: () => this.Close(),
                 },
@@ -41,7 +44,6 @@ namespace invk {
               },
             });
 
-            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 
@@ -64,7 +66,7 @@ namespace invk {
             const seq = new ParallelSequence().SetAttribute(
               this.elements.versionLabel,
               "text",
-              META.VERSION
+              META.VERSION,
             );
 
             this.debugFn(() => ["render()", { actions: seq.size() }]);

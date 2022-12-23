@@ -84,14 +84,16 @@ namespace invk {
     export type OutputsOption<O extends Outputs> = { [K in keyof O]?: (payload: O[K]) => void };
     // TODO: parameterize payloads
     export type CustomEventsOption = { [K in keyof typeof CustomEventName]?: HandlerFn };
+
     // TODO: parameterize payloads
     export type UIEventsOption<E extends Elements> = {
-      [K in keyof E]?: {
+      [K in keyof E | "$"]?: {
         [K in keyof typeof Panorama.UIEvent]?: HandlerFn;
       };
     };
+
     export type PanelEventsOption<E extends Elements> = {
-      [K in keyof E]?: {
+      [K in keyof E | "$"]?: {
         [K in PanelEvent]?: HandlerFn;
       };
     };
@@ -386,9 +388,18 @@ namespace invk {
        ******************************/
 
       element(ref: string): Panel;
+      element(ref: "$"): this["panel"];
       element<K extends keyof E & string>(ref: K): E[K];
-      element<K extends keyof E & string>(ref: K | string): E[K] | Panel {
-        return _.startsWith(ref, "#") ? $.FindChildInContext(ref) : this.elements[ref];
+      element<K extends keyof E & string>(ref: K | "$" | string): E[K] | Panel {
+        if (ref === "$") {
+          return this.panel;
+        }
+
+        if (_.startsWith(ref, "#")) {
+          return $(ref);
+        }
+
+        return this.elements[ref];
       }
 
       // findElements({ name1: "elem1", name2: "Elmen2", ... })
@@ -522,10 +533,6 @@ namespace invk {
             this.listen(this.element(element), event as keyof typeof Panorama.UIEvent, listener);
           }
         }
-      }
-
-      setPanelEvent(event: PanelEvent, listener: HandlerFn): void {
-        this.panel.SetPanelEvent(event, listener);
       }
 
       setPanelEvents(options?: PanelEventsOption<E>): void {

@@ -75,6 +75,9 @@ namespace invk {
                 btnCancel: "PopupTextEntryCancel",
               },
               panelEvents: {
+                $: {
+                  oncancel: () => this.Close(),
+                },
                 textEntry: {
                   oninputsubmit: () => this.Submit(),
                 },
@@ -98,7 +101,6 @@ namespace invk {
               },
             });
 
-            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 

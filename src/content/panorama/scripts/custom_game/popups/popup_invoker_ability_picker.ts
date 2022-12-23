@@ -41,6 +41,9 @@ namespace invk {
                 btnClose: "PopupInvokerAbilityPickerClose",
               },
               panelEvents: {
+                $: {
+                  oncancel: () => this.Close(),
+                },
                 btnClose: {
                   onactivate: () => this.Close(),
                 },
@@ -50,7 +53,6 @@ namespace invk {
               },
             });
 
-            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 

@@ -45,6 +45,9 @@ namespace invk {
                 btnClose: "PopupItemPickerClose",
               },
               panelEvents: {
+                $: {
+                  oncancel: () => this.Close(),
+                },
                 btnClose: {
                   onactivate: () => this.Close(),
                 },
@@ -56,7 +59,6 @@ namespace invk {
 
             this.selected = INVALID_ITEM;
 
-            this.setPanelEvent("oncancel", () => this.Close());
             this.debug("init");
           }
 
@@ -81,7 +83,7 @@ namespace invk {
             this.itemPicker = this.create(
               Layout.ID.UIItemPicker,
               PanelID.ItemPicker,
-              this.elements.itemPickerContainer
+              this.elements.itemPickerContainer,
             );
 
             this.itemPicker.Outputs({
