@@ -4,8 +4,8 @@ namespace invk {
     export namespace UI {
       export namespace ItemPicker {
         export interface Elements extends Component.Elements {
+          table: Panel;
           search: LabelPanel;
-          groups: Panel;
         }
 
         export type Inputs = never;
@@ -19,216 +19,183 @@ namespace invk {
         export type Params = never;
 
         const {
-          CustomNetTables,
-          L10n,
           CustomEvents: { Name: CustomEventName },
-          Lua: { fromArrayDeep },
-          NetTable: { NetTable },
-          Panorama: { createItemImage, createPanelSnippet },
-          Sequence: { Sequence, ParallelSequence, NoopAction, EnableAction, DisableAction },
-          Util: { pascalCase },
+          Sequence: { Sequence, ParallelSequence },
           Vendor: { lodash: _ },
-          Dota2: {
-            Shop: { CATEGORIES },
-          },
         } = GameUI.CustomUIConfig().invk;
 
-        const GROUP_SNIPPET = "UIItemPickerGroup";
-        const GROUP_ID_PREFIX = "UIItemPickerGroup";
-        const GROUP_NAME_ATTR = "group_name";
-        const GROUP_CATEGORY_LIST_ID = "CategoryList";
+        enum PanelID {
+          SectionList = "ShopItemSectionItemList",
+        }
 
-        const CATEGORY_SNIPPET = "UIItemPickerCategory";
-        const CATEGORY_ID_PREFIX = "UIItemPickerCategory";
-        const CATEGORY_NAME_ATTR = "category_name";
-        const CATEGORY_ITEM_LIST_ID = "ItemList";
+        enum CssClass {
+          Section = "ShopItemSection",
+          TableEnableHighlight = "HighlightItemsMatchingName",
+          ItemHighlight = "Highlighted",
+        }
 
-        const ITEM_ID_PREFIX = "UIItemPicker";
-        const ITEM_CLASS = "UIItemPickerItem";
-        const ITEM_HIGHLIGHT_CLASS = "Highlighted";
+        interface ShopItemPanel {
+          panel: Panel;
+          itemImage: ItemImage;
+          itemName: string;
+        }
 
-        const elementId = (prefix: string, name: string) => `${prefix}${pascalCase(name)}`;
+        type ShopItemPanels = Record<string, ShopItemPanel>;
 
         export class ItemPicker extends Component.Component<Elements, Inputs, Outputs, Params> {
-          netTable: NetTable.NetTable<CustomNetTables.Name.Invokation>;
-          itemPanels: Record<string, ItemImage[]>;
-          shopItems?: Record<Dota2.Shop.Category, string[]>;
+          shopItems: ShopItemPanels;
 
           constructor() {
             super({
               elements: {
+                table: "GameItemTable",
                 search: "UIItemPickerSearchTextEntry",
-                groups: "UIItemPickerGroups",
               },
               customEvents: {
                 ITEM_PICKER_QUERY_RESPONSE: (payload) => this.onQueryResponse(payload),
               },
               panelEvents: {
                 search: {
-                  oninputsubmit: () => this.Search(),
+                  oncancel: () => this.clear(),
+                  oninputsubmit: () => this.search(),
                 },
               },
             });
 
-            this.netTable = new NetTable(CustomNetTables.Name.Invokation);
-            this.itemPanels = {};
+            this.shopItems = this.findShopItemPanels();
 
-            this.loadItems();
-            this.render();
+            this.bindEvents();
+            this.elements.search.SetFocus();
             this.debug("init");
           }
 
-          onImageActivate(imagePanel: ItemImage) {
-            this.debug("onImageActivate()", imagePanel.id);
-            this.select(imagePanel);
+          get query() {
+            return this.elements.search.text.toString();
           }
 
-          onQueryResponse(payload: CustomEvents.ItemPickerQueryResponse) {
-            const itemNames = _.keys(payload.items);
-
-            this.debug("onQueryResponse()", itemNames);
-            this.highlight(itemNames);
+          set query(value: string) {
+            this.elements.search.text = value;
           }
 
-          highlight(items: string[]) {
-            return new Sequence()
-              .Action(this.disableItemsAction())
-              .Action(this.enableItemsAction(items))
+          findShopItemPanels() {
+            const panels: Panel[] = [];
+
+            for (const section of this.elements.table.FindChildrenWithClassTraverse(
+              CssClass.Section,
+            )) {
+              const list = section.FindChildTraverse(PanelID.SectionList);
+
+              if (!list) {
+                continue;
+              }
+
+              panels.push(...list.Children());
+            }
+
+            return _.transform(
+              panels,
+              (result, panel) => {
+                const imagePanel = panel.FindChild("ItemImage");
+
+                if (!imagePanel) {
+                  throw new Error(`Could not find item image for shop item`);
+                }
+
+                const itemImage = imagePanel as ItemImage;
+                const itemName = itemImage.itemname;
+
+                result[itemImage.itemname] = {
+                  panel,
+                  itemImage,
+                  itemName,
+                };
+              },
+              {} as ShopItemPanels,
+            );
+          }
+
+          bindEvents() {
+            for (const shopItem of Object.values(this.shopItems)) {
+              shopItem.panel.SetPanelEvent("onactivate", () => {
+                this.select(shopItem.itemName);
+              });
+            }
+          }
+
+          select(item: string) {
+            this.runOutput("OnSelect", { item });
+          }
+
+          search() {
+            if (_.isEmpty(this.query)) {
+              return this.clear();
+            }
+
+            this.sendServer(CustomEventName.ITEM_PICKER_QUERY, { query: this.query });
+          }
+
+          clear() {
+            this.query = "";
+
+            new ParallelSequence()
+              .RemoveClass(this.elements.table, CssClass.TableEnableHighlight)
+              .Action(this.clearItemsAction())
               .Run();
           }
 
-          disableItemsAction() {
-            const actions = _.map(this.itemPanels, (_panel, item) => this.disableItemAction(item));
+          onQueryResponse(payload: CustomEvents.ItemPickerQueryResponse) {
+            const itemNames = Object.keys(payload.items);
+
+            this.debug("onQueryResponse()", itemNames);
+
+            const shopItems = itemNames.map((itemName) => {
+              const shopItem = this.shopItems[itemName];
+
+              if (!shopItem) {
+                this.warn(`Could not find shop item panel for item ${itemName}`);
+              }
+
+              return shopItem;
+            });
+
+            this.highlight(_.compact(shopItems));
+          }
+
+          highlight(shopItems: ShopItemPanel[]) {
+            const seq = new Sequence()
+              .AddClass(this.elements.table, CssClass.TableEnableHighlight)
+              .Action(this.clearItemsAction())
+              .Action(this.highlightItemsAction(shopItems));
+
+            this.debugFn(() => ["highlight()", { actions: seq.size() }]);
+
+            return seq.Run();
+          }
+
+          setItemAction(shopItem: ShopItemPanel, enable: boolean) {
+            const seq = new ParallelSequence();
+
+            if (enable) {
+              seq.AddClass(shopItem.panel, CssClass.ItemHighlight);
+            } else {
+              seq.RemoveClass(shopItem.panel, CssClass.ItemHighlight);
+            }
+
+            return seq;
+          }
+
+          setItemsAction(shopItems: ShopItemPanel[], enable: boolean) {
+            const actions = shopItems.map((shopItem) => this.setItemAction(shopItem, enable));
 
             return new ParallelSequence().Action(...actions);
           }
 
-          disableItemAction(item: string) {
-            const panels = this.itemPanels[item];
-
-            if (!panels) {
-              this.warn("Could not find panel for item", item);
-              return new NoopAction();
-            }
-
-            const actions = _.map(panels, (panel) => new DisableAction(panel));
-
-            return new ParallelSequence().Action(...actions);
+          clearItemsAction() {
+            return this.setItemsAction(Object.values(this.shopItems), false);
           }
 
-          enableItemsAction(items: string[]) {
-            const actions = _.map(items, (item) => this.enableItemAction(item));
-
-            return new ParallelSequence().Action(...actions);
-          }
-
-          enableItemAction(item: string) {
-            const panels = this.itemPanels[item];
-
-            if (!panels) {
-              this.warn("Could not find panel for item", item);
-              return new NoopAction();
-            }
-
-            const actions = _.map(panels, (panel) => new EnableAction(panel));
-
-            return new ParallelSequence().Action(...actions);
-          }
-
-          loadItems() {
-            this.shopItems = fromArrayDeep(
-              this.netTable.get(CustomNetTables.Invokation.Key.ShopItems)
-            );
-
-            this.debug("loadItems()", this.shopItems);
-          }
-
-          select(imagePanel: ItemImage) {
-            const highlighted =
-              this.elements.groups.FindChildrenWithClassTraverse(ITEM_HIGHLIGHT_CLASS);
-
-            _.each(highlighted, (panel) => panel.RemoveClass(ITEM_HIGHLIGHT_CLASS));
-
-            imagePanel.AddClass(ITEM_HIGHLIGHT_CLASS);
-
-            this.runOutput("OnSelect", { item: imagePanel.itemname });
-          }
-
-          search(query: string) {
-            if (_.isEmpty(query)) {
-              this.enableItemsAction(_.keys(this.itemPanels)).Run();
-              return;
-            }
-
-            this.sendServer(CustomEventName.ITEM_PICKER_QUERY, { query: query });
-          }
-
-          render() {
-            if (!this.shopItems) return;
-
-            this.elements.search.SetFocus();
-
-            for (const [group, categories] of Object.entries(CATEGORIES)) {
-              this.createGroup(this.elements.groups, group as Dota2.Shop.CategoryGroup, categories);
-            }
-          }
-
-          createGroup(
-            parent: Panel,
-            group: Dota2.Shop.CategoryGroup,
-            categories: Dota2.Shop.Category[]
-          ) {
-            if (!this.shopItems) return;
-
-            const groupId = elementId(GROUP_ID_PREFIX, group);
-            const panel = createPanelSnippet(parent, groupId, GROUP_SNIPPET);
-            const categoriesPanel = panel.FindChild(GROUP_CATEGORY_LIST_ID);
-
-            if (!categoriesPanel) {
-              this.warn("Could not find categories panel for group", group);
-              return;
-            }
-
-            panel.SetDialogVariable(GROUP_NAME_ATTR, L10n.shopGroup(group));
-
-            for (const category of categories) {
-              this.createCategory(categoriesPanel, category);
-            }
-          }
-
-          createCategory(parent: Panel, category: Dota2.Shop.Category) {
-            if (!this.shopItems) return;
-
-            const items = this.shopItems[category];
-            const categoryId = elementId(CATEGORY_ID_PREFIX, category);
-            const panel = createPanelSnippet(parent, categoryId, CATEGORY_SNIPPET);
-            const itemsPanel = panel.FindChild(CATEGORY_ITEM_LIST_ID);
-
-            if (!itemsPanel) {
-              this.warn("Could not find items panel for category", category);
-              return;
-            }
-
-            panel.SetDialogVariable(CATEGORY_NAME_ATTR, L10n.shopCategory(category));
-
-            for (const item of items) {
-              this.createItemImage(itemsPanel, item);
-            }
-          }
-
-          createItemImage(parent: Panel, item: string) {
-            const itemId = elementId(ITEM_ID_PREFIX, item);
-            const panel = createItemImage(parent, itemId, item);
-
-            panel.AddClass(ITEM_CLASS);
-            panel.SetPanelEvent("onactivate", () => this.onImageActivate(panel));
-
-            (this.itemPanels[item] || (this.itemPanels[item] = [])).push(panel);
-          }
-
-          Search() {
-            this.debug("Search()", this.elements.search.text.toString());
-            this.search(this.elements.search.text);
+          highlightItemsAction(shopItems: ShopItemPanel[]) {
+            return this.setItemsAction(shopItems, true);
           }
         }
 

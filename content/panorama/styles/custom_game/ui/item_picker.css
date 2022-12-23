@@ -1,26 +1,10 @@
 @import url("s2r://panorama/styles/dotastyles.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
-/*
-uiItemPickerCategoryWidth = 4 * (uiItemPickerItemWidth + uiItemPickerItemHMargin + 2)
-uiItemPickerGroupWidth = 2 * (uiItemPickerCategoryWidth + uiItemPickerCategoryHMargin) + 20
-uiItemPickerWidth = 2 * (uiItemPickerGroupWidth + uiItemPickerGroupHMargin) + uiItemPickerGroupsPadding.right + uiItemPickerGroupsPadding.left
-*/
-
-@define uiItemPickerWidth: 1032px;
-@define uiItemPickerHeight: 850px;
-@define uiItemPickerGroupsPadding: 16px 8px 0 8px;
-@define uiItemPickerGroupWidth: 500px;
-@define uiItemPickerGroupHMargin: 8px;
-@define uiItemPickerCategoryWidth: 232px;
-@define uiItemPickerCategoryHMargin: 8px;
-@define uiItemPickerItemWidth: 50px;
-@define uiItemPickerItemHMargin: 6px;
-
 .UIItemPickerRoot {
   flow-children: down;
-  width: uiItemPickerWidth;
-  height: uiItemPickerHeight;
+  width: 1032px;
+  height: 820px;
 }
 
 .UIItemPickerHeader {
@@ -78,75 +62,7 @@ uiItemPickerWidth = 2 * (uiItemPickerGroupWidth + uiItemPickerGroupHMargin) + ui
   wash-color: #fff;
 }
 
-#UIItemPickerGroups {
-  overflow: squish scroll;
-  flow-children: right;
-  width: 100%;
-  height: fill-parent-flow(1);
-  padding: uiItemPickerGroupsPadding;
-}
-
-.UIItemPickerGroupName {
-  width: 100%;
-  padding-bottom: 8px;
-  text-align: center;
-  border-bottom: 1px solid #444;
-}
-
-.UIItemPickerGroupName,
-.UIItemPickerCategoryName {
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-}
-
-.UIItemPickerGroup {
-  flow-children: down;
-  width: uiItemPickerGroupWidth;
-  margin-left: uiItemPickerGroupHMargin;
-}
-
-.UIItemPickerGroupCategories {
-  flow-children: right-wrap;
-  width: 100%;
+#GameItemTable {
   margin-top: 16px;
   horizontal-align: center;
-}
-
-.UIItemPickerCategory {
-  flow-children: down;
-  width: uiItemPickerCategoryWidth;
-  margin-bottom: 8px;
-  margin-left: uiItemPickerCategoryHMargin;
-}
-
-.UIItemPickerCategoryItems {
-  flow-children: right-wrap;
-  width: 100%;
-}
-
-.UIItemPickerCategoryItems .UIItemPickerItem {
-  width: uiItemPickerItemWidth;
-  height: width-percentage(72.7%);
-  margin-right: uiItemPickerItemHMargin;
-  margin-bottom: 6px;
-  box-shadow: #6ad4 0 0 1px 1px;
-}
-
-.UIItemPickerCategoryItems .UIItemPickerItem:disabled {
-  opacity: 0.2;
-  saturation: 0;
-}
-
-.UIItemPickerCategoryItems .UIItemPickerItem:enabled:hover {
-  brightness: 2;
-  contrast: 0.95;
-  saturation: 1;
-}
-
-.UIItemPickerCategoryItems .UIItemPickerItem.Highlighted {
-  box-shadow: 0 0 8px aqua;
 }
