@@ -1,6 +1,5 @@
 <root>
   <scripts>
-    <!-- vendor -->
     <include src="file://{resources}/scripts/lib.js" />
     <include src="file://{resources}/scripts/custom_game/component.js" />
     <include src="file://{resources}/scripts/custom_game/custom_ui_manifest.js" />
