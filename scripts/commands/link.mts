@@ -28,6 +28,8 @@ interface Link {
 
 const POWERSHELL_BIN = "pwsh.exe";
 
+const GAME_SRCS = ["resource", "scripts", "addoninfo.txt"];
+
 export default class LinkCommand extends BaseCommand<Options> {
   static subcommand(parent: Command, configOptions: ConfigOptions) {
     const command = parent
@@ -51,18 +53,28 @@ export default class LinkCommand extends BaseCommand<Options> {
       .field("dest", dota2.path)
       .debug(":link: base directories");
 
-    const links = this.findLinks();
+    const links = await this.findLinks();
 
     await asyncEach(links, async (link) => await this.mklink(link));
   }
 
-  findLinks() {
+  async findLinks() {
+    return [...(await this.contentLinks()), ...(await this.gameLinks())];
+  }
+
+  async contentLinks() {
     const { sources, customGame } = this.config;
 
-    return [
-      { src: sources.contentPath, dest: customGame.contentPath },
-      { src: sources.gamePath, dest: customGame.gamePath },
-    ];
+    return [{ src: sources.contentPath, dest: customGame.contentPath }];
+  }
+
+  async gameLinks() {
+    const { sources, customGame } = this.config;
+
+    return GAME_SRCS.map((relPath) => ({
+      src: path.join(sources.gamePath, relPath),
+      dest: path.join(customGame.gamePath, relPath),
+    }));
   }
 
   async mklink(link: Link) {

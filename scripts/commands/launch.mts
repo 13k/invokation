@@ -25,6 +25,7 @@ const COMMON_LAUNCH_OPTIONS = [
   "-condebug",
   "-toconsole",
   "-vconsole",
+  "-steam",
 ];
 
 const NOBREAKPAD_OPTIONS = NOBREAKPAD_APPIDS.flatMap((appID) => ["-nobreakpad", appID.toString()]);
@@ -48,11 +49,11 @@ export default class LaunchCommand extends BaseCommand<Options> {
         `-m, --map <map>`,
         `Map name for '${Tool.Game}' tool (choices: ${mapChoices})`,
         parseMap(PACKAGE.dota2.customGame.maps),
-        defaultMap
+        defaultMap,
       )
       .action(
         async (tool: Tool, toolArgs: string[]) =>
-          await new LaunchCommand(tool, toolArgs, command.opts(), configOptions).run()
+          await new LaunchCommand(tool, toolArgs, command.opts(), configOptions).run(),
       );
   }
 
