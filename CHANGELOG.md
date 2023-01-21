@@ -9,6 +9,26 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 Latest commits not yet released.
 
+## [0.5.0] - 2023-01-21
+
+### Gameplay
+
+- Fixed game not working properly after Valve's V8 update (#34)
+
+### UI
+
+- Changed item filter to use built-in item list
+- Improved ability filter
+- Minor improvement to popups
+- Minor improvement to combo viewer
+
+### Development
+
+- Use npm instead of yarn
+- Rewrite of panorama scripts in typescript
+- Rewrite of build scripts in typescript
+- Updated build tasks to use typescript compiler to create javascript bundles used in panorama layouts
+
 ## [0.4.7] - 2022-11-20
 
 ### Gameplay
@@ -119,7 +139,6 @@ Initial open beta release.
 
 Initial closed beta release.
 
-[unreleased]: https://github.com/13k/invokation/compare/v0.4.7...HEAD
 [0.1.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.1.0-beta1
 [0.2.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.2.0-beta1
 [0.3.0-beta1]: https://github.com/13k/invokation/releases/tag/v0.3.0-beta1
@@ -131,5 +150,7 @@ Initial closed beta release.
 [0.4.5-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.5-beta1
 [0.4.6-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.6-beta1
 [0.4.7]: https://github.com/13k/invokation/releases/tag/v0.4.7
+[0.5.0]: https://github.com/13k/invokation/releases/tag/v0.5.0
+[unreleased]: https://github.com/13k/invokation/compare/v0.5.0...HEAD
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
