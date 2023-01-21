@@ -296,6 +296,8 @@ globals:
     property: read-only
   ACT_DOTA_ANCESTRAL_SPIRIT:
     property: read-only
+  ACT_DOTA_ARCANA_VOTE:
+    property: read-only
   ACT_DOTA_ARCTIC_BURN_END:
     property: read-only
   ACT_DOTA_AREA_DENY:
@@ -429,6 +431,8 @@ globals:
   ACT_DOTA_CAST_LIFE_BREAK_START:
     property: read-only
   ACT_DOTA_CAST_REFRACTION:
+    property: read-only
+  ACT_DOTA_CAST_STATUE:
     property: read-only
   ACT_DOTA_CAST_SUN_STRIKE:
     property: read-only
@@ -634,6 +638,8 @@ globals:
     property: read-only
   ACT_DOTA_MK_STRIKE:
     property: read-only
+  ACT_DOTA_MK_STRIKE_END:
+    property: read-only
   ACT_DOTA_MK_TREE_END:
     property: read-only
   ACT_DOTA_MK_TREE_SOAR:
@@ -678,6 +684,8 @@ globals:
     property: read-only
   ACT_DOTA_PRESENT_ITEM:
     property: read-only
+  ACT_DOTA_PUNCH:
+    property: read-only
   ACT_DOTA_RADIANT_CREEP_HAMMER:
     property: read-only
   ACT_DOTA_RATTLETRAP_BATTERYASSAULT:
@@ -716,6 +724,8 @@ globals:
     property: read-only
   ACT_DOTA_RUN_ALT:
     property: read-only
+  ACT_DOTA_RUN_RARE:
+    property: read-only
   ACT_DOTA_RUN_STATUE:
     property: read-only
   ACT_DOTA_SAND_KING_BURROW_IN:
@@ -752,11 +762,15 @@ globals:
     property: read-only
   ACT_DOTA_SPIRIT_BREAKER_CHARGE_POSE:
     property: read-only
+  ACT_DOTA_SPIRIT_BREAKER_ULT_RUN:
+    property: read-only
   ACT_DOTA_SPWN:
     property: read-only
   ACT_DOTA_STARTLE:
     property: read-only
   ACT_DOTA_STATIC_STORM:
+    property: read-only
+  ACT_DOTA_STATUE_SEQUENCE:
     property: read-only
   ACT_DOTA_STUN_STATUE:
     property: read-only
@@ -785,6 +799,8 @@ globals:
   ACT_DOTA_TELEPORT_END:
     property: read-only
   ACT_DOTA_TELEPORT_END_REACT:
+    property: read-only
+  ACT_DOTA_TELEPORT_END_STATUE:
     property: read-only
   ACT_DOTA_TELEPORT_REACT:
     property: read-only
@@ -821,6 +837,12 @@ globals:
   ACT_DOTA_VICTORY:
     property: read-only
   ACT_DOTA_VICTORY_START:
+    property: read-only
+  ACT_DOTA_VICTORY_STATUE:
+    property: read-only
+  ACT_DOTA_VIPER_DIVE:
+    property: read-only
+  ACT_DOTA_VIPER_DIVE_END:
     property: read-only
   ACT_DOTA_VOODOO_REST:
     property: read-only
@@ -2718,6 +2740,8 @@ globals:
     property: read-only
   AE_DOTA_PET_ITEM_PICKUP:
     property: read-only
+  AE_DOTA_PLAY_SOUND_ATTACK:
+    property: read-only
   AE_DOTA_PLAY_SOUND_ATTACK_BACKSTAB:
     property: read-only
   AE_DOTA_PLAY_SOUND_ATTACK_SPECIAL:
@@ -2733,14 +2757,6 @@ globals:
   AE_FOOTSTEP:
     property: read-only
   AE_HAPTIC_PULSE:
-    property: read-only
-  AE_IK_ALLOW_PLANE_TILT_NORMAL_UPDATES:
-    property: read-only
-  AE_IK_SET_CHAIN_BLEND_AMOUNT:
-    property: read-only
-  AE_IK_SET_LOCK_ROTATION_ALPHA:
-    property: read-only
-  AE_IK_SET_MASTER_BLEND_AMOUNT:
     property: read-only
   AE_MUZZLEFLASH:
     property: read-only
@@ -2812,48 +2828,6 @@ globals:
         observes: read
       - type: number
         observes: read
-  CDOTABaseAbility:
-    args:
-      - required: false
-        type: table
-  CDOTA_Item:
-    args:
-      - required: false
-        type: table
-  CDOTAPlayer:
-    args:
-      - required: false
-        type: table
-  CDOTA_BaseNPC_Hero:
-    args:
-      - required: false
-        type: table
-      - required: false
-        type: table
-  CDOTA_BaseNPC:
-    args:
-      - required: false
-        type: table
-  CBaseEntity:
-    args:
-      - required: false
-        type: table
-  CDOTABaseGameMode:
-    args:
-      - required: false
-        type: table
-  CBaseAnimating:
-    args:
-      - required: false
-        type: table
-  CBasePlayer:
-    args:
-      - required: false
-        type: table
-  CBaseFlex:
-    args:
-      - required: false
-        type: table
   CalcClosestPointOnEntityOBB:
     args:
       - type:
@@ -3606,11 +3580,15 @@ globals:
     property: read-only
   DOTA_DEFAULT_UI_ENDGAME_CHAT:
     property: read-only
+  DOTA_DEFAULT_UI_FIGHT_RECAP:
+    property: read-only
   DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD:
     property: read-only
   DOTA_DEFAULT_UI_HERO_SELECTION_CLOCK:
     property: read-only
   DOTA_DEFAULT_UI_HERO_SELECTION_GAME_NAME:
+    property: read-only
+  DOTA_DEFAULT_UI_HERO_SELECTION_HEADER:
     property: read-only
   DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS:
     property: read-only
@@ -3684,7 +3662,25 @@ globals:
     property: read-only
   DOTA_GC_TEAM_BROADCASTER:
     property: read-only
+  DOTA_GC_TEAM_CUSTOM_1:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_2:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_3:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_4:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_5:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_6:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_7:
+    property: read-only
+  DOTA_GC_TEAM_CUSTOM_8:
+    property: read-only
   DOTA_GC_TEAM_GOOD_GUYS:
+    property: read-only
+  DOTA_GC_TEAM_NEUTRALS:
     property: read-only
   DOTA_GC_TEAM_NOTEAM:
     property: read-only
@@ -3832,9 +3828,13 @@ globals:
     property: read-only
   DOTA_HUD_VISIBILITY_ENDGAME_CHAT:
     property: read-only
+  DOTA_HUD_VISIBILITY_FIGHT_RECAP:
+    property: read-only
   DOTA_HUD_VISIBILITY_HERO_SELECTION_CLOCK:
     property: read-only
   DOTA_HUD_VISIBILITY_HERO_SELECTION_GAME_NAME:
+    property: read-only
+  DOTA_HUD_VISIBILITY_HERO_SELECTION_HEADER:
     property: read-only
   DOTA_HUD_VISIBILITY_HERO_SELECTION_TEAMS:
     property: read-only
@@ -3957,6 +3957,24 @@ globals:
   DOTA_LOADOUT_TYPE_ABILITY_ATTACK:
     property: read-only
   DOTA_LOADOUT_TYPE_ABILITY_ATTACK_PERSONA_1:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_1:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_2:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_3:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_4:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_5:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_6:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_7:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_8:
+    property: read-only
+  DOTA_LOADOUT_TYPE_ABILITY_EFFECTS_9:
     property: read-only
   DOTA_LOADOUT_TYPE_ABILITY_ULTIMATE:
     property: read-only
@@ -4241,6 +4259,34 @@ globals:
   DOTA_PLAYER_LOADOUT_END:
     property: read-only
   DOTA_PLAYER_LOADOUT_START:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_ASSISTS:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_DAMAGE:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_DEATHS:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_DENIES:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_HEALING:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_ITEMS:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_KILLS:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_LAST_HITS:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_LEVEL:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_MAX:
+    property: read-only
+  DOTA_POST_GAME_COLUMN_NET_WORTH:
+    property: read-only
+  DOTA_POST_GAME_LAYOUT_DOUBLE_COLUMN:
+    property: read-only
+  DOTA_POST_GAME_LAYOUT_MAX:
+    property: read-only
+  DOTA_POST_GAME_LAYOUT_SINGLE_COLUMN:
     property: read-only
   DOTA_PROJECTILE_ATTACHMENT_ATTACK_1:
     property: read-only
@@ -5708,6 +5754,12 @@ globals:
   GameRules.IsNightstalkerNight:
     args: []
     method: true
+  GameRules.IsSuggestAbilitiesEnabled:
+    args: []
+    method: true
+  GameRules.IsSuggestItemsEnabled:
+    args: []
+    method: true
   GameRules.IsTemporaryNight:
     args: []
     method: true
@@ -5788,6 +5840,11 @@ globals:
     method: true
   GameRules.ResetGameTime:
     args: []
+    method: true
+  GameRules.ResetPlayer:
+    args:
+      - type: number
+        observes: read
     method: true
   GameRules.ResetToCustomGameSetup:
     args: []
@@ -6035,6 +6092,23 @@ globals:
       - type: number
         observes: read
     method: true
+  GameRules.SetPostGameColumns:
+    args:
+      - type:
+          display: handle
+        observes: read
+    method: true
+  GameRules.SetPostGameLayout:
+    args:
+      - type: number
+        observes: read
+    method: true
+  GameRules.SetPostGameTeamScores:
+    args:
+      - type:
+          display: handle
+        observes: read
+    method: true
   GameRules.SetPostGameTime:
     args:
       - type: number
@@ -6090,6 +6164,16 @@ globals:
   GameRules.SetStrategyTime:
     args:
       - type: number
+        observes: read
+    method: true
+  GameRules.SetSuggestAbilitiesEnabled:
+    args:
+      - type: bool
+        observes: read
+    method: true
+  GameRules.SetSuggestItemsEnabled:
+    args:
+      - type: bool
         observes: read
     method: true
   GameRules.SetTimeOfDay:
@@ -6793,6 +6877,8 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_EXTRA_MANA_BONUS:
     property: read-only
+  MODIFIER_PROPERTY_EXTRA_MANA_BONUS_PERCENTAGE:
+    property: read-only
   MODIFIER_PROPERTY_EXTRA_MANA_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_EXTRA_STRENGTH_BONUS:
@@ -7005,6 +7091,8 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION:
     property: read-only
+  MODIFIER_PROPERTY_RAT_PACK:
+    property: read-only
   MODIFIER_PROPERTY_REFLECT_SPELL:
     property: read-only
   MODIFIER_PROPERTY_REINCARNATION:
@@ -7024,6 +7112,8 @@ globals:
   MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE:
     property: read-only
   MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET:
     property: read-only
   MODIFIER_PROPERTY_STATS_AGILITY_BONUS:
     property: read-only
@@ -7070,6 +7160,8 @@ globals:
   MODIFIER_PROPERTY_TRANSLATE_ATTACK_SOUND:
     property: read-only
   MODIFIER_PROPERTY_TRIGGER_COSMETIC_AND_END_ATTACK:
+    property: read-only
+  MODIFIER_PROPERTY_TURN_RATE_CONSTANT:
     property: read-only
   MODIFIER_PROPERTY_TURN_RATE_OVERRIDE:
     property: read-only
@@ -7579,6 +7671,12 @@ globals:
         observes: read
     method: true
   PlayerResource.ClearLastHitStreak:
+    args:
+      - type:
+          display: PlayerID
+        observes: read
+    method: true
+  PlayerResource.ClearPlayer:
     args:
       - type:
           display: PlayerID
@@ -9531,11 +9629,6 @@ globals:
     args:
       - type: number
         observes: read
-  Vector:
-    args:
-      - type: number
-      - type: number
-      - type: number
   VectorAngles:
     args:
       - type:
@@ -9659,7 +9752,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -9701,7 +9794,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -9722,7 +9815,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -9747,7 +9840,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -9855,7 +9948,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -10125,7 +10218,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: number
         observes: read
@@ -10217,7 +10310,7 @@ globals:
           display: Vector
         observes: read
       - type:
-          display: Quaternion
+          display: unknown
         observes: read
       - type: string
         observes: read

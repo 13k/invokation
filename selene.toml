@@ -1,4 +1,4 @@
-std = "selene-busted+selene-dota2+selene-dota2-custom_game"
+std = ".selene/busted+.selene/dota2+.selene/dota2-custom-game"
 exclude = [
   ".luarocks/**",
   "lua_modules/**",
