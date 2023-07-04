@@ -1,9 +1,17 @@
 {
-  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-  "diagnostics.enable": false,
+  "$schema": "https://github.com/LuaLS/vscode-lua/raw/master/setting/schema.json",
   "runtime.version": "LuaJIT",
-  "runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/init.lua"],
-  "workspace.ignoreDir": [".luarocks", "config.ld", "lua_modules", "*.rockspec"],
+  "runtime.pathStrict": true,
+  "runtime.path": [
+    "game/scripts/vscripts/?.lua",
+    "game/scripts/vscripts/?/init.lua"
+  ],
+  "workspace.ignoreDir": [
+    ".luarocks",
+    "config.ld",
+    "lua_modules",
+    "*.rockspec"
+  ],
   "workspace.library": [
     "game/scripts/vscripts/pl",
     "game/scripts/vscripts/fsm.lua",
