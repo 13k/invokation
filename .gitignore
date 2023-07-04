@@ -9,6 +9,7 @@
 /lua_modules
 /luarocks
 # javascript/typescript
+/.node-version
 /node_modules
 # game
 /content/panorama/scripts/*
