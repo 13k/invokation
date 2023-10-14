@@ -1,6 +1,4 @@
-@import url("s2r://panorama/styles/dotastyles.css");
 @import url("s2r://panorama/styles/dashboard_page_shared.css");
-@import url("s2r://panorama/styles/dashboard_page_hero_new.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
 .Root {
