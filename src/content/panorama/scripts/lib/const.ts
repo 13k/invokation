@@ -2,7 +2,7 @@
 namespace invk {
   export namespace Const {
     export const META = {
-      VERSION: "v0.5.0",
+      VERSION: "v0.5.1",
       URL: "https://github.com/13k/invokation",
       CHANGELOG_URL: "https://github.com/13k/invokation/blob/main/CHANGELOG.md",
     };
