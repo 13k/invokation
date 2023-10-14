@@ -86,6 +86,8 @@ make build
   git push --follow-tags
   ```
 
+- Create release on GitHub (https://github.com/13k/invokation/tags)
+
 - Publish release to Steam Workshop
 
   Change note template:
