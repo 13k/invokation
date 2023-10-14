@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 Latest commits not yet released.
 
+## [0.5.1] - 2023-10-14
+
+### Development
+
+- Update build and fix errors for building for 7.34
+
 ## [0.5.0] - 2023-01-21
 
 ### Gameplay
@@ -151,6 +157,7 @@ Initial closed beta release.
 [0.4.6-beta1]: https://github.com/13k/invokation/releases/tag/v0.4.6-beta1
 [0.4.7]: https://github.com/13k/invokation/releases/tag/v0.4.7
 [0.5.0]: https://github.com/13k/invokation/releases/tag/v0.5.0
-[unreleased]: https://github.com/13k/invokation/compare/v0.5.0...HEAD
+[0.5.1]: https://github.com/13k/invokation/releases/tag/v0.5.1
+[unreleased]: https://github.com/13k/invokation/compare/v0.5.1...HEAD
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
