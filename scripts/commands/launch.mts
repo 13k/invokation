@@ -15,20 +15,11 @@ export enum Tool {
   Tools = "tools",
 }
 
-const NOBREAKPAD_APPIDS = [570, 375360];
-
-const COMMON_LAUNCH_OPTIONS = [
-  "-novid",
-  "-dev",
-  "-uidev",
-  "-nominidumps",
-  "-condebug",
-  "-toconsole",
-  "-vconsole",
-  "-steam",
-];
-
-const NOBREAKPAD_OPTIONS = NOBREAKPAD_APPIDS.flatMap((appID) => ["-nobreakpad", appID.toString()]);
+const BREAKPAD_APPIDS: number[] = [570, 375360];
+const COMMON_LAUNCH_OPTIONS: string[] = ["-1080", "-novid", "-nominidumps", "-toconsole", "-steam"];
+const GAME_LAUNCH_OPTIONS: string[] = ["-dev", "-uidev", "-condebug", "-vconsole"];
+const SDK_LAUNCH_OPTIONS: string[] = [];
+const NOBREAKPAD_OPTIONS = BREAKPAD_APPIDS.flatMap((appID) => ["-nobreakpad", appID.toString()]);
 const LAUNCH_OPTIONS = [...COMMON_LAUNCH_OPTIONS, ...NOBREAKPAD_OPTIONS];
 
 export default class LaunchCommand extends BaseCommand<Options> {
@@ -79,9 +70,9 @@ export default class LaunchCommand extends BaseCommand<Options> {
     }
   }
 
-  async execGame(args: string[]) {
+  async execBin(cmd: string, args: string[]) {
     const {
-      dota2: { binPath: cmd, path: cwd },
+      dota2: { path: cwd },
     } = this.config;
 
     args = [...LAUNCH_OPTIONS, ...this.#toolArgs, ...args];
@@ -90,6 +81,22 @@ export default class LaunchCommand extends BaseCommand<Options> {
     this.log.debug(inspect([cmd, ...args]));
 
     await this.exec(cmd, args, { cwd, echo: true });
+  }
+
+  async execGame(args: string[]) {
+    const {
+      dota2: { binPath: cmd },
+    } = this.config;
+
+    await this.execBin(cmd, [...GAME_LAUNCH_OPTIONS, ...args]);
+  }
+
+  async execSdk(args: string[]) {
+    const {
+      dota2: { sdkBinPath: cmd },
+    } = this.config;
+
+    await this.execBin(cmd, [...SDK_LAUNCH_OPTIONS, ...args]);
   }
 
   async launchGame() {
@@ -107,9 +114,9 @@ export default class LaunchCommand extends BaseCommand<Options> {
 
   async launchTools() {
     const { customGame } = this.config;
-    const args = ["-tools", "-addon", customGame.name];
+    const args = ["-addon", customGame.name];
 
-    await this.execGame(args);
+    await this.execSdk(args);
   }
 }
 

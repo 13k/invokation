@@ -37,7 +37,7 @@ export interface ConfigSources {
 export interface ConfigDota2 {
   path: string;
   binPath: string;
-  toolsBinPath: string;
+  sdkBinPath: string;
   resourceCompilerBinPath: string;
   addonsContentPath: string;
   addonsGamePath: string;
@@ -69,7 +69,7 @@ export function createConfig({ rootPath, dota2Path }: ConfigOptions): Config {
     path: dota2Path,
     binDir: dota2BinDir,
     binPath: path.join(dota2BinDir, "dota2.exe"),
-    toolsBinPath: path.join(dota2BinDir, "dota2cfg.exe"),
+    sdkBinPath: path.join(dota2BinDir, "dota2cfg.exe"),
     resourceCompilerBinPath: path.join(dota2BinDir, "resourcecompiler.exe"),
     addonsContentPath: path.join(dota2Path, "content", "dota_addons"),
     addonsGamePath: path.join(dota2Path, "game", "dota_addons"),
