@@ -1,4 +1,4 @@
-# Invokation development
+# Development
 
 ## Requirements
 
@@ -6,9 +6,7 @@ All development is done within a WSL environment with the following setup:
 
 - lua 5.1 (same version as Dota 2)
 - luarocks
-- node LTS
-- yarn >= 1.22.4 (installed globally)
-  - yarn 2.x will be installed and used in project
+- node LTS + npm
 
 ## Setup
 
@@ -21,7 +19,7 @@ DOTA2_PATH="/WSL/path/to/dota2"
 - Install node packages:
 
 ```shell
-yarn install
+npm install
 ```
 
 - Initialize luarocks:
@@ -54,3 +52,56 @@ luarocks test
 ```shell
 make build
 ```
+
+## Release
+
+- Update `CHANGELOG.md` and commit changes
+
+  - Add release notes the top
+
+  ```markdown
+  ## [{version}] - {date}
+
+  {notes}
+  ```
+
+  - Update links at the bottom
+
+  ```markdown
+  [{version}]: https://github.com/13k/invokation/releases/tag/v{version}
+  [unreleased]: https://github.com/13k/invokation/compare/v{version}...HEAD
+  ```
+
+- Update version strings and commit changes
+
+  - `game/scripts/vscripts/invokation/const/metadata.lua`
+  - `src/content/panorama/scripts/lib/const.ts`
+
+- Rebuild and test version changes in UI
+
+- Create and push tag
+
+  ```shell
+  git tag -m "version {version}" v{version}
+  git push --follow-tags
+  ```
+
+- Publish release to Steam Workshop
+
+  Change note template:
+
+  ```
+  v{version}
+
+  ### Gameplay
+
+  - ...
+
+  ### UI
+
+  - ...
+
+  ---
+
+  Issues: https://github.com/13k/invokation/issues
+  ```
