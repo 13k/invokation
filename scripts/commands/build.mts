@@ -31,11 +31,11 @@ export default class BuildCommand extends BaseCommand<Options> {
       .argument(
         "[parts...]",
         `Only build specific parts (choices: ${partChoices})`,
-        parseBuildParts
+        parseBuildParts,
       )
       .action(
         async (parts: BuildPart[]) =>
-          await new BuildCommand(parts, command.opts(), configOptions).run()
+          await new BuildCommand(parts, command.opts(), configOptions).run(),
       );
   }
 
@@ -80,7 +80,7 @@ export default class BuildCommand extends BaseCommand<Options> {
       this.config.sources.srcPath,
       "content",
       "panorama",
-      "scripts"
+      "scripts",
     );
 
     this.log.label(Label.Generate).info("panorama scripts");
@@ -120,6 +120,29 @@ export default class BuildCommand extends BaseCommand<Options> {
     this.log.label(Label.Compile).info("resources");
 
     await this.compile(["-r", ...inputArgs]);
+  }
+
+  async compileMap(relPath: string) {
+    await this.compile([
+      "-threads",
+      "16",
+      "-maxtextureres",
+      "256",
+      "-dxlevel",
+      "110",
+      "-quiet",
+      "-html",
+      "-unbufferedio",
+      "-noassert",
+      "-world",
+      "-phys",
+      "-vis",
+      "-gridnav",
+      "-breakpad",
+      "-nop4",
+      "-i",
+      relPath,
+    ]);
   }
 
   async compile(args: string[]) {
