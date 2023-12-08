@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog][kacl], and this project adheres to
 
 Latest commits not yet released.
 
+## [0.5.2] - 2023-12-08
+
+### Gameplay
+
+- Fixed game not working properly after hero abilities files reorganization by Valve (#46)
+
 ## [0.5.1] - 2023-10-14
 
 ### Development
@@ -158,6 +164,7 @@ Initial closed beta release.
 [0.4.7]: https://github.com/13k/invokation/releases/tag/v0.4.7
 [0.5.0]: https://github.com/13k/invokation/releases/tag/v0.5.0
 [0.5.1]: https://github.com/13k/invokation/releases/tag/v0.5.1
+[0.5.2]: https://github.com/13k/invokation/releases/tag/v0.5.2
 [unreleased]: https://github.com/13k/invokation/compare/v0.5.1...HEAD
 [kacl]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
