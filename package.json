@@ -15,6 +15,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@moddota/panorama-types": "^1.31.0",
+    "@mojojs/path": "^1.6.0",
     "@prettier/plugin-xml": "^2.2.0",
     "@tsconfig/node-lts": "^20.1.1",
     "@tsconfig/strictest": "^2.0.3",
@@ -55,7 +56,10 @@
   "dota2": {
     "customGame": {
       "name": "invokation",
-      "maps": ["cottage", "island"]
+      "maps": [
+        "cottage",
+        "island"
+      ]
     }
   }
 }
