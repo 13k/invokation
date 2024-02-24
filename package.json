@@ -3,7 +3,7 @@
   "name": "invokation",
   "version": "dev",
   "engines": {
-    "node": ">=18.12"
+    "node": ">=20.11"
   },
   "scripts": {
     "build": "tsx scripts/index.mts build",
@@ -55,10 +55,7 @@
   "dota2": {
     "customGame": {
       "name": "invokation",
-      "maps": [
-        "cottage",
-        "island"
-      ]
+      "maps": ["cottage", "island"]
     }
   }
 }
