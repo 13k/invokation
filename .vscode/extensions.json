@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "arcanis.vscode-zipfs",
+    "biomejs.biome",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "JohnnyMorganz.stylua",
