@@ -34,6 +34,7 @@
     "commander": "^9.5.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
+    "eslint-config-biome": "^1.5.3",
     "eslint-config-prettier": "^8.10.0",
     "execa": "^6.1.0",
     "fs-extra": "^11.2.0",
