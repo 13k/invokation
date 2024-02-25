@@ -8,9 +8,9 @@ type ChalkStyleName = ModifierName | ColorName;
 
 export type ColorStyle = ChalkInstance;
 
-export function colorStyle(
-  ...styles: (number | [number, number, number] | string | ChalkStyleName)[]
-): ColorStyle {
+type Style = number | [number, number, number] | string | ChalkStyleName;
+
+export function colorStyle(...styles: Style[]): ColorStyle {
   return _.reduce(
     styles,
     (s, c) => {
@@ -32,6 +32,6 @@ export function colorStyle(
 
       throw new Error(`Invalid color style: ${inspect(c)}`);
     },
-    chalk
+    chalk,
   );
 }

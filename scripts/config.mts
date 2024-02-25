@@ -1,4 +1,4 @@
-import * as path from "node:path";
+import type { Path } from "./path.mjs";
 
 export const { default: PACKAGE }: PackageImport = await import("../package.json", {
   assert: { type: "json" },
@@ -21,70 +21,78 @@ export interface PackageCustomGame {
   maps: string[];
 }
 
-export interface Config {
-  rootPath: string;
+export interface ConfigOptions {
+  rootDir: Path;
+  dota2Dir: Path;
+}
+
+export class Config {
+  rootDir: Path;
   sources: ConfigSources;
   dota2: ConfigDota2;
   customGame: ConfigCustomGame;
+
+  constructor({ rootDir, dota2Dir }: ConfigOptions) {
+    const {
+      dota2: { customGame: pkgCustomGame },
+    } = PACKAGE;
+
+    this.rootDir = rootDir;
+    this.sources = {
+      srcDir: rootDir.join("src"),
+      contentDir: rootDir.join("content"),
+      gameDir: rootDir.join("game"),
+    };
+
+    const dota2BinDir = dota2Dir.join("game", "bin", "win64");
+
+    this.dota2 = {
+      baseDir: dota2Dir,
+      binDir: dota2BinDir,
+      gameBinPath: dota2BinDir.join("dota2.exe"),
+      sdkBinPath: dota2BinDir.join("dota2cfg.exe"),
+      resourceCompilerBinPath: dota2BinDir.join("resourcecompiler.exe"),
+      addonsContentDir: dota2Dir.join("content", "dota_addons"),
+      addonsGameDir: dota2Dir.join("game", "dota_addons"),
+    };
+
+    this.customGame = {
+      ...pkgCustomGame,
+      contentDir: this.dota2.addonsContentDir.join(pkgCustomGame.name),
+      gameDir: this.dota2.addonsGameDir.join(pkgCustomGame.name),
+    };
+  }
+
+  customGameContentRelPath(srcPath: Path): Path {
+    const {
+      sources: { contentDir: srcDir },
+      customGame: { contentDir: destDir },
+    } = this;
+
+    const srcRelPath = srcDir.relative(srcPath);
+    const destPath = destDir.join(srcRelPath);
+
+    return this.dota2.baseDir.relative(destPath);
+  }
 }
 
 export interface ConfigSources {
-  srcPath: string;
-  contentPath: string;
-  gamePath: string;
+  srcDir: Path;
+  contentDir: Path;
+  gameDir: Path;
 }
 
 export interface ConfigDota2 {
-  path: string;
-  binPath: string;
-  sdkBinPath: string;
-  resourceCompilerBinPath: string;
-  addonsContentPath: string;
-  addonsGamePath: string;
+  baseDir: Path;
+  binDir: Path;
+  gameBinPath: Path;
+  sdkBinPath: Path;
+  resourceCompilerBinPath: Path;
+  addonsContentDir: Path;
+  addonsGameDir: Path;
 }
 
 export interface ConfigCustomGame extends PackageCustomGame {
-  contentPath: string;
-  gamePath: string;
-}
-
-export interface ConfigOptions {
-  rootPath: string;
-  dota2Path: string;
-}
-
-export function createConfig({ rootPath, dota2Path }: ConfigOptions): Config {
-  const {
-    dota2: { customGame: pkgCustomGame },
-  } = PACKAGE;
-
-  const sources = {
-    srcPath: path.join(rootPath, "src"),
-    contentPath: path.join(rootPath, "content"),
-    gamePath: path.join(rootPath, "game"),
-  };
-
-  const dota2BinDir = path.join(dota2Path, "game", "bin", "win64");
-  const dota2 = {
-    path: dota2Path,
-    binDir: dota2BinDir,
-    binPath: path.join(dota2BinDir, "dota2.exe"),
-    sdkBinPath: path.join(dota2BinDir, "dota2cfg.exe"),
-    resourceCompilerBinPath: path.join(dota2BinDir, "resourcecompiler.exe"),
-    addonsContentPath: path.join(dota2Path, "content", "dota_addons"),
-    addonsGamePath: path.join(dota2Path, "game", "dota_addons"),
-  };
-
-  const customGame = {
-    ...pkgCustomGame,
-    contentPath: path.join(dota2.addonsContentPath, pkgCustomGame.name),
-    gamePath: path.join(dota2.addonsGamePath, pkgCustomGame.name),
-  };
-
-  return {
-    rootPath,
-    sources,
-    dota2,
-    customGame,
-  };
+  contentDir: Path;
+  gameDir: Path;
 }

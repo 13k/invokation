@@ -1,130 +1,123 @@
-import * as path from "node:path";
-import * as fs from "fs/promises";
+import assert from "node:assert";
 import { inspect } from "node:util";
 
 import { each as asyncEach } from "async";
 import type { Command } from "commander";
-import * as fse from "fs-extra";
 
-import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
+import { Link, LinkType } from "../path.mjs";
 import BaseCommand from "./base.mjs";
+
+export type Args = null;
 
 export interface Options {
   dryRun?: boolean;
 }
 
-enum LinkType {
-  SymbolicLink = "SymbolicLink",
-  HardLink = "HardLink",
-  Junction = "Junction",
-}
-
-interface Link {
-  src: string;
-  dest: string;
-  type?: LinkType;
-}
-
 const POWERSHELL_BIN = "pwsh.exe";
-
 const GAME_SRCS = ["resource", "scripts", "addoninfo.txt"];
 
-export default class LinkCommand extends BaseCommand<Options> {
-  static subcommand(parent: Command, configOptions: ConfigOptions) {
-    const command = parent
+export default class LinkCommand extends BaseCommand<Args, Options> {
+  override subcommand(parent: Command): Command {
+    return parent
       .command("link")
-      .description(`Link source code paths to Dota 2 addon paths`)
-      .option(`-n, --dry-run`, `Only print paths that would be linked`, false)
-      .action(async () => await new LinkCommand(command.opts(), configOptions).run());
+      .description("Link source code paths to Dota 2 addon paths")
+      .option("-n, --dry-run", "Only print paths that would be linked", false);
   }
 
-  constructor(options: Options, configOptions: ConfigOptions) {
-    super([], options, configOptions);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  override parse_args(..._args: unknown[]): Args {
+    return null;
   }
 
-  override async run() {
-    const { rootPath, dota2 } = this.config;
+  override async run(): Promise<void> {
+    const { rootDir: rootPath, dota2 } = this.config;
 
     this.log.info("Linking custom game");
-    this.log
-      .emojify()
-      .field("src", rootPath)
-      .field("dest", dota2.path)
-      .debug(":link: base directories");
+    this.log.emojify().field("src", rootPath).field("dest", dota2.baseDir).debug(":link: base directories");
 
     const links = await this.findLinks();
 
     await asyncEach(links, async (link) => await this.mklink(link));
   }
 
-  async findLinks() {
+  async findLinks(): Promise<Link[]> {
     return [...(await this.contentLinks()), ...(await this.gameLinks())];
   }
 
-  async contentLinks() {
+  async contentLinks(): Promise<Link[]> {
     const { sources, customGame } = this.config;
 
-    return [{ src: sources.contentPath, dest: customGame.contentPath }];
+    return [
+      {
+        type: LinkType.Symbolic,
+        src: sources.contentDir,
+        dest: customGame.contentDir,
+      },
+    ];
   }
 
-  async gameLinks() {
-    const { sources, customGame } = this.config;
+  async gameLinks(): Promise<Link[]> {
+    const {
+      sources: { gameDir: srcDir },
+      customGame: { gameDir: destDir },
+    } = this.config;
 
     return GAME_SRCS.map((relPath) => ({
-      src: path.join(sources.gamePath, relPath),
-      dest: path.join(customGame.gamePath, relPath),
+      type: LinkType.Symbolic,
+      src: srcDir.join(relPath),
+      dest: destDir.join(relPath),
     }));
   }
 
-  async mklink(link: Link) {
+  // TODO: implement links on unix
+  async mklink(link: Link): Promise<void> {
     const { src, dest } = link;
-    const { rootPath, dota2 } = this.config;
+    const { rootDir, dota2 } = this.config;
 
     const log = this.log
       .label(Label.Link)
-      .field("src", path.relative(rootPath, src))
-      .field("dest", path.relative(dota2.path, dest));
+      .field("src", rootDir.relative(src))
+      .field("dest", dota2.baseDir.relative(dest));
 
     if (this.options.dryRun) {
-      log.info(`skip (dry run)`);
+      log.info("skip (dry run)");
       return;
     }
 
-    if (await fse.pathExists(dest)) {
+    if (await dest.exists()) {
       // TODO: check if dest is a link pointing to src
-      log.info(`skip (already exists)`);
+      log.info("skip (already exists)");
       return;
     }
 
-    const srcSt = await fs.stat(src);
+    const srcSt = await src.stat();
 
     if (srcSt.isDirectory()) {
       link.type = LinkType.Junction;
 
-      await fse.mkdirp(path.dirname(dest));
+      await dest.dirname().mkdir({ recursive: true });
       await this.pwshLink(link);
     } else if (srcSt.isFile()) {
-      link.type = LinkType.HardLink;
-      // it seems regular hard-link from WSL works, so avoid spawning a process
-      await fse.ensureLink(link.src, link.dest);
+      link.type = LinkType.Hard;
+      // NOTE: it seems regular hard-link from WSL works, so avoid spawning a process
+      await src.link(dest);
     } else {
       throw new Error(`${src}: invalid link source (not a file or directory)`);
     }
 
-    log.field("type", link.type).info(`created`);
+    log.field("type", link.type).info("created");
   }
 
-  async pwshLink({ src, dest, type }: Link) {
-    const linkType = type || LinkType.SymbolicLink;
-    const winSrc = await this.windowsPath(src, { absolute: true });
-    const destDir = path.dirname(dest);
-    const winDestDir = await this.windowsPath(destDir, { absolute: true });
-    const winDest = `${winDestDir}\\${path.basename(dest)}`;
-    const args = [
-      "-Command",
-      `New-Item -ItemType '${linkType}' -Path '${winDest}' -Target '${winSrc}'`,
-    ];
+  async pwshLink({ src, dest, type }: Link): Promise<void> {
+    assert(src.isWslPosix());
+    assert(dest.isWslPosix());
+
+    const winSrc = await src.windows({ absolute: true });
+    const destDir = dest.dirname();
+    const winDestDir = await destDir.windows({ absolute: true });
+    const winDest = `${winDestDir}\\${dest.basename()}`;
+    const args = ["-Command", `New-Item -ItemType '${type}' -Path '${winDest}' -Target '${winSrc}'`];
 
     this.log.field("cmd", inspect([POWERSHELL_BIN, ...args])).debug("pwsh link");
 

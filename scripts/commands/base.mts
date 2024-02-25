@@ -1,69 +1,103 @@
-import { promisify } from "node:util";
+import type { Command, OptionValues } from "commander";
 
-import glob from "glob";
-
-import fse from "fs-extra";
-import type { Config, ConfigOptions } from "../config.mjs";
-import { createConfig } from "../config.mjs";
+import { Config } from "../config.mjs";
+import type { ExecReturnValue } from "../exec.mjs";
+import type { ExecOptions } from "../exec.mjs";
+import { exec } from "../exec.mjs";
 import type { Logger } from "../logger.mjs";
-import log from "../logger.mjs";
-import type { ExecOptions, ExecSyncOptions } from "../util.mjs";
-import { exec, execSync } from "../util.mjs";
-import type { PathOptions as WslPathOptions } from "../wsl.mjs";
-import { unixPath, windowsPath } from "../wsl.mjs";
+import LOG from "../logger.mjs";
+import { Path, ROOT_DIR } from "../path.mjs";
+import type { PathLike } from "../path.mjs";
 
-const globP = promisify(glob);
+export interface Subcommand<Options> {
+  subcommand(parent: Command): Command;
+  run(options: Options, ...args: unknown[]): Promise<void>;
+}
 
-export default abstract class BaseCommand<Options> {
-  protected config: Config;
-  protected log: Logger;
+export default abstract class BaseCommand<Args, Options extends OptionValues> {
+  #log?: Logger;
+  #config?: Config;
+  #args?: Args;
+  #options?: Options;
 
-  constructor(protected args: string[], protected options: Options, configOptions: ConfigOptions) {
-    this.log = log;
-    this.config = createConfig(configOptions);
-    this.init();
+  protected cmd: Command;
+
+  constructor(parent: Command) {
+    this.cmd = this.subcommand(parent).action(this.#run.bind(this));
   }
 
-  async init() {
-    const path = this.config.dota2.binPath;
+  get log(): Logger {
+    if (this.#log == null) {
+      this.#log = LOG;
+    }
 
-    try {
-      await fse.stat(path);
-    } catch (error) {
-      this.log.fields({ path }).error("Could not find dota2 binary");
-      this.log.debug(error as Error);
+    return this.#log;
+  }
+
+  get config(): Config {
+    if (this.#config == null) {
+      // biome-ignore lint/complexity/useLiteralKeys: doesn't apply to `process.env` keys
+      const dota2DirEnv = process.env["DOTA2_PATH"];
+
+      if (!dota2DirEnv) {
+        const error = new Error("DOTA2_PATH environment variable must be set");
+
+        this.log.error(error.message);
+
+        throw error;
+      }
+
+      this.#config = new Config({ rootDir: ROOT_DIR, dota2Dir: Path.new(dota2DirEnv) });
+    }
+
+    return this.#config;
+  }
+
+  get args(): Args {
+    if (this.#args == null) {
+      if (this.cmd.processedArgs == null) {
+        throw new Error("args used before initialization");
+      }
+
+      this.#args = this.parse_args(this.cmd.processedArgs);
+    }
+
+    return this.#args;
+  }
+
+  get options(): Options {
+    if (this.#options == null) {
+      this.#options = this.cmd.opts();
+    }
+
+    return this.#options;
+  }
+
+  async #run(): Promise<void> {
+    const path = this.config.dota2.gameBinPath;
+    const exists = await path.exists();
+
+    if (!exists) {
+      const error = new Error("Could not find dota2 binary");
+
+      this.log.fields({ path }).error(error.message);
+      this.log.debug(error);
 
       throw error;
     }
+
+    await this.run();
   }
 
+  abstract subcommand(parent: Command): Command;
+  abstract parse_args(...args: unknown[]): Args;
   abstract run(): Promise<void>;
 
-  async readFile(file: number | fse.PathLike, options?: { flag?: string | undefined }) {
-    return await fse.readFile(file, { encoding: "utf-8", ...options });
-  }
-
-  async writeFile(file: number | fse.PathLike, data: string, options?: fse.WriteFileOptions) {
-    return await fse.writeFile(file, data, { encoding: "utf-8", ...options });
-  }
-
-  async glob(pattern: string, options?: glob.IOptions) {
-    return await globP(pattern, options);
-  }
-
-  async exec(cmd: string, args: string[] = [], options?: ExecOptions) {
-    return await exec(cmd, args, options);
-  }
-
-  async execSync(cmd: string, args: string[] = [], options?: ExecSyncOptions) {
-    return execSync(cmd, args, options);
-  }
-
-  async windowsPath(name: string, options?: WslPathOptions) {
-    return await windowsPath(name, options);
-  }
-
-  async unixPath(name: string, options?: WslPathOptions) {
-    return await unixPath(name, options);
+  protected async exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): Promise<ExecReturnValue<string>> {
+    return await exec(
+      cmd.toString(),
+      args.map((arg) => arg.toString()),
+      options,
+    );
   }
 }

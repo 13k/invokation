@@ -1,42 +1,43 @@
 import { each as asyncEach } from "async";
 import type { Command } from "commander";
-import fse from "fs-extra";
 
-import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
 import BaseCommand from "./base.mjs";
+
+export type Args = null;
 
 export interface Options {
   dryRun?: boolean;
 }
 
-export default class CleanCommand extends BaseCommand<Options> {
-  static subcommand(parent: Command, configOptions: ConfigOptions) {
-    const command = parent
+export default class CleanCommand extends BaseCommand<Args, Options> {
+  override subcommand(parent: Command): Command {
+    return parent
       .command("clean")
-      .description(`Remove custom game resources and unlink source code`)
-      .option(`-n, --dry-run`, `Only print paths that would be removed`, false)
-      .action(async () => await new CleanCommand(command.opts(), configOptions).run());
+      .description("Remove custom game resources and unlink source code")
+      .option("-n, --dry-run", "Only print paths that would be removed", false);
   }
 
-  constructor(options: Options, configOptions: ConfigOptions) {
-    super([], options, configOptions);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  override parse_args(..._args: unknown[]): Args {
+    return null;
   }
 
-  override async run() {
+  override async run(): Promise<void> {
     const {
-      customGame: { contentPath, gamePath },
+      customGame: { contentDir, gameDir },
     } = this.config;
 
-    await asyncEach([contentPath, gamePath], async (path) => {
+    await asyncEach([contentDir, gameDir], async (path) => {
       if (this.options.dryRun) {
         this.log.label(Label.Remove).info(`${path} [skip: dry run]`);
+
         return;
       }
 
-      await fse.remove(path);
+      await path.rm();
 
-      this.log.label(Label.Remove).info(path);
+      this.log.label(Label.Remove).info(path.toString());
     });
   }
 }

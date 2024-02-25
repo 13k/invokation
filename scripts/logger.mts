@@ -2,7 +2,7 @@ import { inspect } from "node:util";
 
 import _ from "lodash";
 import type { TransformableInfo } from "logform";
-import emoji from "node-emoji";
+import * as emoji from "node-emoji";
 import { LEVEL, SPLAT } from "triple-beam";
 import { config, createLogger, format, transports } from "winston";
 
@@ -13,8 +13,8 @@ type Levels = {
   [K in keyof config.CliConfigSetLevels as string extends K
     ? never
     : number extends K
-    ? never
-    : K]: config.CliConfigSetLevels[K];
+      ? never
+      : K]: config.CliConfigSetLevels[K];
 };
 
 type Level = keyof Levels;
@@ -26,7 +26,7 @@ export enum Option {
 }
 
 export interface Options {
-  [Option.Label]?: string;
+  [Option.Label]?: Label;
   [Option.Emojify]?: boolean;
   [Option.Padding]?: number;
 }
@@ -54,7 +54,7 @@ export enum Label {
   Remove = "remove",
 }
 
-const LABEL_EMOJI: Record<string, string> = {
+const LABEL_EMOJI: Record<Label, string | undefined> = {
   [Label.Compile]: emoji.get("comet"),
   [Label.Copy]: emoji.get("cat2"),
   [Label.Generate]: emoji.get("broccoli"),
@@ -63,7 +63,7 @@ const LABEL_EMOJI: Record<string, string> = {
   [Label.Remove]: emoji.get("ghost"),
 };
 
-const LABEL_STYLES: Record<string, ColorStyle> = {
+const LABEL_STYLES: Record<Label, ColorStyle> = {
   [Label.Compile]: colorStyle(214),
   [Label.Copy]: colorStyle(142),
   [Label.Generate]: colorStyle(70),
@@ -78,7 +78,7 @@ const LOG = createLogger({
     format.errors({ stack: true, cause: true }),
     format.metadata({ fillExcept: ["level", "message", ...Object.values(Option)] }),
     format.colorize({ level: true, message: false }),
-    format.printf(printf)
+    format.printf(printf),
   ),
   transports: [new transports.Console()],
 });
@@ -88,7 +88,7 @@ export class Logger {
   #fields: Fields;
 
   constructor(options?: Options, fields?: FieldsLike) {
-    this.#options = options || {};
+    this.#options = options ?? {};
     this.#fields = new Fields(fields);
   }
 
@@ -145,7 +145,7 @@ export class Logger {
     return this.#fork(options);
   }
 
-  label(value: string): Logger {
+  label(value: Label): Logger {
     return this.#fork({ [Option.Label]: value });
   }
 
@@ -166,19 +166,12 @@ export class Logger {
   }
 
   fields(fields: FieldsLike | Record<string, unknown>): Logger {
-    const it: FieldsLike =
-      Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
+    const it: FieldsLike = Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
 
     return this.#fork(undefined, it);
   }
 
-  log(
-    this: this,
-    level: Level,
-    message: string | Error,
-    options?: Options,
-    fields?: FieldsLike
-  ): void {
+  log(this: this, level: Level, message: string | Error, options?: Options, fields?: FieldsLike): void {
     if (message instanceof Error) {
       LOG.log(level, message);
       return;
@@ -256,8 +249,8 @@ interface Metadata extends Record<string, unknown> {
 
 function printf(info: TransformableInfo) {
   const { level, levelOut, message, metadata, fields, options } = parseInfo(info as Info);
-  const levelPad = " ".repeat(LEVEL_PADDING[level] || 1);
-  const pad = " ".repeat(options[Option.Padding] || 0);
+  const levelPad = " ".repeat(LEVEL_PADDING[level] ?? 1);
+  const pad = " ".repeat(options[Option.Padding] ?? 0);
   const label = formatLabel(options[Option.Label]);
   const messageOut = formatMessage(message, options[Option.Emojify]);
   let fieldsOut = formatFields(level, fields);
@@ -296,7 +289,7 @@ function parseInfo(info: Info) {
   return { level, levelOut, message, metadata, fields, options };
 }
 
-function formatLabel(labelOpt?: string) {
+function formatLabel(labelOpt?: Label): string {
   let label = "";
 
   if (labelOpt) {
@@ -320,7 +313,7 @@ function formatLabel(labelOpt?: string) {
   return label;
 }
 
-function formatMessage(message: unknown, emojify?: boolean) {
+function formatMessage(message: unknown, emojify?: boolean): string {
   let sMessage = _.toString(message);
 
   if (emojify) {
@@ -330,7 +323,7 @@ function formatMessage(message: unknown, emojify?: boolean) {
   return sMessage;
 }
 
-function formatFields(level: string, fields: Fields) {
+function formatFields(level: string, fields: Fields): string {
   let s = "";
 
   if (fields.size === 0) {

@@ -1,11 +1,16 @@
 import assert from "node:assert";
 
 import type { Command } from "commander";
-import * as vdf from "vdf-parser";
+import vdf from "vdf-parser";
 
-import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
+import { Path } from "../path.mjs";
 import BaseCommand from "./base.mjs";
+
+export interface Args {
+  input: Path;
+  output: Path;
+}
 
 export type Options = Record<string, never>;
 
@@ -25,57 +30,49 @@ interface CustomGameShops {
 
 const INVALID_ITEMS = [/item_river_paint/];
 
-export default class ConvertShopsCommand extends BaseCommand<Options> {
-  #input: string;
-  #output: string;
-
-  static subcommand(parent: Command, configOptions: ConfigOptions) {
-    const command = parent
+export default class ConvertShopsCommand extends BaseCommand<Args, Options> {
+  override subcommand(parent: Command): Command {
+    return parent
       .command("convert-shops")
-      .description(`Convert a game KeyValues shops.txt file to custom game KeyValues shops.txt`)
-      .argument("<input>", `Path to shops.txt file (extracted from game files)`)
-      .argument("<output>", `Path to converted shops.txt`)
-      .action(
-        async (input: string, output: string) =>
-          await new ConvertShopsCommand(input, output, command.opts(), configOptions).run()
-      );
+      .description("Convert a game KeyValues shops.txt file to custom game KeyValues shops.txt")
+      .argument("<input>", "Path to shops.txt file (extracted from game files)")
+      .argument("<output>", "Path to converted shops.txt");
   }
 
-  constructor(input: string, output: string, options: Options, configOptions: ConfigOptions) {
-    super([input, output], options, configOptions);
-
-    this.#input = input;
-    this.#output = output;
+  override parse_args(input: string, output: string): Args {
+    return {
+      input: Path.new(input),
+      output: Path.new(output),
+    };
   }
 
-  override async run() {
-    const data = await this.readFile(this.#input);
+  override async run(): Promise<void> {
+    const data = await this.args.input.readFile();
     const gameShops = vdf.parse(data) as GameShops;
 
-    validate(this.#input, gameShops);
+    validate(this.args.input, gameShops);
 
     const customGameShops = transform(gameShops);
     const serialized = vdf.stringify(customGameShops, true);
 
-    await this.writeFile(this.#output, serialized);
+    await this.args.output.writeFile(serialized);
 
     this.log
       .label(Label.Generate)
-      .field("input", this.#input)
-      .field("output", this.#output)
+      .fields({ ...this.args })
       .info("shops converted");
   }
 }
 
 const isInvalidItem = (item: string) => INVALID_ITEMS.find((re) => item.match(re) != null) != null;
 
-function validate(filename: string, doc: GameShops) {
+function validate(filename: Path, doc: GameShops) {
   const message = (msg: string) => `${filename}: not a valid shops.txt file: ${msg}`;
 
-  assert(typeof doc === "object", message(`document is not an object`));
+  assert(typeof doc === "object", message("document is not an object"));
   assert("dota_shops" in doc, message(`missing top-level 'dota_shops' key`));
 
-  const shops = doc["dota_shops"];
+  const shops = doc.dota_shops;
 
   assert(typeof shops === "object", message(`entry 'dota_shops' is not an object`));
   assert(shops != null, message(`top-level 'dota_shops' key has null value`));
@@ -85,7 +82,7 @@ function validate(filename: string, doc: GameShops) {
     assert(items != null, message(`category ${category} has null value`));
     assert("item" in items, message(`category ${category} has no 'item' entry`));
 
-    const list = items["item"];
+    const list = items.item;
 
     assert(Array.isArray(list), message(`entry 'item' in category ${category} is not an array`));
   }
@@ -95,7 +92,7 @@ function transform(doc: GameShops) {
   const result: CustomGameShops = { dota_shops: {} };
   const { dota_shops: shops } = result;
 
-  for (const [categoryName, items] of Object.entries(doc["dota_shops"])) {
+  for (const [categoryName, items] of Object.entries(doc.dota_shops)) {
     const category: Record<number, string> = {};
 
     for (const [i, item] of items.item.entries()) {

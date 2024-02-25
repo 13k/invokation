@@ -1,11 +1,14 @@
-import * as path from "node:path";
+import os from "node:os";
 import { inspect } from "node:util";
 
 import type { Command } from "commander";
 
-import type { ConfigOptions } from "../config.mjs";
 import { Label } from "../logger.mjs";
 import BaseCommand from "./base.mjs";
+
+export interface Args {
+  parts: BuildPart[];
+}
 
 export interface Options {
   force?: boolean;
@@ -17,75 +20,67 @@ enum BuildPart {
   Resources = "resources",
 }
 
+function parseBuildParts(value: string, parts?: BuildPart[]): BuildPart[] {
+  const buildParts = parts ?? [];
+
+  buildParts.push(parseBuildPart(value));
+
+  return buildParts;
+}
+
+function parseBuildPart(value: string): BuildPart {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [_, v] of Object.entries(BuildPart)) {
+    if (value === v) {
+      return v;
+    }
+  }
+
+  throw new Error(`Invalid build part: ${inspect(value)}`);
+}
+
 const ALL_PARTS = [BuildPart.PanoramaScripts, BuildPart.Maps, BuildPart.Resources];
 
-export default class BuildCommand extends BaseCommand<Options> {
-  #parts: BuildPart[];
+const MAX_TEXTURE_RES = 256;
+const DIRECTX_LEVEL = "110";
 
-  static subcommand(parent: Command, configOptions: ConfigOptions) {
+export default class BuildCommand extends BaseCommand<Args, Options> {
+  override subcommand(parent: Command): Command {
     const partChoices = Object.values(BuildPart).join(", ");
-    const command = parent
+
+    return parent
       .command("build")
-      .description(`Build custom game resources`)
-      .option(`-f, --force`, `Force rebuild`, false)
-      .argument(
-        "[parts...]",
-        `Only build specific parts (choices: ${partChoices})`,
-        parseBuildParts,
-      )
-      .action(
-        async (parts: BuildPart[]) =>
-          await new BuildCommand(parts, command.opts(), configOptions).run(),
-      );
+      .description("Build custom game resources")
+      .option("-f, --force", "Force rebuild", false)
+      .argument("[parts...]", `Only build specific parts (choices: ${partChoices})`, parseBuildParts);
   }
 
-  constructor(parts: BuildPart[], options: Options, configOptions: ConfigOptions) {
-    super(parts, options, configOptions);
-
-    if (parts.length === 0) {
-      parts = ALL_PARTS;
-    }
-
-    this.#parts = parts;
+  override parse_args(...parts: BuildPart[]): Args {
+    return { parts };
   }
 
-  override async run() {
-    if (this.#parts.indexOf(BuildPart.PanoramaScripts) >= 0) {
+  override async run(): Promise<void> {
+    const buildParts = this.args.parts.length === 0 ? ALL_PARTS : this.args.parts;
+
+    if (buildParts.indexOf(BuildPart.PanoramaScripts) >= 0) {
       await this.transpileScripts();
     }
 
-    if (this.#parts.indexOf(BuildPart.Maps) >= 0) {
+    if (buildParts.indexOf(BuildPart.Maps) >= 0) {
       await this.compileMaps();
     }
 
-    if (this.#parts.indexOf(BuildPart.Resources) >= 0) {
+    if (buildParts.indexOf(BuildPart.Resources) >= 0) {
       await this.compileResources();
     }
   }
 
-  contentGlobPattern(relPattern: string) {
-    return path.join(this.config.sources.contentPath, relPattern);
-  }
+  async transpileScripts(): Promise<void> {
+    const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts");
 
-  addonContentRelPath(filename: string) {
-    const { sources, dota2, customGame } = this.config;
-    const relPath = path.relative(sources.contentPath, filename);
-    const customGameFilename = path.join(customGame.contentPath, relPath);
+    this.log.label(Label.Generate).fields({ srcDir }).info("panorama scripts");
 
-    return path.relative(dota2.path, customGameFilename);
-  }
-
-  async transpileScripts() {
-    const srcPanoramaScriptsPath = path.join(
-      this.config.sources.srcPath,
-      "content",
-      "panorama",
-      "scripts",
-    );
-
-    this.log.label(Label.Generate).info("panorama scripts");
-
-    const args = ["exec", "--", "tsc", "--build", srcPanoramaScriptsPath, "--verbose"];
+    const args = ["exec", "--", "tsc", "--build", srcDir.toString(), "--verbose"];
 
     if (this.options.force) {
       args.push("--force");
@@ -97,24 +92,29 @@ export default class BuildCommand extends BaseCommand<Options> {
     });
   }
 
-  async compileMaps() {
-    const mapsPath = this.contentGlobPattern(path.join("maps", "*"));
-    const relPath = this.addonContentRelPath(mapsPath);
+  async compileMaps(): Promise<void> {
+    const mapsPatt = this.config.sources.contentDir.join("maps", "*");
+    const relPatt = this.config.customGameContentRelPath(mapsPatt).toString();
 
-    this.log.fields({ mapsPath, relPath }).debug("compileMaps()");
-    this.log.label(Label.Compile).info("maps");
+    this.log.fields({ mapsPath: mapsPatt, relPath: relPatt }).debug("compileMaps()");
+    this.log.label(Label.Compile).fields({ glob: relPatt }).info("maps");
 
-    await this.compile(["-r", "-i", relPath]);
+    await this.compile(["-r", "-i", relPatt]);
   }
 
-  async compileResources() {
-    const resourcesDirs = await this.glob(this.contentGlobPattern("*"), {
-      ignore: [this.contentGlobPattern("maps")],
+  async compileResources(): Promise<void> {
+    const {
+      sources: { contentDir: srcContentDir },
+    } = this.config;
+
+    const srcMapsDir = srcContentDir.join("maps");
+    const srcResourcesPaths = await srcContentDir.glob("*", {
+      ignore: srcMapsDir.toString(),
     });
 
-    const inputArgs = resourcesDirs.flatMap((p) => [
+    const inputArgs = srcResourcesPaths.flatMap((p) => [
       "-i",
-      path.join(this.addonContentRelPath(p), "*"),
+      this.config.customGameContentRelPath(p).join("*").toString(),
     ]);
 
     this.log.label(Label.Compile).info("resources");
@@ -122,14 +122,14 @@ export default class BuildCommand extends BaseCommand<Options> {
     await this.compile(["-r", ...inputArgs]);
   }
 
-  async compileMap(relPath: string) {
+  async compileMap(relPath: string): Promise<void> {
     await this.compile([
       "-threads",
-      "16",
+      os.availableParallelism().toString(),
       "-maxtextureres",
-      "256",
+      MAX_TEXTURE_RES.toString(),
       "-dxlevel",
-      "110",
+      DIRECTX_LEVEL,
       "-quiet",
       "-html",
       "-unbufferedio",
@@ -145,40 +145,20 @@ export default class BuildCommand extends BaseCommand<Options> {
     ]);
   }
 
-  async compile(args: string[]) {
+  // TODO: allow configuration of resourcecompiler command
+  async compile(args: string[]): Promise<void> {
     const { dota2 } = this.config;
 
-    args = [...args];
+    const execArgs = [...args];
 
     if (this.options.force) {
-      args.push("-fshallow");
+      execArgs.push("-fshallow");
     }
 
-    await this.exec(dota2.resourceCompilerBinPath, args, {
+    await this.exec(dota2.resourceCompilerBinPath.toString(), execArgs, {
       echo: true,
       log: this.log,
-      cwd: dota2.path,
+      cwd: dota2.baseDir.toString(),
     });
   }
-}
-
-function parseBuildPart(value: string): BuildPart {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const [_, v] of Object.entries(BuildPart)) {
-    if (value === v) {
-      return v;
-    }
-  }
-
-  throw new Error(`Invalid build part: ${inspect(value)}`);
-}
-
-function parseBuildParts(value: string, parts: BuildPart[] | undefined) {
-  if (parts == null) {
-    parts = [];
-  }
-
-  parts.push(parseBuildPart(value));
-
-  return parts;
 }
