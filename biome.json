@@ -1,5 +1,10 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
   "organizeImports": {
     "enabled": true
   },
@@ -13,11 +18,11 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 120,
+    "lineWidth": 100,
     "lineEnding": "lf"
   },
   "files": {
-    "include": ["**/*.json", "**/*.mts", "**/*.ts"],
-    "ignore": ["content/panorama/scripts/**/*", "node_modules/**/*"]
+    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"],
+    "ignore": ["src/content/panorama/scripts/lib/vendor/**/*"]
   }
 }

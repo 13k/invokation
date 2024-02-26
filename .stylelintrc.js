@@ -62,7 +62,15 @@ const PANORAMA_PROPERTY_GROUPS = [
 
 const PANORAMA_PROPERTIES = PANORAMA_PROPERTY_GROUPS.flat();
 
-const PANORAMA_FUNCTIONS = ["color-stop", "fill-parent-flow", "from", "gaussian", "gradient", "to", "width-percentage"];
+const PANORAMA_FUNCTIONS = [
+  "color-stop",
+  "fill-parent-flow",
+  "from",
+  "gaussian",
+  "gradient",
+  "to",
+  "width-percentage",
+];
 
 const PANORAMA_PSEUDO_CLASSES = ["selected"];
 

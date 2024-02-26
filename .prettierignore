@@ -1,3 +1,7 @@
-/content/panorama/scripts/**
-/src/content/panorama/scripts/lib/vendor/*.js
-node_modules/**
+/images
+
+*.json
+*.js
+*.mjs
+*.ts
+*.mts

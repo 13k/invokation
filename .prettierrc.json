@@ -1,0 +1,16 @@
+{
+  "plugins": ["@prettier/plugin-xml"],
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "ignore",
+  "printWidth": 100,
+  "quoteProps": "consistent",
+  "semi": true,
+  "singleAttributePerLine": false,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "xmlSelfClosingSpace": true,
+  "xmlWhitespaceSensitivity": "ignore"
+}

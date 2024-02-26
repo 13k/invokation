@@ -1,5 +1,3 @@
-/.luarocks
-/lua_modules
 /game/scripts/vscripts/fsm.lua
 /game/scripts/vscripts/moses.lua
 /game/scripts/vscripts/pl/**
