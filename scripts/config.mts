@@ -1,29 +1,47 @@
-import type { Path } from "./path.mjs";
+import { Path } from "./path.mjs";
+import { DARWIN, LINUX, WINDOWS, WSL, unknownPlatform } from "./platform.mjs";
 
 export const { default: PACKAGE }: PackageImport = await import("../package.json", {
   assert: { type: "json" },
 });
 
 interface PackageImport {
-  default: PackageConfig;
+  default: {
+    dota2: {
+      customGame: PackageCustomGame;
+    };
+  };
 }
 
-export interface PackageConfig {
-  dota2: PackageDota2;
-}
-
-export interface PackageDota2 {
-  customGame: PackageCustomGame;
-}
-
-export interface PackageCustomGame {
+interface PackageCustomGame {
   name: string;
   maps: string[];
+}
+
+export interface ConfigSources {
+  srcDir: Path;
+  contentDir: Path;
+  gameDir: Path;
+}
+
+export interface ConfigDota2 {
+  baseDir: Path;
+  gameBinPath: Path;
+  sdkBinPath: Path | undefined;
+  resourceCompiler: string[] | undefined;
+  addonsContentDir: Path;
+  addonsGameDir: Path;
+}
+
+export interface ConfigCustomGame extends PackageCustomGame {
+  contentDir: Path;
+  gameDir: Path;
 }
 
 export interface ConfigOptions {
   rootDir: Path;
   dota2Dir: Path;
+  resourceCompiler?: string[];
 }
 
 export class Config {
@@ -32,10 +50,12 @@ export class Config {
   dota2: ConfigDota2;
   customGame: ConfigCustomGame;
 
-  constructor({ rootDir, dota2Dir }: ConfigOptions) {
+  constructor(options: ConfigOptions) {
     const {
       dota2: { customGame: pkgCustomGame },
     } = PACKAGE;
+
+    const { rootDir, dota2Dir } = options;
 
     this.rootDir = rootDir;
     this.sources = {
@@ -44,17 +64,7 @@ export class Config {
       gameDir: rootDir.join("game"),
     };
 
-    const dota2BinDir = dota2Dir.join("game", "bin", "win64");
-
-    this.dota2 = {
-      baseDir: dota2Dir,
-      binDir: dota2BinDir,
-      gameBinPath: dota2BinDir.join("dota2.exe"),
-      sdkBinPath: dota2BinDir.join("dota2cfg.exe"),
-      resourceCompilerBinPath: dota2BinDir.join("resourcecompiler.exe"),
-      addonsContentDir: dota2Dir.join("content", "dota_addons"),
-      addonsGameDir: dota2Dir.join("game", "dota_addons"),
-    };
+    this.dota2 = configDota2(dota2Dir, options.resourceCompiler);
 
     this.customGame = {
       ...pkgCustomGame,
@@ -76,23 +86,35 @@ export class Config {
   }
 }
 
-export interface ConfigSources {
-  srcDir: Path;
-  contentDir: Path;
-  gameDir: Path;
-}
+// https://steamdb.info/app/570/config
+function configDota2(baseDir: Path, resourceCompilerOpt?: string[]): ConfigDota2 {
+  let gameBinPath: Path | undefined = undefined;
+  let sdkBinPath: Path | undefined = undefined;
+  let resourceCompiler: string[] | undefined = resourceCompilerOpt;
 
-export interface ConfigDota2 {
-  baseDir: Path;
-  binDir: Path;
-  gameBinPath: Path;
-  sdkBinPath: Path;
-  resourceCompilerBinPath: Path;
-  addonsContentDir: Path;
-  addonsGameDir: Path;
-}
+  if (WSL || WINDOWS) {
+    const binDir = baseDir.join("game", "bin", "win64");
 
-export interface ConfigCustomGame extends PackageCustomGame {
-  contentDir: Path;
-  gameDir: Path;
+    gameBinPath = binDir.join("dota2.exe");
+    sdkBinPath = binDir.join("dota2cfg.exe");
+    resourceCompiler ??= [binDir.join("resourcecompiler.exe").toString()];
+  } else if (LINUX) {
+    gameBinPath = baseDir.join("game", "dota.sh");
+  } else if (DARWIN) {
+    gameBinPath = baseDir.join("game", "dota.sh");
+  } else {
+    unknownPlatform();
+  }
+
+  const addonsContentDir = baseDir.join("content", "dota_addons");
+  const addonsGameDir = baseDir.join("game", "dota_addons");
+
+  return {
+    baseDir,
+    gameBinPath,
+    sdkBinPath,
+    resourceCompiler,
+    addonsContentDir,
+    addonsGameDir,
+  };
 }

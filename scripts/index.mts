@@ -1,5 +1,6 @@
 import { program } from "commander";
 import dotenv from "dotenv";
+import { expand as dotenvExpand } from "dotenv-expand";
 import temp from "temp";
 
 import BuildCommand from "./commands/build.mjs";
@@ -10,7 +11,7 @@ import LinkCommand from "./commands/link.mjs";
 import LOG from "./logger.mjs";
 
 async function loadDotenv(): Promise<void> {
-  const result = dotenv.config({ encoding: "utf8" });
+  const result = dotenvExpand(dotenv.config({ encoding: "utf8" }));
   const error = result.error as NodeJS.ErrnoException;
 
   if (error && error.code !== "ENOENT") {
@@ -22,7 +23,8 @@ async function loadDotenv(): Promise<void> {
 async function parseArgs(): Promise<void> {
   program
     .name("tasks")
-    .option("-d, --debug", "Output debug information", false)
+    .option("-d, --dota2 <PATH>", "Dota2 path")
+    .option("-D, --debug", "Output debug information", false)
     .on("option:debug", () => {
       LOG.level = "debug";
     });

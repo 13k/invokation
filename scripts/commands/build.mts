@@ -1,8 +1,11 @@
+import assert from "node:assert";
 import os from "node:os";
 import { inspect } from "node:util";
 
 import type { Command } from "commander";
+import { InvalidArgumentError } from "commander";
 
+import { parseShell } from "../exec.mjs";
 import { Label } from "../logger.mjs";
 import BaseCommand from "./base.mjs";
 
@@ -11,6 +14,7 @@ export interface Args {
 }
 
 export interface Options {
+  compiler?: string[];
   force?: boolean;
 }
 
@@ -20,62 +24,93 @@ enum BuildPart {
   Resources = "resources",
 }
 
-function parseBuildParts(value: string, parts?: BuildPart[]): BuildPart[] {
-  const buildParts = parts ?? [];
+function parseBuildPart(value: string, previous?: BuildPart[]): BuildPart[] {
+  const part = value as BuildPart;
 
-  buildParts.push(parseBuildPart(value));
-
-  return buildParts;
-}
-
-function parseBuildPart(value: string): BuildPart {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const [_, v] of Object.entries(BuildPart)) {
-    if (value === v) {
-      return v;
+  switch (part) {
+    case BuildPart.PanoramaScripts:
+    case BuildPart.Maps:
+    case BuildPart.Resources:
+      break;
+    default: {
+      const _check: never = part;
+      throw new InvalidArgumentError(`Invalid build part: ${inspect(_check)}`);
     }
   }
 
-  throw new Error(`Invalid build part: ${inspect(value)}`);
+  return [...(previous ?? []), part];
 }
 
-const ALL_PARTS = [BuildPart.PanoramaScripts, BuildPart.Maps, BuildPart.Resources];
+function parseCommand(value: string, previous?: string[]): string[] {
+  const cmd = parseShell(value);
+
+  return [...(previous ?? []), ...cmd];
+}
 
 const MAX_TEXTURE_RES = 256;
 const DIRECTX_LEVEL = "110";
 
 export default class BuildCommand extends BaseCommand<Args, Options> {
-  override subcommand(parent: Command): Command {
+  protected override subcommand(parent: Command): Command {
     const partChoices = Object.values(BuildPart).join(", ");
 
     return parent
       .command("build")
       .description("Build custom game resources")
+      .option(
+        "-c, --compiler <COMMAND>",
+        "\
+Resource compiler command. \
+Can be given multiple times to separate executable and arguments. \
+Accepts environment variables. \
+        ",
+        parseCommand,
+      )
       .option("-f, --force", "Force rebuild", false)
-      .argument("[parts...]", `Only build specific parts (choices: ${partChoices})`, parseBuildParts);
+      .argument("[parts...]", `Only build specific parts (choices: ${partChoices})`, parseBuildPart);
   }
 
-  override parse_args(...parts: BuildPart[]): Args {
+  protected override parse_args(parts: BuildPart[]): Args {
     return { parts };
   }
 
-  override async run(): Promise<void> {
-    const buildParts = this.args.parts.length === 0 ? ALL_PARTS : this.args.parts;
+  protected override async run(): Promise<void> {
+    const parts = this.args.parts.length === 0 ? Object.values(BuildPart) : this.args.parts;
 
-    if (buildParts.indexOf(BuildPart.PanoramaScripts) >= 0) {
-      await this.transpileScripts();
-    }
-
-    if (buildParts.indexOf(BuildPart.Maps) >= 0) {
-      await this.compileMaps();
-    }
-
-    if (buildParts.indexOf(BuildPart.Resources) >= 0) {
-      await this.compileResources();
+    for (const part of parts) {
+      switch (part) {
+        case BuildPart.PanoramaScripts:
+          await this.compilePanoramaScripts();
+          break;
+        case BuildPart.Maps:
+          await this.compileMaps();
+          break;
+        case BuildPart.Resources:
+          await this.compileResources();
+          break;
+        default: {
+          const _check: never = part;
+          throw new InvalidArgumentError(`Invalid build part: ${inspect(_check)}`);
+        }
+      }
     }
   }
 
-  async transpileScripts(): Promise<void> {
+  get compilerCommand(): string[] {
+    const {
+      dota2: { resourceCompiler },
+    } = this.config;
+
+    const cmd = this.options.compiler ?? resourceCompiler;
+
+    if (!cmd) {
+      throw new Error("Could not find resource compiler");
+    }
+
+    return cmd;
+  }
+
+  async compilePanoramaScripts(): Promise<void> {
     const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts");
 
     this.log.label(Label.Generate).fields({ srcDir }).info("panorama scripts");
@@ -97,7 +132,7 @@ export default class BuildCommand extends BaseCommand<Args, Options> {
     const relPatt = this.config.customGameContentRelPath(mapsPatt).toString();
 
     this.log.fields({ mapsPath: mapsPatt, relPath: relPatt }).debug("compileMaps()");
-    this.log.label(Label.Compile).fields({ glob: relPatt }).info("maps");
+    this.log.label(Label.Compile).fields({ pattern: relPatt }).info("maps");
 
     await this.compile(["-r", "-i", relPatt]);
   }
@@ -145,20 +180,25 @@ export default class BuildCommand extends BaseCommand<Args, Options> {
     ]);
   }
 
-  // TODO: allow configuration of resourcecompiler command
   async compile(args: string[]): Promise<void> {
-    const { dota2 } = this.config;
+    const {
+      dota2: { baseDir },
+    } = this.config;
 
-    const execArgs = [...args];
+    const [compilerCmd, ...compilerCmdArgs] = this.compilerCommand;
+
+    assert(compilerCmd, `Invalid resource compiler commmand: ${inspect(this.compilerCommand)}`);
+
+    const execArgs = [...compilerCmdArgs, ...args];
 
     if (this.options.force) {
       execArgs.push("-fshallow");
     }
 
-    await this.exec(dota2.resourceCompilerBinPath.toString(), execArgs, {
+    await this.exec(compilerCmd, execArgs, {
       echo: true,
       log: this.log,
-      cwd: dota2.baseDir.toString(),
+      cwd: baseDir.toString(),
     });
   }
 }

@@ -121,6 +121,10 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
       dota2: { sdkBinPath: cmd },
     } = this.config;
 
+    if (!cmd) {
+      throw new Error("Could not find workshop tools executable");
+    }
+
     await this.execBin(cmd, [...SDK_LAUNCH_OPTIONS, ...args]);
   }
 

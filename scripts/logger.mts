@@ -194,11 +194,11 @@ export class Logger {
     LOG.log(level, message, log.#options, log.#fields);
   }
 
-  error(message: string, options?: Options, fields?: FieldsLike): void {
+  error(message: string | Error, options?: Options, fields?: FieldsLike): void {
     this.log("error", message, options, fields);
   }
 
-  warn(message: string, options?: Options, fields?: FieldsLike): void {
+  warn(message: string | Error, options?: Options, fields?: FieldsLike): void {
     this.log("warn", message, options, fields);
   }
 
@@ -222,7 +222,7 @@ export class Logger {
     this.log("prompt", message, options, fields);
   }
 
-  verbose(message: string, options?: Options, fields?: FieldsLike): void {
+  verbose(message: string | Error, options?: Options, fields?: FieldsLike): void {
     this.log("verbose", message, options, fields);
   }
 
@@ -230,7 +230,7 @@ export class Logger {
     this.log("input", message, options, fields);
   }
 
-  silly(message: string, options?: Options, fields?: FieldsLike): void {
+  silly(message: string | Error, options?: Options, fields?: FieldsLike): void {
     this.log("silly", message, options, fields);
   }
 }
@@ -256,7 +256,7 @@ function printf(info: TransformableInfo) {
   let fieldsOut = formatFields(level, fields);
   let body = formatBody(metadata);
 
-  if (fieldsOut !== "") {
+  if (fieldsOut) {
     fieldsOut = `  ${fieldsOut}`;
   }
 
@@ -324,12 +324,11 @@ function formatMessage(message: unknown, emojify?: boolean): string {
 }
 
 function formatFields(level: string, fields: Fields): string {
-  let s = "";
-
   if (fields.size === 0) {
-    return s;
+    return "";
   }
 
+  let s = "";
   const color = _.chain(LEVEL_COLORS[level]).castArray().get(0, "reset").value();
   const style = colorStyle(color);
 
@@ -341,12 +340,11 @@ function formatFields(level: string, fields: Fields): string {
 }
 
 function formatBody(metadata?: Metadata): string {
-  let s = "";
-
   if (!metadata) {
-    return s;
+    return "";
   }
 
+  let s = "";
   const { stack } = metadata;
 
   if (stack) {

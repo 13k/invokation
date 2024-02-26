@@ -1,26 +1,32 @@
 import type { Command, OptionValues } from "commander";
 
 import { Config } from "../config.mjs";
+import type { ConfigOptions } from "../config.mjs";
 import type { ExecReturnValue } from "../exec.mjs";
 import type { ExecOptions } from "../exec.mjs";
-import { exec } from "../exec.mjs";
+import { exec, parseShell } from "../exec.mjs";
 import type { Logger } from "../logger.mjs";
 import LOG from "../logger.mjs";
 import { Path, ROOT_DIR } from "../path.mjs";
 import type { PathLike } from "../path.mjs";
 
-export interface Subcommand<Options> {
-  subcommand(parent: Command): Command;
-  run(options: Options, ...args: unknown[]): Promise<void>;
+interface GlobalOptions {
+  dota2?: string;
+  debug: boolean;
 }
 
 export default abstract class BaseCommand<Args, Options extends OptionValues> {
   #log?: Logger;
   #config?: Config;
   #args?: Args;
+  #globalOptions?: GlobalOptions;
   #options?: Options;
 
   protected cmd: Command;
+
+  protected abstract subcommand(parent: Command): Command;
+  protected abstract parse_args(...args: unknown[]): Args;
+  protected abstract run(): Promise<void>;
 
   constructor(parent: Command) {
     this.cmd = this.subcommand(parent).action(this.#run.bind(this));
@@ -36,18 +42,26 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
 
   get config(): Config {
     if (this.#config == null) {
-      // biome-ignore lint/complexity/useLiteralKeys: doesn't apply to `process.env` keys
-      const dota2DirEnv = process.env["DOTA2_PATH"];
+      // biome-ignore lint/complexity/useLiteralKeys: `process.env`
+      const dota2Dir = this.globalOptions.dota2 ?? process.env["DOTA2_PATH"];
 
-      if (!dota2DirEnv) {
-        const error = new Error("DOTA2_PATH environment variable must be set");
-
-        this.log.error(error.message);
-
-        throw error;
+      if (!dota2Dir) {
+        throw new Error("Dota2 path must be given");
       }
 
-      this.#config = new Config({ rootDir: ROOT_DIR, dota2Dir: Path.new(dota2DirEnv) });
+      const options: ConfigOptions = {
+        rootDir: ROOT_DIR,
+        dota2Dir: Path.new(dota2Dir),
+      };
+
+      // biome-ignore lint/complexity/useLiteralKeys: `process.env`
+      const resourceCompilerEnv = process.env["RESOURCE_COMPILER"];
+
+      if (resourceCompilerEnv) {
+        options.resourceCompiler = parseShell(resourceCompilerEnv);
+      }
+
+      this.#config = new Config(options);
     }
 
     return this.#config;
@@ -59,10 +73,18 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
         throw new Error("args used before initialization");
       }
 
-      this.#args = this.parse_args(this.cmd.processedArgs);
+      this.#args = this.parse_args(...this.cmd.processedArgs);
     }
 
     return this.#args;
+  }
+
+  get globalOptions(): GlobalOptions {
+    if (this.#globalOptions == null) {
+      this.#globalOptions = this.cmd.optsWithGlobals();
+    }
+
+    return this.#globalOptions;
   }
 
   get options(): Options {
@@ -75,23 +97,13 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
 
   async #run(): Promise<void> {
     const path = this.config.dota2.gameBinPath;
-    const exists = await path.exists();
 
-    if (!exists) {
-      const error = new Error("Could not find dota2 binary");
-
-      this.log.fields({ path }).error(error.message);
-      this.log.debug(error);
-
-      throw error;
+    if (!(await path.exists())) {
+      throw new Error(`Could not find dota2 binary in ${path}`);
     }
 
     await this.run();
   }
-
-  abstract subcommand(parent: Command): Command;
-  abstract parse_args(...args: unknown[]): Args;
-  abstract run(): Promise<void>;
 
   protected async exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): Promise<ExecReturnValue<string>> {
     return await exec(

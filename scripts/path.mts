@@ -1,8 +1,6 @@
 import type { Abortable } from "node:events";
 import fs from "node:fs";
-import process from "node:process";
 import { fileURLToPath } from "node:url";
-import { inspect } from "node:util";
 
 import { default as MojoPath } from "@mojojs/path";
 import fse from "fs-extra";
@@ -10,7 +8,7 @@ import { glob } from "glob";
 import type { GlobOptionsWithFileTypesUnset } from "glob";
 
 import { exec } from "./exec.mjs";
-import { UNIX, WINDOWS, WSL } from "./platform.mjs";
+import { UNIX, WINDOWS, WSL, unknownPlatform } from "./platform.mjs";
 
 export type { GlobOptionsWithFileTypesUnset as GlobOptions } from "glob";
 
@@ -48,11 +46,15 @@ export class Path {
       return new WindowsPath(...parts);
     }
 
-    throw new Error(`platform ${inspect(process.platform)} is not supported`);
+    unknownPlatform();
   }
 
   constructor(...parts: PathLike[]) {
     this.#path = new MojoPath(...pathLikeStrings(parts));
+  }
+
+  toString(): string {
+    return this.#path.toString();
   }
 
   isPosix(): this is PosixPath {
