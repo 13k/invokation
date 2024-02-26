@@ -79,11 +79,11 @@
 .ability-name {
   width: fill-parent-flow(1);
   margin-left: 8px;
-  vertical-align: center;
+  font-size: 14px;
   text-overflow: shrink;
   text-shadow: 2px 2px 0 1 #222;
   text-transform: uppercase;
-  font-size: 14px;
+  vertical-align: center;
   transition: color 0.2s ease-in-out 0s;
 }
 

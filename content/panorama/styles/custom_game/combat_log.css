@@ -23,11 +23,11 @@
 
 .CombatLog {
   flow-children: down;
+  align: center top;
   width: clWidth;
   height: clHeight;
-  align: center top;
-  transform: translateY(0);
   transition: transform 0.25s ease-in-out 0s;
+  transform: translateY(0);
 }
 
 .CombatLogRoot.Closed .CombatLog {
@@ -35,13 +35,13 @@
 }
 
 #CombatLogContents {
-  overflow: clip scroll;
   flow-children: down;
   width: 100%;
   height: fill-parent-flow(1);
   padding-top: clPadding;
   padding-right: clPadding;
   padding-left: clPadding;
+  overflow: clip scroll;
 }
 
 .CombatLogRow {
@@ -52,8 +52,8 @@
   width: clCellSize;
   height: clCellSize;
   margin: clCellMargin;
-  box-shadow: #222 -2px -2px 4px 4px;
   background-color: #000d;
+  box-shadow: #222 -2px -2px 4px 4px;
 }
 
 .CombatLogIcon .CombatLogIconImage {
@@ -66,8 +66,8 @@
   width: 100%;
   height: clBarHeight;
   padding: 0 8px;
-  border-top: 1px solid #222;
   background-color: #0003;
+  border-top: 1px solid #222;
 }
 
 .CombatLogThumb {
@@ -78,15 +78,15 @@
 .CombatLogThumb .TickBox {
   width: clThumbWidth;
   height: clThumbHeight;
-  transform: rotateZ(180deg) translateY(-2px);
   wash-color: #d8d8d8;
+  transform: rotateZ(180deg) translateY(-2px);
 }
 
 .CombatLogThumb:selected .TickBox {
   width: clThumbWidth;
   height: clThumbHeight;
-  transform: rotateZ(0deg) translateY(2px);
   wash-color: #d8d8d8;
+  transform: rotateZ(0deg) translateY(2px);
 }
 
 .CombatLogThumb .TickBox:hover {
@@ -95,21 +95,21 @@
 
 .CombatLogTitle {
   horizontal-align: left;
-  vertical-align: center;
-  text-overflow: shrink;
-  text-shadow: 1px 1px 0 3 #0006;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   font-family: defaultFont;
   font-size: 16px;
   font-weight: bold;
   color: white;
+  text-overflow: shrink;
+  text-shadow: 1px 1px 0 3 #0006;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  vertical-align: center;
 }
 
 .CombatLogBarActions {
   flow-children: right;
-  height: 100%;
   horizontal-align: right;
+  height: 100%;
 }
 
 .CombatLogRoot.Closed .CombatLogBarActions {

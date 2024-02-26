@@ -7,8 +7,8 @@
 
 .TopBar {
   flow-children: right;
-  margin-top: 13px;
   align: left top;
+  margin-top: 13px;
 }
 
 .TopBar .TopBarButton {
@@ -17,9 +17,9 @@
   margin-left: 16px;
   vertical-align: top;
   tooltip-position: bottom;
+  background-size: 100%;
   opacity: 0.5;
   wash-color: #cdf;
-  background-size: 100%;
 }
 
 .TopBar .TopBarButton:hover {

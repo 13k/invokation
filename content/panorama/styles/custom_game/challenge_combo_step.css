@@ -1,21 +1,21 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
 .ChallengeComboStepRoot {
+  align: center center;
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  align: center center;
-  pre-transform-scale2d: 0;
-  opacity-mask: softEdgeBoxMask;
-  wash-color: #666e;
-  border: 3px solid goldColor;
   background-color: #241200;
+  border: 3px solid goldColor;
+  wash-color: #666e;
+  opacity-mask: softEdgeBoxMask;
   transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
   transition-property: width, height, wash-color, opacity, pre-transform-scale2d;
   animation-duration: 0.31s;
   animation-timing-function: ease-in;
   animation-iteration-count: 1;
+  pre-transform-scale2d: 0;
 }
 
 .ChallengeComboStepRoot.ComboStepInvocation {
@@ -28,11 +28,11 @@
 }
 
 .ChallengeComboStepRoot.ChallengeComboStepBump {
-  pre-transform-scale2d: 1;
   transition-delay: 0s;
   transition-duration: 0.175s, 0.12s;
   animation-name: ChallengeComboStepBump;
   animation-delay: 0s;
+  pre-transform-scale2d: 1;
 }
 
 .ChallengeComboStepRoot.ChallengeComboStepActive {
@@ -56,17 +56,17 @@
 
 @keyframes 'ChallengeComboStepBump' {
   0% {
-    pre-transform-scale2d: 0;
     opacity: 0;
+    pre-transform-scale2d: 0;
   }
 
   50% {
-    pre-transform-scale2d: 1.25;
     opacity: 1;
+    pre-transform-scale2d: 1.25;
   }
 
   100% {
-    pre-transform-scale2d: 1;
     opacity: 1;
+    pre-transform-scale2d: 1;
   }
 }

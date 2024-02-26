@@ -2,9 +2,9 @@
 @import url("file://{resources}/styles/custom_game/popups/popups_shared.css");
 
 .PopupTextEntryBody {
-  visibility: collapse;
   flow-children: right;
   horizontal-align: center;
+  visibility: collapse;
 }
 
 .PopupTextEntryRoot.BodyEnabled .PopupTextEntryBody {
@@ -16,9 +16,9 @@
 }
 
 .PopupTextEntryIconImage {
-  visibility: collapse;
   width: 80px;
   margin-right: 15px;
+  visibility: collapse;
 }
 
 .PopupTextEntryRoot.ImageIconEnabled #PopupTextEntryImage {
@@ -42,11 +42,11 @@
 }
 
 .PopupTextEntryBodyLabel {
-  max-width: 400px;
   align: center center;
-  text-align: center;
+  max-width: 400px;
   font-size: 24px;
   color: #fff;
+  text-align: center;
 }
 
 .PopupTextEntryRoot.EconItemIconEnabled .PopupTextEntryBodyLabel {
@@ -54,9 +54,9 @@
 }
 
 #PopupTextEntryTextEntry {
+  horizontal-align: center;
   width: 100%;
   margin-top: 24px;
-  horizontal-align: center;
 }
 
 .PopupTextEntryRoot.Multiline #PopupTextEntryTextEntry {

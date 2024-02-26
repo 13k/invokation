@@ -24,9 +24,9 @@
 #UITagSelectTagList .UITagSelectTag {
   flow-children: right;
   height: pillHeight;
+  padding: 4px 6px 2px;
   margin-top: 8px;
   margin-left: 8px;
-  padding: 4px 6px 2px;
   border: 1px solid #666;
   border-radius: 2px;
   transition-duration: 0.2s;
@@ -39,8 +39,8 @@
 
 #UITagSelectTagList .UITagSelectTag .UITagSelectTagLabel {
   margin-top: 3px;
-  vertical-align: center;
   font-size: 18px;
+  vertical-align: center;
 }
 
 #UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton {
@@ -48,9 +48,9 @@
   height: 14px;
   margin-left: 2px;
   vertical-align: center;
-  wash-color: #ccc;
   background-image: controlsQuitIcon;
   background-size: 100%;
+  wash-color: #ccc;
 }
 
 #UITagSelectTagList .UITagSelectTag .UITagSelectTagRemoveButton:hover {

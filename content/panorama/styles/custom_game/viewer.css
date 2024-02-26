@@ -19,21 +19,21 @@
 }
 
 .CloseButton {
+  horizontal-align: right;
   width: 36px;
   height: 36px;
   margin-top: -4px;
   margin-right: -4px;
-  horizontal-align: right;
   wash-color: #fff;
 }
 
 .RefreshButton {
-  visibility: collapse;
+  horizontal-align: left;
   width: 36px;
   height: 36px;
   margin-top: -4px;
   margin-left: -4px;
-  horizontal-align: left;
+  visibility: collapse;
   wash-color: #fff;
 }
 
@@ -42,11 +42,11 @@
 }
 
 .Viewer {
+  horizontal-align: center;
   width: 640px;
   height: 840px;
   margin-top: 150px;
   margin-left: 790px;
-  horizontal-align: center;
   opacity: 1;
   transition-duration: 0s;
   transition-property: opacity;
@@ -74,41 +74,41 @@
 
 #ViewerTitle {
   width: 555px;
-  margin-left: 45px;
   padding: 0 25px;
+  margin-left: 45px;
+  font-size: 21px;
+  font-weight: black;
+  color: fgColor;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 0 0 5px 1px #000;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 21px;
-  font-weight: black;
-  color: fgColor;
 }
 
 #ViewerScrollPanel {
-  overflow: squish scroll;
+  align: center top;
   width: 80%;
   height: 600px;
   padding-right: 20px;
   padding-bottom: 10px;
-  align: center top;
+  overflow: squish scroll;
   opacity-mask: softEdgeVScrollWideMask;
 }
 
 #ViewerPropertiesSection {
-  width: 65%;
   horizontal-align: center;
+  width: 65%;
 }
 
 #ViewerDescription {
   width: 100%;
   margin-top: 18px;
-  text-align: left;
   font-size: 18px;
   font-weight: semi-bold;
   line-height: 21px;
   color: fgColor;
+  text-align: left;
 }
 
 .ViewerSection {
@@ -130,10 +130,10 @@
 }
 
 .ViewerSection .SectionHeader .SectionLabel {
-  text-shadow: 1px 1px 2px 1 fgColor;
-  text-transform: uppercase;
   font-size: 24px;
   font-weight: bold;
+  text-shadow: 1px 1px 2px 1 fgColor;
+  text-transform: uppercase;
 }
 
 .ViewerSection .SectionRow {
@@ -143,16 +143,16 @@
 
 .ViewerAbilitiesBuildSection .ViewerAbilitiesBuild {
   flow-children: right;
+  horizontal-align: center;
   margin-top: 22px;
   margin-bottom: 10px;
-  horizontal-align: center;
 }
 
 .ViewerAbilitiesBuild .AbilityCircle {
   width: abilityCircleSize;
   height: abilityCircleSize;
-  box-shadow: #1c1d20ee 0 0 8px 0;
   border-radius: abilityCircleBorderRadius;
+  box-shadow: #1c1d20ee 0 0 8px 0;
 }
 
 .ViewerAbilitiesBuildSection .ViewerOrb {
@@ -160,23 +160,23 @@
 }
 
 .ViewerAbilitiesBuildSection .ViewerOrbLabel {
+  align: right bottom;
   margin-right: 8px;
   margin-bottom: 4px;
-  align: right bottom;
-  text-shadow: 1px 1px 1px #fffd;
   font-size: 28px;
   font-weight: bold;
-  opacity-mask: softEdgeBoxIrregularMask;
   color: fgColor;
+  text-shadow: 1px 1px 1px #fffd;
+  opacity-mask: softEdgeBoxIrregularMask;
 }
 
 #ViewerTalents {
+  horizontal-align: middle;
   width: abilityCircleSize;
   height: abilityCircleSize;
-  horizontal-align: middle;
   vertical-align: middle;
-  tooltip-position: left;
   tooltip-body-position: 33%;
+  tooltip-position: left;
 }
 
 #ViewerSequence {
@@ -206,8 +206,8 @@
 }
 
 .ViewerFooter {
-  margin-bottom: 60px;
   horizontal-align: center;
+  margin-bottom: 60px;
   vertical-align: bottom;
 }
 
@@ -219,11 +219,11 @@
 .ViewerButtons .PlayButton {
   width: 206px;
   height: 49px;
+  background-color: viewerPlayButtonGradient;
+  border-top: 1px solid #faa46a;
+  box-shadow: #27110250 0 0 12px;
   opacity: 0.9;
   wash-color: #9992;
-  box-shadow: #27110250 0 0 12px;
-  border-top: 1px solid #faa46a;
-  background-color: viewerPlayButtonGradient;
   transition-duration: 0.2s;
   transition-property: background-color;
 }
@@ -238,13 +238,13 @@
 
 .ViewerButtons .PlayButton .PlayLabel {
   width: 100%;
-  vertical-align: center;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   font-size: 24px;
   font-weight: bold;
   color: #d5d7d7;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  vertical-align: center;
 }
 
 .ViewerButtons .PlayButton:hover .PlayLabel {

@@ -19,13 +19,13 @@
 }
 
 .ChallengeCombo {
+  horizontal-align: right;
   width: sequenceWidth;
   height: 100%;
   padding-top: 80px;
   padding-bottom: 80px;
-  horizontal-align: right;
-  opacity: 1;
   background-color: comboPanelGradient;
+  opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
 }
@@ -44,32 +44,32 @@
 }
 
 #ChallengeSequence {
-  overflow: clip scroll;
   flow-children: down;
   width: 100%;
   height: 100%;
   padding-top: 30px;
+  overflow: clip scroll;
   opacity-mask: softEdgeVScrollMask;
 }
 
 #ChallengeSplash {
-  visibility: collapse;
-  overflow: clip noclip;
+  align: left top;
   width: 0;
   max-width: 0;
   height: splashHeight;
   margin-top: 200px;
   margin-left: 100px;
-  align: left top;
+  overflow: clip noclip;
+  visibility: collapse;
   transition-timing-function: ease-out;
   transition-duration: 0.15s;
   transition-property: max-width, width;
 }
 
 #ChallengeSplash.Show {
-  visibility: visible;
   width: splashWidth;
   max-width: splashWidth;
+  visibility: visible;
 }
 
 #ChallengeSplash .ChallengeSplashFX {
@@ -88,40 +88,40 @@
   width: 100%;
   margin-top: 70px;
   margin-left: -50px;
+  font-size: 48px;
+  font-style: italic;
+  font-weight: black;
+  color: #bd42cf;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 3px 3px 6px #04272c;
   text-transform: uppercase;
   letter-spacing: 10px;
-  font-size: 48px;
-  font-weight: black;
-  font-style: italic;
-  color: #bd42cf;
 }
 
 #ChallengeSplash.success .ChallengeSplashTitle {
-  text-shadow: 3px 3px 6px #162c5a;
   color: #42cf49;
+  text-shadow: 3px 3px 6px #162c5a;
 }
 
 #ChallengeSplash.failure .ChallengeSplashTitle {
-  text-shadow: 3px 3px 6px #474303;
   color: #d44b21;
+  text-shadow: 3px 3px 6px #474303;
 }
 
 #ChallengeSplash .ChallengeSplashHelp {
+  horizontal-align: left;
   margin-top: 10px;
   margin-left: 280px;
-  horizontal-align: left;
+  color: #ccc;
   text-align: left;
   text-shadow: 1px 1px 2px #000;
-  color: #ccc;
 }
 
 .ChallengeControls {
   flow-children: right;
-  margin-left: controlsMarginLeft;
   align: left bottom;
+  margin-left: controlsMarginLeft;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
@@ -139,9 +139,9 @@
 }
 
 .ChallengeControls .ChallengeControlIcon:hover {
+  background-color: panelTranslucentHoverGradient;
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
-  background-color: panelTranslucentHoverGradient;
 }
 
 .ChallengeControls .ChallengeIconButton {
@@ -224,18 +224,18 @@
 }
 
 #ChallengeWaitProgress {
+  align: center top;
   width: 40px;
   height: 40px;
   margin-top: waitProgressMarginTop;
   margin-left: waitProgressMarginLeft;
-  align: center top;
 }
 
 #ChallengeWaitProgressBar {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   background-color: #000c;
+  border-radius: 50%;
 }
 
 #ChallengeWaitProgressBar_FG {
@@ -245,27 +245,27 @@
 }
 
 #ChallengeWaitProgress .ChallengeWaitProgressBarOverlay {
+  align: center center;
   width: 34px;
   height: 34px;
-  align: center center;
-  border-radius: 50%;
   background-color: black;
+  border-radius: 50%;
 }
 
 #ChallengeWaitProgress .ChallengeWaitProgressText {
-  width: 80px;
   align: center center;
-  text-align: center;
+  width: 80px;
   font-size: 16px;
   font-weight: bold;
   color: white;
+  text-align: center;
 }
 
 #ChallengeScore {
+  align: center top;
   width: scoreWidth;
   height: scoreHeight;
   margin-top: scoreMarginTop;
-  align: center top;
 }
 
 #ChallengeScore.Failed {
@@ -277,13 +277,13 @@
 }
 
 #ChallengeTimer {
+  align: right top;
   width: 140px;
   height: 58px;
   margin-right: timerMarginRight;
-  align: right top;
-  transform: translateY(0);
   transition-duration: 0.2s;
   transition-property: transform;
+  transform: translateY(0);
 }
 
 #ChallengeTimer.Hide {
@@ -300,9 +300,9 @@
 #ChallengeTimerLabel {
   width: 100%;
   margin-top: 12px;
+  font-size: 26px;
+  color: white;
   text-align: center;
   text-overflow: shrink;
   text-shadow: -1px 2px 1px 2 #333333b0;
-  font-size: 26px;
-  color: white;
 }

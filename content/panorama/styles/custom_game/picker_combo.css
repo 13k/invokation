@@ -6,8 +6,8 @@
 .PickerComboRoot {
   flow-children: down;
   width: 100%;
-  margin-top: 10px;
   padding: 10px;
+  margin-top: 10px;
   border-radius: 4px;
 }
 
@@ -26,14 +26,14 @@
 .PickerComboRoot .PanelTitleContainer {
   height: fit-children;
   padding: 0;
-  border: 0;
   background-color: none;
+  border: 0;
 }
 
 .PickerComboRoot .PanelTitle {
-  vertical-align: center;
-  text-align: left;
   font-size: 14px;
+  text-align: left;
+  vertical-align: center;
 }
 
 .PickerComboRoot.PickerComboFinished .PanelTitle {
@@ -41,15 +41,15 @@
 }
 
 .PickerComboRoot .FinishedIcon {
-  visibility: collapse;
   width: 24px;
   height: 24px;
   vertical-align: center;
-  tooltip-position: right;
+  visibility: collapse;
   tooltip-body-position: 50% 10%;
-  wash-color: dotaPlusLightGold;
+  tooltip-position: right;
   background-image: controlsCheckRoundIcon;
   background-size: 100%;
+  wash-color: dotaPlusLightGold;
 }
 
 .PickerComboRoot.PickerComboFinished .FinishedIcon {
@@ -67,8 +67,8 @@
   height: 28px;
   margin: 6px 8px;
   vertical-align: center;
-  tooltip-position: right;
   tooltip-body-position: 50% 10%;
+  tooltip-position: right;
 }
 
 .PickerComboRoot .InfoIcon {
@@ -93,10 +93,10 @@
 }
 
 .PickerComboRoot .StanceIcon {
-  wash-color: #888;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  wash-color: #888;
   transition-timing-function: ease-in-out;
   transition-duration: 0.2s;
   transition-property: wash-color;
@@ -113,8 +113,8 @@
 .PickerComboRoot .HeroLevelIcon {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
   background-color: #121212;
+  border-radius: 50%;
 }
 
 .PickerComboRoot:hover .HeroLevelIcon {
@@ -122,15 +122,15 @@
 }
 
 .PickerComboRoot .HeroLevelLabel {
+  align: center center;
   width: 14px;
   margin-top: 3px;
-  align: center center;
-  text-align: center;
-  text-overflow: shrink;
-  text-shadow: 0 0 3px 3.7 #ec780e24;
   font-size: 14px;
   font-weight: normal;
   color: #e7d291;
+  text-align: center;
+  text-overflow: shrink;
+  text-shadow: 0 0 3px 3.7 #ec780e24;
 }
 
 .PickerComboRoot .PickerComboRatings {

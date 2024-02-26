@@ -14,9 +14,9 @@
 
 .FreestyleControls {
   flow-children: right;
+  align: left bottom;
   margin-top: 13px;
   margin-left: controlsMarginLeft;
-  align: left bottom;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
@@ -35,9 +35,9 @@
 }
 
 .FreestyleControls .FreestyleControlIcon:hover {
+  background-color: panelTranslucentHoverGradient;
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
-  background-color: panelTranslucentHoverGradient;
 }
 
 .FreestyleControls .FreestyleIconButton {
@@ -76,9 +76,9 @@
 }
 
 .FreestyleControls .LevelMaxButton {
-  transform: rotateZ(-90deg);
   background-image: controlsDoubleArrowRightIcon;
   background-size: 30px 30px;
+  transform: rotateZ(-90deg);
 }
 
 .FreestyleControls .FreestyleControlIcon .Grey {
@@ -114,8 +114,8 @@
 }
 
 #FreestyleScore {
+  align: center bottom;
   width: scoreWidth;
   height: scoreHeight;
   margin-bottom: scoreMarginBottom;
-  align: center bottom;
 }

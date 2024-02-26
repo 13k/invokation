@@ -10,15 +10,15 @@
 
 .PanelTitle {
   width: 100%;
+  font-family: defaultFont;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 1px 1px 0 3 #0006;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-family: defaultFont;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
 }
 
 .PanelTitleContainer {
@@ -27,8 +27,8 @@
   height: 32px;
   padding-top: 6px;
   padding-left: 5px;
-  border-bottom: 1px solid #222;
   background-color: #0003;
+  border-bottom: 1px solid #222;
 }
 
 .PanelTitleContainer .PanelTitle {

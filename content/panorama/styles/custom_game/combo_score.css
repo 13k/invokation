@@ -20,10 +20,10 @@
   z-index: 0;
   width: 100%;
   height: 100%;
-  opacity-mask: softEdgeBoxIrregularMask;
   background-color: rgba(95, 55, 3, 0.1);
   background-image: arcanaShakerSummaryBackground;
   background-size: 100%;
+  opacity-mask: softEdgeBoxIrregularMask;
 }
 
 .ComboScoreRoot.Level2 .ComboScoreSplashBackground {
@@ -32,9 +32,9 @@
 
 .ComboScoreRoot .ComboScoreDigitContainer {
   flow-children: left;
+  align: center center;
   width: 100%;
   margin-left: 20px;
-  align: center center;
 }
 
 .ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigitX {
@@ -181,11 +181,11 @@
 }
 
 .ComboScoreRoot > .ComboScoreCounter > .ComboScoreContent {
+  align: center bottom;
   width: 100%;
   height: 90px;
   margin-bottom: 10px;
   margin-left: 0;
-  align: center bottom;
 }
 
 #ComboScoreCounterTicker {
@@ -193,8 +193,8 @@
 }
 
 #ComboScoreCounterTicker.ComboScoreDigitContainer {
-  margin-right: 90px;
   horizontal-align: center;
+  margin-right: 90px;
 }
 
 #ComboScoreCounterTicker .ComboScoreDigitX {
@@ -211,10 +211,10 @@
 }
 
 #ComboScoreCounterTicker .ComboScoreDigit {
-  pre-transform-scale2d: 0.9;
   transition-timing-function: ease-in-out;
   transition-duration: 0.1s;
   transition-property: pre-transform-scale2d, background-image;
+  pre-transform-scale2d: 0.9;
 }
 
 #ComboScoreCounterTicker.CounterBump .ComboScoreDigit {
@@ -223,18 +223,18 @@
 
 .ComboScoreRoot > .ComboScoreCounter > .ComboScoreContent > .ComboScoreLabel {
   z-index: 10;
-  margin-top: 65px;
   horizontal-align: center;
-  vertical-align: bottom;
+  margin-top: 65px;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: bold;
+  line-height: 13px;
+  color: #d5f9fe;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  font-size: 13px;
-  font-weight: bold;
-  font-style: italic;
-  line-height: 13px;
-  color: #d5f9fe;
+  vertical-align: bottom;
 }
 
 .ComboScoreRoot > .ComboScoreSummary {
@@ -262,19 +262,19 @@
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent {
   flow-children: down;
-  width: 100%;
   align: center center;
+  width: 100%;
 }
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreCount {
   flow-children: right;
-  width: 100%;
   horizontal-align: center;
+  width: 100%;
 }
 
 #ComboScoreSummaryCountDisplay.ComboScoreDigitContainer {
-  width: 40%;
   horizontal-align: center;
+  width: 40%;
 }
 
 #ComboScoreSummaryCountDisplay .ComboScoreDigitX {
@@ -333,14 +333,14 @@
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreCount > .ComboScoreLabel {
   margin-left: 5px;
-  vertical-align: center;
+  font-size: 13px;
+  font-weight: bolder;
+  color: #fff;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 13px;
-  font-weight: bolder;
-  color: #fff;
+  vertical-align: center;
 }
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreDamage {
@@ -349,13 +349,13 @@
 }
 
 #ComboScoreSummaryDamageTicker {
-  margin-right: 60px;
   horizontal-align: right;
+  margin-right: 60px;
 }
 
 #ComboScoreSummaryDamageTicker.ComboScoreDigitContainer {
-  width: 70%;
   horizontal-align: center;
+  width: 70%;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -364,14 +364,14 @@
 }
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreDamage > .ComboScoreLabel {
+  align: center center;
   margin-top: -5px;
   margin-left: 0;
-  align: center center;
+  font-size: 13px;
+  font-weight: bolder;
+  color: #fff;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 13px;
-  font-weight: bolder;
-  color: #fff;
 }

@@ -3,8 +3,8 @@
 
 .PopupInvokerAbilityPickerRoot {
   flow-children: down;
-  padding: 0 0 20px;
   align: center center;
+  padding: 0 0 20px;
 }
 
 .PopupInvokerAbilityPickerHeader {
@@ -15,13 +15,13 @@
 }
 
 .PopupInvokerAbilityPickerSelectionChoice {
-  vertical-align: center;
+  font-size: 22px;
+  color: #bfd2ee;
   text-align: left;
   text-overflow: shrink;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 22px;
-  color: #bfd2ee;
+  vertical-align: center;
 }
 
 #PopupInvokerAbilityPickerAbilityList {

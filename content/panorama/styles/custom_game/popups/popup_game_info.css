@@ -4,24 +4,24 @@
 
 .GameInfoRoot {
   flow-children: none;
-  width: 1300px;
   align: center center;
+  width: 1300px;
 }
 
 .CloseButton {
+  align: right top;
   width: 30px;
   height: 30px;
   margin-top: -16px;
   margin-right: -48px;
-  align: right top;
   wash-color: #ddd;
 }
 
 .GameInfoContents {
-  overflow: squish scroll;
   flow-children: down;
   width: 100%;
   padding: 32px;
+  overflow: squish scroll;
 }
 
 .PopupTitle {
@@ -31,15 +31,15 @@
 }
 
 .PopupDescription {
-  width: 600px;
   horizontal-align: center;
+  width: 600px;
   text-align: center;
 }
 
 .OrbsScene {
+  horizontal-align: center;
   width: 768px;
   height: 256px;
-  horizontal-align: center;
 }
 
 .GameInfoSeparator {
@@ -66,28 +66,28 @@
 }
 
 .GameInfoLinkButton:hover {
+  background-color: #222;
   border-top: 1px solid #333;
   border-right: 1px solid #000;
   border-bottom: 1px solid #000;
   border-left: 1px solid #333;
-  background-color: #222;
 }
 
 .GameInfoLinkButton:active {
+  background-color: #444;
   border-top: 1px solid #666;
   border-right: 1px solid #333;
   border-bottom: 1px solid #333;
   border-left: 1px solid #666;
-  background-color: #444;
 }
 
 .GameInfoMetaText {
   height: 18px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   font-size: 18px;
   font-weight: normal;
   color: linkText;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .GameInfoArrowIcon {
@@ -96,9 +96,9 @@
   margin-top: 2px;
   margin-left: 2px;
   vertical-align: center;
-  wash-color: #ddd;
   background-image: controlsArrowPopoutIcon;
   background-size: 16px 16px;
+  wash-color: #ddd;
 }
 
 .GameInfoLinkButton:hover .GameInfoArrowIcon {

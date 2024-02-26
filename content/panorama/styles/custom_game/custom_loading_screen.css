@@ -26,11 +26,11 @@
 #TitleFX {
   width: 100%;
   height: 100%;
-  transform: translateX(64px) translateY(64px) translateZ(-40px);
   opacity: 0;
   transition-timing-function: ease-in-out;
   transition-duration: 0.4s;
   transition-property: opacity;
+  transform: translateX(64px) translateY(64px) translateZ(-40px);
 }
 
 #TitleFX.SceneLoaded {
@@ -50,25 +50,25 @@
 }
 
 .Title {
-  width: 100%;
   align: center center;
+  width: 100%;
+  font-family: titleFont;
+  font-size: 80px;
+  font-weight: semi-bold;
+  color: #bbb6ae;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 2px 4px 4px #000;
   text-transform: uppercase;
   letter-spacing: -2px;
-  font-family: titleFont;
-  font-size: 80px;
-  font-weight: semi-bold;
-  color: #bbb6ae;
 }
 
 #Scene {
   width: 100%;
   height: 100%;
   margin-left: -200px;
-  transform: translateZ(-30px);
   opacity: 0;
+  transform: translateZ(-30px);
 }
 
 #Scene.SceneLoaded {

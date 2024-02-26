@@ -15,13 +15,13 @@
 }
 
 .UIItemPickerSelectionChoice {
-  vertical-align: center;
+  font-size: 22px;
+  color: #bfd2ee;
   text-align: left;
   text-overflow: shrink;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 22px;
-  color: #bfd2ee;
+  vertical-align: center;
 }
 
 .UIItemPickerSearchBox {
@@ -32,8 +32,8 @@
 
 .UIItemPickerSearchBox .UIItemPickerSearchTextEntry {
   width: fill-parent-flow(1);
-  border: 0;
   background-color: none;
+  border: 0;
 }
 
 .UIItemPickerSearchBox .UIItemPickerSearchTextEntry #PlaceholderText {
@@ -46,10 +46,10 @@
   height: 27px;
   margin: 0 8px;
   vertical-align: center;
-  wash-color: #4f4f4f;
   background-image: controlsSearchIcon;
   background-repeat: no-repeat;
   background-size: contain;
+  wash-color: #4f4f4f;
   transition-duration: 0.1s;
   transition-property: wash-color;
 }
@@ -63,6 +63,6 @@
 }
 
 #GameItemTable {
-  margin-top: 16px;
   horizontal-align: center;
+  margin-top: 16px;
 }

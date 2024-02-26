@@ -6,9 +6,9 @@
 @define backgroundColorStep2: backgroundColor;
 
 .PopupPanel {
-  box-shadow: #0009 0 0 8px 0;
-  border: 2px solid #32383677;
   background-color: backgroundColor;
+  border: 2px solid #32383677;
+  box-shadow: #0009 0 0 8px 0;
 }
 
 @keyframes 'links-and-more-button-focus' {

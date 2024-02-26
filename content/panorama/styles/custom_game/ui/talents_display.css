@@ -1,9 +1,9 @@
 @import url("s2r://panorama/styles/hud/hud_reborn.css");
 
 .StatBranchContainer {
+  horizontal-align: center;
   width: 64px;
   height: 64px;
-  horizontal-align: center;
   vertical-align: center;
   background-image: url("s2r://panorama/images/hud/reborn/statbranch_button_bg_psd.vtex");
   background-repeat: no-repeat;

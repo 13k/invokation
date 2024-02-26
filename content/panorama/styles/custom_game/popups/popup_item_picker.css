@@ -3,6 +3,6 @@
 
 .PopupItemPickerRoot {
   flow-children: down;
-  padding: 0 0 20px;
   align: center center;
+  padding: 0 0 20px;
 }
