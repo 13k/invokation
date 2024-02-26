@@ -23,6 +23,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.20",
+    "@types/shell-quote": "^1.7.5",
     "@types/temp": "^0.9.4",
     "@types/triple-beam": "^1.3.5",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
@@ -40,6 +41,7 @@
     "logform": "^2.6.0",
     "node-emoji": "^2.1.3",
     "prettier": "^3.2.5",
+    "shell-quote": "^1.8.1",
     "stylelint": "^16.2.1",
     "stylelint-config-recess-order": "^4.6.0",
     "stylelint-config-standard": "^36.0.0",
@@ -54,7 +56,10 @@
   "dota2": {
     "customGame": {
       "name": "invokation",
-      "maps": ["cottage", "island"]
+      "maps": [
+        "cottage",
+        "island"
+      ]
     }
   }
 }
