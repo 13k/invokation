@@ -1,0 +1,116 @@
+version: "3"
+
+vars:
+  PANORAMA_LAYOUTS_SRC_PATH: content/panorama/layout
+  PANORAMA_SCRIPTS_SRC_PATH: src/content/panorama/scripts
+  PANORAMA_STYLES_SRC_PATH: content/panorama/styles
+  TASKS_SRC_PATH: scripts
+  VSCRIPTS_SRC_PATH: game/scripts/vscripts
+
+tasks:
+  default:
+    cmds:
+      - task: format
+      - task: lint
+      - task: test
+      - task: build
+
+  format:
+    desc: Run all formatters
+    cmds:
+      - task: tasks:format
+      - task: vscripts:format
+      - task: panorama:format
+
+  lint:
+    desc: Run all linters
+    cmds:
+      - task: tasks:lint
+      - task: vscripts:lint
+      - task: panorama:lint
+
+  test:
+    desc: Run all tests
+    cmds:
+      - task: vscripts:test
+
+  clean:
+    desc: Remove all compiled, generated and linked files
+    cmd: npm run clean
+
+  link:
+    desc: Link source files to game directories
+    cmd: npm run link
+
+  build:
+    desc: Build everything
+    deps: [link]
+    cmd: npm run build
+
+  launch:game:
+    desc: Launch Dota2
+    cmd: npm run launch:game
+
+  launch:tools:
+    desc: Launch SDK
+    cmd: npm run launch:tools
+
+  vscripts:format:
+    desc: Format vscripts
+    cmd: stylua --verify "{{.VSCRIPTS_SRC_PATH}}"
+
+  vscripts:lint:
+    desc: Lint vscripts
+    cmd: selene "{{.VSCRIPTS_SRC_PATH}}"
+
+  vscripts:test:
+    desc: Test vscripts
+    cmd: luarocks test
+
+  panorama:format:
+    desc: Format all panorama files
+    cmds:
+      - task: panorama:layouts:format
+      - task: panorama:scripts:format
+      - task: panorama:styles:format
+
+  panorama:lint:
+    desc: Lint all panorama files
+    cmds:
+      - task: panorama:layouts:lint
+      - task: panorama:scripts:lint
+      - task: panorama:styles:lint
+
+  panorama:layouts:format:
+    desc: Format panorama layout files
+    cmd: npx prettier --write '{{.PANORAMA_LAYOUTS_SRC_PATH}}/**/*.xml'
+
+  panorama:layouts:lint:
+    desc: Lint panorama layout files
+    cmd: echo "not implemented"
+
+  panorama:scripts:format:
+    desc: Format panorama script files
+    cmd: npx @biomejs/biome format --write "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+
+  panorama:scripts:lint:
+    desc: Lint panorama script files
+    cmd: npx eslint "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+
+  panorama:styles:format:
+    desc: Format panorama style files
+    cmds:
+      - npx stylelint --fix "{{.PANORAMA_STYLES_SRC_PATH}}"
+      - npx prettier --write '{{.PANORAMA_STYLES_SRC_PATH}}/**/*.css'
+
+  panorama:styles:lint:
+    desc: Lint panorama style files
+    cmd: npx stylelint "{{.PANORAMA_STYLES_SRC_PATH}}"
+
+  tasks:format:
+    desc: Format tasks
+    cmd: npx @biomejs/biome format --write "{{.TASKS_SRC_PATH}}"
+
+  tasks:lint:
+    desc: Lint tasks
+    cmd: npx eslint "{{.TASKS_SRC_PATH}}"
