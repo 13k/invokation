@@ -49,7 +49,8 @@ namespace invk {
       }
 
       enum CssClass {
-        ChallengeHide = "Hide",
+        Hide = "Hide",
+        ChallengeHide = Hide,
         ComboScore = "Level2",
         StepOptional = "ComboStepOptional",
         SplashShow = "Show",
@@ -57,8 +58,8 @@ namespace invk {
         SplashSuccess = "success",
         SplashFailure = "failure",
         ScoreFailure = "Failed",
-        TimerHide = "Hide",
-        WaitProgressHide = "Hide",
+        TimerHide = Hide,
+        WaitProgressHide = Hide,
       }
 
       enum Timing {
@@ -262,7 +263,7 @@ namespace invk {
 
         createStepPanel(parent: Panel, step: Combo.Step) {
           if (!this.combo) {
-            throw new Error(`Tried to createStepPanel() without combo`);
+            throw new Error("Tried to createStepPanel() without combo");
           }
 
           const id = `combo_step_${step.name}_${step.id}`;
@@ -735,7 +736,11 @@ namespace invk {
         }
 
         cycleHUD() {
-          const [prev, next] = [this.hudMode, (this.hudMode = HUD_MODES_CYCLE[this.hudMode])];
+          const prev = this.hudMode;
+
+          this.hudMode = HUD_MODES_CYCLE[this.hudMode];
+
+          const next = this.hudMode;
           const seq = this.switchHudAction(prev, next);
 
           this.debugFn(() => ["cycleHUD()", { prev, next, actions: seq.size() }]);
