@@ -1,4 +1,5 @@
 ---
+name: busted
 globals:
   after_each:
     args:

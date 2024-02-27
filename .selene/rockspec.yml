@@ -1,0 +1,28 @@
+# https://github.com/luarocks/luarocks/wiki/Rockspec-format
+---
+name: rockspec
+globals:
+  rockspec_format:
+    property: full-write
+  package:
+    property: full-write
+  version:
+    property: full-write
+  description:
+    property: full-write
+  supported_platforms:
+    property: full-write
+  dependencies:
+    property: full-write
+  build_dependencies:
+    property: full-write
+  external_dependencies:
+    property: full-write
+  test_dependencies:
+    property: full-write
+  source:
+    property: full-write
+  build:
+    property: full-write
+  test:
+    property: full-write

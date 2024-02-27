@@ -1,6 +1,6 @@
 ---
-base: lua51
 name: dota2
+base: lua51
 globals:
   ABILITY_CANNOT_BE_UPGRADED_AT_MAX:
     property: read-only

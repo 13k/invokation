@@ -3,7 +3,7 @@
   "runtime.version": "LuaJIT",
   "runtime.pathStrict": true,
   "runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/init.lua"],
-  "workspace.ignoreDir": [".luarocks", "config.ld", "lua_modules", "*.rockspec"],
+  "workspace.ignoreDir": [".luarocks", "config.ld", "lua_modules"],
   "workspace.library": [
     "game/scripts/vscripts/pl",
     "game/scripts/vscripts/fsm.lua",

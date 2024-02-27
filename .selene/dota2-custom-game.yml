@@ -1,5 +1,9 @@
 ---
+name: invokation
 globals:
   GameRules.Invokation:
     property: override-fields
+    any: true
+  GameMode:
+    property: new-fields
     any: true
