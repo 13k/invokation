@@ -1,12 +1,12 @@
 --- Unit class.
 -- @classmod invokation.dota2.Unit
-local m = require("moses")
 local class = require("pl.class")
-local types = require("pl.types")
 local delegation = require("invokation.lang.delegation")
+local m = require("moses")
+local types = require("pl.types")
 
-local LIMITS = require("invokation.const.limits")
 local INVENTORY = require("invokation.const.inventory")
+local LIMITS = require("invokation.const.limits")
 
 local M = class()
 

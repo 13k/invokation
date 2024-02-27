@@ -1,8 +1,8 @@
 --- Collection of `ItemKeyValues`.
 -- @classmod invokation.dota2.kv.ItemsKeyValues
-local m = require("moses")
-local class = require("pl.class")
 local ItemKeyValues = require("invokation.dota2.kv.ItemKeyValues")
+local class = require("pl.class")
+local m = require("moses")
 
 local ITEMS = require("invokation.const.items")
 

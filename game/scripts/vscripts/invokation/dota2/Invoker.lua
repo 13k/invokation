@@ -1,9 +1,9 @@
 --- Invoker class.
 -- @classmod invokation.dota2.Invoker
-local m = require("moses")
+local Ability = require("invokation.dota2.Ability")
 local List = require("pl.List")
 local class = require("pl.class")
-local Ability = require("invokation.dota2.Ability")
+local m = require("moses")
 
 local INVOKER = require("invokation.const.invoker")
 

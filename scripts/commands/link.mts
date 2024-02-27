@@ -34,7 +34,11 @@ export default class LinkCommand extends BaseCommand<Args, Options> {
     const { rootDir: rootPath, dota2 } = this.config;
 
     this.log.info("Linking custom game");
-    this.log.emojify().field("src", rootPath).field("dest", dota2.baseDir).debug(":link: base directories");
+    this.log
+      .emojify()
+      .field("src", rootPath)
+      .field("dest", dota2.baseDir)
+      .debug(":link: base directories");
 
     const links = await this.findLinks();
 
@@ -117,7 +121,10 @@ export default class LinkCommand extends BaseCommand<Args, Options> {
     const destDir = dest.dirname();
     const winDestDir = await destDir.windows({ absolute: true });
     const winDest = `${winDestDir}\\${dest.basename()}`;
-    const args = ["-Command", `New-Item -ItemType '${type}' -Path '${winDest}' -Target '${winSrc}'`];
+    const args = [
+      "-Command",
+      `New-Item -ItemType '${type}' -Path '${winDest}' -Target '${winSrc}'`,
+    ];
 
     this.log.field("cmd", inspect([POWERSHELL_BIN, ...args])).debug("pwsh link");
 

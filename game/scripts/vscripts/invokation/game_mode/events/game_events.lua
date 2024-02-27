@@ -1,8 +1,8 @@
 --- Game Events Listeners
 -- @submodule invokation.GameMode
-local Unit = require("invokation.dota2.Unit")
 local Ability = require("invokation.dota2.Ability")
 local DamageInstance = require("invokation.dota2.DamageInstance")
+local Unit = require("invokation.dota2.Unit")
 
 local ERRF_ABILITY_OR_ITEM_NOT_FOUND = "Could not find ability or item named '%q' on unit '%s'"
 

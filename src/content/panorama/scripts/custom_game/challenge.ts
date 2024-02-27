@@ -286,7 +286,7 @@ namespace invk {
         stepPanelInput<K extends keyof ChallengeComboStep.Inputs>(
           stepID: Combo.StepID,
           input: K,
-          payload: ChallengeComboStep.Inputs[K]
+          payload: ChallengeComboStep.Inputs[K],
         ) {
           this.getComboStep(stepID).Input(input, payload);
         }
@@ -356,7 +356,7 @@ namespace invk {
           const bumpSeq = this.staggeredSequenceOnStepPanels(
             Timing.BumpDelay,
             this.combo.sequence,
-            this.bumpStepPanel.bind(this)
+            this.bumpStepPanel.bind(this),
           );
 
           return new Sequence()
@@ -377,7 +377,7 @@ namespace invk {
           }
 
           const actions = _.map(this.combo.sequence, (step) =>
-            this.createStepPanelAction(this.elements.sequence, step)
+            this.createStepPanelAction(this.elements.sequence, step),
           );
 
           return new Sequence().Action(...actions);
@@ -389,14 +389,14 @@ namespace invk {
 
         sequenceActionsOnStepPanels(
           steps: Combo.Step[],
-          fn: (this: this, stepID: Combo.StepID) => void
+          fn: (this: this, stepID: Combo.StepID) => void,
         ) {
           return _.map(steps, (step) => new RunFunctionAction(fn, step.id));
         }
 
         parallelSequenceOnStepPanels(
           steps: Combo.Step[],
-          fn: (this: this, stepID: Combo.StepID) => void
+          fn: (this: this, stepID: Combo.StepID) => void,
         ) {
           return new ParallelSequence().Action(...this.sequenceActionsOnStepPanels(steps, fn));
         }
@@ -404,10 +404,10 @@ namespace invk {
         staggeredSequenceOnStepPanels(
           delay: number,
           steps: Combo.Step[],
-          fn: (this: this, stepID: Combo.StepID) => void
+          fn: (this: this, stepID: Combo.StepID) => void,
         ) {
           return new StaggeredSequence(delay).Action(
-            ...this.sequenceActionsOnStepPanels(steps, fn)
+            ...this.sequenceActionsOnStepPanels(steps, fn),
           );
         }
 
@@ -420,7 +420,7 @@ namespace invk {
 
           const activateSeq = this.parallelSequenceOnStepPanels(
             steps,
-            this.activateStepPanel.bind(this)
+            this.activateStepPanel.bind(this),
           );
 
           return seq
@@ -536,7 +536,7 @@ namespace invk {
               DVar.WaitProgressValue,
               wait,
               0,
-              wait
+              wait,
             )
             .AnimateProgressBar(this.elements.waitProgressBar, wait, 0, wait);
 

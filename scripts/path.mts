@@ -150,13 +150,17 @@ export class WslPosixPath extends PosixPath {
   }
 
   async windows(options: { absolute: boolean } = { absolute: false }) {
-    return await wslpath(this.toString(), { windows: true, ...options }).then((pathStr) => new WslWindowsPath(pathStr));
+    return await wslpath(this.toString(), { windows: true, ...options }).then(
+      (pathStr) => new WslWindowsPath(pathStr),
+    );
   }
 }
 
 export class WslWindowsPath extends WindowsPath {
   async posix(options: { absolute: boolean } = { absolute: false }) {
-    return await wslpath(this.toString(), { unix: true, ...options }).then((pathStr) => new WslPosixPath(pathStr));
+    return await wslpath(this.toString(), { unix: true, ...options }).then(
+      (pathStr) => new WslPosixPath(pathStr),
+    );
   }
 }
 

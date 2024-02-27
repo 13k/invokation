@@ -147,7 +147,7 @@ namespace invk {
           const component = this.create(
             Layout.ID.ViewerProperties,
             PanelID.Properties,
-            this.elements.propertiesSection
+            this.elements.propertiesSection,
           );
 
           component.Input("SetCombo", this.combo);
@@ -186,7 +186,7 @@ namespace invk {
           const description = L10n.comboAttrName(
             this.combo.id,
             "description",
-            L10n.Key.ViewerDescriptionFallback
+            L10n.Key.ViewerDescriptionFallback,
           );
 
           return new ParallelSequence()
@@ -233,7 +233,7 @@ namespace invk {
           }
 
           const actions = _.map(this.combo.sequence, (step) =>
-            this.createStepPanelAction(this.elements.sequence, step)
+            this.createStepPanelAction(this.elements.sequence, step),
           );
 
           return new Sequence().RemoveChildren(this.elements.sequence).Action(...actions);

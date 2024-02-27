@@ -258,7 +258,7 @@ namespace invk {
           createOptionAction(option: string) {
             return new AddOptionAction(
               this.elements.options,
-              _.bind(this.createOption, this, option)
+              _.bind(this.createOption, this, option),
             );
           }
 
@@ -315,7 +315,7 @@ namespace invk {
 
           clearTagsAction() {
             const actions = _.map(this.tags, (tag) =>
-              this.removeTagAction(tag, { immediate: true })
+              this.removeTagAction(tag, { immediate: true }),
             );
 
             return new ParallelSequence().Action(...actions);
@@ -376,7 +376,7 @@ namespace invk {
               {
                 channel: this.popupTextEntryChannel,
                 title: L10n.l(L10n.Key.TagSelectPopupTextEntryTitle),
-              }
+              },
             );
           }
         }

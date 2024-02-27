@@ -1,10 +1,10 @@
 --- Combo class.
 -- @classmod invokation.combos.Combo
-local moses = require("moses")
-local class = require("pl.class")
-local tablex = require("pl.tablex")
 local BaseCombo = require("invokation.combos.BaseCombo")
 local ComboSequence = require("invokation.combos.ComboSequence")
+local class = require("pl.class")
+local moses = require("moses")
+local tablex = require("pl.tablex")
 
 local M = class(BaseCombo)
 

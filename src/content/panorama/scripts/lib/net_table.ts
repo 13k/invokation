@@ -9,7 +9,7 @@ namespace invk {
 
     export type Listener<N extends Names, K extends Keys<N> = Keys<N>> = (
       key: K,
-      value: CustomNetTables.NetworkValue<N, K>
+      value: CustomNetTables.NetworkValue<N, K>,
     ) => void;
 
     export class NetTable<N extends Names> {
@@ -26,7 +26,7 @@ namespace invk {
       private _onChange<K extends Keys<N>>(
         name: N,
         key: K,
-        value: CustomNetTables.NetworkValue<N, K>
+        value: CustomNetTables.NetworkValue<N, K>,
       ) {
         if (name !== this.name) {
           return;

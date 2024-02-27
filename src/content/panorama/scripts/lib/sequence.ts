@@ -17,7 +17,7 @@ namespace invk {
 
         if (!action) {
           throw new Error(
-            `${this.constructor.name}: invalid action index=${index} actions.length=${this.actions.length}`
+            `${this.constructor.name}: invalid action index=${index} actions.length=${this.actions.length}`,
           );
         }
 
@@ -510,7 +510,7 @@ namespace invk {
 
         this.panel.SetDialogVariableInt(
           this.dialogVariable,
-          this.startValue + (this.endValue - this.startValue) * ratio
+          this.startValue + (this.endValue - this.startValue) * ratio,
         );
 
         return true;
@@ -595,7 +595,7 @@ namespace invk {
         progressBar: ProgressBarWithMiddle,
         startValue: number,
         endValue: number,
-        seconds: number
+        seconds: number,
       ) {
         super();
 
@@ -1055,10 +1055,10 @@ namespace invk {
         dialogVariable: string,
         start: number,
         end: number,
-        seconds: number
+        seconds: number,
       ) {
         return this.Action(
-          new AnimateDialogVariableIntAction(panel, dialogVariable, start, end, seconds)
+          new AnimateDialogVariableIntAction(panel, dialogVariable, start, end, seconds),
         );
       }
 
@@ -1070,10 +1070,10 @@ namespace invk {
         progressBar: ProgressBar,
         startValue: number,
         endValue: number,
-        seconds: number
+        seconds: number,
       ) {
         return this.Action(
-          new AnimateProgressBarAction(progressBar, startValue, endValue, seconds)
+          new AnimateProgressBarAction(progressBar, startValue, endValue, seconds),
         );
       }
 
@@ -1081,10 +1081,10 @@ namespace invk {
         progressBar: ProgressBarWithMiddle,
         startValue: number,
         endValue: number,
-        seconds: number
+        seconds: number,
       ) {
         return this.Action(
-          new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds)
+          new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds),
         );
       }
 

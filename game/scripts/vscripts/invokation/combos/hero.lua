@@ -1,12 +1,12 @@
 --- Internal combos hero helpers.
 -- @module invokation.combos.hero
-local Unit = require("invokation.dota2.Unit")
-local Player = require("invokation.dota2.Player")
 local Invoker = require("invokation.dota2.Invoker")
+local Player = require("invokation.dota2.Player")
+local Unit = require("invokation.dota2.Unit")
 
-local UNITS = require("invokation.const.units")
 local LIMITS = require("invokation.const.limits")
 local SOUND_EVENTS = require("invokation.const.sound_events")
+local UNITS = require("invokation.const.units")
 
 local M = {}
 

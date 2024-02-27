@@ -1,10 +1,10 @@
 --- ComboSequence class.
 -- @classmod invokation.combos.ComboSequence
-local m = require("moses")
-local fsm = require("fsm")
-local class = require("pl.class")
-local Logger = require("invokation.Logger")
 local ComboStep = require("invokation.combos.ComboStep")
+local Logger = require("invokation.Logger")
+local class = require("pl.class")
+local fsm = require("fsm")
+local m = require("moses")
 
 local M = class()
 
@@ -98,7 +98,8 @@ function M:todot()
 end
 
 function M:debugState(message)
-  local state = { state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds }
+  local state =
+    { state = self.fsm.current, current = self.currentId or "<nil>", next = self.nextIds }
   self:d(message, state)
 end
 

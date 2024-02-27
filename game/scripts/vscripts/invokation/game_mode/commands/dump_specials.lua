@@ -1,5 +1,5 @@
-local m = require("moses")
 local Invoker = require("invokation.dota2.Invoker")
+local m = require("moses")
 
 local M = {}
 

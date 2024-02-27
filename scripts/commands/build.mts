@@ -67,7 +67,11 @@ Accepts environment variables. \
         parseCommand,
       )
       .option("-f, --force", "Force rebuild", false)
-      .argument("[parts...]", `Only build specific parts (choices: ${partChoices})`, parseBuildPart);
+      .argument(
+        "[parts...]",
+        `Only build specific parts (choices: ${partChoices})`,
+        parseBuildPart,
+      );
   }
 
   protected override parse_args(parts: BuildPart[]): Args {

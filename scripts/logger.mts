@@ -166,12 +166,19 @@ export class Logger {
   }
 
   fields(fields: FieldsLike | Record<string, unknown>): Logger {
-    const it: FieldsLike = Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
+    const it: FieldsLike =
+      Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
 
     return this.#fork(undefined, it);
   }
 
-  log(this: this, level: Level, message: string | Error, options?: Options, fields?: FieldsLike): void {
+  log(
+    this: this,
+    level: Level,
+    message: string | Error,
+    options?: Options,
+    fields?: FieldsLike,
+  ): void {
     if (message instanceof Error) {
       LOG.log(level, message);
       return;

@@ -480,7 +480,12 @@ local M = {
     damageRating = 5,
     difficultyRating = 5,
     orbs = { 7, 7, 7 },
-    talents = Talents.Select(Talents.L10_LEFT, Talents.L15_RIGHT, Talents.L20_RIGHT, Talents.L25_RIGHT),
+    talents = Talents.Select(
+      Talents.L10_LEFT,
+      Talents.L15_RIGHT,
+      Talents.L20_RIGHT,
+      Talents.L25_RIGHT
+    ),
     tags = { "late-game" },
     items = {
       "item_travel_boots",

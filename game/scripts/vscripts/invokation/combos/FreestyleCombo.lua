@@ -1,7 +1,7 @@
 --- FreestyleCombo is a Combo class that implements a freestyle sequence.
 -- @classmod invokation.combos.FreestyleCombo
-local class = require("pl.class")
 local BaseCombo = require("invokation.combos.BaseCombo")
+local class = require("pl.class")
 
 local M = class(BaseCombo)
 

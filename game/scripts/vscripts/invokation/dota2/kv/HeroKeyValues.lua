@@ -1,8 +1,8 @@
 --- HeroKeyValues class.
 -- @classmod invokation.dota2.kv.HeroKeyValues
-local m = require("moses")
-local class = require("pl.class")
 local Talents = require("invokation.dota2.talents")
+local class = require("pl.class")
+local m = require("moses")
 
 local M = class()
 

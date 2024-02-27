@@ -105,7 +105,7 @@ namespace invk {
                 abilities[level] = abilities[level] || {};
                 abilities[level][side] = ability;
               },
-              {} as Dota2.Talent.Map<Dota2.Invoker.Ability>
+              {} as Dota2.Talent.Map<Dota2.Invoker.Ability>,
             );
 
             this.debug("onHeroDataChange()");
@@ -154,7 +154,7 @@ namespace invk {
 
             if (!branchPanel) {
               this.error(
-                `Could not find branch panel with class ${branchClass} for talent [${level}, ${side}]`
+                `Could not find branch panel with class ${branchClass} for talent [${level}, ${side}]`,
               );
 
               return;
@@ -167,14 +167,14 @@ namespace invk {
             });
 
             const branchLabel = branchPanel.FindChildrenWithClassTraverse(
-              branchLabelClass
+              branchLabelClass,
             )[0] as LabelPanel;
 
             this.debug("localizeBranch()", { branchLabel: branchLabel || "UNDEFINED!" });
 
             if (!branchLabel) {
               this.error(
-                `Could not find branch label with class ${branchLabelClass} for talent [${level}, ${side}]`
+                `Could not find branch label with class ${branchLabelClass} for talent [${level}, ${side}]`,
               );
 
               return;
@@ -260,11 +260,11 @@ namespace invk {
             }
 
             const side = _.find(SIDES, (side) =>
-              this.selectedSplit ? this.selectedSplit[level][side] : false
+              this.selectedSplit ? this.selectedSplit[level][side] : false,
             );
 
             seq = seq.Function(() =>
-              this.debug("selectBranchAction()", { level: level, side: side })
+              this.debug("selectBranchAction()", { level: level, side: side }),
             );
 
             if (side) {
@@ -306,7 +306,7 @@ namespace invk {
                   level: level,
                   side: s,
                   class: CLASSES.BRANCH_SELECTED[s],
-                })
+                }),
               );
 
               seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[s]);
@@ -317,7 +317,7 @@ namespace invk {
                 level: level,
                 side: side,
                 class: CLASSES.BRANCH_SELECTED[side],
-              })
+              }),
             );
 
             seq.AddClass(row, CLASSES.BRANCH_SELECTED[side]);

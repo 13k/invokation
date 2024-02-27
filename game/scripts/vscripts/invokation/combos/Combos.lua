@@ -1,18 +1,18 @@
 --- Combos manager.
 -- @classmod invokation.combos.Combos
-local class = require("pl.class")
 local Combo = require("invokation.combos.Combo")
-local Logger = require("invokation.Logger")
-local Timers = require("invokation.dota2.timers")
-local CombosHero = require("invokation.combos.hero")
 local CombosComm = require("invokation.combos.communication")
+local CombosHero = require("invokation.combos.hero")
 local CombosSound = require("invokation.combos.sound")
 local DummyTarget = require("invokation.dota2.DummyTarget")
-local PlayerStates = require("invokation.combos.PlayerStates")
 local FreestyleCombo = require("invokation.combos.FreestyleCombo")
+local Logger = require("invokation.Logger")
+local PlayerStates = require("invokation.combos.PlayerStates")
+local Timers = require("invokation.dota2.timers")
+local class = require("pl.class")
 
-local NET_TABLE = require("invokation.const.net_table")
 local ABILITY_LIST = require("invokation.const.ability_list")
+local NET_TABLE = require("invokation.const.net_table")
 
 local M = class()
 
@@ -182,12 +182,18 @@ end
 -- @tparam dota2.Ability ability Ability instance
 function M:OnAbilityUsed(player, unit, ability)
   if isIgnoredAbility(ability) then
-    self:d("OnAbilityUsed [ignored]", { player = player:GetPlayerID(), unit = unit.name, ability = ability.name })
+    self:d(
+      "OnAbilityUsed [ignored]",
+      { player = player:GetPlayerID(), unit = unit.name, ability = ability.name }
+    )
 
     return
   end
 
-  self:d("OnAbilityUsed", { player = player:GetPlayerID(), unit = unit.name, ability = ability.name })
+  self:d(
+    "OnAbilityUsed",
+    { player = player:GetPlayerID(), unit = unit.name, ability = ability.name }
+  )
 
   self:CaptureAbility(player, ability)
   self:Progress(player, ability)

@@ -15,18 +15,18 @@ require("invokation.game_mode.events")
 require("invokation.game_mode.commands")
 require("invokation.game_mode.convars")
 
-local m = require("moses")
-local Env = require("invokation.game_mode.env")
-local func = require("invokation.lang.function")
-local rand = require("invokation.lang.random")
 local Combos = require("invokation.combos.Combos")
-local Logger = require("invokation.Logger")
-local Timers = require("invokation.dota2.timers")
-local NetTable = require("invokation.dota2.NetTable")
+local Env = require("invokation.game_mode.env")
 local ItemsKeyValues = require("invokation.dota2.kv.ItemsKeyValues")
+local Logger = require("invokation.Logger")
+local NetTable = require("invokation.dota2.NetTable")
+local Timers = require("invokation.dota2.timers")
+local func = require("invokation.lang.function")
+local m = require("moses")
+local rand = require("invokation.lang.random")
 
-local PRECACHE = require("invokation.const.precache")
 local NET_TABLE = require("invokation.const.net_table")
+local PRECACHE = require("invokation.const.precache")
 
 local LOGGER_PROGNAME = "invokation"
 

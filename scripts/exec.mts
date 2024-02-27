@@ -16,7 +16,11 @@ export interface ExecOptions extends ExecaOptions {
   log?: Logger;
 }
 
-export async function exec(cmd: string, args: string[] = [], options?: ExecOptions): Promise<ExecReturnValue<string>> {
+export async function exec(
+  cmd: string,
+  args: string[] = [],
+  options?: ExecOptions,
+): Promise<ExecReturnValue<string>> {
   const { log, echo, ...execaOptions } = options ?? {};
 
   log?.field("cmd", inspect([cmd, ...args])).debug("executing");

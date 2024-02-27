@@ -10,17 +10,17 @@ namespace invk {
 
     export const HERO_DATA = new NetTableListener(
       CustomNetTables.Name.Invokation,
-      CustomNetTables.Invokation.Key.HeroData
+      CustomNetTables.Invokation.Key.HeroData,
     );
 
     export const HERO_KV = new NetTableListener(
       CustomNetTables.Name.Hero,
-      CustomNetTables.Hero.Key.KeyValues
+      CustomNetTables.Hero.Key.KeyValues,
     );
 
     export const ABILITIES_KV = new NetTableListener(
       CustomNetTables.Name.Abilities,
-      CustomNetTables.Abilities.Key.KeyValues
+      CustomNetTables.Abilities.Key.KeyValues,
     );
   }
 
@@ -42,7 +42,7 @@ namespace invk {
           for (const [key, value] of Object.entries(UI_CONFIG)) {
             GameUI.SetDefaultUIEnabled(
               DotaDefaultUIElement_t[key as keyof typeof DotaDefaultUIElement_t],
-              value
+              value,
             );
           }
 

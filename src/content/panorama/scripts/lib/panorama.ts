@@ -118,7 +118,7 @@ namespace invk {
       id: string,
       layout: string,
       override = false,
-      partial = false
+      partial = false,
     ): T {
       const panel = $.CreatePanel(PanelType.Panel, parent, id) as T;
 
@@ -132,19 +132,19 @@ namespace invk {
     export function createPanelSnippet<T extends Panel>(
       parent: Panel,
       id: string,
-      snippet: string
+      snippet: string,
     ): T {
       const panel = $.CreatePanel(PanelType.Panel, parent, id) as T;
 
       if (!panel.BHasLayoutSnippet(snippet)) {
         throw new Error(
-          `Layout snippet ${snippet} not found in Panel ${id} (parent: ${parent.id})`
+          `Layout snippet ${snippet} not found in Panel ${id} (parent: ${parent.id})`,
         );
       }
 
       if (!panel.BLoadLayoutSnippet(snippet)) {
         throw new Error(
-          `Could not load layout snippet ${snippet} into Panel ${id} (parent: ${parent.id})`
+          `Could not load layout snippet ${snippet} into Panel ${id} (parent: ${parent.id})`,
         );
       }
 
@@ -154,7 +154,7 @@ namespace invk {
     export function createAbilityImage(
       parent: Panel,
       id: string,
-      abilityName: string
+      abilityName: string,
     ): AbilityImage {
       const panel = $.CreatePanel(PanelType.AbilityImage, parent, id);
 

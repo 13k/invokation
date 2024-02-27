@@ -105,7 +105,11 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
     await this.run();
   }
 
-  protected async exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): Promise<ExecReturnValue<string>> {
+  protected async exec(
+    cmd: PathLike,
+    args: PathLike[] = [],
+    options?: ExecOptions,
+  ): Promise<ExecReturnValue<string>> {
     return await exec(
       cmd.toString(),
       args.map((arg) => arg.toString()),

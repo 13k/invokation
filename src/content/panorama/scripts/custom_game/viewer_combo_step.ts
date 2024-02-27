@@ -37,7 +37,7 @@ namespace invk {
           this.elements.descriptionLabel.text = L10n.comboAttrName(
             this.combo.id,
             this.step.id,
-            L10n.Key.ViewerStepDescriptionFallback
+            L10n.Key.ViewerStepDescriptionFallback,
           );
         }
       }

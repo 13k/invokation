@@ -1,10 +1,10 @@
 --- Logger class.
 -- @classmod invokation.Logger
+local class = require("pl.class")
 local moses = require("moses")
 local pp = require("pl.pretty")
-local text = require("pl.text")
-local class = require("pl.class")
 local stringx = require("pl.stringx")
+local text = require("pl.text")
 
 local M = class()
 

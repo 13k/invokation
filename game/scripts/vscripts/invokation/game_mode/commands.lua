@@ -1,10 +1,10 @@
 --- Console Commands
 -- @submodule invokation.GameMode
 
+local Invoker = require("invokation.dota2.Invoker")
+local Logger = require("invokation.Logger")
 local pp = require("pl.pretty")
 local tablex = require("pl.tablex")
-local Logger = require("invokation.Logger")
-local Invoker = require("invokation.dota2.Invoker")
 
 local COMMANDS = require("invokation.const.commands")
 

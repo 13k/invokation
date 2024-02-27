@@ -40,7 +40,7 @@ namespace invk {
 
       const selectionKey = (
         level: Talent.Level,
-        side: Talent.Side
+        side: Talent.Side,
       ): keyof typeof Talent.Selection => `L${level}_${side}`;
 
       const selectionValue = (level: Talent.Level, side: Talent.Side): Talent.Selection =>
@@ -49,7 +49,7 @@ namespace invk {
       export function isSelected(
         level: Talent.Level,
         side: Talent.Side,
-        selected: Talent.Selection
+        selected: Talent.Selection,
       ): boolean {
         return (selectionValue(level, side) & selected) > 0;
       }
@@ -66,7 +66,7 @@ namespace invk {
               map[level][side] = isSelected(level, side, selected);
             });
           },
-          {} as Talent.Map<boolean>
+          {} as Talent.Map<boolean>,
         );
       }
 

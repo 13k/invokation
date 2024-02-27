@@ -31,7 +31,10 @@ namespace invk {
       protected table: NetTable.NetTable<N>;
       protected data?: V | undefined;
 
-      constructor(private name: N, private key: K) {
+      constructor(
+        private name: N,
+        private key: K,
+      ) {
         this.callbacks = new Callbacks();
         this.table = new NetTable(this.name);
         this.log = new Logger({ name: `net_table.${this.name}.${String(this.key)}` });

@@ -38,7 +38,7 @@ namespace invk {
         E extends Elements,
         I extends Inputs,
         O extends Component.Outputs,
-        P extends Component.Params
+        P extends Component.Params,
       > extends Component.Component<E, I, O, P> {
         imageId: string;
         combo?: Combo.Combo;
@@ -85,7 +85,7 @@ namespace invk {
           const image = createAbilityOrItemImage(
             this.elements.button,
             this.imageId,
-            this.step.name
+            this.step.name,
           );
 
           image.hittest = false;

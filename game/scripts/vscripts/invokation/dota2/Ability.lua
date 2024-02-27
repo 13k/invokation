@@ -1,8 +1,8 @@
 --- Ability class that represents either an ability or item.
 -- @classmod invokation.dota2.Ability
-local m = require("moses")
 local class = require("pl.class")
 local delegation = require("invokation.lang.delegation")
+local m = require("moses")
 
 local INVOKER = require("invokation.const.invoker")
 

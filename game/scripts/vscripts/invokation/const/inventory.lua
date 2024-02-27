@@ -34,6 +34,7 @@ M.NEUTRAL_SLOTS = { DOTA_ITEM_NEUTRAL_SLOT }
 M.NON_NEUTRAL_SLOTS = m.chain({}):append(M.INVENTORY_SLOTS):append(M.STASH_SLOTS):value()
 
 --- Array of all slots indices (union of @{INVENTORY_SLOTS}, @{STASH_SLOTS} and @{NEUTRAL_SLOTS}).
-M.SLOTS = m.chain({}):append(M.INVENTORY_SLOTS):append(M.STASH_SLOTS):append(M.NEUTRAL_SLOTS):value()
+M.SLOTS =
+  m.chain({}):append(M.INVENTORY_SLOTS):append(M.STASH_SLOTS):append(M.NEUTRAL_SLOTS):value()
 
 return M

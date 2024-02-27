@@ -21,12 +21,12 @@ namespace invk {
       | ((...args: any) => any) // eslint-disable-line @typescript-eslint/no-explicit-any
       ? T
       : T extends (infer I)[]
-      ? FromLuaArray<I>[]
-      : T extends object
-      ? ArrayUpperBound<T> extends T
-        ? FromLuaArray<T[keyof T]>[]
-        : { [K in keyof T as K]: FromLuaArray<T[K]> }
-      : T;
+        ? FromLuaArray<I>[]
+        : T extends object
+          ? ArrayUpperBound<T> extends T
+            ? FromLuaArray<T[keyof T]>[]
+            : { [K in keyof T as K]: FromLuaArray<T[K]> }
+          : T;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     export function isArray<T>(value: any): value is LuaArray<T> {
@@ -42,7 +42,7 @@ namespace invk {
 
     export function fromArray(
       value: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-      map: (value: any) => any = _.identity // eslint-disable-line @typescript-eslint/no-explicit-any
+      map: (value: any) => any = _.identity, // eslint-disable-line @typescript-eslint/no-explicit-any
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): any {
       if (!isArray(value)) {
@@ -54,7 +54,7 @@ namespace invk {
         (arr, v, k) => {
           arr[_.toNumber(k) - 1] = map(v);
         },
-        [] as any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+        [] as any[], // eslint-disable-line @typescript-eslint/no-explicit-any
       );
     }
 

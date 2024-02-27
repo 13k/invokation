@@ -15,7 +15,7 @@ namespace invk {
 
     export function parseEnumValue<T extends Enum>(
       enumObj: T,
-      value: unknown
+      value: unknown,
     ): T[keyof T] | undefined {
       for (const [k, v] of Object.entries(enumObj)) {
         if (!Number.isNaN(_.toNumber(k))) continue;

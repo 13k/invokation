@@ -109,7 +109,7 @@ namespace invk {
     export type Listener<N extends Names, K extends Keys<N> = Keys<N>> = (
       name: N,
       key: K,
-      value: NetworkValue<N, K>
+      value: NetworkValue<N, K>,
     ) => void;
 
     export function subscribe<N extends Names>(name: N, listener: Listener<N>): NetTableListenerID {
@@ -122,7 +122,7 @@ namespace invk {
 
     export function get<N extends Names, K extends Keys<N>>(
       name: N,
-      key: K
+      key: K,
     ): NetworkValue<N, K> | null {
       return CCustomNetTables.GetTableValue(name, key);
     }

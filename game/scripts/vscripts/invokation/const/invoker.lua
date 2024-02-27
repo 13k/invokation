@@ -1,13 +1,13 @@
 --- Invoker constants.
 -- @module invokation.const.invoker
-local m = require("moses")
-local Talents = require("invokation.dota2.talents")
-local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
 local AbilityKeyValues = require("invokation.dota2.kv.AbilityKeyValues")
+local HeroKeyValues = require("invokation.dota2.kv.HeroKeyValues")
+local Talents = require("invokation.dota2.talents")
+local m = require("moses")
 
-local UNITS = require("invokation.const.units")
-local HEROES = require("invokation.const.heroes")
 local ABILITIES = require("invokation.const.abilities")
+local HEROES = require("invokation.const.heroes")
+local UNITS = require("invokation.const.units")
 
 local FMT_ABILITY_TALENT_CONST_NAME = "ABILITY_TALENT_L%d_%s"
 
@@ -199,15 +199,18 @@ M.TALENT_ABILITIES = m.values(M.HERO_KEY_VALUES:Talents())
 M.ABILITIES_KEY_VALUES = {}
 
 for _, abilityName in ipairs(M.ORB_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.SPELL_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 for _, abilityName in ipairs(M.TALENT_ABILITIES) do
-  M.ABILITIES_KEY_VALUES[abilityName] = AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
+  M.ABILITIES_KEY_VALUES[abilityName] =
+    AbilityKeyValues(abilityName, ABILITIES.KEY_VALUES[abilityName])
 end
 
 --- Table of orb abilities composition ("recipes") of spell abilities.

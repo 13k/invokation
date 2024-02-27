@@ -26,7 +26,10 @@ namespace invk {
     export class CombosView {
       private view: Combo[] = [];
 
-      constructor(public combos: Combo[], private sortOrder = SORT_ORDER) {
+      constructor(
+        public combos: Combo[],
+        private sortOrder = SORT_ORDER,
+      ) {
         this.setCombos(combos);
       }
 
@@ -72,7 +75,7 @@ namespace invk {
     const filterByProperty = <K extends keyof Properties>(
       seq: CombosChain,
       prop: K,
-      value?: Properties[K]
+      value?: Properties[K],
     ) => (value == null ? seq : seq.filter(_.matchesProperty(prop, value)));
 
     const filterByTags = (seq: CombosChain, tags?: string[]) =>

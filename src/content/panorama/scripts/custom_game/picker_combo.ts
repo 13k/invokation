@@ -120,11 +120,11 @@ namespace invk {
             .AddClass(this.panel, propertyCssClass(Property.Stance, this.combo.stance))
             .AddClass(
               this.elements.damageRating,
-              propertyCssClass(Property.DamageRating, this.combo.damageRating)
+              propertyCssClass(Property.DamageRating, this.combo.damageRating),
             )
             .AddClass(
               this.elements.difficultyRating,
-              propertyCssClass(Property.DifficultyRating, this.combo.difficultyRating)
+              propertyCssClass(Property.DifficultyRating, this.combo.difficultyRating),
             );
         }
 
@@ -174,7 +174,7 @@ namespace invk {
 
       const propertyCssClass = <K extends keyof Combo.Properties>(
         prop: K,
-        value: Combo.Properties[K]
+        value: Combo.Properties[K],
       ): string => {
         let baseClass: string;
 

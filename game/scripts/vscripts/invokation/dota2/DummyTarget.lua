@@ -1,9 +1,9 @@
 --- DummyTarget class.
 -- @classmod invokation.dota2.DummyTarget
-local m = require("moses")
-local class = require("pl.class")
 local Units = require("invokation.dota2.units")
+local class = require("pl.class")
 local delegation = require("invokation.lang.delegation")
+local m = require("moses")
 
 local M = class()
 
