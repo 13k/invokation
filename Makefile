@@ -1,7 +1,8 @@
-TASKS_SRC_PATH := scripts
-VSCRIPTS_SRC_PATH := game/scripts/vscripts
+PANORAMA_LAYOUTS_SRC_PATH := content/panorama/layout
 PANORAMA_SCRIPTS_SRC_PATH := src/content/panorama/scripts
 PANORAMA_STYLES_SRC_PATH := content/panorama/styles
+TASKS_SRC_PATH := scripts
+VSCRIPTS_SRC_PATH := game/scripts/vscripts
 
 .NOTPARALLEL:
 .DEFAULT_GOAL := help
@@ -10,7 +11,7 @@ PANORAMA_STYLES_SRC_PATH := content/panorama/styles
 all: format lint test build ## run all tasks
 
 .PHONY: format
-format: format-panorama ## format everything
+format: format-tasks format-vscripts format-panorama ## format everything
 
 .PHONY: lint
 lint: lint-tasks lint-vscripts lint-panorama ## lint everything
@@ -38,6 +39,10 @@ launch-game: ## launch game with custom game
 launch-tools: ## launch tools with custom game
 	@npm run launch:tools
 
+.PHONY: format-vscripts
+format-vscripts: ## format Lua vscripts
+	@stylua --verify "$(VSCRIPTS_SRC_PATH)"
+
 .PHONY: lint-vscripts
 lint-vscripts: ## lint Lua vscripts
 	@selene "$(VSCRIPTS_SRC_PATH)"
@@ -49,28 +54,40 @@ test-vscripts: ## test Lua vscripts
 .PHONY: build-luarocks
 build-luarocks: lint-vscripts
 
+.PHONY: format-tasks
+format-tasks: ## format tasks files
+	@npx @biomejs/biome format --write "$(TASKS_SRC_PATH)"
+
 .PHONY: lint-tasks
 lint-tasks: ## lint tasks files
-	@npm exec -- eslint "$(TASKS_SRC_PATH)"
+	@npx eslint "$(TASKS_SRC_PATH)"
 
 .PHONY: lint-panorama
 lint-panorama: lint-panorama-scripts lint-panorama-styles ## lint panorama files
 
 .PHONY: lint-panorama-scripts
 lint-panorama-scripts: ## lint panorama scripts
-	@npm exec -- eslint "$(PANORAMA_SCRIPTS_SRC_PATH)"
+	@npx eslint "$(PANORAMA_SCRIPTS_SRC_PATH)"
 
 .PHONY: lint-panorama-styles
 lint-panorama-styles: ## lint panorama styles
-	@npm exec -- stylelint "${PANORAMA_STYLES_SRC_PATH}"
+	@npx stylelint "${PANORAMA_STYLES_SRC_PATH}"
 
 .PHONY: format-panorama
-format-panorama: format-panorama-styles ## format panorama files
+format-panorama: format-panorama-layouts format-panorama-scripts format-panorama-styles ## format all panorama files
+
+.PHONY: format-panorama-layouts
+format-panorama-layouts: ## format panorama layouts
+	@npx prettier --write "$(PANORAMA_LAYOUTS_SRC_PATH)/**/*.xml"
+
+.PHONY: format-panorama-scripts
+format-panorama-scripts: ## format panorama scripts
+	@npx @biomejs/biome format --write "$(PANORAMA_SCRIPTS_SRC_PATH)"
 
 .PHONY: format-panorama-styles
 format-panorama-styles: ## format panorama styles
-	@npm exec -- stylelint --fix "$(PANORAMA_STYLES_SRC_PATH)"
-	@npm exec -- prettier --write "$(PANORAMA_STYLES_SRC_PATH)/**/*.css"
+	@npx stylelint --fix "$(PANORAMA_STYLES_SRC_PATH)"
+	@npx prettier --write "$(PANORAMA_STYLES_SRC_PATH)/**/*.css"
 
 help: ## Shows this usage
 	@echo "Makefile"
