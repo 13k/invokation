@@ -11,7 +11,7 @@ description = {
   summary = "Invokation School of Arcane Arts",
   homepage = "https://github.com/13k/invokation",
   issues_url = "https://github.com/13k/invokation/issues",
-  maintainer = "Kiyoshi Murata <kbmurata@gmail.com>",
+  maintainer = "Kiyoshi '13k' Murata <kbmurata@proton.me>",
   labels = { "dota2", "dota2-addon", "dota2-custom-game", "invoker", "invoker-trainer", "trainer" },
   license = "MIT",
 }
@@ -40,6 +40,5 @@ test = {
 }
 
 build = {
-  type = "make",
-  build_target = "build-luarocks",
+  type = "none",
 }
