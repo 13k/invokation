@@ -5,13 +5,55 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
+  "files": {
+    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"],
+    "ignore": ["src/content/panorama/scripts/lib/vendor/**/*"]
+  },
   "organizeImports": {
     "enabled": true
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "noNewSymbol": "error"
+      },
+      "style": {
+        "noParameterProperties": "error",
+        "useBlockStatements": "error",
+        "useCollapsedElseIf": "error",
+        "useNamingConvention": "warn",
+        "useShorthandArrayType": "error",
+        "useShorthandAssign": "error",
+        "useSingleCaseStatement": "error"
+      },
+      "suspicious": {
+        "noMisrefactoredShorthandAssign": "warn"
+      },
+      "nursery": {
+        "noDuplicateJsonKeys": "error",
+        "noEmptyBlockStatements": "warn",
+        "noEmptyTypeParameters": "error",
+        "noGlobalAssign": "error",
+        "noGlobalEval": "error",
+        "noInvalidUseBeforeDeclaration": "error",
+        "noMisleadingCharacterClass": "warn",
+        "noThenProperty": "warn",
+        "noUnusedImports": "error",
+        "noUnusedPrivateClassMembers": "error",
+        "noUselessLoneBlockStatements": "error",
+        "noUselessTernary": "error",
+        "useAwait": "error",
+        "useExportType": "error",
+        "useFilenamingConvention": "warn",
+        "useForOf": "warn",
+        "useGroupedTypeImport": "error",
+        "useImportType": "error",
+        "useNodejsImportProtocol": "error",
+        "useNumberNamespace": "error",
+        "useShorthandFunctionType": "error"
+      }
     }
   },
   "formatter": {
@@ -20,9 +62,5 @@
     "indentWidth": 2,
     "lineWidth": 100,
     "lineEnding": "lf"
-  },
-  "files": {
-    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"],
-    "ignore": ["src/content/panorama/scripts/lib/vendor/**/*"]
   }
 }

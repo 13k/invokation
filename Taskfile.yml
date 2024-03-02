@@ -95,7 +95,7 @@ tasks:
 
   panorama:scripts:lint:
     desc: Lint panorama scripts
-    cmd: npx eslint "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+    cmd: npx @biomejs/biome check "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
 
   panorama:scripts:build:
     desc: Build panorama scripts
@@ -117,4 +117,4 @@ tasks:
 
   tasks:lint:
     desc: Lint tasks
-    cmd: npx eslint "{{.TASKS_SRC_PATH}}"
+    cmd: npx @biomejs/biome check "{{.TASKS_SRC_PATH}}"
