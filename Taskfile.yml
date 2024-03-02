@@ -82,29 +82,33 @@ tasks:
       - task: panorama:styles:lint
 
   panorama:layouts:format:
-    desc: Format panorama layout files
+    desc: Format panorama layouts
     cmd: npx prettier --write '{{.PANORAMA_LAYOUTS_SRC_PATH}}/**/*.xml'
 
   panorama:layouts:lint:
-    desc: Lint panorama layout files
+    desc: Lint panorama layouts
     cmd: echo "not implemented"
 
   panorama:scripts:format:
-    desc: Format panorama script files
+    desc: Format panorama scripts
     cmd: npx @biomejs/biome format --write "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
 
   panorama:scripts:lint:
-    desc: Lint panorama script files
+    desc: Lint panorama scripts
     cmd: npx eslint "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
 
+  panorama:scripts:build:
+    desc: Build panorama scripts
+    cmd: npx tsc --build "{{.PANORAMA_SCRIPTS_SRC_PATH}}" --verbose
+
   panorama:styles:format:
-    desc: Format panorama style files
+    desc: Format panorama styles
     cmds:
       - npx stylelint --fix "{{.PANORAMA_STYLES_SRC_PATH}}"
       - npx prettier --write '{{.PANORAMA_STYLES_SRC_PATH}}/**/*.css'
 
   panorama:styles:lint:
-    desc: Lint panorama style files
+    desc: Lint panorama styles
     cmd: npx stylelint "{{.PANORAMA_STYLES_SRC_PATH}}"
 
   tasks:format:
