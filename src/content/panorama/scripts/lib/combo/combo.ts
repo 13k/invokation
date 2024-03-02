@@ -1,13 +1,12 @@
 /// <reference path="../dota2.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace combo {
-    import TalentSelection = invk.dota2.TalentSelection;
+  export namespace Combo {
+    import TalentSelection = invk.Dota2.TalentSelection;
 
-    export type ComboID = string;
+    export type ComboId = string;
 
-    export enum StaticID {
+    export enum StaticId {
       Freestyle = "freestyle",
     }
 
@@ -74,7 +73,7 @@ namespace invk {
     };
 
     export interface Base {
-      id: ComboID;
+      id: ComboId;
       heroLevel: number;
       talents: TalentSelection;
       tags: string[];
@@ -115,10 +114,10 @@ namespace invk {
       next?: number[];
     }
 
-    export type StepID = number;
+    export type StepId = number;
 
     export interface Step extends NetworkStep {
-      id: StepID;
+      id: StepId;
       isOrbAbility: boolean;
       isInvocationAbility: boolean;
       isItem: boolean;
@@ -172,7 +171,9 @@ namespace invk {
 
     export function matchesTags(combo: Combo, tagset: Set<string>): boolean {
       for (const tag of tagset) {
-        if (combo.tagset.has(tag)) return true;
+        if (combo.tagset.has(tag)) {
+          return true;
+        }
       }
 
       return false;

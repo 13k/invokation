@@ -1,31 +1,34 @@
 /// <reference path="cache.ts" />
 /// <reference path="kv.ts" />
+/// <reference path="logger.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace custom_events {
-    import Cache = invk.cache.Cache;
-    import KeyValues = invk.kv.KeyValues;
+  export namespace CustomEvents {
+    import Cache = invk.Cache.Cache;
+    import KeyValues = invk.KeyValues.KeyValues;
+    import Logger = invk.Logger.Logger;
 
-    export type Event = keyof GameEventDeclarations | keyof CustomGameEventDeclarations;
+    export type CustomEvent = keyof GameEventDeclarations | keyof CustomGameEventDeclarations;
 
-    type ListenerPayload<K extends Event, F = object> = NetworkedData<
+    type ListenerPayload<K extends CustomEvent, F = object> = NetworkedData<
       GameEvents.InferGameEventType<K, F>
     >;
 
-    export type Listener<K extends Event> = (payload: ListenerPayload<K>) => void;
+    export type CustomEventListener<K extends CustomEvent> = (payload: ListenerPayload<K>) => void;
 
-    const subscriptions = new Cache<GameEventListenerID>();
+    const SUBSCRIPTIONS = new Cache<GameEventListenerID>();
+    const LOG = new Logger({ name: "CustomEvents" });
 
-    export function subscribe<K extends Event>(
+    export function subscribe<K extends CustomEvent>(
       key: string,
       name: K,
-      listener: Listener<K>,
+      listener: CustomEventListener<K>,
     ): GameEventListenerID {
       const cacheKey = `${key}.${name}`;
       const id = GameEvents.Subscribe(name, listener);
 
-      subscriptions.add(cacheKey, id);
+      LOG.debug("subscribe", { name, id });
+      SUBSCRIPTIONS.add(cacheKey, id);
 
       return id;
     }
@@ -33,10 +36,12 @@ namespace invk {
     export function unsubscribe(id: GameEventListenerID): string[] {
       GameEvents.Unsubscribe(id);
 
-      const keys = subscriptions.find(id);
+      LOG.debug("unsubscribe", { id });
+
+      const keys = SUBSCRIPTIONS.find(id);
 
       for (const key of keys) {
-        subscriptions.remove(key, id);
+        SUBSCRIPTIONS.remove(key, id);
       }
 
       return keys;
@@ -49,11 +54,11 @@ namespace invk {
     export function unsubscribeAllSiblings(
       key: string,
     ): Map<string, GameEventListenerID[]> | undefined {
-      const siblings = subscriptions.siblings(key);
+      const siblings = SUBSCRIPTIONS.siblings(key);
 
       return siblings.reduce(
         (result, key) => {
-          const ids = subscriptions.get(key);
+          const ids = SUBSCRIPTIONS.get(key);
 
           if (ids != null && ids.length > 0) {
             unsubscribeAll(ids);
@@ -75,6 +80,8 @@ namespace invk {
         name,
         payload as GameEvents.InferCustomGameEventType<K, never>,
       );
+
+      LOG.debug("sendServer", { name, payload });
     }
 
     export function sendAll<K extends CustomGameEvent>(
@@ -85,18 +92,22 @@ namespace invk {
         name,
         payload as GameEvents.InferCustomGameEventType<K, never>,
       );
+
+      LOG.debug("sendAll", { name, payload });
     }
 
     export function sendPlayer<K extends CustomGameEvent>(
-      playerID: PlayerID,
+      playerId: PlayerID,
       name: K,
       payload: CustomGameEventDeclarations[K],
     ): void {
       GameEvents.SendCustomGameEventToClient(
         name,
-        playerID,
+        playerId,
         payload as GameEvents.InferCustomGameEventType<K, never>,
       );
+
+      LOG.debug("sendPlayer", { playerId, name, payload });
     }
 
     export function sendClientSide<K extends GameEvent>(
@@ -104,90 +115,92 @@ namespace invk {
       payload: GameEventDeclarations[K],
     ): void {
       GameEvents.SendEventClientSide(name, payload);
+
+      LOG.debug("sendClientSide", { name, payload });
     }
 
     // ----- Custom events definitions -----
 
     export enum GameEvent {
       // combo viewer
-      VIEWER_RENDER = "invokation_viewer_render",
+      ViewerRender = "invk_viewer_render",
       // popups
-      POPUP_TEXT_ENTRY_SUBMIT = "invokation_popup_text_entry_submit",
-      POPUP_ITEM_PICKER_SUBMIT = "invokation_popup_item_picker_submit",
-      POPUP_ABILITY_PICKER_SUBMIT = "invokation_popup_ability_picker_submit",
+      PopupTextEntrySubmit = "invk_popup_text_entry_submit",
+      PopupItemPickerSubmit = "invk_popup_item_picker_submit",
+      PopupAbilityPickerSubmit = "invk_popup_ability_picker_submit",
     }
 
     export enum CustomGameEvent {
       // combos
-      COMBOS_RELOAD = "invokation_combos_reload",
-      COMBO_START = "invokation_combo_start",
-      COMBO_STARTED = "invokation_combo_started",
-      COMBO_STOP = "invokation_combo_stop",
-      COMBO_STOPPED = "invokation_combo_stopped",
-      COMBO_IN_PROGRESS = "invokation_combo_in_progress",
-      COMBO_PROGRESS = "invokation_combo_progress",
-      COMBO_STEP_ERROR = "invokation_combo_step_error",
-      COMBO_PRE_FINISH = "invokation_combo_pre_finish",
-      COMBO_FINISHED = "invokation_combo_finished",
-      COMBO_RESTART = "invokation_combo_restart",
+      CombosReload = "invk_combos_reload",
+      ComboStart = "invk_combo_start",
+      ComboStarted = "invk_combo_started",
+      ComboStop = "invk_combo_stop",
+      ComboStopped = "invk_combo_stopped",
+      ComboInProgress = "invk_combo_in_progress",
+      ComboProgress = "invk_combo_progress",
+      ComboStepError = "invk_combo_step_error",
+      ComboPreFinish = "invk_combo_pre_finish",
+      ComboFinish = "invk_combo_finished",
+      ComboRestart = "invk_combo_restart",
       // freestyle
-      FREESTYLE_HERO_LEVEL_UP = "invokation_freestyle_hero_level_up",
+      FreestyleHeroLevelUp = "invk_freestyle_hero_level_up",
       // combat log
-      COMBAT_LOG_ABILITY_USED = "invokation_combat_log_ability_used",
-      COMBAT_LOG_CLEAR = "invokation_combat_log_clear",
-      COMBAT_LOG_CAPTURE_START = "invokation_combat_log_capture_start",
-      COMBAT_LOG_CAPTURE_STOP = "invokation_combat_log_capture_stop",
+      CombatLogAbilityUsed = "invk_combat_log_ability_used",
+      CombatLogClear = "invk_combat_log_clear",
+      CombatLogCaptureStart = "invk_combat_log_capture_start",
+      CombatLogCaptureStop = "invk_combat_log_capture_stop",
       // item picker
-      ITEM_PICKER_QUERY = "invokation_item_picker_query",
-      ITEM_PICKER_QUERY_RESPONSE = "invokation_item_picker_query_response",
+      ItemPickerQueryRequest = "invk_item_picker_query_request",
+      ItemPickerQueryResponse = "invk_item_picker_query_response",
     }
 
     export interface ViewerRender {
-      id: combo.ComboID;
+      id: Combo.ComboId;
     }
 
     export type CombosReload = Record<string, never>;
 
     export interface ComboStart {
-      id: combo.ComboID;
+      id: Combo.ComboId;
     }
 
     export interface ComboStarted {
-      id: combo.ComboID;
+      id: Combo.ComboId;
       next: number[];
     }
 
     export type ComboStop = Record<string, never>;
 
     export interface ComboStopped {
-      id: combo.ComboID;
+      id: Combo.ComboId;
     }
 
     export interface ComboInProgress {
-      id: combo.ComboID;
+      id: Combo.ComboId;
     }
 
     export interface ComboProgress {
-      id: combo.ComboID;
+      id: Combo.ComboId;
       next: number[];
-      metrics: combo.Metrics;
+      metrics: Combo.Metrics;
     }
 
     export interface ComboStepError {
-      id: combo.ComboID;
+      id: Combo.ComboId;
       ability: string;
       expected: number[];
     }
 
     export interface ComboPreFinish {
-      id: combo.ComboID;
-      metrics: combo.Metrics;
+      id: Combo.ComboId;
+      metrics: Combo.Metrics;
       wait: number;
     }
 
     export interface ComboFinished {
-      id: combo.ComboID;
-      metrics: combo.Metrics;
+      id: Combo.ComboId;
+      metrics: Combo.Metrics;
     }
 
     export interface ComboRestart {
@@ -231,36 +244,36 @@ namespace invk {
   }
 }
 
-import custom_events = invk.custom_events;
-import GameEvent = invk.custom_events.GameEvent;
-import CustomGameEvent = invk.custom_events.CustomGameEvent;
+import CustomEvents = invk.CustomEvents;
+import GameEvent = invk.CustomEvents.GameEvent;
+import CustomGameEvent = invk.CustomEvents.CustomGameEvent;
 
 // ----- Custom events declarations -----
 
 interface GameEventDeclarations {
-  [GameEvent.VIEWER_RENDER]: custom_events.ViewerRender;
-  [GameEvent.POPUP_ABILITY_PICKER_SUBMIT]: custom_events.PopupAbilityPickerSubmit;
-  [GameEvent.POPUP_ITEM_PICKER_SUBMIT]: custom_events.PopupItemPickerSubmit;
-  [GameEvent.POPUP_TEXT_ENTRY_SUBMIT]: custom_events.PopupTextEntrySubmit;
+  [GameEvent.ViewerRender]: CustomEvents.ViewerRender;
+  [GameEvent.PopupAbilityPickerSubmit]: CustomEvents.PopupAbilityPickerSubmit;
+  [GameEvent.PopupItemPickerSubmit]: CustomEvents.PopupItemPickerSubmit;
+  [GameEvent.PopupTextEntrySubmit]: CustomEvents.PopupTextEntrySubmit;
 }
 
 interface CustomGameEventDeclarations {
-  [CustomGameEvent.COMBOS_RELOAD]: custom_events.CombosReload;
-  [CustomGameEvent.COMBO_START]: custom_events.ComboStart;
-  [CustomGameEvent.COMBO_STARTED]: custom_events.ComboStarted;
-  [CustomGameEvent.COMBO_STOP]: custom_events.ComboStop;
-  [CustomGameEvent.COMBO_STOPPED]: custom_events.ComboStopped;
-  [CustomGameEvent.COMBO_IN_PROGRESS]: custom_events.ComboInProgress;
-  [CustomGameEvent.COMBO_PROGRESS]: custom_events.ComboProgress;
-  [CustomGameEvent.COMBO_STEP_ERROR]: custom_events.ComboStepError;
-  [CustomGameEvent.COMBO_PRE_FINISH]: custom_events.ComboPreFinish;
-  [CustomGameEvent.COMBO_FINISHED]: custom_events.ComboFinished;
-  [CustomGameEvent.COMBO_RESTART]: custom_events.ComboRestart;
-  [CustomGameEvent.FREESTYLE_HERO_LEVEL_UP]: custom_events.FreestyleHeroLevelUp;
-  [CustomGameEvent.COMBAT_LOG_ABILITY_USED]: custom_events.CombatLogAbilityUsed;
-  [CustomGameEvent.COMBAT_LOG_CLEAR]: custom_events.CombatLogClear;
-  [CustomGameEvent.COMBAT_LOG_CAPTURE_START]: custom_events.CombatLogCaptureStart;
-  [CustomGameEvent.COMBAT_LOG_CAPTURE_STOP]: custom_events.CombatLogCaptureStop;
-  [CustomGameEvent.ITEM_PICKER_QUERY]: custom_events.ItemPickerQuery;
-  [CustomGameEvent.ITEM_PICKER_QUERY_RESPONSE]: custom_events.ItemPickerQueryResponse;
+  [CustomGameEvent.CombosReload]: CustomEvents.CombosReload;
+  [CustomGameEvent.ComboStart]: CustomEvents.ComboStart;
+  [CustomGameEvent.ComboStarted]: CustomEvents.ComboStarted;
+  [CustomGameEvent.ComboStop]: CustomEvents.ComboStop;
+  [CustomGameEvent.ComboStopped]: CustomEvents.ComboStopped;
+  [CustomGameEvent.ComboInProgress]: CustomEvents.ComboInProgress;
+  [CustomGameEvent.ComboProgress]: CustomEvents.ComboProgress;
+  [CustomGameEvent.ComboStepError]: CustomEvents.ComboStepError;
+  [CustomGameEvent.ComboPreFinish]: CustomEvents.ComboPreFinish;
+  [CustomGameEvent.ComboFinish]: CustomEvents.ComboFinished;
+  [CustomGameEvent.ComboRestart]: CustomEvents.ComboRestart;
+  [CustomGameEvent.FreestyleHeroLevelUp]: CustomEvents.FreestyleHeroLevelUp;
+  [CustomGameEvent.CombatLogAbilityUsed]: CustomEvents.CombatLogAbilityUsed;
+  [CustomGameEvent.CombatLogClear]: CustomEvents.CombatLogClear;
+  [CustomGameEvent.CombatLogCaptureStart]: CustomEvents.CombatLogCaptureStart;
+  [CustomGameEvent.CombatLogCaptureStop]: CustomEvents.CombatLogCaptureStop;
+  [CustomGameEvent.ItemPickerQueryRequest]: CustomEvents.ItemPickerQuery;
+  [CustomGameEvent.ItemPickerQueryResponse]: CustomEvents.ItemPickerQueryResponse;
 }

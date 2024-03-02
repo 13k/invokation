@@ -1,27 +1,27 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace ui {
-      export namespace talents_display {
+  export namespace Components {
+    export namespace Ui {
+      export namespace TalentsDisplay {
         const {
-          dota2: { Talents, TalentLevel, TalentSide },
-          panorama: { UIEvent },
-          sequence: { ParallelSequence },
+          Dota2: { Talents, TalentLevel, TalentSide },
+          Panorama: { UiEvent },
+          Sequence: { ParallelSequence },
         } = GameUI.CustomUIConfig().invk;
 
-        import Component = invk.component.Component;
-        import TalentSelection = invk.dota2.TalentSelection;
+        import Action = invk.Sequence.Action;
+        import Component = invk.Component.Component;
+        import TalentSelection = invk.Dota2.TalentSelection;
 
-        type TTalentLevel = typeof dota2.TalentLevel;
+        type TalentLevelType = typeof Dota2.TalentLevel;
 
         export type Elements = {
-          [K in keyof TTalentLevel as `statRow${TTalentLevel[K]}`]: Panel;
+          [K in keyof TalentLevelType as `statRow${TalentLevelType[K]}`]: Panel;
         };
 
-        export interface Inputs extends component.Inputs {
-          Reset: undefined;
-          Select: {
-            heroID: HeroID;
+        export interface Inputs extends Component.Inputs {
+          reset: undefined;
+          select: {
+            heroId: HeroID;
             talents: TalentSelection;
           };
         }
@@ -39,9 +39,9 @@ namespace invk {
         };
 
         export class TalentsDisplay extends Component<Elements, Inputs> {
-          talents: dota2.Talents | undefined;
-          heroID: HeroID | undefined;
-          tooltipID: string | undefined;
+          talents: Dota2.Talents | undefined;
+          heroId: HeroID | undefined;
+          tooltipId: string | undefined;
 
           constructor() {
             super({
@@ -53,103 +53,108 @@ namespace invk {
               },
               panelEvents: {
                 $: {
-                  onmouseover: () => this.ShowTooltip(),
-                  onmouseout: () => this.HideTooltip(),
+                  onmouseover: () => this.onMouseOver(),
+                  onmouseout: () => this.onMouseOut(),
                 },
               },
               inputs: {
-                Select: (payload) => this.onSelect(payload),
-                Reset: (payload) => this.onReset(payload),
+                select: (payload) => this.onSelect(payload),
+                reset: (payload) => this.onReset(payload),
               },
             });
 
             this.debug("init");
           }
 
-          // ----- Helpers -----
-
-          row(level: dota2.TalentLevel) {
-            return this.elements[`statRow${level}`];
-          }
-
           // ----- I/O -----
 
-          onSelect(payload: Inputs["Select"]) {
+          onSelect(payload: Inputs["select"]): void {
             this.debug("onSelect()", payload);
 
-            this.heroID = payload.heroID;
+            this.heroId = payload.heroId;
             this.talents = new Talents(payload.talents);
 
             this.render();
           }
 
-          onReset(payload: Inputs["Reset"]) {
+          onReset(payload: Inputs["reset"]): void {
             this.debug("onReset()", payload);
             this.reset();
           }
 
+          // ----- Event handlers -----
+
+          onMouseOver(): void {
+            if (this.heroId == null || this.talents == null) {
+              this.warn("tried to onMouseOver() without hero ID or selected talents");
+              return;
+            }
+
+            this.dispatch(this.panel, UiEvent.ShowHeroStatBranchTooltip, this.heroId);
+          }
+
+          onMouseOut(): void {
+            this.dispatch(this.panel, UiEvent.HideHeroStatBranchTooltip);
+          }
+
+          // ----- Helpers -----
+
+          row(level: Dota2.TalentLevel): Panel {
+            return this.elements[`statRow${level}`];
+          }
+
           // ----- Actions -----
 
-          selectLevelAction(level: dota2.TalentLevel) {
+          selectLevelAction(level: Dota2.TalentLevel): Action {
             return Object.values(TalentSide).reduce(
               (seq, side) =>
                 this.talents?.isSelected(level, side)
-                  ? seq.AddClass(this.row(level), BranchRowClass[side])
-                  : seq.RemoveClass(this.row(level), BranchRowClass[side]),
+                  ? seq.addClass(this.row(level), BranchRowClass[side])
+                  : seq.removeClass(this.row(level), BranchRowClass[side]),
               new ParallelSequence(),
             );
           }
 
-          resetLevelAction(level: dota2.TalentLevel) {
+          resetLevelAction(level: Dota2.TalentLevel): Action {
             return Object.values(TalentSide).reduce(
-              (seq, side) => seq.RemoveClass(this.row(level), BranchRowClass[side]),
+              (seq, side) => seq.removeClass(this.row(level), BranchRowClass[side]),
               new ParallelSequence(),
             );
           }
 
           // ----- Action runners -----
 
-          render() {
-            if (this.heroID == null || this.talents == null) {
+          render(): void {
+            if (this.heroId == null || this.talents == null) {
               this.warn("tried to render() without hero ID or selected talents");
               return;
             }
 
-            const heroID = this.heroID;
-            const actions = LEVELS.map((level) => this.selectLevelAction(level));
-            const seq = new ParallelSequence().Action(...actions);
+            const seq = LEVELS.reduce(
+              (seq, level) => seq.add(this.selectLevelAction(level)),
+              new ParallelSequence(),
+            );
 
             this.debugFn(() => [
               "select()",
-              { heroID, selected: this.talents?.value, actions: seq.size() },
+              { heroId: this.heroId, selected: this.talents?.value, actions: seq.deepSize() },
             ]);
 
-            seq.Run();
+            seq.run();
           }
 
-          reset() {
-            const actions = LEVELS.map((level) => this.resetLevelAction(level));
-            const seq = new ParallelSequence().Action(...actions);
+          reset(): void {
+            const seq = LEVELS.reduce(
+              (seq, level) => seq.add(this.resetLevelAction(level)),
+              new ParallelSequence(),
+            );
 
-            this.debugFn(() => ["reset()", { actions: seq.size() }]);
+            this.debugFn(() => ["reset()", { actions: seq.deepSize() }]);
 
-            seq.Run();
+            seq.run();
           }
 
           // ----- UI methods -----
-
-          ShowTooltip() {
-            if (this.heroID == null || this.talents == null) {
-              this.warn("tried to ShowTooltip() without hero ID or selected talents");
-              return;
-            }
-
-            this.dispatch(this.panel, UIEvent.SHOW_HERO_STAT_BRANCH_TOOLTIP, this.heroID);
-          }
-
-          HideTooltip() {
-            this.dispatch(this.panel, UIEvent.HIDE_HERO_STAT_BRANCH_TOOLTIP);
-          }
         }
 
         export const component = new TalentsDisplay();

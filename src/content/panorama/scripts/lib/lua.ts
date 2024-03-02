@@ -1,13 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace lua {
+  export namespace Lua {
     export type LuaArray<T> = { [key: number]: T };
 
     export function fromArray<T>(value: LuaArray<T>): T[] {
       const arr: T[] = [];
 
       for (const [k, v] of Object.entries(value)) {
-        const i = parseInt(k);
+        const i = Number.parseInt(k);
 
         if (i > 0) {
           arr[i - 1] = v;

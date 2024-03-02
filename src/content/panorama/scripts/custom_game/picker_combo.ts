@@ -1,19 +1,19 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace PickerCombo {
       const {
-        combo: { Property },
-        sequence: { Sequence, ParallelSequence, NoopAction },
-        util: { snakeCase },
+        Combo: { Property },
+        Sequence: { Sequence, ParallelSequence, NoopAction },
+        Util: { snakeCase },
       } = GameUI.CustomUIConfig().invk;
 
-      import Combo = invk.combo.Combo;
-      import ComboID = invk.combo.ComboID;
-      import Component = invk.component.Component;
-      import Properties = invk.combo.Properties;
+      import Action = invk.Sequence.Action;
+      import Combo = invk.Combo.Combo;
+      import ComboId = invk.Combo.ComboId;
+      import Component = invk.Component.Component;
+      import Properties = invk.Combo.Properties;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         titleLabel: LabelPanel;
         heroLevelLabel: LabelPanel;
         damageRating: Panel;
@@ -22,22 +22,22 @@ namespace invk {
         btnPlay: Button;
       }
 
-      export interface Inputs extends component.Inputs {
-        SetCombo: Combo;
-        SetFinished: undefined;
-        UnsetFinished: undefined;
+      export interface Inputs extends Component.Inputs {
+        setCombo: Combo;
+        setFinished: undefined;
+        unsetFinished: undefined;
       }
 
-      export interface Outputs extends component.Outputs {
-        OnPlay: { id: ComboID };
-        OnShowDetails: { id: ComboID };
+      export interface Outputs extends Component.Outputs {
+        onPlay: { id: ComboId };
+        onShowDetails: { id: ComboId };
       }
 
       enum CssClass {
         Finished = "PickerComboFinished",
       }
 
-      enum DVar {
+      enum DialogVar {
         HeroLevel = "hero_level",
         Specialty = "specialty",
         Stance = "stance",
@@ -59,98 +59,20 @@ namespace invk {
               btnPlay: "BtnPlay",
             },
             panelEvents: {
-              btnShowDetails: { onactivate: () => this.ShowDetails() },
-              btnPlay: { onactivate: () => this.Play() },
+              btnShowDetails: { onactivate: () => this.onBtnShowDetails() },
+              btnPlay: { onactivate: () => this.onBtnPlay() },
             },
             inputs: {
-              SetCombo: (payload) => this.setCombo(payload),
-              SetFinished: (payload) => this.onSetFinished(payload),
-              UnsetFinished: (payload) => this.onUnsetFinished(payload),
+              setCombo: (payload) => this.setCombo(payload),
+              setFinished: (payload) => this.onSetFinished(payload),
+              unsetFinished: (payload) => this.onUnsetFinished(payload),
             },
           });
         }
 
-        // --- Inputs ---
+        // ----- Event handlers -----
 
-        setCombo(payload: Inputs["SetCombo"]) {
-          this.combo = payload;
-
-          this.render();
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSetFinished(_payload: Inputs["SetFinished"]) {
-          this.panel.AddClass(CssClass.Finished);
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onUnsetFinished(_payload: Inputs["UnsetFinished"]) {
-          this.panel.RemoveClass(CssClass.Finished);
-        }
-
-        // --- Actions ---
-
-        setVariablesAction() {
-          if (this.combo == null) {
-            return new NoopAction();
-          }
-
-          return new ParallelSequence()
-            .SetDialogVariableInt(this.panel, DVar.HeroLevel, this.combo.heroLevel)
-            .SetDialogVariable(this.panel, DVar.Specialty, this.combo.l10n.specialty)
-            .SetDialogVariable(this.panel, DVar.Stance, this.combo.l10n.stance)
-            .SetDialogVariable(this.panel, DVar.DamageRating, this.combo.l10n.damageRating)
-            .SetDialogVariable(this.panel, DVar.DifficultyRating, this.combo.l10n.difficultyRating);
-        }
-
-        setAttributesAction() {
-          if (this.combo == null) {
-            return new NoopAction();
-          }
-
-          return new ParallelSequence()
-            .SetAttribute(this.elements.titleLabel, "text", this.combo.l10n.name)
-            .SetAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString());
-        }
-
-        setClassesAction() {
-          if (this.combo == null) {
-            return new NoopAction();
-          }
-
-          return new ParallelSequence()
-            .AddClass(this.panel, propertyCssClass(Property.Specialty, this.combo.specialty))
-            .AddClass(this.panel, propertyCssClass(Property.Stance, this.combo.stance))
-            .AddClass(
-              this.elements.damageRating,
-              propertyCssClass(Property.DamageRating, this.combo.damageRating),
-            )
-            .AddClass(
-              this.elements.difficultyRating,
-              propertyCssClass(Property.DifficultyRating, this.combo.difficultyRating),
-            );
-        }
-
-        // ----- Action Runners -----
-
-        render() {
-          if (this.combo == null) {
-            this.warn("Tried to render() without combo");
-            return;
-          }
-
-          const { id } = this.combo;
-          const seq = new Sequence()
-            .Action(this.setVariablesAction())
-            .Action(this.setAttributesAction())
-            .Action(this.setClassesAction());
-
-          this.debugFn(() => ["render()", { id, actions: seq.size() }]);
-
-          seq.Run();
-        }
-
-        ShowDetails() {
+        onBtnShowDetails(): void {
           if (this.combo == null) {
             this.warn("Tried to ShowDetails() without combo");
             return;
@@ -159,10 +81,10 @@ namespace invk {
           const payload = { id: this.combo.id };
 
           this.debug("ShowDetails()", payload);
-          this.output("OnShowDetails", payload);
+          this.outputs({ onShowDetails: payload });
         }
 
-        Play() {
+        onBtnPlay(): void {
           if (this.combo == null) {
             this.warn("Tried to Play() without combo");
             return;
@@ -171,7 +93,89 @@ namespace invk {
           const payload = { id: this.combo.id };
 
           this.debug("Play()", payload);
-          this.output("OnPlay", payload);
+          this.outputs({ onPlay: payload });
+        }
+
+        // ----- I/O -----
+
+        setCombo(payload: Inputs["setCombo"]): void {
+          this.combo = payload;
+
+          this.render();
+        }
+
+        onSetFinished(_payload: Inputs["setFinished"]): void {
+          this.panel.AddClass(CssClass.Finished);
+        }
+
+        onUnsetFinished(_payload: Inputs["unsetFinished"]): void {
+          this.panel.RemoveClass(CssClass.Finished);
+        }
+
+        // ----- Actions -----
+
+        setVariablesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
+
+          return new ParallelSequence()
+            .setDialogVariableInt(this.panel, DialogVar.HeroLevel, this.combo.heroLevel)
+            .setDialogVariable(this.panel, DialogVar.Specialty, this.combo.l10n.specialty)
+            .setDialogVariable(this.panel, DialogVar.Stance, this.combo.l10n.stance)
+            .setDialogVariable(this.panel, DialogVar.DamageRating, this.combo.l10n.damageRating)
+            .setDialogVariable(
+              this.panel,
+              DialogVar.DifficultyRating,
+              this.combo.l10n.difficultyRating,
+            );
+        }
+
+        setAttributesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
+
+          return new ParallelSequence()
+            .setAttribute(this.elements.titleLabel, "text", this.combo.l10n.name)
+            .setAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString());
+        }
+
+        setClassesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
+
+          return new ParallelSequence()
+            .addClass(this.panel, propertyCssClass(Property.Specialty, this.combo.specialty))
+            .addClass(this.panel, propertyCssClass(Property.Stance, this.combo.stance))
+            .addClass(
+              this.elements.damageRating,
+              propertyCssClass(Property.DamageRating, this.combo.damageRating),
+            )
+            .addClass(
+              this.elements.difficultyRating,
+              propertyCssClass(Property.DifficultyRating, this.combo.difficultyRating),
+            );
+        }
+
+        // ----- Action Runners -----
+
+        render(): void {
+          if (this.combo == null) {
+            this.warn("Tried to render() without combo");
+            return;
+          }
+
+          const { id } = this.combo;
+          const seq = new Sequence()
+            .add(this.setVariablesAction())
+            .add(this.setAttributesAction())
+            .add(this.setClassesAction());
+
+          this.debugFn(() => ["render()", { id, actions: seq.deepSize() }]);
+
+          seq.run();
         }
       }
 
@@ -183,9 +187,10 @@ namespace invk {
 
         switch (prop) {
           case Property.DamageRating:
-          case Property.DifficultyRating:
+          case Property.DifficultyRating: {
             baseClass = "rating";
             break;
+          }
           default:
             baseClass = snakeCase(prop);
         }

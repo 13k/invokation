@@ -19,24 +19,24 @@
 
 "CustomEvents"
 {
-  "invokation_viewer_render"
+  "invk_viewer_render"
   {
     "id" "uint64"
   }
 
-  "invokation_popup_text_entry_submit"
+  "invk_popup_text_entry_submit"
   {
     "channel" "string"
     "text" "string"
   }
 
-  "invokation_popup_item_picker_submit"
+  "invk_popup_item_picker_submit"
   {
     "channel" "string"
     "item" "string"
   }
 
-  "invokation_popup_ability_picker_submit"
+  "invk_popup_ability_picker_submit"
   {
     "channel" "string"
     "ability" "string"

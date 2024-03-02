@@ -1,53 +1,55 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace layout {
+  export namespace Layout {
     export interface Components {
-      [LayoutID.Challenge]: components.Challenge.Challenge;
-      [LayoutID.ChallengeComboStep]: components.ChallengeComboStep.ChallengeComboStep;
-      [LayoutID.CombatLog]: components.CombatLog.CombatLog;
-      [LayoutID.ComboScore]: components.ComboScore.ComboScore;
-      [LayoutID.CustomLoadingScreen]: components.CustomLoadingScreen.CustomLoadingScreen;
-      [LayoutID.CustomUIManifest]: components.CustomUIManifest.CustomUIManifest;
-      [LayoutID.Freestyle]: components.Freestyle.Freestyle;
-      [LayoutID.Picker]: components.picker.Picker;
-      [LayoutID.PickerCombo]: components.PickerCombo.PickerCombo;
-      [LayoutID.TopBar]: components.TopBar.TopBar;
-      [LayoutID.Viewer]: components.Viewer.Viewer;
-      [LayoutID.ViewerComboStep]: components.ViewerComboStep.ViewerComboStep;
-      [LayoutID.ViewerProperties]: components.ViewerProperties.ViewerProperties;
+      [LayoutId.Challenge]: Components.Challenge.Challenge;
+      [LayoutId.ChallengeComboStep]: Components.ChallengeComboStep.ChallengeComboStep;
+      [LayoutId.CombatLog]: Components.CombatLog.CombatLog;
+      [LayoutId.ComboScore]: Components.ComboScore.ComboScore;
+      [LayoutId.CustomLoadingScreen]: Components.CustomLoadingScreen.CustomLoadingScreen;
+      [LayoutId.CustomUiManifest]: Components.CustomUiManifest.CustomUiManifest;
+      [LayoutId.Freestyle]: Components.Freestyle.Freestyle;
+      [LayoutId.Picker]: Components.Picker.Picker;
+      [LayoutId.PickerCombo]: Components.PickerCombo.PickerCombo;
+      [LayoutId.TopBar]: Components.TopBar.TopBar;
+      [LayoutId.Viewer]: Components.Viewer.Viewer;
+      [LayoutId.ViewerComboStep]: Components.ViewerComboStep.ViewerComboStep;
+      [LayoutId.ViewerProperties]: Components.ViewerProperties.ViewerProperties;
       // UI
-      [LayoutID.UIInvokerSpellCard]: components.ui.invoker_spell_card.InvokerSpellCard;
-      [LayoutID.UIItemPicker]: components.ui.item_picker.ItemPicker;
-      [LayoutID.UITagSelect]: components.ui.tag_select.TagSelect;
-      [LayoutID.UITalentsDisplay]: components.ui.talents_display.TalentsDisplay;
+      [LayoutId.UiInvokerSpellCard]: Components.Ui.InvokerSpellCard.InvokerSpellCard;
+      [LayoutId.UiItemPicker]: Components.Ui.ItemPicker.ItemPicker;
+      [LayoutId.UiTagSelect]: Components.Ui.TagSelect.TagSelect;
+      [LayoutId.UiTalentsDisplay]: Components.Ui.TalentsDisplay.TalentsDisplay;
       // Popups
-      [LayoutID.PopupGameInfo]: components.popups.game_info.PopupGameInfo;
-      [LayoutID.PopupInvokerAbilityPicker]: components.popups.invoker_ability_picker.PopupInvokerAbilityPicker;
-      [LayoutID.PopupItemPicker]: components.popups.item_picker.PopupItemPicker;
-      [LayoutID.PopupTextEntry]: components.popups.text_entry.PopupTextEntry;
+      [LayoutId.PopupGameInfo]: Components.Popups.GameInfo.PopupGameInfo;
+      [LayoutId.PopupInvokerAbilityPicker]: Components.Popups.InvokerAbilityPicker.PopupInvokerAbilityPicker;
+      [LayoutId.PopupItemPicker]: Components.Popups.ItemPicker.PopupItemPicker;
+      [LayoutId.PopupTextEntry]: Components.Popups.TextEntry.PopupTextEntry;
       // Tooltips
-      [LayoutID.TooltipStatBranch]: components.tooltips.stat_branch.TooltipStatBranch;
+      [LayoutId.TooltipStatBranch]: Components.Tooltips.StatBranch.TooltipStatBranch;
     }
   }
 
-  export namespace component {
+  export namespace Component {
     const {
-      custom_events,
-      layout,
-      callbacks: { Callbacks },
-      logger: { Logger },
-      panorama: { UIEvent, createPanel, debugPanel, serializeParams },
-      singleton: { ENV },
-      util: { prefixOnce, uniqueId },
+      CustomEvents,
+      Layout,
+      Callbacks: { Callbacks },
+      Logger: { Logger },
+      Panorama: { UiEvent, createPanel, debugPanel, serializeParams },
+      Singleton: { ENV },
+      Util: { prefixOnce, uniqueId },
     } = GameUI.CustomUIConfig().invk;
 
-    import AbilityTooltipParams = invk.panorama.AbilityTooltipParams;
-    import Callback = invk.callbacks.Callback;
-    import Components = invk.layout.Components;
-    import CustomGameEvent = invk.custom_events.CustomGameEvent;
-    import Event = invk.custom_events.Event;
-    import GameEvent = invk.custom_events.GameEvent;
-    import LayoutID = invk.layout.LayoutID;
+    import AbilityTooltipParams = invk.Panorama.AbilityTooltipParams;
+    import Callback = invk.Callbacks.Callback;
+    import Components = invk.Layout.Components;
+    import CustomEvent = invk.CustomEvents.CustomEvent;
+    import CustomEventListener = invk.CustomEvents.CustomEventListener;
+    import CustomGameEvent = invk.CustomEvents.CustomGameEvent;
+    import GameEvent = invk.CustomEvents.GameEvent;
+    import LayoutId = invk.Layout.LayoutId;
+    import PanelEventListener = invk.Panorama.PanelEventListener;
+    import UiEventListener = invk.Panorama.UiEventListener;
 
     export type Elements = Record<string, Panel>;
     export type Inputs = object;
@@ -55,26 +57,26 @@ namespace invk {
     export type Params = Record<string, unknown>;
 
     export interface Options<E extends Elements, I extends Inputs, P extends Params> {
-      elements?: ElementsOption<E>;
-      customEvents?: CustomEventsOption;
-      uiEvents?: UIEventsOption<E>;
-      panelEvents?: PanelEventsOption<E>;
-      inputs?: InputsOption<I>;
-      params?: ParamsOption<P>;
+      elements?: ElementsOptions<E>;
+      customEvents?: CustomEventsOptions;
+      uiEvents?: UiEventsOptions<E>;
+      panelEvents?: PanelEventsOptions<E>;
+      inputs?: InputsOptions<I>;
+      params?: ParamsOptions<P>;
     }
 
-    export type ElementsOption<E extends Elements> = { [K in keyof E]: string };
-    export type CustomEventsOption = { [K in Event]?: custom_events.Listener<K> };
-    export type InputsOption<I extends Inputs> = { [K in keyof I]: Callback<I, K> };
-    export type OutputsOption<O extends Outputs> = { [K in keyof O]?: Callback<O, K> };
-    export type ParamsOption<P extends Params> = { [K in keyof P]: ParamDescriptor };
+    export type ElementsOptions<E extends Elements> = { [K in keyof E]: string };
+    export type CustomEventsOptions = { [K in CustomEvent]?: CustomEventListener<K> };
+    export type InputsOptions<I extends Inputs> = { [K in keyof I]: Callback<I, K> };
+    export type OutputsOptions<O extends Outputs> = { [K in keyof O]?: Callback<O, K> };
+    export type ParamsOptions<P extends Params> = { [K in keyof P]: ParamDescriptor };
 
-    export type UIEventsOption<E extends Elements> = {
-      [K in keyof E | "$"]?: { [K in panorama.UIEvent]?: panorama.UIEventListener };
+    export type UiEventsOptions<E extends Elements> = {
+      [K in keyof E | "$"]?: { [K in Panorama.UiEvent]?: UiEventListener };
     };
 
-    export type PanelEventsOption<E extends Elements> = {
-      [K in keyof E | "$"]?: { [K in PanelEvent]?: panorama.PanelEventListener };
+    export type PanelEventsOptions<E extends Elements> = {
+      [K in keyof E | "$"]?: { [K in PanelEvent]?: PanelEventListener };
     };
 
     interface Data<
@@ -94,6 +96,7 @@ namespace invk {
       O extends Outputs,
       P extends Params,
     > extends Panel {
+      // biome-ignore lint/style/useNamingConvention: builtin type
       Data<T = Data<C, E, I, O, P>>(): T;
     }
 
@@ -108,13 +111,13 @@ namespace invk {
     export enum ParamType {
       String = 0,
       Int = 1,
-      UInt32 = 2,
+      Uint32 = 2,
     }
 
     export interface AttributeTypes {
       [ParamType.String]: string;
       [ParamType.Int]: number;
-      [ParamType.UInt32]: number;
+      [ParamType.Uint32]: number;
     }
 
     export interface ParamDescriptor {
@@ -133,15 +136,16 @@ namespace invk {
       P extends Params = never,
     > {
       id: string;
-      env: env.Env;
+      env: Env.Env;
       panel: DataPanel<this, E, I, O, P>;
       elements: E;
       params: P;
 
-      private inputsCb: callbacks.Callbacks<I>;
-      private outputsCb: callbacks.Callbacks<O>;
-      private paramsOptions?: ParamsOption<P> | undefined;
-      protected logger: logger.Logger;
+      protected logger: Logger.Logger;
+
+      #inputs: Callbacks.Callbacks<I>;
+      #outputs: Callbacks.Callbacks<O>;
+      #paramsOptions: ParamsOptions<P> | undefined;
 
       constructor(options: Options<E, I, P> = {}) {
         this.id = uniqueId(`${this.constructor.name}.`);
@@ -156,13 +160,13 @@ namespace invk {
         });
 
         this.elements = this.findElements(options.elements);
-        this.paramsOptions = options.params;
+        this.#paramsOptions = options.params;
         this.params = {} as P;
 
-        this.inputsCb = new Callbacks();
-        this.outputsCb = new Callbacks();
+        this.#inputs = new Callbacks();
+        this.#outputs = new Callbacks();
 
-        this.setup();
+        this.#setup();
         this.unsubscribeSiblings();
         this.registerInputs(options.inputs);
         this.subscribeAll(options.customEvents);
@@ -176,117 +180,132 @@ namespace invk {
         return this.panel.Data<Data<this, E, I, O, P>>();
       }
 
-      private setup() {
+      #setup() {
         this.data.component = this;
 
         if (this.env.development) {
           this.panel.AddClass(CssClass.Development);
         }
 
-        this.panel.SetPanelEvent("onload", this._onLoad.bind(this));
+        this.panel.SetPanelEvent("onload", this.#onLoad.bind(this));
       }
 
-      private _onLoad(): void {
-        this.params = this.loadParams(this.paramsOptions);
+      #onLoad(): void {
+        this.params = this.loadParams(this.#paramsOptions);
         this.debug("onLoad()", { params: this.params });
         this.onLoad();
       }
 
+      /** subclasses can override to customize on-load behavior */
       protected onLoad(): void {
         return;
       }
 
       // ----- Logging -----
 
-      log(level: logger.Level, ...args: unknown[]): void {
+      log(level: Logger.Level, ...args: unknown[]): void {
         this.logger.log(level, ...args);
       }
 
-      logFn(level: logger.Level, fn: logger.LazyFn): void {
+      logFn(level: Logger.Level, fn: Logger.LazyFn): void {
         this.logger.logFn(level, fn);
       }
 
       debug(...args: unknown[]): void {
-        this.log(Logger.Level.Debug, ...args);
+        this.log(Logger.LEVEL.Debug, ...args);
       }
 
       info(...args: unknown[]): void {
-        this.log(Logger.Level.Info, ...args);
+        this.log(Logger.LEVEL.Info, ...args);
       }
 
       warn(...args: unknown[]): void {
-        this.log(Logger.Level.Warning, ...args);
+        this.log(Logger.LEVEL.Warning, ...args);
       }
 
       error(...args: unknown[]): void {
-        this.log(Logger.Level.Error, ...args);
+        this.log(Logger.LEVEL.Error, ...args);
       }
 
-      debugFn(fn: logger.LazyFn): void {
-        this.logFn(Logger.Level.Debug, fn.bind(this));
+      debugFn(fn: Logger.LazyFn): void {
+        this.logFn(Logger.LEVEL.Debug, fn.bind(this));
       }
 
       // ----- I/O -----
 
       registerInput<K extends keyof I>(name: K, cb: Callback<I, K>): void {
-        this.inputsCb.on(name, cb);
+        this.#inputs.on(name, cb);
       }
 
-      registerInputs(inputs?: InputsOption<I>): void {
-        if (inputs == null) return;
+      registerInputs(inputs?: InputsOptions<I>): void {
+        if (inputs == null) {
+          return;
+        }
 
         for (const [name, cb] of Object.entries(inputs)) {
-          const key = name as keyof I;
-
-          this.registerInput(key, cb as Callback<I, typeof key>);
+          this.registerInput(name as keyof I, cb as Callback<I, keyof I>);
         }
       }
 
       registerOutput<K extends keyof O>(name: K, cb: Callback<O, K>): void {
-        this.outputsCb.on(name, cb);
+        this.#outputs.on(name, cb);
       }
 
-      registerOutputs(outputs: OutputsOption<O>): void {
+      registerOutputs(outputs: OutputsOptions<O>): void {
         for (const [name, cb] of Object.entries(outputs)) {
           const key = name as keyof O;
 
-          this.registerOutput(name as keyof O, cb as Callback<O, typeof key>);
+          this.registerOutput(key, cb as Callback<O, typeof key>);
         }
       }
 
       input<K extends keyof I>(name: K, payload: I[K]): void {
-        this.inputsCb.run(name, payload);
+        this.#inputs.run(name, payload);
+      }
+
+      inputs<K extends keyof I>(inputs: { [K in keyof I]?: I[K] }): void {
+        for (const [name, payload] of Object.entries(inputs)) {
+          this.input(name as keyof I, payload as I[K]);
+        }
       }
 
       output<K extends keyof O>(name: K, payload: O[K]): void {
-        this.outputsCb.run(name, payload);
+        this.#outputs.run(name, payload);
+      }
+
+      outputs<K extends keyof O>(outputs: { [K in keyof O]?: O[K] }): void {
+        for (const [name, payload] of Object.entries(outputs)) {
+          this.output(name as keyof O, payload as O[K]);
+        }
       }
 
       // ----- Custom events -----
 
-      subscribe<K extends Event>(
+      subscribe<K extends CustomEvent>(
         event: K,
-        listener: custom_events.Listener<K>,
+        listener: CustomEventListener<K>,
       ): GameEventListenerID {
-        return custom_events.subscribe(this.id, event, listener);
+        return CustomEvents.subscribe(this.id, event, listener);
       }
 
-      subscribeAll(options?: CustomEventsOption): void {
-        if (options == null) return;
+      subscribeAll(options?: CustomEventsOptions): void {
+        if (options == null) {
+          return;
+        }
 
         for (const [event, listener] of Object.entries(options)) {
-          const eventName = event as Event;
+          const eventName = event as CustomEvent;
 
-          this.subscribe(eventName, listener as custom_events.Listener<Event>);
+          this.subscribe(eventName, listener as CustomEventListener<CustomEvent>);
         }
       }
 
       unsubscribe(id: GameEventListenerID): void {
-        custom_events.unsubscribe(id);
+        CustomEvents.unsubscribe(id);
       }
 
       unsubscribeSiblings(): void {
-        const subscriptions = custom_events.unsubscribeAllSiblings(this.id);
+        const subscriptions = CustomEvents.unsubscribeAllSiblings(this.id);
 
         this.debugFn(() =>
           (subscriptions?.size ?? 0) > 0 ? ["unsubscribe.siblings", subscriptions] : null,
@@ -297,11 +316,11 @@ namespace invk {
         name: K,
         payload: CustomGameEventDeclarations[K],
       ): void {
-        custom_events.sendServer(name, payload);
+        CustomEvents.sendServer(name, payload);
       }
 
       sendAll<K extends CustomGameEvent>(name: K, payload: CustomGameEventDeclarations[K]): void {
-        custom_events.sendAll(name, payload);
+        CustomEvents.sendAll(name, payload);
       }
 
       sendPlayer<K extends CustomGameEvent>(
@@ -309,11 +328,11 @@ namespace invk {
         name: K,
         payload: CustomGameEventDeclarations[K],
       ): void {
-        custom_events.sendPlayer(playerId, name, payload);
+        CustomEvents.sendPlayer(playerId, name, payload);
       }
 
       sendClientSide<K extends GameEvent>(name: K, payload: GameEventDeclarations[K]): void {
-        custom_events.sendClientSide(name, payload);
+        CustomEvents.sendClientSide(name, payload);
       }
 
       // ----- Game UI -----
@@ -322,7 +341,7 @@ namespace invk {
         GameUI.SendCustomHUDError(message, soundEvent);
       }
 
-      setUI<K extends keyof typeof DotaDefaultUIElement_t>(
+      setUi<K extends keyof typeof DotaDefaultUIElement_t>(
         elementType: K | DotaDefaultUIElement_t,
         state: boolean,
       ): void {
@@ -332,32 +351,32 @@ namespace invk {
         GameUI.SetDefaultUIEnabled(ty, state);
       }
 
-      showUI<K extends keyof typeof DotaDefaultUIElement_t>(
+      showUi<K extends keyof typeof DotaDefaultUIElement_t>(
         elementType: K | DotaDefaultUIElement_t,
       ): void {
-        this.setUI(elementType, true);
+        this.setUi(elementType, true);
       }
 
-      hideUI<K extends keyof typeof DotaDefaultUIElement_t>(
+      hideUi<K extends keyof typeof DotaDefaultUIElement_t>(
         elementType: K | DotaDefaultUIElement_t,
       ): void {
-        this.setUI(elementType, false);
+        this.setUi(elementType, false);
       }
 
-      showActionPanelUI(): void {
-        this.showUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+      showActionPanelUi(): void {
+        this.showUi("DOTA_DEFAULT_UI_ACTION_PANEL");
       }
 
-      hideActionPanelUI(): void {
-        this.hideUI("DOTA_DEFAULT_UI_ACTION_PANEL");
+      hideActionPanelUi(): void {
+        this.hideUi("DOTA_DEFAULT_UI_ACTION_PANEL");
       }
 
-      showInventoryShopUI(): void {
-        this.showUI("DOTA_DEFAULT_UI_INVENTORY_SHOP");
+      showInventoryShopUi(): void {
+        this.showUi("DOTA_DEFAULT_UI_INVENTORY_SHOP");
       }
 
-      hideInventoryShopUI(): void {
-        this.hideUI("DOTA_DEFAULT_UI_INVENTORY_SHOP");
+      hideInventoryShopUi(): void {
+        this.hideUi("DOTA_DEFAULT_UI_INVENTORY_SHOP");
       }
 
       // ----- Element utils -----
@@ -382,10 +401,12 @@ namespace invk {
        * findElements({ name1: "#elem1", name2: "Elmen2", ... })
        * // returns { name1: $("#elem1"), name2: $("#Elem2"), ... }
        */
-      findElements(options?: ElementsOption<E>): E {
+      findElements(options?: ElementsOptions<E>): E {
         const elements = {} as E;
 
-        if (options == null) return elements;
+        if (options == null) {
+          return elements;
+        }
 
         for (const [name, id] of Object.entries(options)) {
           const idpfx = prefixOnce(id, "#");
@@ -413,33 +434,38 @@ namespace invk {
         return this.panel.GetAttributeUInt32(attr, defaultValue) as T;
       }
 
-      loadParams(options?: ParamsOption<P>): P {
+      loadParams(options?: ParamsOptions<P>): P {
         const params = {} as P;
 
-        if (options == null) return params;
+        if (options == null) {
+          return params;
+        }
 
         this.debug("loadParams()", options);
 
         for (const [k, v] of Object.entries(options)) {
           switch (v.type) {
-            case ParamType.String:
+            case ParamType.String: {
               params[k as keyof P] = this.attrStr(
                 k,
                 (v.default == null ? "" : v.default) as string,
               );
 
               break;
-            case ParamType.Int:
+            }
+            case ParamType.Int: {
               params[k as keyof P] = this.attrInt(k, (v.default == null ? 0 : v.default) as number);
 
               break;
-            case ParamType.UInt32:
+            }
+            case ParamType.Uint32: {
               params[k as keyof P] = this.attrUint32(
                 k,
                 (v.default == null ? 0 : v.default) as number,
               );
 
               break;
+            }
             default: {
               const _check: never = v.type;
               throw new Error(`Component param ${k} with unknown type ${_check}`);
@@ -450,27 +476,27 @@ namespace invk {
         return params;
       }
 
-      create<K extends LayoutID & keyof Components>(
+      create<K extends LayoutId & keyof Components>(
         layoutId: K,
         elemId: string,
         parent: Panel = this.panel,
       ): Components[K] {
-        const panel = createPanel(parent, elemId, layout.path(layoutId));
+        const panel = createPanel(parent, elemId, Layout.path(layoutId));
 
-        this.debug("create()", { layoutId, elemID: elemId, panel: debugPanel(panel) });
+        this.debugFn(() => ["create()", { layoutId, elemId, panel: debugPanel(panel) }]);
 
         const { component } = panel.Data<LayoutData<K>>();
 
         return component;
       }
 
-      load<K extends LayoutID & keyof Components>(
+      load<K extends LayoutId & keyof Components>(
         panel: Panel,
         layoutId: K,
         override = false,
         partial = false,
       ): Components[K] {
-        panel.BLoadLayout(layout.path(layoutId), override, partial);
+        panel.BLoadLayout(Layout.path(layoutId), override, partial);
 
         const { component } = panel.Data<LayoutData<K>>();
 
@@ -479,22 +505,26 @@ namespace invk {
 
       // ----- UI events -----
 
-      listen(element: Panel, event: panorama.UIEvent, listener: panorama.UIEventListener): void {
+      listen(element: Panel, event: Panorama.UiEvent, listener: Panorama.UiEventListener): void {
         $.RegisterEventHandler(event, element, listener);
       }
 
-      listenAll(options?: UIEventsOption<E>): void {
-        if (options == null) return;
+      listenAll(options?: UiEventsOptions<E>): void {
+        if (options == null) {
+          return;
+        }
 
         for (const [element, events] of Object.entries(options)) {
           for (const [event, listener] of Object.entries(events ?? {})) {
-            this.listen(this.element(element), event as panorama.UIEvent, listener);
+            this.listen(this.element(element), event as Panorama.UiEvent, listener);
           }
         }
       }
 
-      setPanelEvents(options?: PanelEventsOption<E>): void {
-        if (options == null) return;
+      setPanelEvents(options?: PanelEventsOptions<E>): void {
+        if (options == null) {
+          return;
+        }
 
         for (const [element, events] of Object.entries(options)) {
           for (const [event, listener] of Object.entries(events || {})) {
@@ -507,92 +537,92 @@ namespace invk {
         $.DispatchEvent(event, element, ...args);
       }
 
-      openExternalURL(element: Panel, url: string): void {
-        this.dispatch(element, UIEvent.EXTERNAL_BROWSER_GO_TO_URL, url);
+      openUrl(element: Panel, url: string): void {
+        this.dispatch(element, UiEvent.BrowserGoToUrl, url);
       }
 
       playSound(soundEvent: string): void {
-        $.DispatchEvent(UIEvent.PLAY_SOUND, soundEvent);
+        $.DispatchEvent(UiEvent.PlaySound, soundEvent);
       }
 
-      showTooltip<K extends LayoutID>(
+      showTooltip<K extends LayoutId>(
         parent: Panel,
         layoutId: K,
         id: string,
         params?: Components[K]["params"],
       ): void {
-        const path = layout.path(layoutId);
+        const path = Layout.path(layoutId);
 
         if (params == null) {
-          this.dispatch(parent, UIEvent.SHOW_TOOLTIP, id, path);
+          this.dispatch(parent, UiEvent.ShowTooltip, id, path);
           return;
         }
 
-        this.dispatch(parent, UIEvent.SHOW_TOOLTIP_PARAMS, id, path, serializeParams(params));
+        this.dispatch(parent, UiEvent.ShowTooltipParams, id, path, serializeParams(params));
       }
 
       hideTooltip(parent: Panel, id: string): void {
-        this.dispatch(parent, UIEvent.HIDE_TOOLTIP, id);
+        this.dispatch(parent, UiEvent.HideTooltip, id);
       }
 
       showTextTooltip(parent: Panel, text: string): void {
-        this.dispatch(parent, UIEvent.SHOW_TEXT_TOOLTIP, text);
+        this.dispatch(parent, UiEvent.ShowTextTooltip, text);
       }
 
       hideTextTooltip(parent: Panel): void {
-        this.dispatch(parent, UIEvent.HIDE_TEXT_TOOLTIP);
+        this.dispatch(parent, UiEvent.HideTextTooltip);
       }
 
       showAbilityTooltip(parent: Panel, abilityName: string, params?: AbilityTooltipParams): void {
         if (params == null) {
-          this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP, abilityName);
+          this.dispatch(parent, UiEvent.ShowAbilityTooltip, abilityName);
           return;
         }
 
         if ("entityIndex" in params) {
           this.dispatch(
             parent,
-            UIEvent.SHOW_ABILITY_TOOLTIP_ENTITY_INDEX,
+            UiEvent.ShowAbilityTooltipEntityIndex,
             abilityName,
             params.entityIndex,
           );
         } else if ("guide" in params) {
-          this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP_GUIDE, abilityName, params.guide);
+          this.dispatch(parent, UiEvent.ShowAbilityTooltipGuide, abilityName, params.guide);
         } else if ("hero" in params) {
           this.dispatch(
             parent,
-            UIEvent.SHOW_ABILITY_TOOLTIP_HERO,
+            UiEvent.ShowAbilityTooltipHero,
             abilityName,
             params.hero,
             params.flag,
           );
         } else if ("level" in params) {
-          this.dispatch(parent, UIEvent.SHOW_ABILITY_TOOLTIP_LEVEL, abilityName, params.level);
+          this.dispatch(parent, UiEvent.ShowAbilityTooltipLevel, abilityName, params.level);
         }
       }
 
       hideAbilityTooltip(parent: Panel): void {
-        this.dispatch(parent, UIEvent.HIDE_ABILITY_TOOLTIP);
+        this.dispatch(parent, UiEvent.HideAbilityTooltip);
       }
 
-      showPopup<K extends LayoutID>(
+      showPopup<K extends LayoutId>(
         parent: Panel,
         layoutId: K,
         id: string,
         params?: Components[K]["params"],
       ): void {
-        const path = layout.path(layoutId);
+        const path = Layout.path(layoutId);
 
         if (params == null) {
-          this.dispatch(parent, UIEvent.SHOW_POPUP, id, path);
+          this.dispatch(parent, UiEvent.ShowPopup, id, path);
           return;
         }
 
-        this.dispatch(parent, UIEvent.SHOW_POPUP_PARAMS, id, path, serializeParams(params));
+        this.dispatch(parent, UiEvent.ShowPopupParams, id, path, serializeParams(params));
       }
 
       closePopup(parent: Panel): void {
-        this.dispatch(parent, UIEvent.POPUP_BUTTON_CLICKED);
+        this.dispatch(parent, UiEvent.PopupButtonClicked);
       }
     }
   }

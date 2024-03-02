@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace dota2 {
+  export namespace Dota2 {
     export enum TalentLevel {
       Tier1 = 10,
       Tier2 = 15,
@@ -9,26 +8,26 @@ namespace invk {
     }
 
     export enum TalentSide {
-      Left = "LEFT",
-      Right = "RIGHT",
+      Left = "Left",
+      Right = "Right",
     }
 
     export enum TalentSelection {
-      NONE = 0,
-      L10_RIGHT = 1 << 0,
-      L10_LEFT = 1 << 1,
-      L15_RIGHT = 1 << 2,
-      L15_LEFT = 1 << 3,
-      L20_RIGHT = 1 << 4,
-      L20_LEFT = 1 << 5,
-      L25_RIGHT = 1 << 6,
-      L25_LEFT = 1 << 7,
+      None = 0,
+      L10Right = 1 << 0,
+      L10Left = 1 << 1,
+      L15Right = 1 << 2,
+      L15Left = 1 << 3,
+      L20Right = 1 << 4,
+      L20Left = 1 << 5,
+      L25Right = 1 << 6,
+      L25Left = 1 << 7,
     }
 
     export type TalentMap<T> = Map<TalentLevel, Map<TalentSide, T>>;
 
     const selectionKey = (level: TalentLevel, side: TalentSide): keyof typeof TalentSelection =>
-      `L${level}_${side}`;
+      `L${level}${side}`;
 
     const selectionValue = (level: TalentLevel, side: TalentSide): TalentSelection =>
       TalentSelection[selectionKey(level, side)];
@@ -42,7 +41,11 @@ namespace invk {
         return i % 2 === 0 ? TalentSide.Right : TalentSide.Left;
       }
 
-      constructor(public value: TalentSelection) {}
+      value: TalentSelection;
+
+      constructor(value: TalentSelection) {
+        this.value = value;
+      }
 
       isSelected(level: TalentLevel, side: TalentSide) {
         return (selectionValue(level, side) & this.value) > 0;

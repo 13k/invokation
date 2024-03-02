@@ -1,16 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace popups {
-      export namespace game_info {
+  export namespace Components {
+    export namespace Popups {
+      export namespace GameInfo {
         const {
-          constants: { META },
-          sequence: { ParallelSequence },
+          Constants: { META },
         } = GameUI.CustomUIConfig().invk;
 
-        import Component = invk.component.Component;
+        import Component = invk.Component.Component;
 
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           versionLabel: LabelPanel;
           btnClose: Button;
           btnOpenHomepage: Button;
@@ -28,16 +26,16 @@ namespace invk {
               },
               panelEvents: {
                 $: {
-                  oncancel: () => this.Close(),
+                  oncancel: () => this.close(),
                 },
                 btnClose: {
-                  onactivate: () => this.Close(),
+                  onactivate: () => this.close(),
                 },
                 btnOpenHomepage: {
-                  onactivate: () => this.OpenHomepageURL(),
+                  onactivate: () => this.openHomepageUrl(),
                 },
                 btnOpenChangelog: {
-                  onactivate: () => this.OpenChangelogURL(),
+                  onactivate: () => this.openChangelogUrl(),
                 },
               },
             });
@@ -54,36 +52,20 @@ namespace invk {
 
           // ----- Helpers -----
 
-          openURL(url: string) {
-            this.openExternalURL(this.panel, url);
+          render(): void {
+            this.elements.versionLabel.text = META.version;
           }
 
-          // ----- Action runners -----
-
-          render() {
-            const seq = new ParallelSequence().SetAttribute(
-              this.elements.versionLabel,
-              "text",
-              META.VERSION,
-            );
-
-            this.debugFn(() => ["render()", { actions: seq.size() }]);
-
-            seq.Run();
-          }
-
-          // ----- UI methods -----
-
-          Close() {
+          close(): void {
             this.closePopup(this.panel);
           }
 
-          OpenHomepageURL() {
-            this.openURL(META.URL);
+          openHomepageUrl(): void {
+            this.openUrl(this.panel, META.url);
           }
 
-          OpenChangelogURL() {
-            this.openURL(META.CHANGELOG_URL);
+          openChangelogUrl(): void {
+            this.openUrl(this.panel, META.changelogUrl);
           }
         }
 

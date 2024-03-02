@@ -1,18 +1,17 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace TopBar {
       const {
-        layout: { LayoutID },
+        Layout: { LayoutId },
       } = GameUI.CustomUIConfig().invk;
 
-      import Component = invk.component.Component;
+      import Component = invk.Component.Component;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         btnShowGameInfo: Button;
       }
 
-      enum PanelID {
+      enum PanelId {
         PopupGameInfo = "PopupGameInfo",
       }
 
@@ -23,7 +22,7 @@ namespace invk {
               btnShowGameInfo: "BtnShowGameInfo",
             },
             panelEvents: {
-              btnShowGameInfo: { onactivate: () => this.ShowGameInfo() },
+              btnShowGameInfo: { onactivate: () => this.onBtnShowGameInfo() },
             },
           });
 
@@ -32,9 +31,9 @@ namespace invk {
 
         // ----- UI methods -----
 
-        ShowGameInfo(): void {
+        onBtnShowGameInfo(): void {
           this.debug("ShowGameInfo()");
-          this.showPopup(this.panel, LayoutID.PopupGameInfo, PanelID.PopupGameInfo);
+          this.showPopup(this.panel, LayoutId.PopupGameInfo, PanelId.PopupGameInfo);
         }
       }
 

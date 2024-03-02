@@ -1,13 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace net_table {
+  export namespace NetTable {
     export enum CustomNetTable {
       Invokation = "invokation",
       Hero = "hero",
       Abilities = "abilities",
     }
 
-    export namespace invokation {
+    export namespace Invokation {
+      import NetworkCombo = invk.Combo.NetworkCombo;
+
       export enum Key {
         Combos = "combos",
         ShopItems = "shop_items",
@@ -20,55 +21,93 @@ namespace invk {
         [Key.HeroData]: HeroData;
       }
 
-      export type Combos = combo.NetworkCombo[];
-
-      export type ShopItems = Record<dota2.shop.Category, string[]>;
+      export type Combos = NetworkCombo[];
+      export type ShopItems = Record<Dota2.shop.Category, string[]>;
 
       export interface HeroData {
+        // biome-ignore lint/style/useNamingConvention: remote data
         HERO_ID: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         UNIT_NAME: string;
-        SPAWNED_UNITS: dota2.invoker.UnitsSpawned;
+        // biome-ignore lint/style/useNamingConvention: remote data
+        SPAWNED_UNITS: Dota2.Invoker.UnitsSpawned;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_QUAS: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_WEX: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_EXORT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_EMPTY1: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_EMPTY2: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_INVOKE: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_COLD_SNAP: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_GHOST_WALK: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_ICE_WALL: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_EMP: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TORNADO: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_ALACRITY: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_SUN_STRIKE: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_FORGE_SPIRIT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_CHAOS_METEOR: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_DEAFENING_BLAST: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L10_RIGHT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L10_LEFT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L15_RIGHT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L15_LEFT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L20_RIGHT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L20_LEFT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L25_RIGHT: string;
+        // biome-ignore lint/style/useNamingConvention: remote data
         ABILITY_TALENT_L25_LEFT: string;
-        ORB_ABILITIES: dota2.invoker.Ability[];
-        SPELL_ABILITIES: dota2.invoker.Ability[];
-        TALENT_ABILITIES: dota2.invoker.Ability[];
-        SPELL_COMPOSITION: Record<dota2.invoker.Ability, dota2.invoker.OrbAbility[]>;
+        // biome-ignore lint/style/useNamingConvention: remote data
+        ORB_ABILITIES: Dota2.Invoker.Ability[];
+        // biome-ignore lint/style/useNamingConvention: remote data
+        SPELL_ABILITIES: Dota2.Invoker.Ability[];
+        // biome-ignore lint/style/useNamingConvention: remote data
+        TALENT_ABILITIES: Dota2.Invoker.Ability[];
+        // biome-ignore lint/style/useNamingConvention: remote data
+        SPELL_COMPOSITION: Record<Dota2.Invoker.Ability, Dota2.Invoker.OrbAbility[]>;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_QUAS: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_WEX: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_EXORT: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_EMPTY1: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_EMPTY2: number;
+        // biome-ignore lint/style/useNamingConvention: remote data
         INDEX_ABILITY_INVOKE: number;
-        ABILITY_INDICES: Record<dota2.invoker.Ability, number>;
+        // biome-ignore lint/style/useNamingConvention: remote data
+        ABILITY_INDICES: Record<Dota2.Invoker.Ability, number>;
+        // biome-ignore lint/style/useNamingConvention: remote data
         MAX_VISIBLE_ABILITY_INDEX: number;
       }
     }
 
-    export namespace hero {
-      import KeyValues = invk.kv.KeyValues;
+    export namespace Hero {
+      import KeyValues = invk.KeyValues.KeyValues;
 
       export enum Key {
         KeyValues = "kv",
@@ -79,8 +118,8 @@ namespace invk {
       }
     }
 
-    export namespace abilities {
-      import KeyValues = invk.kv.KeyValues;
+    export namespace Abilities {
+      import KeyValues = invk.KeyValues.KeyValues;
 
       export enum Key {
         KeyValues = "kv",
@@ -112,28 +151,13 @@ namespace invk {
       key: K,
       value: NetworkValue<N, K>,
     ) => void;
-
-    export function subscribe<N extends Names>(name: N, listener: Listener<N>): NetTableListenerID {
-      return CustomNetTables.SubscribeNetTableListener(name, listener);
-    }
-
-    export function entries<N extends Names>(name: N): Entries<N> {
-      return CustomNetTables.GetAllTableValues(name);
-    }
-
-    export function get<N extends Names, K extends Keys<N>>(
-      name: N,
-      key: K,
-    ): NetworkValue<N, K> | null {
-      return CustomNetTables.GetTableValue(name, key);
-    }
   }
 }
 
 // ----- Custom net tables declarations -----
 
 interface CustomNetTableDeclarations {
-  [invk.net_table.CustomNetTable.Invokation]: invk.net_table.invokation.Table;
-  [invk.net_table.CustomNetTable.Hero]: invk.net_table.hero.Table;
-  [invk.net_table.CustomNetTable.Abilities]: invk.net_table.abilities.Table;
+  [invk.NetTable.CustomNetTable.Invokation]: invk.NetTable.Invokation.Table;
+  [invk.NetTable.CustomNetTable.Hero]: invk.NetTable.Hero.Table;
+  [invk.NetTable.CustomNetTable.Abilities]: invk.NetTable.Abilities.Table;
 }

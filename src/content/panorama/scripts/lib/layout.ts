@@ -1,13 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace layout {
-    export enum LayoutID {
+  export namespace Layout {
+    export enum LayoutId {
       Challenge = "challenge",
       ChallengeComboStep = "challenge_combo_step",
       CombatLog = "combat_log",
       ComboScore = "combo_score",
       CustomLoadingScreen = "custom_loading_screen",
-      CustomUIManifest = "custom_ui_manifest",
+      CustomUiManifest = "custom_ui_manifest",
       Freestyle = "freestyle",
       Picker = "picker",
       PickerCombo = "picker_combo",
@@ -16,10 +15,10 @@ namespace invk {
       ViewerComboStep = "viewer_combo_step",
       ViewerProperties = "viewer_properties",
       // UI
-      UIInvokerSpellCard = "ui/invoker_spell_card",
-      UIItemPicker = "ui/item_picker",
-      UITagSelect = "ui/tag_select",
-      UITalentsDisplay = "ui/talents_display",
+      UiInvokerSpellCard = "ui/invoker_spell_card",
+      UiItemPicker = "ui/item_picker",
+      UiTagSelect = "ui/tag_select",
+      UiTalentsDisplay = "ui/talents_display",
       // Popups
       PopupGameInfo = "popups/popup_game_info",
       PopupInvokerAbilityPicker = "popups/popup_invoker_ability_picker",
@@ -29,9 +28,9 @@ namespace invk {
       TooltipStatBranch = "tooltips/tooltip_stat_branch",
     }
 
-    export type Path<K extends LayoutID> = `file://{resources}/layout/custom_game/${K}.xml`;
+    export type Path<K extends LayoutId> = `file://{resources}/layout/custom_game/${K}.xml`;
 
-    export function path<K extends LayoutID>(id: K): Path<K> {
+    export function path<K extends LayoutId>(id: K): Path<K> {
       return `file://{resources}/layout/custom_game/${id}.xml`;
     }
   }

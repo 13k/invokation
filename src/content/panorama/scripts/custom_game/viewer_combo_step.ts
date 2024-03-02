@@ -1,10 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace ViewerComboStep {
-      const { l10n } = GameUI.CustomUIConfig().invk;
+      const { L10n } = GameUI.CustomUIConfig().invk;
 
-      import ComboStep = invk.components.ComboStep.ComboStep;
+      import ComboStep = invk.Components.ComboStep.ComboStep;
 
       export interface Elements extends ComboStep.Elements {
         descriptionLabel: LabelPanel;
@@ -17,12 +16,6 @@ namespace invk {
               button: "ComboStepIconButton",
               descriptionLabel: "ViewerComboStepDescription",
             },
-            panelEvents: {
-              button: {
-                onmouseover: () => this.ShowTooltip(),
-                onmouseout: () => this.HideTooltip(),
-              },
-            },
           });
         }
 
@@ -32,10 +25,10 @@ namespace invk {
             return;
           }
 
-          this.elements.descriptionLabel.text = l10n.comboAttrName(
+          this.elements.descriptionLabel.text = L10n.comboAttrName(
             this.combo.id,
             this.step.id,
-            l10n.Key.ViewerStepDescriptionFallback,
+            L10n.Key.ViewerStepDescriptionFallback,
           );
         }
       }

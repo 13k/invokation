@@ -1,15 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace env {
+  export namespace Env {
     export enum Name {
       Development = "development",
       Production = "production",
     }
 
     export class Env {
-      static Name = Name;
+      name: Name;
 
-      constructor(public name = isDevelopment() ? Name.Development : Name.Production) {}
+      constructor(name = isDevelopment() ? Name.Development : Name.Production) {
+        this.name = name;
+      }
 
       get development() {
         return this.name === Name.Development;
@@ -21,7 +22,6 @@ namespace invk {
     }
 
     function isDevelopment(): boolean {
-      // @ts-expect-error `Game.GetConvar*` functions are missing from types
       return Game.IsInToolsMode() || Game.GetConvarInt("developer") > 0;
     }
   }

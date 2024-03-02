@@ -1,17 +1,17 @@
 /// <reference path="combo.ts" />
 /// <reference path="util.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace l10n {
-    import ComboID = invk.combo.ComboID;
-    import ComboL10n = invk.combo.ComboL10n;
-    import Properties = invk.combo.Properties;
-    import PropertiesL10n = invk.combo.PropertiesL10n;
-    import Property = invk.combo.Property;
-    import StepID = invk.combo.StepID;
-    import prefixOnce = invk.util.prefixOnce;
-    import snakeCase = invk.util.snakeCase;
+  export namespace L10n {
+    import ComboId = invk.Combo.ComboId;
+    import ComboL10n = invk.Combo.ComboL10n;
+    import Properties = invk.Combo.Properties;
+    import PropertiesL10n = invk.Combo.PropertiesL10n;
+    import Property = invk.Combo.Property;
+    import StepId = invk.Combo.StepId;
+
+    import prefixOnce = invk.Util.prefixOnce;
+    import snakeCase = invk.Util.snakeCase;
 
     const L = $.Localize;
 
@@ -45,7 +45,7 @@ namespace invk {
       return toKey(KeyPrefix.AbilityTooltip + ability);
     }
 
-    export function comboKey<K extends keyof ComboL10n>(id: ComboID, attr: K | StepID): string {
+    export function comboKey<K extends keyof ComboL10n>(id: ComboId, attr: K | StepId): string {
       return pKey(KeyPrefix.Combo, id, snakeCase(attr.toString()));
     }
 
@@ -79,8 +79,8 @@ namespace invk {
     }
 
     export function comboAttrName<K extends keyof ComboL10n>(
-      id: ComboID,
-      attr: K | StepID,
+      id: ComboId,
+      attr: K | StepId,
       fk?: string,
     ): string {
       return l(comboKey(id, attr), { fk });

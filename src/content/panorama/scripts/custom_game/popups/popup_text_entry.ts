@@ -1,16 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace popups {
-      export namespace text_entry {
+  export namespace Components {
+    export namespace Popups {
+      export namespace TextEntry {
         const {
-          custom_events: { GameEvent },
+          CustomEvents: { GameEvent },
         } = GameUI.CustomUIConfig().invk;
 
-        import Component = invk.component.Component;
-        import ParamType = invk.component.ParamType;
+        import Component = invk.Component.Component;
+        import ParamType = invk.Component.ParamType;
 
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           textEntry: LabelPanel;
           image: ImagePanel;
           econItemImage: EconItemPanel;
@@ -21,13 +20,13 @@ namespace invk {
           btnCancel: Button;
         }
 
-        export interface Params extends component.Params {
+        export interface Params extends Component.Params {
           [Param.Channel]: string;
           [Param.Title]?: string;
           [Param.Body]?: string;
           [Param.Image]?: string;
           [Param.EconItem]?: number;
-          [Param.HeroID]?: number;
+          [Param.HeroId]?: number;
           [Param.Hero]?: string;
           [Param.Ability]?: string;
           [Param.Item]?: string;
@@ -39,7 +38,7 @@ namespace invk {
           Body = "body",
           Image = "image",
           EconItem = "econitem",
-          HeroID = "heroid",
+          HeroId = "heroid",
           Hero = "hero",
           Ability = "ability",
           Item = "item",
@@ -54,7 +53,7 @@ namespace invk {
           ItemEnabled = "ItemIconEnabled",
         }
 
-        enum DialogVariable {
+        enum DialogVar {
           Title = "title",
           Body = "body",
         }
@@ -74,16 +73,16 @@ namespace invk {
               },
               panelEvents: {
                 $: {
-                  oncancel: () => this.Close(),
+                  oncancel: () => this.close(),
                 },
                 textEntry: {
-                  oninputsubmit: () => this.Submit(),
+                  oninputsubmit: () => this.submit(),
                 },
                 btnSubmit: {
-                  onactivate: () => this.Submit(),
+                  onactivate: () => this.submit(),
                 },
                 btnCancel: {
-                  onactivate: () => this.Close(),
+                  onactivate: () => this.close(),
                 },
               },
               params: {
@@ -91,8 +90,8 @@ namespace invk {
                 [Param.Title]: { type: ParamType.String, default: "" },
                 [Param.Body]: { type: ParamType.String, default: "" },
                 [Param.Image]: { type: ParamType.String, default: "" },
-                [Param.EconItem]: { type: ParamType.UInt32, default: 0 },
-                [Param.HeroID]: { type: ParamType.UInt32, default: 0 },
+                [Param.EconItem]: { type: ParamType.Uint32, default: 0 },
+                [Param.HeroId]: { type: ParamType.Uint32, default: 0 },
                 [Param.Hero]: { type: ParamType.String, default: "" },
                 [Param.Ability]: { type: ParamType.String, default: "" },
                 [Param.Item]: { type: ParamType.String, default: "" },
@@ -127,8 +126,8 @@ namespace invk {
             return this.params[Param.EconItem];
           }
 
-          get heroID(): number | undefined {
-            return this.params[Param.HeroID];
+          get heroId(): HeroID | undefined {
+            return this.params[Param.HeroId] as HeroID;
           }
 
           get hero(): string | undefined {
@@ -148,7 +147,7 @@ namespace invk {
               this.hasBody() ||
               this.hasImage() ||
               this.hasEconItem() ||
-              this.hasHeroID() ||
+              this.hasHeroId() ||
               this.hasHero() ||
               this.hasAbility() ||
               this.hasItem()
@@ -167,8 +166,8 @@ namespace invk {
             return (this.econItem ?? 0) > 0;
           }
 
-          hasHeroID(): this is { heroID: number } {
-            return (this.heroID ?? 0) > 0;
+          hasHeroId(): this is { heroId: HeroID } {
+            return (this.heroId ?? 0) > 0;
           }
 
           hasHero(): this is { hero: string } {
@@ -183,11 +182,11 @@ namespace invk {
             return (this.item?.length ?? 0) > 0;
           }
 
-          render() {
+          render(): void {
             let iconClass: CssClass | null = null;
 
-            this.panel.SetDialogVariable(DialogVariable.Title, this.title ?? "");
-            this.panel.SetDialogVariable(DialogVariable.Body, this.body ?? "");
+            this.panel.SetDialogVariable(DialogVar.Title, this.title ?? "");
+            this.panel.SetDialogVariable(DialogVar.Body, this.body ?? "");
 
             if (this.hasImage()) {
               this.elements.image.SetImage(this.image);
@@ -195,8 +194,8 @@ namespace invk {
             } else if (this.hasEconItem()) {
               this.elements.econItemImage.SetItemByDefinition(this.econItem);
               iconClass = CssClass.EconItemEnabled;
-            } else if (this.hasHeroID()) {
-              this.elements.heroImage.heroid = this.heroID as HeroID;
+            } else if (this.hasHeroId()) {
+              this.elements.heroImage.heroid = this.heroId;
               iconClass = CssClass.HeroEnabled;
             } else if (this.hasHero()) {
               this.elements.heroImage.heroname = this.hero;
@@ -222,13 +221,11 @@ namespace invk {
             this.debug("render()");
           }
 
-          // ----- UI methods -----
-
-          Close() {
+          close(): void {
             this.closePopup(this.panel);
           }
 
-          Submit() {
+          submit(): void {
             const {
               params: { [Param.Channel]: channel },
               elements: {
@@ -239,8 +236,8 @@ namespace invk {
             const payload = { channel, text };
 
             this.debug("Submit()", payload);
-            this.sendClientSide(GameEvent.POPUP_TEXT_ENTRY_SUBMIT, payload);
-            this.Close();
+            this.sendClientSide(GameEvent.PopupTextEntrySubmit, payload);
+            this.close();
           }
         }
 

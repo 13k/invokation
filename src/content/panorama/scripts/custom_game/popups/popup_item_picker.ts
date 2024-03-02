@@ -1,28 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace popups {
-      export namespace item_picker {
+  export namespace Components {
+    export namespace Popups {
+      export namespace ItemPicker {
         const {
-          layout,
-          custom_events: { GameEvent },
+          Layout: { LayoutId },
+          CustomEvents: { GameEvent },
         } = GameUI.CustomUIConfig().invk;
 
-        import item_picker = invk.components.ui.item_picker;
+        import Component = invk.Component.Component;
+        import ParamType = invk.Component.ParamType;
+        import UiItemPicker = invk.Components.Ui.ItemPicker;
 
-        import Component = invk.component.Component;
-        import ParamType = invk.component.ParamType;
-
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           itemPickerContainer: Panel;
           btnClose: Button;
         }
 
-        export interface Params extends component.Params {
+        export interface Params extends Component.Params {
           channel: string;
         }
 
-        enum PanelID {
+        enum PanelId {
           ItemPicker = "PopupItemPickerUIItemPicker",
         }
 
@@ -31,7 +29,7 @@ namespace invk {
 
         export class PopupItemPicker extends Component<Elements, never, never, Params> {
           selected: string = INVALID_ITEM;
-          itemPicker: item_picker.ItemPicker | undefined;
+          itemPicker: UiItemPicker.ItemPicker | undefined;
 
           constructor() {
             super({
@@ -41,10 +39,10 @@ namespace invk {
               },
               panelEvents: {
                 $: {
-                  oncancel: () => this.Close(),
+                  oncancel: () => this.close(),
                 },
                 btnClose: {
-                  onactivate: () => this.Close(),
+                  onactivate: () => this.close(),
                 },
               },
               params: {
@@ -62,37 +60,35 @@ namespace invk {
             this.render();
           }
 
-          onItemSelected(payload: item_picker.Outputs["OnSelect"]) {
+          onItemSelected(payload: UiItemPicker.Outputs["onSelect"]): void {
             this.debug("onItemSelected()", payload);
 
             this.selected = payload.item;
 
-            this.Submit();
+            this.submit();
           }
 
           // ----- Helpers -----
 
-          render() {
+          render(): void {
             this.itemPicker = this.create(
-              layout.LayoutID.UIItemPicker,
-              PanelID.ItemPicker,
+              LayoutId.UiItemPicker,
+              PanelId.ItemPicker,
               this.elements.itemPickerContainer,
             );
 
             this.itemPicker.registerOutputs({
-              OnSelect: this.onItemSelected.bind(this),
+              onSelect: this.onItemSelected.bind(this),
             });
 
             this.debug("render()");
           }
 
-          // ----- UI methods -----
-
-          Close() {
+          close(): void {
             this.closePopup(this.panel);
           }
 
-          Submit() {
+          submit(): void {
             const {
               params: { channel },
               selected: item,
@@ -101,8 +97,8 @@ namespace invk {
             const payload = { channel, item };
 
             this.debug("Submit()", payload);
-            this.sendClientSide(GameEvent.POPUP_ITEM_PICKER_SUBMIT, payload);
-            this.Close();
+            this.sendClientSide(GameEvent.PopupItemPickerSubmit, payload);
+            this.close();
           }
         }
 

@@ -1,10 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace singleton {
+  export namespace Singleton {
     const {
-      combo: { CombosCollection },
-      net_table: {
-        key_listener: { AbilitiesKeyValues, HeroData, HeroKeyValues },
+      Combo: { CombosCollection },
+      NetTable: {
+        KeyListener: { AbilitiesKeyValues, HeroData, HeroKeyValues },
       },
     } = invk;
 
@@ -14,30 +13,27 @@ namespace invk {
     export const HERO_KV = new HeroKeyValues();
   }
 
-  export namespace components {
-    export namespace CustomUIManifest {
+  export namespace Components {
+    export namespace CustomUiManifest {
       const {
-        constants: { UI_CONFIG },
+        Constants: { UI_CONFIG },
       } = GameUI.CustomUIConfig().invk;
 
-      import Component = invk.component.Component;
+      import Component = invk.Component.Component;
 
-      export class CustomUIManifest extends Component {
+      export class CustomUiManifest extends Component {
         constructor() {
           super();
 
           for (const [key, value] of Object.entries(UI_CONFIG)) {
-            GameUI.SetDefaultUIEnabled(
-              DotaDefaultUIElement_t[key as keyof typeof DotaDefaultUIElement_t],
-              value,
-            );
+            this.setUi(key as keyof typeof DotaDefaultUIElement_t, value);
           }
 
           this.debug("init");
         }
       }
 
-      export const component = new CustomUIManifest();
+      export const component = new CustomUiManifest();
     }
   }
 }

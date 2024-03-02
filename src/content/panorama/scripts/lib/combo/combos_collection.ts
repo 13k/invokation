@@ -5,36 +5,35 @@
 /// <reference path="../net_table.ts" />
 /// <reference path="combo.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace combo {
-    import l10n = invk.l10n;
-    import lua = invk.lua;
+  export namespace Combo {
+    import l10n = invk.L10n;
+    import lua = invk.Lua;
 
-    import Combo = invk.combo.Combo;
-    import ComboID = invk.combo.ComboID;
-    import CustomGameEvent = invk.custom_events.CustomGameEvent;
-    import NetTableKeyListener = invk.net_table.key_listener.NetTableKeyListener;
-    import OrbName = invk.combo.OrbName;
-    import Step = invk.combo.Step;
+    import Combo = invk.Combo.Combo;
+    import ComboId = invk.Combo.ComboId;
+    import CustomGameEvent = invk.CustomEvents.CustomGameEvent;
+    import NetTableKeyListener = invk.NetTable.KeyListener.NetTableKeyListener;
+    import OrbName = invk.Combo.OrbName;
+    import Step = invk.Combo.Step;
 
-    import isInvocationAbility = invk.dota2.invoker.isInvocationAbility;
-    import isItemAbility = invk.dota2.isItemAbility;
-    import isOrbAbility = invk.dota2.invoker.isOrbAbility;
+    import isInvocationAbility = invk.Dota2.Invoker.isInvocationAbility;
+    import isItemAbility = invk.Dota2.isItemAbility;
+    import isOrbAbility = invk.Dota2.Invoker.isOrbAbility;
 
-    import table = invk.net_table.CustomNetTable.Invokation;
-    import key = invk.net_table.invokation.Key.Combos;
+    import table = invk.NetTable.CustomNetTable.Invokation;
+    import key = invk.NetTable.Invokation.Key.Combos;
 
-    type NetworkValue = invk.net_table.NetworkValue<table, key>;
-    type Value = Map<ComboID, Combo>;
+    type NetworkValue = invk.NetTable.NetworkValue<table, key>;
+    type Value = Map<ComboId, Combo>;
 
     export class CombosCollection extends NetTableKeyListener<table, key, Value> {
       constructor() {
         super(table, key);
       }
 
-      private sendReloadToServer() {
-        custom_events.sendServer(CustomGameEvent.COMBOS_RELOAD, {});
+      #sendReloadToServer() {
+        CustomEvents.sendServer(CustomGameEvent.CombosReload, {});
       }
 
       protected override normalize(rvalue: NetworkValue): Value {
@@ -90,7 +89,7 @@ namespace invk {
 
         this.value = undefined;
 
-        this.sendReloadToServer();
+        this.#sendReloadToServer();
         this.load();
       }
 
@@ -106,11 +105,11 @@ namespace invk {
         return this.value?.values();
       }
 
-      get entries(): IterableIterator<[ComboID, Combo]> | undefined {
+      get entries(): IterableIterator<[ComboId, Combo]> | undefined {
         return this.value?.entries();
       }
 
-      get(id: ComboID): Combo | undefined {
+      get(id: ComboId): Combo | undefined {
         return this.value?.get(id);
       }
     }

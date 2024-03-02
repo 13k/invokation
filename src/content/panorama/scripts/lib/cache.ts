@@ -1,10 +1,9 @@
 /// <reference path="util.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace cache {
-    import surround = invk.util.surround;
-    import trim = invk.util.trim;
+  export namespace Cache {
+    import surround = invk.Util.surround;
+    import trim = invk.Util.trim;
 
     const PATH_SEP = ".";
 

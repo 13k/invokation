@@ -1,11 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace ComboScore {
       const {
-        panorama: { UIEvent },
-        util: { sortedIndex },
-        sequence: {
+        Panorama: { UiEvent },
+        Util: { sortedIndex },
+        Sequence: {
           AddClassAction,
           ParallelSequence,
           RemoveClassAction,
@@ -15,9 +14,9 @@ namespace invk {
         },
       } = GameUI.CustomUIConfig().invk;
 
-      import Component = invk.component.Component;
+      import Component = invk.Component.Component;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         counterTicker: Panel;
         summaryCountDisplay: Panel;
         summaryDamageTicker: Panel;
@@ -25,12 +24,12 @@ namespace invk {
         summaryFx: ScenePanel;
       }
 
-      export interface Inputs extends component.Inputs {
-        Hide: undefined;
-        UpdateCounter: {
+      export interface Inputs extends Component.Inputs {
+        hide: undefined;
+        updateCounter: {
           count: number;
         };
-        UpdateSummary: {
+        updateSummary: {
           count: number;
           startDamage?: number;
           endDamage: number;
@@ -40,7 +39,7 @@ namespace invk {
       type BurstIntensity = 1 | 2 | 3;
 
       interface SpinDigitOptions {
-        container: Panel;
+        panel: Panel;
         start?: number | undefined;
         end: number;
         increment?: number;
@@ -64,6 +63,7 @@ namespace invk {
       }
 
       interface PanelWithDigit extends Panel {
+        // biome-ignore lint/style/useNamingConvention: builtin type
         Data<T = PanelDigitData>(): T;
       }
 
@@ -98,7 +98,6 @@ namespace invk {
         summary: {
           level1: {
             ambient: "combo_ambient_level_1",
-            burst2_1: "combo_burst_2_level1", // ?
             burst2: "combo_burst_2_level_1",
             burst3: "combo_burst_3_level_1",
           },
@@ -127,16 +126,16 @@ namespace invk {
             },
             uiEvents: {
               counterFx: {
-                [UIEvent.SCENE_PANEL_LOADED]: () => this.counterFxAmbientStart(),
+                [UiEvent.ScenePanelLoaded]: () => this.counterFxAmbientStart(),
               },
               summaryFx: {
-                [UIEvent.SCENE_PANEL_LOADED]: () => this.summaryFxAmbientStart(),
+                [UiEvent.ScenePanelLoaded]: () => this.summaryFxAmbientStart(),
               },
             },
             inputs: {
-              UpdateCounter: (payload) => this.updateCounter(payload),
-              UpdateSummary: (payload) => this.updateSummary(payload),
-              Hide: (payload) => this.hide(payload),
+              updateCounter: (payload) => this.updateCounter(payload),
+              updateSummary: (payload) => this.updateSummary(payload),
+              hide: (payload) => this.hide(payload),
             },
           });
 
@@ -218,7 +217,7 @@ namespace invk {
           const queue = this.spinQueue(id);
           const options = queue.pop();
 
-          while (queue.shift());
+          queue.splice(0);
 
           if (options) {
             this.spinDigits(options);
@@ -226,9 +225,7 @@ namespace invk {
         }
 
         enqueueSpinDigits(options: SpinDigitOptions) {
-          const {
-            container: { id },
-          } = options;
+          const id = options.panel.id;
 
           this.spinQueue(id).push(options);
 
@@ -237,8 +234,8 @@ namespace invk {
           }
         }
 
-        updateDigits(container: Panel, value: number) {
-          eachUpdateDigitsOperations(container, value, (panel, ops) => {
+        updateDigits(panel: Panel, value: number) {
+          eachUpdateDigitsOperations(panel, value, (panel, ops) => {
             for (const [key, value] of Object.entries(ops.data)) {
               panel.Data()[key as keyof PanelDigitData] = value;
             }
@@ -252,32 +249,32 @@ namespace invk {
             }
           });
 
-          this.digitsValue(container.id, value);
+          this.digitsValue(panel.id, value);
         }
 
         // ----- Actions -----
 
-        updateDigitsAction(container: Panel, value: number) {
-          const seq = new ParallelSequence().Function(() => this.digitsValue(container.id, value));
+        updateDigitsAction(panel: Panel, value: number) {
+          const seq = new ParallelSequence().runFn(() => this.digitsValue(panel.id, value));
 
-          eachUpdateDigitsOperations(container, value, (panel, ops) => {
+          eachUpdateDigitsOperations(panel, value, (panel, ops) => {
             const panelSeq = new ParallelSequence();
 
             for (const [key, value] of Object.entries(ops.data)) {
-              panelSeq.Function(() => {
+              panelSeq.runFn(() => {
                 panel.Data()[key as keyof PanelDigitData] = value;
               });
             }
 
             for (const cssClass of ops.removeClass) {
-              panelSeq.RemoveClass(panel, cssClass);
+              panelSeq.removeClass(panel, cssClass);
             }
 
             for (const cssClass of ops.addClass) {
-              panelSeq.AddClass(panel, cssClass);
+              panelSeq.addClass(panel, cssClass);
             }
 
-            seq.Action(panelSeq);
+            seq.add(panelSeq);
           });
 
           return seq;
@@ -288,7 +285,7 @@ namespace invk {
           options.interval ??= 0.1;
           options.callbacks ??= {};
 
-          const id = options.container.id;
+          const id = options.panel.id;
           const onStart = options.callbacks?.onStart;
           const onSpin = options.callbacks?.onSpin;
           const onEnd = options.callbacks?.onEnd;
@@ -304,7 +301,7 @@ namespace invk {
           const seq = new StaggeredSequence(options.interval);
 
           if (typeof onStart === "function") {
-            seq.Function(onStart);
+            seq.runFn(onStart);
           }
 
           for (let v = options.start, cond = true; cond; v += options.increment) {
@@ -314,28 +311,28 @@ namespace invk {
 
             (() => {
               const boundValue = Math.ceil(value);
-              const updateSeq = new Sequence().Function(() =>
-                this.updateDigits(options.container, boundValue),
+              const updateSeq = new Sequence().runFn(() =>
+                this.updateDigits(options.panel, boundValue),
               );
 
               if (typeof onSpin === "function") {
-                updateSeq.Function(onSpin, boundValue);
+                updateSeq.runFn(onSpin, boundValue);
               }
 
-              seq.Action(updateSeq);
+              seq.add(updateSeq);
             })();
           }
 
           if (typeof onEnd === "function") {
-            seq.Function(onEnd);
+            seq.runFn(onEnd);
           }
 
           return new Sequence()
-            .Function(() => {
+            .runFn(() => {
               this.isSpinning.set(id, true);
             })
-            .Action(seq)
-            .Function(() => {
+            .add(seq)
+            .runFn(() => {
               this.isSpinning.set(id, false);
               this.consumeSpinDigits(id);
             });
@@ -397,14 +394,14 @@ namespace invk {
           }
 
           return seq
-            .Action(this.showCounterAction())
-            .Wait(0.15)
-            .Action(this.bumpCounterTickerAction())
-            .Function(() => this.counterFxBurstStart())
-            .Action(this.updateCounterDigitsAction(count))
-            .Wait(0.15)
-            .Action(this.unbumpCounterTickerAction())
-            .Function(() => this.counterFxBurstStop());
+            .add(this.showCounterAction())
+            .wait(0.15)
+            .add(this.bumpCounterTickerAction())
+            .runFn(() => this.counterFxBurstStart())
+            .add(this.updateCounterDigitsAction(count))
+            .wait(0.15)
+            .add(this.unbumpCounterTickerAction())
+            .runFn(() => this.counterFxBurstStop());
         }
 
         showSummaryAction() {
@@ -415,7 +412,7 @@ namespace invk {
           return new RemoveClassAction(this.panel, CssClass.SummaryShow);
         }
 
-        updateSummaryAction(options: Inputs["UpdateSummary"]) {
+        updateSummaryAction(options: Inputs["updateSummary"]) {
           const count = options.count ?? 0;
           const seq = new Sequence();
 
@@ -424,7 +421,7 @@ namespace invk {
           }
 
           const summaryDamageOptions: SpinDigitOptions = {
-            container: this.elements.summaryDamageTicker,
+            panel: this.elements.summaryDamageTicker,
             start: options.startDamage,
             end: options.endDamage,
             interval: Timing.SpinDigitsInterval,
@@ -432,45 +429,42 @@ namespace invk {
           };
 
           return seq
-            .Action(this.updateSummaryCounterDigitsAction(count))
-            .Action(this.showSummaryAction())
-            .Wait(0.1)
-            .Action(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
+            .add(this.updateSummaryCounterDigitsAction(count))
+            .add(this.showSummaryAction())
+            .wait(0.1)
+            .add(this.spinSummaryDamageDigitsAction(summaryDamageOptions));
         }
 
         hideAction() {
-          return new ParallelSequence()
-            .Action(this.hideCounterAction())
-            .Action(this.hideSummaryAction());
+          return new ParallelSequence().add(this.hideCounterAction()).add(this.hideSummaryAction());
         }
 
         // ----- Action runners -----
 
         spinDigits(options: SpinDigitOptions) {
-          this.spinDigitsAction(options).Run();
+          this.spinDigitsAction(options).run();
         }
 
-        updateCounter(payload: Inputs["UpdateCounter"]) {
-          this.updateCounterAction(payload.count ?? 0).Run();
+        updateCounter(payload: Inputs["updateCounter"]) {
+          this.updateCounterAction(payload.count ?? 0).run();
         }
 
-        updateSummary(payload: Inputs["UpdateSummary"]) {
-          this.updateSummaryAction(payload).Run();
+        updateSummary(payload: Inputs["updateSummary"]) {
+          this.updateSummaryAction(payload).run();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        hide(_payload: Inputs["Hide"]) {
-          this.hideAction().Run();
+        hide(_payload: Inputs["hide"]) {
+          this.hideAction().run();
         }
       }
 
       const digitClass = (digit: string): string => `digit_${digit}`;
       const eachUpdateDigitsOperations = (
-        container: Panel,
+        panel: Panel,
         value: number,
         callback: (panel: PanelWithDigit, operations: DigitsOperations) => void,
       ) => {
-        const panels = container.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithDigit[];
+        const panels = panel.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithDigit[];
 
         if (panels.length === 0) {
           throw new Error("Could not find digit panels");
@@ -478,37 +472,28 @@ namespace invk {
 
         const valueRevStr = value.toString().split("").reverse();
 
-        for (let i = 0; i < panels.length; i++) {
-          (() => {
-            const boundIdx = i;
-            const panel = panels[boundIdx];
-            const digit = valueRevStr[boundIdx];
+        for (const [i, panel] of panels.entries()) {
+          const digit = valueRevStr[i];
+          const ops: DigitsOperations = {
+            data: { digit },
+            removeClass: [],
+            addClass: [],
+          };
 
-            if (panel == null) throw "unreachable";
+          const prevDigit = panel.Data().digit;
 
-            const ops: DigitsOperations = {
-              data: {
-                digit: digit,
-              },
-              removeClass: [],
-              addClass: [],
-            };
+          if (prevDigit) {
+            ops.removeClass.push(digitClass(prevDigit));
+          }
 
-            const prevDigit = panel.Data().digit;
+          if (digit == null) {
+            ops.addClass.push(CssClass.DigitHidden);
+          } else {
+            ops.removeClass.push(CssClass.DigitHidden);
+            ops.addClass.push(digitClass(digit));
+          }
 
-            if (prevDigit) {
-              ops.removeClass.push(digitClass(prevDigit));
-            }
-
-            if (digit == null) {
-              ops.addClass.push(CssClass.DigitHidden);
-            } else {
-              ops.removeClass.push(CssClass.DigitHidden);
-              ops.addClass.push(digitClass(digit));
-            }
-
-            callback(panel, ops);
-          })();
+          callback(panel, ops);
         }
       };
 

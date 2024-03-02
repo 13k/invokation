@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace kv {
+  export namespace KeyValues {
     export interface KeyValues {
       [key: string]: string | KeyValues;
     }

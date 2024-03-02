@@ -1,27 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace CombatLog {
       const {
-        custom_events: { CustomGameEvent },
-        grid: { Grid },
-        panorama: { createAbilityOrItemImage },
-        sequence: { Sequence },
-        dota2: {
-          invoker: { isInvocationAbility },
+        CustomEvents: { CustomGameEvent },
+        Grid: { Grid },
+        Panorama: { createAbilityOrItemImage },
+        Sequence: { Sequence },
+        Dota2: {
+          Invoker: { isInvocationAbility },
         },
       } = GameUI.CustomUIConfig().invk;
 
-      import Component = invk.component.Component;
+      import Component = invk.Component.Component;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         contents: Panel;
-        filterInvocations: Panel;
+        skipInvocations: Panel;
         btnToggle: ToggleButton;
         btnClear: Button;
       }
 
-      enum PanelID {
+      enum PanelId {
         RowPrefix = "CombatLogRow",
         IconPrefix = "CombatLogIcon",
         IconImagePrefix = "Image",
@@ -37,29 +36,29 @@ namespace invk {
       const ICON_IMAGE_SCALING = "stretch-to-fit-y-preserve-aspect";
       const GRID_COLUMNS = 20;
 
-      const rowId = (index: number) => `${PanelID.RowPrefix}${index}`;
-      const iconId = (row: number, col: number) => [PanelID.IconPrefix, row, col].join("_");
-      const iconImageId = (iconId: string) => `${iconId}_${PanelID.IconImagePrefix}`;
+      const rowId = (index: number) => `${PanelId.RowPrefix}${index}`;
+      const iconId = (row: number, col: number) => [PanelId.IconPrefix, row, col].join("_");
+      const iconImageId = (iconId: string) => `${iconId}_${PanelId.IconImagePrefix}`;
 
       export class CombatLog extends Component<Elements> {
-        grid: grid.Grid<string>;
+        grid: Grid.Grid<string>;
         row: Panel | undefined;
 
         constructor() {
           super({
             elements: {
               contents: "CombatLogContents",
-              filterInvocations: "CombatLogFilterInvocations",
+              skipInvocations: "CombatLogFilterInvocations",
               btnToggle: "BtnToggle",
               btnClear: "BtnClear",
             },
             customEvents: {
-              [CustomGameEvent.COMBAT_LOG_ABILITY_USED]: (payload) => this.onAbilityUsed(payload),
-              [CustomGameEvent.COMBAT_LOG_CLEAR]: (payload) => this.onClear(payload),
+              [CustomGameEvent.CombatLogAbilityUsed]: (payload) => this.onAbilityUsed(payload),
+              [CustomGameEvent.CombatLogClear]: (payload) => this.onClear(payload),
             },
             panelEvents: {
-              btnToggle: { onactivate: () => this.Toggle() },
-              btnClear: { onactivate: () => this.Clear() },
+              btnToggle: { onactivate: () => this.onBtnToggle() },
+              btnClear: { onactivate: () => this.onBtnClear() },
             },
           });
 
@@ -72,67 +71,81 @@ namespace invk {
 
         // ----- Event handlers -----
 
-        onClear(payload: NetworkedData<custom_events.CombatLogClear>) {
+        onClear(payload: NetworkedData<CustomEvents.CombatLogClear>): void {
           this.debug("onClear()", payload);
           this.clear();
         }
 
-        onAbilityUsed(payload: NetworkedData<custom_events.CombatLogAbilityUsed>) {
+        onAbilityUsed(payload: NetworkedData<CustomEvents.CombatLogAbilityUsed>): void {
           this.debug("onAbilityUsed()", payload);
 
-          if (this.isFilteringInvocations && isInvocationAbility(payload.ability)) return;
+          if (this.skipInvocations && isInvocationAbility(payload.ability)) {
+            return;
+          }
 
           this.addColumn(payload.ability);
         }
 
-        onGridRowChange(i: number) {
+        onGridRowChange(i: number): void {
           this.debug("onGridRowChange()", i);
           this.addRow(i);
         }
 
+        onBtnToggle(): void {
+          if (this.isOpen) {
+            this.close();
+          } else {
+            this.open();
+          }
+        }
+
+        onBtnClear(): void {
+          this.clear();
+        }
+
         // ----- Helpers -----
 
-        bindEvents() {
+        bindEvents(): void {
           this.grid.onRowChange(this.onGridRowChange.bind(this));
         }
 
-        startCapturing() {
-          this.sendServer(CustomGameEvent.COMBAT_LOG_CAPTURE_START, {});
+        startCapturing(): void {
+          this.sendServer(CustomGameEvent.CombatLogCaptureStart, {});
         }
 
-        stopCapturing() {
-          this.sendServer(CustomGameEvent.COMBAT_LOG_CAPTURE_STOP, {});
+        stopCapturing(): void {
+          this.sendServer(CustomGameEvent.CombatLogCaptureStop, {});
         }
 
-        get isOpen() {
+        get isOpen(): boolean {
           return !this.panel.BHasClass(CssClass.Closed);
         }
 
-        get isFilteringInvocations() {
-          return this.elements.filterInvocations.checked;
+        get skipInvocations(): boolean {
+          return this.elements.skipInvocations.checked;
         }
 
-        start() {
+        start(): void {
           this.startCapturing();
         }
 
-        stop() {
+        stop(): void {
           this.stopCapturing();
         }
 
-        appendToGrid(abilityName: string) {
+        appendToGrid(abilityName: string): void {
           this.grid.add(abilityName);
         }
 
-        clearGrid() {
+        clearGrid(): void {
           this.grid.clear();
         }
 
-        resetRow() {
+        resetRow(): void {
           this.row = undefined;
         }
 
-        createRow(rowIndex: number) {
+        createRow(rowIndex: number): Panel {
           const id = rowId(rowIndex);
           const panel = $.CreatePanel("Panel", this.elements.contents, id);
 
@@ -143,7 +156,7 @@ namespace invk {
           return panel;
         }
 
-        createAbilityIcon(abilityName: string) {
+        createAbilityIcon(abilityName: string): Panel {
           if (this.row == null) {
             throw new Error("Tried to create CombatLog ability icon without a row");
           }
@@ -171,49 +184,35 @@ namespace invk {
 
         // ----- Action runners -----
 
-        open() {
-          return new Sequence().RemoveClass(this.panel, CssClass.Closed).Run();
+        open(): void {
+          new Sequence().removeClass(this.panel, CssClass.Closed).run();
         }
 
-        close() {
-          return new Sequence().AddClass(this.panel, CssClass.Closed).Run();
+        close(): void {
+          new Sequence().addClass(this.panel, CssClass.Closed).run();
         }
 
-        addRow(rowIndex: number) {
-          return new Sequence()
-            .Function(() => this.createRow(rowIndex))
-            .ScrollToBottom(this.elements.contents)
-            .Run();
+        addRow(rowIndex: number): void {
+          new Sequence()
+            .runFn(() => this.createRow(rowIndex))
+            .scrollToBottom(this.elements.contents)
+            .run();
         }
 
-        addColumn(abilityName: string) {
-          return new Sequence()
-            .Function(() => this.appendToGrid(abilityName))
-            .Function(() => this.createAbilityIcon(abilityName))
-            .ScrollToBottom(this.elements.contents)
-            .Run();
+        addColumn(abilityName: string): void {
+          new Sequence()
+            .runFn(() => this.appendToGrid(abilityName))
+            .runFn(() => this.createAbilityIcon(abilityName))
+            .scrollToBottom(this.elements.contents)
+            .run();
         }
 
-        clear() {
-          return new Sequence()
-            .Function(() => this.clearGrid())
-            .Function(() => this.resetRow())
-            .RemoveChildren(this.elements.contents)
-            .Run();
-        }
-
-        // ----- UI methods -----
-
-        Toggle() {
-          if (this.isOpen) {
-            return this.close();
-          }
-
-          return this.open();
-        }
-
-        Clear() {
-          return this.clear();
+        clear(): void {
+          new Sequence()
+            .runFn(() => this.clearGrid())
+            .runFn(() => this.resetRow())
+            .removeChildren(this.elements.contents)
+            .run();
         }
       }
 

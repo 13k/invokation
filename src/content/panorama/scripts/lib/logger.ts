@@ -1,9 +1,8 @@
 /// <reference path="singleton.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace logger {
-    import ENV = invk.singleton.ENV;
+  export namespace Logger {
+    import ENV = invk.Singleton.ENV;
 
     export enum Level {
       Unknown = 0,
@@ -25,30 +24,31 @@ namespace invk {
     const MAX_LEVEL_NAME_LEN = Math.max(...Object.keys(Level).map((s) => s.length));
 
     export class Logger {
-      static Level = Level;
+      static LEVEL = Level;
 
       level: Level;
-
-      private name: string | undefined;
+      #name: string | undefined;
 
       constructor(options: Options = {}) {
         this.level = options.level || (ENV.development ? Level.Debug : Level.Info);
 
         if (options.name) {
-          this.name = `[${options.name}]`;
+          this.#name = `[${options.name}]`;
         }
       }
 
       // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
-      log(level: Level, ...args: any[]) {
-        if (level < this.level || args.length < 1) return;
+      log(level: Level, ...args: any[]): void {
+        if (level < this.level || args.length < 1) {
+          return;
+        }
 
         const levelName = Level[level];
         // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
         let msgArgs: any[] = [levelName.padStart(MAX_LEVEL_NAME_LEN)];
 
-        if (this.name) {
-          msgArgs.push(this.name);
+        if (this.#name) {
+          msgArgs.push(this.#name);
         }
 
         msgArgs = msgArgs
@@ -60,11 +60,15 @@ namespace invk {
       }
 
       logFn(level: Level, fn: LazyFn) {
-        if (level < this.level) return;
+        if (level < this.level) {
+          return;
+        }
 
         let values = fn();
 
-        if (values == null) return;
+        if (values == null) {
+          return;
+        }
 
         if (!Array.isArray(values)) {
           values = [values];

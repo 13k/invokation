@@ -1,17 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace Challenge {
       const {
-        l10n: L10n,
-        layout: Layout,
-        lua: Lua,
-        combo: { StaticID },
-        custom_events: { CustomGameEvent, GameEvent },
-        panorama: { SoundEvent },
-        singleton: { COMBOS },
-        util: { pick, randomInt },
-        sequence: {
+        L10n,
+        Layout,
+        Lua,
+        Combo: { StaticId },
+        CustomEvents: { CustomGameEvent, GameEvent },
+        Panorama: { SoundEvent },
+        Singleton: { COMBOS },
+        Util: { pick, randomInt },
+        Sequence: {
           AddClassAction,
           NoopAction,
           ParallelSequence,
@@ -23,17 +22,17 @@ namespace invk {
         },
       } = GameUI.CustomUIConfig().invk;
 
-      import Combo = invk.combo.Combo;
-      import ComboID = invk.combo.ComboID;
-      import Metrics = invk.combo.Metrics;
-      import Step = invk.combo.Step;
-      import StepID = invk.combo.StepID;
+      import Action = invk.Sequence.Action;
+      import ChallengeComboStep = invk.Components.ChallengeComboStep.ChallengeComboStep;
+      import Combo = invk.Combo.Combo;
+      import ComboId = invk.Combo.ComboId;
+      import ComboScore = invk.Components.ComboScore.ComboScore;
+      import Component = invk.Component.Component;
+      import Metrics = invk.Combo.Metrics;
+      import Step = invk.Combo.Step;
+      import StepId = invk.Combo.StepId;
 
-      import Component = invk.component.Component;
-      import ChallengeComboStep = invk.components.ChallengeComboStep.ChallengeComboStep;
-      import ComboScore = invk.components.ComboScore.ComboScore;
-
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         sequence: Panel;
         splash: Panel;
         splashTitle: LabelPanel;
@@ -44,13 +43,13 @@ namespace invk {
         waitProgress: ProgressBar;
         waitProgressBar: ProgressBar;
         btnShowDetails: Button;
-        btnCycleHUD: Button;
+        btnCycleHud: Button;
         btnRestart: Button;
         btnFullRestart: Button;
         btnStop: Button;
       }
 
-      enum PanelID {
+      enum PanelId {
         ComboScore = "ComboScore",
       }
 
@@ -118,7 +117,7 @@ namespace invk {
         [HudMode.NoHands]: "HudNoHands",
       };
 
-      enum DVar {
+      enum DialogVar {
         HudVisibility = "hud_visibility",
         WaitProgressValue = "wait_seconds",
       }
@@ -132,7 +131,7 @@ namespace invk {
       export class Challenge extends Component<Elements> {
         combo: Combo | undefined;
         comboScore: ComboScore;
-        comboSteps: Map<StepID, ChallengeComboStep> = new Map();
+        comboSteps: Map<StepId, ChallengeComboStep> = new Map();
         hudMode: HudMode = HudMode.Visible;
         timer: Timer = { update: false };
         finished = false;
@@ -150,26 +149,26 @@ namespace invk {
               waitProgress: "ChallengeWaitProgress",
               waitProgressBar: "ChallengeWaitProgressBar",
               btnShowDetails: "BtnShowDetails",
-              btnCycleHUD: "BtnCycleHUD",
+              btnCycleHud: "BtnCycleHUD",
               btnRestart: "BtnRestart",
               btnFullRestart: "BtnFullRestart",
               btnStop: "BtnStop",
             },
             customEvents: {
-              [CustomGameEvent.COMBO_STARTED]: (payload) => this.onComboStarted(payload),
-              [CustomGameEvent.COMBO_STOPPED]: (payload) => this.onComboStopped(payload),
-              [CustomGameEvent.COMBO_IN_PROGRESS]: (payload) => this.onComboInProgress(payload),
-              [CustomGameEvent.COMBO_PROGRESS]: (payload) => this.onComboProgress(payload),
-              [CustomGameEvent.COMBO_STEP_ERROR]: (payload) => this.onComboStepError(payload),
-              [CustomGameEvent.COMBO_PRE_FINISH]: (payload) => this.onComboPreFinish(payload),
-              [CustomGameEvent.COMBO_FINISHED]: (payload) => this.onComboFinished(payload),
+              [CustomGameEvent.ComboStarted]: (payload) => this.onComboStarted(payload),
+              [CustomGameEvent.ComboStopped]: (payload) => this.onComboStopped(payload),
+              [CustomGameEvent.ComboInProgress]: (payload) => this.onComboInProgress(payload),
+              [CustomGameEvent.ComboProgress]: (payload) => this.onComboProgress(payload),
+              [CustomGameEvent.ComboStepError]: (payload) => this.onComboStepError(payload),
+              [CustomGameEvent.ComboPreFinish]: (payload) => this.onComboPreFinish(payload),
+              [CustomGameEvent.ComboFinish]: (payload) => this.onComboFinished(payload),
             },
             panelEvents: {
-              btnShowDetails: { onactivate: () => this.ShowDetails() },
-              btnCycleHUD: { onactivate: () => this.CycleHUD() },
-              btnRestart: { onactivate: () => this.Restart(false) },
-              btnFullRestart: { onactivate: () => this.Restart(true) },
-              btnStop: { onactivate: () => this.Stop() },
+              btnShowDetails: { onactivate: () => this.showDetails() },
+              btnCycleHud: { onactivate: () => this.cycleHud() },
+              btnRestart: { onactivate: () => this.restart(false) },
+              btnFullRestart: { onactivate: () => this.restart(true) },
+              btnStop: { onactivate: () => this.stop() },
             },
           });
 
@@ -181,70 +180,84 @@ namespace invk {
 
         // --- Event handlers -----
 
-        onComboStarted(payload: NetworkedData<custom_events.ComboStarted>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboStarted(payload: NetworkedData<CustomEvents.ComboStarted>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboStarted()", payload);
-          this.start(payload.id, Lua.indexArray(payload.next));
+          this.runStart(payload.id, Lua.indexArray(payload.next));
         }
 
-        onComboStopped(payload: NetworkedData<custom_events.ComboStopped>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboStopped(payload: NetworkedData<CustomEvents.ComboStopped>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboStopped()", payload);
-          this.stop(payload.id);
+          this.runStop(payload.id);
         }
 
-        onComboInProgress(payload: NetworkedData<custom_events.ComboInProgress>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboInProgress(payload: NetworkedData<CustomEvents.ComboInProgress>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboInProgress()", payload);
-          this.inProgress(payload.id);
+          this.runInProgress(payload.id);
         }
 
-        onComboProgress(payload: NetworkedData<custom_events.ComboProgress>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboProgress(payload: NetworkedData<CustomEvents.ComboProgress>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboProgress()", payload);
-          this.progress(payload.id, payload.metrics, Lua.indexArray(payload.next));
+          this.runProgress(payload.id, payload.metrics, Lua.indexArray(payload.next));
         }
 
-        onComboStepError(payload: NetworkedData<custom_events.ComboStepError>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboStepError(payload: NetworkedData<CustomEvents.ComboStepError>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboStepError()", payload);
-          this.fail(payload.id, Lua.indexArray(payload.expected), payload.ability);
+          this.runFail(payload.id, Lua.indexArray(payload.expected), payload.ability);
         }
 
-        onComboPreFinish(payload: NetworkedData<custom_events.ComboPreFinish>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboPreFinish(payload: NetworkedData<CustomEvents.ComboPreFinish>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboPreFinish()", payload);
-          this.preFinish(payload.id, payload.metrics, payload.wait);
+          this.runPreFinish(payload.id, payload.metrics, payload.wait);
         }
 
-        onComboFinished(payload: NetworkedData<custom_events.ComboFinished>) {
-          if (payload.id === StaticID.Freestyle) return;
+        onComboFinished(payload: NetworkedData<CustomEvents.ComboFinished>): void {
+          if (payload.id === StaticId.Freestyle) {
+            return;
+          }
 
           this.debug("onComboFinished()", payload);
-          this.finish(payload.id, payload.metrics);
+          this.runFinish(payload.id, payload.metrics);
         }
 
         // ----- Helpers -----
 
-        sendStop() {
-          this.sendServer(CustomGameEvent.COMBO_STOP, {});
+        sendStop(): void {
+          this.sendServer(CustomGameEvent.ComboStop, {});
         }
 
-        sendRestart(isHardReset: boolean) {
-          this.sendServer(CustomGameEvent.COMBO_RESTART, { hardReset: isHardReset });
+        sendRestart(isHardReset: boolean): void {
+          this.sendServer(CustomGameEvent.ComboRestart, { hardReset: isHardReset });
         }
 
-        sendRenderViewer(combo: Combo) {
-          this.sendClientSide(GameEvent.VIEWER_RENDER, { id: combo.id });
+        sendRenderViewer(combo: Combo): void {
+          this.sendClientSide(GameEvent.ViewerRender, { id: combo.id });
         }
 
-        getComboStep(id: StepID) {
+        getComboStep(id: StepId): ChallengeComboStep {
           const step = this.comboSteps.get(id);
 
           if (step == null) {
@@ -254,21 +267,21 @@ namespace invk {
           return step;
         }
 
-        createComboScore(parent: Panel) {
-          const component = this.create(Layout.LayoutID.ComboScore, PanelID.ComboScore, parent);
+        createComboScore(parent: Panel): ComboScore {
+          const component = this.create(Layout.LayoutId.ComboScore, PanelId.ComboScore, parent);
 
           component.panel.AddClass(CssClass.ComboScore);
 
           return component;
         }
 
-        createStepPanel(parent: Panel, step: Step) {
+        createStepPanel(parent: Panel, step: Step): ChallengeComboStep {
           if (this.combo == null) {
             throw new Error("Tried to createStepPanel() without combo");
           }
 
           const id = `combo_step_${step.name}_${step.id}`;
-          const component = this.create(Layout.LayoutID.ChallengeComboStep, id, parent);
+          const component = this.create(Layout.LayoutId.ChallengeComboStep, id, parent);
 
           if (!step.required) {
             component.panel.AddClass(CssClass.StepOptional);
@@ -276,44 +289,36 @@ namespace invk {
 
           this.comboSteps.set(step.id, component);
 
-          component.input("SetStep", { combo: this.combo, step: step });
+          component.inputs({ setStep: { combo: this.combo, step } });
 
           return component;
         }
 
-        scrollToStepPanel(stepID: StepID) {
-          this.getComboStep(stepID).panel.ScrollParentToMakePanelFit(1, false);
+        scrollToStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).panel.ScrollParentToMakePanelFit(1, false);
         }
 
-        stepPanelInput<K extends keyof ChallengeComboStep.Inputs>(
-          stepID: StepID,
-          input: K,
-          payload: ChallengeComboStep.Inputs[K],
-        ) {
-          this.getComboStep(stepID).input(input, payload);
+        bumpStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).inputs({ stepBump: undefined });
         }
 
-        bumpStepPanel(stepID: StepID) {
-          return this.stepPanelInput(stepID, "StepBump", undefined);
+        activateStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).inputs({ setStepActive: undefined });
         }
 
-        activateStepPanel(stepID: StepID) {
-          return this.stepPanelInput(stepID, "SetStepActive", undefined);
+        deactivateStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).inputs({ unsetStepActive: undefined });
         }
 
-        deactivateStepPanel(stepID: StepID) {
-          return this.stepPanelInput(stepID, "UnsetStepActive", undefined);
+        failStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).inputs({ setStepError: undefined });
         }
 
-        failStepPanel(stepID: StepID) {
-          return this.stepPanelInput(stepID, "SetStepError", undefined);
+        clearFailedStepPanel(stepId: StepId): void {
+          this.getComboStep(stepId).inputs({ unsetStepError: undefined });
         }
 
-        clearFailedStepPanel(stepID: StepID) {
-          return this.stepPanelInput(stepID, "UnsetStepError", undefined);
-        }
-
-        startTimer() {
+        startTimer(): void {
           this.timer.start = Date.now();
           this.timer.update = true;
 
@@ -321,34 +326,36 @@ namespace invk {
           this.updateTimer();
         }
 
-        updateTimer() {
-          if (this.timer.start == null || !this.timer.update) return;
+        updateTimer(): void {
+          if (this.timer.start == null || !this.timer.update) {
+            return;
+          }
 
           this.elements.timerLabel.text = ((Date.now() - this.timer.start) / 1000).toFixed(1);
 
-          $.Schedule(0.1, () => this.updateTimer());
+          $.Schedule(0.05, () => this.updateTimer());
         }
 
-        stopTimer() {
+        stopTimer(): void {
           this.timer.update = false;
         }
 
         // ----- Component actions -----
 
-        showAction() {
+        showAction(): Action {
           return new RemoveClassAction(this.panel, CssClass.ChallengeHide);
         }
 
-        hideAction() {
+        hideAction(): Action {
           return new ParallelSequence()
-            .Action(this.hideSplashAction())
-            .Action(this.hideScoreAction())
-            .AddClass(this.panel, CssClass.ChallengeHide);
+            .add(this.hideSplashAction())
+            .add(this.hideScoreAction())
+            .addClass(this.panel, CssClass.ChallengeHide);
         }
 
         // ----- Sequence actions -----
 
-        renderSequenceAction() {
+        renderSequenceAction(): Action {
           if (this.combo == null) {
             return new NoopAction();
           }
@@ -362,18 +369,18 @@ namespace invk {
           );
 
           return new Sequence()
-            .Action(this.resetSequenceAction())
-            .Action(this.createStepPanelsAction())
-            .Action(bumpSeq);
+            .add(this.resetSequenceAction())
+            .add(this.createStepPanelsAction())
+            .add(bumpSeq);
         }
 
-        resetSequenceAction() {
+        resetSequenceAction(): Action {
           return new Sequence()
-            .ScrollToTop(this.elements.sequence)
-            .RemoveChildren(this.elements.sequence);
+            .scrollToTop(this.elements.sequence)
+            .removeChildren(this.elements.sequence);
         }
 
-        createStepPanelsAction() {
+        createStepPanelsAction(): Action {
           if (this.combo == null) {
             return new NoopAction();
           }
@@ -382,32 +389,36 @@ namespace invk {
             this.createStepPanelAction(this.elements.sequence, step),
           );
 
-          return new Sequence().Action(...actions);
+          return new Sequence().add(...actions);
         }
 
-        createStepPanelAction(parent: Panel, step: Step) {
+        createStepPanelAction(parent: Panel, step: Step): Action {
           return new RunFunctionAction(() => this.createStepPanel(parent, step));
         }
 
-        sequenceActionsOnStepPanels(steps: Step[], fn: (this: this, stepID: StepID) => void) {
+        sequenceActionsOnStepPanels(
+          steps: Step[],
+          fn: (this: this, stepId: StepId) => void,
+        ): Action[] {
           return steps.map((step) => new RunFunctionAction(fn, step.id));
         }
 
-        parallelSequenceOnStepPanels(steps: Step[], fn: (this: this, stepID: StepID) => void) {
-          return new ParallelSequence().Action(...this.sequenceActionsOnStepPanels(steps, fn));
+        parallelSequenceOnStepPanels(
+          steps: Step[],
+          fn: (this: this, stepId: StepId) => void,
+        ): Action {
+          return new ParallelSequence().add(...this.sequenceActionsOnStepPanels(steps, fn));
         }
 
         staggeredSequenceOnStepPanels(
           delay: number,
           steps: Step[],
-          fn: (this: this, stepID: StepID) => void,
-        ) {
-          return new StaggeredSequence(delay).Action(
-            ...this.sequenceActionsOnStepPanels(steps, fn),
-          );
+          fn: (this: this, stepId: StepId) => void,
+        ): Action {
+          return new StaggeredSequence(delay).add(...this.sequenceActionsOnStepPanels(steps, fn));
         }
 
-        activateStepPanelsAction(steps: Step[]) {
+        activateStepPanelsAction(steps: Step[]): Action {
           const seq = new Sequence();
 
           if (steps.length === 0) {
@@ -420,68 +431,72 @@ namespace invk {
           );
 
           return seq
-            .Function(() => {
+            .runFn(() => {
               const firstStep = steps[0];
 
               if (firstStep) {
                 this.scrollToStepPanel(firstStep.id);
               }
             })
-            .Action(activateSeq);
+            .add(activateSeq);
         }
 
-        deactivateStepPanelsAction(steps: Step[]) {
+        deactivateStepPanelsAction(steps: Step[]): Action {
           return this.parallelSequenceOnStepPanels(steps, this.deactivateStepPanel.bind(this));
         }
 
-        bumpStepPanelsAction(steps: Step[]) {
+        bumpStepPanelsAction(steps: Step[]): Action {
           return this.parallelSequenceOnStepPanels(steps, this.bumpStepPanel.bind(this));
         }
 
-        failStepPanelsAction(steps: Step[]) {
+        failStepPanelsAction(steps: Step[]): Action {
           return this.parallelSequenceOnStepPanels(steps, this.failStepPanel.bind(this));
         }
 
-        clearFailedStepPanelsAction(steps: Step[]) {
+        clearFailedStepPanelsAction(steps: Step[]): Action {
           return this.parallelSequenceOnStepPanels(steps, this.clearFailedStepPanel.bind(this));
         }
 
         // ----- HUD actions -----
 
-        resetHudVisibilityActions() {
+        resetHudVisibilityActions(): Action[] {
           return Object.values(HUD_VISIBILITY_CLASSES).map(
             (cls) => new RemoveClassAction(this.panel, cls),
           );
         }
 
-        updateHudVisibilityTooltipAction(mode: HudMode) {
+        updateHudVisibilityTooltipAction(mode: HudMode): Action {
           const hudVisibilityTooltip = L10n.lp(L10n.Key.HudVisibilityPrefix, mode);
 
-          return new SetDialogVariableAction(this.panel, DVar.HudVisibility, hudVisibilityTooltip);
+          return new SetDialogVariableAction(
+            this.panel,
+            DialogVar.HudVisibility,
+            hudVisibilityTooltip,
+          );
         }
 
-        switchHudAction(prevMode: HudMode, nextMode: HudMode) {
+        switchHudSeq(prevMode: HudMode, nextMode: HudMode): Sequence.Sequence {
           const prevClass = HUD_VISIBILITY_CLASSES[prevMode];
           const nextClass = HUD_VISIBILITY_CLASSES[nextMode];
           const heroHudFn =
-            nextMode === HudMode.NoHands ? this.hideActionPanelUI : this.showActionPanelUI;
+            nextMode === HudMode.NoHands ? this.hideActionPanelUi : this.showActionPanelUi;
 
           return new Sequence()
-            .Action(this.updateHudVisibilityTooltipAction(nextMode))
-            .ReplaceClass(this.panel, prevClass, nextClass)
-            .Function(heroHudFn.bind(this));
+            .add(this.updateHudVisibilityTooltipAction(nextMode))
+            .replaceClass(this.panel, prevClass, nextClass)
+            .runFn(heroHudFn.bind(this));
         }
 
         // ----- Splash actions -----
 
-        clearSplashAction() {
+        clearSplashAction(): Action {
           return new ParallelSequence()
-            .RemoveClass(this.elements.splash, CssClass.SplashStart)
-            .RemoveClass(this.elements.splash, CssClass.SplashSuccess)
-            .RemoveClass(this.elements.splash, CssClass.SplashFailure);
+            .removeClass(this.elements.splash, CssClass.SplashStart)
+            .removeClass(this.elements.splash, CssClass.SplashSuccess)
+            .removeClass(this.elements.splash, CssClass.SplashFailure);
         }
 
-        showSplashAction(state: ComboState) {
+        showSplashAction(state: ComboState): Action {
           const titleIndex = randomInt(1, SPLASH_MAX_INDICES[state].title);
           const titleText = L10n.lp(L10n.Key.SplashPrefix, state, "title", titleIndex.toString());
 
@@ -489,65 +504,65 @@ namespace invk {
           const helpText = L10n.lp(L10n.Key.SplashPrefix, state, "help", helpIndex.toString());
 
           const actions = new ParallelSequence()
-            .Action(this.clearSplashAction())
-            .SetAttribute(this.elements.splashTitle, "text", titleText)
-            .SetAttribute(this.elements.splashHelp, "text", helpText)
-            .AddClass(this.elements.splash, SPLASH_CLASSES[state]);
+            .add(this.clearSplashAction())
+            .setAttribute(this.elements.splashTitle, "text", titleText)
+            .setAttribute(this.elements.splashHelp, "text", helpText)
+            .addClass(this.elements.splash, SPLASH_CLASSES[state]);
 
-          return new Sequence().Action(actions).AddClass(this.elements.splash, CssClass.SplashShow);
+          return new Sequence().add(actions).addClass(this.elements.splash, CssClass.SplashShow);
         }
 
-        hideSplashAction() {
+        hideSplashAction(): Action {
           return new ParallelSequence()
-            .Action(this.clearSplashAction())
-            .RemoveClass(this.elements.splash, CssClass.SplashShow);
+            .add(this.clearSplashAction())
+            .removeClass(this.elements.splash, CssClass.SplashShow);
         }
 
         // ----- Score actions -----
 
-        updateScoreCounterAction(count: number) {
-          return new RunFunctionAction(() => this.comboScore.input("UpdateCounter", { count }));
+        updateScoreCounterAction(count: number): Action {
+          return new RunFunctionAction(() => this.comboScore.inputs({ updateCounter: { count } }));
         }
 
-        updateScoreSummaryAction(options: ComboScore.Inputs["UpdateSummary"]) {
-          return new RunFunctionAction(() => this.comboScore.input("UpdateSummary", options));
+        updateScoreSummaryAction(options: ComboScore.Inputs["updateSummary"]): Action {
+          return new RunFunctionAction(() => this.comboScore.inputs({ updateSummary: options }));
         }
 
-        hideScoreAction() {
+        hideScoreAction(): Action {
           return new Sequence()
-            .RemoveClass(this.elements.score, CssClass.ScoreFailure)
-            .Function(() => this.comboScore.input("Hide", undefined));
+            .removeClass(this.elements.score, CssClass.ScoreFailure)
+            .runFn(() => this.comboScore.inputs({ hide: undefined }));
         }
 
-        showTimerAction() {
+        showTimerAction(): Action {
           return new RemoveClassAction(this.elements.timer, CssClass.TimerHide);
         }
 
-        hideTimerAction() {
+        hideTimerAction(): Action {
           return new AddClassAction(this.elements.timer, CssClass.TimerHide);
         }
 
-        countdownWaitAction(wait: number) {
+        countdownWaitAction(wait: number): Action {
           const animate = new ParallelSequence()
-            .AnimateDialogVariableInt(
+            .animateDialogVariableInt(
               this.elements.waitProgress,
-              DVar.WaitProgressValue,
+              DialogVar.WaitProgressValue,
               wait,
               0,
               wait,
             )
-            .AnimateProgressBar(this.elements.waitProgressBar, wait, 0, wait);
+            .animateProgressBar(this.elements.waitProgressBar, wait, 0, wait);
 
           return new Sequence()
-            .SetAttribute(this.elements.waitProgressBar, "max", wait)
-            .RemoveClass(this.elements.waitProgress, CssClass.WaitProgressHide)
-            .Action(animate)
-            .AddClass(this.elements.waitProgress, CssClass.WaitProgressHide);
+            .setAttribute(this.elements.waitProgressBar, "max", wait)
+            .removeClass(this.elements.waitProgress, CssClass.WaitProgressHide)
+            .add(animate)
+            .addClass(this.elements.waitProgress, CssClass.WaitProgressHide);
         }
 
         // ----- Composite actions -----
 
-        progressWhenInProgressAction(metrics: Metrics, next: number[]) {
+        progressWhenInProgressAction(metrics: Metrics, next: number[]): Action {
           if (this.combo == null) {
             return new NoopAction();
           }
@@ -563,13 +578,13 @@ namespace invk {
           }
 
           return new Sequence()
-            .Action(this.clearFailedStepPanelsAction(this.combo.sequence))
-            .Action(this.deactivateStepPanelsAction(this.combo.sequence))
-            .Action(this.activateStepPanelsAction(nextSteps))
-            .Action(this.updateScoreCounterAction(metrics.count || 0));
+            .add(this.clearFailedStepPanelsAction(this.combo.sequence))
+            .add(this.deactivateStepPanelsAction(this.combo.sequence))
+            .add(this.activateStepPanelsAction(nextSteps))
+            .add(this.updateScoreCounterAction(metrics.count || 0));
         }
 
-        progressWhenFinishedAction(metrics: Metrics) {
+        progressWhenFinishedAction(metrics: Metrics): Action {
           const scoreSummaryOptions = {
             count: metrics.count || 0,
             endDamage: metrics.damage || 0,
@@ -580,15 +595,15 @@ namespace invk {
 
         // ----- Action runners -----
 
-        initHudVisibility(mode: HudMode) {
+        initHudVisibility(mode: HudMode): void {
           new Sequence()
-            .Action(this.updateHudVisibilityTooltipAction(mode))
-            .Action(...this.resetHudVisibilityActions())
-            .AddClass(this.panel, HUD_VISIBILITY_CLASSES[mode])
-            .Run();
+            .add(this.updateHudVisibilityTooltipAction(mode))
+            .add(...this.resetHudVisibilityActions())
+            .addClass(this.panel, HUD_VISIBILITY_CLASSES[mode])
+            .run();
         }
 
-        start(id: ComboID, next: number[]) {
+        runStart(id: ComboId, next: number[]): void {
           this.combo = COMBOS.get(id);
 
           if (this.combo == null) {
@@ -599,22 +614,22 @@ namespace invk {
           this.finished = false;
 
           const seq = new Sequence()
-            .Action(this.hideScoreAction())
-            .Action(this.hideSplashAction())
-            .Action(this.hideTimerAction())
-            .Wait(Timing.StartDelay)
-            .Action(this.showAction())
-            .Action(this.renderSequenceAction())
-            .Action(this.showSplashAction(ComboState.Start))
-            .Wait(0.25)
-            .Function(() => this.progress(id, {}, next));
+            .add(this.hideScoreAction())
+            .add(this.hideSplashAction())
+            .add(this.hideTimerAction())
+            .wait(Timing.StartDelay)
+            .add(this.showAction())
+            .add(this.renderSequenceAction())
+            .add(this.showSplashAction(ComboState.Start))
+            .wait(0.25)
+            .runFn(() => this.runProgress(id, {}, next));
 
-          this.debugFn(() => ["start()", { id, actions: seq.size() }]);
+          this.debugFn(() => ["start", { id, actions: seq.deepSize() }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        stop(id: ComboID) {
+        runStop(id: ComboId): void {
           if (this.combo == null) {
             this.warn("Tried to stop() without combo", { id });
             return;
@@ -625,28 +640,28 @@ namespace invk {
           this.combo = undefined;
           this.finished = false;
 
-          const seq = new Sequence().Action(this.hideAction()).Action(this.hideTimerAction());
+          const seq = new Sequence().add(this.hideAction()).add(this.hideTimerAction());
 
-          this.debugFn(() => ["stop()", { id: id, actions: seq.size() }]);
+          this.debugFn(() => ["stop", { id, actions: seq.deepSize() }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        inProgress(id: ComboID) {
+        runInProgress(id: ComboId): void {
           if (this.combo == null) {
             this.warn("Tried to inProgress() without combo", { id });
             return;
           }
 
-          const seq = new Sequence().Action(this.showTimerAction()).Action(this.hideSplashAction());
+          const seq = new Sequence().add(this.showTimerAction()).add(this.hideSplashAction());
 
-          this.debugFn(() => ["inProgress()", { id: id }]);
+          this.debugFn(() => ["inProgress", { id }]);
           this.startTimer();
 
-          seq.Run();
+          seq.run();
         }
 
-        progress(id: ComboID, metrics: Metrics, next: number[]) {
+        runProgress(id: ComboId, metrics: Metrics, next: number[]): void {
           if (this.combo == null) {
             this.warn("Tried to progress() without combo", { id });
             return;
@@ -655,20 +670,17 @@ namespace invk {
           const seq = new Sequence();
 
           if (this.finished) {
-            seq.Action(this.progressWhenFinishedAction(metrics));
+            seq.add(this.progressWhenFinishedAction(metrics));
           } else {
-            seq.Action(this.progressWhenInProgressAction(metrics, next));
+            seq.add(this.progressWhenInProgressAction(metrics, next));
           }
 
-          this.debugFn(() => [
-            "progress()",
-            { id: id, metrics: metrics, next: next, actions: seq.size() },
-          ]);
+          this.debugFn(() => ["progress", { id, metrics, next, actions: seq.deepSize() }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        preFinish(id: ComboID, metrics: Metrics, wait: number) {
+        runPreFinish(id: ComboId, metrics: Metrics, wait: number): void {
           if (this.combo == null) {
             this.warn("Tried to preFinish() without combo", { id });
             return;
@@ -683,17 +695,17 @@ namespace invk {
           this.finished = true;
 
           const seq = new Sequence()
-            .Action(this.deactivateStepPanelsAction(this.combo.sequence))
-            .Action(this.bumpStepPanelsAction(this.combo.sequence))
-            .Action(this.updateScoreSummaryAction(options))
-            .Action(this.countdownWaitAction(wait));
+            .add(this.deactivateStepPanelsAction(this.combo.sequence))
+            .add(this.bumpStepPanelsAction(this.combo.sequence))
+            .add(this.updateScoreSummaryAction(options))
+            .add(this.countdownWaitAction(wait));
 
-          this.debugFn(() => ["preFinish()", { id: id, actions: seq.size(), ...options }]);
+          this.debugFn(() => ["preFinish", { id, actions: seq.deepSize(), ...options }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        finish(id: ComboID, metrics: Metrics) {
+        runFinish(id: ComboId, metrics: Metrics): void {
           if (this.combo == null) {
             this.warn("Tried to finish() without combo", { id });
             return;
@@ -708,16 +720,16 @@ namespace invk {
 
           const state = ComboState.Success;
           const seq = new Sequence()
-            .PlaySoundEffect(SOUND_EVENTS[state])
-            .Action(this.showSplashAction(state))
-            .Action(this.updateScoreSummaryAction(options));
+            .playSoundEffect(SOUND_EVENTS[state])
+            .add(this.showSplashAction(state))
+            .add(this.updateScoreSummaryAction(options));
 
-          this.debugFn(() => ["finish()", { id, state, actions: seq.size(), ...options }]);
+          this.debugFn(() => ["finish", { id, state, actions: seq.deepSize(), ...options }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        fail(id: ComboID, expected: number[], ability: string) {
+        runFail(id: ComboId, expected: number[], ability: string): void {
           if (this.combo == null) {
             this.warn("Tried to fail() without combo", { id });
             return;
@@ -737,55 +749,51 @@ namespace invk {
           }
 
           const seq = new Sequence()
-            .PlaySoundEffect(SOUND_EVENTS[state])
-            .Action(this.showSplashAction(state))
-            .AddClass(this.elements.score, SCORE_CLASSES[state])
-            .Action(this.failStepPanelsAction(expectedSteps))
-            .Action(this.bumpStepPanelsAction(expectedSteps))
-            .Action(this.hideTimerAction());
+            .playSoundEffect(SOUND_EVENTS[state])
+            .add(this.showSplashAction(state))
+            .addClass(this.elements.score, SCORE_CLASSES[state])
+            .add(this.failStepPanelsAction(expectedSteps))
+            .add(this.bumpStepPanelsAction(expectedSteps))
+            .add(this.hideTimerAction());
 
-          this.debugFn(() => ["fail()", { id, state, ability, expected, actions: seq.size() }]);
+          this.debugFn(() => ["fail", { id, state, ability, expected, actions: seq.deepSize() }]);
 
-          seq.Run();
+          seq.run();
         }
 
-        cycleHUD() {
+        cycleHud(): void {
           const prev = this.hudMode;
 
           this.hudMode = HUD_MODES_CYCLE[this.hudMode];
 
           const next = this.hudMode;
-          const seq = this.switchHudAction(prev, next);
+          const seq = this.switchHudSeq(prev, next);
 
-          this.debugFn(() => ["cycleHUD()", { prev, next, actions: seq.size() }]);
+          this.debugFn(() => ["cycleHud", { prev, next, actions: seq.deepSize() }]);
 
-          return seq.Run();
+          seq.run();
         }
 
         // ----- UI methods -----
 
-        Restart(isHardReset: boolean) {
-          this.debugFn(() => ["Restart()", { isHardReset: isHardReset }]);
+        restart(isHardReset: boolean): void {
+          this.debugFn(() => ["restart", { isHardReset }]);
           this.sendRestart(!!isHardReset);
         }
 
-        Stop() {
-          this.debug("Stop()");
+        stop(): void {
+          this.debug("stop");
           this.sendStop();
         }
 
-        ShowDetails() {
+        showDetails() {
           if (this.combo == null) {
-            this.warn("Tried to ShowDetails() without combo");
+            this.warn("Tried to showDetails() without combo");
             return;
           }
 
-          this.debug("ShowDetails()");
+          this.debug("showDetails");
           this.sendRenderViewer(this.combo);
-        }
-
-        CycleHUD() {
-          this.cycleHUD();
         }
       }
 

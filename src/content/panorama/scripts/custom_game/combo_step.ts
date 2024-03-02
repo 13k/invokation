@@ -1,27 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace ComboStep {
       const {
-        panorama: { createAbilityOrItemImage },
+        Panorama: { createAbilityOrItemImage },
       } = GameUI.CustomUIConfig().invk;
 
-      import Combo = invk.combo.Combo;
-      import Component = invk.component.Component;
-      import Step = invk.combo.Step;
+      import Combo = invk.Combo.Combo;
+      import Component = invk.Component.Component;
+      import Step = invk.Combo.Step;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         button: Panel;
       }
 
-      export interface Inputs extends component.Inputs {
-        SetStep: {
+      export interface Inputs extends Component.Inputs {
+        setStep: {
           combo: Combo;
           step: Step;
         };
       }
 
-      export enum PanelID {
+      export enum PanelId {
         Image = "ComboStepImage",
       }
 
@@ -38,32 +37,48 @@ namespace invk {
       export abstract class ComboStep<
         E extends Elements = Elements,
         I extends Inputs = Inputs,
-        O extends component.Outputs = never,
-        P extends component.Params = never,
+        O extends Component.Outputs = never,
+        P extends Component.Params = never,
       > extends Component<E, I, O, P> {
         combo: Combo | undefined;
         step: Step | undefined;
 
-        constructor({ elements, inputs, ...options }: component.Options<E, I, P> = {}) {
+        constructor({
+          elements,
+          inputs,
+          panelEvents,
+          ...options
+        }: Component.Options<E, I, P> = {}) {
           super({
             elements: {
               button: "ComboStepIconButton",
               ...elements,
-            } as component.ElementsOption<E>,
+            } as Component.ElementsOptions<E>,
             inputs: {
-              SetStep: (payload) => this.setStep(payload),
+              setStep: (payload) => this.setStep(payload),
               ...inputs,
-            } as component.InputsOption<I>,
+            } as Component.InputsOptions<I>,
+            panelEvents: {
+              button: {
+                onmouseover: () => this.onMouseover(),
+                onmouseout: () => this.onMouseout(),
+              },
+              ...panelEvents,
+            },
             ...options,
           });
         }
+
+        // ----- Callbacks -----
 
         /** Subclasses can override */
         protected onStepChange(): void {
           return;
         }
 
-        setStep({ combo, step }: Inputs["SetStep"]): void {
+        // ----- I/O -----
+
+        protected setStep({ combo, step }: Inputs["setStep"]): void {
           this.combo = combo;
           this.step = step;
 
@@ -83,7 +98,7 @@ namespace invk {
 
           const image = createAbilityOrItemImage(
             this.elements.button,
-            PanelID.Image,
+            PanelId.Image,
             this.step.name,
           );
 
@@ -92,16 +107,18 @@ namespace invk {
           this.onStepChange();
         }
 
-        ShowTooltip(): void {
+        // ----- Layout event handlers -----
+
+        onMouseover(): void {
           if (this.step == null) {
-            this.warn("Tried to ShowTooltip() without step");
+            this.warn("Tried to onShowTooltip() without step");
             return;
           }
 
           this.showAbilityTooltip(this.panel, this.step.name);
         }
 
-        HideTooltip(): void {
+        onMouseout(): void {
           this.hideAbilityTooltip(this.panel);
         }
       }

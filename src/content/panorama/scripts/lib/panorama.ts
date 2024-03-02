@@ -1,9 +1,8 @@
 /// <reference path="dota2.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace panorama {
-    import isItemAbility = invk.dota2.isItemAbility;
+  export namespace Panorama {
+    import isItemAbility = invk.Dota2.isItemAbility;
 
     export enum PanelType {
       Panel = "Panel",
@@ -60,9 +59,9 @@ namespace invk {
       OverlayMap = "DOTAHUDOverlayMap",
       Minimap = "DOTAMinimap",
 
-      HTML = "HTML",
-      AccountLinkHTML = "DOTAAccountLinkHTML",
-      HTMLPanel = "DOTAHTMLPanel",
+      Html = "HTML",
+      AccountLinkHtml = "DOTAAccountLinkHTML",
+      HtmlPanel = "DOTAHTMLPanel",
       StoreCustomControls = "DOTAStoreCustomControls",
 
       CustomLayoutPanel = "CustomLayoutPanel",
@@ -70,29 +69,29 @@ namespace invk {
 
     export type PanelEventListener = () => void;
 
-    export enum UIEvent {
-      EXTERNAL_BROWSER_GO_TO_URL = "ExternalBrowserGoToURL",
-      PLAY_SOUND = "PlaySoundEffect",
-      SHOW_TOOLTIP = "UIShowCustomLayoutTooltip",
-      SHOW_TOOLTIP_PARAMS = "UIShowCustomLayoutParametersTooltip",
-      HIDE_TOOLTIP = "UIHideCustomLayoutTooltip",
-      SHOW_TEXT_TOOLTIP = "DOTAShowTextTooltip",
-      HIDE_TEXT_TOOLTIP = "DOTAHideTextTooltip",
-      SHOW_ABILITY_TOOLTIP = "DOTAShowAbilityTooltip",
-      SHOW_ABILITY_TOOLTIP_ENTITY_INDEX = "DOTAShowAbilityTooltipForEntityIndex",
-      SHOW_ABILITY_TOOLTIP_GUIDE = "DOTAShowAbilityTooltipForGuide",
-      SHOW_ABILITY_TOOLTIP_HERO = "DOTAShowAbilityTooltipForHero",
-      SHOW_ABILITY_TOOLTIP_LEVEL = "DOTAShowAbilityTooltipForLevel",
-      HIDE_ABILITY_TOOLTIP = "DOTAHideAbilityTooltip",
-      SHOW_HERO_STAT_BRANCH_TOOLTIP = "DOTAHUDShowHeroStatBranchTooltip",
-      HIDE_HERO_STAT_BRANCH_TOOLTIP = "DOTAHUDHideStatBranchTooltip",
-      SHOW_POPUP = "UIShowCustomLayoutPopup",
-      SHOW_POPUP_PARAMS = "UIShowCustomLayoutPopupParameters",
-      POPUP_BUTTON_CLICKED = "UIPopupButtonClicked",
-      SCENE_PANEL_LOADED = "DOTAScenePanelSceneLoaded",
+    export enum UiEvent {
+      BrowserGoToUrl = "ExternalBrowserGoToURL",
+      PlaySound = "PlaySoundEffect",
+      ShowTooltip = "UIShowCustomLayoutTooltip",
+      ShowTooltipParams = "UIShowCustomLayoutParametersTooltip",
+      HideTooltip = "UIHideCustomLayoutTooltip",
+      ShowTextTooltip = "DOTAShowTextTooltip",
+      HideTextTooltip = "DOTAHideTextTooltip",
+      ShowAbilityTooltip = "DOTAShowAbilityTooltip",
+      ShowAbilityTooltipEntityIndex = "DOTAShowAbilityTooltipForEntityIndex",
+      ShowAbilityTooltipGuide = "DOTAShowAbilityTooltipForGuide",
+      ShowAbilityTooltipHero = "DOTAShowAbilityTooltipForHero",
+      ShowAbilityTooltipLevel = "DOTAShowAbilityTooltipForLevel",
+      HideAbilityTooltip = "DOTAHideAbilityTooltip",
+      ShowHeroStatBranchTooltip = "DOTAHUDShowHeroStatBranchTooltip",
+      HideHeroStatBranchTooltip = "DOTAHUDHideStatBranchTooltip",
+      ShowPopup = "UIShowCustomLayoutPopup",
+      ShowPopupParams = "UIShowCustomLayoutPopupParameters",
+      PopupButtonClicked = "UIPopupButtonClicked",
+      ScenePanelLoaded = "DOTAScenePanelSceneLoaded",
     }
 
-    export type UIEventListener = () => void;
+    export type UiEventListener = () => void;
 
     export enum SoundEvent {
       Death = "ui.death_stinger",
@@ -101,8 +100,8 @@ namespace invk {
       InvokerKidTakeoverStinger = "kidvoker_takeover_stinger",
       ShopClose = "Shop.PanelDown",
       ShopOpen = "Shop.PanelUp",
-      UIRolloverDown = "ui_rollover_md_down",
-      UIRolloverUp = "ui_rollover_md_up",
+      UiRolloverDown = "ui_rollover_md_down",
+      UiRolloverUp = "ui_rollover_md_up",
     }
 
     export type SerializableParams = string | Record<string, unknown>;
@@ -202,7 +201,9 @@ namespace invk {
     export type DebugPanel = string | { id: string; type: string; layoutfile: string };
 
     export function debugPanel(panel: Panel | undefined): DebugPanel {
-      if (panel == null) return "<undefined>";
+      if (panel == null) {
+        return "<undefined>";
+      }
 
       const { id, type, layoutfile } = panel;
 

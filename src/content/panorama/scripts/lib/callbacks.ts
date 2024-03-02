@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace callbacks {
+  export namespace Callbacks {
     export type Callback<T, K extends keyof T> = (payload: T[K]) => void;
 
     export type Listeners<T> = {
@@ -12,15 +11,15 @@ namespace invk {
     };
 
     export class Callbacks<T> {
-      private cbs: CallbacksStore<T> = {};
+      #store: CallbacksStore<T> = {};
 
       on<K extends keyof T>(event: K, cb: Callback<T, K>): void {
-        this.cbs[event] ??= [];
-        this.cbs[event]?.push(cb);
+        this.#store[event] ??= [];
+        this.#store[event]?.push(cb);
       }
 
       run<K extends keyof T>(event: K, payload: T[K]): void {
-        for (const cb of this.cbs[event] ?? []) {
+        for (const cb of this.#store[event] ?? []) {
           cb(payload);
         }
       }

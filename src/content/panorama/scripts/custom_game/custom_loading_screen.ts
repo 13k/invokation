@@ -1,15 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace CustomLoadingScreen {
       const {
-        sequence: { Sequence },
-        panorama: { SoundEvent, UIEvent },
+        Sequence: { Sequence },
+        Panorama: { SoundEvent, UiEvent },
       } = GameUI.CustomUIConfig().invk;
 
-      import Component = invk.component.Component;
+      import Component = invk.Component.Component;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         scene: ScenePanel;
       }
 
@@ -20,6 +19,7 @@ namespace invk {
 
       enum Timing {
         KidSplash = 1.8,
+        KidSoundEnd = 8.2,
       }
 
       export class CustomLoadingScreen extends Component<Elements> {
@@ -30,7 +30,7 @@ namespace invk {
             },
             uiEvents: {
               scene: {
-                [UIEvent.SCENE_PANEL_LOADED]: () => this.start(),
+                [UiEvent.ScenePanelLoaded]: () => this.start(),
               },
             },
           });
@@ -40,14 +40,14 @@ namespace invk {
 
         start() {
           new Sequence()
-            .WaitClass(this.elements.scene, CssClass.SceneLoaded)
-            .PlaySoundEffect(SoundEvent.InvokerKidTakeoverStinger)
-            .PlaySoundEffect(SoundEvent.InvokerKidTakeoverSfx)
-            .Wait(Timing.KidSplash)
-            .AddClass(this.panel, CssClass.BackgroundSplash)
-            .Wait(8.2)
-            .FireEntityInput(this.elements.scene, "kid", "SetAnimation", "debut_end")
-            .Run();
+            .waitClass(this.elements.scene, CssClass.SceneLoaded)
+            .playSoundEffect(SoundEvent.InvokerKidTakeoverStinger)
+            .playSoundEffect(SoundEvent.InvokerKidTakeoverSfx)
+            .wait(Timing.KidSplash)
+            .addClass(this.panel, CssClass.BackgroundSplash)
+            .wait(Timing.KidSoundEnd)
+            .fireEntityInput(this.elements.scene, "kid", "SetAnimation", "debut_end")
+            .run();
         }
       }
 

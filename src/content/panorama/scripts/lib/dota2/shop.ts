@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace dota2 {
+  export namespace Dota2 {
     export namespace shop {
       export enum Category {
         Artifacts = "artifacts",

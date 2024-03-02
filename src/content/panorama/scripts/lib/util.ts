@@ -1,9 +1,8 @@
 /// <reference path="_vendor.ts" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace util {
-    import _ = invk.vendor.lodash;
+  export namespace Util {
+    import _ = invk.Vendor.lodash;
 
     export function randomInt(lower: number, upper: number): number {
       return _.random(lower, upper);
@@ -73,9 +72,11 @@ namespace invk {
       value: unknown,
     ): T[keyof T] | undefined {
       for (const [k, v] of Object.entries(enumObj)) {
-        const isStrKey = Number.isNaN(parseInt(k));
+        const isStrKey = Number.isNaN(Number.parseInt(k));
 
-        if (isStrKey && v === value) return v as T[keyof T];
+        if (isStrKey && v === value) {
+          return v as T[keyof T];
+        }
       }
 
       return undefined;

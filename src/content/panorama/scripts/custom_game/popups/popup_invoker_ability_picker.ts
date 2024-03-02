@@ -1,32 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace popups {
-      export namespace invoker_ability_picker {
+  export namespace Components {
+    export namespace Popups {
+      export namespace InvokerAbilityPicker {
         const {
-          custom_events: { GameEvent },
-          layout: { LayoutID },
+          CustomEvents: { GameEvent },
+          Layout: { LayoutId },
         } = GameUI.CustomUIConfig().invk;
 
-        import invoker_spell_card = invk.components.ui.invoker_spell_card;
+        import Component = invk.Component.Component;
+        import ParamType = invk.Component.ParamType;
+        import UiInvokerSpellCard = invk.Components.Ui.InvokerSpellCard;
 
-        import Component = invk.component.Component;
-        import ParamType = invk.component.ParamType;
-
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           abilities: Panel;
           btnClose: Button;
         }
 
-        export interface Params extends component.Params {
+        export interface Params extends Component.Params {
           channel: string;
+        }
+
+        enum PanelId {
+          SpellCard = "spell-card",
         }
 
         const INVALID_CHANNEL = "<invalid>";
         const INVALID_ABILITY = "<invalid>";
 
         export class PopupInvokerAbilityPicker extends Component<Elements, never, never, Params> {
-          spellCard: invoker_spell_card.InvokerSpellCard | undefined;
+          spellCard: UiInvokerSpellCard.InvokerSpellCard | undefined;
           selected: string = INVALID_ABILITY;
 
           constructor() {
@@ -37,10 +39,10 @@ namespace invk {
               },
               panelEvents: {
                 $: {
-                  oncancel: () => this.Close(),
+                  oncancel: () => this.close(),
                 },
                 btnClose: {
-                  onactivate: () => this.Close(),
+                  onactivate: () => this.close(),
                 },
               },
               params: {
@@ -58,37 +60,37 @@ namespace invk {
             this.render();
           }
 
-          onSelect(payload: invoker_spell_card.Outputs["OnSelect"]) {
+          onSelect(payload: UiInvokerSpellCard.Outputs["onSelect"]): void {
             this.debug("onSelect()", payload);
             this.select(payload.ability);
           }
 
           // ----- Helpers -----
 
-          select(ability: string) {
+          select(ability: string): void {
             this.selected = ability;
-            this.Submit();
+            this.submit();
           }
 
-          render() {
+          render(): void {
             this.spellCard = this.create(
-              LayoutID.UIInvokerSpellCard,
-              "spell-card",
+              LayoutId.UiInvokerSpellCard,
+              PanelId.SpellCard,
               this.elements.abilities,
             );
 
-            this.spellCard.registerOutput("OnSelect", this.onSelect.bind(this));
+            this.spellCard.registerOutputs({ onSelect: this.onSelect.bind(this) });
 
             this.debug("render()");
           }
 
           // ----- UI methods -----
 
-          Close() {
+          close(): void {
             this.closePopup(this.panel);
           }
 
-          Submit() {
+          submit(): void {
             const {
               params: { channel },
               selected: ability,
@@ -97,8 +99,8 @@ namespace invk {
             const payload = { channel, ability };
 
             this.debug("Submit()", payload);
-            this.sendClientSide(GameEvent.POPUP_ABILITY_PICKER_SUBMIT, payload);
-            this.Close();
+            this.sendClientSide(GameEvent.PopupAbilityPickerSubmit, payload);
+            this.close();
           }
         }
 

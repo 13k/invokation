@@ -1,15 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
+  export namespace Components {
     export namespace ViewerProperties {
       const {
-        sequence: { Sequence, ParallelSequence, NoopAction },
+        Sequence: { Sequence, ParallelSequence, NoopAction },
       } = GameUI.CustomUIConfig().invk;
 
-      import Combo = invk.combo.Combo;
-      import Component = invk.component.Component;
+      import Action = invk.Sequence.Action;
+      import Combo = invk.Combo.Combo;
+      import Component = invk.Component.Component;
 
-      export interface Elements extends component.Elements {
+      export interface Elements extends Component.Elements {
         heroLevelLabel: LabelPanel;
         specialtyLabel: LabelPanel;
         stanceLabel: LabelPanel;
@@ -17,11 +17,11 @@ namespace invk {
         difficultyRating: Panel;
       }
 
-      export interface Inputs extends component.Inputs {
-        SetCombo: Combo;
+      export interface Inputs extends Component.Inputs {
+        setCombo: Combo;
       }
 
-      enum DVar {
+      enum DialogVar {
         HeroLevel = "hero_level",
         Specialty = "specialty",
         Stance = "stance",
@@ -44,52 +44,64 @@ namespace invk {
               difficultyRating: "ViewerPropertiesDifficultyRating",
             },
             inputs: {
-              SetCombo: (payload) => this.setCombo(payload),
+              setCombo: (payload) => this.setCombo(payload),
             },
           });
 
           this.debug("init");
         }
 
-        setCombo(payload: Inputs["SetCombo"]) {
+        // ----- I/O -----
+
+        setCombo(payload: Inputs["setCombo"]) {
           this.combo = payload;
 
           this.render();
         }
 
-        // --- Actions ---
+        // ----- Actions -----
 
-        setVariablesAction() {
-          if (this.combo == null) return new NoopAction();
+        setVariablesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
 
           return new ParallelSequence()
-            .SetDialogVariableInt(this.panel, DVar.HeroLevel, this.combo.heroLevel)
-            .SetDialogVariable(this.panel, DVar.Specialty, this.combo.l10n.specialty)
-            .SetDialogVariable(this.panel, DVar.Stance, this.combo.l10n.stance)
-            .SetDialogVariable(this.panel, DVar.DamageRating, this.combo.l10n.damageRating)
-            .SetDialogVariable(this.panel, DVar.DifficultyRating, this.combo.l10n.difficultyRating);
+            .setDialogVariableInt(this.panel, DialogVar.HeroLevel, this.combo.heroLevel)
+            .setDialogVariable(this.panel, DialogVar.Specialty, this.combo.l10n.specialty)
+            .setDialogVariable(this.panel, DialogVar.Stance, this.combo.l10n.stance)
+            .setDialogVariable(this.panel, DialogVar.DamageRating, this.combo.l10n.damageRating)
+            .setDialogVariable(
+              this.panel,
+              DialogVar.DifficultyRating,
+              this.combo.l10n.difficultyRating,
+            );
         }
 
-        setAttributesAction() {
-          if (this.combo == null) return new NoopAction();
+        setAttributesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
 
           return new ParallelSequence()
-            .SetAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString())
-            .SetAttribute(this.elements.specialtyLabel, "text", this.combo.l10n.specialty)
-            .SetAttribute(this.elements.stanceLabel, "text", this.combo.l10n.stance);
+            .setAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString())
+            .setAttribute(this.elements.specialtyLabel, "text", this.combo.l10n.specialty)
+            .setAttribute(this.elements.stanceLabel, "text", this.combo.l10n.stance);
         }
 
-        setClassesAction() {
-          if (this.combo == null) return new NoopAction();
+        setClassesAction(): Action {
+          if (this.combo == null) {
+            return new NoopAction();
+          }
 
           return new ParallelSequence()
-            .AddClass(this.elements.damageRating, ratingCssClass(this.combo.damageRating))
-            .AddClass(this.elements.difficultyRating, ratingCssClass(this.combo.difficultyRating));
+            .addClass(this.elements.damageRating, ratingCssClass(this.combo.damageRating))
+            .addClass(this.elements.difficultyRating, ratingCssClass(this.combo.difficultyRating));
         }
 
         // ----- Action Runners -----
 
-        render() {
+        render(): void {
           if (this.combo == null) {
             this.warn("Tried to render() without combo");
             return;
@@ -97,13 +109,13 @@ namespace invk {
 
           const id = this.combo.id;
           const seq = new Sequence()
-            .Action(this.setVariablesAction())
-            .Action(this.setAttributesAction())
-            .Action(this.setClassesAction());
+            .add(this.setVariablesAction())
+            .add(this.setAttributesAction())
+            .add(this.setClassesAction());
 
-          this.debugFn(() => ["render()", { id, actions: seq.size() }]);
+          this.debugFn(() => ["render()", { id, actions: seq.deepSize() }]);
 
-          seq.Run();
+          seq.run();
         }
       }
 

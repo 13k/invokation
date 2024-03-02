@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace sequence {
+  export namespace Sequence {
     // ----------------------------------------------------------------------------
     // Valve's sequence_actions.js
     // ----------------------------------------------------------------------------
@@ -10,18 +9,24 @@ namespace invk {
 
     // Base action, which is something that will tick per-frame for a while until it's done.
     export abstract class Action {
-      actions: Action[] = [];
+      protected actions: Action[] = [];
 
       protected nth(index: number): Action {
         const action = this.actions[index];
 
         if (action == null) {
           throw new Error(
-            `${this.constructor.name}: invalid action index=${index} actions.length=${this.actions.length}`,
+            `${this.constructor.name}: invalid action index=${index} actions=${this.actions.length}`,
           );
         }
 
         return action;
+      }
+
+      add(...actions: Action[]): this {
+        this.actions.push(...actions);
+
+        return this;
       }
 
       // The start function is called before the action starts executing.
@@ -39,75 +44,83 @@ namespace invk {
         return;
       }
 
-      size(): number {
-        return this.actions.reduce((size, action) => size + action.size(), 1);
+      get isEmpty(): boolean {
+        return this.actions.length === 0;
+      }
+
+      deepSize(): number {
+        return this.actions.reduce((size, action) => size + action.deepSize(), 1);
       }
     }
 
     class RunSequentialActions extends Action {
-      index = 0;
-      running = false;
-      stop = false;
+      #index = 0;
+      #running = false;
+      #stop = false;
 
       override start(): void {
-        this.index = 0;
-        this.running = false;
-        this.stop = false;
+        this.#index = 0;
+        this.#running = false;
+        this.#stop = false;
       }
 
       override update(): boolean {
-        while (this.index < this.actions.length) {
-          const action = this.nth(this.index);
+        while (this.#index < this.actions.length) {
+          const action = this.nth(this.#index);
 
-          if (!this.running) {
+          if (!this.#running) {
             action.start();
 
-            this.running = true;
+            this.#running = true;
           }
 
           try {
-            if (action.update()) return true;
+            if (action.update()) {
+              return true;
+            }
           } catch (err: unknown) {
-            return this.handleError(err);
+            return this.#handleError(err);
           }
 
           action.finish();
 
-          this.running = false;
-          this.index++;
+          this.#running = false;
+          this.#index++;
         }
 
         return false;
       }
 
       override finish(): void {
-        if (this.stop) return;
+        if (this.#stop) {
+          return;
+        }
 
-        while (this.index < this.actions.length) {
-          const action = this.nth(this.index);
+        while (this.#index < this.actions.length) {
+          const action = this.nth(this.#index);
 
-          if (!this.running) {
+          if (!this.#running) {
             action.start();
 
-            this.running = true;
+            this.#running = true;
 
             action.update();
           }
 
           action.finish();
 
-          this.index++;
-          this.running = false;
+          this.#running = false;
+          this.#index++;
         }
       }
 
-      private handleError(err: unknown): boolean {
+      #handleError(err: unknown): boolean {
         if (err instanceof StopSequence) {
-          const skipCount = this.actions.length - this.index + 1;
+          const skipCount = this.actions.length - this.#index + 1;
 
-          $.Msg("StopSequence", { current: this.index, skipped: skipCount });
+          $.Msg("StopSequence", { current: this.#index, skipped: skipCount });
 
-          this.stop = true;
+          this.#stop = true;
 
           return false;
         }
@@ -118,15 +131,13 @@ namespace invk {
 
     // Action to run multiple actions all at once. The action is complete once all sub actions are done.
     class RunParallelActions extends Action {
-      actionsFinished: boolean[] = [];
+      #actionsFinished: boolean[] = [];
 
       override start(): void {
-        this.actionsFinished = new Array(this.actions.length);
+        this.#actionsFinished = new Array(this.actions.length);
 
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-
-          this.actionsFinished[i] = false;
+        for (const [i, action] of this.actions.entries()) {
+          this.#actionsFinished[i] = false;
 
           action.start();
         }
@@ -135,14 +146,12 @@ namespace invk {
       override update(): boolean {
         let anyTicking = false;
 
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-
-          if (!this.actionsFinished[i]) {
+        for (const [i, action] of this.actions.entries()) {
+          if (!this.#actionsFinished[i]) {
             if (!action.update()) {
               action.finish();
 
-              this.actionsFinished[i] = true;
+              this.#actionsFinished[i] = true;
             } else {
               anyTicking = true;
             }
@@ -153,13 +162,11 @@ namespace invk {
       }
 
       override finish(): void {
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-
-          if (!this.actionsFinished[i]) {
+        for (const [i, action] of this.actions.entries()) {
+          if (!this.#actionsFinished[i]) {
             action.finish();
 
-            this.actionsFinished[i] = true;
+            this.#actionsFinished[i] = true;
           }
         }
       }
@@ -167,77 +174,79 @@ namespace invk {
 
     // Action to rum multiple actions in parallel, but with a slight stagger start between each of them
     class RunStaggeredActions extends Action {
-      private runParallel: RunParallelActions;
+      #delay: number;
+      #runParallel: RunParallelActions;
 
-      constructor(protected delay: number) {
+      constructor(delay: number) {
         super();
 
-        this.runParallel = new RunParallelActions();
+        this.#delay = delay;
+        this.#runParallel = new RunParallelActions();
       }
 
       override start(): void {
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-          const delay = i * this.delay;
+        for (const [i, action] of this.actions.entries()) {
+          const delay = i * this.#delay;
 
           if (delay > 0) {
             const seq = new RunSequentialActions();
 
-            seq.actions.push(new WaitAction(delay));
-            seq.actions.push(action);
+            seq.add(new WaitAction(delay));
+            seq.add(action);
 
-            this.runParallel.actions.push(seq);
+            this.#runParallel.add(seq);
           } else {
-            this.runParallel.actions.push(action);
+            this.#runParallel.add(action);
           }
         }
 
-        this.runParallel.start();
+        this.#runParallel.start();
       }
 
       override update(): boolean {
-        return this.runParallel.update();
+        return this.#runParallel.update();
       }
 
       override finish(): void {
-        this.runParallel.finish();
+        this.#runParallel.finish();
       }
     }
 
     // Runs a set of actions but stops as soon as any of them are finished.  continueOtherActions is a bool
     // that determines whether to continue ticking the remaining actions, or whether to just finish them immediately.
     class RunUntilSingleActionFinishedAction extends Action {
-      finished: boolean[] = [];
+      #keepRunning = false;
+      #finished: boolean[] = [];
 
-      constructor(protected keepRunning: boolean) {
+      constructor(keepRunning: boolean) {
         super();
+
+        this.#keepRunning = keepRunning;
       }
 
       override start(): void {
-        this.finished = new Array(this.actions.length);
+        this.#finished = new Array(this.actions.length);
 
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-
-          this.finished[i] = false;
+        for (const [i, action] of this.actions.entries()) {
+          this.#finished[i] = false;
 
           action.start();
         }
       }
 
       override update(): boolean {
-        if (this.actions.length === 0) return false;
+        if (this.isEmpty) {
+          return false;
+        }
 
         let anyFinished = false;
 
-        for (let i = 0; i < this.actions.length; ++i) {
-          const action = this.nth(i);
-
+        for (const [i, action] of this.actions.entries()) {
           if (!action.update()) {
             action.finish();
 
-            this.finished[i] = true;
             anyFinished = true;
+            this.#finished[i] = true;
           }
         }
 
@@ -245,28 +254,24 @@ namespace invk {
       }
 
       override finish(): void {
-        if (this.keepRunning) {
+        if (this.#keepRunning) {
           // If we want to make sure the rest tick out, then build a new RunParallelActions of all
           // the remaining actions, then have it tick out separately.
           const runParallel = new RunParallelActions();
 
-          for (let i = 0; i < this.actions.length; ++i) {
-            const action = this.nth(i);
-
-            if (!this.finished[i]) {
-              runParallel.actions.push(action);
+          for (const [i, action] of this.actions.entries()) {
+            if (!this.#finished[i]) {
+              runParallel.add(action);
             }
           }
 
-          if (runParallel.actions.length > 0) {
+          if (!runParallel.isEmpty) {
             UpdateSingleActionUntilFinished(runParallel);
           }
         } else {
           // Just finish each action immediately
-          for (let i = 0; i < this.actions.length; ++i) {
-            const action = this.nth(i);
-
-            if (!this.finished[i]) {
+          for (const [i, action] of this.actions.entries()) {
+            if (!this.#finished[i]) {
               action.finish();
             }
           }
@@ -275,7 +280,7 @@ namespace invk {
     }
 
     export class PanelAction<T extends Panel> extends Action {
-      panel: T;
+      protected panel: T;
 
       constructor(panel: T) {
         super();
@@ -286,38 +291,38 @@ namespace invk {
 
     // Action to wait for some amount of seconds before resuming
     export class WaitAction extends Action {
-      seconds: number;
-      endTimestamp = 0;
+      #duration: number;
+      #endTimestamp = 0;
 
-      constructor(seconds: number) {
+      constructor(duration: number) {
         super();
 
-        this.seconds = seconds;
+        this.#duration = duration;
       }
 
       override start(): void {
-        this.endTimestamp = Date.now() + this.seconds * 1000.0;
+        this.#endTimestamp = Date.now() + this.#duration * 1000.0;
       }
 
       override update(): boolean {
-        return Date.now() < this.endTimestamp;
+        return Date.now() < this.#endTimestamp;
       }
     }
 
     // Action to wait a single frame
     export class WaitOneFrameAction extends Action {
-      updated = false;
+      #updated = false;
 
       override start(): void {
-        this.updated = false;
+        this.#updated = false;
       }
 
       override update(): boolean {
-        if (this.updated) {
+        if (this.#updated) {
           return false;
         }
 
-        this.updated = true;
+        this.#updated = true;
 
         return true;
       }
@@ -325,108 +330,108 @@ namespace invk {
 
     // Action that waits for a specific event type to be fired on the given panel.
     export class WaitEventAction<T extends Panel> extends PanelAction<T> {
-      eventName: string;
-      receivedEvent = false;
+      #eventName: string;
+      #receivedEvent = false;
 
       constructor(panel: T, eventName: string) {
         super(panel);
 
-        this.eventName = eventName;
+        this.#eventName = eventName;
       }
 
       override start(): void {
-        this.receivedEvent = false;
+        this.#receivedEvent = false;
 
-        $.RegisterEventHandler(this.eventName, this.panel, () => {
-          this.receivedEvent = true;
+        $.RegisterEventHandler(this.#eventName, this.panel, () => {
+          this.#receivedEvent = true;
         });
       }
 
       override update(): boolean {
-        return !this.receivedEvent;
+        return !this.#receivedEvent;
       }
     }
 
     // Run an action until it's complete, or until it hits a timeout. continueAfterTimeout is a bool
     // determining whether to continue ticking the action after it has timed out
     export class WaitActionAction extends Action {
-      action: Action;
-      timeoutDuration: number;
-      continueAfterTimeout: boolean;
-      allAction: RunUntilSingleActionFinishedAction;
+      #action: Action;
+      #timeoutDuration: number;
+      #continueAfterTimeout: boolean;
+      #runner: RunUntilSingleActionFinishedAction;
 
       constructor(action: Action, timeoutDuration: number, continueAfterTimeout: boolean) {
         super();
 
-        this.action = action;
-        this.timeoutDuration = timeoutDuration;
-        this.continueAfterTimeout = continueAfterTimeout;
-        this.allAction = new RunUntilSingleActionFinishedAction(this.continueAfterTimeout);
+        this.#action = action;
+        this.#timeoutDuration = timeoutDuration;
+        this.#continueAfterTimeout = continueAfterTimeout;
+        this.#runner = new RunUntilSingleActionFinishedAction(this.#continueAfterTimeout);
       }
 
       override start(): void {
-        this.allAction.actions.push(this.action);
-        this.allAction.actions.push(new WaitAction(this.timeoutDuration));
-        this.allAction.start();
+        this.#runner.add(this.#action);
+        this.#runner.add(new WaitAction(this.#timeoutDuration));
+        this.#runner.start();
       }
 
       override update(): boolean {
-        return this.allAction.update();
+        return this.#runner.update();
       }
 
       override finish(): void {
-        this.allAction.finish();
+        this.#runner.finish();
       }
     }
 
-    // Action to add a class to a panel
+    // Action to add a CSS class to a panel
     export class AddClassAction<T extends Panel> extends PanelAction<T> {
-      panelClass: string;
+      #cssClass: string;
 
-      constructor(panel: T, panelClass: string) {
+      constructor(panel: T, cssClass: string) {
         super(panel);
 
-        this.panelClass = panelClass;
+        this.#cssClass = cssClass;
       }
 
       override update(): boolean {
-        this.panel.AddClass(this.panelClass);
+        this.panel.AddClass(this.#cssClass);
 
         return false;
       }
     }
 
-    // Action to remove a class to a panel
+    // Action to remove a CSS class to a panel
     export class RemoveClassAction<T extends Panel> extends PanelAction<T> {
-      panelClass: string;
+      #cssClass: string;
 
-      constructor(panel: T, panelClass: string) {
+      constructor(panel: T, cssClass: string) {
         super(panel);
 
-        this.panelClass = panelClass;
+        this.#cssClass = cssClass;
       }
 
       override update(): boolean {
-        this.panel.RemoveClass(this.panelClass);
+        this.panel.RemoveClass(this.#cssClass);
 
         return false;
       }
     }
 
-    // Switch a class on a panel
+    // Switch a CSS class on a panel
     export class SwitchClassAction<T extends Panel> extends PanelAction<T> {
-      panelSlot: string;
-      panelClass: string;
+      #original: string;
+      #replacement: string;
 
-      constructor(panel: T, panelSlot: string, panelClass: string) {
+      constructor(panel: T, original: string, replacement: string) {
         super(panel);
 
-        this.panelSlot = panelSlot;
-        this.panelClass = panelClass;
+        this.#original = original;
+        this.#replacement = replacement;
       }
 
       override update(): boolean {
-        this.panel.SwitchClass(this.panelSlot, this.panelClass);
+        this.panel.SwitchClass(this.#original, this.#replacement);
 
         return false;
       }
@@ -434,33 +439,33 @@ namespace invk {
 
     // Action to wait for a class to appear on a panel
     export class WaitClassAction<T extends Panel> extends PanelAction<T> {
-      panelClass: string;
+      #cssClass: string;
 
-      constructor(panel: T, panelClass: string) {
+      constructor(panel: T, cssClass: string) {
         super(panel);
 
-        this.panelClass = panelClass;
+        this.#cssClass = cssClass;
       }
 
       override update(): boolean {
-        return !this.panel.BHasClass(this.panelClass);
+        return !this.panel.BHasClass(this.#cssClass);
       }
     }
 
     // Action to set an integer dialog variable
     export class SetDialogVariableIntAction<T extends Panel> extends PanelAction<T> {
-      dialogVariable: string;
-      value: number;
+      #dvar: string;
+      #value: number;
 
-      constructor(panel: T, dialogVariable: string, value: number) {
+      constructor(panel: T, dvar: string, value: number) {
         super(panel);
 
-        this.dialogVariable = dialogVariable;
-        this.value = value;
+        this.#dvar = dvar;
+        this.#value = value;
       }
 
       override update(): boolean {
-        this.panel.SetDialogVariableInt(this.dialogVariable, this.value);
+        this.panel.SetDialogVariableInt(this.#dvar, this.#value);
 
         return false;
       }
@@ -468,169 +473,163 @@ namespace invk {
 
     // Action to animate an integer dialog variable over some duration of seconds
     export class AnimateDialogVariableIntAction<T extends Panel> extends PanelAction<T> {
-      dialogVariable: string;
-      startValue: number;
-      endValue: number;
-      seconds: number;
-      startTimestamp = 0;
-      endTimestamp = 0;
+      #dvar: string;
+      #startValue: number;
+      #endValue: number;
+      #duration: number;
+      #startTimestamp = 0;
+      #endTimestamp = 0;
 
-      constructor(panel: T, dialogVariable: string, start: number, end: number, seconds: number) {
+      constructor(panel: T, dvar: string, startValue: number, endValue: number, duration: number) {
         super(panel);
 
-        this.dialogVariable = dialogVariable;
-        this.startValue = start;
-        this.endValue = end;
-        this.seconds = seconds;
+        this.#dvar = dvar;
+        this.#startValue = startValue;
+        this.#endValue = endValue;
+        this.#duration = duration;
       }
 
       override start(): void {
-        this.startTimestamp = Date.now();
-        this.endTimestamp = this.startTimestamp + this.seconds * 1000;
+        this.#startTimestamp = Date.now();
+        this.#endTimestamp = this.#startTimestamp + this.#duration * 1000;
       }
 
       override update(): boolean {
         const now = Date.now();
 
-        if (now >= this.endTimestamp) {
+        if (now >= this.#endTimestamp) {
           return false;
         }
 
-        const ratio = (now - this.startTimestamp) / (this.endTimestamp - this.startTimestamp);
+        const ratio = (now - this.#startTimestamp) / (this.#endTimestamp - this.#startTimestamp);
 
         this.panel.SetDialogVariableInt(
-          this.dialogVariable,
-          this.startValue + (this.endValue - this.startValue) * ratio,
+          this.#dvar,
+          this.#startValue + (this.#endValue - this.#startValue) * ratio,
         );
 
         return true;
       }
 
       override finish(): void {
-        this.panel.SetDialogVariableInt(this.dialogVariable, this.endValue);
+        this.panel.SetDialogVariableInt(this.#dvar, this.#endValue);
       }
     }
 
     // Action to set a progress bar's value
-    export class SetProgressBarValueAction extends Action {
-      progressBar: ProgressBar;
-      value: number;
+    export class SetProgressBarValueAction extends PanelAction<ProgressBar> {
+      #value: number;
 
-      constructor(progressBar: ProgressBar, value: number) {
-        super();
+      constructor(panel: ProgressBar, value: number) {
+        super(panel);
 
-        this.progressBar = progressBar;
-        this.value = value;
+        this.#value = value;
       }
 
       override update(): boolean {
-        this.progressBar.value = this.value;
+        this.panel.value = this.#value;
 
         return false;
       }
     }
 
     // Action to animate a progress bar
-    export class AnimateProgressBarAction extends Action {
-      progressBar: ProgressBar;
-      startValue: number;
-      endValue: number;
-      seconds: number;
-      startTimestamp = 0;
-      endTimestamp = 0;
+    export class AnimateProgressBarAction extends PanelAction<ProgressBar> {
+      #startValue: number;
+      #endValue: number;
+      #duration: number;
+      #startTimestamp = 0;
+      #endTimestamp = 0;
 
-      constructor(progressBar: ProgressBar, startValue: number, endValue: number, seconds: number) {
-        super();
+      constructor(panel: ProgressBar, startValue: number, endValue: number, duration: number) {
+        super(panel);
 
-        this.progressBar = progressBar;
-        this.startValue = startValue;
-        this.endValue = endValue;
-        this.seconds = seconds;
+        this.#startValue = startValue;
+        this.#endValue = endValue;
+        this.#duration = duration;
       }
 
       override start(): void {
-        this.startTimestamp = Date.now();
-        this.endTimestamp = this.startTimestamp + this.seconds * 1000;
+        this.#startTimestamp = Date.now();
+        this.#endTimestamp = this.#startTimestamp + this.#duration * 1000;
       }
 
       override update(): boolean {
         const now = Date.now();
 
-        if (now >= this.endTimestamp) {
+        if (now >= this.#endTimestamp) {
           return false;
         }
 
-        const ratio = (now - this.startTimestamp) / (this.endTimestamp - this.startTimestamp);
+        const ratio = (now - this.#startTimestamp) / (this.#endTimestamp - this.#startTimestamp);
 
-        this.progressBar.value = this.startValue + (this.endValue - this.startValue) * ratio;
+        this.panel.value = this.#startValue + (this.#endValue - this.#startValue) * ratio;
 
         return true;
       }
 
       override finish(): void {
-        this.progressBar.value = this.endValue;
+        this.panel.value = this.#endValue;
       }
     }
 
     // Action to animate a progress bar	with middle
-    export class AnimateProgressBarWithMiddleAction extends Action {
-      progressBar: ProgressBarWithMiddle;
-      startValue: number;
-      endValue: number;
-      seconds: number;
-      startTimestamp = 0;
-      endTimestamp = 0;
+    export class AnimateProgressBarWithMiddleAction extends PanelAction<ProgressBarWithMiddle> {
+      #startValue: number;
+      #endValue: number;
+      #duration: number;
+      #startTimestamp = 0;
+      #endTimestamp = 0;
 
       constructor(
-        progressBar: ProgressBarWithMiddle,
+        panel: ProgressBarWithMiddle,
         startValue: number,
         endValue: number,
-        seconds: number,
+        duration: number,
       ) {
-        super();
+        super(panel);
 
-        this.progressBar = progressBar;
-        this.startValue = startValue;
-        this.endValue = endValue;
-        this.seconds = seconds;
+        this.#startValue = startValue;
+        this.#endValue = endValue;
+        this.#duration = duration;
       }
 
       override start(): void {
-        this.startTimestamp = Date.now();
-        this.endTimestamp = this.startTimestamp + this.seconds * 1000;
+        this.#startTimestamp = Date.now();
+        this.#endTimestamp = this.#startTimestamp + this.#duration * 1000;
       }
 
       override update(): boolean {
         const now = Date.now();
 
-        if (now >= this.endTimestamp) {
+        if (now >= this.#endTimestamp) {
           return false;
         }
 
-        const ratio = (now - this.startTimestamp) / (this.endTimestamp - this.startTimestamp);
+        const ratio = (now - this.#startTimestamp) / (this.#endTimestamp - this.#startTimestamp);
 
-        this.progressBar.uppervalue = this.startValue + (this.endValue - this.startValue) * ratio;
+        this.panel.uppervalue = this.#startValue + (this.#endValue - this.#startValue) * ratio;
 
         return true;
       }
 
       override finish(): void {
-        this.progressBar.uppervalue = this.endValue;
+        this.panel.uppervalue = this.#endValue;
       }
     }
 
     // Action to play a sound effect
     export class PlaySoundEffectAction extends Action {
-      soundName: string;
+      #soundName: string;
 
       constructor(soundName: string) {
         super();
 
-        this.soundName = soundName;
+        this.#soundName = soundName;
       }
 
       override update(): boolean {
-        $.DispatchEvent("PlaySoundEffect", this.soundName);
+        $.DispatchEvent("PlaySoundEffect", this.#soundName);
 
         return false;
       }
@@ -708,55 +707,55 @@ namespace invk {
 
     // Action that simply runs a passed in function. You may include extra arguments and they will be passed to the called function.
     export class RunFunctionAction<F extends RunFunction> extends Action {
-      fn: F;
-      args: Parameters<F>;
+      #fn: F;
+      #args: Parameters<F>;
 
       constructor(fn: F, ...args: Parameters<F>) {
         super();
 
-        this.fn = fn;
-        this.args = args;
+        this.#fn = fn;
+        this.#args = args;
       }
 
       override update(): boolean {
-        this.fn(...this.args);
+        this.#fn(...this.#args);
 
         return false;
       }
     }
 
     export class ReplaceClassAction<T extends Panel> extends PanelAction<T> {
-      className: string;
-      replacement: string;
+      #original: string;
+      #replacement: string;
 
-      constructor(panel: T, className: string, replacement: string) {
+      constructor(panel: T, original: string, replacement: string) {
         super(panel);
 
-        this.className = className;
-        this.replacement = replacement;
+        this.#original = original;
+        this.#replacement = replacement;
       }
 
       override update(): boolean {
-        this.panel.RemoveClass(this.className);
-        this.panel.AddClass(this.replacement);
+        this.panel.RemoveClass(this.#original);
+        this.panel.AddClass(this.#replacement);
 
         return false;
       }
     }
 
     export class SetAttributeAction<T extends Panel, K extends keyof T> extends PanelAction<T> {
-      attribute: K;
-      value: T[K];
+      #attribute: K;
+      #value: T[K];
 
       constructor(panel: T, attribute: K, value: T[K]) {
         super(panel);
 
-        this.attribute = attribute;
-        this.value = value;
+        this.#attribute = attribute;
+        this.#value = value;
       }
 
       override update(): boolean {
-        this.panel[this.attribute] = this.value;
+        this.panel[this.#attribute] = this.#value;
 
         return false;
       }
@@ -775,36 +774,36 @@ namespace invk {
     }
 
     export class SetDialogVariableAction<T extends Panel> extends PanelAction<T> {
-      variable: string;
-      value: string;
+      #dvar: string;
+      #value: string;
 
-      constructor(panel: T, variable: string, value: string) {
+      constructor(panel: T, dvar: string, value: string) {
         super(panel);
 
-        this.variable = variable;
-        this.value = value;
+        this.#dvar = dvar;
+        this.#value = value;
       }
 
       override update(): boolean {
-        this.panel.SetDialogVariable(this.variable, this.value);
+        this.panel.SetDialogVariable(this.#dvar, this.#value);
 
         return false;
       }
     }
 
     export class SetDialogVariableTimeAction<T extends Panel> extends PanelAction<T> {
-      variable: string;
-      value: number;
+      #dvar: string;
+      #value: number;
 
-      constructor(panel: T, variable: string, value: number) {
+      constructor(panel: T, dvar: string, value: number) {
         super(panel);
 
-        this.variable = variable;
-        this.value = value;
+        this.#dvar = dvar;
+        this.#value = value;
       }
 
       override update(): boolean {
-        this.panel.SetDialogVariableTime(this.variable, this.value);
+        this.panel.SetDialogVariableTime(this.#dvar, this.#value);
 
         return false;
       }
@@ -827,16 +826,16 @@ namespace invk {
     }
 
     export class DeleteAsyncAction<T extends Panel> extends PanelAction<T> {
-      delay: number;
+      #delay: number;
 
       constructor(panel: T, delay: number) {
         super(panel);
 
-        this.delay = delay;
+        this.#delay = delay;
       }
 
       override update(): boolean {
-        this.panel.DeleteAsync(this.delay);
+        this.panel.DeleteAsync(this.#delay);
 
         return false;
       }
@@ -851,32 +850,32 @@ namespace invk {
     }
 
     export class SelectOptionAction extends PanelAction<DropDown> {
-      optionID: string;
+      #optionId: string;
 
-      constructor(panel: DropDown, optionID: string) {
+      constructor(panel: DropDown, optionId: string) {
         super(panel);
 
-        this.optionID = optionID;
+        this.#optionId = optionId;
       }
 
       override update(): boolean {
-        this.panel.SetSelected(this.optionID);
+        this.panel.SetSelected(this.#optionId);
 
         return false;
       }
     }
 
     export class AddOptionAction extends PanelAction<DropDown> {
-      option: Panel | (() => Panel);
+      #option: Panel | (() => Panel);
 
       constructor(panel: DropDown, option: Panel | (() => Panel)) {
         super(panel);
 
-        this.option = option;
+        this.#option = option;
       }
 
       override update(): boolean {
-        const optionPanel = typeof this.option === "function" ? this.option() : this.option;
+        const optionPanel = typeof this.#option === "function" ? this.#option() : this.#option;
 
         this.panel.AddOption(optionPanel);
 
@@ -885,16 +884,16 @@ namespace invk {
     }
 
     export class RemoveOptionAction extends PanelAction<DropDown> {
-      optionID: string;
+      #optionId: string;
 
-      constructor(panel: DropDown, optionID: string) {
+      constructor(panel: DropDown, optionId: string) {
         super(panel);
 
-        this.optionID = optionID;
+        this.#optionId = optionId;
       }
 
       override update(): boolean {
-        this.panel.RemoveOption(this.optionID);
+        this.panel.RemoveOption(this.#optionId);
 
         return false;
       }
@@ -917,28 +916,38 @@ namespace invk {
     }
 
     export class FireEntityInputAction extends PanelAction<ScenePanel> {
-      entityName: string;
-      inputName: string;
-      inputArg: string;
+      #entityName: string;
+      #inputName: string;
+      #inputArg: string;
 
       constructor(panel: ScenePanel, entityName: string, inputName: string, inputArg: string) {
         super(panel);
 
-        this.entityName = entityName;
-        this.inputName = inputName;
-        this.inputArg = inputArg;
+        this.#entityName = entityName;
+        this.#inputName = inputName;
+        this.#inputArg = inputArg;
       }
 
       override update(): boolean {
-        this.panel.FireEntityInput(this.entityName, this.inputName, this.inputArg);
+        this.panel.FireEntityInput(this.#entityName, this.#inputName, this.#inputArg);
 
         return false;
       }
     }
 
     abstract class SequenceBase<T extends Action> extends Action {
-      constructor(protected action: T) {
+      protected action: T;
+
+      constructor(action: T) {
         super();
+
+        this.action = action;
+      }
+
+      override add(...actions: Action[]): this {
+        this.action.add(...actions);
+
+        return this;
       }
 
       override start(): void {
@@ -953,177 +962,165 @@ namespace invk {
         this.action.finish();
       }
 
-      Run(): void {
+      run(): void {
         RunSingleAction(this.action);
       }
 
-      Action(...actions: Action[]): this {
-        this.action.actions.push(...actions);
+      // ----- actions -----
 
-        return this;
+      noop(): this {
+        return this.add(new NoopAction());
       }
 
-      Noop(): this {
-        return this.Action(new NoopAction());
+      print(...args: unknown[]): this {
+        return this.add(new PrintAction(...args));
       }
 
-      Function<F extends RunFunction>(fn: F, ...args: Parameters<F>): this {
-        return this.Action(new RunFunctionAction(fn, ...args));
+      runFn<F extends RunFunction>(fn: F, ...args: Parameters<F>): this {
+        return this.add(new RunFunctionAction(fn, ...args));
       }
 
-      Wait(seconds: number): this {
-        return this.Action(new WaitAction(seconds));
+      wait(duration: number): this {
+        return this.add(new WaitAction(duration));
       }
 
-      WaitOneFrame(): this {
-        return this.Action(new WaitOneFrameAction());
+      waitOneFrame(): this {
+        return this.add(new WaitOneFrameAction());
       }
 
-      WaitEvent<T extends Panel>(panel: T, eventName: string): this {
-        return this.Action(new WaitEventAction(panel, eventName));
+      waitEvent<T extends Panel>(panel: T, eventName: string): this {
+        return this.add(new WaitEventAction(panel, eventName));
       }
 
-      WaitAction(action: Action, timeoutDuration: number, continueAfterTimeout: boolean): this {
-        return this.Action(new WaitActionAction(action, timeoutDuration, continueAfterTimeout));
+      waitAction(action: Action, timeoutDuration: number, continueAfterTimeout: boolean): this {
+        return this.add(new WaitActionAction(action, timeoutDuration, continueAfterTimeout));
       }
 
-      Print(...args: unknown[]): this {
-        return this.Action(new PrintAction(...args));
+      addClass<T extends Panel>(panel: T, cssClass: string): this {
+        return this.add(new AddClassAction(panel, cssClass));
       }
 
-      AddClass<T extends Panel>(panel: T, className: string): this {
-        return this.Action(new AddClassAction(panel, className));
+      removeClass<T extends Panel>(panel: T, cssClass: string): this {
+        return this.add(new RemoveClassAction(panel, cssClass));
       }
 
-      RemoveClass<T extends Panel>(panel: T, className: string): this {
-        return this.Action(new RemoveClassAction(panel, className));
+      switchClass<T extends Panel>(panel: T, original: string, replacement: string): this {
+        return this.add(new SwitchClassAction(panel, original, replacement));
       }
 
-      SwitchClass<T extends Panel>(panel: T, panelSlot: string, className: string): this {
-        return this.Action(new SwitchClassAction(panel, panelSlot, className));
+      replaceClass<T extends Panel>(panel: T, original: string, replacement: string): this {
+        return this.add(new ReplaceClassAction(panel, original, replacement));
       }
 
-      ReplaceClass<T extends Panel>(panel: T, className: string, replacement: string): this {
-        return this.Action(new ReplaceClassAction(panel, className, replacement));
+      waitClass<T extends Panel>(panel: T, cssClass: string): this {
+        return this.add(new WaitClassAction(panel, cssClass));
       }
 
-      WaitClass<T extends Panel>(panel: T, className: string): this {
-        return this.Action(new WaitClassAction(panel, className));
+      deleteAsync<T extends Panel>(panel: T, delay: number): this {
+        return this.add(new DeleteAsyncAction(panel, delay));
       }
 
-      DeleteAsync<T extends Panel>(panel: T, delay: number): this {
-        return this.Action(new DeleteAsyncAction(panel, delay));
+      removeChildren<T extends Panel>(panel: T): this {
+        return this.add(new RemoveChildrenAction(panel));
       }
 
-      RemoveChildren<T extends Panel>(panel: T): this {
-        return this.Action(new RemoveChildrenAction(panel));
+      scrollToTop<T extends Panel>(panel: T): this {
+        return this.add(new ScrollToTopAction(panel));
       }
 
-      ScrollToTop<T extends Panel>(panel: T): this {
-        return this.Action(new ScrollToTopAction(panel));
+      scrollToBottom<T extends Panel>(panel: T): this {
+        return this.add(new ScrollToBottomAction(panel));
       }
 
-      ScrollToBottom<T extends Panel>(panel: T): this {
-        return this.Action(new ScrollToBottomAction(panel));
+      enable<T extends Panel>(panel: T): this {
+        return this.add(new EnableAction(panel));
       }
 
-      Enable<T extends Panel>(panel: T): this {
-        return this.Action(new EnableAction(panel));
+      disable<T extends Panel>(panel: T): this {
+        return this.add(new DisableAction(panel));
       }
 
-      Disable<T extends Panel>(panel: T): this {
-        return this.Action(new DisableAction(panel));
+      focus<T extends Panel>(panel: T): this {
+        return this.add(new FocusAction(panel));
       }
 
-      Focus<T extends Panel>(panel: T): this {
-        return this.Action(new FocusAction(panel));
+      setAttribute<T extends Panel, K extends keyof T>(panel: T, attribute: K, value: T[K]): this {
+        return this.add(new SetAttributeAction(panel, attribute, value));
       }
 
-      SetAttribute<T extends Panel, K extends keyof T>(panel: T, attribute: K, value: T[K]): this {
-        return this.Action(new SetAttributeAction(panel, attribute, value));
+      setDialogVariable<T extends Panel>(panel: T, dvar: string, value: string): this {
+        return this.add(new SetDialogVariableAction(panel, dvar, value));
       }
 
-      SetDialogVariable<T extends Panel>(panel: T, dialogVariable: string, value: string): this {
-        return this.Action(new SetDialogVariableAction(panel, dialogVariable, value));
+      setDialogVariableInt<T extends Panel>(panel: T, dvar: string, value: number): this {
+        return this.add(new SetDialogVariableIntAction(panel, dvar, value));
       }
 
-      SetDialogVariableInt<T extends Panel>(panel: T, dialogVariable: string, value: number): this {
-        return this.Action(new SetDialogVariableIntAction(panel, dialogVariable, value));
+      setDialogVariableTime<T extends Panel>(panel: T, dvar: string, value: number): this {
+        return this.add(new SetDialogVariableTimeAction(panel, dvar, value));
       }
 
-      SetDialogVariableTime<T extends Panel>(
+      animateDialogVariableInt<T extends Panel>(
         panel: T,
-        dialogVariable: string,
-        value: number,
-      ): this {
-        return this.Action(new SetDialogVariableTimeAction(panel, dialogVariable, value));
-      }
-
-      AnimateDialogVariableInt<T extends Panel>(
-        panel: T,
-        dialogVariable: string,
+        dvar: string,
         start: number,
         end: number,
-        seconds: number,
+        duration: number,
       ): this {
-        return this.Action(
-          new AnimateDialogVariableIntAction(panel, dialogVariable, start, end, seconds),
-        );
+        return this.add(new AnimateDialogVariableIntAction(panel, dvar, start, end, duration));
       }
 
-      SetProgressBarValue(progressBar: ProgressBar, value: number): this {
-        return this.Action(new SetProgressBarValueAction(progressBar, value));
+      setProgressBarValue(panel: ProgressBar, value: number): this {
+        return this.add(new SetProgressBarValueAction(panel, value));
       }
 
-      AnimateProgressBar(
-        progressBar: ProgressBar,
+      animateProgressBar(
+        panel: ProgressBar,
         startValue: number,
         endValue: number,
-        seconds: number,
+        duration: number,
       ): this {
-        return this.Action(
-          new AnimateProgressBarAction(progressBar, startValue, endValue, seconds),
-        );
+        return this.add(new AnimateProgressBarAction(panel, startValue, endValue, duration));
       }
 
-      AnimateProgressBarWithMiddle(
-        progressBar: ProgressBarWithMiddle,
+      animateProgressBarWithMiddle(
+        panel: ProgressBarWithMiddle,
         startValue: number,
         endValue: number,
-        seconds: number,
+        duration: number,
       ): this {
-        return this.Action(
-          new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds),
+        return this.add(
+          new AnimateProgressBarWithMiddleAction(panel, startValue, endValue, duration),
         );
       }
 
-      AddOption(panel: DropDown, option: Panel | (() => Panel)): this {
-        return this.Action(new AddOptionAction(panel, option));
+      addOption(panel: DropDown, option: Panel | (() => Panel)): this {
+        return this.add(new AddOptionAction(panel, option));
       }
 
-      RemoveOption(panel: DropDown, optionID: string): this {
-        return this.Action(new RemoveOptionAction(panel, optionID));
+      removeOption(panel: DropDown, optionId: string): this {
+        return this.add(new RemoveOptionAction(panel, optionId));
       }
 
-      RemoveAllOptions(panel: DropDown): this {
-        return this.Action(new RemoveAllOptionsAction(panel));
+      removeAllOptions(panel: DropDown): this {
+        return this.add(new RemoveAllOptionsAction(panel));
       }
 
-      SelectOption(panel: DropDown, optionID: string): this {
-        return this.Action(new SelectOptionAction(panel, optionID));
+      selectOption(panel: DropDown, optionId: string): this {
+        return this.add(new SelectOptionAction(panel, optionId));
       }
 
-      PlaySoundEffect(soundName: string): this {
-        return this.Action(new PlaySoundEffectAction(soundName));
+      playSoundEffect(soundName: string): this {
+        return this.add(new PlaySoundEffectAction(soundName));
       }
 
-      FireEntityInput(
+      fireEntityInput(
         panel: ScenePanel,
         entityName: string,
         inputName: string,
         inputArg: string,
       ): this {
-        return this.Action(new FireEntityInputAction(panel, entityName, inputName, inputArg));
+        return this.add(new FireEntityInputAction(panel, entityName, inputName, inputArg));
       }
     }
 

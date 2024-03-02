@@ -1,24 +1,23 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace ui {
-      export namespace invoker_spell_card {
+  export namespace Components {
+    export namespace Ui {
+      export namespace InvokerSpellCard {
         const {
-          l10n,
-          panorama: { createPanelSnippet },
-          dota2: {
-            invoker: { Ability },
+          L10n,
+          Panorama: { createPanelSnippet },
+          Dota2: {
+            Invoker: { Ability },
           },
         } = GameUI.CustomUIConfig().invk;
 
-        import Component = invk.component.Component;
+        import Component = invk.Component.Component;
 
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           rows: Panel;
         }
 
-        export interface Outputs extends component.Outputs {
-          OnSelect: {
+        export interface Outputs extends Component.Outputs {
+          onSelect: {
             ability: string;
           };
         }
@@ -27,7 +26,7 @@ namespace invk {
           Ability = "ability",
         }
 
-        enum PanelID {
+        enum PanelId {
           AbilityButton = "button",
           AbilityIcon = "icon",
         }
@@ -38,14 +37,14 @@ namespace invk {
           Quas = "quas",
           Wex = "wex",
           Exort = "exort",
-          QWE = "qwe",
+          Qwe = "qwe",
         }
 
         type Row = Array<Column | undefined>;
 
         interface Column {
           color: CssClass;
-          abilities: dota2.invoker.Ability[];
+          abilities: Dota2.Invoker.Ability[];
         }
 
         const GRID: Row[] = [
@@ -63,7 +62,7 @@ namespace invk {
               abilities: [Ability.SunStrike, Ability.ForgeSpirit, Ability.ChaosMeteor],
             },
           ],
-          [undefined, { color: CssClass.QWE, abilities: [Ability.DeafeningBlast] }, undefined],
+          [undefined, { color: CssClass.Qwe, abilities: [Ability.DeafeningBlast] }, undefined],
         ];
 
         export class InvokerSpellCard extends Component<Elements, never, Outputs> {
@@ -78,42 +77,40 @@ namespace invk {
             this.debug("init");
           }
 
-          render() {
+          render(): void {
             for (let i = 0; i < GRID.length; i++) {
               const row = GRID[i];
 
-              if (row == null) throw "unreachable";
+              if (row == null) {
+                throw "unreachable";
+              }
 
-              const rowID = `row${i}`;
-              const rowPanel = $.CreatePanel("Panel", this.elements.rows, rowID);
+              const rowId = `row${i}`;
+              const rowPanel = $.CreatePanel("Panel", this.elements.rows, rowId);
 
               rowPanel.AddClass(CssClass.Row);
 
               for (let j = 0; j < row.length; j++) {
                 const col = row[j];
 
-                if (col == null) continue;
+                if (col == null) {
+                  continue;
+                }
 
-                const colID = `row${i}-col${j}`;
-                const colPanel = $.CreatePanel("Panel", rowPanel, colID);
+                const colId = `row${i}-col${j}`;
+                const colPanel = $.CreatePanel("Panel", rowPanel, colId);
 
                 colPanel.AddClass(CssClass.Column);
 
-                if (col.abilities == null) continue;
-
-                for (let k = 0; k < col.abilities.length; k++) {
-                  const ability = col.abilities[k];
-
-                  if (ability == null) throw "unreachable";
-
+                for (const ability of col.abilities) {
                   this.createAbilityPanel(colPanel, col, ability);
                 }
               }
             }
           }
 
-          createAbilityPanel(parent: Panel, col: Column, ability: string) {
-            const loc = l10n.abilityTooltip(ability);
+          createAbilityPanel(parent: Panel, col: Column, ability: string): Panel {
+            const loc = L10n.abilityTooltip(ability);
             const panel = createPanelSnippet(parent, ability, Snippet.Ability);
 
             if (col.color) {
@@ -122,17 +119,15 @@ namespace invk {
 
             panel.SetDialogVariable("ability_name", loc);
 
-            const button = panel.FindChild(PanelID.AbilityButton);
+            const button = panel.FindChild(PanelId.AbilityButton);
 
             if (button == null) {
               throw new Error(`Could not find Button for ability ${ability}`);
             }
 
-            button.SetPanelEvent("onactivate", () => {
-              this.output("OnSelect", { ability });
-            });
+            button.SetPanelEvent("onactivate", () => this.outputs({ onSelect: { ability } }));
 
-            const iconPanel = panel.FindChildTraverse(PanelID.AbilityIcon);
+            const iconPanel = panel.FindChildTraverse(PanelId.AbilityIcon);
 
             if (iconPanel == null) {
               throw new Error(`Could not find AbilityImage panel for ability ${ability}`);

@@ -1,27 +1,27 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace components {
-    export namespace ui {
-      export namespace item_picker {
+  export namespace Components {
+    export namespace Ui {
+      export namespace ItemPicker {
         const {
-          custom_events: { CustomGameEvent },
-          sequence: { Sequence, ParallelSequence },
+          CustomEvents: { CustomGameEvent },
+          Sequence: { AddClassAction, ParallelSequence, RemoveClassAction, Sequence },
         } = GameUI.CustomUIConfig().invk;
 
-        import Component = invk.component.Component;
+        import Action = invk.Sequence.Action;
+        import Component = invk.Component.Component;
 
-        export interface Elements extends component.Elements {
+        export interface Elements extends Component.Elements {
           table: Panel;
           search: LabelPanel;
         }
 
-        export interface Outputs extends component.Outputs {
-          OnSelect: {
+        export interface Outputs extends Component.Outputs {
+          onSelect: {
             item: string;
           };
         }
 
-        enum PanelID {
+        enum PanelId {
           SectionList = "ShopItemSectionItemList",
         }
 
@@ -49,7 +49,7 @@ namespace invk {
                 search: "UIItemPickerSearchTextEntry",
               },
               customEvents: {
-                [CustomGameEvent.ITEM_PICKER_QUERY_RESPONSE]: (payload) =>
+                [CustomGameEvent.ItemPickerQueryResponse]: (payload) =>
                   this.onQueryResponse(payload),
               },
               panelEvents: {
@@ -69,7 +69,7 @@ namespace invk {
 
           // ----- Event handlers -----
 
-          onQueryResponse(payload: NetworkedData<custom_events.ItemPickerQueryResponse>) {
+          onQueryResponse(payload: NetworkedData<CustomEvents.ItemPickerQueryResponse>): void {
             const itemNames = Object.keys(payload.items);
 
             this.debug("onQueryResponse()", itemNames);
@@ -87,6 +87,10 @@ namespace invk {
             this.highlight(shopItems);
           }
 
+          onSelect(item: string): void {
+            this.outputs({ onSelect: { item } });
+          }
+
           // ----- Helpers -----
 
           get query(): string {
@@ -102,9 +106,11 @@ namespace invk {
             const sections = this.elements.table.FindChildrenWithClassTraverse(CssClass.Section);
 
             for (const section of sections) {
-              const list = section.FindChildTraverse(PanelID.SectionList);
+              const list = section.FindChildTraverse(PanelId.SectionList);
 
-              if (list == null) continue;
+              if (list == null) {
+                continue;
+              }
 
               panels.push(...list.Children());
             }
@@ -129,74 +135,66 @@ namespace invk {
             }, new Map() as ShopItemPanels);
           }
 
-          bindEvents() {
+          bindEvents(): void {
             for (const shopItem of this.shopItems.values()) {
-              shopItem.panel.SetPanelEvent("onactivate", () => {
-                this.select(shopItem.itemName);
-              });
+              shopItem.panel.SetPanelEvent("onactivate", () => this.onSelect(shopItem.itemName));
             }
           }
 
           // ----- Actions -----
 
-          setItemAction(shopItem: ShopItemPanel, enable: boolean) {
-            const seq = new ParallelSequence();
-
+          setItemAction(shopItem: ShopItemPanel, enable: boolean): Action {
             if (enable) {
-              seq.AddClass(shopItem.panel, CssClass.ItemHighlight);
-            } else {
-              seq.RemoveClass(shopItem.panel, CssClass.ItemHighlight);
+              return new AddClassAction(shopItem.panel, CssClass.ItemHighlight);
             }
 
-            return seq;
+            return new RemoveClassAction(shopItem.panel, CssClass.ItemHighlight);
           }
 
-          setItemsAction(shopItems: ShopItemPanel[], enable: boolean) {
-            const actions = shopItems.map((shopItem) => this.setItemAction(shopItem, enable));
-
-            return new ParallelSequence().Action(...actions);
+          setItemsAction(shopItems: ShopItemPanel[], enable: boolean): Action {
+            return shopItems.reduce(
+              (seq, shopItem) => seq.add(this.setItemAction(shopItem, enable)),
+              new ParallelSequence(),
+            );
           }
 
-          clearItemsAction() {
+          clearItemsAction(): Action {
             return this.setItemsAction([...this.shopItems.values()], false);
           }
 
-          highlightItemsAction(shopItems: ShopItemPanel[]) {
+          highlightItemsAction(shopItems: ShopItemPanel[]): Action {
             return this.setItemsAction(shopItems, true);
           }
 
           // ----- Action runners -----
 
-          select(item: string) {
-            this.output("OnSelect", { item });
-          }
-
-          search() {
+          search(): void {
             if (this.query.length === 0) {
-              return this.clear();
+              this.clear();
+              return;
             }
 
-            this.sendServer(CustomGameEvent.ITEM_PICKER_QUERY, { query: this.query });
+            this.sendServer(CustomGameEvent.ItemPickerQueryRequest, { query: this.query });
           }
 
-          clear() {
+          clear(): void {
             this.query = "";
 
             new ParallelSequence()
-              .RemoveClass(this.elements.table, CssClass.TableEnableHighlight)
-              .Action(this.clearItemsAction())
-              .Run();
+              .removeClass(this.elements.table, CssClass.TableEnableHighlight)
+              .add(this.clearItemsAction())
+              .run();
           }
 
-          highlight(shopItems: ShopItemPanel[]) {
+          highlight(shopItems: ShopItemPanel[]): void {
             const seq = new Sequence()
-              .AddClass(this.elements.table, CssClass.TableEnableHighlight)
-              .Action(this.clearItemsAction())
-              .Action(this.highlightItemsAction(shopItems));
+              .addClass(this.elements.table, CssClass.TableEnableHighlight)
+              .add(this.clearItemsAction())
+              .add(this.highlightItemsAction(shopItems));
 
-            this.debugFn(() => ["highlight()", { actions: seq.size() }]);
+            this.debugFn(() => ["highlight()", { actions: seq.deepSize() }]);
 
-            return seq.Run();
+            seq.run();
           }
         }
 

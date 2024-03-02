@@ -69,7 +69,7 @@ function GameMode:registerCustomEvents()
   self:subscribeToCustomEvent("EVENT_FREESTYLE_HERO_LEVEL_UP", "OnFreestyleHeroLevelUp")
   self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_START", "OnCombatLogCaptureStart")
   self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_STOP", "OnCombatLogCaptureStop")
-  self:subscribeToCustomEvent("EVENT_ITEM_PICKER_QUERY", "OnItemPickerQuery")
+  self:subscribeToCustomEvent("EVENT_ITEM_PICKER_QUERY_REQUEST", "OnItemPickerQuery")
 
   self:d("  register custom events listeners")
 end

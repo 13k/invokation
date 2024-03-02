@@ -1,7 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace dota2 {
-    export namespace invoker {
+  export namespace Dota2 {
+    export namespace Invoker {
       export const HERO_ID = 74 as HeroID;
 
       export enum Ability {
@@ -23,20 +22,21 @@ namespace invk {
 
         // FIXME: Talent ability names shouldn't be hardcoded
 
-        Talent_L10_RIGHT = "special_bonus_unique_invoker_10",
-        Talent_L10_LEFT = "special_bonus_unique_invoker_3",
-        Talent_L15_RIGHT = "special_bonus_unique_invoker_11",
-        Talent_L15_LEFT = "special_bonus_unique_invoker_9",
-        Talent_L20_RIGHT = "special_bonus_unique_invoker_6",
-        Talent_L20_LEFT = "special_bonus_unique_invoker_5",
-        Talent_L25_RIGHT = "special_bonus_unique_invoker_2",
-        Talent_L25_LEFT = "special_bonus_unique_invoker_13",
+        TalentL10Right = "special_bonus_unique_invoker_10",
+        TalentL10Left = "special_bonus_unique_invoker_3",
+        TalentL15Right = "special_bonus_unique_invoker_11",
+        TalentL15Left = "special_bonus_unique_invoker_9",
+        TalentL20Right = "special_bonus_unique_invoker_6",
+        TalentL20Left = "special_bonus_unique_invoker_5",
+        TalentL25Right = "special_bonus_unique_invoker_2",
+        TalentL25Left = "special_bonus_unique_invoker_13",
       }
 
       export type OrbAbility = Ability.Quas | Ability.Wex | Ability.Exort;
       export type InvocationAbility = OrbAbility | Ability.Invoke;
 
       export interface UnitsSpawned {
+        // biome-ignore lint/style/useNamingConvention: remote data
         FORGED_SPIRIT: string;
       }
 
@@ -65,14 +65,14 @@ namespace invk {
       };
 
       export const TALENT_ABILITIES: Ability[] = [
-        Ability.Talent_L10_RIGHT,
-        Ability.Talent_L10_LEFT,
-        Ability.Talent_L15_RIGHT,
-        Ability.Talent_L15_LEFT,
-        Ability.Talent_L20_RIGHT,
-        Ability.Talent_L20_LEFT,
-        Ability.Talent_L25_RIGHT,
-        Ability.Talent_L25_LEFT,
+        Ability.TalentL10Right,
+        Ability.TalentL10Left,
+        Ability.TalentL15Right,
+        Ability.TalentL15Left,
+        Ability.TalentL20Right,
+        Ability.TalentL20Left,
+        Ability.TalentL25Right,
+        Ability.TalentL25Left,
       ];
 
       export function isOrbAbility(ability: string): ability is OrbAbility {
