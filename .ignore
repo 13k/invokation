@@ -1,6 +1,6 @@
-/game/scripts/vscripts/pl
-/game/scripts/vscripts/moses.lua
-/game/scripts/vscripts/fsm.lua
-/src/content/panorama/scripts/lib/vendor
-/images
-/tmp
+game/scripts/vscripts/pl
+game/scripts/vscripts/moses.lua
+game/scripts/vscripts/fsm.lua
+src/content/panorama/scripts/lib/vendor/*.js
+images
+tmp
