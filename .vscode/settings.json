@@ -11,7 +11,6 @@
   },
 
   "css.validate": false,
-  "eslint.format.enable": false,
   "vim.textwidth": 100,
   "prettier.printWidth": 100,
   "yaml.format.printWidth": 100,

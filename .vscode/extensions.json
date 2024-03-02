@@ -1,11 +1,11 @@
 {
   "recommendations": [
-    "arcanis.vscode-zipfs",
-    "biomejs.biome",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
     "JohnnyMorganz.stylua",
     "Kampfkarren.selene-vscode",
+    "biomejs.biome",
+    "esbenp.prettier-vscode",
+    "geekidos.vdf",
+    "redhat.vscode-xml",
     "stylelint.vscode-stylelint",
     "sumneko.lua"
   ]
