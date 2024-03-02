@@ -1,27 +1,25 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace CombatLog {
-      export interface Elements extends Component.Elements {
+      const {
+        custom_events: { CustomGameEvent },
+        grid: { Grid },
+        panorama: { createAbilityOrItemImage },
+        sequence: { Sequence },
+        dota2: {
+          invoker: { isInvocationAbility },
+        },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         contents: Panel;
         filterInvocations: Panel;
         btnToggle: ToggleButton;
         btnClear: Button;
       }
-
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        CustomEvents: { Name: CustomEventName },
-        Grid: { Grid },
-        Panorama: { createAbilityOrItemImage },
-        Sequence: { Sequence },
-        Dota2: {
-          Invoker: { isInvocationAbility },
-        },
-      } = GameUI.CustomUIConfig().invk;
 
       enum PanelID {
         RowPrefix = "CombatLogRow",
@@ -43,9 +41,9 @@ namespace invk {
       const iconId = (row: number, col: number) => [PanelID.IconPrefix, row, col].join("_");
       const iconImageId = (iconId: string) => `${iconId}_${PanelID.IconImagePrefix}`;
 
-      export class CombatLog extends Component.Component<Elements, Inputs, Outputs, Params> {
-        grid: Grid.Grid<string>;
-        row?: Panel | null;
+      export class CombatLog extends Component<Elements> {
+        grid: grid.Grid<string>;
+        row: Panel | undefined;
 
         constructor() {
           super({
@@ -56,8 +54,8 @@ namespace invk {
               btnClear: "BtnClear",
             },
             customEvents: {
-              COMBAT_LOG_ABILITY_USED: (payload) => this.onAbilityUsed(payload),
-              COMBAT_LOG_CLEAR: (payload) => this.onClear(payload),
+              [CustomGameEvent.COMBAT_LOG_ABILITY_USED]: (payload) => this.onAbilityUsed(payload),
+              [CustomGameEvent.COMBAT_LOG_CLEAR]: (payload) => this.onClear(payload),
             },
             panelEvents: {
               btnToggle: { onactivate: () => this.Toggle() },
@@ -74,22 +72,22 @@ namespace invk {
 
         // ----- Event handlers -----
 
-        onClear(payload: CustomEvents.CombatLogClear) {
+        onClear(payload: NetworkedData<custom_events.CombatLogClear>) {
           this.debug("onClear()", payload);
           this.clear();
         }
 
-        onGridRowChange(i: number) {
-          this.debug("onGridRowChange()", i);
-          this.addRow(i);
-        }
-
-        onAbilityUsed(payload: CustomEvents.CombatLogAbilityUsed) {
+        onAbilityUsed(payload: NetworkedData<custom_events.CombatLogAbilityUsed>) {
           this.debug("onAbilityUsed()", payload);
 
           if (this.isFilteringInvocations && isInvocationAbility(payload.ability)) return;
 
           this.addColumn(payload.ability);
+        }
+
+        onGridRowChange(i: number) {
+          this.debug("onGridRowChange()", i);
+          this.addRow(i);
         }
 
         // ----- Helpers -----
@@ -99,11 +97,11 @@ namespace invk {
         }
 
         startCapturing() {
-          this.sendServer(CustomEventName.COMBAT_LOG_CAPTURE_START, {});
+          this.sendServer(CustomGameEvent.COMBAT_LOG_CAPTURE_START, {});
         }
 
         stopCapturing() {
-          this.sendServer(CustomEventName.COMBAT_LOG_CAPTURE_STOP, {});
+          this.sendServer(CustomGameEvent.COMBAT_LOG_CAPTURE_STOP, {});
         }
 
         get isOpen() {
@@ -131,7 +129,7 @@ namespace invk {
         }
 
         resetRow() {
-          this.row = null;
+          this.row = undefined;
         }
 
         createRow(rowIndex: number) {
@@ -146,8 +144,8 @@ namespace invk {
         }
 
         createAbilityIcon(abilityName: string) {
-          if (!this.row) {
-            throw new Error(`tried to create CombatLog ability icon without a row`);
+          if (this.row == null) {
+            throw new Error("Tried to create CombatLog ability icon without a row");
           }
 
           const id = iconId(this.grid.row, this.grid.column);

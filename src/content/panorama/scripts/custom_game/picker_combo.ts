@@ -1,8 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace PickerCombo {
-      export interface Elements extends Component.Elements {
+      const {
+        combo: { Property },
+        sequence: { Sequence, ParallelSequence, NoopAction },
+        util: { snakeCase },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Combo = invk.combo.Combo;
+      import ComboID = invk.combo.ComboID;
+      import Component = invk.component.Component;
+      import Properties = invk.combo.Properties;
+
+      export interface Elements extends component.Elements {
         titleLabel: LabelPanel;
         heroLevelLabel: LabelPanel;
         damageRating: Panel;
@@ -11,24 +22,16 @@ namespace invk {
         btnPlay: Button;
       }
 
-      export interface Inputs extends Component.Inputs {
-        SetCombo: Combo.Combo;
+      export interface Inputs extends component.Inputs {
+        SetCombo: Combo;
         SetFinished: undefined;
         UnsetFinished: undefined;
       }
 
-      export interface Outputs extends Component.Outputs {
-        OnPlay: { id: Combo.ID };
-        OnShowDetails: { id: Combo.ID };
+      export interface Outputs extends component.Outputs {
+        OnPlay: { id: ComboID };
+        OnShowDetails: { id: ComboID };
       }
-
-      export type Params = never;
-
-      const {
-        Combo: { Property },
-        Sequence: { Sequence, ParallelSequence, NoopAction },
-        Vendor: { lodash: _ },
-      } = GameUI.CustomUIConfig().invk;
 
       enum CssClass {
         Finished = "PickerComboFinished",
@@ -42,8 +45,8 @@ namespace invk {
         DifficultyRating = "difficulty_rating",
       }
 
-      export class PickerCombo extends Component.Component<Elements, Inputs, Outputs, Params> {
-        combo?: Combo.Combo;
+      export class PickerCombo extends Component<Elements, Inputs, Outputs> {
+        combo: Combo | undefined;
 
         constructor() {
           super({
@@ -60,9 +63,9 @@ namespace invk {
               btnPlay: { onactivate: () => this.Play() },
             },
             inputs: {
-              SetCombo: (payload: Inputs["SetCombo"]) => this.setCombo(payload),
-              SetFinished: (payload: Inputs["SetFinished"]) => this.onSetFinished(payload),
-              UnsetFinished: (payload: Inputs["UnsetFinished"]) => this.onUnsetFinished(payload),
+              SetCombo: (payload) => this.setCombo(payload),
+              SetFinished: (payload) => this.onSetFinished(payload),
+              UnsetFinished: (payload) => this.onUnsetFinished(payload),
             },
           });
         }
@@ -88,7 +91,7 @@ namespace invk {
         // --- Actions ---
 
         setVariablesAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
@@ -101,17 +104,17 @@ namespace invk {
         }
 
         setAttributesAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
           return new ParallelSequence()
             .SetAttribute(this.elements.titleLabel, "text", this.combo.l10n.name)
-            .SetAttribute(this.elements.heroLevelLabel, "text", _.toString(this.combo.heroLevel));
+            .SetAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString());
         }
 
         setClassesAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
@@ -131,8 +134,8 @@ namespace invk {
         // ----- Action Runners -----
 
         render() {
-          if (!this.combo) {
-            this.warn("tried to render() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to render() without combo");
             return;
           }
 
@@ -148,33 +151,33 @@ namespace invk {
         }
 
         ShowDetails() {
-          if (!this.combo) {
-            this.warn("tried to ShowDetails() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to ShowDetails() without combo");
             return;
           }
 
           const payload = { id: this.combo.id };
 
           this.debug("ShowDetails()", payload);
-          this.runOutput("OnShowDetails", payload);
+          this.output("OnShowDetails", payload);
         }
 
         Play() {
-          if (!this.combo) {
-            this.warn("tried to Play() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to Play() without combo");
             return;
           }
 
           const payload = { id: this.combo.id };
 
           this.debug("Play()", payload);
-          this.runOutput("OnPlay", payload);
+          this.output("OnPlay", payload);
         }
       }
 
-      const propertyCssClass = <K extends keyof Combo.Properties>(
+      const propertyCssClass = <K extends keyof Properties>(
         prop: K,
-        value: Combo.Properties[K],
+        value: Properties[K],
       ): string => {
         let baseClass: string;
 
@@ -184,7 +187,7 @@ namespace invk {
             baseClass = "rating";
             break;
           default:
-            baseClass = _.snakeCase(prop);
+            baseClass = snakeCase(prop);
         }
 
         return `${baseClass}_${value}`;

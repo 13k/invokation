@@ -1,41 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Static {
+  export namespace singleton {
     const {
-      CombosCollection: { CombosCollection },
-      NetTableListener: { NetTableListener },
+      combo: { CombosCollection },
+      net_table: {
+        key_listener: { AbilitiesKeyValues, HeroData, HeroKeyValues },
+      },
     } = invk;
 
+    export const ABILITIES_KV = new AbilitiesKeyValues();
     export const COMBOS = new CombosCollection();
-
-    export const HERO_DATA = new NetTableListener(
-      CustomNetTables.Name.Invokation,
-      CustomNetTables.Invokation.Key.HeroData,
-    );
-
-    export const HERO_KV = new NetTableListener(
-      CustomNetTables.Name.Hero,
-      CustomNetTables.Hero.Key.KeyValues,
-    );
-
-    export const ABILITIES_KV = new NetTableListener(
-      CustomNetTables.Name.Abilities,
-      CustomNetTables.Abilities.Key.KeyValues,
-    );
+    export const HERO_DATA = new HeroData();
+    export const HERO_KV = new HeroKeyValues();
   }
 
-  export namespace Components {
+  export namespace components {
     export namespace CustomUIManifest {
-      export type Elements = never;
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
       const {
-        Const: { UI_CONFIG },
+        constants: { UI_CONFIG },
       } = GameUI.CustomUIConfig().invk;
 
-      export class CustomUIManifest extends Component.Component<Elements, Inputs, Outputs, Params> {
+      import Component = invk.component.Component;
+
+      export class CustomUIManifest extends Component {
         constructor() {
           super();
 

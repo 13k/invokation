@@ -1,19 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace ChallengeComboStep {
-      export type Elements = ComboStep.Elements;
+      import ComboStep = invk.components.ComboStep.ComboStep;
 
       export interface Inputs extends ComboStep.Inputs {
-        SetStepActive: Record<string, never>;
-        UnsetStepActive: Record<string, never>;
-        SetStepError: Record<string, never>;
-        UnsetStepError: Record<string, never>;
-        StepBump: Record<string, never>;
+        SetStepActive: undefined;
+        UnsetStepActive: undefined;
+        SetStepError: undefined;
+        UnsetStepError: undefined;
+        StepBump: undefined;
       }
-
-      export type Outputs = never;
-      export type Params = never;
 
       enum CssClass {
         Active = "ChallengeComboStepActive",
@@ -21,21 +18,16 @@ namespace invk {
         Bump = "ChallengeComboStepBump",
       }
 
-      export class ChallengeComboStep extends ComboStep.ComboStep<
-        Elements,
-        Inputs,
-        Outputs,
-        Params
-      > {
+      export class ChallengeComboStep extends ComboStep<ComboStep.Elements, Inputs> {
         constructor() {
           super({
             inputs: {
-              SetStep: (payload: Inputs["SetStep"]) => this.setStep(payload),
-              SetStepActive: (payload: Inputs["SetStepActive"]) => this.onSetActive(payload),
-              UnsetStepActive: (payload: Inputs["UnsetStepActive"]) => this.onUnsetActive(payload),
-              SetStepError: (payload: Inputs["SetStepError"]) => this.onSetError(payload),
-              UnsetStepError: (payload: Inputs["UnsetStepError"]) => this.onUnsetError(payload),
-              StepBump: (payload: Inputs["StepBump"]) => this.onBump(payload),
+              SetStep: (payload) => this.setStep(payload),
+              SetStepActive: (payload) => this.onSetActive(payload),
+              UnsetStepActive: (payload) => this.onUnsetActive(payload),
+              SetStepError: (payload) => this.onSetError(payload),
+              UnsetStepError: (payload) => this.onUnsetError(payload),
+              StepBump: (payload) => this.onBump(payload),
             },
           });
         }

@@ -1,18 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace ViewerComboStep {
+      const { l10n } = GameUI.CustomUIConfig().invk;
+
+      import ComboStep = invk.components.ComboStep.ComboStep;
+
       export interface Elements extends ComboStep.Elements {
         descriptionLabel: LabelPanel;
       }
 
-      export type Inputs = ComboStep.Inputs;
-      export type Outputs = never;
-      export type Params = never;
-
-      const { L10n } = GameUI.CustomUIConfig().invk;
-
-      export class ViewerComboStep extends ComboStep.ComboStep<Elements, Inputs, Outputs, Params> {
+      export class ViewerComboStep extends ComboStep<Elements> {
         constructor() {
           super({
             elements: {
@@ -28,16 +26,16 @@ namespace invk {
           });
         }
 
-        override onStepChange() {
-          if (!this.combo || !this.step) {
-            this.warn("received onStepChange() without combo or step");
+        protected override onStepChange(): void {
+          if (this.combo == null || this.step == null) {
+            this.warn("Received onStepChange() without combo or step");
             return;
           }
 
-          this.elements.descriptionLabel.text = L10n.comboAttrName(
+          this.elements.descriptionLabel.text = l10n.comboAttrName(
             this.combo.id,
             this.step.id,
-            L10n.Key.ViewerStepDescriptionFallback,
+            l10n.Key.ViewerStepDescriptionFallback,
           );
         }
       }

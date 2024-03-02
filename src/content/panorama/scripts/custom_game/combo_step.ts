@@ -1,30 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace ComboStep {
-      export interface Elements extends Component.Elements {
+      const {
+        panorama: { createAbilityOrItemImage },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Combo = invk.combo.Combo;
+      import Component = invk.component.Component;
+      import Step = invk.combo.Step;
+
+      export interface Elements extends component.Elements {
         button: Panel;
       }
 
-      export interface Inputs {
+      export interface Inputs extends component.Inputs {
         SetStep: {
-          combo: Combo.Combo;
-          step: Combo.Step;
+          combo: Combo;
+          step: Step;
         };
       }
 
-      export interface Options<E extends Elements, I extends Inputs, P extends Component.Params>
-        extends Component.Options<E, I, P> {
-        imageId?: string;
-      }
-
-      const {
-        Panorama: { createAbilityOrItemImage },
-        Vendor: { lodash: _ },
-      } = GameUI.CustomUIConfig().invk;
-
-      enum PanelID {
-        ImageDefault = "ComboStepImage",
+      export enum PanelID {
+        Image = "ComboStepImage",
       }
 
       enum CssClass {
@@ -32,35 +30,36 @@ namespace invk {
         StepInvocation = "ComboStepInvocation",
       }
 
-      // Abstract ComboStep component.
-      // Should be included in the actual component layout and subclassed.
-      export class ComboStep<
-        E extends Elements,
-        I extends Inputs,
-        O extends Component.Outputs,
-        P extends Component.Params,
-      > extends Component.Component<E, I, O, P> {
-        imageId: string;
-        combo?: Combo.Combo;
-        step?: Combo.Step;
+      /**
+       * Abstract ComboStep component.
+       *
+       * Should be included in the actual component layout and subclassed.
+       */
+      export abstract class ComboStep<
+        E extends Elements = Elements,
+        I extends Inputs = Inputs,
+        O extends component.Outputs = never,
+        P extends component.Params = never,
+      > extends Component<E, I, O, P> {
+        combo: Combo | undefined;
+        step: Step | undefined;
 
-        constructor({ imageId, ...options }: Options<E, I, P> = {}) {
-          options = _.defaultsDeep(options, {
+        constructor({ elements, inputs, ...options }: component.Options<E, I, P> = {}) {
+          super({
             elements: {
               button: "ComboStepIconButton",
-            },
+              ...elements,
+            } as component.ElementsOption<E>,
             inputs: {
-              SetStep: (payload: Inputs["SetStep"]) => this.setStep(payload),
-            },
+              SetStep: (payload) => this.setStep(payload),
+              ...inputs,
+            } as component.InputsOption<I>,
+            ...options,
           });
-
-          super(options);
-
-          this.imageId = imageId || PanelID.ImageDefault;
         }
 
-        // child components code can override this function
-        onStepChange(): void {
+        /** Subclasses can override */
+        protected onStepChange(): void {
           return;
         }
 
@@ -84,7 +83,7 @@ namespace invk {
 
           const image = createAbilityOrItemImage(
             this.elements.button,
-            this.imageId,
+            PanelID.Image,
             this.step.name,
           );
 
@@ -94,8 +93,8 @@ namespace invk {
         }
 
         ShowTooltip(): void {
-          if (!this.step) {
-            this.warn("tried to ShowTooltip() without step");
+          if (this.step == null) {
+            this.warn("Tried to ShowTooltip() without step");
             return;
           }
 

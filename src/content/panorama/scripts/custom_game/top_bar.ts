@@ -1,22 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace TopBar {
-      export interface Elements extends Component.Elements {
+      const {
+        layout: { LayoutID },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         btnShowGameInfo: Button;
       }
-
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const { Layout } = GameUI.CustomUIConfig().invk;
 
       enum PanelID {
         PopupGameInfo = "PopupGameInfo",
       }
 
-      export class TopBar extends Component.Component<Elements, Inputs, Outputs, Params> {
+      export class TopBar extends Component<Elements> {
         constructor() {
           super({
             elements: {
@@ -26,6 +26,7 @@ namespace invk {
               btnShowGameInfo: { onactivate: () => this.ShowGameInfo() },
             },
           });
+
           this.debug("init");
         }
 
@@ -33,7 +34,7 @@ namespace invk {
 
         ShowGameInfo(): void {
           this.debug("ShowGameInfo()");
-          this.showPopup(this.panel, Layout.ID.PopupGameInfo, PanelID.PopupGameInfo);
+          this.showPopup(this.panel, LayoutID.PopupGameInfo, PanelID.PopupGameInfo);
         }
       }
 

@@ -1,37 +1,34 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace Tooltips {
-      export namespace TooltipStatBranch {
-        export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace tooltips {
+      export namespace stat_branch {
+        const {
+          l10n,
+          dota2: { Talents, TalentLevel, TalentSide },
+          panorama: { createPanelSnippet },
+          sequence: { Sequence, ParallelSequence },
+          singleton: { HERO_DATA },
+        } = GameUI.CustomUIConfig().invk;
+
+        import Ability = invk.dota2.invoker.Ability;
+        import Component = invk.component.Component;
+        import HeroData = invk.net_table.invokation.HeroData;
+        import ParamType = invk.component.ParamType;
+        import TalentMap = invk.dota2.TalentMap;
+        import TalentSelection = invk.dota2.TalentSelection;
+
+        export interface Elements extends component.Elements {
           container: Panel;
         }
 
-        export type Inputs = never;
-        export type Outputs = never;
-
-        export interface Params extends Component.Params {
+        export interface Params extends component.Params {
           heroID: HeroID;
-          selected: Dota2.Talent.Selection;
+          selected: TalentSelection;
         }
 
-        const {
-          L10n,
-          Lua,
-          Panorama: { createPanelSnippet },
-          Sequence: { Sequence, ParallelSequence },
-          Static: { HERO_DATA },
-          Vendor: { lodash: _ },
-          Dota2: {
-            Talent,
-            Talent: { Level, Side },
-          },
-        } = GameUI.CustomUIConfig().invk;
-
-        const { ParamType } = Component;
-
-        const LEVELS = [Level.Tier4, Level.Tier3, Level.Tier2, Level.Tier1];
-        const SIDES = [Side.Right, Side.Left];
+        const LEVELS = [TalentLevel.Tier4, TalentLevel.Tier3, TalentLevel.Tier2, TalentLevel.Tier1];
+        const SIDES = [TalentSide.Right, TalentSide.Left];
 
         const BRANCH_ROW_SNIPPET = "TooltipStatBranchRow";
         const BRANCH_ROW_ID_PREFIX = "TooltipStatBranchRow";
@@ -40,28 +37,22 @@ namespace invk {
         const CLASSES = {
           BRANCH_ROW_CHOICE_LABEL: "StatBonusLabel",
           BRANCH_ROW_SIDES: {
-            [Side.Right]: "BranchRight",
-            [Side.Left]: "BranchLeft",
+            [TalentSide.Right]: "BranchRight",
+            [TalentSide.Left]: "BranchLeft",
           },
           BRANCH_SELECTED: {
-            [Side.Right]: "BranchRightSelected",
-            [Side.Left]: "BranchLeftSelected",
+            [TalentSide.Right]: "BranchRightSelected",
+            [TalentSide.Left]: "BranchLeftSelected",
           },
         };
 
-        const branchRowId = (level: Dota2.Talent.Level) => `${BRANCH_ROW_ID_PREFIX}${level}`;
+        const branchRowId = (level: dota2.TalentLevel) => `${BRANCH_ROW_ID_PREFIX}${level}`;
 
-        export class TooltipStatBranch extends Component.Component<
-          Elements,
-          Inputs,
-          Outputs,
-          Params
-        > {
-          selected?: Dota2.Talent.Selection;
-          selectedSplit?: Dota2.Talent.Map<boolean>;
-          talents?: Dota2.Talent.Map<Dota2.Invoker.Ability>;
-          heroData?: CustomNetTables.Invokation.HeroData;
-          rows: Record<Dota2.Talent.Level, Panel>;
+        export class TooltipStatBranch extends Component<Elements, never, never, Params> {
+          selected: dota2.Talents | undefined;
+          talents: TalentMap<Ability> | undefined;
+          heroData: HeroData | undefined;
+          rows: Map<dota2.TalentLevel, Panel> = new Map();
 
           constructor() {
             super({
@@ -74,8 +65,6 @@ namespace invk {
               },
             });
 
-            this.rows = {} as Record<Dota2.Talent.Level, Panel>;
-
             HERO_DATA.onChange(this.onHeroDataChange.bind(this));
 
             this.debug("init");
@@ -84,28 +73,33 @@ namespace invk {
           // ----- Event handlers -----
 
           override onLoad(): void {
-            this.selected = this.params.selected;
-            this.selectedSplit = Talent.splitSelection(this.selected);
+            this.selected = new Talents(this.params.selected);
 
-            this.debug("onLoad()", { selected: this.selected, selectedSplit: this.selectedSplit });
+            this.debug("onLoad()", { selected: this.selected.value });
             this.render();
           }
 
-          onHeroDataChange(data: NetworkedData<CustomNetTables.Invokation.HeroData>) {
-            this.heroData = Lua.fromArrayDeep(data);
+          onHeroDataChange(data: net_table.invokation.HeroData) {
+            this.heroData = data;
 
-            if (!this.heroData) return;
+            if (this.heroData == null) return;
 
-            this.talents = _.transform(
-              this.heroData.TALENT_ABILITIES,
+            this.talents = this.heroData.TALENT_ABILITIES.reduce(
               (abilities, ability, i) => {
-                const level = Talent.arrayIndexToLevel(i);
-                const side = Talent.arrayIndexToSide(i);
+                const level = Talents.indexToLevel(i);
+                const side = Talents.indexToSide(i);
+                let sides = abilities.get(level);
 
-                abilities[level] = abilities[level] || {};
-                abilities[level][side] = ability;
+                if (sides == null) {
+                  sides = new Map();
+                  abilities.set(level, sides);
+                }
+
+                sides.set(side, ability);
+
+                return abilities;
               },
-              {} as Dota2.Talent.Map<Dota2.Invoker.Ability>,
+              new Map() as TalentMap<Ability>,
             );
 
             this.debug("onHeroDataChange()");
@@ -115,34 +109,22 @@ namespace invk {
           // ----- Helpers -----
 
           resetRows() {
-            this.rows = {} as Record<Dota2.Talent.Level, Panel>;
+            this.rows = new Map();
           }
 
-          localizeBranch(panel: Panel, level: Dota2.Talent.Level, side: Dota2.Talent.Side) {
-            this.debug("localizeBranch()", { level: level, side: side });
+          localizeBranch(panel: Panel, level: dota2.TalentLevel, side: dota2.TalentSide) {
+            this.debug("localizeBranch()", { level, side });
 
-            if (!this.talents) return;
+            if (this.talents == null) return;
 
-            const ability = this.talents[level][side];
+            const ability = this.talents.get(level)?.get(side);
 
-            if (!ability) {
+            if (ability == null) {
               this.error(`Could not find ability for talent [${level}, ${side}]`);
               return;
             }
 
-            /*
-      var abilitySpecial = _.get(this.heroData, [ability, "AbilitySpecial"]);
-
-      if (abilitySpecial == null) {
-        this.error("could not find AbilitySpecial for ability " + ability);
-        return;
-      }
-      */
-
-            this.debug("localizeBranch()", {
-              ability: ability || "UNDEFINED!",
-              // abilitySpecial: abilitySpecial || "UNDEFINED!",
-            });
+            this.debug("localizeBranch()", { ability });
 
             const branchClass = CLASSES.BRANCH_ROW_SIDES[side];
 
@@ -150,15 +132,15 @@ namespace invk {
 
             const branchPanel = panel.FindChildrenWithClassTraverse(branchClass)[0];
 
-            this.debug("localizeBranch()", { branchPanel: branchPanel || "UNDEFINED!" });
-
-            if (!branchPanel) {
+            if (branchPanel == null) {
               this.error(
                 `Could not find branch panel with class ${branchClass} for talent [${level}, ${side}]`,
               );
 
               return;
             }
+
+            this.debug("localizeBranch()", { branchPanel });
 
             const branchLabelClass = CLASSES.BRANCH_ROW_CHOICE_LABEL;
 
@@ -170,9 +152,7 @@ namespace invk {
               branchLabelClass,
             )[0] as LabelPanel;
 
-            this.debug("localizeBranch()", { branchLabel: branchLabel || "UNDEFINED!" });
-
-            if (!branchLabel) {
+            if (branchLabel == null) {
               this.error(
                 `Could not find branch label with class ${branchLabelClass} for talent [${level}, ${side}]`,
               );
@@ -180,24 +160,14 @@ namespace invk {
               return;
             }
 
-            /*
-      _.each(abilitySpecial, function (special) {
-        _.forOwn(special, function (value, key) {
-          if (key === "var_type") return;
-
-          this.debug("localizeBranch() : SetDialogVariable", { key: key, value: value });
-
-          branchLabel.SetDialogVariable(key, value);
-        });
-      });
-      */
+            this.debug("localizeBranch()", { branchLabel });
 
             this.debug("localizeBranch() : L10n.LocalizeAbilityTooltip()", {
               ability: ability,
               branchLabel: branchLabel.id,
             });
 
-            const labelText = L10n.abilityTooltip(ability, branchLabel);
+            const labelText = l10n.abilityTooltip(ability, branchLabel);
 
             this.debug("localizeBranch() : set branchLabel.text", { labelText });
 
@@ -206,7 +176,7 @@ namespace invk {
             this.debug("localizeBranch() ---");
           }
 
-          createBranchRowPanel(level: Dota2.Talent.Level) {
+          createBranchRowPanel(level: dota2.TalentLevel) {
             this.debug("createBranchRowPanel()", { level: level });
 
             const id = branchRowId(level);
@@ -223,11 +193,13 @@ namespace invk {
               value: level,
             });
 
-            panel.SetDialogVariable(BRANCH_ROW_VAR_LEVEL, _.toString(level));
+            panel.SetDialogVariable(BRANCH_ROW_VAR_LEVEL, level.toString());
 
-            _.each(SIDES, (side) => this.localizeBranch(panel, level, side));
+            for (const side of SIDES) {
+              this.localizeBranch(panel, level, side);
+            }
 
-            this.rows[level] = panel;
+            this.rows.set(level, panel);
 
             this.debug("createBranchRowPanel() : panel created");
           }
@@ -242,40 +214,36 @@ namespace invk {
               .Function(() => this.resetRows());
           }
 
-          createBranchRowPanelAction(level: Dota2.Talent.Level) {
+          createBranchRowPanelAction(level: dota2.TalentLevel) {
             return new Sequence()
               .Function(() => this.debug("createBranchRowPanelAction()", { level: level }))
               .Function(() => this.createBranchRowPanel(level));
           }
 
           renderRowsAction() {
-            return _.map(LEVELS, (level) => this.createBranchRowPanelAction(level));
+            return LEVELS.map((level) => this.createBranchRowPanelAction(level));
           }
 
-          selectBranchAction(level: Dota2.Talent.Level) {
-            let seq = new Sequence();
+          selectBranchAction(level: dota2.TalentLevel) {
+            const seq = new Sequence();
 
-            if (!this.selectedSplit) {
+            if (this.selected == null) {
               return seq;
             }
 
-            const side = _.find(SIDES, (side) =>
-              this.selectedSplit ? this.selectedSplit[level][side] : false,
-            );
+            const sides = SIDES.filter((side) => this.selected?.isSelected(level, side));
 
-            seq = seq.Function(() =>
-              this.debug("selectBranchAction()", { level: level, side: side }),
-            );
+            seq.Function(() => this.debug("selectBranchAction()", { level: level, sides: sides }));
 
-            if (side) {
-              seq = seq.Function(() => this.selectBranchSide(level, side));
+            for (const side of sides) {
+              seq.Function(() => this.selectBranchSide(level, side));
             }
 
             return seq;
           }
 
           selectBranchesAction() {
-            const actions = _.map(LEVELS, (level) => this.selectBranchAction(level));
+            const actions = LEVELS.map((level) => this.selectBranchAction(level));
 
             return new ParallelSequence().Action(...actions);
           }
@@ -283,39 +251,49 @@ namespace invk {
           // ----- Action runners -----
 
           render() {
-            if (!this.selectedSplit) return;
-            if (!this.talents) return;
+            if (this.selected == null || this.talents == null) {
+              this.warn("Tried to render without selected or talents");
+              return;
+            }
 
             const seq = new Sequence()
               .Action(this.resetAction())
               .Action(...this.renderRowsAction())
               .Action(this.selectBranchesAction());
 
-            this.debugFn(() => ["render()", { selected: this.selected, actions: seq.size() }]);
+            this.debugFn(() => [
+              "render()",
+              { selected: this.selected?.value, actions: seq.size() },
+            ]);
 
             seq.Run();
           }
 
-          selectBranchSide(level: Dota2.Talent.Level, side: Dota2.Talent.Side) {
-            const row = this.rows[level];
+          selectBranchSide(level: dota2.TalentLevel, side: dota2.TalentSide) {
+            const row = this.rows.get(level);
+
+            if (row == null) {
+              throw new Error(`Could not find talent branch row for talent [${level}, ${side}]`);
+            }
+
             const seq = new Sequence();
 
-            _.each(SIDES, (s) => {
+            for (const side of SIDES) {
               seq.Function(() =>
                 this.debug("selectBranchSide() : RemoveClass", {
-                  level: level,
-                  side: s,
-                  class: CLASSES.BRANCH_SELECTED[s],
+                  level,
+                  side,
+                  class: CLASSES.BRANCH_SELECTED[side],
                 }),
               );
 
-              seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[s]);
-            });
+              seq.RemoveClass(row, CLASSES.BRANCH_SELECTED[side]);
+            }
 
             seq.Function(() =>
               this.debug("selectBranchSide() : AddClass", {
-                level: level,
-                side: side,
+                level,
+                side,
                 class: CLASSES.BRANCH_SELECTED[side],
               }),
             );

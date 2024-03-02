@@ -1,10 +1,10 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
-    "types": ["@moddota/panorama-types", "@types/lodash"],
-    "target": "es2017",
-    "lib": ["es2017"],
+    "types": ["@types/core-js", "@types/lodash", "@moddota/panorama-types"],
+    "target": "esnext",
     "esModuleInterop": false,
+    "sourceMap": false,
     "inlineSourceMap": true,
     "inlineSources": true,
     "isolatedModules": false,

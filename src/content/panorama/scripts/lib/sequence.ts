@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Sequence {
+  export namespace sequence {
     // ----------------------------------------------------------------------------
     // Valve's sequence_actions.js
     // ----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace invk {
       protected nth(index: number): Action {
         const action = this.actions[index];
 
-        if (!action) {
+        if (action == null) {
           throw new Error(
             `${this.constructor.name}: invalid action index=${index} actions.length=${this.actions.length}`,
           );
@@ -65,16 +65,10 @@ namespace invk {
             this.running = true;
           }
 
-          let continueRunning;
-
           try {
-            continueRunning = action.update();
-          } catch (err: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
+            if (action.update()) return true;
+          } catch (err: unknown) {
             return this.handleError(err);
-          }
-
-          if (continueRunning) {
-            return true;
           }
 
           action.finish();
@@ -107,7 +101,7 @@ namespace invk {
         }
       }
 
-      protected handleError(err: unknown): boolean {
+      private handleError(err: unknown): boolean {
         if (err instanceof StopSequence) {
           const skipCount = this.actions.length - this.index + 1;
 
@@ -116,10 +110,6 @@ namespace invk {
           this.stop = true;
 
           return false;
-        }
-
-        if (typeof err === "object" && err != null && "stack" in err) {
-          $.Msg((err as { stack: string }).stack);
         }
 
         throw err;
@@ -236,7 +226,7 @@ namespace invk {
       }
 
       override update(): boolean {
-        if (this.actions.length == 0) return false;
+        if (this.actions.length === 0) return false;
 
         let anyFinished = false;
 
@@ -649,24 +639,42 @@ namespace invk {
     // ----------------------------------------------------------------------------
 
     // Helper function to asynchronously tick a single action until it's finished, then call finish on it.
-    const UpdateSingleActionUntilFinished = (action: Action): void => {
+    function UpdateSingleActionUntilFinished(action: Action): void {
       const run = () => {
-        if (!action.update()) {
-          action.finish();
-        } else {
-          $.Schedule(0.0, run);
+        try {
+          if (!action.update()) {
+            action.finish();
+          } else {
+            $.Schedule(0.0, run);
+          }
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            warnStack(err);
+          }
+
+          throw err;
         }
       };
 
       run();
-    };
+    }
 
     // Call RunSingleAction to start a single action and continue ticking it until it's done
-    const RunSingleAction = (action: Action): void => {
+    function RunSingleAction(action: Action): void {
       action.start();
 
       UpdateSingleActionUntilFinished(action);
-    };
+    }
+
+    function warnStack(err: Error) {
+      if (err.stack != null) {
+        $.Warning(err.stack);
+      }
+
+      if (err.cause instanceof Error) {
+        warnStack(err.cause);
+      }
+    }
 
     // ----------------------------------------------------------------------------
     // END sequence_actions.js
@@ -680,11 +688,9 @@ namespace invk {
 
     // Action to print a debug message
     export class PrintAction extends Action {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      args: any[];
+      args: unknown[];
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      constructor(...args: any[]) {
+      constructor(...args: unknown[]) {
         super();
 
         this.args = args;
@@ -697,7 +703,7 @@ namespace invk {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: can't know types ahead of time
     type RunFunction = (...args: any[]) => void;
 
     // Action that simply runs a passed in function. You may include extra arguments and they will be passed to the called function.
@@ -947,106 +953,109 @@ namespace invk {
         this.action.finish();
       }
 
-      Run() {
+      Run(): void {
         RunSingleAction(this.action);
       }
 
-      Action(...actions: Action[]) {
+      Action(...actions: Action[]): this {
         this.action.actions.push(...actions);
 
         return this;
       }
 
-      Noop() {
+      Noop(): this {
         return this.Action(new NoopAction());
       }
 
-      Function<F extends RunFunction>(fn: F, ...args: Parameters<F>) {
+      Function<F extends RunFunction>(fn: F, ...args: Parameters<F>): this {
         return this.Action(new RunFunctionAction(fn, ...args));
       }
 
-      Wait(seconds: number) {
+      Wait(seconds: number): this {
         return this.Action(new WaitAction(seconds));
       }
 
-      WaitOneFrame() {
+      WaitOneFrame(): this {
         return this.Action(new WaitOneFrameAction());
       }
 
-      WaitEvent<T extends Panel>(panel: T, eventName: string) {
+      WaitEvent<T extends Panel>(panel: T, eventName: string): this {
         return this.Action(new WaitEventAction(panel, eventName));
       }
 
-      WaitAction(action: Action, timeoutDuration: number, continueAfterTimeout: boolean) {
+      WaitAction(action: Action, timeoutDuration: number, continueAfterTimeout: boolean): this {
         return this.Action(new WaitActionAction(action, timeoutDuration, continueAfterTimeout));
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      Print(...args: any[]) {
+      Print(...args: unknown[]): this {
         return this.Action(new PrintAction(...args));
       }
 
-      AddClass<T extends Panel>(panel: T, className: string) {
+      AddClass<T extends Panel>(panel: T, className: string): this {
         return this.Action(new AddClassAction(panel, className));
       }
 
-      RemoveClass<T extends Panel>(panel: T, className: string) {
+      RemoveClass<T extends Panel>(panel: T, className: string): this {
         return this.Action(new RemoveClassAction(panel, className));
       }
 
-      SwitchClass<T extends Panel>(panel: T, panelSlot: string, className: string) {
+      SwitchClass<T extends Panel>(panel: T, panelSlot: string, className: string): this {
         return this.Action(new SwitchClassAction(panel, panelSlot, className));
       }
 
-      ReplaceClass<T extends Panel>(panel: T, className: string, replacement: string) {
+      ReplaceClass<T extends Panel>(panel: T, className: string, replacement: string): this {
         return this.Action(new ReplaceClassAction(panel, className, replacement));
       }
 
-      WaitClass<T extends Panel>(panel: T, className: string) {
+      WaitClass<T extends Panel>(panel: T, className: string): this {
         return this.Action(new WaitClassAction(panel, className));
       }
 
-      DeleteAsync<T extends Panel>(panel: T, delay: number) {
+      DeleteAsync<T extends Panel>(panel: T, delay: number): this {
         return this.Action(new DeleteAsyncAction(panel, delay));
       }
 
-      RemoveChildren<T extends Panel>(panel: T) {
+      RemoveChildren<T extends Panel>(panel: T): this {
         return this.Action(new RemoveChildrenAction(panel));
       }
 
-      ScrollToTop<T extends Panel>(panel: T) {
+      ScrollToTop<T extends Panel>(panel: T): this {
         return this.Action(new ScrollToTopAction(panel));
       }
 
-      ScrollToBottom<T extends Panel>(panel: T) {
+      ScrollToBottom<T extends Panel>(panel: T): this {
         return this.Action(new ScrollToBottomAction(panel));
       }
 
-      Enable<T extends Panel>(panel: T) {
+      Enable<T extends Panel>(panel: T): this {
         return this.Action(new EnableAction(panel));
       }
 
-      Disable<T extends Panel>(panel: T) {
+      Disable<T extends Panel>(panel: T): this {
         return this.Action(new DisableAction(panel));
       }
 
-      Focus<T extends Panel>(panel: T) {
+      Focus<T extends Panel>(panel: T): this {
         return this.Action(new FocusAction(panel));
       }
 
-      SetAttribute<T extends Panel, K extends keyof T>(panel: T, attribute: K, value: T[K]) {
+      SetAttribute<T extends Panel, K extends keyof T>(panel: T, attribute: K, value: T[K]): this {
         return this.Action(new SetAttributeAction(panel, attribute, value));
       }
 
-      SetDialogVariable<T extends Panel>(panel: T, dialogVariable: string, value: string) {
+      SetDialogVariable<T extends Panel>(panel: T, dialogVariable: string, value: string): this {
         return this.Action(new SetDialogVariableAction(panel, dialogVariable, value));
       }
 
-      SetDialogVariableInt<T extends Panel>(panel: T, dialogVariable: string, value: number) {
+      SetDialogVariableInt<T extends Panel>(panel: T, dialogVariable: string, value: number): this {
         return this.Action(new SetDialogVariableIntAction(panel, dialogVariable, value));
       }
 
-      SetDialogVariableTime<T extends Panel>(panel: T, dialogVariable: string, value: number) {
+      SetDialogVariableTime<T extends Panel>(
+        panel: T,
+        dialogVariable: string,
+        value: number,
+      ): this {
         return this.Action(new SetDialogVariableTimeAction(panel, dialogVariable, value));
       }
 
@@ -1056,13 +1065,13 @@ namespace invk {
         start: number,
         end: number,
         seconds: number,
-      ) {
+      ): this {
         return this.Action(
           new AnimateDialogVariableIntAction(panel, dialogVariable, start, end, seconds),
         );
       }
 
-      SetProgressBarValue(progressBar: ProgressBar, value: number) {
+      SetProgressBarValue(progressBar: ProgressBar, value: number): this {
         return this.Action(new SetProgressBarValueAction(progressBar, value));
       }
 
@@ -1071,7 +1080,7 @@ namespace invk {
         startValue: number,
         endValue: number,
         seconds: number,
-      ) {
+      ): this {
         return this.Action(
           new AnimateProgressBarAction(progressBar, startValue, endValue, seconds),
         );
@@ -1082,33 +1091,38 @@ namespace invk {
         startValue: number,
         endValue: number,
         seconds: number,
-      ) {
+      ): this {
         return this.Action(
           new AnimateProgressBarWithMiddleAction(progressBar, startValue, endValue, seconds),
         );
       }
 
-      AddOption(panel: DropDown, option: Panel | (() => Panel)) {
+      AddOption(panel: DropDown, option: Panel | (() => Panel)): this {
         return this.Action(new AddOptionAction(panel, option));
       }
 
-      RemoveOption(panel: DropDown, optionID: string) {
+      RemoveOption(panel: DropDown, optionID: string): this {
         return this.Action(new RemoveOptionAction(panel, optionID));
       }
 
-      RemoveAllOptions(panel: DropDown) {
+      RemoveAllOptions(panel: DropDown): this {
         return this.Action(new RemoveAllOptionsAction(panel));
       }
 
-      SelectOption(panel: DropDown, optionID: string) {
+      SelectOption(panel: DropDown, optionID: string): this {
         return this.Action(new SelectOptionAction(panel, optionID));
       }
 
-      PlaySoundEffect(soundName: string) {
+      PlaySoundEffect(soundName: string): this {
         return this.Action(new PlaySoundEffectAction(soundName));
       }
 
-      FireEntityInput(panel: ScenePanel, entityName: string, inputName: string, inputArg: string) {
+      FireEntityInput(
+        panel: ScenePanel,
+        entityName: string,
+        inputName: string,
+        inputArg: string,
+      ): this {
         return this.Action(new FireEntityInputAction(panel, entityName, inputName, inputArg));
       }
     }

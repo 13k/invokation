@@ -1,12 +1,9 @@
-/// <reference path="./vendor/lodash.js" />
-/// <reference path="./static.ts" />
+/// <reference path="singleton.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Logger {
-    const {
-      Static: { ENV },
-    } = invk;
+  export namespace logger {
+    import ENV = invk.singleton.ENV;
 
     export enum Level {
       Unknown = 0,
@@ -22,16 +19,17 @@ namespace invk {
       name?: string;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
     export type LazyFn = () => any;
 
-    const MAX_LEVEL_NAME_LEN = _.maxBy(_.keys(Level), "length")?.length || 1;
+    const MAX_LEVEL_NAME_LEN = Math.max(...Object.keys(Level).map((s) => s.length));
 
     export class Logger {
       static Level = Level;
 
-      public level: Level = Level.Info;
-      private name?: string;
+      level: Level;
+
+      private name: string | undefined;
 
       constructor(options: Options = {}) {
         this.level = options.level || (ENV.development ? Level.Debug : Level.Info);
@@ -41,23 +39,24 @@ namespace invk {
         }
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       log(level: Level, ...args: any[]) {
         if (level < this.level || args.length < 1) return;
 
-        const name = Level[level];
-        let msgArgs = _.chain([_.padStart(name, MAX_LEVEL_NAME_LEN)]);
+        const levelName = Level[level];
+        // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
+        let msgArgs: any[] = [levelName.padStart(MAX_LEVEL_NAME_LEN)];
 
         if (this.name) {
-          msgArgs = msgArgs.push(this.name);
+          msgArgs.push(this.name);
         }
 
         msgArgs = msgArgs
           .concat(args)
           .flatMap((arg) => [arg, " "])
-          .dropRight();
+          .slice(0, -1);
 
-        $.Msg(...msgArgs.value());
+        $.Msg(...msgArgs);
       }
 
       logFn(level: Level, fn: LazyFn) {
@@ -67,39 +66,39 @@ namespace invk {
 
         if (values == null) return;
 
-        if (!_.isArray(values)) {
+        if (!Array.isArray(values)) {
           values = [values];
         }
 
         this.log(level, ...values);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       unknown(...args: any[]) {
         this.log(Level.Unknown, ...args);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       debug(...args: any[]) {
         this.log(Level.Debug, ...args);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       info(...args: any[]) {
         this.log(Level.Info, ...args);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       warning(...args: any[]) {
         this.log(Level.Warning, ...args);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       error(...args: any[]) {
         this.log(Level.Error, ...args);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: passed to `$.Msg`
       critical(...args: any[]) {
         this.log(Level.Critical, ...args);
       }

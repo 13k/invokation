@@ -1,19 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace CustomLoadingScreen {
-      export interface Elements extends Component.Elements {
+      const {
+        sequence: { Sequence },
+        panorama: { SoundEvent, UIEvent },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         scene: ScenePanel;
       }
-
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        Sequence: { Sequence },
-        Panorama: { SoundEvent },
-      } = GameUI.CustomUIConfig().invk;
 
       enum CssClass {
         SceneLoaded = "SceneLoaded",
@@ -24,12 +22,7 @@ namespace invk {
         KidSplash = 1.8,
       }
 
-      export class CustomLoadingScreen extends Component.Component<
-        Elements,
-        Inputs,
-        Outputs,
-        Params
-      > {
+      export class CustomLoadingScreen extends Component<Elements> {
         constructor() {
           super({
             elements: {
@@ -37,7 +30,7 @@ namespace invk {
             },
             uiEvents: {
               scene: {
-                SCENE_PANEL_LOADED: () => this.start(),
+                [UIEvent.SCENE_PANEL_LOADED]: () => this.start(),
               },
             },
           });

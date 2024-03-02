@@ -1,8 +1,23 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace ComboScore {
-      export interface Elements extends Component.Elements {
+      const {
+        panorama: { UIEvent },
+        util: { sortedIndex },
+        sequence: {
+          AddClassAction,
+          ParallelSequence,
+          RemoveClassAction,
+          RunFunctionAction,
+          Sequence,
+          StaggeredSequence,
+        },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         counterTicker: Panel;
         summaryCountDisplay: Panel;
         summaryDamageTicker: Panel;
@@ -10,7 +25,7 @@ namespace invk {
         summaryFx: ScenePanel;
       }
 
-      export interface Inputs extends Component.Inputs {
+      export interface Inputs extends component.Inputs {
         Hide: undefined;
         UpdateCounter: {
           count: number;
@@ -21,21 +36,6 @@ namespace invk {
           endDamage: number;
         };
       }
-
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        Vendor: { lodash: _ },
-        Sequence: {
-          Sequence,
-          ParallelSequence,
-          StaggeredSequence,
-          AddClassAction,
-          RemoveClassAction,
-          RunFunctionAction,
-        },
-      } = GameUI.CustomUIConfig().invk;
 
       type BurstIntensity = 1 | 2 | 3;
 
@@ -111,10 +111,10 @@ namespace invk {
         },
       } as const;
 
-      export class ComboScore extends Component.Component<Elements, Inputs, Outputs, Params> {
-        values: Record<string, number>;
-        spinQueues: Record<string, SpinDigitOptions[]>;
-        spinning: Record<string, boolean>;
+      export class ComboScore extends Component<Elements, Inputs> {
+        values: Map<string, number> = new Map();
+        spinQueues: Map<string, SpinDigitOptions[]> = new Map();
+        isSpinning: Map<string, boolean> = new Map();
 
         constructor() {
           super({
@@ -127,22 +127,18 @@ namespace invk {
             },
             uiEvents: {
               counterFx: {
-                SCENE_PANEL_LOADED: () => this.counterFxAmbientStart(),
+                [UIEvent.SCENE_PANEL_LOADED]: () => this.counterFxAmbientStart(),
               },
               summaryFx: {
-                SCENE_PANEL_LOADED: () => this.summaryFxAmbientStart(),
+                [UIEvent.SCENE_PANEL_LOADED]: () => this.summaryFxAmbientStart(),
               },
             },
             inputs: {
-              UpdateCounter: (payload: Inputs["UpdateCounter"]) => this.updateCounter(payload),
-              UpdateSummary: (payload: Inputs["UpdateSummary"]) => this.updateSummary(payload),
-              Hide: (payload: Inputs["Hide"]) => this.hide(payload),
+              UpdateCounter: (payload) => this.updateCounter(payload),
+              UpdateSummary: (payload) => this.updateSummary(payload),
+              Hide: (payload) => this.hide(payload),
             },
           });
-
-          this.values = {};
-          this.spinQueues = {};
-          this.spinning = {};
 
           this.debug("init");
         }
@@ -196,19 +192,26 @@ namespace invk {
         }
 
         burstIntensity(value: number): BurstIntensity {
-          return (_.sortedIndex(BURST_INTENSITY_THRESHOLDS, value) + 1) as BurstIntensity;
+          return (sortedIndex(BURST_INTENSITY_THRESHOLDS, value) + 1) as BurstIntensity;
         }
 
         digitsValue(id: string, value?: number) {
           if (value != null) {
-            this.values[id] = value;
+            this.values.set(id, value);
           }
 
-          return this.values[id];
+          return this.values.get(id);
         }
 
-        spinQueue(id: string) {
-          return this.spinQueues[id] || (this.spinQueues[id] = []);
+        spinQueue(id: string): SpinDigitOptions[] {
+          let queue = this.spinQueues.get(id);
+
+          if (queue == null) {
+            queue = [];
+            this.spinQueues.set(id, queue);
+          }
+
+          return queue;
         }
 
         consumeSpinDigits(id: string) {
@@ -229,19 +232,24 @@ namespace invk {
 
           this.spinQueue(id).push(options);
 
-          if (!this.spinning[id]) {
+          if (!this.isSpinning.get(id)) {
             this.consumeSpinDigits(id);
           }
         }
 
         updateDigits(container: Panel, value: number) {
           eachUpdateDigitsOperations(container, value, (panel, ops) => {
-            _.forOwn(ops.data, (value, key) => {
+            for (const [key, value] of Object.entries(ops.data)) {
               panel.Data()[key as keyof PanelDigitData] = value;
-            });
+            }
 
-            _.each(ops.removeClass, (cssClass) => panel.RemoveClass(cssClass));
-            _.each(ops.addClass, (cssClass) => panel.AddClass(cssClass));
+            for (const cssClass of ops.removeClass) {
+              panel.RemoveClass(cssClass);
+            }
+
+            for (const cssClass of ops.addClass) {
+              panel.AddClass(cssClass);
+            }
           });
 
           this.digitsValue(container.id, value);
@@ -255,14 +263,19 @@ namespace invk {
           eachUpdateDigitsOperations(container, value, (panel, ops) => {
             const panelSeq = new ParallelSequence();
 
-            _.forOwn(ops.data, (value, key) =>
+            for (const [key, value] of Object.entries(ops.data)) {
               panelSeq.Function(() => {
                 panel.Data()[key as keyof PanelDigitData] = value;
-              }),
-            );
+              });
+            }
 
-            _.each(ops.removeClass, (cssClass) => panelSeq.RemoveClass(panel, cssClass));
-            _.each(ops.addClass, (cssClass) => panelSeq.AddClass(panel, cssClass));
+            for (const cssClass of ops.removeClass) {
+              panelSeq.RemoveClass(panel, cssClass);
+            }
+
+            for (const cssClass of ops.addClass) {
+              panelSeq.AddClass(panel, cssClass);
+            }
 
             seq.Action(panelSeq);
           });
@@ -271,16 +284,11 @@ namespace invk {
         }
 
         spinDigitsAction(options: SpinDigitOptions) {
-          options = _.assign(
-            {
-              iterations: 10,
-              interval: 0.1,
-              callbacks: {},
-            },
-            options,
-          );
+          options.iterations ??= 10;
+          options.interval ??= 0.1;
+          options.callbacks ??= {};
 
-          const { id } = options.container;
+          const id = options.container.id;
           const onStart = options.callbacks?.onStart;
           const onSpin = options.callbacks?.onSpin;
           const onEnd = options.callbacks?.onEnd;
@@ -293,11 +301,9 @@ namespace invk {
           options.increment =
             options.increment || (options.end - options.start) / options.iterations;
 
-          // this.debugFn(() => ["spinDigitsAction()", _.omit(options, ["container"])]);
-
           const seq = new StaggeredSequence(options.interval);
 
-          if (_.isFunction(onStart)) {
+          if (typeof onStart === "function") {
             seq.Function(onStart);
           }
 
@@ -312,7 +318,7 @@ namespace invk {
                 this.updateDigits(options.container, boundValue),
               );
 
-              if (_.isFunction(onSpin)) {
+              if (typeof onSpin === "function") {
                 updateSeq.Function(onSpin, boundValue);
               }
 
@@ -320,17 +326,17 @@ namespace invk {
             })();
           }
 
-          if (_.isFunction(onEnd)) {
+          if (typeof onEnd === "function") {
             seq.Function(onEnd);
           }
 
           return new Sequence()
             .Function(() => {
-              this.spinning[id] = true;
+              this.isSpinning.set(id, true);
             })
             .Action(seq)
             .Function(() => {
-              this.spinning[id] = false;
+              this.isSpinning.set(id, false);
               this.consumeSpinDigits(id);
             });
         }
@@ -344,24 +350,24 @@ namespace invk {
         }
 
         spinSummaryDamageDigitsAction(options: SpinDigitOptions) {
-          if (!options.callbacks) {
-            options.callbacks = {};
-          }
+          options.callbacks ??= {};
 
-          const appliedFx: Record<number, BurstIntensity> = {};
+          const appliedFx: Map<BurstIntensity, BurstIntensity> = new Map();
 
           options.callbacks.onSpin = (damage) => {
             const intensity = this.burstIntensity(damage);
 
-            if (!(intensity in appliedFx)) {
+            if (!appliedFx.has(intensity)) {
               this.summaryFxBurstStart(intensity);
 
-              appliedFx[intensity] = intensity;
+              appliedFx.set(intensity, intensity);
             }
           };
 
           options.callbacks.onEnd = () => {
-            _.forOwn(appliedFx, (v) => this.summaryFxBurstStop(v));
+            for (const v of appliedFx.values()) {
+              this.summaryFxBurstStop(v);
+            }
           };
 
           return new RunFunctionAction(() => this.enqueueSpinDigits(options));
@@ -410,7 +416,7 @@ namespace invk {
         }
 
         updateSummaryAction(options: Inputs["UpdateSummary"]) {
-          const count = _.get(options, "count", 0);
+          const count = options.count ?? 0;
           const seq = new Sequence();
 
           if (count < 1) {
@@ -445,14 +451,10 @@ namespace invk {
         }
 
         updateCounter(payload: Inputs["UpdateCounter"]) {
-          // this.debug("updateCounter()", payload);
-          const count = _.get(payload, "count", 0);
-
-          this.updateCounterAction(count).Run();
+          this.updateCounterAction(payload.count ?? 0).Run();
         }
 
         updateSummary(payload: Inputs["UpdateSummary"]) {
-          // this.debug("updateSummary()", payload);
           this.updateSummaryAction(payload).Run();
         }
 
@@ -470,19 +472,19 @@ namespace invk {
       ) => {
         const panels = container.FindChildrenWithClassTraverse(CssClass.Digit) as PanelWithDigit[];
 
-        if (_.isEmpty(panels)) {
-          throw new Error(`Could not find digit panels`);
+        if (panels.length === 0) {
+          throw new Error("Could not find digit panels");
         }
 
         const valueRevStr = value.toString().split("").reverse();
 
-        for (let idx = 0; idx < panels.length; idx++) {
+        for (let i = 0; i < panels.length; i++) {
           (() => {
-            const boundIdx = idx;
+            const boundIdx = i;
             const panel = panels[boundIdx];
             const digit = valueRevStr[boundIdx];
 
-            if (!panel) throw "unreachable";
+            if (panel == null) throw "unreachable";
 
             const ops: DigitsOperations = {
               data: {

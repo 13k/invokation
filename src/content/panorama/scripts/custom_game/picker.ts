@@ -1,8 +1,45 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace Picker {
-      export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace picker {
+      const {
+        l10n,
+        combo: { CombosView },
+        custom_events: { GameEvent, CustomGameEvent },
+        layout: { LayoutID },
+        panorama: { SoundEvent, createLabel },
+        singleton: { COMBOS },
+        util: { camelCase, parseEnumValue, pascalCase, uniqueId },
+        combo: {
+          DamageRating,
+          DifficultyRating,
+          Property,
+          Specialty,
+          Stance,
+          StaticID,
+          PROPERTIES,
+        },
+        sequence: {
+          AddOptionAction,
+          NoopAction,
+          ParallelSequence,
+          RunFunctionAction,
+          SelectOptionAction,
+          Sequence,
+          SetAttributeAction,
+        },
+      } = GameUI.CustomUIConfig().invk;
+
+      import tag_select = invk.components.ui.tag_select;
+
+      import Combo = invk.combo.Combo;
+      import ComboID = invk.combo.ComboID;
+      import Component = invk.component.Component;
+      import PickerCombo = invk.components.PickerCombo.PickerCombo;
+      import Properties = invk.combo.Properties;
+      import PropertyDescriptor = invk.combo.PropertyDescriptor;
+
+      export interface Elements extends component.Elements {
         slideout: Panel;
         combos: Panel;
         filterTagsContainer: Panel;
@@ -23,39 +60,6 @@ namespace invk {
         btnResetFilters: Button;
         btnToggle: Button;
       }
-
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        L10n,
-        CombosView: { CombosView },
-        CustomEvents: { Name: CustomEventName },
-        Layout: { ID: LayoutID },
-        Panorama: { PanelType, SoundEvent },
-        Static: { COMBOS },
-        Util: { pascalCase, parseEnumValue },
-        Vendor: { lodash: _ },
-        Combo: {
-          PROPERTIES,
-          DamageRating,
-          DifficultyRating,
-          Property,
-          Specialty,
-          Stance,
-          StaticID,
-        },
-        Sequence: {
-          Sequence,
-          ParallelSequence,
-          AddOptionAction,
-          NoopAction,
-          RunFunctionAction,
-          SelectOptionAction,
-          SetAttributeAction,
-        },
-      } = GameUI.CustomUIConfig().invk;
 
       enum PanelID {
         TagSelect = "PickerFilterTags",
@@ -79,12 +83,12 @@ namespace invk {
         [Property.DifficultyRating]: -1,
       } as const;
 
-      export class Picker extends Component.Component<Elements, Inputs, Outputs, Params> {
-        combosView?: CombosView.CombosView;
-        pickerCombos: Record<Combo.ID, PickerCombo.PickerCombo>;
-        finishedCombos: Record<Combo.ID, boolean>;
-        tagSelect?: UI.TagSelect.TagSelect;
-        filterTags: string[] = [];
+      export class Picker extends Component<Elements> {
+        combosView: combo.CombosView | undefined;
+        pickerCombos: Map<ComboID, PickerCombo> = new Map();
+        finishedCombos: Map<ComboID, boolean> = new Map();
+        tagSelect: tag_select.TagSelect | undefined;
+        filterTags: Set<string> = new Set();
         filtering = false;
         popupItemPickerChannel: string;
         popupAbilityPickerChannel: string;
@@ -113,11 +117,13 @@ namespace invk {
               btnToggle: "BtnToggle",
             },
             customEvents: {
-              COMBO_STARTED: (payload) => this.onComboStarted(payload),
-              COMBO_STOPPED: (payload) => this.onComboStopped(payload),
-              COMBO_FINISHED: (payload) => this.onComboFinished(payload),
-              POPUP_ITEM_PICKER_SUBMIT: (payload) => this.onPopupItemPickerSubmit(payload),
-              POPUP_ABILITY_PICKER_SUBMIT: (payload) => this.onPopupAbilityPickerSubmit(payload),
+              [CustomGameEvent.COMBO_STARTED]: (payload) => this.onComboStarted(payload),
+              [CustomGameEvent.COMBO_STOPPED]: (payload) => this.onComboStopped(payload),
+              [CustomGameEvent.COMBO_FINISHED]: (payload) => this.onComboFinished(payload),
+              [GameEvent.POPUP_ITEM_PICKER_SUBMIT]: (payload) =>
+                this.onPopupItemPickerSubmit(payload),
+              [GameEvent.POPUP_ABILITY_PICKER_SUBMIT]: (payload) =>
+                this.onPopupAbilityPickerSubmit(payload),
             },
             panelEvents: {
               btnReload: { onactivate: () => this.Reload() },
@@ -137,10 +143,8 @@ namespace invk {
             },
           });
 
-          this.pickerCombos = {};
-          this.finishedCombos = {};
-          this.popupItemPickerChannel = _.uniqueId("popup_item_picker_");
-          this.popupAbilityPickerChannel = _.uniqueId("popup_ability_picker_");
+          this.popupItemPickerChannel = uniqueId("popup_item_picker_");
+          this.popupAbilityPickerChannel = uniqueId("popup_ability_picker_");
 
           this.enableFiltering();
           this.renderFilters();
@@ -153,14 +157,13 @@ namespace invk {
         onCombosChange() {
           this.debug("onCombosChange()");
 
-          if (!this.tagSelect) {
-            this.warn("undefined tagSelect");
+          if (this.tagSelect == null) {
+            this.warn("Undefined tagSelect");
             return;
           }
 
-          this.combosView = new CombosView(COMBOS.entries);
-
-          this.tagSelect.Input("SetOptions", { options: this.comboTags() });
+          this.combosView = new CombosView([...COMBOS]);
+          this.tagSelect.input("SetOptions", { options: this.allTags() });
           this.renderCombos();
         }
 
@@ -175,46 +178,46 @@ namespace invk {
           this.startCombo(payload.id);
         }
 
-        onComboStarted(payload: CustomEvents.ComboStarted) {
+        onComboStarted(payload: NetworkedData<custom_events.ComboStarted>) {
           this.debug("onComboStarted()", payload);
           this.close();
         }
 
-        onComboStopped(payload: CustomEvents.ComboStopped) {
+        onComboStopped(payload: NetworkedData<custom_events.ComboStopped>) {
           this.debug("onComboStopped()", payload);
           this.open();
         }
 
-        onComboFinished(payload: CustomEvents.ComboFinished) {
+        onComboFinished(payload: NetworkedData<custom_events.ComboFinished>) {
           if (payload.id === StaticID.Freestyle) return;
 
           this.debug("onComboFinished()", payload);
           this.finishCombo(payload.id);
         }
 
-        onFilterTagsChange(payload: { tags: string[] }) {
-          this.debug("onFilterTagsChange()", payload);
-          this.filterByTags(payload.tags);
-        }
-
-        onPopupItemPickerSubmit(payload: CustomEvents.PopupItemPickerSubmit) {
+        onPopupItemPickerSubmit(payload: NetworkedData<custom_events.PopupItemPickerSubmit>) {
           if (payload.channel !== this.popupItemPickerChannel) return;
 
           this.debug("onPopupItemPickerSubmit()", payload);
 
-          if (!_.isEmpty(payload.item)) {
+          if (payload.item.length > 0) {
             this.filterByItem(payload.item);
           }
         }
 
-        onPopupAbilityPickerSubmit(payload: CustomEvents.PopupAbilityPickerSubmit) {
+        onPopupAbilityPickerSubmit(payload: NetworkedData<custom_events.PopupAbilityPickerSubmit>) {
           if (payload.channel !== this.popupAbilityPickerChannel) return;
 
           this.debug("onPopupAbilityPickerSubmit()", payload);
 
-          if (!_.isEmpty(payload.ability)) {
+          if (payload.ability.length > 0) {
             this.filterByAbility(payload.ability);
           }
+        }
+
+        onFilterTagsChange(payload: tag_select.Outputs["OnChange"]) {
+          this.debug("onFilterTagsChange()", payload);
+          this.filterByTags(payload.tags);
         }
 
         // ----- Helpers -----
@@ -223,27 +226,39 @@ namespace invk {
           COMBOS.onChange(this.onCombosChange.bind(this));
         }
 
-        startCombo(id: Combo.ID) {
+        startCombo(id: ComboID) {
           this.debug("startCombo()", id);
-          this.sendServer(CustomEventName.COMBO_START, { id: id });
+          this.sendServer(CustomGameEvent.COMBO_START, { id: id });
         }
 
-        finishCombo(id: Combo.ID) {
+        finishCombo(id: ComboID) {
           this.debug("finishCombo()", id);
-          this.finishedCombos[id] = true;
+          this.finishedCombos.set(id, true);
           this.markComboPanelAsFinished(id);
         }
 
-        markComboPanelAsFinished(id: Combo.ID) {
-          this.getPickerCombo(id).Input("SetFinished", undefined);
+        markComboPanelAsFinished(id: ComboID) {
+          this.getPickerCombo(id).input("SetFinished", undefined);
         }
 
-        renderViewer(id: Combo.ID) {
-          this.sendClientSide(CustomEventName.VIEWER_RENDER, { id: id });
+        renderViewer(id: ComboID) {
+          this.sendClientSide(GameEvent.VIEWER_RENDER, { id: id });
         }
 
-        comboTags(): string[] {
-          return _.chain(this.combosView?.entries).map("tags").flatten().uniq().sort().value();
+        allTags(): Set<string> {
+          const tagset: Set<string> = new Set();
+
+          if (this.combosView == null) {
+            return tagset;
+          }
+
+          for (const combo of this.combosView) {
+            for (const tag of combo.tagset) {
+              tagset.add(tag);
+            }
+          }
+
+          return tagset;
         }
 
         isClosed() {
@@ -254,10 +269,10 @@ namespace invk {
           return this.elements.slideout.BHasClass(CssClass.FiltersClosed);
         }
 
-        getPickerCombo(id: Combo.ID) {
-          const pickerCombo = this.pickerCombos[id];
+        getPickerCombo(id: ComboID) {
+          const pickerCombo = this.pickerCombos.get(id);
 
-          if (!pickerCombo) {
+          if (pickerCombo == null) {
             throw new Error(`Could not find PickerCombo for id ${id}`);
           }
 
@@ -265,45 +280,47 @@ namespace invk {
         }
 
         resetPickerCombos() {
-          this.pickerCombos = {};
+          this.pickerCombos.clear();
         }
 
-        createComboPanel(parent: Panel, combo: Combo.Combo) {
+        createComboPanel(parent: Panel, combo: Combo) {
           const id = comboPanelID(combo);
           const component = this.create(LayoutID.PickerCombo, id, parent);
           const { panel } = component;
 
           panel.AddClass(CssClass.ComboPanel);
 
-          component.Outputs({
+          component.registerOutputs({
             OnShowDetails: this.onComboDetailsShow.bind(this),
             OnPlay: this.onComboPlay.bind(this),
           });
 
-          component.Input("SetCombo", combo);
+          component.input("SetCombo", combo);
 
-          this.pickerCombos[combo.id] = component;
+          this.pickerCombos.set(combo.id, component);
 
-          if (this.finishedCombos[combo.id]) {
+          if (this.finishedCombos.get(combo.id)) {
             this.markComboPanelAsFinished(combo.id);
           }
         }
 
-        createPropertyFilterOption<K extends keyof Combo.Properties>(
+        createPropertyFilterOption<K extends keyof Properties>(
           parent: Panel,
           prop: K,
-          value?: Combo.Properties[K],
+          value: Properties[K] | undefined,
         ) {
           const id = propertyFilterOptionID(prop, value);
-          const panel = $.CreatePanel(PanelType.Label, parent, id);
+          let text: string;
+
+          if (value == null) {
+            text = l10n.l(l10n.Key.PickerDefaultOption);
+          } else {
+            text = l10n.comboPropValue(prop, value);
+          }
+
+          const panel = createLabel(parent, id, text);
 
           setPropertyFilterAttr(panel, prop, value);
-
-          if (value === undefined) {
-            panel.text = L10n.l(L10n.Key.PickerDefaultOption);
-          } else {
-            panel.text = L10n.comboPropValue(prop, value);
-          }
 
           return panel;
         }
@@ -315,13 +332,13 @@ namespace invk {
             this.elements.filterTagsContainer,
           );
 
-          this.tagSelect.Outputs({
+          this.tagSelect.registerOutputs({
             OnChange: this.onFilterTagsChange.bind(this),
           });
         }
 
         resetTagsFilter() {
-          this.tagSelect?.Input("Clear", undefined);
+          this.tagSelect?.input("Clear", undefined);
         }
 
         enableFiltering() {
@@ -332,13 +349,13 @@ namespace invk {
           this.filtering = false;
         }
 
-        filter() {
-          if (!this.combosView) {
-            this.warn("tried to filter combos without CombosView");
-            return;
+        filter(): boolean {
+          if (this.combosView == null) {
+            this.warn("Tried to filter combos without CombosView");
+            return false;
           }
 
-          const filters = {
+          const filters: combo.Filters = {
             properties: this.propertyFilterValues(),
             tags: this.tagsFilterValue,
             item: this.itemFilterValue,
@@ -346,16 +363,15 @@ namespace invk {
           };
 
           this.debug("filter()", filters);
-          this.combosView.filter(filters);
+
+          return this.combosView.filter(filters);
         }
 
-        propertyFilter(prop: keyof Combo.Properties) {
+        propertyFilter(prop: keyof Properties) {
           return this.elements[propertyFilterAttr(prop)];
         }
 
-        propertyFilterValue<K extends keyof Combo.Properties>(
-          prop: K,
-        ): Combo.Properties[K] | undefined {
+        propertyFilterValue<K extends keyof Properties>(prop: K): Properties[K] | undefined {
           const dropDown = this.propertyFilter(prop);
           const option = dropDown.GetSelected();
 
@@ -366,19 +382,19 @@ namespace invk {
           switch (prop) {
             case Property.Specialty:
               return parseEnumValue(Specialty, getPropertyFilterAttr(option, prop)) as
-                | Combo.Properties[K]
+                | Properties[K]
                 | undefined;
             case Property.Stance:
               return parseEnumValue(Stance, getPropertyFilterAttr(option, prop)) as
-                | Combo.Properties[K]
+                | Properties[K]
                 | undefined;
             case Property.DamageRating:
               return parseEnumValue(DamageRating, getPropertyFilterAttr(option, prop)) as
-                | Combo.Properties[K]
+                | Properties[K]
                 | undefined;
             case Property.DifficultyRating:
               return parseEnumValue(DifficultyRating, getPropertyFilterAttr(option, prop)) as
-                | Combo.Properties[K]
+                | Properties[K]
                 | undefined;
             default: {
               const _check: never = prop;
@@ -387,24 +403,23 @@ namespace invk {
           }
         }
 
-        propertyFilterValues(): Partial<Combo.Properties> {
-          const setProp = <K extends Combo.Property>(
-            props: Partial<Combo.Properties>,
+        propertyFilterValues(): Partial<Properties> {
+          const setProp = <K extends combo.Property>(
+            props: Partial<Properties>,
             prop: K,
-            value?: Combo.Properties[K],
+            value?: Properties[K],
           ): void => {
-            if (value === undefined) {
-              return undefined;
-            }
+            if (value === undefined) return;
 
             props[prop] = value;
           };
 
-          return _.transform(
-            PROPERTIES,
-            (props, descriptor) =>
-              setProp(props, descriptor.name, this.propertyFilterValue(descriptor.name)),
-            {} as Partial<Combo.Properties>,
+          return Object.values(PROPERTIES).reduce(
+            (props, pd) => {
+              setProp(props, pd.name, this.propertyFilterValue(pd.name));
+              return props;
+            },
+            {} as Partial<Properties>,
           );
         }
 
@@ -435,11 +450,11 @@ namespace invk {
         }
 
         createComboPanelsAction() {
-          if (!this.combosView) {
+          if (this.combosView == null) {
             return new NoopAction();
           }
 
-          const actions = _.map(this.combosView.entries, (combo) =>
+          const actions = this.combosView.map((combo) =>
             this.elements.combos
               ? this.createComboPanelAction(this.elements.combos, combo)
               : new NoopAction(),
@@ -448,7 +463,7 @@ namespace invk {
           return new Sequence().Action(...actions);
         }
 
-        createComboPanelAction(parent: Panel, combo: Combo.Combo) {
+        createComboPanelAction(parent: Panel, combo: Combo) {
           return new RunFunctionAction(this.createComboPanel.bind(this), parent, combo);
         }
 
@@ -459,42 +474,44 @@ namespace invk {
         }
 
         renderPropertyFiltersAction() {
-          const actions = _.map(PROPERTIES, (descriptor) =>
-            this.renderPropertyFilterAction(descriptor),
+          const actions = Object.values(PROPERTIES).map((pd) =>
+            this.renderPropertyFilterAction(pd),
           );
 
           return new ParallelSequence().Action(...actions);
         }
 
-        renderPropertyFilterAction<K extends keyof Combo.Properties>(
-          descriptor: Combo.PropertyDescriptor<K>,
-        ) {
-          const dropDown = this.propertyFilter(descriptor.name);
-          const actions = _.map(
-            descriptor.values,
+        renderPropertyFilterAction<K extends keyof Properties>(pd: PropertyDescriptor<K>) {
+          const dropDown = this.propertyFilter(pd.name);
+
+          if (dropDown == null) {
+            throw new Error("dropDown not found");
+          }
+
+          const actions = pd.values.map(
             (value) =>
               new AddOptionAction(dropDown, () =>
-                this.createPropertyFilterOption(dropDown, descriptor.name, value),
+                this.createPropertyFilterOption(dropDown, pd.name, value),
               ),
           );
 
           return new Sequence()
             .RemoveAllOptions(dropDown)
             .AddOption(dropDown, () =>
-              this.createPropertyFilterOption(dropDown, descriptor.name, undefined),
+              this.createPropertyFilterOption(dropDown, pd.name, undefined),
             )
             .Action(...actions);
         }
 
         resetPropertyFiltersAction() {
-          const actions = _.map(PROPERTIES, (descriptor) =>
-            this.resetPropertyFilterAction(descriptor.name),
+          const actions = Object.values(PROPERTIES).map((pd) =>
+            this.resetPropertyFilterAction(pd.name),
           );
 
           return new ParallelSequence().Action(...actions);
         }
 
-        resetPropertyFilterAction<K extends keyof Combo.Properties>(prop: K) {
+        resetPropertyFilterAction<K extends keyof Properties>(prop: K) {
           return new SelectOptionAction(
             this.propertyFilter(prop),
             propertyFilterOptionID(prop, undefined),
@@ -532,12 +549,12 @@ namespace invk {
         // ----- Action runners -----
 
         renderCombos() {
-          if (!this.combosView) {
-            this.warn("tried to renderCombos() without CombosView");
+          if (this.combosView == null) {
+            this.warn("Tried to renderCombos() without CombosView");
             return;
           }
 
-          const { size } = this.combosView;
+          const size = this.combosView.size;
           const seq = this.renderCombosAction();
 
           this.debugFn(() => ["renderCombos()", { combos: size, actions: seq.size() }]);
@@ -560,9 +577,7 @@ namespace invk {
             .PlaySoundEffect(SoundEvent.ShopOpen)
             .RemoveClass(this.elements.slideout, CssClass.DrawerClosed);
 
-          this.debugFn(function () {
-            return ["open()", { actions: seq.size() }];
-          });
+          this.debugFn(() => ["open()", { actions: seq.size() }]);
 
           seq.Run();
         }
@@ -603,12 +618,12 @@ namespace invk {
           seq.Run();
         }
 
-        filterByTags(tags: string[]) {
+        filterByTags(tags: Set<string>) {
           this.filterTags = tags;
 
           const seq = new Sequence();
 
-          if (_.isEmpty(this.filterTags)) {
+          if (this.filterTags.size === 0) {
             seq.Disable(this.elements.filterTagsResetButton);
           } else {
             seq.Enable(this.elements.filterTagsResetButton);
@@ -627,9 +642,7 @@ namespace invk {
             .Enable(this.elements.filterItemResetButton)
             .Function(this.Filter.bind(this));
 
-          this.debugFn(function () {
-            return ["filterByItem()", { item: name, actions: seq.size() }];
-          });
+          this.debugFn(() => ["filterByItem()", { item: name, actions: seq.size() }]);
 
           seq.Run();
         }
@@ -711,8 +724,9 @@ namespace invk {
         Filter() {
           if (!this.filtering) return;
 
-          this.filter();
-          this.renderCombos();
+          if (this.filter()) {
+            this.renderCombos();
+          }
         }
 
         ResetFilters() {
@@ -752,25 +766,24 @@ namespace invk {
         }
       }
 
-      const comboPanelID = (c: Combo.Combo) => `${COMBO_PANEL_ID_PREFIX}${c.id}`;
+      const comboPanelID = (c: Combo) => `${COMBO_PANEL_ID_PREFIX}${c.id}`;
 
-      const propertyFilterAttr = <K extends keyof Combo.Properties>(
-        k: K,
-      ): `filter${Capitalize<K>}` => _.camelCase(`filter_${k}`) as `filter${Capitalize<K>}`;
+      const propertyFilterAttr = <K extends keyof Properties>(k: K): `filter${Capitalize<K>}` =>
+        camelCase(`filter_${k}`) as `filter${Capitalize<K>}`;
 
-      const propertyFilterOptionID = <K extends keyof Combo.Properties>(
+      const propertyFilterOptionID = <K extends keyof Properties>(
         prop: K,
-        value?: Combo.Properties[K],
+        value?: Properties[K],
       ): string => {
-        const valueID = value == null ? PROPERTY_FILTER_OPTION_DEFAULT : _.toString(value);
+        const valueID = value == null ? PROPERTY_FILTER_OPTION_DEFAULT : value.toString();
 
         return pascalCase(`picker_filter_${prop}_${valueID}`);
       };
 
-      const setPropertyFilterAttr = <K extends keyof Combo.Properties>(
+      const setPropertyFilterAttr = <K extends keyof Properties>(
         panel: Panel,
         prop: K,
-        value?: Combo.Properties[K],
+        value?: Properties[K],
       ): void => {
         switch (prop) {
           case Property.Stance:
@@ -808,7 +821,7 @@ namespace invk {
         }
       };
 
-      const getPropertyFilterAttr = <K extends keyof Combo.Properties>(panel: Panel, prop: K) => {
+      const getPropertyFilterAttr = <K extends keyof Properties>(panel: Panel, prop: K) => {
         switch (prop) {
           case Property.Stance:
             return panel.GetAttributeString(

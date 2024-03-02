@@ -1,25 +1,23 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace Popups {
-      export namespace PopupGameInfo {
-        export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace popups {
+      export namespace game_info {
+        const {
+          constants: { META },
+          sequence: { ParallelSequence },
+        } = GameUI.CustomUIConfig().invk;
+
+        import Component = invk.component.Component;
+
+        export interface Elements extends component.Elements {
           versionLabel: LabelPanel;
           btnClose: Button;
           btnOpenHomepage: Button;
           btnOpenChangelog: Button;
         }
 
-        export type Inputs = never;
-        export type Outputs = never;
-        export type Params = never;
-
-        const {
-          Const: { META },
-          Sequence: { ParallelSequence },
-        } = GameUI.CustomUIConfig().invk;
-
-        export class PopupGameInfo extends Component.Component<Elements, Inputs, Outputs, Params> {
+        export class PopupGameInfo extends Component<Elements> {
           constructor() {
             super({
               elements: {

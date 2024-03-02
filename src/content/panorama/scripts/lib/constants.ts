@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Const {
+  export namespace constants {
     export const META = {
       VERSION: "v0.5.2",
       URL: "https://github.com/13k/invokation",

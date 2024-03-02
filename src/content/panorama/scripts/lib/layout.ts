@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Layout {
-    export enum ID {
+  export namespace layout {
+    export enum LayoutID {
       Challenge = "challenge",
       ChallengeComboStep = "challenge_combo_step",
       CombatLog = "combat_log",
@@ -29,9 +29,9 @@ namespace invk {
       TooltipStatBranch = "tooltips/tooltip_stat_branch",
     }
 
-    export type Path<K extends ID> = `file://{resources}/layout/custom_game/${K}.xml`;
+    export type Path<K extends LayoutID> = `file://{resources}/layout/custom_game/${K}.xml`;
 
-    export function path<K extends ID>(id: K): Path<K> {
+    export function path<K extends LayoutID>(id: K): Path<K> {
       return `file://{resources}/layout/custom_game/${id}.xml`;
     }
   }

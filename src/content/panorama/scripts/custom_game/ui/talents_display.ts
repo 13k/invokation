@@ -1,56 +1,47 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace UI {
-      export namespace TalentsDisplay {
-        type TTalentLevel = typeof Dota2.Talent.Level;
+  export namespace components {
+    export namespace ui {
+      export namespace talents_display {
+        const {
+          dota2: { Talents, TalentLevel, TalentSide },
+          panorama: { UIEvent },
+          sequence: { ParallelSequence },
+        } = GameUI.CustomUIConfig().invk;
+
+        import Component = invk.component.Component;
+        import TalentSelection = invk.dota2.TalentSelection;
+
+        type TTalentLevel = typeof dota2.TalentLevel;
 
         export type Elements = {
           [K in keyof TTalentLevel as `statRow${TTalentLevel[K]}`]: Panel;
         };
 
-        export interface Inputs extends Component.Inputs {
+        export interface Inputs extends component.Inputs {
           Reset: undefined;
           Select: {
             heroID: HeroID;
-            talents: Dota2.Talent.Selection;
+            talents: TalentSelection;
           };
         }
-
-        export type Outputs = never;
-        export type Params = never;
-
-        const {
-          Panorama: { UIEvent },
-          Sequence: { ParallelSequence },
-          Vendor: { lodash: _ },
-          Dota2: {
-            Talent: { Level, Side, isSelected },
-          },
-        } = GameUI.CustomUIConfig().invk;
-
-        /*
-        enum PanelID {
-          Tooltip = "TalentDisplayTooltip",
-        }
-        */
 
         enum CssClass {
           BranchSelectedLeft = "LeftBranchSelected",
           BranchSelectedRight = "RightBranchSelected",
         }
 
-        const LEVELS = [Level.Tier1, Level.Tier2, Level.Tier3, Level.Tier4];
+        const LEVELS = [TalentLevel.Tier1, TalentLevel.Tier2, TalentLevel.Tier3, TalentLevel.Tier4];
 
         const BranchRowClass = {
-          [Side.Left]: CssClass.BranchSelectedLeft,
-          [Side.Right]: CssClass.BranchSelectedRight,
+          [TalentSide.Left]: CssClass.BranchSelectedLeft,
+          [TalentSide.Right]: CssClass.BranchSelectedRight,
         };
 
-        export class TalentsDisplay extends Component.Component<Elements, Inputs, Outputs, Params> {
-          selected?: Dota2.Talent.Selection;
-          heroID?: HeroID;
-          tooltipID?: string;
+        export class TalentsDisplay extends Component<Elements, Inputs> {
+          talents: dota2.Talents | undefined;
+          heroID: HeroID | undefined;
+          tooltipID: string | undefined;
 
           constructor() {
             super({
@@ -67,17 +58,17 @@ namespace invk {
                 },
               },
               inputs: {
-                Select: (payload: Inputs["Select"]) => this.onSelect(payload),
-                Reset: (payload: Inputs["Reset"]) => this.onReset(payload),
+                Select: (payload) => this.onSelect(payload),
+                Reset: (payload) => this.onReset(payload),
               },
             });
 
             this.debug("init");
           }
 
-          // ----- I/O -----
+          // ----- Helpers -----
 
-          row(level: Dota2.Talent.Level) {
+          row(level: dota2.TalentLevel) {
             return this.elements[`statRow${level}`];
           }
 
@@ -87,7 +78,7 @@ namespace invk {
             this.debug("onSelect()", payload);
 
             this.heroID = payload.heroID;
-            this.selected = payload.talents;
+            this.talents = new Talents(payload.talents);
 
             this.render();
           }
@@ -99,21 +90,19 @@ namespace invk {
 
           // ----- Actions -----
 
-          selectLevelAction(level: Dota2.Talent.Level, selected: Dota2.Talent.Selection) {
-            return _.reduce(
-              Object.entries(Side),
-              (seq, [, side]) =>
-                isSelected(level, side, selected)
+          selectLevelAction(level: dota2.TalentLevel) {
+            return Object.values(TalentSide).reduce(
+              (seq, side) =>
+                this.talents?.isSelected(level, side)
                   ? seq.AddClass(this.row(level), BranchRowClass[side])
                   : seq.RemoveClass(this.row(level), BranchRowClass[side]),
               new ParallelSequence(),
             );
           }
 
-          resetLevelAction(level: Dota2.Talent.Level) {
-            return _.reduce(
-              Object.entries(Side),
-              (seq, [, side]) => seq.RemoveClass(this.row(level), BranchRowClass[side]),
+          resetLevelAction(level: dota2.TalentLevel) {
+            return Object.values(TalentSide).reduce(
+              (seq, side) => seq.RemoveClass(this.row(level), BranchRowClass[side]),
               new ParallelSequence(),
             );
           }
@@ -121,23 +110,25 @@ namespace invk {
           // ----- Action runners -----
 
           render() {
-            if (this.heroID == null || this.selected == null) {
+            if (this.heroID == null || this.talents == null) {
               this.warn("tried to render() without hero ID or selected talents");
               return;
             }
 
-            const { heroID, selected } = this;
-
-            const actions = _.map(LEVELS, (level) => this.selectLevelAction(level, selected));
+            const heroID = this.heroID;
+            const actions = LEVELS.map((level) => this.selectLevelAction(level));
             const seq = new ParallelSequence().Action(...actions);
 
-            this.debugFn(() => ["select()", { heroID, selected, actions: seq.size() }]);
+            this.debugFn(() => [
+              "select()",
+              { heroID, selected: this.talents?.value, actions: seq.size() },
+            ]);
 
             seq.Run();
           }
 
           reset() {
-            const actions = _.map(LEVELS, (level) => this.resetLevelAction(level));
+            const actions = LEVELS.map((level) => this.resetLevelAction(level));
             const seq = new ParallelSequence().Action(...actions);
 
             this.debugFn(() => ["reset()", { actions: seq.size() }]);
@@ -148,37 +139,15 @@ namespace invk {
           // ----- UI methods -----
 
           ShowTooltip() {
-            if (this.heroID == null || this.selected == null) {
+            if (this.heroID == null || this.talents == null) {
               this.warn("tried to ShowTooltip() without hero ID or selected talents");
               return;
             }
-
-            /*
-            this.tooltipID = _.uniqueId(PanelID.Tooltip);
-
-            const { heroID, selected, tooltipID } = this;
-            const params = { heroID, selected };
-
-            this.showTooltip(this.panel, Layout.ID.TooltipStatBranch, tooltipID, params);
-            this.debugFn(() => ["ShowTooltip()", { tooltipID, params }]);
-            */
 
             this.dispatch(this.panel, UIEvent.SHOW_HERO_STAT_BRANCH_TOOLTIP, this.heroID);
           }
 
           HideTooltip() {
-            /*
-            if (!this.tooltipID) return;
-
-            const { tooltipID } = this;
-
-            this.hideTooltip(this.panel, tooltipID);
-
-            this.tooltipID = undefined;
-
-            this.debugFn(() => ["HideTooltip()", { tooltipID }]);
-            */
-
             this.dispatch(this.panel, UIEvent.HIDE_HERO_STAT_BRANCH_TOOLTIP);
           }
         }

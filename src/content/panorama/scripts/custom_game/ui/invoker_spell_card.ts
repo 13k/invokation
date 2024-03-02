@@ -1,29 +1,27 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace UI {
-      export namespace InvokerSpellCard {
-        export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace ui {
+      export namespace invoker_spell_card {
+        const {
+          l10n,
+          panorama: { createPanelSnippet },
+          dota2: {
+            invoker: { Ability },
+          },
+        } = GameUI.CustomUIConfig().invk;
+
+        import Component = invk.component.Component;
+
+        export interface Elements extends component.Elements {
           rows: Panel;
         }
 
-        export type Inputs = never;
-
-        export interface Outputs extends Component.Outputs {
+        export interface Outputs extends component.Outputs {
           OnSelect: {
             ability: string;
           };
         }
-
-        export type Params = never;
-
-        const {
-          L10n,
-          Panorama: { createPanelSnippet },
-          Dota2: {
-            Invoker: { Ability },
-          },
-        } = GameUI.CustomUIConfig().invk;
 
         enum Snippet {
           Ability = "ability",
@@ -47,7 +45,7 @@ namespace invk {
 
         interface Column {
           color: CssClass;
-          abilities: Dota2.Invoker.Ability[];
+          abilities: dota2.invoker.Ability[];
         }
 
         const GRID: Row[] = [
@@ -68,12 +66,7 @@ namespace invk {
           [undefined, { color: CssClass.QWE, abilities: [Ability.DeafeningBlast] }, undefined],
         ];
 
-        export class InvokerSpellCard extends Component.Component<
-          Elements,
-          Inputs,
-          Outputs,
-          Params
-        > {
+        export class InvokerSpellCard extends Component<Elements, never, Outputs> {
           constructor() {
             super({
               elements: {
@@ -89,7 +82,7 @@ namespace invk {
             for (let i = 0; i < GRID.length; i++) {
               const row = GRID[i];
 
-              if (!row) throw "unreachable";
+              if (row == null) throw "unreachable";
 
               const rowID = `row${i}`;
               const rowPanel = $.CreatePanel("Panel", this.elements.rows, rowID);
@@ -99,19 +92,19 @@ namespace invk {
               for (let j = 0; j < row.length; j++) {
                 const col = row[j];
 
-                if (!col) continue;
+                if (col == null) continue;
 
                 const colID = `row${i}-col${j}`;
                 const colPanel = $.CreatePanel("Panel", rowPanel, colID);
 
                 colPanel.AddClass(CssClass.Column);
 
-                if (!col.abilities) continue;
+                if (col.abilities == null) continue;
 
                 for (let k = 0; k < col.abilities.length; k++) {
                   const ability = col.abilities[k];
 
-                  if (!ability) throw "unreachable";
+                  if (ability == null) throw "unreachable";
 
                   this.createAbilityPanel(colPanel, col, ability);
                 }
@@ -120,7 +113,7 @@ namespace invk {
           }
 
           createAbilityPanel(parent: Panel, col: Column, ability: string) {
-            const loc = L10n.abilityTooltip(ability);
+            const loc = l10n.abilityTooltip(ability);
             const panel = createPanelSnippet(parent, ability, Snippet.Ability);
 
             if (col.color) {
@@ -131,17 +124,17 @@ namespace invk {
 
             const button = panel.FindChild(PanelID.AbilityButton);
 
-            if (!button) {
+            if (button == null) {
               throw new Error(`Could not find Button for ability ${ability}`);
             }
 
             button.SetPanelEvent("onactivate", () => {
-              this.runOutput("OnSelect", { ability });
+              this.output("OnSelect", { ability });
             });
 
             const iconPanel = panel.FindChildTraverse(PanelID.AbilityIcon);
 
-            if (!iconPanel) {
+            if (iconPanel == null) {
               throw new Error(`Could not find AbilityImage panel for ability ${ability}`);
             }
 

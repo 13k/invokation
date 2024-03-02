@@ -1,9 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace Popups {
-      export namespace PopupTextEntry {
-        export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace popups {
+      export namespace text_entry {
+        const {
+          custom_events: { GameEvent },
+        } = GameUI.CustomUIConfig().invk;
+
+        import Component = invk.component.Component;
+        import ParamType = invk.component.ParamType;
+
+        export interface Elements extends component.Elements {
           textEntry: LabelPanel;
           image: ImagePanel;
           econItemImage: EconItemPanel;
@@ -14,10 +21,7 @@ namespace invk {
           btnCancel: Button;
         }
 
-        export type Inputs = never;
-        export type Outputs = never;
-
-        export interface Params extends Component.Params {
+        export interface Params extends component.Params {
           [Param.Channel]: string;
           [Param.Title]?: string;
           [Param.Body]?: string;
@@ -28,12 +32,6 @@ namespace invk {
           [Param.Ability]?: string;
           [Param.Item]?: string;
         }
-
-        const {
-          CustomEvents: { Name: CustomEventName },
-        } = GameUI.CustomUIConfig().invk;
-
-        const { ParamType } = Component;
 
         enum Param {
           Channel = "channel",
@@ -61,7 +59,7 @@ namespace invk {
           Body = "body",
         }
 
-        export class PopupTextEntry extends Component.Component<Elements, Inputs, Outputs, Params> {
+        export class PopupTextEntry extends Component<Elements, never, never, Params> {
           constructor() {
             super({
               elements: {
@@ -158,38 +156,38 @@ namespace invk {
           }
 
           hasBody(): this is { body: string } {
-            return this.body != null && this.body !== "";
+            return (this.body?.length ?? 0) > 0;
           }
 
           hasImage(): this is { image: string } {
-            return this.image != null && this.image !== "";
+            return (this.image?.length ?? 0) > 0;
           }
 
           hasEconItem(): this is { econItem: number } {
-            return this.econItem != null && this.econItem > 0;
+            return (this.econItem ?? 0) > 0;
           }
 
           hasHeroID(): this is { heroID: number } {
-            return this.heroID != null && this.heroID > 0;
+            return (this.heroID ?? 0) > 0;
           }
 
           hasHero(): this is { hero: string } {
-            return this.hero != null && this.hero !== "";
+            return (this.hero?.length ?? 0) > 0;
           }
 
           hasAbility(): this is { ability: string } {
-            return this.ability != null && this.ability !== "";
+            return (this.ability?.length ?? 0) > 0;
           }
 
           hasItem(): this is { item: string } {
-            return this.item != null && this.item !== "";
+            return (this.item?.length ?? 0) > 0;
           }
 
           render() {
             let iconClass: CssClass | null = null;
 
-            this.panel.SetDialogVariable(DialogVariable.Title, this.title || "");
-            this.panel.SetDialogVariable(DialogVariable.Body, this.body || "");
+            this.panel.SetDialogVariable(DialogVariable.Title, this.title ?? "");
+            this.panel.SetDialogVariable(DialogVariable.Body, this.body ?? "");
 
             if (this.hasImage()) {
               this.elements.image.SetImage(this.image);
@@ -241,7 +239,7 @@ namespace invk {
             const payload = { channel, text };
 
             this.debug("Submit()", payload);
-            this.sendClientSide(CustomEventName.POPUP_TEXT_ENTRY_SUBMIT, payload);
+            this.sendClientSide(GameEvent.POPUP_TEXT_ENTRY_SUBMIT, payload);
             this.Close();
           }
         }

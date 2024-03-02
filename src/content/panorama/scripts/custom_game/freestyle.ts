@@ -1,8 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace Freestyle {
-      export interface Elements extends Component.Elements {
+      const {
+        combo: { StaticID },
+        custom_events: { CustomGameEvent },
+        layout: { LayoutID },
+        panorama: { SoundEvent },
+        sequence: { Sequence, ParallelSequence, RemoveClassAction, RunFunctionAction },
+      } = GameUI.CustomUIConfig().invk;
+
+      import ComboScore = invk.components.ComboScore.ComboScore;
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         score: Panel;
         btnLevelUp: Button;
         btnLevelMax: Button;
@@ -10,19 +21,6 @@ namespace invk {
         btnFullRestart: Button;
         btnStop: Button;
       }
-
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        Combo: { StaticID },
-        CustomEvents: { Name: CustomEventName },
-        Layout: { ID: LayoutID },
-        Panorama: { SoundEvent },
-        Sequence: { Sequence, ParallelSequence, RemoveClassAction, RunFunctionAction },
-        Vendor: { lodash: _ },
-      } = GameUI.CustomUIConfig().invk;
 
       enum PanelID {
         ComboScore = "ComboScore",
@@ -37,8 +35,8 @@ namespace invk {
         StartDelay = 0.5,
       }
 
-      export class Freestyle extends Component.Component<Elements, Inputs, Outputs, Params> {
-        comboScore: ComboScore.ComboScore;
+      export class Freestyle extends Component<Elements> {
+        comboScore: ComboScore;
 
         constructor() {
           super({
@@ -51,9 +49,9 @@ namespace invk {
               btnStop: "BtnStop",
             },
             customEvents: {
-              COMBO_STARTED: (payload) => this.onComboStarted(payload),
-              COMBO_STOPPED: (payload) => this.onComboStopped(payload),
-              COMBO_PROGRESS: (payload) => this.onComboProgress(payload),
+              [CustomGameEvent.COMBO_STARTED]: (payload) => this.onComboStarted(payload),
+              [CustomGameEvent.COMBO_STOPPED]: (payload) => this.onComboStopped(payload),
+              [CustomGameEvent.COMBO_PROGRESS]: (payload) => this.onComboProgress(payload),
             },
             panelEvents: {
               btnLevelUp: { onactivate: () => this.LevelUp() },
@@ -71,7 +69,7 @@ namespace invk {
 
         // --- Event handlers -----
 
-        onComboStarted(payload: CustomEvents.ComboStarted) {
+        onComboStarted(payload: NetworkedData<custom_events.ComboStarted>) {
           if (payload.id !== StaticID.Freestyle) {
             return;
           }
@@ -80,7 +78,7 @@ namespace invk {
           this.start();
         }
 
-        onComboStopped(payload: CustomEvents.ComboStopped) {
+        onComboStopped(payload: NetworkedData<custom_events.ComboStopped>) {
           if (payload.id !== StaticID.Freestyle) {
             return;
           }
@@ -89,7 +87,7 @@ namespace invk {
           this.stop();
         }
 
-        onComboProgress(payload: CustomEvents.ComboProgress) {
+        onComboProgress(payload: NetworkedData<custom_events.ComboProgress>) {
           if (payload.id !== StaticID.Freestyle) {
             return;
           }
@@ -101,15 +99,15 @@ namespace invk {
         // ----- Helpers -----
 
         sendStop() {
-          this.sendServer(CustomEventName.COMBO_STOP, {});
+          this.sendServer(CustomGameEvent.COMBO_STOP, {});
         }
 
         sendRestart(isHardReset: boolean) {
-          this.sendServer(CustomEventName.COMBO_RESTART, { hardReset: isHardReset });
+          this.sendServer(CustomGameEvent.COMBO_RESTART, { hardReset: isHardReset });
         }
 
-        sendLevelUp(payload: CustomEvents.FreestyleHeroLevelUp) {
-          this.sendServer(CustomEventName.FREESTYLE_HERO_LEVEL_UP, payload);
+        sendLevelUp(payload: custom_events.FreestyleHeroLevelUp) {
+          this.sendServer(CustomGameEvent.FREESTYLE_HERO_LEVEL_UP, payload);
         }
 
         createComboScore(parent: Panel) {
@@ -136,11 +134,11 @@ namespace invk {
         // ----- Score actions -----
 
         updateScoreSummaryAction(options: ComboScore.Inputs["UpdateSummary"]) {
-          return new RunFunctionAction(() => this.comboScore.Input("UpdateSummary", options));
+          return new RunFunctionAction(() => this.comboScore.input("UpdateSummary", options));
         }
 
         hideScoreAction() {
-          return new RunFunctionAction(() => this.comboScore.Input("Hide", undefined));
+          return new RunFunctionAction(() => this.comboScore.input("Hide", undefined));
         }
 
         // ----- HUD actions -----
@@ -176,7 +174,7 @@ namespace invk {
           seq.Run();
         }
 
-        progress(metrics: Combo.Metrics) {
+        progress(metrics: combo.Metrics) {
           const options = {
             count: metrics.count || 0,
             endDamage: metrics.damage || 0,
@@ -184,7 +182,7 @@ namespace invk {
 
           const seq = new Sequence().Action(this.updateScoreSummaryAction(options));
 
-          this.debugFn(() => ["progress()", _.assign({ actions: seq.size() }, options)]);
+          this.debugFn(() => ["progress()", { actions: seq.size(), ...options }]);
 
           seq.Run();
         }

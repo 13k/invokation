@@ -1,14 +1,32 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace Viewer {
-      export interface Elements extends Component.Elements {
+      const {
+        l10n,
+        layout,
+        combo: { OrbName },
+        custom_events: { CustomGameEvent, GameEvent },
+        dota2: { invoker: Invoker },
+        sequence: { Sequence, ParallelSequence, RunFunctionAction, NoopAction },
+        singleton: { COMBOS },
+        util: { capitalize },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Combo = invk.combo.Combo;
+      import ComboID = invk.combo.ComboID;
+      import Step = invk.combo.Step;
+
+      import Component = invk.component.Component;
+      import TalentsDisplay = invk.components.ui.talents_display.TalentsDisplay;
+
+      export interface Elements extends component.Elements {
         scrollPanel: Panel;
         propertiesSection: Panel;
         titleLabel: LabelPanel;
         descriptionLabel: LabelPanel;
         sequence: Panel;
-        talents: Components.UI.TalentsDisplay.TalentsDisplay["panel"];
+        talents: TalentsDisplay["panel"];
         orbQuas: AbilityImage;
         orbQuasLabel: LabelPanel;
         orbWex: AbilityImage;
@@ -20,21 +38,6 @@ namespace invk {
         btnPlay: Button;
       }
 
-      export type Inputs = never;
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        L10n,
-        Layout,
-        Combo: { OrbName },
-        CustomEvents: { Name: CustomEventName },
-        Dota2: { Invoker },
-        Sequence: { Sequence, ParallelSequence, RunFunctionAction, NoopAction },
-        Static: { COMBOS },
-        Vendor: { lodash: _ },
-      } = GameUI.CustomUIConfig().invk;
-
       enum PanelID {
         Properties = "ViewerProperties",
       }
@@ -44,9 +47,9 @@ namespace invk {
         OptionalStep = "ComboStepOptional",
       }
 
-      export class Viewer extends Component.Component<Elements, Inputs, Outputs, Params> {
-        combo?: Combo.Combo | undefined;
-        talents: Components.UI.TalentsDisplay.TalentsDisplay;
+      export class Viewer extends Component<Elements> {
+        combo: Combo | undefined;
+        talents: TalentsDisplay;
 
         constructor() {
           super({
@@ -68,8 +71,8 @@ namespace invk {
               btnPlay: "BtnPlay",
             },
             customEvents: {
-              VIEWER_RENDER: (payload) => this.onViewerRender(payload),
-              COMBO_STARTED: (payload) => this.onComboStarted(payload),
+              [GameEvent.VIEWER_RENDER]: (payload) => this.onViewerRender(payload),
+              [CustomGameEvent.COMBO_STARTED]: (payload) => this.onComboStarted(payload),
             },
             panelEvents: {
               btnClose: { onactivate: () => this.Close() },
@@ -81,19 +84,19 @@ namespace invk {
             },
           });
 
-          this.talents = this.load(this.elements.talents, Layout.ID.UITalentsDisplay);
+          this.talents = this.load(this.elements.talents, layout.LayoutID.UITalentsDisplay);
 
           this.debug("init");
         }
 
         // --- Event handlers -----
 
-        onComboStarted(payload: CustomEvents.ComboStarted) {
+        onComboStarted(payload: NetworkedData<custom_events.ComboStarted>) {
           this.debug("onComboStarted()", payload);
           this.close();
         }
 
-        onViewerRender(payload: CustomEvents.ViewerRender) {
+        onViewerRender(payload: NetworkedData<custom_events.ViewerRender>) {
           this.debug("onViewerRender()", payload);
           this.view(payload.id);
         }
@@ -101,56 +104,56 @@ namespace invk {
         // ----- Helpers -----
 
         resetSelectedTalents() {
-          this.talents.Input("Reset", undefined);
+          this.talents.input("Reset", undefined);
         }
 
         selectTalents() {
-          if (!this.combo) {
-            this.warn("tried to selectTalents() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to selectTalents() without combo");
             return;
           }
 
-          this.talents.Input("Select", { heroID: Invoker.HERO_ID, talents: this.combo.talents });
+          this.talents.input("Select", { heroID: Invoker.HERO_ID, talents: this.combo.talents });
         }
 
         startCombo() {
-          if (!this.combo) {
-            this.warn("tried to startCombo() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to startCombo() without combo");
             return;
           }
 
           this.debug("startCombo()", this.combo.id);
-          this.sendServer(CustomEventName.COMBO_START, { id: this.combo.id });
+          this.sendServer(CustomGameEvent.COMBO_START, { id: this.combo.id });
         }
 
-        createStepPanel(parent: Panel, step: Combo.Step) {
-          if (!this.combo) {
-            throw new Error(`Tried to createStepPanel() without combo`);
+        createStepPanel(parent: Panel, step: Step) {
+          if (this.combo == null) {
+            throw new Error("Tried to createStepPanel() without combo");
           }
 
           const id = stepPanelID(step);
-          const component = this.create(Layout.ID.ViewerComboStep, id, parent);
+          const component = this.create(layout.LayoutID.ViewerComboStep, id, parent);
           const { panel } = component;
 
           if (!step.required) {
             panel.AddClass(CssClass.OptionalStep);
           }
 
-          component.Input("SetStep", { combo: this.combo, step: step });
+          component.input("SetStep", { combo: this.combo, step: step });
         }
 
         createPropertiesPanel() {
-          if (!this.combo) {
-            throw new Error(`Tried to createPropertiesPanel() without combo`);
+          if (this.combo == null) {
+            throw new Error("Tried to createPropertiesPanel() without combo");
           }
 
           const component = this.create(
-            Layout.ID.ViewerProperties,
+            layout.LayoutID.ViewerProperties,
             PanelID.Properties,
             this.elements.propertiesSection,
           );
 
-          component.Input("SetCombo", this.combo);
+          component.input("SetCombo", this.combo);
         }
 
         // ----- Actions -----
@@ -164,7 +167,7 @@ namespace invk {
         }
 
         renderAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new Sequence();
           }
 
@@ -178,15 +181,15 @@ namespace invk {
         }
 
         renderInfoAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
           const title = titleHTML(this.combo.l10n.name);
-          const description = L10n.comboAttrName(
+          const description = l10n.comboAttrName(
             this.combo.id,
             "description",
-            L10n.Key.ViewerDescriptionFallback,
+            l10n.Key.ViewerDescriptionFallback,
           );
 
           return new ParallelSequence()
@@ -195,7 +198,7 @@ namespace invk {
         }
 
         renderPropertiesAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
@@ -205,7 +208,7 @@ namespace invk {
         }
 
         renderTalentsAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
@@ -215,11 +218,11 @@ namespace invk {
         }
 
         renderOrbsAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
-          const orbs = _.map(this.combo.orbs, _.toString) as [string, string, string];
+          const orbs = this.combo.orbs.map((n) => n.toString()) as [string, string, string];
 
           return new ParallelSequence()
             .SetAttribute(this.elements.orbQuasLabel, "text", orbs[0])
@@ -228,28 +231,28 @@ namespace invk {
         }
 
         renderSequenceAction() {
-          if (!this.combo) {
+          if (this.combo == null) {
             return new NoopAction();
           }
 
-          const actions = _.map(this.combo.sequence, (step) =>
+          const actions = this.combo.sequence.map((step) =>
             this.createStepPanelAction(this.elements.sequence, step),
           );
 
           return new Sequence().RemoveChildren(this.elements.sequence).Action(...actions);
         }
 
-        createStepPanelAction(parent: Panel, step: Combo.Step) {
+        createStepPanelAction(parent: Panel, step: Step) {
           return new RunFunctionAction(this.createStepPanel.bind(this), parent, step);
         }
 
         // ----- Action runners -----
 
-        view(id: Combo.ID) {
+        view(id: ComboID) {
           this.combo = COMBOS.get(id);
 
-          if (!this.combo) {
-            this.warn("tried to view() an invalid combo", { id });
+          if (this.combo == null) {
+            this.warn("Tried to view() an invalid combo", { id });
             return;
           }
 
@@ -279,9 +282,9 @@ namespace invk {
           this.startCombo();
         }
 
-        ShowOrbTooltip(orb: Combo.OrbName) {
-          if (!this.combo) {
-            this.warn("tried to ShowOrbTooltip() without combo");
+        ShowOrbTooltip(orb: combo.OrbName) {
+          if (this.combo == null) {
+            this.warn("Tried to ShowOrbTooltip() without combo");
             return;
           }
 
@@ -292,10 +295,10 @@ namespace invk {
         }
       }
 
-      const stepPanelID = (step: Combo.Step) => `combo_step_${step.id}_${step.name}`;
+      const stepPanelID = (step: Step) => `combo_step_${step.id}_${step.name}`;
 
-      const orbAttrName = <K extends Combo.OrbName>(orb: K): `orb${Capitalize<K>}` =>
-        `orb${_.capitalize(orb)}` as `orb${Capitalize<K>}`;
+      const orbAttrName = <K extends combo.OrbName>(orb: K): `orb${Capitalize<K>}` =>
+        `orb${capitalize(orb)}`;
 
       const titleHTML = (s: string) => {
         const [title, ...subtitleParts] = s.split(" - ");

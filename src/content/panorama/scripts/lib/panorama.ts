@@ -1,12 +1,9 @@
-/// <reference path="./vendor/lodash.js" />
 /// <reference path="dota2.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Panorama {
-    const {
-      Dota2: { isItemAbility },
-    } = invk;
+  export namespace panorama {
+    import isItemAbility = invk.dota2.isItemAbility;
 
     export enum PanelType {
       Panel = "Panel",
@@ -71,6 +68,8 @@ namespace invk {
       CustomLayoutPanel = "CustomLayoutPanel",
     }
 
+    export type PanelEventListener = () => void;
+
     export enum UIEvent {
       EXTERNAL_BROWSER_GO_TO_URL = "ExternalBrowserGoToURL",
       PLAY_SOUND = "PlaySoundEffect",
@@ -93,6 +92,8 @@ namespace invk {
       SCENE_PANEL_LOADED = "DOTAScenePanelSceneLoaded",
     }
 
+    export type UIEventListener = () => void;
+
     export enum SoundEvent {
       Death = "ui.death_stinger",
       InvokationFreestyleStart = "Invokation.Freestyle.Start",
@@ -104,8 +105,7 @@ namespace invk {
       UIRolloverUp = "ui_rollover_md_up",
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    export type SerializableParams = string | Record<string, any>;
+    export type SerializableParams = string | Record<string, unknown>;
 
     export type AbilityTooltipParams =
       | { entityIndex: number }
@@ -151,6 +151,16 @@ namespace invk {
       return panel;
     }
 
+    export function createLabel(parent: Panel, id: string, text?: string): LabelPanel {
+      const panel = $.CreatePanel(PanelType.Label, parent, id);
+
+      if (text != null) {
+        panel.text = text;
+      }
+
+      return panel;
+    }
+
     export function createAbilityImage(
       parent: Panel,
       id: string,
@@ -180,14 +190,23 @@ namespace invk {
     }
 
     export function serializeParams(params: SerializableParams): string {
-      if (_.isString(params)) {
+      if (typeof params === "string") {
         return params;
       }
 
-      return _.chain(params)
-        .map((value, key) => `${key}=${value}`)
-        .join("&")
-        .value();
+      return Object.entries(params)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
+    }
+
+    export type DebugPanel = string | { id: string; type: string; layoutfile: string };
+
+    export function debugPanel(panel: Panel | undefined): DebugPanel {
+      if (panel == null) return "<undefined>";
+
+      const { id, type, layoutfile } = panel;
+
+      return { id, type, layoutfile };
     }
   }
 }

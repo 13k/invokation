@@ -1,26 +1,26 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
-    export namespace Popups {
-      export namespace PopupItemPicker {
-        export interface Elements extends Component.Elements {
+  export namespace components {
+    export namespace popups {
+      export namespace item_picker {
+        const {
+          layout,
+          custom_events: { GameEvent },
+        } = GameUI.CustomUIConfig().invk;
+
+        import item_picker = invk.components.ui.item_picker;
+
+        import Component = invk.component.Component;
+        import ParamType = invk.component.ParamType;
+
+        export interface Elements extends component.Elements {
           itemPickerContainer: Panel;
           btnClose: Button;
         }
 
-        export type Inputs = never;
-        export type Outputs = never;
-
-        export interface Params extends Component.Params {
+        export interface Params extends component.Params {
           channel: string;
         }
-
-        const {
-          Layout,
-          CustomEvents: { Name: CustomEventName },
-        } = GameUI.CustomUIConfig().invk;
-
-        const { ParamType } = Component;
 
         enum PanelID {
           ItemPicker = "PopupItemPickerUIItemPicker",
@@ -29,14 +29,9 @@ namespace invk {
         const INVALID_CHANNEL = "<invalid>";
         const INVALID_ITEM = "<invalid>";
 
-        export class PopupItemPicker extends Component.Component<
-          Elements,
-          Inputs,
-          Outputs,
-          Params
-        > {
-          selected: string;
-          itemPicker?: Components.UI.ItemPicker.ItemPicker;
+        export class PopupItemPicker extends Component<Elements, never, never, Params> {
+          selected: string = INVALID_ITEM;
+          itemPicker: item_picker.ItemPicker | undefined;
 
           constructor() {
             super({
@@ -57,8 +52,6 @@ namespace invk {
               },
             });
 
-            this.selected = INVALID_ITEM;
-
             this.debug("init");
           }
 
@@ -69,7 +62,7 @@ namespace invk {
             this.render();
           }
 
-          onItemSelected(payload: Components.UI.ItemPicker.Outputs["OnSelect"]) {
+          onItemSelected(payload: item_picker.Outputs["OnSelect"]) {
             this.debug("onItemSelected()", payload);
 
             this.selected = payload.item;
@@ -81,12 +74,12 @@ namespace invk {
 
           render() {
             this.itemPicker = this.create(
-              Layout.ID.UIItemPicker,
+              layout.LayoutID.UIItemPicker,
               PanelID.ItemPicker,
               this.elements.itemPickerContainer,
             );
 
-            this.itemPicker.Outputs({
+            this.itemPicker.registerOutputs({
               OnSelect: this.onItemSelected.bind(this),
             });
 
@@ -108,7 +101,7 @@ namespace invk {
             const payload = { channel, item };
 
             this.debug("Submit()", payload);
-            this.sendClientSide(CustomEventName.POPUP_ITEM_PICKER_SUBMIT, payload);
+            this.sendClientSide(GameEvent.POPUP_ITEM_PICKER_SUBMIT, payload);
             this.Close();
           }
         }

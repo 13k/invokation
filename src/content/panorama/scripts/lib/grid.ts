@@ -1,12 +1,9 @@
-/// <reference path="./vendor/lodash.js" />
-/// <reference path="./callbacks.ts" />
+/// <reference path="callbacks.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Grid {
-    const {
-      Callbacks: { Callbacks },
-    } = invk;
+  export namespace grid {
+    import Callbacks = invk.callbacks.Callbacks;
 
     enum Event {
       RowChange = "rowChange",
@@ -16,11 +13,11 @@ namespace invk {
       [Event.RowChange]: number;
     }
 
-    type Callbacks = Callbacks.Listeners<Payloads>;
+    type Listeners = invk.callbacks.Listeners<Payloads>;
 
     export class Grid<T> {
       private data: T[][] = [];
-      private cb: Callbacks.Callbacks<Payloads>;
+      private cb: Callbacks<Payloads>;
 
       constructor(private width: number) {
         this.cb = new Callbacks();
@@ -53,14 +50,14 @@ namespace invk {
         return this.row * this.width + this.column + 1;
       }
 
-      onRowChange(cb: Callbacks[Event.RowChange]): void {
+      onRowChange(cb: Listeners[Event.RowChange]): void {
         this.cb.on(Event.RowChange, cb);
       }
 
       add(element: T): this {
         let row = this.getRow(-1);
 
-        if (!row || row.length === this.width) {
+        if (row == null || row.length === this.width) {
           row = this.addRow();
         }
 
@@ -70,17 +67,15 @@ namespace invk {
       }
 
       getRow(i: number): T[] | undefined {
-        return _.nth(this.data, i);
+        return this.data.at(i);
       }
 
       get(i: number, j: number): T | undefined {
         const row = this.getRow(i);
 
-        if (!row) {
-          return row;
-        }
+        if (row == null) return row;
 
-        return _.nth(row, j);
+        return row.at(j);
       }
 
       clear(): void {

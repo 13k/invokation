@@ -1,14 +1,19 @@
-/// <reference path="./vendor/lodash.js" />
 /// <reference path="combo.ts" />
 /// <reference path="util.ts" />
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace L10n {
-    const {
-      Combo: { Property },
-      Util: { prefixer },
-    } = invk;
+  export namespace l10n {
+    import ComboID = invk.combo.ComboID;
+    import ComboL10n = invk.combo.ComboL10n;
+    import Properties = invk.combo.Properties;
+    import PropertiesL10n = invk.combo.PropertiesL10n;
+    import Property = invk.combo.Property;
+    import StepID = invk.combo.StepID;
+    import prefixOnce = invk.util.prefixOnce;
+    import snakeCase = invk.util.snakeCase;
+
+    const L = $.Localize;
 
     export enum Key {
       ViewerDescriptionFallback = "invokation_viewer_description_lorem",
@@ -23,59 +28,46 @@ namespace invk {
     export enum KeyPrefix {
       Combo = "invokation_combo",
       ComboProperties = "invokation_combo_properties",
-      ShopGroup = "DOTA_",
-      ShopCategory = "DOTA_SUBSHOP_",
       AbilityTooltip = "DOTA_Tooltip_ability_",
     }
 
     const KEY_PARAM_SEP = "__";
 
-    export function key(k: string): string {
-      return prefixer(k, "#");
+    export function toKey(name: string): string {
+      return prefixOnce(name, "#");
     }
 
     export function pKey(...parts: string[]): string {
-      return key(parts.join(KEY_PARAM_SEP));
-    }
-
-    export function shopGroupKey(group: string): string {
-      return key(`${KeyPrefix.ShopGroup}${_.capitalize(group)}`);
-    }
-
-    export function shopCategoryKey(category: string): string {
-      return key(`${KeyPrefix.ShopCategory}${_.toUpper(category)}`);
+      return toKey(parts.join(KEY_PARAM_SEP));
     }
 
     export function abilityTooltipKey(ability: string): string {
-      return key(`${KeyPrefix.AbilityTooltip}${ability}`);
+      return toKey(KeyPrefix.AbilityTooltip + ability);
     }
 
-    export function comboKey<K extends keyof Combo.ComboL10n>(
-      id: Combo.ID,
-      attr: K | Combo.StepID,
-    ): string {
-      return pKey(KeyPrefix.Combo, id, _.snakeCase(_.toString(attr)));
+    export function comboKey<K extends keyof ComboL10n>(id: ComboID, attr: K | StepID): string {
+      return pKey(KeyPrefix.Combo, id, snakeCase(attr.toString()));
     }
 
-    export function comboPropKey<K extends keyof Combo.Properties>(
+    export function comboPropKey<K extends keyof Properties>(
       prop: K,
-      value: Combo.Properties[K],
+      value: Properties[K],
     ): string {
-      return pKey(KeyPrefix.ComboProperties, _.snakeCase(prop), _.toString(value));
+      return pKey(KeyPrefix.ComboProperties, snakeCase(prop), value.toString());
     }
 
-    export function l(
-      k: string,
-      { fk, panel }: { fk?: string | undefined; panel?: Panel | undefined } = {},
-    ): string {
-      const loc = (k: string) => (panel ? $.Localize(k, panel) : $.Localize(k));
+    export interface LocalizeOptions {
+      fk?: string | undefined;
+      panel?: Panel | undefined;
+    }
 
-      k = key(k);
+    export function l(keyName: string, { fk, panel }: LocalizeOptions = {}): string {
+      const loc = (key: string): string => (panel ? L(key, panel) : L(key));
+      const key = toKey(keyName);
+      let text = loc(keyName);
 
-      let text = loc(k);
-
-      if (fk && text === k) {
-        fk = key(fk);
+      if (fk && text === key) {
+        fk = toKey(fk);
         text = loc(fk);
       }
 
@@ -86,42 +78,30 @@ namespace invk {
       return l(pKey(...parts));
     }
 
-    export function comboAttrName<K extends keyof Combo.ComboL10n>(
-      id: Combo.ID,
-      attr: K | Combo.StepID,
+    export function comboAttrName<K extends keyof ComboL10n>(
+      id: ComboID,
+      attr: K | StepID,
       fk?: string,
     ): string {
       return l(comboKey(id, attr), { fk });
     }
 
-    export function comboPropValue<K extends keyof Combo.Properties>(
+    export function comboPropValue<K extends keyof Properties>(
       prop: K,
-      value: Combo.Properties[K],
+      value: Properties[K],
     ): string {
       return l(comboPropKey(prop, value));
     }
 
-    export function comboProp<K extends keyof Combo.Properties>(
-      combo: Combo.Properties,
-      prop: K,
-    ): string {
+    export function comboProp<K extends keyof Properties>(combo: Properties, prop: K): string {
       return comboPropValue(prop, combo[prop]);
     }
 
-    export function comboProps(combo: Combo.Properties): Combo.PropertiesL10n {
-      return _.transform(
-        Property,
-        (props, p) => (props[p] = comboProp(combo, p)),
-        {} as Combo.PropertiesL10n,
-      );
-    }
-
-    export function shopGroup(group: string): string {
-      return l(shopGroupKey(group));
-    }
-
-    export function shopCategory(category: string): string {
-      return l(shopCategoryKey(category));
+    export function comboProps(combo: Properties): PropertiesL10n {
+      return Object.values(Property).reduce((props, prop) => {
+        props[prop] = comboProp(combo, prop);
+        return props;
+      }, {} as PropertiesL10n);
     }
 
     export function abilityTooltip(ability: string, panel?: Panel): string {

@@ -1,8 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace invk {
-  export namespace Components {
+  export namespace components {
     export namespace ViewerProperties {
-      export interface Elements extends Component.Elements {
+      const {
+        sequence: { Sequence, ParallelSequence, NoopAction },
+      } = GameUI.CustomUIConfig().invk;
+
+      import Combo = invk.combo.Combo;
+      import Component = invk.component.Component;
+
+      export interface Elements extends component.Elements {
         heroLevelLabel: LabelPanel;
         specialtyLabel: LabelPanel;
         stanceLabel: LabelPanel;
@@ -10,17 +17,9 @@ namespace invk {
         difficultyRating: Panel;
       }
 
-      export interface Inputs extends Component.Inputs {
-        SetCombo: Combo.Combo;
+      export interface Inputs extends component.Inputs {
+        SetCombo: Combo;
       }
-
-      export type Outputs = never;
-      export type Params = never;
-
-      const {
-        Sequence: { Sequence, ParallelSequence, NoopAction },
-        Vendor: { lodash: _ },
-      } = GameUI.CustomUIConfig().invk;
 
       enum DVar {
         HeroLevel = "hero_level",
@@ -32,8 +31,8 @@ namespace invk {
 
       const ratingCssClass = (value: number) => `rating_${value}`;
 
-      export class ViewerProperties extends Component.Component<Elements, Inputs, Outputs, Params> {
-        combo?: Combo.Combo;
+      export class ViewerProperties extends Component<Elements, Inputs> {
+        combo: Combo | undefined;
 
         constructor() {
           super({
@@ -45,7 +44,7 @@ namespace invk {
               difficultyRating: "ViewerPropertiesDifficultyRating",
             },
             inputs: {
-              SetCombo: (payload: Inputs["SetCombo"]) => this.setCombo(payload),
+              SetCombo: (payload) => this.setCombo(payload),
             },
           });
 
@@ -61,9 +60,7 @@ namespace invk {
         // --- Actions ---
 
         setVariablesAction() {
-          if (!this.combo) {
-            return new NoopAction();
-          }
+          if (this.combo == null) return new NoopAction();
 
           return new ParallelSequence()
             .SetDialogVariableInt(this.panel, DVar.HeroLevel, this.combo.heroLevel)
@@ -74,20 +71,16 @@ namespace invk {
         }
 
         setAttributesAction() {
-          if (!this.combo) {
-            return new NoopAction();
-          }
+          if (this.combo == null) return new NoopAction();
 
           return new ParallelSequence()
-            .SetAttribute(this.elements.heroLevelLabel, "text", _.toString(this.combo.heroLevel))
+            .SetAttribute(this.elements.heroLevelLabel, "text", this.combo.heroLevel.toString())
             .SetAttribute(this.elements.specialtyLabel, "text", this.combo.l10n.specialty)
             .SetAttribute(this.elements.stanceLabel, "text", this.combo.l10n.stance);
         }
 
         setClassesAction() {
-          if (!this.combo) {
-            return new NoopAction();
-          }
+          if (this.combo == null) return new NoopAction();
 
           return new ParallelSequence()
             .AddClass(this.elements.damageRating, ratingCssClass(this.combo.damageRating))
@@ -97,12 +90,12 @@ namespace invk {
         // ----- Action Runners -----
 
         render() {
-          if (!this.combo) {
-            this.warn("tried to render() without combo");
+          if (this.combo == null) {
+            this.warn("Tried to render() without combo");
             return;
           }
 
-          const { id } = this.combo;
+          const id = this.combo.id;
           const seq = new Sequence()
             .Action(this.setVariablesAction())
             .Action(this.setAttributesAction())
