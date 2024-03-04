@@ -4,6 +4,7 @@
   "runtime.pathStrict": true,
   "runtime.path": ["game/scripts/vscripts/?.lua", "game/scripts/vscripts/?/init.lua"],
   "workspace.ignoreDir": [".busted", ".luarocks", "lua_modules"],
+  "workspace.checkThirdParty": false,
   "workspace.library": [
     ".luacats",
     "game/scripts/vscripts/pl",
