@@ -1,8 +1,7 @@
 local paths = {
   "./game/scripts/vscripts/?.lua",
-  "./game/scripts/vscripts/?/?.lua",
+  "./game/scripts/vscripts/?/init.lua",
   "./spec/?.lua",
-  "./spec/?/?.lua",
   "./spec/?/init.lua",
 }
 
@@ -13,6 +12,14 @@ for _, path in ipairs(paths) do
 end
 
 return {
-  _all = {verbose = true, coverage = true, helper = "./spec/helper.lua", lpath = lpath},
-  default = {ROOT = {"./spec"}, recursive = true},
+  default = {
+    ROOT = { "./spec" },
+    recursive = true,
+  },
+  _all = {
+    verbose = true,
+    coverage = true,
+    helper = "./spec/helper.lua",
+    lpath = lpath,
+  },
 }
