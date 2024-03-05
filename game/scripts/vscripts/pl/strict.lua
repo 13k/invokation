@@ -1,7 +1,7 @@
 --- Checks uses of undeclared global variables.
 -- All global variables must be 'declared' through a regular assignment
 -- (even assigning `nil` will do) in a main chunk before being used
--- anywhere or assigned to inside a function.  Existing metatables `__newindex` and `__index`
+-- anywhere or assigned to inside a function. Existing metatables `__newindex` and `__index`
 -- metamethods are respected.
 --
 -- You can set any table to have strict behaviour using `strict.module`. Creating a new
@@ -23,15 +23,25 @@ local function what ()
 end
 
 --- make an existing table strict.
--- @string name name of table (optional)
--- @tab[opt] mod table - if `nil` then we'll return a new table
+-- @string[opt] name name of table
+-- @tab[opt] mod the table to protect - if `nil` then we'll return a new table
 -- @tab[opt] predeclared - table of variables that are to be considered predeclared.
 -- @return the given table, or a new table
+-- @usage
+-- local M = { hello = "world" }
+-- strict.module ("Awesome_Module", M, {
+--   Lua = true,  -- defines allowed keys
+-- })
+--
+-- assert(M.hello == "world")
+-- assert(M.Lua == nil)       -- access allowed, but has no value yet
+-- M.Lua = "Rocks"
+-- assert(M.Lua == "Rocks")
+-- M.not_allowed = "bad boy"  -- throws an error
 function strict.module (name,mod,predeclared)
-    local mt, old_newindex, old_index, old_index_type, global, closed
+    local mt, old_newindex, old_index, old_index_type, global
     if predeclared then
         global = predeclared.__global
-        closed = predeclared.__closed
     end
     if type(mod) == 'table' then
         mt = getmetatable(mod)
@@ -71,17 +81,17 @@ function strict.module (name,mod,predeclared)
                     local fallback = old_index[n]
                     if fallback ~= nil then
                         return fallback
-                    end 
+                    end
                 else
                     local res = old_index(t, n)
                     if res ~= nil then
                         return res
                     end
-                end 
+                end
             end
             local msg = "variable '"..n.."' is not declared"
             if name then
-                msg = msg .. " in '"..name.."'"
+                msg = msg .. " in '"..tostring(name).."'"
             end
             error(msg, 2)
         end
@@ -93,7 +103,7 @@ end
 --- make all tables in a table strict.
 -- So `strict.make_all_strict(_G)` prevents monkey-patching
 -- of any global table
--- @tab T
+-- @tab T the table containing the tables to protect. Table `T` itself will NOT be protected.
 function strict.make_all_strict (T)
     for k,v in pairs(T) do
         if type(v) == 'table' and v ~= T then
@@ -103,7 +113,11 @@ function strict.make_all_strict (T)
 end
 
 --- make a new module table which is closed to further changes.
+-- @tab mod module table
+-- @string name module name
 function strict.closed_module (mod,name)
+    -- No clue to what this is useful for? see tests
+    -- Deprecate this and remove???
     local M = {}
     mod = mod or {}
     local mt = getmetatable(mod)
@@ -118,8 +132,7 @@ function strict.closed_module (mod,name)
 end
 
 if not rawget(_G,'PENLIGHT_NO_GLOBAL_STRICT') then
-    strict.module(nil,_G,{_PROMPT=true,__global=true})
+    strict.module(nil,_G,{_PROMPT=true,_PROMPT2=true,__global=true})
 end
 
 return strict
-

@@ -39,7 +39,7 @@ local function parseDollarParen(pieces, chunk, exec_pat, newline)
     for term, executed, e in chunk:gmatch(exec_pat) do
         executed = '('..strsub(executed,2,-2)..')'
         append(pieces, APPENDER..format("%q", strsub(chunk,s, term - 1)))
-        append(pieces, APPENDER..format("(%s or '')", executed))
+        append(pieces, APPENDER..format("__tostring(%s or '')", executed))
         s = e
     end
     local r
@@ -58,19 +58,21 @@ local function parseHashLines(chunk,inline_escape,brackets,esc,newline)
 
     local esc_pat = esc.."+([^\n]*\n?)"
     local esc_pat1, esc_pat2 = "^"..esc_pat, "\n"..esc_pat
-    local  pieces, s = {"return function()\nlocal __R_size, __R_table = 0, {}", n = 1}, 1
+    local  pieces, s = {"return function()\nlocal __R_size, __R_table, __tostring = 0, {}, __tostring", n = 1}, 1
     while true do
-        local ss, e, lua = strfind(chunk,esc_pat1, s)
+        local _, e, lua = strfind(chunk,esc_pat1, s)
         if not e then
+            local ss
             ss, e, lua = strfind(chunk,esc_pat2, s)
             parseDollarParen(pieces, strsub(chunk,s, ss), exec_pat, newline)
             if not e then break end
         end
+        if strsub(lua, -1, -1) == "\n" then lua = strsub(lua, 1, -2) end
         append(pieces, "\n"..lua)
         s = e + 1
     end
     append(pieces, "\nreturn __R_table\nend")
-    
+
     -- let's check for a special case where there is nothing to template, but it's
     -- just a single static string
     local short = false
@@ -113,7 +115,7 @@ function template.substitute(str,env)
         debug = rawget(env,"_debug")
     })
     if not t then return t, err end
-    
+
     return t:render(env, rawget(env,"_parent"), rawget(env,"_debug"))
 end
 
@@ -168,9 +170,9 @@ function template.compile(str, opts)
     local escape = opts.escape or '#'
     local inline_escape = opts.inline_escape or '$'
     local inline_brackets = opts.inline_brackets or '()'
-    
+
     local code, short = parseHashLines(str,inline_escape,inline_brackets,escape,opts.newline)
-    local env = {}
+    local env = { __tostring = tostring }
     local fn, err = utils.load(code, chunk_name,'t',env)
     if not fn then return nil, err, code end
 

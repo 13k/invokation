@@ -7,7 +7,8 @@
 
 local append = table.insert
 local concat = table.concat
-local mfloor, mhuge, mtype = math.floor, math.huge, math.type
+local mfloor, mhuge = math.floor, math.huge
+local mtype = math.type
 local utils = require 'pl.utils'
 local lexer = require 'pl.lexer'
 local debug = require 'debug'
@@ -46,12 +47,12 @@ local pretty = {}
 local function save_global_env()
     local env = {}
     env.hook, env.mask, env.count = debug.gethook()
-    
+
     -- env.hook is "external hook" if is a C hook function
-	if env.hook~="external hook" then
-	    debug.sethook()
-	end
-    
+    if env.hook~="external hook" then
+        debug.sethook()
+    end
+
     env.string_mt = getmetatable("")
     debug.setmetatable("", nil)
     return env
@@ -164,11 +165,17 @@ local function index (numkey,key)
 end
 
 
----	Create a string representation of a Lua table.
+--- Create a string representation of a Lua table.
 -- This function never fails, but may complain by returning an
 -- extra value. Normally puts out one item per line, using
 -- the provided indent; set the second parameter to an empty string
 -- if you want output on one line.
+--
+-- *NOTE:* this is NOT a serialization function, not a full blown
+-- debug function. Checkout out respectively the
+-- [serpent](https://github.com/pkulchenko/serpent)
+-- or [inspect](https://github.com/kikito/inspect.lua)
+-- Lua modules for that if you need them.
 -- @tab tbl Table to serialize to a string.
 -- @string[opt] space The indent to use.
 -- Defaults to two spaces; pass an empty string for no indentation.
@@ -210,13 +217,36 @@ function pretty.write (tbl,space,not_clever)
     end
 
     local function eat_last_comma ()
-        local n,lastch = #lines
+        local n = #lines
         local lastch = lines[n]:sub(-1,-1)
         if lastch == ',' then
             lines[n] = lines[n]:sub(1,-2)
         end
     end
 
+
+    -- safe versions for iterators since 5.3+ honors metamethods that can throw
+    -- errors
+    local ipairs = function(t)
+        local i = 0
+        local ok, v
+        local getter = function() return t[i] end
+        return function()
+                i = i + 1
+                ok, v = pcall(getter)
+                if v == nil or not ok then return end
+                return i, t[i]
+            end
+    end
+    local pairs = function(t)
+        local k, v, ok
+        local getter = function() return next(t, k) end
+        return function()
+                ok, k, v = pcall(getter)
+                if not ok then return end
+                return k, v
+            end
+    end
 
     local writeit
     writeit = function (t,oldindent,indent)
@@ -247,7 +277,20 @@ function pretty.write (tbl,space,not_clever)
                     used[i] = true
                 end
             end
-            for key,val in pairs(t) do
+            local ordered_keys = {}
+            for k,v in pairs(t) do
+               if type(k) ~= 'number' then
+                  ordered_keys[#ordered_keys + 1] = k
+               end
+            end
+            table.sort(ordered_keys, function (a, b)
+                if type(a) == type(b) then
+                    return tostring(a) < tostring(b)
+                else
+                    return type(a) < type(b)
+                end
+            end)
+            local function write_entry (key, val)
                 local tkey = type(key)
                 local numkey = tkey == 'number'
                 if not_clever then
@@ -266,6 +309,16 @@ function pretty.write (tbl,space,not_clever)
                         writeit(val,indent,newindent)
                     end
                 end
+            end
+            for i = 1, #ordered_keys do
+                local key = ordered_keys[i]
+                local val = t[key]
+                write_entry(key, val)
+            end
+            for key,val in pairs(t) do
+               if type(key) == 'number' then
+                  write_entry(key, val)
+               end
             end
             tables[t] = nil
             eat_last_comma()
@@ -291,6 +344,49 @@ function pretty.dump (t, filename)
         return utils.writefile(filename, pretty.write(t))
     end
 end
+
+--- Dump a series of arguments to stdout for debug purposes.
+-- This function is attached to the module table `__call` method, to make it
+-- extra easy to access. So the full:
+--
+--     print(require("pl.pretty").write({...}))
+--
+-- Can be shortened to:
+--
+--     require"pl.pretty" (...)
+--
+-- Any `nil` entries will be printed as `"<nil>"` to make them explicit.
+-- @param ... the parameters to dump to stdout.
+-- @usage
+-- -- example debug output
+-- require"pl.pretty" ("hello", nil, "world", { bye = "world", true} )
+--
+-- -- output:
+-- {
+--   ["arg 1"] = "hello",
+--   ["arg 2"] = "<nil>",
+--   ["arg 3"] = "world",
+--   ["arg 4"] = {
+--     true,
+--     bye = "world"
+--   }
+-- }
+function pretty.debug(...)
+    local n = select("#", ...)
+    local t = { ... }
+    for i = 1, n do
+        local value = t[i]
+        if value == nil then
+            value = "<nil>"
+        end
+        t[i] = nil
+        t["arg " .. i] = value
+    end
+
+    print(pretty.write(t))
+    return true
+end
+
 
 local memp,nump = {'B','KiB','MiB','GiB'},{'','K','M','B'}
 
@@ -335,4 +431,8 @@ function pretty.number (num,kind,prec)
     end
 end
 
-return pretty
+return setmetatable(pretty, {
+    __call = function(self, ...)
+        return self.debug(...)
+    end
+})

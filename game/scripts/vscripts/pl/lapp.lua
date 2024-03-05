@@ -33,11 +33,10 @@ local function lines(s) return s:gmatch('([^\n]*)\n') end
 local function lstrip(str)  return str:gsub('^%s+','')  end
 local function strip(str)  return lstrip(str):gsub('%s+$','') end
 local function at(s,k)  return s:sub(k,k) end
-local function isdigit(s) return s:find('^%d+$') == 1 end
 
 local lapp = {}
 
-local open_files,parms,aliases,parmlist,usage,windows,script
+local open_files,parms,aliases,parmlist,usage,script
 
 lapp.callback = false -- keep Strict happy
 
@@ -182,7 +181,6 @@ end
 -- @return a table with parameter-value pairs
 function lapp.process_options_string(str,args)
     local results = {}
-    local opts = {at_start=true}
     local varargs
     local arg = args or _G.arg
     open_files = {}
@@ -219,7 +217,7 @@ function lapp.process_options_string(str,args)
 
     for line in lines(str) do
         local res = {}
-        local optspec,optparm,i1,i2,defval,vtype,constraint,rest
+        local optparm,defval,vtype,constraint,rest
         line = lstrip(line)
         local function check(str)
             return match(str,line,res)
@@ -239,7 +237,8 @@ function lapp.process_options_string(str,args)
         elseif check '$<{name} $'  then -- is it <parameter_name>?
             -- so <input file...> becomes input_file ...
             optparm,rest = res.name:match '([^%.]+)(.*)'
-            optparm = optparm:gsub('%A','_')
+            -- follow lua legal variable names
+            optparm = optparm:sub(1,1):gsub('%A','_') .. optparm:sub(2):gsub('%W', '_')
             varargs = rest == '...'
             append(parmlist,optparm)
         end
@@ -248,6 +247,7 @@ function lapp.process_options_string(str,args)
             line = res.rest
             res = {}
             local optional
+            local defval_str
             -- do we have ([optional] [<type>] [default <val>])?
             if match('$({def} $',line,res) or match('$({def}',line,res) then
                 local typespec = strip(res.def)
@@ -279,7 +279,7 @@ function lapp.process_options_string(str,args)
                         local enump = '|' .. enums .. '|'
                         vtype = 'string'
                         constraint = function(s)
-                            lapp.assert(enump:match('|'..s..'|'),
+                            lapp.assert(enump:find('|'..s..'|', 1, true),
                               "value '"..s.."' not in "..enums
                             )
                         end
@@ -290,6 +290,7 @@ function lapp.process_options_string(str,args)
                 -- optional 'default value' clause. Type is inferred as
                 -- 'string' or 'number' if there's no explicit type
                 if default or match('default $r{rest}',typespec,res) then
+                    defval_str = res.rest
                     defval,vtype = process_default(res.rest,vtype)
                 end
             else -- must be a plain flag, no extra parameter required
@@ -299,6 +300,7 @@ function lapp.process_options_string(str,args)
             local ps = {
                 type = vtype,
                 defval = defval,
+                defval_str = defval_str,
                 required = defval == nil and not optional,
                 comment = res.rest or optparm,
                 constraint = constraint,
@@ -314,7 +316,7 @@ function lapp.process_options_string(str,args)
                 end
                 ps.constraint = types[vtype].constraint
             elseif not builtin_types[vtype] and vtype then
-                lapp.error(vtype.." is unknown type")          
+                lapp.error(vtype.." is unknown type")
             end
             parms[optparm] = ps
         end
@@ -428,6 +430,9 @@ function lapp.process_options_string(str,args)
         if not ps.used then
             if ps.required then lapp.error("missing required parameter: "..parm) end
             set_result(ps,parm,ps.defval)
+            if builtin_types[ps.type] == "file" then
+                set_result(ps, parm .. "_name", ps.defval_str)
+            end
         end
     end
     return results

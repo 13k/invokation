@@ -1,6 +1,9 @@
 --- Date and Date Format classes.
 -- See  @{05-dates.md|the Guide}.
 --
+-- NOTE: the date module is deprecated! see
+-- https://github.com/lunarmodules/Penlight/issues/285
+--
 -- Dependencies: `pl.class`, `pl.stringx`, `pl.utils`
 -- @classmod pl.Date
 -- @pragma nostrip
@@ -10,6 +13,15 @@ local os_time, os_date = os.time, os.date
 local stringx = require 'pl.stringx'
 local utils = require 'pl.utils'
 local assert_arg,assert_string = utils.assert_arg,utils.assert_string
+
+
+utils.raise_deprecation {
+  source = "Penlight " .. utils._VERSION,
+  message = "the 'Date' module is deprecated, see https://github.com/lunarmodules/Penlight/issues/285",
+  version_removed = "2.0.0",
+  version_deprecated = "1.9.2",
+}
+
 
 local Date = class()
 Date.Format = class()
@@ -94,9 +106,9 @@ function Date.tzone (ts)
         ts = os_time()
     elseif type(ts) == "table" then
         if getmetatable(ts) == Date then
-        	ts = ts.time
+            ts = ts.time
         else
-        	ts = Date(ts).time
+            ts = Date(ts).time
         end
     end
     local utc = os_date('!*t',ts)
@@ -510,7 +522,7 @@ Allowed patterns:
 
 ]]
 
-local function looks_like_a_month(w) 
+local function looks_like_a_month(w)
     return w:match '^%a+,*$' ~= nil
 end
 local is_number = stringx.isdigit
@@ -537,7 +549,7 @@ local function  parse_iso_end(p,ns,sec)
     -- (we're working with the date as lower case, hence 'z')
     if p:match 'z$' then -- we're UTC!
         return  sec, {h=0,m=0}
-    end 
+    end
     p = p:gsub(':','') -- turn 00:30 to 0030
     local _,_,sign,offs = p:find('^([%+%-])(%d+)')
     if not sign then return sec, nil end -- not UTC
