@@ -1,11 +1,15 @@
 # Development
 
+This repository follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+specification for commit messages.
+
 ## Requirements
 
 - [lua](https://lua.org) 5.1 (same version as Dota 2)
 - [luarocks](https://luarocks.org)
 - [node](https://nodejs.org) LTS + npm
 - [task](https://taskfile.dev)
+- [git-cliff](https://git-cliff.org) (releases only)
 
 ## Setup
 
@@ -24,10 +28,46 @@ npm install
 - Initialize luarocks:
 
 ```shell
-luarocks init
+luarocks init --local
 ```
 
 - Add `<project_dir>/lua_modules/bin` to the `PATH`.
+
+---
+
+### A note about rocks tree isolation
+
+Custom rocks trees defined with `rocks_trees` in a LuaRocks user config
+(usually at `$HOME/.config/luarocks/config.lua` or `$HOME/.luarocks/config.lua`)
+will get added to the project's `rocks_trees` config too
+(this is a LuaRocks specific behavior).
+
+To truly isolate the project tree from everything else, I recommend appending
+the following to `<PROJECT_ROOT>/.luarocks/config-5.1.lua`
+(after running `luarocks init`):
+
+```lua
+rocks_trees = {}
+```
+
+Then verify LuaRocks is using only the projects rocks tree by running:
+
+```shell
+luarocks config rocks_trees
+```
+
+It should print something like this:
+
+```lua
+{
+   {
+      name = "project",
+      root = "<PROJECT_ROOT>/lua_modules"
+   }
+}
+```
+
+---
 
 ## Testing
 
@@ -45,27 +85,28 @@ task build
 
 ## Release
 
-- Update `CHANGELOG.md` and commit changes
+- Update changelog:
 
-  - Add release notes the top
+  - Re-generate file with `git-cliff`
 
-  ```markdown
-  ## [{version}] - {date}
+    ```shell
+    git-cliff --bump -o CHANGELOG.md
+    ```
 
-  {notes}
-  ```
+  - Commit changes
 
-  - Update links at the bottom
+- Update version
 
-  ```markdown
-  [{version}]: https://github.com/13k/invokation/releases/tag/v{version}
-  [unreleased]: https://github.com/13k/invokation/compare/v{version}...HEAD
-  ```
+  - Update version strings
 
-- Update version strings and commit changes
+    - `game/scripts/vscripts/invokation/const/metadata.lua`
+    - `src/content/panorama/scripts/lib/constants.ts`
 
-  - `game/scripts/vscripts/invokation/const/metadata.lua`
-  - `src/content/panorama/scripts/lib/constants.ts`
+  - Commit changes with `chore(release)` label
+
+    ```shell
+    git commit -m "chore(release): version <VERSION>"
+    ```
 
 - Rebuild and test version changes in UI
 
