@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  workflow_dispatch: true
+  workflow_dispatch:
   push:
     branches: [$default-branch]
   pull_request:
