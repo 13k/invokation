@@ -5,12 +5,12 @@ import temp from "temp";
 
 import BuildCommand from "./commands/build.mjs";
 import CleanCommand from "./commands/clean.mjs";
-import ConvertShopsCommand from "./commands/convert-shops.mjs";
+import DataCommand from "./commands/data/index.mjs";
 import LaunchCommand from "./commands/launch.mjs";
 import LinkCommand from "./commands/link.mjs";
 import LOG from "./logger.mjs";
 
-async function loadDotenv(): Promise<void> {
+function loadDotenv() {
   const result = dotenvExpand(dotenv.config({ encoding: "utf8" }));
   const error = result.error as NodeJS.ErrnoException;
 
@@ -29,19 +29,18 @@ async function parseArgs(): Promise<void> {
       LOG.level = "debug";
     });
 
-  {
-    new BuildCommand(program);
-    new CleanCommand(program);
-    new ConvertShopsCommand(program);
-    new LinkCommand(program);
-    new LaunchCommand(program);
-  }
+  new BuildCommand(program);
+  new CleanCommand(program);
+  new DataCommand(program);
+  new LinkCommand(program);
+  new LaunchCommand(program);
 
   await program.parseAsync();
 }
 
-async function main() {
-  await loadDotenv();
+async function main(): Promise<number> {
+  loadDotenv();
+
   await parseArgs();
 
   return 0;

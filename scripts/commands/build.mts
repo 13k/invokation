@@ -74,7 +74,7 @@ Accepts environment variables. \
       );
   }
 
-  protected override parse_args(parts: BuildPart[]): Args {
+  protected override parseArgs(parts: BuildPart[]): Args {
     return { parts };
   }
 
@@ -83,15 +83,18 @@ Accepts environment variables. \
 
     for (const part of parts) {
       switch (part) {
-        case BuildPart.PanoramaScripts:
+        case BuildPart.PanoramaScripts: {
           await this.compilePanoramaScripts();
           break;
-        case BuildPart.Maps:
+        }
+        case BuildPart.Maps: {
           await this.compileMaps();
           break;
-        case BuildPart.Resources:
+        }
+        case BuildPart.Resources: {
           await this.compileResources();
           break;
+        }
         default: {
           const _check: never = part;
           throw new InvalidArgumentError(`Invalid build part: ${inspect(_check)}`);

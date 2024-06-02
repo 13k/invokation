@@ -4,7 +4,7 @@ import { Config } from "../config.mjs";
 import type { ConfigOptions } from "../config.mjs";
 import type { ExecReturnValue } from "../exec.mjs";
 import type { ExecOptions } from "../exec.mjs";
-import { exec, parseShell } from "../exec.mjs";
+import { exec, executable, parseShell } from "../exec.mjs";
 import type { Logger } from "../logger.mjs";
 import LOG from "../logger.mjs";
 import { Path, ROOT_DIR } from "../path.mjs";
@@ -25,7 +25,7 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
   protected cmd: Command;
 
   protected abstract subcommand(parent: Command): Command;
-  protected abstract parse_args(...args: unknown[]): Args;
+  protected abstract parseArgs(...args: unknown[]): Args;
   protected abstract run(): Promise<void>;
 
   constructor(parent: Command) {
@@ -73,7 +73,7 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
         throw new Error("args used before initialization");
       }
 
-      this.#args = this.parse_args(...this.cmd.processedArgs);
+      this.#args = this.parseArgs(...this.cmd.processedArgs);
     }
 
     return this.#args;
@@ -103,6 +103,10 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
     }
 
     await this.run();
+  }
+
+  protected async executable(cmd: PathLike): Promise<string | null> {
+    return await executable(cmd.toString());
   }
 
   protected async exec(

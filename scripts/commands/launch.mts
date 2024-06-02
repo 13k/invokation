@@ -73,7 +73,7 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
       );
   }
 
-  override parse_args(tool: Tool, ...toolArgs: string[]): Args {
+  override parseArgs(tool: Tool, ...toolArgs: string[]): Args {
     return {
       tool,
       toolArgs,

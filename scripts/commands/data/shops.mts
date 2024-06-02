@@ -3,9 +3,9 @@ import assert from "node:assert";
 import type { Command } from "commander";
 import vdf from "vdf-parser";
 
-import { Label } from "../logger.mjs";
-import { Path } from "../path.mjs";
-import BaseCommand from "./base.mjs";
+import { Label } from "../../logger.mjs";
+import { Path } from "../../path.mjs";
+import BaseCommand from "../base.mjs";
 
 export interface Args {
   input: Path;
@@ -15,6 +15,7 @@ export interface Args {
 export type Options = Record<string, never>;
 
 interface GameShops {
+  // biome-ignore lint/style/useNamingConvention: external data
   dota_shops: {
     [category: string]: {
       item: string[];
@@ -23,23 +24,22 @@ interface GameShops {
 }
 
 interface CustomGameShops {
+  // biome-ignore lint/style/useNamingConvention: external data
   dota_shops: {
     [category: string]: Record<number, string>;
   };
 }
 
-const INVALID_ITEMS = [/item_river_paint/];
-
-export default class ConvertShopsCommand extends BaseCommand<Args, Options> {
+export default class ShopsCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     return parent
-      .command("convert-shops")
-      .description("Convert a game KeyValues shops.txt file to custom game KeyValues shops.txt")
+      .command("shops")
+      .description("Parse and convert a `shops.txt` file")
       .argument("<input>", "Path to shops.txt file (extracted from game files)")
       .argument("<output>", "Path to converted shops.txt");
   }
 
-  override parse_args(input: string, output: string): Args {
+  override parseArgs(input: string, output: string): Args {
     return {
       input: Path.new(input),
       output: Path.new(output),
@@ -64,7 +64,10 @@ export default class ConvertShopsCommand extends BaseCommand<Args, Options> {
   }
 }
 
-const isInvalidItem = (item: string) => INVALID_ITEMS.find((re) => item.match(re) != null) != null;
+const INVALID_SHOP_ITEMS = [/item_river_paint/];
+
+const isInvalidItem = (item: string) =>
+  INVALID_SHOP_ITEMS.find((re) => item.match(re) != null) != null;
 
 function validate(filename: Path, doc: GameShops) {
   const message = (msg: string) => `${filename}: not a valid shops.txt file: ${msg}`;
@@ -89,14 +92,20 @@ function validate(filename: Path, doc: GameShops) {
 }
 
 function transform(doc: GameShops) {
-  const result: CustomGameShops = { dota_shops: {} };
+  const result: CustomGameShops = {
+    // biome-ignore lint/style/useNamingConvention: external data
+    dota_shops: {},
+  };
+
   const { dota_shops: shops } = result;
 
   for (const [categoryName, items] of Object.entries(doc.dota_shops)) {
     const category: Record<number, string> = {};
 
     for (const [i, item] of items.item.entries()) {
-      if (isInvalidItem(item)) continue;
+      if (isInvalidItem(item)) {
+        continue;
+      }
 
       category[i + 1] = item;
     }

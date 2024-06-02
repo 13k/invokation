@@ -4,12 +4,17 @@ import { inspect } from "node:util";
 import type { ExecaReturnValue as ExecReturnValue, Options as ExecaOptions } from "execa";
 import { execa } from "execa";
 import shellQuote from "shell-quote";
+import which from "which";
 
 import type { Logger } from "./logger.mjs";
 
 export type { ExecaReturnValue as ExecReturnValue } from "execa";
 
 const ENCODING = "utf8";
+
+export async function executable(cmd: string): Promise<string | null> {
+  return await which(cmd, { nothrow: true });
+}
 
 export interface ExecOptions extends ExecaOptions {
   echo?: boolean;

@@ -26,7 +26,7 @@ export default class LinkCommand extends BaseCommand<Args, Options> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  override parse_args(..._args: unknown[]): Args {
+  override parseArgs(..._args: unknown[]): Args {
     return null;
   }
 
