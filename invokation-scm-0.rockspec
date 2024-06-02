@@ -32,7 +32,7 @@ test_dependencies = {
   "compat53 ~> 0.7",
   "luacov",
   "moses ~> 2.1",
-  "penlight ~> 1.7",
+  "penlight ~> 1.13.1",
 }
 
 test = {
