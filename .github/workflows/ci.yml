@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+jobs:
+  vscript:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Setup LuaJIT
+        uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: "luajit-2.1.0-beta3"
+
+      - name: Setup LuaRocks
+        uses: leafo/gh-actions-luarocks@v4
+        with:
+          luaVersion: "luajit-2.1.0-beta3"
+
+      - name: Test
+        run: |
+          luarocks test
