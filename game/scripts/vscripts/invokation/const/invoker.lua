@@ -126,6 +126,7 @@ M.ABILITY_DEAFENING_BLAST = "invoker_deafening_blast"
 
 for enumValue, abilityName in pairs(M.HERO_KEY_VALUES:Talents()) do
   local constName = FMT_ABILITY_TALENT_CONST_NAME:format(Talents.LevelAndSide(enumValue))
+
   M[constName] = abilityName
 end
 

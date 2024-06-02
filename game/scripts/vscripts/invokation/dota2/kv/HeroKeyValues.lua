@@ -6,6 +6,7 @@ local m = require("moses")
 
 local M = class()
 
+local MAX_TALENTS_COUNT = 8
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- Constructor.
@@ -55,7 +56,10 @@ end
 -- @treturn talents.Talents Table of talent ability names
 function M:Talents()
   if self.talents == nil then
-    local abilities = m.chain(self:Abilities()):slice(self.AbilityTalentStart):compact():value()
+    local start = self.AbilityTalentStart
+    local finish = start + MAX_TALENTS_COUNT - 1
+    local abilities = m.chain(self:Abilities()):slice(start, finish):compact():value()
+
     self.talents = Talents.NamesArrayToEnumsTable(abilities)
   end
 
