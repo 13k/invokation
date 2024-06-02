@@ -5,7 +5,8 @@ import { each as asyncEach } from "async";
 import type { Command } from "commander";
 
 import { Label } from "../logger.mjs";
-import { Link, LinkType } from "../path.mjs";
+import type { Link } from "../path.mjs";
+import { LinkType } from "../path.mjs";
 import BaseCommand from "./base.mjs";
 
 export type Args = null;

@@ -51,7 +51,7 @@ const BREAKPAD_APPIDS: number[] = [570, 375360];
 const COMMON_LAUNCH_OPTIONS: string[] = ["-1080", "-novid", "-nominidumps", "-toconsole", "-steam"];
 const GAME_LAUNCH_OPTIONS: string[] = ["-dev", "-uidev", "-condebug", "-vconsole"];
 const SDK_LAUNCH_OPTIONS: string[] = [];
-const NOBREAKPAD_OPTIONS = BREAKPAD_APPIDS.flatMap((appID) => ["-nobreakpad", appID.toString()]);
+const NOBREAKPAD_OPTIONS = BREAKPAD_APPIDS.flatMap((appId) => ["-nobreakpad", appId.toString()]);
 const LAUNCH_OPTIONS = [...COMMON_LAUNCH_OPTIONS, ...NOBREAKPAD_OPTIONS];
 
 export default class LaunchCommand extends BaseCommand<Args, Options> {
@@ -82,12 +82,14 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
 
   override async run(): Promise<void> {
     switch (this.args.tool) {
-      case Tool.Game:
+      case Tool.Game: {
         await this.launchGame();
         break;
-      case Tool.Tools:
+      }
+      case Tool.Tools: {
         await this.launchTools();
         break;
+      }
       default: {
         const _check: never = this.args.tool;
         throw new Error(`Invalid tool: ${inspect(_check)}`);

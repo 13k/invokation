@@ -1,4 +1,4 @@
-import { Path } from "./path.mjs";
+import type { Path } from "./path.mjs";
 import { DARWIN, LINUX, WINDOWS, WSL, unknownPlatform } from "./platform.mjs";
 
 export const { default: PACKAGE }: PackageImport = await import("../package.json", {

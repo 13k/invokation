@@ -1,5 +1,5 @@
 import type { Abortable } from "node:events";
-import fs from "node:fs";
+import type fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { default as MojoPath } from "@mojojs/path";

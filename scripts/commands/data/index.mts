@@ -1,8 +1,8 @@
 import type { Command } from "commander";
 
 import BaseCommand from "../base.mjs";
-import ShopsCommand from "./shops.mjs";
 import KeyValuesCommand from "./key_values.mjs";
+import ShopsCommand from "./shops.mjs";
 
 export type Args = Record<string, never>;
 export type Options = Record<string, never>;
