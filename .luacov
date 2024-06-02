@@ -39,7 +39,10 @@ return {
   --    "mymodule$",      -- the main module
   --    "mymodule%/.+$",  -- and everything namespaced underneath it
   -- }
-  include = {},
+  include = {
+    "game/scripts/vscripts/addon_game_mode$",
+    "game/scripts/vscripts/invokation%/.+$",
+  },
 
   --- Lua patterns for files to exclude when reporting.
   -- Nothing will be excluded if nothing is listed.
