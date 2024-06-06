@@ -3,9 +3,9 @@ import assert from "node:assert";
 import type { Command } from "commander";
 import vdf from "vdf-parser";
 
-import { Label } from "../../logger.mjs";
-import { Path } from "../../path.mjs";
-import BaseCommand from "../base.mjs";
+import { Label } from "../../logger";
+import { Path } from "../../path";
+import BaseCommand from "../base";
 
 export interface Args {
   input: Path;
@@ -24,6 +24,16 @@ enum Kind {
 interface KeyValues {
   [key: string]: boolean | number | string | KeyValues;
 }
+
+interface AbilitiesKeyValues {
+  [Kind.Abilities]: KeyValues;
+}
+
+interface HeroesKeyValues {
+  [Kind.Heroes]: KeyValues;
+}
+
+type KeyValuesDoc = AbilitiesKeyValues & HeroesKeyValues;
 
 export default class KeyValuesCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
@@ -60,7 +70,11 @@ Parse and convert a KeyValues file \
 
   async generateOutputFile(): Promise<void> {
     const data = await this.args.input.readFile();
-    const doc: KeyValues = vdf.parse(data, { types: true, arrayify: true });
+    const doc: KeyValuesDoc = vdf.parse(data, {
+      types: true,
+      arrayify: true,
+    });
+
     const kind = this.validate(doc);
     const serializer = new Serializer(doc[kind], { module: this.options.module });
     const serialized = serializer.serialize();
@@ -69,7 +83,7 @@ Parse and convert a KeyValues file \
   }
 
   async formatOutputFile(): Promise<void> {
-    const cmd = await this.executable("stylua");
+    const cmd = this.executable("stylua");
 
     if (cmd == null) {
       return;
@@ -89,7 +103,7 @@ Parse and convert a KeyValues file \
       this.args.output,
     ];
 
-    await this.exec(cmd, args, {
+    this.exec(cmd, args, {
       echo: true,
     });
   }

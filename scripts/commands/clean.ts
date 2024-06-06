@@ -1,8 +1,8 @@
 import { each as asyncEach } from "async";
 import type { Command } from "commander";
 
-import { Label } from "../logger.mjs";
-import BaseCommand from "./base.mjs";
+import { Label } from "../logger";
+import BaseCommand from "./base";
 
 export type Args = null;
 

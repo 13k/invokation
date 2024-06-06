@@ -7,8 +7,8 @@ import fse from "fs-extra";
 import { glob } from "glob";
 import type { GlobOptionsWithFileTypesUnset } from "glob";
 
-import { exec } from "./exec.mjs";
-import { UNIX, WINDOWS, WSL, unknownPlatform } from "./platform.mjs";
+import { capture } from "./exec";
+import { UNIX, WINDOWS, WSL, unknownPlatform } from "./platform";
 
 export type { GlobOptionsWithFileTypesUnset as GlobOptions } from "glob";
 
@@ -149,18 +149,18 @@ export class WslPosixPath extends PosixPath {
     super(...parts);
   }
 
-  async windows(options: { absolute: boolean } = { absolute: false }) {
-    return await wslpath(this.toString(), { windows: true, ...options }).then(
-      (pathStr) => new WslWindowsPath(pathStr),
-    );
+  windows(options: { absolute: boolean } = { absolute: false }) {
+    const path = wslpath(this.toString(), { windows: true, ...options });
+
+    return new WslWindowsPath(path);
   }
 }
 
 export class WslWindowsPath extends WindowsPath {
-  async posix(options: { absolute: boolean } = { absolute: false }) {
-    return await wslpath(this.toString(), { unix: true, ...options }).then(
-      (pathStr) => new WslPosixPath(pathStr),
-    );
+  posix(options: { absolute: boolean } = { absolute: false }) {
+    const path = wslpath(this.toString(), { unix: true, ...options });
+
+    return new WslPosixPath(path);
   }
 }
 
@@ -172,7 +172,7 @@ interface WslPathOptions {
   absolute?: boolean;
 }
 
-async function wslpath(path: string, options: WslPathOptions = {}) {
+function wslpath(path: string, options: WslPathOptions = {}) {
   const args: string[] = [];
 
   if (options.unix) {
@@ -187,13 +187,7 @@ async function wslpath(path: string, options: WslPathOptions = {}) {
 
   args.push(path);
 
-  const cp = await exec(WSLPATH_BIN, args, { encoding: "utf8" });
-
-  if (cp instanceof Error) {
-    throw cp;
-  }
-
-  return cp.stdout;
+  return capture(WSLPATH_BIN, args);
 }
 
 // FIXME: This will not work if compiling to javascript

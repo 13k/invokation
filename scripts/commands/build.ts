@@ -5,9 +5,9 @@ import { inspect } from "node:util";
 import type { Command } from "commander";
 import { InvalidArgumentError } from "commander";
 
-import { parseShell } from "../exec.mjs";
-import { Label } from "../logger.mjs";
-import BaseCommand from "./base.mjs";
+import { parseShell } from "../exec";
+import { Label } from "../logger";
+import BaseCommand from "./base";
 
 export interface Args {
   parts: BuildPart[];
@@ -122,13 +122,13 @@ Accepts environment variables. \
 
     this.log.label(Label.Generate).fields({ srcDir }).info("panorama scripts");
 
-    const args = ["exec", "--", "tsc", "--build", srcDir.toString(), "--verbose"];
+    const args = ["--no-install", "x", "--", "tsc", "--build", srcDir.toString(), "--verbose"];
 
     if (this.options.force) {
       args.push("--force");
     }
 
-    await this.exec("npm", args, {
+    this.exec("bun", args, {
       echo: true,
       log: this.log,
     });
@@ -202,7 +202,7 @@ Accepts environment variables. \
       execArgs.push("-fshallow");
     }
 
-    await this.exec(compilerCmd, execArgs, {
+    this.exec(compilerCmd, execArgs, {
       echo: true,
       log: this.log,
       cwd: baseDir.toString(),

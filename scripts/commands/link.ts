@@ -1,13 +1,11 @@
 import assert from "node:assert";
-import { inspect } from "node:util";
-
 import { each as asyncEach } from "async";
 import type { Command } from "commander";
 
-import { Label } from "../logger.mjs";
-import type { Link } from "../path.mjs";
-import { LinkType } from "../path.mjs";
-import BaseCommand from "./base.mjs";
+import { Label } from "../logger";
+import type { Link } from "../path";
+import { LinkType } from "../path";
+import BaseCommand from "./base";
 
 export type Args = null;
 
@@ -36,10 +34,10 @@ export default class LinkCommand extends BaseCommand<Args, Options> {
 
     this.log.info("Linking custom game");
     this.log
-      .emojify()
+      .label(Label.Link)
       .field("src", rootPath)
       .field("dest", dota2.baseDir)
-      .debug(":link: base directories");
+      .debug("base directories");
 
     const links = await this.findLinks();
 
@@ -118,17 +116,15 @@ export default class LinkCommand extends BaseCommand<Args, Options> {
     assert(src.isWslPosix());
     assert(dest.isWslPosix());
 
-    const winSrc = await src.windows({ absolute: true });
+    const winSrc = src.windows({ absolute: true });
     const destDir = dest.dirname();
-    const winDestDir = await destDir.windows({ absolute: true });
+    const winDestDir = destDir.windows({ absolute: true });
     const winDest = `${winDestDir}\\${dest.basename()}`;
     const args = [
       "-Command",
       `New-Item -ItemType '${type}' -Path '${winDest}' -Target '${winSrc}'`,
     ];
 
-    this.log.field("cmd", inspect([POWERSHELL_BIN, ...args])).debug("pwsh link");
-
-    await this.exec(POWERSHELL_BIN, args);
+    this.exec(POWERSHELL_BIN, args, { log: this.log });
   }
 }

@@ -2,9 +2,9 @@ import { inspect } from "node:util";
 
 import type { Command } from "commander";
 
-import { PACKAGE } from "../config.mjs";
-import type { PathLike } from "../path.mjs";
-import BaseCommand from "./base.mjs";
+import { PACKAGE } from "../config";
+import type { PathLike } from "../path";
+import BaseCommand from "./base";
 
 export interface Args {
   tool: Tool;
@@ -73,7 +73,7 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
       );
   }
 
-  override parseArgs(tool: Tool, ...toolArgs: string[]): Args {
+  override parseArgs(tool: Tool, toolArgs: string[]): Args {
     return {
       tool,
       toolArgs,
@@ -105,9 +105,8 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
     const execArgs = [...LAUNCH_OPTIONS, ...this.args.toolArgs, ...args];
 
     this.log.info(`Launching ${this.args.tool}`);
-    this.log.debug(inspect([cmd, ...execArgs]));
 
-    await this.exec(cmd, execArgs, { cwd: cwd.toString(), echo: true });
+    this.exec(cmd, execArgs, { cwd: cwd.toString(), echo: true, log: this.log });
   }
 
   async execGame(args: PathLike[]): Promise<void> {

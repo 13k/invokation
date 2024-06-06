@@ -3,11 +3,11 @@ import { inspect } from "node:util";
 import _ from "lodash";
 import type { TransformableInfo } from "logform";
 import * as emoji from "node-emoji";
-import { LEVEL, SPLAT } from "triple-beam";
+import tb from "triple-beam";
 import { config, createLogger, format, transports } from "winston";
 
-import type { ColorStyle } from "./colors.mjs";
-import { colorStyle } from "./colors.mjs";
+import type { ColorStyle } from "./colors";
+import { colorStyle } from "./colors";
 
 type Levels = {
   [K in keyof config.CliConfigSetLevels as string extends K
@@ -172,13 +172,7 @@ export class Logger {
     return this.#fork(undefined, it);
   }
 
-  log(
-    this: this,
-    level: Level,
-    message: string | Error,
-    options?: Options,
-    fields?: FieldsLike,
-  ): void {
+  log(level: Level, message: string | Error, options?: Options, fields?: FieldsLike): void {
     if (message instanceof Error) {
       LOG.log(level, message);
       return;
@@ -243,8 +237,8 @@ export class Logger {
 }
 
 interface Info extends TransformableInfo {
-  [LEVEL]: string;
-  [SPLAT]: unknown[];
+  [tb.LEVEL]: string;
+  [tb.SPLAT]: unknown[];
 
   metadata?: Metadata;
 }
@@ -276,8 +270,8 @@ function printf(info: TransformableInfo) {
 
 function parseInfo(info: Info) {
   const { level: levelOut, message, metadata } = info;
-  const level = info[LEVEL];
-  const splat = info[SPLAT];
+  const level = info[tb.LEVEL];
+  const splat = info[tb.SPLAT];
 
   let fields = new Fields();
   let options: Options = {};
@@ -289,7 +283,7 @@ function parseInfo(info: Info) {
 
   last = _.last(splat);
 
-  if (_.isObject(last) && _.isPlainObject(last)) {
+  if (_.isPlainObject(last)) {
     options = splat.pop() as Options;
   }
 

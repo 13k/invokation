@@ -1,14 +1,15 @@
+import type { SyncSubprocess } from "bun";
+
 import type { Command, OptionValues } from "commander";
 
-import { Config } from "../config.mjs";
-import type { ConfigOptions } from "../config.mjs";
-import type { ExecReturnValue } from "../exec.mjs";
-import type { ExecOptions } from "../exec.mjs";
-import { exec, executable, parseShell } from "../exec.mjs";
-import type { Logger } from "../logger.mjs";
-import LOG from "../logger.mjs";
-import { Path, ROOT_DIR } from "../path.mjs";
-import type { PathLike } from "../path.mjs";
+import { Config } from "../config";
+import type { ConfigOptions } from "../config";
+import type { CaptureOptions, ExecOptions } from "../exec";
+import { capture, exec, parseShell } from "../exec";
+import type { Logger } from "../logger";
+import LOG from "../logger";
+import { Path, ROOT_DIR } from "../path";
+import type { PathLike } from "../path";
 
 interface GlobalOptions {
   dota2?: string;
@@ -105,16 +106,20 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
     await this.run();
   }
 
-  protected async executable(cmd: PathLike): Promise<string | null> {
-    return await executable(cmd.toString());
+  protected executable(cmd: PathLike): string | null {
+    return Bun.which(cmd.toString());
   }
 
-  protected async exec(
-    cmd: PathLike,
-    args: PathLike[] = [],
-    options?: ExecOptions,
-  ): Promise<ExecReturnValue<string>> {
-    return await exec(
+  protected exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): SyncSubprocess {
+    return exec(
+      cmd.toString(),
+      args.map((arg) => arg.toString()),
+      options,
+    );
+  }
+
+  protected capture(cmd: PathLike, args: PathLike[] = [], options?: CaptureOptions): string {
+    return capture(
       cmd.toString(),
       args.map((arg) => arg.toString()),
       options,

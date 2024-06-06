@@ -3,9 +3,9 @@ import assert from "node:assert";
 import type { Command } from "commander";
 import vdf from "vdf-parser";
 
-import { Label } from "../../logger.mjs";
-import { Path } from "../../path.mjs";
-import BaseCommand from "../base.mjs";
+import { Label } from "../../logger";
+import { Path } from "../../path";
+import BaseCommand from "../base";
 
 export interface Args {
   input: Path;

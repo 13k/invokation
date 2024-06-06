@@ -3,12 +3,12 @@ import dotenv from "dotenv";
 import { expand as dotenvExpand } from "dotenv-expand";
 import temp from "temp";
 
-import BuildCommand from "./commands/build.mjs";
-import CleanCommand from "./commands/clean.mjs";
-import DataCommand from "./commands/data/index.mjs";
-import LaunchCommand from "./commands/launch.mjs";
-import LinkCommand from "./commands/link.mjs";
-import LOG from "./logger.mjs";
+import BuildCommand from "./commands/build";
+import CleanCommand from "./commands/clean";
+import DataCommand from "./commands/data/index";
+import LaunchCommand from "./commands/launch";
+import LinkCommand from "./commands/link";
+import LOG from "./logger";
 
 function loadDotenv() {
   const result = dotenvExpand(dotenv.config({ encoding: "utf8" }));
@@ -48,11 +48,15 @@ async function main(): Promise<number> {
 
 temp.track();
 
-main()
-  .catch((error: Error) => {
+try {
+  await main();
+} catch (error: unknown) {
+  if (error instanceof Error) {
     LOG.error(error.message);
     LOG.debug(error);
+  } else {
+    console.error(error);
+  }
 
-    return 1;
-  })
-  .then((exitCode) => process.exit(exitCode));
+  process.exit(1);
+}

@@ -1,15 +1,16 @@
-import type { Path } from "./path.mjs";
-import { DARWIN, LINUX, WINDOWS, WSL, unknownPlatform } from "./platform.mjs";
+import packageJson from "../package.json";
+import type { Path } from "./path";
+import { DARWIN, LINUX, WINDOWS, WSL, unknownPlatform } from "./platform";
 
-export const { default: PACKAGE }: PackageImport = await import("../package.json", {
-  assert: { type: "json" },
-});
+export const PACKAGE: Package = packageJson;
 
-interface PackageImport {
-  default: {
-    dota2: {
-      customGame: PackageCustomGame;
-    };
+// interface PackageImport {
+//   default: Package;
+// }
+
+interface Package {
+  dota2: {
+    customGame: PackageCustomGame;
   };
 }
 
