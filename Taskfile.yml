@@ -36,24 +36,24 @@ tasks:
 
   clean:
     desc: Remove all compiled, generated and linked files
-    cmd: npm run clean
+    cmd: bun scripts/index.ts clean
 
   link:
     desc: Link source files to game directories
-    cmd: npm run link
+    cmd: bun scripts/index.ts link
 
   build:
     desc: Build everything
     deps: [link]
-    cmd: npm run build
+    cmd: bun scripts/index.ts build
 
   launch:game:
     desc: Launch Dota2
-    cmd: npm run launch:game
+    cmd: bun scripts/index.ts launch game
 
   launch:tools:
     desc: Launch SDK
-    cmd: npm run launch:tools
+    cmd: bun scripts/index.ts launch tools
 
   vscripts:format:
     desc: Format vscripts
@@ -83,7 +83,7 @@ tasks:
 
   panorama:layouts:format:
     desc: Format panorama layouts
-    cmd: npx prettier --write '{{.PANORAMA_LAYOUTS_SRC_PATH}}/**/*.xml'
+    cmd: bun x prettier --write '{{.PANORAMA_LAYOUTS_SRC_PATH}}/**/*.xml'
 
   panorama:layouts:lint:
     desc: Lint panorama layouts
@@ -91,30 +91,30 @@ tasks:
 
   panorama:scripts:format:
     desc: Format panorama scripts
-    cmd: npx @biomejs/biome format --write "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+    cmd: bun x @biomejs/biome format --write "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
 
   panorama:scripts:lint:
     desc: Lint panorama scripts
-    cmd: npx @biomejs/biome check "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+    cmd: bun x @biomejs/biome check "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
 
   panorama:scripts:build:
     desc: Build panorama scripts
-    cmd: npx tsc --build "{{.PANORAMA_SCRIPTS_SRC_PATH}}" --verbose
+    cmd: bun x tsc --build "{{.PANORAMA_SCRIPTS_SRC_PATH}}" --verbose
 
   panorama:styles:format:
     desc: Format panorama styles
     cmds:
-      - npx stylelint --fix "{{.PANORAMA_STYLES_SRC_PATH}}"
-      - npx prettier --write '{{.PANORAMA_STYLES_SRC_PATH}}/**/*.css'
+      - bun x stylelint --fix "{{.PANORAMA_STYLES_SRC_PATH}}"
+      - bun x prettier --write '{{.PANORAMA_STYLES_SRC_PATH}}/**/*.css'
 
   panorama:styles:lint:
     desc: Lint panorama styles
-    cmd: npx stylelint "{{.PANORAMA_STYLES_SRC_PATH}}"
+    cmd: bun x stylelint "{{.PANORAMA_STYLES_SRC_PATH}}"
 
   tasks:format:
     desc: Format tasks
-    cmd: npx @biomejs/biome format --write "{{.TASKS_SRC_PATH}}"
+    cmd: bun x @biomejs/biome format --write "{{.TASKS_SRC_PATH}}"
 
   tasks:lint:
     desc: Lint tasks
-    cmd: npx @biomejs/biome check "{{.TASKS_SRC_PATH}}"
+    cmd: bun x @biomejs/biome check "{{.TASKS_SRC_PATH}}"
