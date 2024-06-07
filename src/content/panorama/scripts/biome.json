@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../../node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["../../../../biome.json"],
+  "files": {
+    "ignore": ["lib/vendor/**/*"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noUndeclaredVariables": "off",
+        "noUnusedVariables": "off"
+      }
+    }
+  }
+}

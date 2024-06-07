@@ -112,7 +112,7 @@ tasks:
 
   lint:panorama:scripts:
     desc: Lint panorama scripts
-    cmd: bun x -- @biomejs/biome check "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    cmd: bun x -- @biomejs/biome check --config-path "{{ .PANORAMA_SCRIPTS_SRC_PATH }}" "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
 
   format:panorama:styles:
     desc: Format panorama styles

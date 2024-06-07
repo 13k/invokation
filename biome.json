@@ -6,8 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"],
-    "ignore": ["src/content/panorama/scripts/lib/vendor/**/*"]
+    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"]
   },
   "organizeImports": {
     "enabled": true
