@@ -1,6 +1,4 @@
-import type { Abortable } from "node:events";
 import type fs from "node:fs";
-import { fileURLToPath } from "node:url";
 
 import { default as MojoPath } from "@mojojs/path";
 import fse from "fs-extra";
@@ -8,10 +6,9 @@ import { glob } from "glob";
 import type { GlobOptionsWithFileTypesUnset } from "glob";
 
 import { capture } from "./exec";
-import { UNIX, WINDOWS, WSL, unknownPlatform } from "./platform";
+import { UNIX, UnknownPlatformError, WINDOWS, WSL } from "./platform";
 
-export type { GlobOptionsWithFileTypesUnset as GlobOptions } from "glob";
-
+export type GlobOptions = GlobOptionsWithFileTypesUnset;
 export type PathLike = Path | string;
 
 export enum LinkType {
@@ -46,7 +43,7 @@ export class Path {
       return new WindowsPath(...parts);
     }
 
-    unknownPlatform();
+    throw new UnknownPlatformError();
   }
 
   constructor(...parts: PathLike[]) {
@@ -115,21 +112,17 @@ export class Path {
     return await fse.ensureLink(this.toString(), dest.toString());
   }
 
-  async readFile(options?: { flag?: fs.OpenMode }): Promise<string> {
-    return (await this.#path.readFile({ encoding: "utf8", ...options })) as string;
+  async readFile(): Promise<string> {
+    const file = Bun.file(this.toString());
+
+    return await file.text();
   }
 
-  async writeFile(
-    data: string,
-    options?: {
-      mode?: fs.Mode;
-      flag?: fs.OpenMode;
-    } & Abortable,
-  ): Promise<void> {
-    await this.#path.writeFile(data, { encoding: "utf8", ...options });
+  async writeFile(data: string): Promise<void> {
+    await Bun.write(this.toString(), data);
   }
 
-  async glob(pattern: PathLike, options?: GlobOptionsWithFileTypesUnset): Promise<Path[]> {
+  async glob(pattern: PathLike, options?: GlobOptions): Promise<Path[]> {
     const strPaths = await glob(this.join(pattern).toString(), options);
 
     return strPaths.map((s) => Path.new(s));
@@ -190,7 +183,14 @@ function wslpath(path: string, options: WslPathOptions = {}) {
   return capture(WSLPATH_BIN, args);
 }
 
-// FIXME: This will not work if compiling to javascript
-export const ROOT_DIR = Path.new(fileURLToPath(import.meta.url))
-  .dirname()
-  .dirname();
+function rootDir(): Path {
+  try {
+    const path = Bun.resolveSync("../../package.json", import.meta.dir);
+
+    return Path.new(path).dirname();
+  } catch (err) {
+    throw new Error(`Could not determine project root directory! Error: ${err}`);
+  }
+}
+
+export const ROOT_DIR: Path = rootDir();

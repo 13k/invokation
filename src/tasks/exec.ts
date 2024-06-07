@@ -1,4 +1,3 @@
-import { inspect } from "node:util";
 import type { SpawnOptions as BunSpawnOptions } from "bun";
 
 import shellQuote from "shell-quote";
@@ -13,7 +12,7 @@ export function spawnSync(cmd: string, args: string[] = [], options?: SpawnOptio
   const { log, ...spawnOptions } = options ?? {};
   const spawnCmd = [cmd, ...args];
 
-  log?.field("cmd", inspect(spawnCmd)).debug("spawning");
+  log?.field("cmd", Bun.inspect(spawnCmd)).debug("spawning");
 
   return Bun.spawnSync(spawnCmd, spawnOptions);
 }
@@ -33,7 +32,7 @@ export function exec(cmd: string, args: string[] = [], options?: ExecOptions) {
   const process = spawnSync(cmd, args, spawnOptions);
 
   if (!process.success) {
-    throw new Error(`Process ${inspect([cmd, ...args])} exited with code ${process.exitCode}`);
+    throw new Error(`Process ${Bun.inspect([cmd, ...args])} exited with code ${process.exitCode}`);
   }
 
   return process;
@@ -52,7 +51,7 @@ export function capture(cmd: string, args: string[] = [], options?: CaptureOptio
   });
 
   if (!process.success) {
-    throw new Error(`Process ${inspect([cmd, ...args])} exited with code ${process.exitCode}`);
+    throw new Error(`Process ${Bun.inspect([cmd, ...args])} exited with code ${process.exitCode}`);
   }
 
   return process.stdout.toString();
@@ -61,7 +60,7 @@ export function capture(cmd: string, args: string[] = [], options?: CaptureOptio
 export function parseShell(value: string): string[] {
   return shellQuote.parse(value, process.env).map((node) => {
     if (typeof node !== "string") {
-      throw new Error(`Invalid command ${inspect(value)}`);
+      throw new Error(`Invalid command ${Bun.inspect(value)}`);
     }
 
     return node;

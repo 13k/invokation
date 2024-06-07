@@ -1,5 +1,3 @@
-import { inspect } from "node:util";
-
 import _ from "lodash";
 import type { TransformableInfo } from "logform";
 import * as emoji from "node-emoji";
@@ -32,7 +30,7 @@ export interface Options {
 }
 
 export type Fields = Map<string, unknown>;
-export const Fields: new (fields?: FieldsLike) => Fields = Map;
+export const Fields: new (_fields?: FieldsLike) => Fields = Map;
 export type FieldsLike = Iterable<[string, unknown]>;
 
 const LEVELS = config.cli.levels;
@@ -179,7 +177,7 @@ export class Logger {
     }
 
     if (!_.isString(message)) {
-      throw new Error(`Invalid Logger message: ${inspect(message)}`);
+      throw new Error(`Invalid Logger message: ${Bun.inspect(message)}`);
     }
 
     let log = this as Logger;
@@ -355,4 +353,4 @@ function formatBody(metadata?: Metadata): string {
   return s;
 }
 
-export default new Logger();
+export const LOGGER = new Logger();

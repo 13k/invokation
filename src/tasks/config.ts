@@ -1,12 +1,8 @@
-import packageJson from "../package.json";
+import packageJson from "../../package.json";
 import type { Path } from "./path";
-import { DARWIN, LINUX, WINDOWS, WSL, unknownPlatform } from "./platform";
+import { DARWIN, LINUX, UnknownPlatformError, WINDOWS, WSL } from "./platform";
 
 export const PACKAGE: Package = packageJson;
-
-// interface PackageImport {
-//   default: Package;
-// }
 
 interface Package {
   dota2: {
@@ -104,7 +100,7 @@ function configDota2(baseDir: Path, resourceCompilerOpt?: string[]): ConfigDota2
   } else if (DARWIN) {
     gameBinPath = baseDir.join("game", "dota.sh");
   } else {
-    unknownPlatform();
+    throw new UnknownPlatformError();
   }
 
   const addonsContentDir = baseDir.join("content", "dota_addons");

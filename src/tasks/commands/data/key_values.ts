@@ -5,7 +5,7 @@ import vdf from "vdf-parser";
 
 import { Label } from "../../logger";
 import { Path } from "../../path";
-import BaseCommand from "../base";
+import { BaseCommand } from "../base";
 
 export interface Args {
   input: Path;
@@ -35,7 +35,7 @@ interface HeroesKeyValues {
 
 type KeyValuesDoc = AbilitiesKeyValues & HeroesKeyValues;
 
-export default class KeyValuesCommand extends BaseCommand<Args, Options> {
+export class KeyValuesCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     return parent
       .command("keyvalues")

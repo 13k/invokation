@@ -1,11 +1,15 @@
-version: "3"
+version: 3
+
+dotenv: [".env"]
 
 vars:
-  PANORAMA_LAYOUTS_SRC_PATH: content/panorama/layout
-  PANORAMA_SCRIPTS_SRC_PATH: src/content/panorama/scripts
-  PANORAMA_STYLES_SRC_PATH: content/panorama/styles
-  TASKS_SRC_PATH: scripts
-  VSCRIPTS_SRC_PATH: game/scripts/vscripts
+  PANORAMA_LAYOUTS_SRC_PATH: "content/panorama/layout"
+  PANORAMA_SCRIPTS_SRC_PATH: "src/content/panorama/scripts"
+  PANORAMA_STYLES_SRC_PATH: "content/panorama/styles"
+  VSCRIPTS_SRC_PATH: "game/scripts/vscripts"
+  TASKS_SRC_PATH: "src/tasks"
+  TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/index.ts"
+  TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
 
 tasks:
   default:
@@ -18,103 +22,112 @@ tasks:
   format:
     desc: Run all formatters
     cmds:
-      - task: tasks:format
-      - task: vscripts:format
-      - task: panorama:format
+      - task: format:tasks
+      - task: format:vscripts
+      - task: format:panorama
 
   lint:
     desc: Run all linters
     cmds:
-      - task: tasks:lint
-      - task: vscripts:lint
-      - task: panorama:lint
+      - task: lint:tasks
+      - task: lint:vscripts
+      - task: lint:panorama
 
   test:
     desc: Run all tests
     cmds:
-      - task: vscripts:test
+      - task: test:vscripts
 
   clean:
     desc: Remove all compiled, generated and linked files
-    cmd: bun scripts/index.ts clean
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} clean
 
   link:
     desc: Link source files to game directories
-    cmd: bun scripts/index.ts link
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} link
+
+  launch:game:
+    desc: Launch Dota2
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} launch game
+
+  launch:sdk:
+    desc: Launch SDK (Workshop Tools)
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} launch sdk
 
   build:
     desc: Build everything
     deps: [link]
-    cmd: bun scripts/index.ts build
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build
 
-  launch:game:
-    desc: Launch Dota2
-    cmd: bun scripts/index.ts launch game
+  build:maps:
+    desc: Build maps
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build maps
 
-  launch:tools:
-    desc: Launch SDK
-    cmd: bun scripts/index.ts launch tools
+  build:panorama:scripts:
+    desc: Build panorama scripts
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build panorama-scripts
 
-  vscripts:format:
+  build:resources:
+    deps: [build:panorama:scripts]
+    desc: Build resources
+    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build resources
+
+  format:vscripts:
     desc: Format vscripts
-    cmd: stylua --verify "{{.VSCRIPTS_SRC_PATH}}"
+    cmd: stylua --verify "{{ .VSCRIPTS_SRC_PATH }}"
 
-  vscripts:lint:
+  lint:vscripts:
     desc: Lint vscripts
-    cmd: selene "{{.VSCRIPTS_SRC_PATH}}"
+    cmd: selene "{{ .VSCRIPTS_SRC_PATH }}"
 
-  vscripts:test:
+  test:vscripts:
     desc: Test vscripts
     cmd: luarocks test
 
-  panorama:format:
+  format:panorama:
     desc: Format all panorama files
     cmds:
-      - task: panorama:layouts:format
-      - task: panorama:scripts:format
-      - task: panorama:styles:format
+      - task: format:panorama:layouts
+      - task: format:panorama:scripts
+      - task: format:panorama:styles
 
-  panorama:lint:
+  lint:panorama:
     desc: Lint all panorama files
     cmds:
-      - task: panorama:layouts:lint
-      - task: panorama:scripts:lint
-      - task: panorama:styles:lint
+      - task: lint:panorama:layouts
+      - task: lint:panorama:scripts
+      - task: lint:panorama:styles
 
-  panorama:layouts:format:
+  format:panorama:layouts:
     desc: Format panorama layouts
-    cmd: bun x prettier --write '{{.PANORAMA_LAYOUTS_SRC_PATH}}/**/*.xml'
+    cmd: bun x -- prettier --write '{{ .PANORAMA_LAYOUTS_SRC_PATH }}/**/*.xml'
 
-  panorama:layouts:lint:
+  lint:panorama:layouts:
     desc: Lint panorama layouts
     cmd: echo "not implemented"
 
-  panorama:scripts:format:
+  format:panorama:scripts:
     desc: Format panorama scripts
-    cmd: bun x @biomejs/biome format --write "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+    cmd: bun x -- @biomejs/biome format --write "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
 
-  panorama:scripts:lint:
+  lint:panorama:scripts:
     desc: Lint panorama scripts
-    cmd: bun x @biomejs/biome check "{{.PANORAMA_SCRIPTS_SRC_PATH}}"
+    cmd: bun x -- @biomejs/biome check "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
 
-  panorama:scripts:build:
-    desc: Build panorama scripts
-    cmd: bun x tsc --build "{{.PANORAMA_SCRIPTS_SRC_PATH}}" --verbose
-
-  panorama:styles:format:
+  format:panorama:styles:
     desc: Format panorama styles
     cmds:
-      - bun x stylelint --fix "{{.PANORAMA_STYLES_SRC_PATH}}"
-      - bun x prettier --write '{{.PANORAMA_STYLES_SRC_PATH}}/**/*.css'
+      - bun x -- stylelint --fix "{{ .PANORAMA_STYLES_SRC_PATH }}"
+      - bun x -- prettier --write '{{ .PANORAMA_STYLES_SRC_PATH }}/**/*.css'
 
-  panorama:styles:lint:
+  lint:panorama:styles:
     desc: Lint panorama styles
-    cmd: bun x stylelint "{{.PANORAMA_STYLES_SRC_PATH}}"
+    cmd: bun x -- stylelint "{{ .PANORAMA_STYLES_SRC_PATH }}"
 
-  tasks:format:
+  format:tasks:
     desc: Format tasks
-    cmd: bun x @biomejs/biome format --write "{{.TASKS_SRC_PATH}}"
+    cmd: bun x -- @biomejs/biome format --write "{{ .TASKS_SRC_PATH }}"
 
-  tasks:lint:
+  lint:tasks:
     desc: Lint tasks
-    cmd: bun x @biomejs/biome check "{{.TASKS_SRC_PATH}}"
+    cmd: bun x -- @biomejs/biome check --config-path "{{ .TASKS_SRC_PATH }}" "{{ .TASKS_SRC_PATH }}"

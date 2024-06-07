@@ -1,10 +1,8 @@
-import { inspect } from "node:util";
-
 import type { Command } from "commander";
 
 import { PACKAGE } from "../config";
 import type { PathLike } from "../path";
-import BaseCommand from "./base";
+import { BaseCommand } from "./base";
 
 export interface Args {
   tool: Tool;
@@ -17,7 +15,7 @@ export interface Options {
 
 export enum Tool {
   Game = "game",
-  Tools = "tools",
+  Sdk = "sdk",
 }
 
 function parseTool(value: string): Tool {
@@ -26,11 +24,11 @@ function parseTool(value: string): Tool {
   switch (tool) {
     case Tool.Game:
       break;
-    case Tool.Tools:
+    case Tool.Sdk:
       break;
     default: {
       const _check: never = tool;
-      throw new Error(`Invalid tool: ${inspect(_check)}`);
+      throw new Error(`Invalid tool: ${Bun.inspect(_check)}`);
     }
   }
 
@@ -40,7 +38,7 @@ function parseTool(value: string): Tool {
 function parseMap(available: string[]): (value: string) => string {
   return (value: string): string => {
     if (available.indexOf(value) < 0) {
-      throw new Error(`Invalid map ${inspect(value)}`);
+      throw new Error(`Invalid map ${Bun.inspect(value)}`);
     }
 
     return value;
@@ -54,7 +52,7 @@ const SDK_LAUNCH_OPTIONS: string[] = [];
 const NOBREAKPAD_OPTIONS = BREAKPAD_APPIDS.flatMap((appId) => ["-nobreakpad", appId.toString()]);
 const LAUNCH_OPTIONS = [...COMMON_LAUNCH_OPTIONS, ...NOBREAKPAD_OPTIONS];
 
-export default class LaunchCommand extends BaseCommand<Args, Options> {
+export class LaunchCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     const toolChoices = Object.values(Tool).join(", ");
     const mapChoices = PACKAGE.dota2.customGame.maps.join(", ");
@@ -86,13 +84,13 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
         await this.launchGame();
         break;
       }
-      case Tool.Tools: {
-        await this.launchTools();
+      case Tool.Sdk: {
+        await this.launchSdk();
         break;
       }
       default: {
         const _check: never = this.args.tool;
-        throw new Error(`Invalid tool: ${inspect(_check)}`);
+        throw new Error(`Invalid tool: ${Bun.inspect(_check)}`);
       }
     }
   }
@@ -142,7 +140,7 @@ export default class LaunchCommand extends BaseCommand<Args, Options> {
     await this.execGame(args);
   }
 
-  async launchTools(): Promise<void> {
+  async launchSdk(): Promise<void> {
     const { customGame } = this.config;
     const args = ["-addon", customGame.name];
 

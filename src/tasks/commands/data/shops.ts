@@ -5,7 +5,7 @@ import vdf from "vdf-parser";
 
 import { Label } from "../../logger";
 import { Path } from "../../path";
-import BaseCommand from "../base";
+import { BaseCommand } from "../base";
 
 export interface Args {
   input: Path;
@@ -30,7 +30,7 @@ interface CustomGameShops {
   };
 }
 
-export default class ShopsCommand extends BaseCommand<Args, Options> {
+export class ShopsCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     return parent
       .command("shops")

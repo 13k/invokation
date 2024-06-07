@@ -3,19 +3,19 @@ import dotenv from "dotenv";
 import { expand as dotenvExpand } from "dotenv-expand";
 import temp from "temp";
 
-import BuildCommand from "./commands/build";
-import CleanCommand from "./commands/clean";
-import DataCommand from "./commands/data/index";
-import LaunchCommand from "./commands/launch";
-import LinkCommand from "./commands/link";
-import LOG from "./logger";
+import { BuildCommand } from "./commands/build";
+import { CleanCommand } from "./commands/clean";
+import { DataCommand } from "./commands/data/index";
+import { LaunchCommand } from "./commands/launch";
+import { LinkCommand } from "./commands/link";
+import { LOGGER } from "./logger";
 
 function loadDotenv() {
   const result = dotenvExpand(dotenv.config({ encoding: "utf8" }));
   const error = result.error as NodeJS.ErrnoException;
 
   if (error && error.code !== "ENOENT") {
-    LOG.fields({ error }).warn("Error reading env file");
+    LOGGER.fields({ error }).warn("Error reading env file");
     throw error;
   }
 }
@@ -26,7 +26,7 @@ async function parseArgs(): Promise<void> {
     .option("-d, --dota2 <PATH>", "Dota2 path")
     .option("-D, --debug", "Output debug information", false)
     .on("option:debug", () => {
-      LOG.level = "debug";
+      LOGGER.level = "debug";
     });
 
   new BuildCommand(program);
@@ -46,17 +46,19 @@ async function main(): Promise<number> {
   return 0;
 }
 
-temp.track();
+if (import.meta.main) {
+  temp.track();
 
-try {
-  await main();
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    LOG.error(error.message);
-    LOG.debug(error);
-  } else {
-    console.error(error);
+  try {
+    await main();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      LOGGER.error(error.message);
+      LOGGER.debug(error);
+    } else {
+      console.error(error);
+    }
+
+    process.exit(1);
   }
-
-  process.exit(1);
 }

@@ -1,13 +1,12 @@
 import assert from "node:assert";
 import os from "node:os";
-import { inspect } from "node:util";
 
 import type { Command } from "commander";
 import { InvalidArgumentError } from "commander";
 
 import { parseShell } from "../exec";
 import { Label } from "../logger";
-import BaseCommand from "./base";
+import { BaseCommand } from "./base";
 
 export interface Args {
   parts: BuildPart[];
@@ -34,7 +33,7 @@ function parseBuildPart(value: string, previous?: BuildPart[]): BuildPart[] {
       break;
     default: {
       const _check: never = part;
-      throw new InvalidArgumentError(`Invalid build part: ${inspect(_check)}`);
+      throw new InvalidArgumentError(`Invalid build part: ${Bun.inspect(_check)}`);
     }
   }
 
@@ -50,7 +49,7 @@ function parseCommand(value: string, previous?: string[]): string[] {
 const MAX_TEXTURE_RES = 256;
 const DIRECTX_LEVEL = "110";
 
-export default class BuildCommand extends BaseCommand<Args, Options> {
+export class BuildCommand extends BaseCommand<Args, Options> {
   protected override subcommand(parent: Command): Command {
     const partChoices = Object.values(BuildPart).join(", ");
 
@@ -97,7 +96,7 @@ Accepts environment variables. \
         }
         default: {
           const _check: never = part;
-          throw new InvalidArgumentError(`Invalid build part: ${inspect(_check)}`);
+          throw new InvalidArgumentError(`Invalid build part: ${Bun.inspect(_check)}`);
         }
       }
     }
@@ -194,7 +193,7 @@ Accepts environment variables. \
 
     const [compilerCmd, ...compilerCmdArgs] = this.compilerCommand;
 
-    assert(compilerCmd, `Invalid resource compiler commmand: ${inspect(this.compilerCommand)}`);
+    assert(compilerCmd, `Invalid resource compiler commmand: ${Bun.inspect(this.compilerCommand)}`);
 
     const execArgs = [...compilerCmdArgs, ...args];
 

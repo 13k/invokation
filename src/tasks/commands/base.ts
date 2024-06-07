@@ -7,16 +7,19 @@ import type { ConfigOptions } from "../config";
 import type { CaptureOptions, ExecOptions } from "../exec";
 import { capture, exec, parseShell } from "../exec";
 import type { Logger } from "../logger";
-import LOG from "../logger";
+import { LOGGER } from "../logger";
 import { Path, ROOT_DIR } from "../path";
 import type { PathLike } from "../path";
+
+const ENV_DOTA2_PATH = "DOTA2_PATH";
+const ENV_RESOURCE_COMPILER = "RESOURCE_COMPILER";
 
 interface GlobalOptions {
   dota2?: string;
   debug: boolean;
 }
 
-export default abstract class BaseCommand<Args, Options extends OptionValues> {
+export abstract class BaseCommand<Args, Options extends OptionValues> {
   #log?: Logger;
   #config?: Config;
   #args?: Args;
@@ -35,7 +38,7 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
 
   get log(): Logger {
     if (this.#log == null) {
-      this.#log = LOG;
+      this.#log = LOGGER;
     }
 
     return this.#log;
@@ -43,8 +46,7 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
 
   get config(): Config {
     if (this.#config == null) {
-      // biome-ignore lint/complexity/useLiteralKeys: `process.env`
-      const dota2Dir = this.globalOptions.dota2 ?? process.env["DOTA2_PATH"];
+      const dota2Dir = this.globalOptions.dota2 ?? process.env[ENV_DOTA2_PATH];
 
       if (!dota2Dir) {
         throw new Error("Dota2 path must be given");
@@ -55,8 +57,7 @@ export default abstract class BaseCommand<Args, Options extends OptionValues> {
         dota2Dir: Path.new(dota2Dir),
       };
 
-      // biome-ignore lint/complexity/useLiteralKeys: `process.env`
-      const resourceCompilerEnv = process.env["RESOURCE_COMPILER"];
+      const resourceCompilerEnv = process.env[ENV_RESOURCE_COMPILER];
 
       if (resourceCompilerEnv) {
         options.resourceCompiler = parseShell(resourceCompilerEnv);

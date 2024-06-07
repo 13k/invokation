@@ -2,7 +2,7 @@ import { each as asyncEach } from "async";
 import type { Command } from "commander";
 
 import { Label } from "../logger";
-import BaseCommand from "./base";
+import { BaseCommand } from "./base";
 
 export type Args = null;
 
@@ -10,7 +10,7 @@ export interface Options {
   dryRun?: boolean;
 }
 
-export default class CleanCommand extends BaseCommand<Args, Options> {
+export class CleanCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     return parent
       .command("clean")

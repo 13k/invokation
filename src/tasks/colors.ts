@@ -1,5 +1,3 @@
-import { inspect } from "node:util";
-
 import type { ChalkInstance, ColorName, ModifierName } from "chalk";
 import chalk from "chalk";
 import _ from "lodash";
@@ -30,7 +28,7 @@ export function colorStyle(...styles: Style[]): ColorStyle {
         return s[c as ChalkStyleName];
       }
 
-      throw new Error(`Invalid color style: ${inspect(c)}`);
+      throw new Error(`Invalid color style: ${Bun.inspect(c)}`);
     },
     chalk,
   );

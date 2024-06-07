@@ -1,11 +1,12 @@
 import assert from "node:assert";
+
 import { each as asyncEach } from "async";
 import type { Command } from "commander";
 
 import { Label } from "../logger";
 import type { Link } from "../path";
 import { LinkType } from "../path";
-import BaseCommand from "./base";
+import { BaseCommand } from "./base";
 
 export type Args = null;
 
@@ -16,7 +17,7 @@ export interface Options {
 const POWERSHELL_BIN = "pwsh.exe";
 const GAME_SRCS = ["resource", "scripts", "addoninfo.txt"];
 
-export default class LinkCommand extends BaseCommand<Args, Options> {
+export class LinkCommand extends BaseCommand<Args, Options> {
   override subcommand(parent: Command): Command {
     return parent
       .command("link")
