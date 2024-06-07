@@ -7,7 +7,7 @@
   },
   "scripts": {},
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
+    "@biomejs/biome": "^1.8.0",
     "@moddota/panorama-types": "^1.33.0",
     "@mojojs/path": "^1.6.0",
     "@prettier/plugin-xml": "^3.4.1",
@@ -53,7 +53,5 @@
       "maps": ["cottage", "island"]
     }
   },
-  "trustedDependencies": [
-    "@biomejs/biome"
-  ]
+  "trustedDependencies": ["@biomejs/biome"]
 }
