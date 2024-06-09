@@ -116,8 +116,9 @@ Parse and convert a KeyValues file \
 
     let kind: Kind | undefined = undefined;
 
-    for (kind of Object.values(Kind)) {
-      if (kind in doc) {
+    for (const key of Object.values(Kind)) {
+      if (key in doc) {
+        kind = key;
         break;
       }
     }

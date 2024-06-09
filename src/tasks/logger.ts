@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from "lodash-es";
 import type { TransformableInfo } from "logform";
 import * as emoji from "node-emoji";
 import tb from "triple-beam";
@@ -44,6 +44,7 @@ const LEVEL_LENGTH = _.chain(LEVELS)
 const LEVEL_PADDING = _.mapValues(LEVELS, (_v, k) => LEVEL_LENGTH - k.length);
 
 export enum Label {
+  Check = "check",
   Compile = "compile",
   Copy = "copy",
   Generate = "generate",
@@ -53,15 +54,17 @@ export enum Label {
 }
 
 const LABEL_EMOJI: Record<Label, string | undefined> = {
-  [Label.Compile]: emoji.get("comet"),
-  [Label.Copy]: emoji.get("cat2"),
-  [Label.Generate]: emoji.get("broccoli"),
-  [Label.Install]: emoji.get("teapot"),
-  [Label.Link]: emoji.get("anchor"),
-  [Label.Remove]: emoji.get("ghost"),
+  [Label.Check]: ":eyeglasses:",
+  [Label.Compile]: ":rocket:",
+  [Label.Copy]: ":cat2:",
+  [Label.Generate]: ":broccoli:",
+  [Label.Install]: ":teapot:",
+  [Label.Link]: ":anchor:",
+  [Label.Remove]: ":ghost:",
 };
 
 const LABEL_STYLES: Record<Label, ColorStyle> = {
+  [Label.Check]: colorStyle(163),
   [Label.Compile]: colorStyle(214),
   [Label.Copy]: colorStyle(142),
   [Label.Generate]: colorStyle(70),
@@ -292,13 +295,14 @@ function formatLabel(labelOpt?: Label): string {
   let label = "";
 
   if (labelOpt) {
-    const emoji = LABEL_EMOJI[labelOpt];
+    const labelEmoji = LABEL_EMOJI[labelOpt];
 
-    if (emoji) {
-      label += `${emoji} `;
+    if (labelEmoji) {
+      label += `${labelEmoji} `;
     }
 
     label += labelOpt;
+    label = emoji.emojify(label);
 
     const style = LABEL_STYLES[labelOpt];
 

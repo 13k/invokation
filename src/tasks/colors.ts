@@ -1,6 +1,6 @@
 import type { ChalkInstance, ColorName, ModifierName } from "chalk";
 import chalk from "chalk";
-import _ from "lodash";
+import _ from "lodash-es";
 
 type ChalkStyleName = ModifierName | ColorName;
 

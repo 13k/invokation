@@ -4,9 +4,10 @@ import os from "node:os";
 import type { Command } from "commander";
 import { InvalidArgumentError } from "commander";
 
-import { parseShell } from "../exec";
-import { Label } from "../logger";
-import { BaseCommand } from "./base";
+import { parseShell } from "../../exec";
+import { Label } from "../../logger";
+import { BaseCommand } from "../base";
+import { build as bunBuild } from "./bun";
 
 export interface Args {
   parts: BuildPart[];
@@ -100,6 +101,8 @@ Accepts environment variables. \
         }
       }
     }
+
+    this.log.emojify(true).info(":house: done");
   }
 
   get compilerCommand(): string[] {
@@ -117,20 +120,31 @@ Accepts environment variables. \
   }
 
   async compilePanoramaScripts(): Promise<void> {
+    await this.typecheckPanoramaScripts();
+    await this.bundlePanoramaScripts();
+  }
+
+  async typecheckPanoramaScripts(): Promise<void> {
     const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts");
+    const libDir = srcDir.join("lib");
+    const customGameDir = srcDir.join("custom_game");
 
-    this.log.label(Label.Generate).fields({ srcDir }).info("panorama scripts");
+    this.log.label(Label.Check).fields({ srcDir: libDir }).info("panorama scripts");
 
-    const args = ["--no-install", "x", "--", "tsc", "--build", srcDir.toString(), "--verbose"];
+    await this.tscBuild(libDir.toString());
 
-    if (this.options.force) {
-      args.push("--force");
-    }
+    this.log.label(Label.Check).fields({ srcDir: customGameDir }).info("panorama scripts");
 
-    this.exec("bun", args, {
-      echo: true,
-      log: this.log,
-    });
+    await this.tscBuild(customGameDir.toString());
+  }
+
+  async bundlePanoramaScripts(): Promise<void> {
+    const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts", "custom_game");
+    const outDir = this.config.sources.contentDir.join("panorama", "scripts", "custom_game");
+
+    this.log.label(Label.Compile).fields({ srcDir }).info("panorama scripts");
+
+    await bunBuild(srcDir, outDir, this.log);
   }
 
   async compileMaps(): Promise<void> {
@@ -140,7 +154,7 @@ Accepts environment variables. \
     this.log.fields({ mapsPath: mapsPatt, relPath: relPatt }).debug("compileMaps()");
     this.log.label(Label.Compile).fields({ pattern: relPatt }).info("maps");
 
-    await this.compile(["-r", "-i", relPatt]);
+    await this.resourceCompiler(["-r", "-i", relPatt]);
   }
 
   async compileResources(): Promise<void> {
@@ -160,11 +174,11 @@ Accepts environment variables. \
 
     this.log.label(Label.Compile).info("resources");
 
-    await this.compile(["-r", ...inputArgs]);
+    await this.resourceCompiler(["-r", ...inputArgs]);
   }
 
   async compileMap(relPath: string): Promise<void> {
-    await this.compile([
+    await this.resourceCompiler([
       "-threads",
       os.availableParallelism().toString(),
       "-maxtextureres",
@@ -186,7 +200,22 @@ Accepts environment variables. \
     ]);
   }
 
-  async compile(args: string[]): Promise<void> {
+  async tscBuild(srcDir: string): Promise<void> {
+    const args = ["x", "--", "tsc", "--build", "--verbose"];
+
+    if (this.options.force) {
+      args.push("--force");
+    }
+
+    args.push(srcDir);
+
+    this.exec("bun", args, {
+      echo: true,
+      log: this.log,
+    });
+  }
+
+  async resourceCompiler(args: string[]): Promise<void> {
     const {
       dota2: { baseDir },
     } = this.config;

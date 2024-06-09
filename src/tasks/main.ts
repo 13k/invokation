@@ -5,7 +5,7 @@ import temp from "temp";
 
 import { BuildCommand } from "./commands/build";
 import { CleanCommand } from "./commands/clean";
-import { DataCommand } from "./commands/data/index";
+import { DataCommand } from "./commands/data";
 import { LaunchCommand } from "./commands/launch";
 import { LinkCommand } from "./commands/link";
 import { LOGGER } from "./logger";
