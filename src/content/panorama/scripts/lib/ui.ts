@@ -64,7 +64,7 @@ export const CONFIG: { [K in keyof typeof DotaDefaultUIElement_t]: boolean } = {
   // biome-ignore lint/style/useNamingConvention: builtin type
   DOTA_DEFAULT_UI_CUSTOMUI_BEHIND_HUD_ELEMENTS: true,
   // biome-ignore lint/style/useNamingConvention: builtin type
-  DOTA_DEFAULT_UI_AGHANIMS_STATUS: false,
+  DOTA_DEFAULT_UI_AGHANIMS_STATUS: true,
   // biome-ignore lint/style/useNamingConvention: builtin type
   DOTA_DEFAULT_UI_ELEMENT_COUNT: false,
 };
