@@ -1,164 +1,157 @@
-namespace invk {
-  export namespace Components {
-    export namespace Ui {
-      export namespace TalentsDisplay {
-        const {
-          Dota2: { Talents, TalentLevel, TalentSide },
-          Panorama: { UiEvent },
-          Sequence: { ParallelSequence },
-        } = GameUI.CustomUIConfig().invk;
+import type { TalentSelection } from "@invokation/panorama-lib/dota2/talents";
+import { TalentLevel, TalentSide, Talents } from "@invokation/panorama-lib/dota2/talents";
+import { UiEvent } from "@invokation/panorama-lib/panorama";
+import type { Action } from "@invokation/panorama-lib/sequence";
+import { ParallelSequence } from "@invokation/panorama-lib/sequence";
 
-        import Action = invk.Sequence.Action;
-        import Component = invk.Component.Component;
-        import TalentSelection = invk.Dota2.TalentSelection;
+import type { Inputs } from "../component";
+import { Component } from "../component";
 
-        type TalentLevelType = typeof Dota2.TalentLevel;
+type TalentLevelType = typeof TalentLevel;
 
-        export type Elements = {
-          [K in keyof TalentLevelType as `statRow${TalentLevelType[K]}`]: Panel;
-        };
+export type TalentsDisplayElements = {
+  [K in keyof TalentLevelType as `statRow${TalentLevelType[K]}`]: Panel;
+};
 
-        export interface Inputs extends Component.Inputs {
-          reset: undefined;
-          select: {
-            heroId: HeroID;
-            talents: TalentSelection;
-          };
-        }
+export interface TalentsDisplayInputs extends Inputs {
+  reset: undefined;
+  select: {
+    heroId: HeroID;
+    talents: TalentSelection;
+  };
+}
 
-        enum CssClass {
-          BranchSelectedLeft = "LeftBranchSelected",
-          BranchSelectedRight = "RightBranchSelected",
-        }
+enum CssClass {
+  BranchSelectedLeft = "LeftBranchSelected",
+  BranchSelectedRight = "RightBranchSelected",
+}
 
-        const LEVELS = [TalentLevel.Tier1, TalentLevel.Tier2, TalentLevel.Tier3, TalentLevel.Tier4];
+const LEVELS = [TalentLevel.Tier1, TalentLevel.Tier2, TalentLevel.Tier3, TalentLevel.Tier4];
 
-        const BranchRowClass = {
-          [TalentSide.Left]: CssClass.BranchSelectedLeft,
-          [TalentSide.Right]: CssClass.BranchSelectedRight,
-        };
+const BranchRowClass = {
+  [TalentSide.Left]: CssClass.BranchSelectedLeft,
+  [TalentSide.Right]: CssClass.BranchSelectedRight,
+};
 
-        export class TalentsDisplay extends Component<Elements, Inputs> {
-          talents: Dota2.Talents | undefined;
-          heroId: HeroID | undefined;
-          tooltipId: string | undefined;
+export type { TalentsDisplay };
 
-          constructor() {
-            super({
-              elements: {
-                statRow10: "StatRow10",
-                statRow15: "StatRow15",
-                statRow20: "StatRow20",
-                statRow25: "StatRow25",
-              },
-              panelEvents: {
-                $: {
-                  onmouseover: () => this.onMouseOver(),
-                  onmouseout: () => this.onMouseOut(),
-                },
-              },
-              inputs: {
-                select: (payload) => this.onSelect(payload),
-                reset: (payload) => this.onReset(payload),
-              },
-            });
+class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInputs> {
+  talents: Talents | undefined;
+  heroId: HeroID | undefined;
+  tooltipId: string | undefined;
 
-            this.debug("init");
-          }
+  constructor() {
+    super({
+      elements: {
+        statRow10: "StatRow10",
+        statRow15: "StatRow15",
+        statRow20: "StatRow20",
+        statRow25: "StatRow25",
+      },
+      panelEvents: {
+        $: {
+          onmouseover: () => this.onMouseOver(),
+          onmouseout: () => this.onMouseOut(),
+        },
+      },
+      inputs: {
+        select: (payload) => this.onSelect(payload),
+        reset: (payload) => this.onReset(payload),
+      },
+    });
 
-          // ----- I/O -----
+    this.debug("init");
+  }
 
-          onSelect(payload: Inputs["select"]): void {
-            this.debug("onSelect()", payload);
+  // ----- I/O -----
 
-            this.heroId = payload.heroId;
-            this.talents = new Talents(payload.talents);
+  onSelect(payload: TalentsDisplayInputs["select"]): void {
+    this.debug("onSelect()", payload);
 
-            this.render();
-          }
+    this.heroId = payload.heroId;
+    this.talents = new Talents(payload.talents);
 
-          onReset(payload: Inputs["reset"]): void {
-            this.debug("onReset()", payload);
-            this.reset();
-          }
+    this.render();
+  }
 
-          // ----- Event handlers -----
+  onReset(payload: TalentsDisplayInputs["reset"]): void {
+    this.debug("onReset()", payload);
+    this.reset();
+  }
 
-          onMouseOver(): void {
-            if (this.heroId == null || this.talents == null) {
-              this.warn("tried to onMouseOver() without hero ID or selected talents");
-              return;
-            }
+  // ----- Event handlers -----
 
-            this.dispatch(this.panel, UiEvent.ShowHeroStatBranchTooltip, this.heroId);
-          }
-
-          onMouseOut(): void {
-            this.dispatch(this.panel, UiEvent.HideHeroStatBranchTooltip);
-          }
-
-          // ----- Helpers -----
-
-          row(level: Dota2.TalentLevel): Panel {
-            return this.elements[`statRow${level}`];
-          }
-
-          // ----- Actions -----
-
-          selectLevelAction(level: Dota2.TalentLevel): Action {
-            return Object.values(TalentSide).reduce(
-              (seq, side) =>
-                this.talents?.isSelected(level, side)
-                  ? seq.addClass(this.row(level), BranchRowClass[side])
-                  : seq.removeClass(this.row(level), BranchRowClass[side]),
-              new ParallelSequence(),
-            );
-          }
-
-          resetLevelAction(level: Dota2.TalentLevel): Action {
-            return Object.values(TalentSide).reduce(
-              (seq, side) => seq.removeClass(this.row(level), BranchRowClass[side]),
-              new ParallelSequence(),
-            );
-          }
-
-          // ----- Action runners -----
-
-          render(): void {
-            if (this.heroId == null || this.talents == null) {
-              this.warn("tried to render() without hero ID or selected talents");
-              return;
-            }
-
-            const seq = LEVELS.reduce(
-              (seq, level) => seq.add(this.selectLevelAction(level)),
-              new ParallelSequence(),
-            );
-
-            this.debugFn(() => [
-              "select()",
-              { heroId: this.heroId, selected: this.talents?.value, actions: seq.deepSize() },
-            ]);
-
-            seq.run();
-          }
-
-          reset(): void {
-            const seq = LEVELS.reduce(
-              (seq, level) => seq.add(this.resetLevelAction(level)),
-              new ParallelSequence(),
-            );
-
-            this.debugFn(() => ["reset()", { actions: seq.deepSize() }]);
-
-            seq.run();
-          }
-
-          // ----- UI methods -----
-        }
-
-        export const component = new TalentsDisplay();
-      }
+  onMouseOver(): void {
+    if (this.heroId == null || this.talents == null) {
+      this.warn("tried to onMouseOver() without hero ID or selected talents");
+      return;
     }
+
+    this.dispatch(this.panel, UiEvent.ShowHeroStatBranchTooltip, this.heroId);
+  }
+
+  onMouseOut(): void {
+    this.dispatch(this.panel, UiEvent.HideHeroStatBranchTooltip);
+  }
+
+  // ----- Helpers -----
+
+  row(level: TalentLevel): Panel {
+    return this.elements[`statRow${level}`];
+  }
+
+  // ----- Actions -----
+
+  selectLevelAction(level: TalentLevel): Action {
+    return Object.values(TalentSide).reduce(
+      (seq, side) =>
+        this.talents?.isSelected(level, side)
+          ? seq.addClass(this.row(level), BranchRowClass[side])
+          : seq.removeClass(this.row(level), BranchRowClass[side]),
+      new ParallelSequence(),
+    );
+  }
+
+  resetLevelAction(level: TalentLevel): Action {
+    return Object.values(TalentSide).reduce(
+      (seq, side) => seq.removeClass(this.row(level), BranchRowClass[side]),
+      new ParallelSequence(),
+    );
+  }
+
+  // ----- Action runners -----
+
+  render(): void {
+    if (this.heroId == null || this.talents == null) {
+      this.warn("tried to render() without hero ID or selected talents");
+      return;
+    }
+
+    const seq = LEVELS.reduce(
+      (seq, level) => seq.add(this.selectLevelAction(level)),
+      new ParallelSequence(),
+    );
+
+    this.debugFn(() => [
+      "select()",
+      { heroId: this.heroId, selected: this.talents?.value, actions: seq.deepSize() },
+    ]);
+
+    seq.run();
+  }
+
+  reset(): void {
+    const seq = LEVELS.reduce(
+      (seq, level) => seq.add(this.resetLevelAction(level)),
+      new ParallelSequence(),
+    );
+
+    this.debugFn(() => ["reset()", { actions: seq.deepSize() }]);
+
+    seq.run();
   }
 }
+
+(() => {
+  new TalentsDisplay();
+})();

@@ -1,7 +1,3 @@
-namespace invk {
-  export namespace KeyValues {
-    export interface KeyValues {
-      [key: string]: string | KeyValues;
-    }
-  }
+export interface KeyValues {
+  [key: string]: string | KeyValues;
 }

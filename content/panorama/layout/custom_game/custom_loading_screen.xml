@@ -1,7 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/lib.js" />
-    <include src="file://{resources}/scripts/custom_game/component.js" />
     <include src="file://{resources}/scripts/custom_game/custom_loading_screen.js" />
   </scripts>
 

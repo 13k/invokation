@@ -1,6 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/component.js" />
     <include src="file://{resources}/scripts/custom_game/freestyle.js" />
   </scripts>
 

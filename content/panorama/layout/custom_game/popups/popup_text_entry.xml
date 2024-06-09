@@ -1,6 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/component.js" />
     <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.js" />
   </scripts>
 

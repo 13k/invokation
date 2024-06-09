@@ -1,6 +1,5 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/component.js" />
     <include src="file://{resources}/scripts/custom_game/viewer.js" />
   </scripts>
 
@@ -34,7 +33,9 @@
 
             <Panel class="ViewerAbilitiesBuild" hittest="false">
               <Panel id="ViewerTalents" class="AbilityCircle" />
-              <!-- <DOTAUITalentDisplay id="TalentTree" onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)" onmouseout="DOTAHUDHideStatBranchTooltip()" /> -->
+              <!-- <DOTAUITalentDisplay id="TalentTree"
+              onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)"
+              onmouseout="DOTAHUDHideStatBranchTooltip()" /> -->
               <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">

@@ -1,0 +1,7 @@
+{
+  "extends": ["@tsconfig/bun/tsconfig.json", "@tsconfig/strictest/tsconfig.json"],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "types": ["@moddota/panorama-types", "@types/core-js", "@types/lodash-es"]
+  }
+}

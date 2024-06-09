@@ -1,76 +1,71 @@
-namespace invk {
-  export namespace Components {
-    export namespace Popups {
-      export namespace GameInfo {
-        const {
-          Constants: { META },
-        } = GameUI.CustomUIConfig().invk;
+import { META } from "@invokation/panorama-lib/meta";
 
-        import Component = invk.Component.Component;
+import type { Elements } from "../component";
+import { Component } from "../component";
 
-        export interface Elements extends Component.Elements {
-          versionLabel: LabelPanel;
-          btnClose: Button;
-          btnOpenHomepage: Button;
-          btnOpenChangelog: Button;
-        }
+export interface PopupGameInfoElements extends Elements {
+  versionLabel: LabelPanel;
+  btnClose: Button;
+  btnOpenHomepage: Button;
+  btnOpenChangelog: Button;
+}
 
-        export class PopupGameInfo extends Component<Elements> {
-          constructor() {
-            super({
-              elements: {
-                versionLabel: "GameInfoVersionLabel",
-                btnClose: "GameInfoClose",
-                btnOpenHomepage: "GameInfoOpenHomepage",
-                btnOpenChangelog: "GameInfoOpenChangelog",
-              },
-              panelEvents: {
-                $: {
-                  oncancel: () => this.close(),
-                },
-                btnClose: {
-                  onactivate: () => this.close(),
-                },
-                btnOpenHomepage: {
-                  onactivate: () => this.openHomepageUrl(),
-                },
-                btnOpenChangelog: {
-                  onactivate: () => this.openChangelogUrl(),
-                },
-              },
-            });
+export type { PopupGameInfo };
 
-            this.debug("init");
-          }
+class PopupGameInfo extends Component<PopupGameInfoElements> {
+  constructor() {
+    super({
+      elements: {
+        versionLabel: "GameInfoVersionLabel",
+        btnClose: "GameInfoClose",
+        btnOpenHomepage: "GameInfoOpenHomepage",
+        btnOpenChangelog: "GameInfoOpenChangelog",
+      },
+      panelEvents: {
+        $: {
+          oncancel: () => this.close(),
+        },
+        btnClose: {
+          onactivate: () => this.close(),
+        },
+        btnOpenHomepage: {
+          onactivate: () => this.openHomepageUrl(),
+        },
+        btnOpenChangelog: {
+          onactivate: () => this.openChangelogUrl(),
+        },
+      },
+    });
 
-          // ----- Event handlers -----
+    this.debug("init");
+  }
 
-          override onLoad(): void {
-            this.debug("onLoad()");
-            this.render();
-          }
+  // ----- Event handlers -----
 
-          // ----- Helpers -----
+  override onLoad(): void {
+    this.debug("onLoad()");
+    this.render();
+  }
 
-          render(): void {
-            this.elements.versionLabel.text = META.version;
-          }
+  // ----- Helpers -----
 
-          close(): void {
-            this.closePopup(this.panel);
-          }
+  render(): void {
+    this.elements.versionLabel.text = META.version;
+  }
 
-          openHomepageUrl(): void {
-            this.openUrl(this.panel, META.url);
-          }
+  close(): void {
+    this.closePopup(this.panel);
+  }
 
-          openChangelogUrl(): void {
-            this.openUrl(this.panel, META.changelogUrl);
-          }
-        }
+  openHomepageUrl(): void {
+    this.openUrl(this.panel, META.url);
+  }
 
-        export const component = new PopupGameInfo();
-      }
-    }
+  openChangelogUrl(): void {
+    this.openUrl(this.panel, META.changelogUrl);
   }
 }
+
+(() => {
+  new PopupGameInfo();
+})();

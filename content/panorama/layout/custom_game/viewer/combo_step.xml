@@ -1,0 +1,14 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/viewer/combo_step.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/viewer/combo_step.css" />
+  </styles>
+
+  <Panel class="ViewerComboStepRoot">
+    <Button id="ComboStepIconButton" class="ViewerComboStepIcon" />
+    <Label id="ViewerComboStepDescription" html="true" hittest="false" />
+  </Panel>
+</root>

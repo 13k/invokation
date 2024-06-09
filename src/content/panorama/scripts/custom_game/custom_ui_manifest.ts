@@ -1,39 +1,40 @@
-namespace invk {
-  export namespace Singleton {
-    const {
-      Combo: { CombosCollection },
-      NetTable: {
-        KeyListener: { AbilitiesKeyValues, HeroData, HeroKeyValues },
-      },
-    } = invk;
+import "@invokation/panorama-lib/api";
 
-    export const ABILITIES_KV = new AbilitiesKeyValues();
-    export const COMBOS = new CombosCollection();
-    export const HERO_DATA = new HeroData();
-    export const HERO_KV = new HeroKeyValues();
-  }
+import { CombosCollection } from "@invokation/panorama-lib/combo/combos_collection";
+import {
+  AbilitiesKeyValues,
+  HeroData,
+  HeroKeyValues,
+} from "@invokation/panorama-lib/net_table/key_listener";
+import { CONFIG } from "@invokation/panorama-lib/ui";
 
-  export namespace Components {
-    export namespace CustomUiManifest {
-      const {
-        Constants: { UI_CONFIG },
-      } = GameUI.CustomUIConfig().invk;
+import { Component } from "./component";
 
-      import Component = invk.Component.Component;
+GameUI.CustomUIConfig().invk = {
+  // biome-ignore lint/style/useNamingConvention: constant
+  ABILITIES_KV: new AbilitiesKeyValues(),
+  // biome-ignore lint/style/useNamingConvention: constant
+  COMBOS: new CombosCollection(),
+  // biome-ignore lint/style/useNamingConvention: constant
+  HERO_DATA: new HeroData(),
+  // biome-ignore lint/style/useNamingConvention: constant
+  HERO_KV: new HeroKeyValues(),
+};
 
-      export class CustomUiManifest extends Component {
-        constructor() {
-          super();
+export type { CustomUiManifest };
 
-          for (const [key, value] of Object.entries(UI_CONFIG)) {
-            this.setUi(key as keyof typeof DotaDefaultUIElement_t, value);
-          }
+class CustomUiManifest extends Component {
+  constructor() {
+    super();
 
-          this.debug("init");
-        }
-      }
-
-      export const component = new CustomUiManifest();
+    for (const [key, value] of Object.entries(CONFIG)) {
+      this.setUi(key as keyof typeof DotaDefaultUIElement_t, value);
     }
+
+    this.debug("init");
   }
 }
+
+(() => {
+  new CustomUiManifest();
+})();

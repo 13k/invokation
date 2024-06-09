@@ -1,109 +1,108 @@
-namespace invk {
-  export namespace Components {
-    export namespace Popups {
-      export namespace ItemPicker {
-        const {
-          Layout: { LayoutId },
-          CustomEvents: { GameEvent },
-        } = GameUI.CustomUIConfig().invk;
+import { GameEvent } from "@invokation/panorama-lib/custom_events";
 
-        import Component = invk.Component.Component;
-        import ParamType = invk.Component.ParamType;
-        import UiItemPicker = invk.Components.Ui.ItemPicker;
+import type { Elements, Params } from "../component";
+import { Component, ParamType } from "../component";
+import { LayoutId } from "../layout";
+import type { ItemPicker, ItemPickerOutputs } from "../ui/item_picker";
 
-        export interface Elements extends Component.Elements {
-          itemPickerContainer: Panel;
-          btnClose: Button;
-        }
+export interface PopupItemPickerElements extends Elements {
+  itemPickerContainer: Panel;
+  btnClose: Button;
+}
 
-        export interface Params extends Component.Params {
-          channel: string;
-        }
+export interface PopupItemPickerParams extends Params {
+  channel: string;
+}
 
-        enum PanelId {
-          ItemPicker = "PopupItemPickerUIItemPicker",
-        }
+enum PanelId {
+  ItemPicker = "PopupItemPickerUIItemPicker",
+}
 
-        const INVALID_CHANNEL = "<invalid>";
-        const INVALID_ITEM = "<invalid>";
+const INVALID_CHANNEL = "<invalid>";
+const INVALID_ITEM = "<invalid>";
 
-        export class PopupItemPicker extends Component<Elements, never, never, Params> {
-          selected: string = INVALID_ITEM;
-          itemPicker: UiItemPicker.ItemPicker | undefined;
+export type { PopupItemPicker };
 
-          constructor() {
-            super({
-              elements: {
-                itemPickerContainer: "PopupItemPickerUIItemPickerContainer",
-                btnClose: "PopupItemPickerClose",
-              },
-              panelEvents: {
-                $: {
-                  oncancel: () => this.close(),
-                },
-                btnClose: {
-                  onactivate: () => this.close(),
-                },
-              },
-              params: {
-                channel: { type: ParamType.String, default: INVALID_CHANNEL },
-              },
-            });
+class PopupItemPicker extends Component<
+  PopupItemPickerElements,
+  never,
+  never,
+  PopupItemPickerParams
+> {
+  selected: string = INVALID_ITEM;
+  itemPicker: ItemPicker | undefined;
 
-            this.debug("init");
-          }
+  constructor() {
+    super({
+      elements: {
+        itemPickerContainer: "PopupItemPickerUIItemPickerContainer",
+        btnClose: "PopupItemPickerClose",
+      },
+      panelEvents: {
+        $: {
+          oncancel: () => this.close(),
+        },
+        btnClose: {
+          onactivate: () => this.close(),
+        },
+      },
+      params: {
+        channel: { type: ParamType.String, default: INVALID_CHANNEL },
+      },
+    });
 
-          // ----- Event handlers -----
+    this.debug("init");
+  }
 
-          override onLoad(): void {
-            this.debug("onLoad()", this.params);
-            this.render();
-          }
+  // ----- Event handlers -----
 
-          onItemSelected(payload: UiItemPicker.Outputs["onSelect"]): void {
-            this.debug("onItemSelected()", payload);
+  override onLoad(): void {
+    this.debug("onLoad()", this.params);
+    this.render();
+  }
 
-            this.selected = payload.item;
+  onItemSelected(payload: ItemPickerOutputs["onSelect"]): void {
+    this.debug("onItemSelected()", payload);
 
-            this.submit();
-          }
+    this.selected = payload.item;
 
-          // ----- Helpers -----
+    this.submit();
+  }
 
-          render(): void {
-            this.itemPicker = this.create(
-              LayoutId.UiItemPicker,
-              PanelId.ItemPicker,
-              this.elements.itemPickerContainer,
-            );
+  // ----- Helpers -----
 
-            this.itemPicker.registerOutputs({
-              onSelect: this.onItemSelected.bind(this),
-            });
+  render(): void {
+    this.itemPicker = this.create(
+      LayoutId.UiItemPicker,
+      PanelId.ItemPicker,
+      this.elements.itemPickerContainer,
+    );
 
-            this.debug("render()");
-          }
+    this.itemPicker.registerOutputs({
+      onSelect: this.onItemSelected.bind(this),
+    });
 
-          close(): void {
-            this.closePopup(this.panel);
-          }
+    this.debug("render()");
+  }
 
-          submit(): void {
-            const {
-              params: { channel },
-              selected: item,
-            } = this;
+  close(): void {
+    this.closePopup(this.panel);
+  }
 
-            const payload = { channel, item };
+  submit(): void {
+    const {
+      params: { channel },
+      selected: item,
+    } = this;
 
-            this.debug("Submit()", payload);
-            this.sendClientSide(GameEvent.PopupItemPickerSubmit, payload);
-            this.close();
-          }
-        }
+    const payload = { channel, item };
 
-        export const component = new PopupItemPicker();
-      }
-    }
+    this.debug("Submit()", payload);
+    this.sendClientSide(GameEvent.PopupItemPickerSubmit, payload);
+    this.close();
   }
 }
+
+(() => {
+  new PopupItemPicker();
+})();

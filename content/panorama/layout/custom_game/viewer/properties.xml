@@ -1,11 +1,10 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/component.js" />
-    <include src="file://{resources}/scripts/custom_game/viewer_properties.js" />
+    <include src="file://{resources}/scripts/custom_game/viewer/properties.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/viewer_properties.css" />
+    <include src="file://{resources}/styles/custom_game/viewer/properties.css" />
   </styles>
 
   <Panel class="ViewerPropertiesRoot" hittest="false">

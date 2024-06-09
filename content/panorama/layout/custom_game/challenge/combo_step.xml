@@ -1,0 +1,13 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/challenge/combo_step.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/challenge/combo_step.css" />
+  </styles>
+
+  <Panel class="ChallengeComboStepRoot">
+    <Button id="ComboStepIconButton" />
+  </Panel>
+</root>

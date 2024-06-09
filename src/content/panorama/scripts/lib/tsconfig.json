@@ -1,13 +1,7 @@
 {
-  "extends": "../tsconfig.common.json",
+  "extends": "../tsconfig.panorama.json",
+  "include": ["**/*.ts"],
   "compilerOptions": {
-    "rootDir": ".",
-    "outFile": "../../../../../content/panorama/scripts/lib.js",
-    "module": "AMD",
-    "allowJs": true,
-    "checkJs": false,
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true
+    "rootDir": "."
   }
 }
