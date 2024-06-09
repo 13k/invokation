@@ -79,18 +79,18 @@
   width: clThumbWidth;
   height: clThumbHeight;
   wash-color: #d8d8d8;
-  transform: rotateZ(180deg) translateY(-2px);
+  transform: rotateZ(0deg) translateY(3px);
 }
 
 .CombatLogThumb:selected .TickBox {
   width: clThumbWidth;
   height: clThumbHeight;
   wash-color: #d8d8d8;
-  transform: rotateZ(0deg) translateY(2px);
+  transform: rotateZ(180deg) translateY(0);
 }
 
-.CombatLogThumb .TickBox:hover {
-  wash-color: #fff;
+.CombatLogThumb:selected:hover {
+  wash-color: #f43;
 }
 
 .CombatLogTitle {
