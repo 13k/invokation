@@ -8,7 +8,7 @@ vars:
   PANORAMA_STYLES_SRC_PATH: "content/panorama/styles"
   VSCRIPTS_SRC_PATH: "game/scripts/vscripts"
   TASKS_SRC_PATH: "src/tasks"
-  TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/index.ts"
+  TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/main.ts"
   TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
 
 tasks:
@@ -108,7 +108,7 @@ tasks:
 
   format:panorama:scripts:
     desc: Format panorama scripts
-    cmd: bun x -- @biomejs/biome format --write "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    cmd: bun x -- @biomejs/biome format --write --config-path "{{ .PANORAMA_SCRIPTS_SRC_PATH }}" "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
 
   lint:panorama:scripts:
     desc: Lint panorama scripts
@@ -126,7 +126,7 @@ tasks:
 
   format:tasks:
     desc: Format tasks
-    cmd: bun x -- @biomejs/biome format --write "{{ .TASKS_SRC_PATH }}"
+    cmd: bun x -- @biomejs/biome format --write --config-path "{{ .TASKS_SRC_PATH }}" "{{ .TASKS_SRC_PATH }}"
 
   lint:tasks:
     desc: Lint tasks
