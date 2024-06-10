@@ -185,11 +185,20 @@
  ******************************************************************************/
 
 @define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
-@define statBranchSelectBgHud: url("s2r://panorama/images/hud/reborn/statbranch_select_bg_psd.vtex");
+@define statBranchBgLargeHud: url("s2r://panorama/images/hud/reborn/stat_branch_large_png.vtex");
+@define statBranchBgButtonHud: url("s2r://panorama/images/hud/reborn/statbranch_button_bg_all_off_psd.vtex");
+@define statBranchPipBg: url("s2r://panorama/images/hud/reborn/statbranch_pip_psd.vtex");
+@define statBranchPip25: url("s2r://panorama/images/hud/reborn/statbranch_button_pip25_psd.vtex");
+@define statBranchPip20: url("s2r://panorama/images/hud/reborn/statbranch_button_pip20_psd.vtex");
+@define statBranchPip15: url("s2r://panorama/images/hud/reborn/statbranch_button_pip15_psd.vtex");
+@define statBranchPip10: url("s2r://panorama/images/hud/reborn/statbranch_button_pip10_psd.vtex");
 @define statBranchLevelBgHud: url("s2r://panorama/images/hud/reborn/statbranch_levelbg_psd.vtex");
 @define timerBgHud: url("s2r://panorama/images/hud/reborn/bg_timer_psd.vtex");
 @define ultCooldownHud: url("s2r://panorama/images/hud/reborn/ult_cooldown_psd.vtex");
 @define ultReadyHud: url("s2r://panorama/images/hud/reborn/ult_ready_psd.vtex");
+
+@define viewerAbilityCircleSize: 64px;
+@define viewerAbilityCircleBorderRadius: 32px;
 
 /******************************************************************************
  * Backgrounds

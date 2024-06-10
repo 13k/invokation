@@ -44,6 +44,17 @@ const branchRowId = (level: TalentLevel) => `${BRANCH_ROW_ID_PREFIX}${level}`;
 
 export type { TooltipStatBranch };
 
+// FIXME: No l10n alternative seems to work out-of-the-box.
+//
+// `GameUI.SetupDOTATalentNameLabel` is broken and is probably legacy.
+//
+// `GameUI.ReplaceDOTAAbilitySpecialValues` requires an l10n key that changes according to which
+// facet is currently active, but it seems it's only possible to get the facet numeric ID as
+// opposed to facet name. Even if a mapping of {facet_id: facet_name} is hardcoded, it doesn't
+// seem to be possible to check (using KeyValues) which l10n keys are using facets or not.
+//
+// For now, it doesn't seem to be any alternatives besides implementing l10n manually with all
+// `AbilityValues` interpolated, which would be a huge effort and probably not worth it.
 class TooltipStatBranch extends Component<
   TooltipStatBranchElements,
   never,
@@ -105,7 +116,18 @@ class TooltipStatBranch extends Component<
       new Map() as TalentMap<Ability>,
     );
 
-    this.debug("onHeroDataChange()");
+    this.debug("talents = {");
+    for (const [level, sides] of this.talents.entries()) {
+      this.debug(`  ${level} : {`);
+
+      for (const [side, ability] of sides.entries()) {
+        this.debug(`    ${side}: ${ability}`);
+      }
+
+      this.debug("  }");
+    }
+    this.debug("}");
+
     this.render();
   }
 
@@ -116,7 +138,9 @@ class TooltipStatBranch extends Component<
   }
 
   localizeBranch(panel: Panel, level: TalentLevel, side: TalentSide): void {
-    this.debug("localizeBranch()", { level, side });
+    const debug = (...args: unknown[]) => this.debug("localizeBranch", ":", ...args);
+
+    debug({ level, side });
 
     if (this.talents == null) {
       return;
@@ -129,56 +153,76 @@ class TooltipStatBranch extends Component<
       return;
     }
 
-    this.debug("localizeBranch()", { ability });
+    debug({ ability });
 
     const branchClass = CLASSES.branchRowSides[side];
 
-    this.debug("localizeBranch() : FindChildrenWithClassTraverse [panel]", { branchClass });
+    debug("FindChildrenWithClassTraverse [branchPanel]", { branchClass });
 
-    const branchPanel = panel.FindChildrenWithClassTraverse(branchClass)[0];
+    const branchPanels = panel.FindChildrenWithClassTraverse(branchClass);
+    const branchPanel = branchPanels[0];
 
     if (branchPanel == null) {
-      this.error(
-        `Could not find branch panel with class ${branchClass} for talent [${level}, ${side}]`,
-      );
-
+      this.error(`Could not find panel with class ${branchClass} for talent [${level}, ${side}]`);
       return;
     }
 
-    this.debug("localizeBranch()", { branchPanel });
+    debug({ branchPanel });
 
     const branchLabelClass = CLASSES.branchRowChoiceLabel;
 
-    this.debug("localizeBranch() : FindChildrenWithClassTraverse [label]", {
-      branchLabelClass,
-    });
+    debug("FindChildrenWithClassTraverse [branchLabel]", { branchLabelClass });
 
-    const branchLabel = branchPanel.FindChildrenWithClassTraverse(
-      branchLabelClass,
-    )[0] as LabelPanel;
+    const branchLabels = branchPanel.FindChildrenWithClassTraverse(branchLabelClass);
+    const branchLabel = branchLabels[0] as LabelPanel;
 
     if (branchLabel == null) {
       this.error(
-        `Could not find branch label with class ${branchLabelClass} for talent [${level}, ${side}]`,
+        `Could not find panel with class ${branchLabelClass} for talent [${level}, ${side}]`,
       );
 
       return;
     }
 
-    this.debug("localizeBranch()", { branchLabel });
+    debug({ branchLabel });
 
-    this.debug("localizeBranch() : L10n.LocalizeAbilityTooltip()", {
-      ability,
-      branchLabel: branchLabel.id,
-    });
+    // This renders wrong talents.
+    /*
+    GameUI.SetupDOTATalentNameLabel(branchLabel, ability);
+    */
 
-    const labelText = l10n.abilityTooltip(ability, branchLabel);
+    // This crashes the game.
+    /*
+    const l10nKey = l10n.abilityTooltipKey(ability);
 
-    this.debug("localizeBranch() : set branchLabel.text", { labelText });
+    debug("l10n", { ability, l10nKey });
 
-    branchLabel.text = labelText;
+    let text = l10n.l(l10nKey);
 
-    this.debug("localizeBranch() ---");
+    debug("l10n", { ability, l10nKey, text });
+
+    if (text.startsWith("#")) {
+      this.warn(`Could not localize ability "${ability}" with key "${l10nKey}"`);
+
+      text = `!${text.substring(1)}`;
+    } else {
+      const expandedText = GameUI.ReplaceDOTAAbilitySpecialValues(ability, text);
+
+      debug("GameUI.ReplaceDOTAAbilitySpecialValues", { expandedText });
+
+      if (expandedText == null) {
+        this.warn(
+          `Could not replace ability special values for ability "${ability}" in text "${text}"`,
+        );
+      } else {
+        text = expandedText;
+      }
+    }
+
+    branchLabel.text = text;
+    */
+
+    debug("---");
   }
 
   createBranchRowPanel(level: TalentLevel): void {

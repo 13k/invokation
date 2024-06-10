@@ -33,10 +33,7 @@
 
             <Panel class="ViewerAbilitiesBuild" hittest="false">
               <Panel id="ViewerTalents" class="AbilityCircle" />
-              <!-- <DOTAUITalentDisplay id="TalentTree"
-              onmouseover="DOTAHUDShowHeroStatBranchTooltip(74)"
-              onmouseout="DOTAHUDHideStatBranchTooltip()" /> -->
-              <!-- <DOTAHudTalentDisplay id="TalentTree" /> -->
+              <!-- <DOTAUITalentDisplay id="ViewerTalents" /> -->
 
               <Panel class="ViewerOrb AbilityCircle" hittest="false">
                 <DOTAAbilityImage

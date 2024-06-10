@@ -79,8 +79,6 @@ export enum UiEvent {
   ShowAbilityTooltipHero = "DOTAShowAbilityTooltipForHero",
   ShowAbilityTooltipLevel = "DOTAShowAbilityTooltipForLevel",
   HideAbilityTooltip = "DOTAHideAbilityTooltip",
-  ShowHeroStatBranchTooltip = "DOTAHUDShowHeroStatBranchTooltip",
-  HideHeroStatBranchTooltip = "DOTAHUDHideStatBranchTooltip",
   ShowPopup = "UIShowCustomLayoutPopup",
   ShowPopupParams = "UIShowCustomLayoutPopupParameters",
   PopupButtonClicked = "UIPopupButtonClicked",

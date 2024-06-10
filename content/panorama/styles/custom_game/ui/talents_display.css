@@ -1,12 +1,98 @@
-@import url("s2r://panorama/styles/hud/hud_reborn.css");
+@import url("file://{resources}/styles/shared/variables.css");
+
+.UITalentsDisplayRoot {
+  flow-children: down;
+}
 
 .StatBranchContainer {
   horizontal-align: center;
-  width: 64px;
-  height: 64px;
+  width: viewerAbilityCircleSize;
+  height: viewerAbilityCircleSize;
+  margin: 0;
   vertical-align: center;
-  background-image: url("s2r://panorama/images/hud/reborn/statbranch_button_bg_psd.vtex");
+}
+
+#StatBranchBGBranchWell {
+  width: 100%;
+  height: 100%;
+  overflow: noclip;
+  background-image: statBranchBgButtonHud;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+#StatBranchGraphics {
+	width: 100%;
+	height: 100%;
+}
+
+#StatBranchChannel {
+  z-index: 21;
+  horizontal-align: center;
+  width: 100%;
+  height: 100%;
+  overflow: noclip;
+  vertical-align: top;
+}
+
+#StatPipContainer {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
+
+.StatBranchRow {
+  flow-children: none;
+  horizontal-align: center;
+  width: 100%;
+  height: 100%;
+  overflow: noclip;
+}
+
+.StatBranchPip {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-image: statBranchPipBg;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0s;
+  transition-property: opacity;
+}
+
+.StatBranchPip.LeftBranchPip {
+  horizontal-align: left;
+  transform: scaleX(-1);
+}
+
+.StatBranchPip.RightBranchPip {
+  horizontal-align: right;
+}
+
+.RightBranchSelected .RightBranchPip,
+.LeftBranchSelected .LeftBranchPip {
+  opacity: 1;
+}
+
+#StatRow25 .StatBranchPip {
+  background-image: statBranchPip25;
+}
+
+#StatRow25 .LeftBranchPip {
+  transform: scaleX(-1) translateX(1px);
+}
+
+#StatRow20 .StatBranchPip {
+  background-image: statBranchPip20;
+}
+
+#StatRow15 .StatBranchPip {
+  background-image: statBranchPip15;
+}
+
+#StatRow10 .StatBranchPip {
+  background-image: statBranchPip10;
 }

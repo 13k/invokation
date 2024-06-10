@@ -6,8 +6,6 @@
 @import url("file://{resources}/styles/shared/variables.css");
 
 @define fgColor: #3c1b18;
-@define abilityCircleSize: 64px;
-@define abilityCircleBorderRadius: 32px;
 
 .ViewerRoot {
   width: 100%;
@@ -149,9 +147,9 @@
 }
 
 .ViewerAbilitiesBuild .AbilityCircle {
-  width: abilityCircleSize;
-  height: abilityCircleSize;
-  border-radius: abilityCircleBorderRadius;
+  width: viewerAbilityCircleSize;
+  height: viewerAbilityCircleSize;
+  border-radius: viewerAbilityCircleBorderRadius;
   box-shadow: #1c1d20ee 0 0 8px 0;
 }
 
@@ -172,8 +170,6 @@
 
 #ViewerTalents {
   horizontal-align: middle;
-  width: abilityCircleSize;
-  height: abilityCircleSize;
   vertical-align: middle;
   tooltip-body-position: 33%;
   tooltip-position: left;

@@ -1,6 +1,5 @@
 import type { TalentSelection } from "@invokation/panorama-lib/dota2/talents";
 import { TalentLevel, TalentSide, Talents } from "@invokation/panorama-lib/dota2/talents";
-import { UiEvent } from "@invokation/panorama-lib/panorama";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import { ParallelSequence } from "@invokation/panorama-lib/sequence";
 
@@ -70,6 +69,7 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
 
     this.heroId = payload.heroId;
     this.talents = new Talents(payload.talents);
+    this.tooltipId = `TooltipStatBranch_${this.heroId}_${this.talents.value}`;
 
     this.render();
   }
@@ -82,16 +82,26 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
   // ----- Event handlers -----
 
   onMouseOver(): void {
-    if (this.heroId == null || this.talents == null) {
-      this.warn("tried to onMouseOver() without hero ID or selected talents");
+    if (this.heroId == null || this.talents == null || this.tooltipId == null) {
+      this.warn("tried to onMouseOver() without hero ID, selected talents or tooltip ID");
       return;
     }
 
-    this.dispatch(this.panel, UiEvent.ShowHeroStatBranchTooltip, this.heroId);
+    // NOTE: disabled. See `TooltipStatBranch` comments.
+    // this.showTooltip(this.panel, LayoutId.TooltipStatBranch, this.tooltipId, {
+    //   heroId: this.heroId,
+    //   selected: this.talents.value,
+    // });
   }
 
   onMouseOut(): void {
-    this.dispatch(this.panel, UiEvent.HideHeroStatBranchTooltip);
+    if (this.tooltipId == null) {
+      this.warn("tried to onMouseOut() without tooltip ID");
+      return;
+    }
+
+    // NOTE: disabled. See `TooltipStatBranch` comments.
+    // this.hideTooltip(this.panel, this.tooltipId);
   }
 
   // ----- Helpers -----
