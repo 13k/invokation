@@ -47,7 +47,7 @@
   visibility: collapse;
   tooltip-body-position: 50% 10%;
   tooltip-position: right;
-  background-image: controlsCheckRoundIcon;
+  background-image: controlsCheckShadowIcon;
   background-size: 100%;
   wash-color: dotaPlusLightGold;
 }
