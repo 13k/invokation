@@ -1,6 +1,8 @@
 @import url("s2r://panorama/styles/dotastyles.css");
+@import url("file://{resources}/styles/shared/variables.css");
 
 .TopBarRoot {
+  flow-children: right;
   width: 100%;
   height: 42px;
 }
@@ -11,17 +13,41 @@
   margin-top: 13px;
 }
 
-.TopBar .TopBarButton {
+.TopBarButton {
   width: 30px;
   height: 30px;
   margin-left: 16px;
   vertical-align: top;
   tooltip-position: bottom;
-  background-size: 100%;
+  background-size: contain;
   opacity: 0.5;
   wash-color: #cdf;
+	transition-timing-function: ease-in-out;
+	transition-duration: 0.2s;
+	transition-property: wash-color,opacity;
 }
 
-.TopBar .TopBarButton:hover {
+.TopBarButton:hover {
   opacity: 1;
+}
+
+#BtnQuit {
+  align: right top;
+  margin-top: 13px;
+  margin-right: 32px;
+  background-image: controlsQuitIcon;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+.Netgraph #BtnQuit {
+  margin-right: 200px;
+}
+
+#BtnQuit:hover {
+	wash-color: #f43;
+}
+
+#BtnQuit.Activated {
+  sound: "ui.menu_quit";
 }

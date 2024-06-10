@@ -4,6 +4,7 @@ require("invokation.game_mode.events.internal")
 require("invokation.game_mode.events.game_events")
 require("invokation.game_mode.events.custom_events")
 
+local CUSTOM_EVENTS = require("invokation.const.custom_events")
 local CustomEvents = require("invokation.dota2.custom_events")
 
 --- Events Setup
@@ -13,8 +14,11 @@ function GameMode:listenToGameEvent(event, methodName)
   return ListenToGameEvent(event, self:fnHandler(methodName), self)
 end
 
+--- @param event string
+--- @param methodName string
+--- @return CustomGameEventListenerID
 function GameMode:subscribeToCustomEvent(event, methodName)
-  return CustomEvents.Subscribe(CustomEvents[event], self:methodHandler(methodName))
+  return CustomEvents.Subscribe(event, self:methodHandler(methodName))
 end
 
 function GameMode:registerGameEvents()
@@ -62,14 +66,21 @@ function GameMode:registerGameEvents()
 end
 
 function GameMode:registerCustomEvents()
-  self:subscribeToCustomEvent("EVENT_COMBOS_RELOAD", "OnCombosReload")
-  self:subscribeToCustomEvent("EVENT_COMBO_START", "OnComboStart")
-  self:subscribeToCustomEvent("EVENT_COMBO_STOP", "OnComboStop")
-  self:subscribeToCustomEvent("EVENT_COMBO_RESTART", "OnComboRestart")
-  self:subscribeToCustomEvent("EVENT_FREESTYLE_HERO_LEVEL_UP", "OnFreestyleHeroLevelUp")
-  self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_START", "OnCombatLogCaptureStart")
-  self:subscribeToCustomEvent("EVENT_COMBAT_LOG_CAPTURE_STOP", "OnCombatLogCaptureStop")
-  self:subscribeToCustomEvent("EVENT_ITEM_PICKER_QUERY_REQUEST", "OnItemPickerQuery")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_PLAYER_QUIT_REQUEST, "OnPlayerQuitRequest")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "OnCombosReload")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "OnCombosReload")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBO_START, "OnComboStart")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBO_STOP, "OnComboStop")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBO_RESTART, "OnComboRestart")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_FREESTYLE_HERO_LEVEL_UP, "OnFreestyleHeroLevelUp")
+
+  self:subscribeToCustomEvent(
+    CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_START,
+    "OnCombatLogCaptureStart"
+  )
+
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_STOP, "OnCombatLogCaptureStop")
+  self:subscribeToCustomEvent(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_REQUEST, "OnItemPickerQuery")
 
   self:d("  register custom events listeners")
 end

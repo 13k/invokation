@@ -4,7 +4,6 @@ import "core-js";
 import type {
   // biome-ignore lint/correctness/noUnusedImports: false positive (type import)
   GameEvent,
-  PlayerHeroInGame,
   PopupAbilityPickerSubmit,
   PopupItemPickerSubmit,
   PopupTextEntrySubmit,
@@ -33,6 +32,8 @@ import type {
   FreestyleHeroLevelUp,
   ItemPickerQuery,
   ItemPickerQueryResponse,
+  PlayerHeroInGame,
+  PlayerQuitRequest,
 } from "./custom_events";
 
 // biome-ignore lint/correctness/noUnusedImports: false positive (type import)
@@ -71,6 +72,7 @@ declare global {
 
   interface CustomGameEventDeclarations {
     [CustomGameEvent.PlayerHeroInGame]: PlayerHeroInGame;
+    [CustomGameEvent.PlayerQuitRequest]: PlayerQuitRequest;
     [CustomGameEvent.CombosReload]: CombosReload;
     [CustomGameEvent.ComboStart]: ComboStart;
     [CustomGameEvent.ComboStarted]: ComboStarted;

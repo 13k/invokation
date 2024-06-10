@@ -5,6 +5,15 @@ local CustomEvents = require("invokation.dota2.custom_events")
 --- Custom Events Listeners
 -- @section custom_events
 
+--- Handles player quit request events.
+-- @tparam CDOTAPlayerController player
+-- @tparam const.custom_events.PlayerQuitRequest payload
+function GameMode:OnPlayerQuitRequest(player, payload)
+  self:d("OnPlayerQuitRequest", { player = player:GetPlayerID(), payload = payload })
+
+  SendToServerConsole("disconnect")
+end
+
 --- Handles combos reload events.
 -- @tparam CDOTAPlayer player
 -- @tparam const.custom_events.CombosReloadPayload payload
