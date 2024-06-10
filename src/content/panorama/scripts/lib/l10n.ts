@@ -32,8 +32,19 @@ export function pKey(...parts: string[]): string {
   return toKey(parts.join(KEY_PARAM_SEP));
 }
 
-export function abilityTooltipKey(ability: string): string {
-  return toKey(KeyPrefix.AbilityTooltip + ability);
+export interface AbilityTooltipKeyOptions {
+  facet?: string | undefined;
+}
+
+export function abilityTooltipKey(ability: string, options?: AbilityTooltipKeyOptions): string {
+  let key = KeyPrefix.AbilityTooltip + ability;
+  const facet = options?.facet;
+
+  if (facet != null) {
+    key += `_facet_${facet}`;
+  }
+
+  return toKey(key);
 }
 
 export function comboKey<K extends keyof ComboL10n>(id: ComboId, attr: K | StepId): string {
@@ -66,6 +77,17 @@ export function lp(...parts: string[]): string {
   return l(pKey(...parts));
 }
 
+export interface AbilityTooltipOptions {
+  facet?: string | undefined;
+  panel?: Panel | undefined;
+}
+
+export function abilityTooltip(ability: string, options?: AbilityTooltipOptions): string {
+  const key = abilityTooltipKey(ability, { facet: options?.facet });
+
+  return l(key, { panel: options?.panel });
+}
+
 export function comboAttrName<K extends keyof ComboL10n>(
   id: ComboId,
   attr: K | StepId,
@@ -87,8 +109,4 @@ export function comboProps(combo: Properties): PropertiesL10n {
     props[prop] = comboProp(combo, prop);
     return props;
   }, {} as PropertiesL10n);
-}
-
-export function abilityTooltip(ability: string, panel?: Panel): string {
-  return l(abilityTooltipKey(ability), { panel });
 }

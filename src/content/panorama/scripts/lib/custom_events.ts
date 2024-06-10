@@ -126,6 +126,8 @@ export enum GameEvent {
 }
 
 export enum CustomGameEvent {
+  // player
+  PlayerHeroInGame = "invk_player_hero_in_game",
   // combos
   CombosReload = "invk_combos_reload",
   ComboStart = "invk_combo_start",
@@ -152,6 +154,12 @@ export enum CustomGameEvent {
 
 export interface ViewerRender {
   id: ComboId;
+}
+
+export interface PlayerHeroInGame {
+  id: number;
+  name: string;
+  variant: number;
 }
 
 export type CombosReload = Record<string, never>;

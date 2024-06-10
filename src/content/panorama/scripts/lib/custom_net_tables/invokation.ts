@@ -99,4 +99,15 @@ export interface HeroData {
   ABILITY_INDICES: Record<invoker.Ability, number>;
   // biome-ignore lint/style/useNamingConvention: remote data
   MAX_VISIBLE_ABILITY_INDEX: number;
+  // biome-ignore lint/style/useNamingConvention: remote data
+  FACETS: Record<string, HeroFacet>;
+}
+
+export interface HeroFacet {
+  // biome-ignore lint/style/useNamingConvention: remote data
+  Icon: string;
+  // biome-ignore lint/style/useNamingConvention: remote data
+  Color: string;
+  // biome-ignore lint/style/useNamingConvention: remote data
+  GradientID: number;
 }

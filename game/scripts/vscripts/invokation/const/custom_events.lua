@@ -2,6 +2,15 @@
 -- @module invokation.const.custom_events
 local M = {}
 
+--- Player
+-- @section player
+
+--- Payload for event `EVENT_PLAYER_HERO_IN_GAME`
+-- @table PlayerHeroInGame
+
+--- Player picked a hero
+M.EVENT_PLAYER_HERO_IN_GAME = "invk_player_hero_in_game"
+
 --- Combos
 -- @section combos
 

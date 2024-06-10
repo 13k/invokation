@@ -1,6 +1,7 @@
 --- Game Events Listeners
 -- @submodule invokation.GameMode
 local Ability = require("invokation.dota2.Ability")
+local CustomEvents = require("invokation.dota2.custom_events")
 local DamageInstance = require("invokation.dota2.DamageInstance")
 local Unit = require("invokation.dota2.Unit")
 
@@ -90,6 +91,16 @@ end
 -- @tparam CDOTA_BaseNPC_Hero hero
 function GameMode:OnHeroInGame(hero)
   self:d("OnHeroInGame", { hero = hero:GetUnitName() })
+
+  local player_id = hero:GetPlayerID()
+  local player = PlayerResource:GetPlayer(player_id)
+  local payload = {
+    id = hero:GetHeroID(),
+    name = hero:GetUnitName(),
+    variant = hero:GetHeroFacetID(),
+  }
+
+  CustomEvents.SendPlayer(CustomEvents.EVENT_PLAYER_HERO_IN_GAME, player, payload)
 end
 
 --[[--

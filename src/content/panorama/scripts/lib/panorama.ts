@@ -85,9 +85,11 @@ export enum UiEvent {
   ShowPopupParams = "UIShowCustomLayoutPopupParameters",
   PopupButtonClicked = "UIPopupButtonClicked",
   ScenePanelLoaded = "DOTAScenePanelSceneLoaded",
+  FacetDropdownFacetSelected = "DOTAHeroFacetDropdownFacetSelected",
 }
 
-export type UiEventListener = () => void;
+// TODO: parameterize payloads by `UiEvent`
+export type UiEventListener = (...args: unknown[]) => void;
 
 export enum SoundEvent {
   Death = "ui.death_stinger",

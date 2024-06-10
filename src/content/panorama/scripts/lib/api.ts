@@ -4,6 +4,7 @@ import "core-js";
 import type {
   // biome-ignore lint/correctness/noUnusedImports: false positive (type import)
   GameEvent,
+  PlayerHeroInGame,
   PopupAbilityPickerSubmit,
   PopupItemPickerSubmit,
   PopupTextEntrySubmit,
@@ -69,6 +70,7 @@ declare global {
   }
 
   interface CustomGameEventDeclarations {
+    [CustomGameEvent.PlayerHeroInGame]: PlayerHeroInGame;
     [CustomGameEvent.CombosReload]: CombosReload;
     [CustomGameEvent.ComboStart]: ComboStart;
     [CustomGameEvent.ComboStarted]: ComboStarted;
@@ -110,6 +112,8 @@ declare global {
       HERO_DATA: HeroData;
       // biome-ignore lint/style/useNamingConvention: constant
       HERO_KV: HeroKeyValues;
+
+      hero: PlayerHeroInGame | null;
     };
   }
 }
