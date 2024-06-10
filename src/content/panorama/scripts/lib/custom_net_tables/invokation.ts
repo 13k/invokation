@@ -1,24 +1,20 @@
 import type { NetworkCombo } from "../combo";
 import { CustomNetTable } from "../custom_net_tables";
 import type * as invoker from "../dota2/invoker";
-import type * as shop from "../dota2/shop";
 
 export const Name = CustomNetTable.Invokation;
 
 export enum Key {
   Combos = "combos",
-  ShopItems = "shop_items",
   HeroData = "hero_data",
 }
 
 export interface Table {
   [Key.Combos]: Combos;
-  [Key.ShopItems]: ShopItems;
   [Key.HeroData]: HeroData;
 }
 
 export type Combos = NetworkCombo[];
-export type ShopItems = Record<shop.Category, string[]>;
 
 export interface HeroData {
   // biome-ignore lint/style/useNamingConvention: remote data

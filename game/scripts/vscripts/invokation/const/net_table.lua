@@ -5,7 +5,6 @@ local M = {
     NAME = "invokation",
     KEYS = {
       COMBOS = "combos",
-      SHOP_ITEMS = "shop_items",
       HERO_DATA = "hero_data",
     },
   },

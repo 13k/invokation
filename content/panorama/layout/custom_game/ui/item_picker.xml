@@ -7,22 +7,6 @@
     <include src="file://{resources}/styles/custom_game/ui/item_picker.css" />
   </styles>
 
-  <snippets>
-    <snippet name="UIItemPickerGroup">
-      <Panel class="UIItemPickerGroup">
-        <Label id="GroupName" class="UIItemPickerGroupName" text="{s:group_name}" />
-        <Panel id="CategoryList" class="UIItemPickerGroupCategories" />
-      </Panel>
-    </snippet>
-
-    <snippet name="UIItemPickerCategory">
-      <Panel class="UIItemPickerCategory">
-        <Label id="CategoryName" class="UIItemPickerCategoryName" text="{s:category_name}" />
-        <Panel id="ItemList" class="UIItemPickerCategoryItems" />
-      </Panel>
-    </snippet>
-  </snippets>
-
   <Panel class="UIItemPickerRoot">
     <Panel class="UIItemPickerHeader">
       <Label class="UIItemPickerSelectionChoice" text="#invokation_item_picker_choose" />

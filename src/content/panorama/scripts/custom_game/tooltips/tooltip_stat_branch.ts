@@ -2,7 +2,6 @@ import type { HeroData } from "@invokation/panorama-lib/custom_net_tables/invoka
 import type { Ability } from "@invokation/panorama-lib/dota2/invoker";
 import type { TalentMap, TalentSelection } from "@invokation/panorama-lib/dota2/talents";
 import { TalentLevel, TalentSide, Talents } from "@invokation/panorama-lib/dota2/talents";
-import * as l10n from "@invokation/panorama-lib/l10n";
 import { createPanelSnippet } from "@invokation/panorama-lib/panorama";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import { ParallelSequence, Sequence } from "@invokation/panorama-lib/sequence";

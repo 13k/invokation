@@ -57,11 +57,8 @@ function GameMode:_OnConnectFull(payload)
 
   local player = PlayerResource:GetPlayer(payload.PlayerID)
 
-  self.users[payload.userid] = player
-  self.players[player:GetPlayerID()] = player
-
   GameMode._reentrantCheck = true
-  self:OnConnectFull(player)
+  self:OnConnectFull(player, payload.userid)
   GameMode._reentrantCheck = false
 
   if not self.firstPlayerLoaded then
@@ -80,16 +77,12 @@ function GameMode:_OnNPCSpawned(payload)
     return
   end
 
-  local npc = EntIndexToHScript(payload.entindex)
+  local npc = EntIndexToHScript(payload.entindex) --[[@as CDOTA_BaseNPC]]
 
-  if npc:IsRealHero() and npc.bFirstSpawned == nil then
-    npc.bFirstSpawned = true
+  if npc and npc:IsRealHero() and not self.firstSpawned then
+    self.firstSpawned = true
     self:OnHeroInGame(npc)
   end
-
-  GameMode._reentrantCheck = true
-  self:OnNPCSpawned(npc)
-  GameMode._reentrantCheck = false
 end
 
 --- Called when an entity was killed.
@@ -114,23 +107,6 @@ function GameMode:_OnEntityKilled(payload)
 
   if payload.entindex_inflictor ~= nil then
     inflictor = EntIndexToHScript(payload.entindex_inflictor)
-  end
-
-  if killed:IsRealHero() then
-    if S.END_GAME_ON_KILLS and attacker ~= nil then
-      local attackerTeam = attacker:GetTeam()
-      if GetTeamHeroKills(attackerTeam) >= S.KILLS_TO_END_GAME_FOR_TEAM then
-        GameRules:SetSafeToLeave(true)
-        GameRules:SetGameWinner(attackerTeam)
-      end
-    end
-
-    if S.SHOW_KILLS_ON_TOPBAR then
-      GameRules:GetGameModeEntity()
-        :SetTopBarTeamValue(DOTA_TEAM_BADGUYS, GetTeamHeroKills(DOTA_TEAM_BADGUYS))
-      GameRules:GetGameModeEntity()
-        :SetTopBarTeamValue(DOTA_TEAM_GOODGUYS, GetTeamHeroKills(DOTA_TEAM_GOODGUYS))
-    end
   end
 
   GameMode._reentrantCheck = true
