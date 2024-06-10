@@ -57,7 +57,6 @@ enum PanelId {
 
 enum CssClass {
   Hide = "Hide",
-  ChallengeHide = Hide,
   ComboScore = "Level2",
   StepOptional = "ComboStepOptional",
   SplashShow = "Show",
@@ -65,8 +64,6 @@ enum CssClass {
   SplashSuccess = "success",
   SplashFailure = "failure",
   ScoreFailure = "Failed",
-  TimerHide = Hide,
-  WaitProgressHide = Hide,
 }
 
 enum Timing {
@@ -349,14 +346,14 @@ class Challenge extends Component<ChallengeElements> {
   // ----- Component actions -----
 
   showAction(): Action {
-    return new RemoveClassAction(this.panel, CssClass.ChallengeHide);
+    return new RemoveClassAction(this.panel, CssClass.Hide);
   }
 
   hideAction(): Action {
     return new ParallelSequence()
       .add(this.hideSplashAction())
       .add(this.hideScoreAction())
-      .addClass(this.panel, CssClass.ChallengeHide);
+      .addClass(this.panel, CssClass.Hide);
   }
 
   // ----- Sequence actions -----
@@ -528,11 +525,11 @@ class Challenge extends Component<ChallengeElements> {
   }
 
   showTimerAction(): Action {
-    return new RemoveClassAction(this.elements.timer, CssClass.TimerHide);
+    return new RemoveClassAction(this.elements.timer, CssClass.Hide);
   }
 
   hideTimerAction(): Action {
-    return new AddClassAction(this.elements.timer, CssClass.TimerHide);
+    return new AddClassAction(this.elements.timer, CssClass.Hide);
   }
 
   countdownWaitAction(wait: number): Action {
@@ -548,9 +545,9 @@ class Challenge extends Component<ChallengeElements> {
 
     return new Sequence()
       .setAttribute(this.elements.waitProgressBar, "max", wait)
-      .removeClass(this.elements.waitProgress, CssClass.WaitProgressHide)
+      .removeClass(this.elements.waitProgress, CssClass.Hide)
       .add(animate)
-      .addClass(this.elements.waitProgress, CssClass.WaitProgressHide);
+      .addClass(this.elements.waitProgress, CssClass.Hide);
   }
 
   // ----- Composite actions -----

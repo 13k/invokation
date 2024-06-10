@@ -35,7 +35,7 @@ enum PanelId {
 }
 
 enum CssClass {
-  FreestyleHide = "Hide",
+  Hide = "Hide",
   ComboScore = "Level2",
 }
 
@@ -149,14 +149,14 @@ class Freestyle extends Component<FreestyleElements> {
   // ----- Component actions -----
 
   showAction(): Action {
-    return new RemoveClassAction(this.panel, CssClass.FreestyleHide);
+    return new RemoveClassAction(this.panel, CssClass.Hide);
   }
 
   hideAction(): Action {
     return new ParallelSequence()
       .add(this.hideScoreAction())
       .add(this.hideShopAction())
-      .addClass(this.panel, CssClass.FreestyleHide);
+      .addClass(this.panel, CssClass.Hide);
   }
 
   // ----- Score actions -----
