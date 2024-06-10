@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "include": ["**/*.json", "**/*.js", "**/*.mjs", "**/*.mts", "**/*.ts"]
+    "include": ["**/*.js", "**/*.json", "**/*.mjs", "**/*.mts", "**/*.ts"]
   },
   "organizeImports": {
     "enabled": true
@@ -52,7 +52,7 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 100,
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "lineWidth": 100
   }
 }
