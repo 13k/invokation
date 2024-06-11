@@ -1,8 +1,20 @@
-const uniqueIdCounters: Map<string, number> = new Map();
+declare global {
+  // biome-ignore lint/style/useNamingConvention: external type
+  interface CustomUIConfig {
+    // biome-ignore lint/style/useNamingConvention: constant
+    UNIQUE_IDS: Map<string, number>;
+  }
+}
+
+const CACHE = (() => {
+  GameUI.CustomUIConfig().UNIQUE_IDS ??= new Map();
+
+  return GameUI.CustomUIConfig().UNIQUE_IDS;
+})();
 
 export function uniqueId(prefix?: string | undefined): string {
   const key = prefix ?? "";
-  let counter = uniqueIdCounters.get(key);
+  let counter = CACHE.get(key);
 
   if (counter == null) {
     counter = 0;
@@ -10,7 +22,7 @@ export function uniqueId(prefix?: string | undefined): string {
 
   const id = `${prefix}${counter++}`;
 
-  uniqueIdCounters.set(key, counter);
+  CACHE.set(key, counter);
 
   return id;
 }

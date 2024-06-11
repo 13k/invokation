@@ -11,7 +11,20 @@ type ListenerPayload<K extends CustomEvent, F = object> = NetworkedData<
 
 export type CustomEventListener<K extends CustomEvent> = (payload: ListenerPayload<K>) => void;
 
-const SUBSCRIPTIONS = new Cache<GameEventListenerID>();
+declare global {
+  // biome-ignore lint/style/useNamingConvention: external type
+  interface CustomUIConfig {
+    // biome-ignore lint/style/useNamingConvention: constant
+    CUSTOM_EVENTS_SUBSCRIPTIONS: Cache<GameEventListenerID>;
+  }
+}
+
+const SUBSCRIPTIONS = (() => {
+  GameUI.CustomUIConfig().CUSTOM_EVENTS_SUBSCRIPTIONS ??= new Cache();
+
+  return GameUI.CustomUIConfig().CUSTOM_EVENTS_SUBSCRIPTIONS;
+})();
+
 const LOG = new Logger({ name: "CustomEvents" });
 
 export function subscribe<K extends CustomEvent>(
