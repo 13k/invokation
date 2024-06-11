@@ -1,6 +1,7 @@
 std = ".selene/rockspec+.selene/busted+.selene/dota2+.selene/dota2-custom-game"
 exclude = [
   ".luarocks/**",
+  ".luacats/**",
   "lua_modules/**",
   "game/scripts/vscripts/fsm.lua",
   "game/scripts/vscripts/moses.lua",
