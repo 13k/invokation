@@ -40,11 +40,11 @@
 }
 
 .Viewer {
-  horizontal-align: center;
+  horizontal-align: right;
   width: 640px;
   height: 840px;
-  margin-top: 150px;
-  margin-left: 790px;
+  margin-top: 80px;
+  margin-right: 180px;
   opacity: 1;
   transition-duration: 0s;
   transition-property: opacity;

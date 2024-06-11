@@ -179,7 +179,7 @@ class Picker extends Component<PickerElements> {
 
   onComboDetailsShow(payload: PickerComboOutputs["onShowDetails"]): void {
     this.debug("onComboDetailsShow()", payload);
-    this.close();
+    // this.close();
     this.renderViewer(payload.id);
   }
 
