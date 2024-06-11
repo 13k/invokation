@@ -12,21 +12,21 @@
       <Panel class="PickerContents TranslucentPanel" hittest="false">
         <Panel class="PickerTitleContainer PanelTitleContainer">
           <Button id="BtnReload" class="RefreshButton" />
-          <Label class="PickerTitle PanelTitle" text="#invokation_picker_title" hittest="false" />
+          <Label class="PickerTitle PanelTitle" text="#invk_picker_title" hittest="false" />
         </Panel>
 
         <Panel class="PickerHeader">
           <ToggleButton
             id="BtnToggleFilters"
             class="PickerFiltersButton ExpandCollapseToggleButton"
-            onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filters_toggle)"
+            onmouseover="UIShowTextTooltip(#invk_picker_tooltip_filters_toggle)"
             onmouseout="UIHideTextTooltip()"
           />
 
           <Button id="BtnFreestyle" class="PickerFreestyleButton">
             <Label
               class="PickerFreestyleLabel"
-              text="#invokation_picker_freestyle_play"
+              text="#invk_picker_freestyle_play"
               hittest="false"
             />
           </Button>
@@ -40,14 +40,14 @@
               <Panel class="LeftRightFlow">
                 <Label
                   class="PickerFiltersLabel"
-                  text="#invokation_combo_properties__tags"
+                  text="#invk_combo_properties__tags"
                   hittest="false"
                 />
                 <Button
                   id="PickerFilterTagsResetButton"
                   class="PickerFilterResetButton CloseButton"
                   disabled="true"
-                  onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_tags_reset)"
+                  onmouseover="UIShowTextTooltip(#invk_picker_tooltip_filter_tags_reset)"
                   onmouseout="UIHideTextTooltip()"
                 />
               </Panel>
@@ -57,7 +57,7 @@
             <Panel class="PickerFiltersRow" hittest="false">
               <Label
                 class="PickerFiltersLabel"
-                text="#invokation_combo_properties__specialty"
+                text="#invk_combo_properties__specialty"
                 hittest="false"
               />
               <DropDown id="PickerFilterSpecialty" />
@@ -66,7 +66,7 @@
             <Panel class="PickerFiltersRow" hittest="false">
               <Label
                 class="PickerFiltersLabel"
-                text="#invokation_combo_properties__stance"
+                text="#invk_combo_properties__stance"
                 hittest="false"
               />
               <DropDown id="PickerFilterStance" />
@@ -75,7 +75,7 @@
             <Panel class="PickerFiltersRow" hittest="false">
               <Label
                 class="PickerFiltersLabel"
-                text="#invokation_combo_properties__damage_rating"
+                text="#invk_combo_properties__damage_rating"
                 hittest="false"
               />
               <DropDown id="PickerFilterDamageRating" />
@@ -84,7 +84,7 @@
             <Panel class="PickerFiltersRow" hittest="false">
               <Label
                 class="PickerFiltersLabel"
-                text="#invokation_combo_properties__difficulty_rating"
+                text="#invk_combo_properties__difficulty_rating"
                 hittest="false"
               />
               <DropDown id="PickerFilterDifficultyRating" />
@@ -95,14 +95,14 @@
                 <Panel class="LeftRightFlow">
                   <Label
                     class="PopupPickerLabel"
-                    text="#invokation_picker_filter_item"
+                    text="#invk_picker_filter_item"
                     hittest="false"
                   />
                   <Button
                     id="PickerFilterItemResetButton"
                     class="PickerFilterResetButton CloseButton"
                     disabled="true"
-                    onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_item_reset)"
+                    onmouseover="UIShowTextTooltip(#invk_picker_tooltip_filter_item_reset)"
                     onmouseout="UIHideTextTooltip()"
                   />
                 </Panel>
@@ -119,14 +119,14 @@
                 <Panel class="LeftRightFlow">
                   <Label
                     class="PopupPickerLabel"
-                    text="#invokation_picker_filter_ability"
+                    text="#invk_picker_filter_ability"
                     hittest="false"
                   />
                   <Button
                     id="PickerFilterAbilityResetButton"
                     class="PickerFilterResetButton CloseButton"
                     disabled="true"
-                    onmouseover="UIShowTextTooltip(#invokation_picker_tooltip_filter_ability_reset)"
+                    onmouseover="UIShowTextTooltip(#invk_picker_tooltip_filter_ability_reset)"
                     onmouseout="UIHideTextTooltip()"
                   />
                 </Panel>
@@ -142,7 +142,7 @@
 
             <Panel class="PickerFiltersRow ButtonsRow" hittest="false">
               <Button id="BtnResetFilters" class="PickerFiltersResetButton ButtonDark">
-                <Label text="#invokation_picker_filters_reset" hittest="false" />
+                <Label text="#invk_picker_filters_reset" hittest="false" />
               </Button>
             </Panel>
           </Panel>

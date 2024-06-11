@@ -785,20 +785,20 @@ const comboPanelId = (c: Combo) => `${COMBO_PANEL_ID_PREFIX}${c.id}`;
 const propertyFilterAttr = <K extends keyof Properties>(k: K): `filter${Capitalize<K>}` =>
   camelCase(`filter_${k}`) as `filter${Capitalize<K>}`;
 
-const propertyFilterOptionId = <K extends keyof Properties>(
+function propertyFilterOptionId<K extends keyof Properties>(
   prop: K,
   value?: Properties[K],
-): string => {
+): string {
   const valueId = value == null ? PROPERTY_FILTER_OPTION_DEFAULT : value.toString();
 
   return pascalCase(`picker_filter_${prop}_${valueId}`);
-};
+}
 
-const setPropertyFilterAttr = <K extends keyof Properties>(
+function setPropertyFilterAttr<K extends keyof Properties>(
   panel: Panel,
   prop: K,
   value?: Properties[K],
-): void => {
+): void {
   switch (prop) {
     case Property.Stance: {
       panel.SetAttributeString(
@@ -833,9 +833,9 @@ const setPropertyFilterAttr = <K extends keyof Properties>(
       throw new Error(`Invalid property ${_check}`);
     }
   }
-};
+}
 
-const getPropertyFilterAttr = <K extends keyof Properties>(panel: Panel, prop: K) => {
+function getPropertyFilterAttr<K extends keyof Properties>(panel: Panel, prop: K) {
   switch (prop) {
     case Property.Stance:
       return panel.GetAttributeString(
@@ -862,7 +862,7 @@ const getPropertyFilterAttr = <K extends keyof Properties>(panel: Panel, prop: K
       throw new Error(`Invalid property ${_check}`);
     }
   }
-};
+}
 
 (() => {
   const component = new Picker();

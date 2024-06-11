@@ -13,19 +13,19 @@
 
       <Panel class="CombatLogBar">
         <ToggleButton id="BtnToggle" class="CombatLogThumb ExpandCollapseToggleButton">
-          <Label class="CombatLogTitle" text="#invokation_combat_log_title" hittest="false" />
+          <Label class="CombatLogTitle" text="#invk_combat_log_title" hittest="false" />
         </ToggleButton>
 
         <Panel class="CombatLogBarActions">
           <ToggleButton
             id="CombatLogFilterInvocations"
             class="CombatLogBarItem Checkbox"
-            text="#invokation_combat_log_filter_invocations"
+            text="#invk_combat_log_filter_invocations"
             selected="true"
           />
 
           <Button id="BtnClear" class="CombatLogBarItem ClearButton BlueButton">
-            <Label text="#invokation_combat_log_clear" hittest="false" />
+            <Label text="#invk_combat_log_clear" hittest="false" />
           </Button>
         </Panel>
       </Panel>

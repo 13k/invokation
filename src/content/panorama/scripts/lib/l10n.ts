@@ -7,18 +7,18 @@ import { prefixOnce } from "./util/prefixOnce";
 const L = $.Localize;
 
 export enum Key {
-  ViewerDescriptionFallback = "invokation_viewer_description_lorem",
-  ViewerStepDescriptionFallback = "invokation_viewer_step_description_lorem",
-  PickerDefaultOption = "invokation_picker_filter_option_all",
-  HudVisibilityPrefix = "invokation_combo_hud_visibility",
-  SplashPrefix = "invokation_combo_splash",
-  TagSelectOptionTextEntry = "invokation_tag_select_option_text_entry",
-  TagSelectPopupTextEntryTitle = "invokation_tag_select_popup_text_entry_title",
+  ViewerDescriptionFallback = "invk_viewer_description_lorem",
+  ViewerStepDescriptionFallback = "invk_viewer_step_description_lorem",
+  PickerDefaultOption = "invk_picker_filter_option_all",
+  HudVisibilityPrefix = "invk_combo_hud_visibility",
+  SplashPrefix = "invk_combo_splash",
+  TagSelectOptionTextEntry = "invk_tag_select_option_text_entry",
+  TagSelectPopupTextEntryTitle = "invk_tag_select_popup_text_entry_title",
 }
 
 export enum KeyPrefix {
-  Combo = "invokation_combo",
-  ComboProperties = "invokation_combo_properties",
+  Combo = "invk_combo",
+  ComboProperties = "invk_combo_properties",
   AbilityTooltip = "DOTA_Tooltip_ability_",
 }
 
@@ -56,18 +56,22 @@ export function comboPropKey<K extends keyof Properties>(prop: K, value: Propert
 }
 
 export interface LocalizeOptions {
+  // fallback key
   fk?: string | undefined;
   panel?: Panel | undefined;
 }
 
-export function l(keyName: string, { fk, panel }: LocalizeOptions = {}): string {
-  const loc = (key: string): string => (panel ? L(key, panel) : L(key));
-  const key = toKey(keyName);
-  let text = loc(keyName);
+function localize(key: string, panel?: Panel): string {
+  return panel != null ? L(key, panel) : L(key);
+}
 
-  if (fk && text === key) {
-    fk = toKey(fk);
-    text = loc(fk);
+export function l(keyName: string, options?: LocalizeOptions): string {
+  const key = toKey(keyName);
+  let text = localize(key);
+
+  if (options?.fk != null && text === key) {
+    const fKey = toKey(options.fk);
+    text = localize(fKey);
   }
 
   return text;

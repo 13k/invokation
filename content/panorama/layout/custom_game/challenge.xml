@@ -27,12 +27,12 @@
         <Label
           id="ChallengeSplashTitle"
           class="ChallengeSplashTitle"
-          text="#invokation_combo_splash__start__title__1"
+          text="#invk_combo_splash__start__title__1"
         />
         <Label
           id="ChallengeSplashHelp"
           class="ChallengeSplashHelp"
-          text="#invokation_combo_splash__start__help__1"
+          text="#invk_combo_splash__start__help__1"
         />
       </Panel>
     </Panel>
@@ -50,7 +50,7 @@
         <Button
           id="BtnShowDetails"
           class="InfoIcon ChallengeIconButton Grey"
-          onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)"
+          onmouseover="UIShowTextTooltip(#invk_combo_tooltip_details)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -59,7 +59,7 @@
         <Button
           id="BtnCycleHUD"
           class="EyeIcon ChallengeIconButton Grey"
-          onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hud)"
+          onmouseover="UIShowTextTooltip(#invk_combo_tooltip_hud)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -68,7 +68,7 @@
         <Button
           id="BtnRestart"
           class="RefreshButton ChallengeIconButton Blue"
-          onmouseover="UIShowTextTooltip(#invokation_controls_restart)"
+          onmouseover="UIShowTextTooltip(#invk_controls_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -77,7 +77,7 @@
         <Button
           id="BtnFullRestart"
           class="FullRefreshIcon ChallengeIconButton Bronze"
-          onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)"
+          onmouseover="UIShowTextTooltip(#invk_controls_full_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -86,7 +86,7 @@
         <Button
           id="BtnStop"
           class="CloseButton ChallengeIconButton Red"
-          onmouseover="UIShowTextTooltip(#invokation_controls_stop)"
+          onmouseover="UIShowTextTooltip(#invk_controls_stop)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>

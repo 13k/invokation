@@ -11,7 +11,7 @@
     <Panel class="PanelTitleContainer">
       <Button
         class="FinishedIcon"
-        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_finished)"
+        onmouseover="UIShowTextTooltip(#invk_combo_tooltip_finished)"
         onmouseout="UIHideTextTooltip()"
       />
       <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
@@ -20,7 +20,7 @@
     <Panel class="PickerComboInfoContainer">
       <Button
         class="PickerComboIcon HeroLevelIcon"
-        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_hero_level)"
+        onmouseover="UIShowTextTooltip(#invk_combo_tooltip_hero_level)"
         onmouseout="UIHideTextTooltip()"
       >
         <Label
@@ -33,17 +33,17 @@
       <Button
         id="BtnShowDetails"
         class="PickerComboIcon InfoIcon"
-        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_details)"
+        onmouseover="UIShowTextTooltip(#invk_combo_tooltip_details)"
         onmouseout="UIHideTextTooltip()"
       />
       <Button
         class="PickerComboIcon SpecialtyIcon"
-        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_specialty)"
+        onmouseover="UIShowTextTooltip(#invk_combo_tooltip_specialty)"
         onmouseout="UIHideTextTooltip()"
       />
       <Button
         class="PickerComboIcon StanceIcon"
-        onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_stance)"
+        onmouseover="UIShowTextTooltip(#invk_combo_tooltip_stance)"
         onmouseout="UIHideTextTooltip()"
       />
 
@@ -51,7 +51,7 @@
         <Panel class="LeftRightFlow">
           <Button
             class="AttackDamageIcon"
-            onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_damage_rating)"
+            onmouseover="UIShowTextTooltip(#invk_combo_tooltip_damage_rating)"
             onmouseout="UIHideTextTooltip()"
           />
           <Panel id="PickerComboDamageRating" class="Rating">
@@ -62,7 +62,7 @@
         <Panel class="LeftRightFlow">
           <Button
             class="DifficultyIcon"
-            onmouseover="UIShowTextTooltip(#invokation_combo_tooltip_difficulty_rating)"
+            onmouseover="UIShowTextTooltip(#invk_combo_tooltip_difficulty_rating)"
             onmouseout="UIHideTextTooltip()"
           />
           <Panel id="PickerComboDifficultyRating" class="Rating">
@@ -73,7 +73,7 @@
     </Panel>
 
     <Button id="BtnPlay" class="PlayButton FlatButton">
-      <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
+      <Label class="PlayLabel" text="#invk_controls_play" hittest="false" />
     </Button>
   </Panel>
 </root>

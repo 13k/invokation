@@ -11,7 +11,7 @@
     <Button id="GameInfoClose" class="CloseButton" />
 
     <Panel class="GameInfoContents">
-      <Label class="PopupTitle" text="#invokation_game_info_title" hittest="false" />
+      <Label class="PopupTitle" text="#invk_game_info_title" hittest="false" />
 
       <DOTAScenePanel
         class="OrbsScene"
@@ -23,7 +23,7 @@
 
       <Label
         class="PopupDescription"
-        text="#invokation_game_info_description"
+        text="#invk_game_info_description"
         html="true"
         hittest="false"
       />
@@ -36,12 +36,12 @@
         </Panel>
 
         <Button id="GameInfoOpenHomepage" class="GameInfoMetaItem GameInfoLinkButton">
-          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_home_page" />
+          <Label class="GameInfoMetaText GameInfoLinkText" text="#invk_game_info_home_page" />
           <Panel class="GameInfoArrowIcon" />
         </Button>
 
         <Button id="GameInfoOpenChangelog" class="GameInfoMetaItem GameInfoLinkButton">
-          <Label class="GameInfoMetaText GameInfoLinkText" text="#invokation_game_info_changelog" />
+          <Label class="GameInfoMetaText GameInfoLinkText" text="#invk_game_info_changelog" />
           <Panel class="GameInfoArrowIcon" />
         </Button>
       </Panel>

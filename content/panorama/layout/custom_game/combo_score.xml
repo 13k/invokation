@@ -29,7 +29,7 @@
           <Panel class="ComboScoreDigit" />
           <Panel class="ComboScoreDigit" />
         </Panel>
-        <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
+        <Label class="ComboScoreLabel" text="#invk_combo_counter_title" />
       </Panel>
     </Panel>
 
@@ -54,7 +54,7 @@
             <Panel class="ComboScoreDigit" />
             <Panel class="ComboScoreDigit" />
           </Panel>
-          <Label class="ComboScoreLabel" text="#invokation_combo_counter_title" />
+          <Label class="ComboScoreLabel" text="#invk_combo_counter_title" />
         </Panel>
 
         <Panel class="ComboScoreDamage">
@@ -65,7 +65,7 @@
             <Panel class="ComboScoreDigit" />
             <Panel class="ComboScoreDigit" />
           </Panel>
-          <Label class="ComboScoreLabel" text="#invokation_combo_counter_damage_label" />
+          <Label class="ComboScoreLabel" text="#invk_combo_counter_damage_label" />
         </Panel>
       </Panel>
     </Panel>

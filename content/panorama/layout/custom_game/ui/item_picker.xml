@@ -9,7 +9,7 @@
 
   <Panel class="UIItemPickerRoot">
     <Panel class="UIItemPickerHeader">
-      <Label class="UIItemPickerSelectionChoice" text="#invokation_item_picker_choose" />
+      <Label class="UIItemPickerSelectionChoice" text="#invk_item_picker_choose" />
       <Panel class="FillWidth" />
       <Panel id="UIItemPickerSearch" class="UIItemPickerSearchBox">
         <TextEntry

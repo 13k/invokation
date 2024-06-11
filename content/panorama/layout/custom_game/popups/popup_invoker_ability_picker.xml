@@ -11,7 +11,7 @@
     <Panel class="PopupInvokerAbilityPickerHeader">
       <Label
         class="PopupInvokerAbilityPickerSelectionChoice"
-        text="#invokation_ability_picker_choose"
+        text="#invk_ability_picker_choose"
       />
     </Panel>
 

@@ -13,7 +13,7 @@
         <Button
           id="BtnLevelUp"
           class="LevelUpButton FreestyleIconButton Grey"
-          onmouseover="UIShowTextTooltip(#invokation_controls_level_up)"
+          onmouseover="UIShowTextTooltip(#invk_controls_level_up)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -22,7 +22,7 @@
         <Button
           id="BtnLevelMax"
           class="LevelMaxButton FreestyleIconButton Grey"
-          onmouseover="UIShowTextTooltip(#invokation_controls_level_max)"
+          onmouseover="UIShowTextTooltip(#invk_controls_level_max)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -31,7 +31,7 @@
         <Button
           id="BtnRestart"
           class="RefreshButton FreestyleIconButton Blue"
-          onmouseover="UIShowTextTooltip(#invokation_controls_restart)"
+          onmouseover="UIShowTextTooltip(#invk_controls_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -40,7 +40,7 @@
         <Button
           id="BtnFullRestart"
           class="FullRefreshIcon FreestyleIconButton Bronze"
-          onmouseover="UIShowTextTooltip(#invokation_controls_full_restart)"
+          onmouseover="UIShowTextTooltip(#invk_controls_full_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
@@ -49,7 +49,7 @@
         <Button
           id="BtnStop"
           class="CloseButton FreestyleIconButton Red"
-          onmouseover="UIShowTextTooltip(#invokation_controls_stop)"
+          onmouseover="UIShowTextTooltip(#invk_controls_stop)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>

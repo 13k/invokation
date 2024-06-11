@@ -26,7 +26,7 @@
             <Panel class="SectionHeader" hittest="false">
               <Label
                 class="SectionLabel"
-                text="#invokation_viewer_abilities_build_title"
+                text="#invk_viewer_abilities_build_title"
                 hittest="false"
               />
             </Panel>
@@ -68,14 +68,14 @@
             <Panel class="SectionHeader" hittest="false">
               <Label
                 class="SectionLabel"
-                text="#invokation_viewer_sequence_title"
+                text="#invk_viewer_sequence_title"
                 hittest="false"
               />
             </Panel>
 
             <Label
               class="SectionLabel"
-              text="#invokation_viewer_sequence_disclaimer"
+              text="#invk_viewer_sequence_disclaimer"
               hittest="false"
             />
 
@@ -87,7 +87,7 @@
       <Panel class="ViewerFooter" hittest="false">
         <Panel class="ViewerButtons" hittest="false">
           <Button id="BtnPlay" class="PlayButton">
-            <Label class="PlayLabel" text="#invokation_controls_play" hittest="false" />
+            <Label class="PlayLabel" text="#invk_controls_play" hittest="false" />
           </Button>
         </Panel>
       </Panel>

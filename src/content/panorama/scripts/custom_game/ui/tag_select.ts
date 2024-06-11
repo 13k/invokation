@@ -12,7 +12,6 @@ import {
   Sequence,
   StopSequence,
 } from "@invokation/panorama-lib/sequence";
-import { pascalCase } from "@invokation/panorama-lib/util/pascalCase";
 import { uniqueId } from "@invokation/panorama-lib/util/uniqueId";
 
 import type { Elements, Inputs, Outputs } from "../component";
@@ -52,14 +51,22 @@ enum CssClass {
   Option = "UITagSelectOption",
 }
 
-enum OptionValue {
-  Empty = "__empty__",
-  TextEntry = "__text_entry__",
+interface UiOption {
+  id: string;
+  text: string;
 }
 
-const OPTION_ID = {
-  empty: `${PanelId.OptionPrefix}${OptionValue.Empty}`,
-  textEntry: `${PanelId.OptionPrefix}${OptionValue.TextEntry}`,
+const UI_OPTIONS = {
+  // biome-ignore lint/style/useNamingConvention: const
+  EMPTY: {
+    id: `${PanelId.OptionPrefix}Empty`,
+    text: "",
+  },
+  // biome-ignore lint/style/useNamingConvention: const
+  TEXT_ENTRY: {
+    id: `${PanelId.OptionPrefix}TextEntry`,
+    text: l10n.l(l10n.Key.TagSelectOptionTextEntry),
+  },
 };
 
 enum Timing {
@@ -67,8 +74,8 @@ enum Timing {
 }
 
 const normalizeTag = (tag: string): string => kebabCase(tag);
-const tagId = (tag: string): string => pascalCase(`${PanelId.TagPrefix}${tag}`);
-const optionId = (option: string): string => pascalCase(`${PanelId.OptionPrefix}${option}`);
+const tagId = (tag: string): string => `${PanelId.TagPrefix}:${tag}`;
+const optionId = (option: string): string => `${PanelId.OptionPrefix}:${option}`;
 
 export type { TagSelect };
 
@@ -133,18 +140,20 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
 
     const option = selected.GetAttributeString("value", "");
 
-    switch (option) {
-      case OptionValue.Empty:
+    switch (selected.id) {
+      case UI_OPTIONS.EMPTY.id: {
         return;
-      case OptionValue.TextEntry: {
+      }
+      case UI_OPTIONS.TEXT_ENTRY.id: {
         this.showTagEntryPopup();
         break;
       }
-      default:
+      default: {
         this.addTag(option);
+      }
     }
 
-    this.elements.options.SetSelected(OPTION_ID.empty);
+    this.elements.options.SetSelected(UI_OPTIONS.EMPTY.id);
   }
 
   onPopupTextEntrySubmit(payload: NetworkedData<PopupTextEntrySubmit>): void {
@@ -205,30 +214,21 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
     this.tagPanels.delete(tag);
   }
 
-  createOption(option: string): LabelPanel {
-    let id: string;
-    let text: string;
+  createOption(option: string | UiOption): LabelPanel {
+    let uiOption: UiOption;
 
-    switch (option) {
-      case OptionValue.Empty: {
-        id = OPTION_ID.empty;
-        text = "";
-        break;
-      }
-      case OptionValue.TextEntry: {
-        id = OPTION_ID.textEntry;
-        text = l10n.l(l10n.Key.TagSelectOptionTextEntry);
-        break;
-      }
-      default: {
-        id = optionId(option);
-        text = option;
-      }
+    if (typeof option === "string") {
+      uiOption = {
+        id: optionId(option),
+        text: option,
+      };
+    } else {
+      uiOption = option;
     }
 
-    const panel = createLabel(this.elements.options, id, text);
+    const panel = createLabel(this.elements.options, uiOption.id, uiOption.text);
 
-    panel.SetAttributeString("value", option);
+    panel.SetAttributeString("value", uiOption.text);
     panel.AddClass(CssClass.Option);
 
     return panel;
@@ -254,13 +254,13 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
 
   // ----- Actions -----
 
-  createOptionAction(option: string): Action {
+  createOptionAction(option: string | UiOption): Action {
     return new AddOptionAction(this.elements.options, this.createOption.bind(this, option));
   }
 
   renderOptionsAction(): Action {
-    const actions = [OptionValue.Empty, ...this.options, OptionValue.TextEntry]
-      .filter((opt) => !this.isTagSelected(opt))
+    const actions = [UI_OPTIONS.EMPTY, ...this.options, UI_OPTIONS.TEXT_ENTRY]
+      .filter((opt) => typeof opt !== "string" || !this.isTagSelected(opt))
       .map(this.createOptionAction.bind(this));
 
     return new Sequence().removeAllOptions(this.elements.options).add(...actions);
