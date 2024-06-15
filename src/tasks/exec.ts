@@ -5,7 +5,7 @@ import shellQuote from "shell-quote";
 import type { Logger } from "./logger";
 
 export interface SpawnOptions extends BunSpawnOptions.OptionsObject {
-  log?: Logger;
+  log?: Logger | undefined;
 }
 
 export function spawnSync(cmd: string, args: string[] = [], options?: SpawnOptions) {
@@ -18,7 +18,7 @@ export function spawnSync(cmd: string, args: string[] = [], options?: SpawnOptio
 }
 
 export interface ExecOptions extends SpawnOptions {
-  echo?: boolean;
+  echo?: boolean | undefined;
 }
 
 export function exec(cmd: string, args: string[] = [], options?: ExecOptions) {
@@ -39,7 +39,7 @@ export function exec(cmd: string, args: string[] = [], options?: ExecOptions) {
 }
 
 export interface CaptureOptions {
-  log?: Logger;
+  log?: Logger | undefined;
 }
 
 export function capture(cmd: string, args: string[] = [], options?: CaptureOptions) {

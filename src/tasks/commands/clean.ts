@@ -25,19 +25,23 @@ export class CleanCommand extends BaseCommand<Args, Options> {
 
   override async run(): Promise<void> {
     const {
+      dota2: { baseDir },
       customGame: { contentDir, gameDir },
     } = this.config;
 
-    await asyncEach([contentDir, gameDir], async (path) => {
-      if (this.options.dryRun) {
-        this.log.label(Label.Remove).info(`${path} [skip: dry run]`);
+    this.log.fields({ baseDir }).info("Clean");
 
+    await asyncEach([contentDir, gameDir], async (path) => {
+      const log = this.log.label(Label.Remove).field("path", baseDir.relative(path));
+
+      if (this.options.dryRun) {
+        log.info("skip (dry run)");
         return;
       }
 
-      await path.rm();
+      await path.rm({ recursive: true });
 
-      this.log.label(Label.Remove).info(path.toString());
+      log.info("removed");
     });
   }
 }

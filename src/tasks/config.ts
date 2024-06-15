@@ -1,6 +1,6 @@
 import packageJson from "../../package.json";
 import type { Path } from "./path";
-import { DARWIN, LINUX, UnknownPlatformError, WINDOWS, WSL } from "./platform";
+import { PLATFORM, UnknownPlatformError } from "./platform";
 
 export const PACKAGE: Package = packageJson;
 
@@ -89,15 +89,15 @@ function configDota2(baseDir: Path, resourceCompilerOpt?: string[]): ConfigDota2
   let sdkBinPath: Path | undefined = undefined;
   let resourceCompiler: string[] | undefined = resourceCompilerOpt;
 
-  if (WSL || WINDOWS) {
+  if (PLATFORM.isWsl || PLATFORM.isWindows) {
     const binDir = baseDir.join("game", "bin", "win64");
 
     gameBinPath = binDir.join("dota2.exe");
     sdkBinPath = binDir.join("dota2cfg.exe");
     resourceCompiler ??= [binDir.join("resourcecompiler.exe").toString()];
-  } else if (LINUX) {
+  } else if (PLATFORM.isLinux) {
     gameBinPath = baseDir.join("game", "dota.sh");
-  } else if (DARWIN) {
+  } else if (PLATFORM.isDarwin) {
     gameBinPath = baseDir.join("game", "dota.sh");
   } else {
     throw new UnknownPlatformError();

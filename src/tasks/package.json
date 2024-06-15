@@ -20,7 +20,6 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
-    "@mojojs/path": "^1.6.0",
     "@tsconfig/bun": "^1.0.6",
     "@tsconfig/strictest": "^2.0.5",
     "@types/async": "^3.2.24",
