@@ -260,11 +260,11 @@ describe("invk.combo.hero", function()
 
     describe("with hard reset", function()
       before_each(function()
-        mocks:stub("PlayerResource", PlayerResource, "ReplaceHeroWith")
+        mocks:stub("PlayerResource", PlayerResource, "ReplaceHeroWithNoTransfer")
       end)
 
       after_each(function()
-        mocks:reset("PlayerResource", "ReplaceHeroWith")
+        mocks:reset("PlayerResource", "ReplaceHeroWithNoTransfer")
       end)
 
       it("removes all hero's items", function()
@@ -320,8 +320,8 @@ describe("invk.combo.hero", function()
         combo_hero.teardown(player, { hard_reset = true })
 
         mocks
-          :assert("PlayerResource", "ReplaceHeroWith").self
-          .called_with(31, INVOKER.UNIT_NAME, 0, 0)
+          :assert("PlayerResource", "ReplaceHeroWithNoTransfer").self
+          .called_with(31, INVOKER.UNIT_NAME, -1, 0)
         mocks:assert("hero", "RemoveSelf").self.called()
         assert.is_true(hero:IsNull())
       end)

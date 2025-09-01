@@ -21,3 +21,5 @@ end
 function GameRules:GetDroppedItem(_i)
   return nil
 end
+
+function GameRules:SetSpeechUseSpawnInsteadOfRespawnConcept(_b) end
