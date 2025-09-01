@@ -11,14 +11,14 @@
     "src/content/panorama/scripts/lib"
   ],
   "devDependencies": {
-    "@biomejs/biome": "^1.8.0",
-    "@prettier/plugin-xml": "^3.4.1",
-    "prettier": "^3.3.0",
-    "stylelint": "^16.6.1",
+    "@biomejs/biome": "^1.9.4",
+    "@prettier/plugin-xml": "^3.4.2",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.23.1",
     "stylelint-config-recess-order": "^4.6.0",
-    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard": "^36.0.1",
     "stylelint-order": "^6.0.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.2"
   },
   "dota2": {
     "customGame": {
