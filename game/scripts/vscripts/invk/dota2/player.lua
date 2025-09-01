@@ -1,7 +1,5 @@
 local class = require("middleclass")
 
-local val = require("invk.lang.value")
-
 --- Player class.
 --- @class invk.dota2.Player : middleclass.Class
 --- @field entity CDOTAPlayerController # player entity
@@ -24,8 +22,6 @@ end
 --- @class invk.dota2.player.ReplaceHeroOptions
 --- @field gold? integer # New hero starting gold (default: `0`)
 --- @field xp? integer # New hero starting experience (default: `0`)
---- @field remove? boolean # Remove old hero entity. Not removing the entity will make it linger
----   under the player's ownership and control (default: `true`)
 
 --- Replaces the player's hero with a new one.
 ---
@@ -36,16 +32,17 @@ end
 --- @return CDOTA_BaseNPC_Hero # New hero entity
 function M:replace_hero(hero_name, options)
   local opts = options or {}
-  local old_hero = self.hero
-  local gold = opts.gold or 0
+  local gold = opts.gold or -1
   local xp = opts.xp or 0
-  local remove = val.non_nil(opts.remove, true)
 
-  self.hero = PlayerResource:ReplaceHeroWith(self.id, hero_name, gold, xp)
+  GameRules:SetSpeechUseSpawnInsteadOfRespawnConcept(true)
 
-  if remove then
-    old_hero:RemoveSelf()
-  end
+  local hero = PlayerResource:ReplaceHeroWithNoTransfer(self.id, hero_name, gold, xp) --[[@as CDOTA_BaseNPC_Hero]]
+
+  GameRules:SetSpeechUseSpawnInsteadOfRespawnConcept(false)
+
+  self.hero:RemoveSelf()
+  self.hero = hero
 
   return self.hero
 end
