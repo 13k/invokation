@@ -1,12 +1,10 @@
 local class = require("middleclass")
-local inspect = require("inspect")
 
-local Ability = require("invk.dota2.ability")
 local COMMANDS = require("invk.const.commands")
 local CUSTOM_EVENTS = require("invk.const.custom_events")
 local Combos = require("invk.combo.combos")
-local DamageInstance = require("invk.dota2.damage_instance")
 local Env = require("invk.game_mode.env")
+local GameEvents = require("invk.game_mode.game_events")
 local INVOKER = require("invk.const.invoker")
 local Invoker = require("invk.dota2.invoker")
 local ItemsKeyValues = require("invk.dota2.kv.items_key_values")
@@ -17,7 +15,6 @@ local NetTable = require("invk.dota2.net_table")
 local PRECACHE = require("invk.const.precache")
 local S = require("invk.const.settings")
 local Timers = require("invk.dota2.timers")
-local Unit = require("invk.dota2.unit")
 local custom_ev = require("invk.dota2.custom_events")
 local func = require("invk.lang.function")
 local rand = require("invk.lang.random")
@@ -33,12 +30,11 @@ local DEFAULT_ENV = Env.is_dev_mode() and Env.DEVELOPMENT or Env.PRODUCTION
 --- @field players { [PlayerID]: CDOTAPlayerController? }
 --- @field items_kv invk.dota2.kv.ItemsKeyValues
 --- @field net_tables { [invk.net_table.Name]: invk.dota2.NetTable }
+--- @field game_events invk.game_mode.GameEvents
 --- @field combos invk.combo.Combos
 --- @field logger invk.Logger
 --- @field private game_mode CDOTABaseGameMode
 --- @field private _reentrant boolean
---- @field private _first_player_loaded boolean
---- @field private _first_spawned boolean
 local M = class("invk.GameMode")
 
 M:include(Logger.Mixin)
@@ -72,8 +68,6 @@ function M:initialize(options)
   local opts = options or {}
 
   self._reentrant = false
-  self._first_player_loaded = false
-  self._first_spawned = false
 
   self.env = opts.env or DEFAULT_ENV
   self.users = {}
@@ -87,6 +81,8 @@ function M:initialize(options)
   self.net_tables = tbl.map(NET_TABLES.Tables, function(config)
     return NetTable:new(config, { logger = self.logger })
   end)
+
+  self.game_events = GameEvents:new(self, { logger = self.logger })
 
   self.combos = Combos:new(self.net_tables[NET_TABLES.Name.MAIN], { logger = self.logger })
 end
@@ -119,8 +115,10 @@ function M:activate()
   self:setup_net_tables()
   self:setup_game_rules()
   self:setup_game_mode()
-  self:register_game_events()
+
+  self.game_events:register()
   self:register_custom_events()
+
   self:register_commands()
   self:register_convars()
 
@@ -327,38 +325,15 @@ end
 
 --- @param event string
 --- @param method_name string
---- @return EventListenerID
-function M:listen_to_game_event(event, method_name)
-  return ListenToGameEvent(event, self:fn_handler(method_name), self)
-end
-
---- @param event string
---- @param method_name string
 --- @return CustomGameEventListenerID
 function M:subscribe_to_custom_event(event, method_name)
   return custom_ev.subscribe(event, self:method_handler(method_name))
-end
-
-function M:register_game_events()
-  self:d("  (game_events) register listeners")
-
-  self:listen_to_game_event("dota_ability_channel_finished", "OnAbilityChannelFinished")
-  self:listen_to_game_event("dota_item_purchased", "OnItemPurchased")
-  self:listen_to_game_event("dota_non_player_used_ability", "OnNonPlayerUsedAbility")
-  self:listen_to_game_event("dota_player_begin_cast", "OnAbilityCastBegins")
-  self:listen_to_game_event("dota_player_used_ability", "OnAbilityUsed")
-  self:listen_to_game_event("entity_hurt", "OnEntityHurt")
-  self:listen_to_game_event("entity_killed", "_OnEntityKilled")
-  self:listen_to_game_event("game_rules_state_change", "_OnGameRulesStateChange")
-  self:listen_to_game_event("npc_spawned", "_OnNPCSpawned")
-  self:listen_to_game_event("player_connect_full", "_OnConnectFull")
 end
 
 function M:register_custom_events()
   self:d("  (custom_events) register listeners")
 
   self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_PLAYER_QUIT_REQUEST, "OnPlayerQuitRequest")
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "OnCombosReload")
   self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "OnCombosReload")
   self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBO_START, "OnComboStart")
   self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBO_STOP, "OnComboStop")
@@ -380,278 +355,35 @@ function M:register_custom_events()
   self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_REQUEST, "OnItemPickerQuery")
 end
 
--- events.internal {{{
+-- events.game {{{
 
 local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
 
---- Called when the overall game state has changed.
---- @param payload dota2.events.game_rules_state_change
-function M:_OnGameRulesStateChange(payload)
-  if self._reentrant then
+function M:set_team_colors()
+  if not S.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS then
     return
   end
 
-  local state = GameRules:State_Get()
+  for i = 0, DOTA_DEFAULT_MAX_TEAM_PLAYERS do
+    if PlayerResource:IsValidPlayer(i) then
+      local team = PlayerResource:GetTeam(i)
+      local color = S.TEAM_COLORS[team]
 
-  self._reentrant = true
-  self:OnGameRulesStateChange(state, payload)
-  self._reentrant = false
-
-  if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
-    self:post_load_precache()
-    self:OnAllPlayersLoaded()
-
-    if S.USE_CUSTOM_TEAM_COLORS_FOR_PLAYERS then
-      for i = 0, DOTA_DEFAULT_MAX_TEAM_PLAYERS do
-        if PlayerResource:IsValidPlayer(i) then
-          local team = PlayerResource:GetTeam(i)
-          local color = S.TEAM_COLORS[team]
-
-          if color ~= nil then
-            PlayerResource:SetCustomPlayerColor(i, color[1], color[2], color[3])
-          else
-            self:warnf(WARNF_MISSING_TEAM_COLOR, i, team)
-          end
-        end
+      if color ~= nil then
+        PlayerResource:SetCustomPlayerColor(i, color[1], color[2], color[3])
+      else
+        self:warnf(WARNF_MISSING_TEAM_COLOR, i, team)
       end
     end
-  elseif state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-    self:OnGameInProgress()
   end
 end
 
---- Called once when the player fully connects and becomes "Ready" during loading.
---- @param payload dota2.events.player_connect_full
-function M:_OnConnectFull(payload)
-  self:d("_OnConnectFull", { payload = payload })
-
-  if self._reentrant then
-    return
-  end
-
-  local player = assertf(
-    PlayerResource:GetPlayer(payload.PlayerID),
-    "received invalid player ID from event payload %s",
-    inspect(payload)
-  )
-
-  self._reentrant = true
-  self:OnConnectFull(player, payload.userid)
-  self._reentrant = false
-
-  if not self._first_player_loaded then
-    self._first_player_loaded = true
-    self:OnFirstPlayerLoaded()
-  end
-end
-
---- Called when an NPC has spawned somewhere in game, including heroes.
---- @param payload dota2.events.npc_spawned
-function M:_OnNPCSpawned(payload)
-  self:d("_OnNPCSpawned", { payload = payload })
-
-  if self._reentrant then
-    return
-  end
-
-  local npc = EntIndexToHScript(payload.entindex) --[[@as CDOTA_BaseNPC?]]
-
-  if npc ~= nil and npc:IsRealHero() and not self._first_spawned then
-    self._first_spawned = true
-    self:OnHeroInGame(npc)
-  end
-end
-
---- Called when an entity was killed.
---- @param payload dota2.events.entity_killed
-function M:_OnEntityKilled(payload)
-  self:d("_OnEntityKilled", { payload = payload })
-
-  if self._reentrant then
-    return
-  end
-
-  local killed = EntIndexToHScript(payload.entindex_killed)
-  local attacker = nil
-  local inflictor = nil
-
-  if payload.entindex_attacker ~= nil then
-    attacker = EntIndexToHScript(payload.entindex_attacker)
-  end
-
-  if payload.entindex_inflictor ~= nil then
-    inflictor = EntIndexToHScript(payload.entindex_inflictor)
-  end
-
-  self._reentrant = true
-  self:OnEntityKilled(killed, attacker, inflictor)
-  self._reentrant = false
-end
-
--- }}}
--- events.game {{{
-
-local ERRF_ABILITY_OR_ITEM_NOT_FOUND = "Could not find ability or item named %q on unit %q"
-
---- The overall game state has changeds.
---- @param state DOTA_GameState
---- @param payload table
-function M:OnGameRulesStateChange(state, payload)
-  self:d("OnGameRulesStateChange", { state = state, payload = payload })
-end
-
---- Called once when the player fully connects and becomes "Ready" during loading.
---- @param player CDOTAPlayerController
 --- @param user_id integer
-function M:OnConnectFull(player, user_id)
-  self:d("OnConnectFull", { player = player:GetPlayerID() })
-
+--- @param player CDOTAPlayerController
+function M:add_player_user(user_id, player)
   self.users[user_id] = player
   self.players[player:GetPlayerID()] = player
-end
-
---- Called once and only once as soon as the first player (almost certain to be
---- the server in local lobbies) loads in.
----
---- It can be used to initialize state that isn't initializeable in @{Activate}
---- but needs to be done before everyone loads in.
-function M:OnFirstPlayerLoaded()
-  self:d("OnFirstPlayerLoaded")
-end
-
---- Called once and only once after all players have loaded into the game,
---- right as the hero selection time begins.
----
---- It can be used to initialize non-hero player state or adjust the hero
---- selection (i.e. force random etc)
-function M:OnAllPlayersLoaded()
-  self:d("OnAllPlayersLoaded")
-end
-
---- Called once and only once for every player when they spawn into the game
---- for the first time.
----
---- It is also called if the player's hero is replaced with a new hero for any
---- reason. This function is useful for initializing heroes, such as adding
---- levels, changing the starting gold, removing/adding abilities, adding
---- physics, etc.
----
---- @param hero CDOTA_BaseNPC_Hero
-function M:OnHeroInGame(hero)
-  self:d("OnHeroInGame", { hero = hero:GetUnitName() })
-
-  local player_id = hero:GetPlayerID()
-  local player =
-    assertf(PlayerResource:GetPlayer(player_id), "received invalid player id %d", player_id)
-
-  local payload = {
-    id = hero:GetHeroID(),
-    name = hero:GetUnitName(),
-    variant = hero:GetHeroFacetID(),
-  }
-
-  custom_ev.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_IN_GAME, player, payload)
-end
-
---- Called once and only once when the game completely begins (about 0:00 on the clock).
-function M:OnGameInProgress()
-  self:d("OnGameInProgress")
-end
-
---- An entity has been hurt.
---- @param payload dota2.events.entity_hurt
-function M:OnEntityHurt(payload)
-  self:d("OnEntityHurt", { payload = payload })
-
-  local attacker
-  local inflictor
-  local victim = Unit:new(EntIndexToHScript(payload.entindex_killed))
-
-  if payload.entindex_attacker ~= nil then
-    attacker = Unit:new(EntIndexToHScript(payload.entindex_attacker))
-  end
-
-  -- FIXME: This is a hack to fix an issue when an entity is killed with `ForceKill`,
-  -- FIXME: which will trigger this event. I'm not sure which enum `damagebits` is using,
-  -- FIXME: but regular damage seems to always set it to 0 while `ForceKill` sets it to 4096
-  if payload.entindex_inflictor ~= nil and payload.damagebits == 0 then
-    inflictor = Ability:new(EntIndexToHScript(payload.entindex_inflictor))
-  end
-
-  local damage = DamageInstance:new(victim, payload.damage, attacker, inflictor)
-
-  self.combos:on_entity_hurt(damage)
-end
-
---- An item was purchased by a player.
---- @param payload dota2.events.dota_item_purchased
-function M:OnItemPurchased(payload)
-  self:d("OnItemPurchased", { payload = payload })
-
-  local player = assertf(
-    PlayerResource:GetPlayer(payload.PlayerID),
-    "received invalid player ID from event payload %s",
-    inspect(payload)
-  )
-
-  self.combos:on_item_purchased(player, {
-    item = payload.itemname,
-    cost = payload.itemcost,
-  })
-end
-
---- Called whenever an ability begins its PhaseStart phase (but before it is actually cast).
---- @param payload dota2.events.dota_player_begin_cast
-function M:OnAbilityCastBegins(payload)
-  self:d("OnAbilityCastBegins", { payload = payload })
-end
-
---- An ability was used by a player (including items).
---- @param payload dota2.events.dota_player_used_ability
-function M:OnAbilityUsed(payload)
-  self:d("OnAbilityUsed", { payload = payload })
-
-  local player = assertf(
-    PlayerResource:GetPlayer(payload.PlayerID),
-    "received invalid player ID from event payload %s",
-    inspect(payload)
-  )
-
-  local caster = Unit:new(EntIndexToHScript(payload.caster_entindex))
-  local ability_ent = caster:find_ability_or_item(payload.abilityname)
-
-  if ability_ent == nil then
-    errorf(ERRF_ABILITY_OR_ITEM_NOT_FOUND, payload.abilityname, caster.name)
-  end
-
-  local ability = Ability:new(ability_ent)
-
-  self.combos:on_ability_used(player, caster, ability)
-end
-
---- A non-player entity (necro-book, chen creep, etc) used an ability.
---- @param payload dota2.events.dota_non_player_used_ability
-function M:OnNonPlayerUsedAbility(payload)
-  self:d("OnNonPlayerUsedAbility", { payload = payload })
-end
-
---- A channelled ability finished by either completing or being interrupted.
---- @param payload dota2.events.dota_ability_channel_finished
-function M:OnAbilityChannelFinished(payload)
-  self:d("OnAbilityChannelFinished", { payload = payload })
-end
-
---- An entity died.
--- @tparam CDOTA_BaseNPC killed Killed unit
--- @tparam[opt] CDOTA_BaseNPC attacker Attacker unit
--- @tparam[opt] CDOTABaseAbility inflictor Inflictor ability
-function M:OnEntityKilled(killed, attacker, inflictor)
-  self:d("OnEntityKilled", {
-    killed = killed:GetName(),
-    attacker = attacker and attacker:GetName(),
-    inflictor = inflictor and inflictor:GetName(),
-  })
 end
 
 -- }}}
