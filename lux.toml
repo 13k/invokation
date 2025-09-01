@@ -17,7 +17,6 @@ bit32 = "~> 5.3"
 busted = "~> 2.2"
 busted-htest = "~> 1.0"
 compat53 = "~> 0.14"
-luacov = "~> 0.16"
 moses = "~> 2.1"
 penlight = "~> 1.14"
 

@@ -30,7 +30,6 @@
       "game/scripts/vscripts/middleclass.lua",
       ".lux/jit/test_dependencies/jit/01a3c364614bddff7370223a5a9c4580f8e62d144384148444c518ec5367a59b-mediator_lua@1.1.2-0/src",
       ".lux/jit/test_dependencies/jit/092886a00e3c7cb9cb944528116da6ce7d5e4a25b9d198735ac1b1307f77dca5-bit32@5.3.5-1/src",
-      ".lux/jit/test_dependencies/jit/117a52658298bf0e7dc607718e5e39ef93468c41c45dcf8650d7986d93e19341-luacov@0.16.0-1/src",
       ".lux/jit/test_dependencies/jit/287e827f4a088d41bba04af5f61a13614346c16fe8150eb7c4246e67d6fd163e-lua-term@0.8-1/src",
       ".lux/jit/test_dependencies/jit/316ac0b30e04e86a253d64886f3b110bd0508267474e6b58a3b973bd6857dbf4-penlight@1.14.0-3/src",
       ".lux/jit/test_dependencies/jit/455cd98d50c6191a9685cffcda4ce783efbb957934625e134c39f43bd5df6818-luassert@1.9.0-1/src",
@@ -44,7 +43,6 @@
       ".lux/jit/test_dependencies/jit/a6c5176043cb3de56336b7de119443dbb3d9e024be1d50e06289ad4b4959a2da-lua_cliargs@3.0.2-1/src",
       ".lux/jit/test_dependencies/jit/c82b26bea8099fcea79b4e243145c4cf2597abdde010248e02fcd273e490e1bb-penlight@1.14.0-3/src",
       ".lux/jit/test_dependencies/jit/d792a2d7b67521e3af5c323f99f9c5b20625b649826613bdf93854482c22dd1b-moses@2.1.0-1/src",
-      ".lux/jit/test_dependencies/jit/e496d4ec14c0feec0b3eac3f622f59eb3777d6e63b24469fdb464841e6ab4e63-datafile@0.11-1/src",
       ".lux/jit/test_dependencies/jit/e4f17b9e67313bbd5e90f425672fc8998dd0bfa43335f7c57ed2de7a799e07a6-dkjson@2.8-1/src"
     ]
   }

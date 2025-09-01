@@ -38,30 +38,6 @@
           "source": "sha256-q53sd82FUQL+xw5rILdegS2xqZ4/KAMMWzTcD+uIyD0="
         }
       },
-      "117a52658298bf0e7dc607718e5e39ef93468c41c45dcf8650d7986d93e19341": {
-        "name": "luacov",
-        "version": "0.16.0-1",
-        "pinned": false,
-        "opt": false,
-        "dependencies": [
-          "e496d4ec14c0feec0b3eac3f622f59eb3777d6e63b24469fdb464841e6ab4e63"
-        ],
-        "constraint": ">=0.16.0, <0.17.0",
-        "binaries": [
-          "luacov",
-          "luacov"
-        ],
-        "source": "luarocks_rockspec+https://luarocks.org/",
-        "source_url": {
-          "type": "git",
-          "url": "https://github.com/lunarmodules/luacov.git",
-          "ref": "v0.16.0"
-        },
-        "hashes": {
-          "rockspec": "sha256-fbdS+kCvyMlE1qUZTDm+sGwroa1NCR0YFSR00a4pwPo=",
-          "source": "sha256-GoJqiFyXH4chQ/k/qBPttnh/V4vUSfR2Lg8rt3CPKoY="
-        }
-      },
       "287e827f4a088d41bba04af5f61a13614346c16fe8150eb7c4246e67d6fd163e": {
         "name": "lua-term",
         "version": "0.8-1",
@@ -330,25 +306,6 @@
           "source": "sha256-koGDl+3kjV0EkeeTsmc5zuVoljT7s47Et8w8JoPfv1g="
         }
       },
-      "e496d4ec14c0feec0b3eac3f622f59eb3777d6e63b24469fdb464841e6ab4e63": {
-        "name": "datafile",
-        "version": "0.11-1",
-        "pinned": false,
-        "opt": false,
-        "dependencies": [],
-        "constraint": null,
-        "binaries": [],
-        "source": "luarocks_rockspec+https://luarocks.org/",
-        "source_url": {
-          "type": "git",
-          "url": "https://github.com/hishamhm/datafile.git",
-          "ref": "v0.11"
-        },
-        "hashes": {
-          "rockspec": "sha256-2DDuPfJZustlH90MsItOvpTv2+weKIyFE2SwPxX2ICY=",
-          "source": "sha256-aHdxFJ2IB9v9UMK7vqk7tUA0rLmfvRd0nzhc9JO8AlQ="
-        }
-      },
       "e4f17b9e67313bbd5e90f425672fc8998dd0bfa43335f7c57ed2de7a799e07a6": {
         "name": "dkjson",
         "version": "2.8-1",
@@ -370,7 +327,6 @@
     },
     "entrypoints": [
       "092886a00e3c7cb9cb944528116da6ce7d5e4a25b9d198735ac1b1307f77dca5",
-      "117a52658298bf0e7dc607718e5e39ef93468c41c45dcf8650d7986d93e19341",
       "672112d42de52914cd6daaac8a86cf906f80360bd81d6ad0a1df51224d74e9d4",
       "8a29d183b38f69620275ab4765d677ada24ff5f96f48d2018d0ee7bcd8ad057e",
       "9a3c8a33388fd17cf44291697753b48efba841849e4a92dc37c4f7a4c6877c86",
