@@ -17,6 +17,7 @@ local S = require("invk.const.settings")
 local Timers = require("invk.dota2.timers")
 local custom_ev = require("invk.dota2.custom_events")
 local func = require("invk.lang.function")
+local game_mode = require("invk.game_mode.game_mode")
 local game_rules = require("invk.game_mode.game_rules")
 local rand = require("invk.lang.random")
 local tbl = require("invk.lang.table")
@@ -134,24 +135,8 @@ function M:setup_modules()
   rand.seed()
 end
 
---- Used to set up async precache calls at the beginning of the gameplay.
----
---- In this function, place all of your `PrecacheItemByNameAsync` and
---- `PrecacheUnitByNameAsync`. These calls will be made after all players have
---- loaded in, but before they have selected their heroes.
---- `PrecacheItemByNameAsync` can also be used to precache dynamically-added
---- datadriven abilities instead of items. `PrecacheUnitByNameAsync` will
---- precache the `precache{}` block statement of the unit and all `precache{}`
---- block statements for every `Ability#` defined on the unit.
----
---- This function should only be called once. If you want to/need to precache
---- more items/abilities/units at a later time, you can call the functions
---- individually (for example if you want to precache units in a new wave of
---- holdout).
----
---- This function should generally only be used if `Precache` is not working.
 function M:post_load_precache()
-  self:d("Performing Post-Load precache")
+  self:d("  (precache) post-load")
 end
 
 --- net_tables {{{
@@ -196,76 +181,7 @@ end
 function M:setup_game_mode()
   self:d("  (GameMode) setup")
 
-  self.game_mode = GameRules:GetGameModeEntity()
-
-  self.game_mode:SetAlwaysShowPlayerInventory(S.ALWAYS_SHOW_PLAYER_INVENTORY)
-  self.game_mode:SetAlwaysShowPlayerNames(S.ALWAYS_SHOW_PLAYER_NAMES)
-  self.game_mode:SetAnnouncerDisabled(S.DISABLE_ANNOUNCER)
-  self.game_mode:SetBotThinkingEnabled(S.USE_STANDARD_DOTA_BOT_THINKING)
-  self.game_mode:SetBotsAlwaysPushWithHuman(S.BOTS_ALWAYS_PUSH_WITH_HUMAN)
-  self.game_mode:SetBotsInLateGame(S.BOTS_LATE_GAME_BEHAVIOR)
-  self.game_mode:SetBotsMaxPushTier(S.BOTS_MAX_PUSH_TIER)
-  self.game_mode:SetBountyRuneSpawnInterval(S.BOUNTY_RUNE_SPAWN_INTERVAL)
-  self.game_mode:SetBuybackEnabled(S.BUYBACK_ENABLED)
-  self.game_mode:SetCameraDistanceOverride(S.CAMERA_DISTANCE_OVERRIDE)
-  self.game_mode:SetCameraSmoothCountOverride(S.CAMERA_SMOOTH_COUNT)
-  self.game_mode:SetCustomBackpackCooldownPercent(S.CUSTOM_BACKPACK_COOLDOWN_PERCENT)
-  self.game_mode:SetCustomBackpackSwapCooldown(S.CUSTOM_BACKPACK_SWAP_COOLDOWN)
-  self.game_mode:SetCustomBuybackCooldownEnabled(S.CUSTOM_BUYBACK_COOLDOWN_ENABLED)
-  self.game_mode:SetCustomBuybackCostEnabled(S.CUSTOM_BUYBACK_COST_ENABLED)
-  self.game_mode:SetCustomGlyphCooldown(S.CUSTOM_GLYPH_COOLDOWN)
-  self.game_mode:SetCustomScanCooldown(S.CUSTOM_SCAN_COOLDOWN)
-  self.game_mode:SetDaynightCycleDisabled(S.DISABLE_DAY_NIGHT_CYCLE)
-  self.game_mode:SetDeathOverlayDisabled(S.DISABLE_DEATH_OVERLAY)
-  self.game_mode:SetDraftingBanningTimeOverride(S.DRAFTING_BANNING_TIME)
-  self.game_mode:SetDraftingHeroPickSelectTimeOverride(S.DRAFTING_HERO_PICK_SELECTION_TIME)
-  self.game_mode:SetFixedRespawnTime(S.FIXED_RESPAWN_TIME)
-  self.game_mode:SetFogOfWarDisabled(S.DISABLE_FOG_OF_WAR)
-  self.game_mode:SetFountainConstantManaRegen(S.FOUNTAIN_CONSTANT_MANA_REGEN)
-  self.game_mode:SetFountainPercentageHealthRegen(S.FOUNTAIN_PERCENTAGE_HEALTH_REGEN)
-  self.game_mode:SetFountainPercentageManaRegen(S.FOUNTAIN_PERCENTAGE_MANA_REGEN)
-  self.game_mode:SetFriendlyBuildingMoveToEnabled(S.ENABLE_FRIENDLY_BUILDING_MOVE_TO_CLICK)
-  self.game_mode:SetGoldSoundDisabled(S.DISABLE_GOLD_SOUNDS)
-  self.game_mode:SetHudCombatEventsDisabled(S.DISABLE_COMBAT_EVENTS_HUD)
-  self.game_mode:SetKillingSpreeAnnouncerDisabled(S.DISABLE_KILLING_SPREE_ANNOUNCER)
-  self.game_mode:SetLoseGoldOnDeath(S.LOSE_GOLD_ON_DEATH)
-  self.game_mode:SetMaximumAttackSpeed(S.MAXIMUM_ATTACK_SPEED)
-  self.game_mode:SetMinimumAttackSpeed(S.MINIMUM_ATTACK_SPEED)
-  self.game_mode:SetPauseEnabled(S.ENABLE_PAUSE)
-  self.game_mode:SetPowerRuneSpawnInterval(S.POWER_RUNE_SPAWN_INTERVAL)
-  self.game_mode:SetRecommendedItemsDisabled(S.RECOMMENDED_BUILDS_DISABLED)
-  self.game_mode:SetRemoveIllusionsOnDeath(S.REMOVE_ILLUSIONS_ON_DEATH)
-  self.game_mode:SetRespawnTimeScale(S.RESPAWN_TIME_SCALE)
-  self.game_mode:SetSelectionGoldPenaltyEnabled(S.ENABLE_SELECTION_GOLD_PENALTY)
-  self.game_mode:SetStashPurchasingDisabled(S.DISABLE_STASH_PURCHASING)
-  self.game_mode:SetStickyItemDisabled(S.DISABLE_STICKY_ITEM)
-  self.game_mode:SetTopBarTeamValuesOverride(S.USE_CUSTOM_TOP_BAR_VALUES)
-  self.game_mode:SetTopBarTeamValuesVisible(S.TOP_BAR_VISIBLE)
-  self.game_mode:SetTowerBackdoorProtectionEnabled(S.ENABLE_TOWER_BACKDOOR_PROTECTION)
-  self.game_mode:SetUnseenFogOfWarEnabled(S.USE_UNSEEN_FOG_OF_WAR)
-  self.game_mode:SetUseDefaultDOTARuneSpawnLogic(S.USE_DEFAULT_DOTA_RUNE_SPAWN_LOGIC)
-  self.game_mode:SetWeatherEffectsDisabled(S.DISABLE_WEATHER_EFFECTS)
-
-  -- Must be set before `SetUseCustomHeroLevels`
-  self.game_mode:SetCustomXPRequiredToReachNextLevel(S.XP_PER_LEVEL_TABLE)
-  self.game_mode:SetUseCustomHeroLevels(S.USE_CUSTOM_HERO_LEVELS)
-
-  -- self.gameMode:SetCustomAttributeDerivedStatValue(nStatType, flNewValue)
-  -- self.gameMode:SetHUDVisible(iHUDElement, bVisible)
-  -- self.gameMode:SetKillableTombstones(S.KILLABLE_TOMBSTONES)
-  -- self.gameMode:SetTopBarTeamValue(iTeam, nValue)
-
-  if S.FORCE_PICKED_HERO ~= nil then
-    self.game_mode:SetCustomGameForceHero(S.FORCE_PICKED_HERO)
-  end
-
-  if S.CUSTOM_TERRAIN_WEATHER_EFFECT ~= nil then
-    self.game_mode:SetCustomTerrainWeatherEffect(S.CUSTOM_TERRAIN_WEATHER_EFFECT)
-  end
-
-  for rune, spawn in pairs(S.ENABLED_RUNES) do
-    self.game_mode:SetRuneEnabled(rune, spawn)
-  end
+  self.game_mode = game_mode.setup()
 end
 
 --- }}}
