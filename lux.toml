@@ -1,0 +1,31 @@
+package = "invokation"
+version = "0.1.0"
+lua = "==5.1"
+
+[description]
+homepage = "https://github.com/13k/invokation"
+issues_url = "https://github.com/13k/invokation/issues"
+summary = "Invokation: School of Arcane Arts"
+maintainer = "13k <k@13k.dev>"
+labels = ["dota2", "invoker", "practice", "trainer"]
+license = "MIT"
+
+[dependencies]
+
+[test_dependencies]
+bit32 = "~> 5.3"
+busted = "~> 2.2"
+busted-htest = "~> 1.0"
+compat53 = "~> 0.14"
+luacov = "~> 0.16"
+moses = "~> 2.1"
+penlight = "~> 1.14"
+
+[run]
+args = ["game/scripts/vscripts/addon_game_mode.lua"]
+
+[build]
+type = "none"
+
+[test]
+type = "busted"
