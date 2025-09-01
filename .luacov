@@ -41,7 +41,7 @@ return {
   -- }
   include = {
     "game/scripts/vscripts/addon_game_mode$",
-    "game/scripts/vscripts/invokation%/.+$",
+    "game/scripts/vscripts/invk%/.+$",
   },
 
   --- Lua patterns for files to exclude when reporting.
