@@ -1,7 +1,7 @@
 require("support.luassert_ext")
+require("support.game_mode")
 require("support.dota2")
-require("support.factories")
 
-local Timers = require("invokation.dota2.timers")
+local Timers = require("invk.dota2.timers")
 
-Timers:Start()
+Timers:start()

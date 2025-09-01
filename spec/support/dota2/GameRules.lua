@@ -1,12 +1,13 @@
--- selene: allow(incorrect_standard_library_use)
+local CDOTABaseGameMode = require("support.dota2.CDOTABaseGameMode")
+
 GameRules = {}
 
 function GameRules:GetGameModeEntity()
-  if self.gameMode == nil then
-    self.gameMode = CDOTABaseGameMode()
+  if self.game_mode == nil then
+    self.game_mode = CDOTABaseGameMode()
   end
 
-  return self.gameMode
+  return self.game_mode
 end
 
 function GameRules:GetGameTime()

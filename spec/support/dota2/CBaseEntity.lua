@@ -1,30 +1,39 @@
-local m = require("moses")
 local class = require("pl.class")
-local Factory = require("support.factory")
+local m = require("moses")
 
--- selene: allow(incorrect_standard_library_use)
-CBaseEntity = class()
+local F = require("support.factory")
 
-CBaseEntity.entIdx = 0
+--- @class support.dota2.CBaseEntity : CBaseEntity
+--- @field name string
+--- @field classname string
+--- @field entindex EntityIndex
+--- @field team DOTATeam_t
+--- @field origin Vector
+--- @field removed boolean
+--- @field alive boolean
+local CBaseEntity = class()
 
+--- @class support.dota2.CBaseEntity_attributes
+--- @field name string
+--- @field classname? string
+--- @field entindex? EntityIndex
+--- @field team? DOTATeam_t
+--- @field origin? Vector
+--- @field removed? boolean
+--- @field alive? boolean
+
+--- @param attributes support.dota2.CBaseEntity_attributes
 function CBaseEntity:_init(attributes)
-  m.extend(self, attributes or {})
+  attributes.classname = attributes.classname or attributes.name
+  attributes.entindex = attributes.entindex or test_NextEntIndex()
+  attributes.team = attributes.team or DOTA_TEAM_NOTEAM
+  attributes.origin = attributes.origin or F.vector({ 0, 0, 0 })
+  attributes.removed = attributes.removed == nil and false or attributes.removed
+  attributes.alive = attributes.alive == nil and true or attributes.alive
 
-  if self.entindex == nil then
-    CBaseEntity.entIdx = CBaseEntity.entIdx + 1
-    self.entindex = CBaseEntity.entIdx
-  end
+  m.extend(self, attributes)
 
-  self.team = self.team or DOTA_TEAM_NOTEAM
-  self.origin = self.origin or Factory.create("vector", { 0, 0, 0 })
-
-  if self.removed == nil then
-    self.removed = false
-  end
-
-  if self.alive == nil then
-    self.alive = true
-  end
+  test_SetEntity(self.entindex, self)
 end
 
 function CBaseEntity:GetEntityIndex()
@@ -75,5 +84,7 @@ function CBaseEntity:GetTeamNumber()
   return self.team
 end
 
-function CBaseEntity:StopSound(_soundEvent) end
+function CBaseEntity:StopSound(_event) end
 function CBaseEntity:SetThink() end
+
+return CBaseEntity

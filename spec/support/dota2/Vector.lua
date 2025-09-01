@@ -1,8 +1,11 @@
 local class = require("pl.class")
 
--- selene: allow(incorrect_standard_library_use)
+--- @class support.dota2.Vector : Vector
 Vector = class()
 
+--- @param x number
+--- @param y number
+--- @param z number
 function Vector:_init(x, y, z)
   self.x = x
   self.y = y
