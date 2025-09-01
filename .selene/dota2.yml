@@ -295,8 +295,6 @@ globals:
     property: read-only
   ACT_DOTA_ANCESTRAL_SPIRIT:
     property: read-only
-  ACT_DOTA_ARCANA_VOTE:
-    property: read-only
   ACT_DOTA_ARCTIC_BURN_END:
     property: read-only
   ACT_DOTA_AREA_DENY:
@@ -350,10 +348,6 @@ globals:
   ACT_DOTA_CAST1_STATUE:
     property: read-only
   ACT_DOTA_CAST2_STATUE:
-    property: read-only
-  ACT_DOTA_CAST3_STATUE:
-    property: read-only
-  ACT_DOTA_CAST4_STATUE:
     property: read-only
   ACT_DOTA_CAST_ABILITY_1:
     property: read-only
@@ -432,8 +426,6 @@ globals:
   ACT_DOTA_CAST_LIFE_BREAK_START:
     property: read-only
   ACT_DOTA_CAST_REFRACTION:
-    property: read-only
-  ACT_DOTA_CAST_STATUE:
     property: read-only
   ACT_DOTA_CAST_SUN_STRIKE:
     property: read-only
@@ -575,8 +567,6 @@ globals:
     property: read-only
   ACT_DOTA_IDLE_SLEEPING_END:
     property: read-only
-  ACT_DOTA_IDLE_STATUE:
-    property: read-only
   ACT_DOTA_IMPALE:
     property: read-only
   ACT_DOTA_INTRO:
@@ -592,6 +582,18 @@ globals:
   ACT_DOTA_JAKIRO_LIQUIDFIRE_LOOP:
     property: read-only
   ACT_DOTA_JAKIRO_LIQUIDFIRE_START:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_IMPALE:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_IMPALE_FAST:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_ULT_CHAIN_A:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_ULT_CHAIN_B:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_ULT_END:
+    property: read-only
+  ACT_DOTA_KEZ_KATANA_ULT_START:
     property: read-only
   ACT_DOTA_KILLTAUNT:
     property: read-only
@@ -647,6 +649,8 @@ globals:
     property: read-only
   ACT_DOTA_MK_TREE_SOAR:
     property: read-only
+  ACT_DOTA_MVP_SCREEN:
+    property: read-only
   ACT_DOTA_NECRO_GHOST_SHROUD:
     property: read-only
   ACT_DOTA_NIAN_INTRO_LEAP:
@@ -686,8 +690,6 @@ globals:
   ACT_DOTA_POOF_END:
     property: read-only
   ACT_DOTA_PRESENT_ITEM:
-    property: read-only
-  ACT_DOTA_PUNCH:
     property: read-only
   ACT_DOTA_RADIANT_CREEP_HAMMER:
     property: read-only
@@ -735,6 +737,8 @@ globals:
     property: read-only
   ACT_DOTA_SAND_KING_BURROW_OUT:
     property: read-only
+  ACT_DOTA_SHADOW_VAULT:
+    property: read-only
   ACT_DOTA_SHAKE:
     property: read-only
   ACT_DOTA_SHALLOW_GRAVE:
@@ -767,13 +771,11 @@ globals:
     property: read-only
   ACT_DOTA_SPIRIT_BREAKER_CHARGE_POSE:
     property: read-only
-  ACT_DOTA_SPIRIT_BREAKER_ULT_RUN:
+  ACT_DOTA_SPWN:
     property: read-only
   ACT_DOTA_STARTLE:
     property: read-only
   ACT_DOTA_STATIC_STORM:
-    property: read-only
-  ACT_DOTA_STATUE_SEQUENCE:
     property: read-only
   ACT_DOTA_STUN_STATUE:
     property: read-only
@@ -836,6 +838,10 @@ globals:
   ACT_DOTA_UNDYING_SOUL_RIP:
     property: read-only
   ACT_DOTA_UNDYING_TOMBSTONE:
+    property: read-only
+  ACT_DOTA_UNICYCLE:
+    property: read-only
+  ACT_DOTA_UNICYCLE_END:
     property: read-only
   ACT_DOTA_VERSUS:
     property: read-only
@@ -2663,9 +2669,9 @@ globals:
     property: read-only
   ACT_ZOMBIE_TRIP:
     property: read-only
-  AE_CL_ADD_PARTICLE_EFFECT_CP:
+  AE_BODYGROUP_SET_VALUE:
     property: read-only
-  AE_CL_BODYGROUP_SET_VALUE:
+  AE_CL_ADD_PARTICLE_EFFECT_CP:
     property: read-only
   AE_CL_BODYGROUP_SET_VALUE_CMODEL_WPN:
     property: read-only
@@ -2719,6 +2725,10 @@ globals:
     property: read-only
   AE_CL_SUPPRESS_EVENTS_WITH_TAG:
     property: read-only
+  AE_DESTRUCTIBLE_PART_DESTROY:
+    property: read-only
+  AE_DISABLE_PLATFORM:
+    property: read-only
   AE_DOTA_CREATE_CLINKZ_ATTACK:
     property: read-only
   AE_DOTA_DIE_PHANTOM_DEATH_PARTICLES:
@@ -2743,23 +2753,33 @@ globals:
     property: read-only
   AE_EMPTY:
     property: read-only
+  AE_ENABLE_PLATFORM_PLAYER_FOLLOWS_YAW:
+    property: read-only
+  AE_ENABLE_PLATFORM_PLAYER_IGNORES_YAW:
+    property: read-only
   AE_FIRE_INPUT:
     property: read-only
   AE_FOOTSTEP:
     property: read-only
-  AE_RAGDOLL:
+  AE_PULSE_GRAPH:
     property: read-only
-  AE_SV_BODYGROUP_SET_VALUE:
+  AE_PULSE_GRAPH_AIMAT:
+    property: read-only
+  AE_PULSE_GRAPH_IKLOCKLEFTARM:
+    property: read-only
+  AE_PULSE_GRAPH_IKLOCKRIGHTARM:
+    property: read-only
+  AE_PULSE_GRAPH_LOOKAT:
     property: read-only
   AE_SV_CREATE_PARTICLE_EFFECT_CFG:
+    property: read-only
+  AE_SV_IKLOCK:
     property: read-only
   AE_SV_PLAYSOUND:
     property: read-only
   AE_SV_STOP_PARTICLE_EFFECT:
     property: read-only
-  AE_WPN_PRIMARYATTACK:
-    property: read-only
-  AE_WPN_SECONDARYATTACK:
+  AE_WEAPON_PERFORM_ATTACK:
     property: read-only
   Activate:
     args: []
@@ -3005,7 +3025,7 @@ globals:
       observes: read
     - required: false
       type:
-        display: CDOTAPlayerController
+        display: CDOTA_BaseNPC_Hero
       observes: read
   CreateItemOnPositionForLaunch:
     args:
@@ -3296,10 +3316,6 @@ globals:
     property: read-only
   DMG_PARALYZE:
     property: read-only
-  DMG_PHYSGUN:
-    property: read-only
-  DMG_PLASMA:
-    property: read-only
   DMG_POISON:
     property: read-only
   DMG_PREVENT_PHYSICS_FORCE:
@@ -3348,6 +3364,8 @@ globals:
     - type: number
       observes: read
     method: true
+  DOTA_ABILITY_BEHAVIOR_AFFECTED_BY_MUTE:
+    property: read-only
   DOTA_ABILITY_BEHAVIOR_ALT_CASTABLE:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_AOE:
@@ -3357,8 +3375,6 @@ globals:
   DOTA_ABILITY_BEHAVIOR_AURA:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_AUTOCAST:
-    property: read-only
-  DOTA_ABILITY_BEHAVIOR_BREAK_DISABLES:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_CAN_SELF_CAST:
     property: read-only
@@ -3372,6 +3388,8 @@ globals:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT:
     property: read-only
+  DOTA_ABILITY_BEHAVIOR_DONT_PROC_OTHER_ABILITIES:
+    property: read-only
   DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT:
@@ -3384,6 +3402,8 @@ globals:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL:
     property: read-only
+  DOTA_ABILITY_BEHAVIOR_IGNORE_INVISIBLE:
+    property: read-only
   DOTA_ABILITY_BEHAVIOR_IGNORE_MUTED:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE:
@@ -3391,6 +3411,10 @@ globals:
   DOTA_ABILITY_BEHAVIOR_IGNORE_SILENCE:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_IMMEDIATE:
+    property: read-only
+  DOTA_ABILITY_BEHAVIOR_INNATE_UI:
+    property: read-only
+  DOTA_ABILITY_BEHAVIOR_IS_FAKE_ITEM:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_ITEM:
     property: read-only
@@ -3422,6 +3446,8 @@ globals:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_SHOW_IN_GUIDES:
     property: read-only
+  DOTA_ABILITY_BEHAVIOR_SKIP_FOR_KEYBINDS:
+    property: read-only
   DOTA_ABILITY_BEHAVIOR_SUPPRESS_ASSOCIATED_CONSUMABLE:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_TOGGLE:
@@ -3431,6 +3457,8 @@ globals:
   DOTA_ABILITY_BEHAVIOR_UNLOCKED_BY_EFFECT_INDEX:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_UNRESTRICTED:
+    property: read-only
+  DOTA_ABILITY_BEHAVIOR_UNSWAPPABLE:
     property: read-only
   DOTA_ABILITY_BEHAVIOR_VECTOR_TARGETING:
     property: read-only
@@ -3536,13 +3564,17 @@ globals:
     property: read-only
   DOTA_DAMAGE_CATEGORY_ATTACK:
     property: read-only
+  DOTA_DAMAGE_CATEGORY_BARRIER:
+    property: read-only
   DOTA_DAMAGE_CATEGORY_SPELL:
     property: read-only
   DOTA_DAMAGE_FLAG_ATTACK_MODIFIER:
     property: read-only
-  DOTA_DAMAGE_FLAG_BYPASSES_BLOCK:
+  DOTA_DAMAGE_FLAG_BYPASSES_ALL_BLOCK:
     property: read-only
   DOTA_DAMAGE_FLAG_BYPASSES_INVULNERABILITY:
+    property: read-only
+  DOTA_DAMAGE_FLAG_BYPASSES_PHYSICAL_BLOCK:
     property: read-only
   DOTA_DAMAGE_FLAG_DONT_DISPLAY_DAMAGE_IF_SOURCE_HIDDEN:
     property: read-only
@@ -3565,6 +3597,8 @@ globals:
   DOTA_DAMAGE_FLAG_NO_DAMAGE_MULTIPLIERS:
     property: read-only
   DOTA_DAMAGE_FLAG_NO_DIRECTOR_EVENT:
+    property: read-only
+  DOTA_DAMAGE_FLAG_NO_REFLECTION:
     property: read-only
   DOTA_DAMAGE_FLAG_NO_SPELL_AMPLIFICATION:
     property: read-only
@@ -3944,6 +3978,10 @@ globals:
     property: read-only
   DOTA_INVALID_ORDER_CANT_ACCEPT_ATTACK_TARGET:
     property: read-only
+  DOTA_INVALID_ORDER_CANT_ATTACK_BUILDINGS:
+    property: read-only
+  DOTA_INVALID_ORDER_CANT_BUYBACK_CEASELESS_DIRGE:
+    property: read-only
   DOTA_INVALID_ORDER_CANT_BUYBACK_DISABLED_BY_GAME_MODE:
     property: read-only
   DOTA_INVALID_ORDER_CANT_BUYBACK_IN_COOLDOWN:
@@ -4035,6 +4073,8 @@ globals:
   DOTA_INVALID_ORDER_HOME_SHOP_NOT_IN_RANGE:
     property: read-only
   DOTA_INVALID_ORDER_ITEM_ALREADY_PURCHASED:
+    property: read-only
+  DOTA_INVALID_ORDER_ITEM_CANNOT_BE_CONSUMED:
     property: read-only
   DOTA_INVALID_ORDER_ITEM_CANT_BE_DROPPED:
     property: read-only
@@ -4156,7 +4196,9 @@ globals:
     property: read-only
   DOTA_ITEM_MAX:
     property: read-only
-  DOTA_ITEM_NEUTRAL_SLOT:
+  DOTA_ITEM_NEUTRAL_ACTIVE_SLOT:
+    property: read-only
+  DOTA_ITEM_NEUTRAL_PASSIVE_SLOT:
     property: read-only
   DOTA_ITEM_SLOT_1:
     property: read-only
@@ -4240,6 +4282,8 @@ globals:
     property: read-only
   DOTA_LOADOUT_TYPE_AMBIENT_EFFECTS_PERSONA_1:
     property: read-only
+  DOTA_LOADOUT_TYPE_ANCIENT:
+    property: read-only
   DOTA_LOADOUT_TYPE_ANNOUNCER:
     property: read-only
   DOTA_LOADOUT_TYPE_ARMOR:
@@ -4295,6 +4339,12 @@ globals:
   DOTA_LOADOUT_TYPE_HEAD_PERSONA_1:
     property: read-only
   DOTA_LOADOUT_TYPE_HEROIC_STATUE:
+    property: read-only
+  DOTA_LOADOUT_TYPE_HERO_BASE:
+    property: read-only
+  DOTA_LOADOUT_TYPE_HERO_EFFIGY:
+    property: read-only
+  DOTA_LOADOUT_TYPE_HERO_EFFIGY_PERSONA_1:
     property: read-only
   DOTA_LOADOUT_TYPE_HUD_SKIN:
     property: read-only
@@ -4504,7 +4554,11 @@ globals:
     property: read-only
   DOTA_ModifyGold_WardKill:
     property: read-only
+  DOTA_ModifyXP_CatchUp:
+    property: read-only
   DOTA_ModifyXP_CreepKill:
+    property: read-only
+  DOTA_ModifyXP_HeroAbility:
     property: read-only
   DOTA_ModifyXP_HeroKill:
     property: read-only
@@ -4566,8 +4620,6 @@ globals:
     property: read-only
   DOTA_PROJECTILE_ATTACHMENT_NONE:
     property: read-only
-  DOTA_PSEUDO_RANDOM_ANTIMAGE_SILENT:
-    property: read-only
   DOTA_PSEUDO_RANDOM_ARMADILLO_HEARTPIERCER:
     property: read-only
   DOTA_PSEUDO_RANDOM_ATOS:
@@ -4583,6 +4635,8 @@ globals:
   DOTA_PSEUDO_RANDOM_CHAOS_CRIT:
     property: read-only
   DOTA_PSEUDO_RANDOM_CHAOS_DOUBLE_CRIT:
+    property: read-only
+  DOTA_PSEUDO_RANDOM_CHAOS_KNIGHT_INNATE_REFUND:
     property: read-only
   DOTA_PSEUDO_RANDOM_CHAOS_TRIPLE_CRIT:
     property: read-only
@@ -4629,6 +4683,8 @@ globals:
   DOTA_PSEUDO_RANDOM_GENERIC_HEIGHT_MISS:
     property: read-only
   DOTA_PSEUDO_RANDOM_GENERIC_MISS:
+    property: read-only
+  DOTA_PSEUDO_RANDOM_HOODWINK_REDIRECT:
     property: read-only
   DOTA_PSEUDO_RANDOM_ITEM_ABYSSAL:
     property: read-only
@@ -4678,6 +4734,8 @@ globals:
     property: read-only
   DOTA_PSEUDO_RANDOM_JUGG_CRIT:
     property: read-only
+  DOTA_PSEUDO_RANDOM_KEZ_SAI:
+    property: read-only
   DOTA_PSEUDO_RANDOM_LEGION_MOMENT:
     property: read-only
   DOTA_PSEUDO_RANDOM_LONE_DRUID_ENTANGLE:
@@ -4710,6 +4768,8 @@ globals:
     property: read-only
   DOTA_PSEUDO_RANDOM_OGRE_MAGI_FIREBLAST:
     property: read-only
+  DOTA_PSEUDO_RANDOM_PANGOLIER_PARRY:
+    property: read-only
   DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_CRIT:
     property: read-only
   DOTA_PSEUDO_RANDOM_PHANTOMASSASSIN_DAGGER:
@@ -4723,6 +4783,8 @@ globals:
   DOTA_PSEUDO_RANDOM_SKELETONKING_CRIT_MORTAL:
     property: read-only
   DOTA_PSEUDO_RANDOM_SLARDAR_BASH:
+    property: read-only
+  DOTA_PSEUDO_RANDOM_SNAPFIRE_GLANCING:
     property: read-only
   DOTA_PSEUDO_RANDOM_SNIPER_HEADSHOT:
     property: read-only
@@ -4910,6 +4972,8 @@ globals:
     property: read-only
   DOTA_UNIT_ORDER_CAST_TOGGLE_AUTO:
     property: read-only
+  DOTA_UNIT_ORDER_CONSUME_ITEM:
+    property: read-only
   DOTA_UNIT_ORDER_CONTINUE:
     property: read-only
   DOTA_UNIT_ORDER_DISASSEMBLE_ITEM:
@@ -4956,6 +5020,8 @@ globals:
     property: read-only
   DOTA_UNIT_ORDER_SET_ITEM_COMBINE_LOCK:
     property: read-only
+  DOTA_UNIT_ORDER_SET_ITEM_MARK_FOR_SELL:
+    property: read-only
   DOTA_UNIT_ORDER_STOP:
     property: read-only
   DOTA_UNIT_ORDER_TAKE_ITEM_FROM_NEUTRAL_ITEM_STASH:
@@ -4979,6 +5045,8 @@ globals:
   DOTA_UNIT_TARGET_CREEP:
     property: read-only
   DOTA_UNIT_TARGET_CUSTOM:
+    property: read-only
+  DOTA_UNIT_TARGET_FLAG_CAN_BE_SEEN:
     property: read-only
   DOTA_UNIT_TARGET_FLAG_CHECK_DISABLE_HELP:
     property: read-only
@@ -5026,6 +5094,8 @@ globals:
     property: read-only
   DOTA_UNIT_TARGET_HERO:
     property: read-only
+  DOTA_UNIT_TARGET_HEROES_AND_CREEPS:
+    property: read-only
   DOTA_UNIT_TARGET_NONE:
     property: read-only
   DOTA_UNIT_TARGET_OTHER:
@@ -5048,6 +5118,20 @@ globals:
     property: read-only
   DebugBreak:
     args: []
+  DebugCreateHeroWithVariant:
+    args:
+    - type: any
+      observes: read
+    - type: string
+      observes: read
+    - type: number
+      observes: read
+    - type: number
+      observes: read
+    - type: bool
+      observes: read
+    - type: any
+      observes: read
   DebugCreateUnit:
     args:
     - type:
@@ -7076,6 +7160,10 @@ globals:
     property: read-only
   MODIFIER_ATTRIBUTE_PERMANENT:
     property: read-only
+  MODIFIER_EVENT_NEUTRAL_ENHANCEMENT_OPTIONS:
+    property: read-only
+  MODIFIER_EVENT_NEUTRAL_TRINKET_OPTIONS:
+    property: read-only
   MODIFIER_EVENT_ON_ABILITY_END_CHANNEL:
     property: read-only
   MODIFIER_EVENT_ON_ABILITY_EXECUTED:
@@ -7083,6 +7171,8 @@ globals:
   MODIFIER_EVENT_ON_ABILITY_FULLY_CAST:
     property: read-only
   MODIFIER_EVENT_ON_ABILITY_START:
+    property: read-only
+  MODIFIER_EVENT_ON_ABILITY_TOGGLED:
     property: read-only
   MODIFIER_EVENT_ON_ASSIST:
     property: read-only
@@ -7112,9 +7202,13 @@ globals:
     property: read-only
   MODIFIER_EVENT_ON_BUILDING_KILLED:
     property: read-only
+  MODIFIER_EVENT_ON_CLEAVE_ATTACK_LANDED:
+    property: read-only
   MODIFIER_EVENT_ON_DAMAGE_CALCULATED:
     property: read-only
   MODIFIER_EVENT_ON_DAMAGE_HPLOSS:
+    property: read-only
+  MODIFIER_EVENT_ON_DAY_STARTED:
     property: read-only
   MODIFIER_EVENT_ON_DEATH:
     property: read-only
@@ -7126,9 +7220,13 @@ globals:
     property: read-only
   MODIFIER_EVENT_ON_FORCE_PROC_MAGIC_STICK:
     property: read-only
+  MODIFIER_EVENT_ON_FOW_TEAM_CHANGED:
+    property: read-only
   MODIFIER_EVENT_ON_HEALTH_GAINED:
     property: read-only
   MODIFIER_EVENT_ON_HEAL_RECEIVED:
+    property: read-only
+  MODIFIER_EVENT_ON_HERO_BEGIN_DYING:
     property: read-only
   MODIFIER_EVENT_ON_HERO_KILLED:
     property: read-only
@@ -7141,6 +7239,12 @@ globals:
   MODIFIER_EVENT_ON_MODEL_CHANGED:
     property: read-only
   MODIFIER_EVENT_ON_MODIFIER_ADDED:
+    property: read-only
+  MODIFIER_EVENT_ON_MODIFIER_REMOVED:
+    property: read-only
+  MODIFIER_EVENT_ON_MUTE_DAMAGE_ABILITIES:
+    property: read-only
+  MODIFIER_EVENT_ON_NIGHT_STARTED:
     property: read-only
   MODIFIER_EVENT_ON_ORB_EFFECT:
     property: read-only
@@ -7156,9 +7260,13 @@ globals:
     property: read-only
   MODIFIER_EVENT_ON_PROJECTILE_OBSTRUCTION_HIT:
     property: read-only
+  MODIFIER_EVENT_ON_PURE_DAMAGE_CALCULATED:
+    property: read-only
   MODIFIER_EVENT_ON_REFRESH:
     property: read-only
   MODIFIER_EVENT_ON_RESPAWN:
+    property: read-only
+  MODIFIER_EVENT_ON_RUNE_SPAWN:
     property: read-only
   MODIFIER_EVENT_ON_SET_LOCATION:
     property: read-only
@@ -7174,9 +7282,15 @@ globals:
     property: read-only
   MODIFIER_EVENT_ON_TAKEDAMAGE_KILLCREDIT:
     property: read-only
+  MODIFIER_EVENT_ON_TAKEDAMAGE_POST_UNAVOIDABLE_BLOCK:
+    property: read-only
   MODIFIER_EVENT_ON_TELEPORTED:
     property: read-only
   MODIFIER_EVENT_ON_TELEPORTING:
+    property: read-only
+  MODIFIER_EVENT_ON_TIER_TOKEN_REROLLED:
+    property: read-only
+  MODIFIER_EVENT_ON_TREE_CUT_DOWN:
     property: read-only
   MODIFIER_EVENT_ON_UNIT_MOVED:
     property: read-only
@@ -7198,6 +7312,8 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_ABILITY_LAYOUT:
     property: read-only
+  MODIFIER_PROPERTY_ABILITY_POINTS:
+    property: read-only
   MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL:
     property: read-only
   MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL:
@@ -7205,6 +7321,8 @@ globals:
   MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE:
     property: read-only
   MODIFIER_PROPERTY_ABSORB_SPELL:
+    property: read-only
+  MODIFIER_PROPERTY_ADDITIONAL_NEUTRAL_ITEM_DROPS:
     property: read-only
   MODIFIER_PROPERTY_ALWAYS_ALLOW_ATTACK:
     property: read-only
@@ -7214,7 +7332,11 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_AOE_BONUS_CONSTANT:
     property: read-only
+  MODIFIER_PROPERTY_AOE_BONUS_CONSTANT_STACKING:
+    property: read-only
   MODIFIER_PROPERTY_AOE_BONUS_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_ATTACKSPEED_ABSOLUTE_MAX:
     property: read-only
   MODIFIER_PROPERTY_ATTACKSPEED_BASE_OVERRIDE:
     property: read-only
@@ -7225,6 +7347,8 @@ globals:
   MODIFIER_PROPERTY_ATTACKSPEED_REDUCTION_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_ATTACK_ANIM_TIME_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_ATTACK_HEIGHT_BONUS:
     property: read-only
   MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT:
     property: read-only
@@ -7238,6 +7362,8 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_ATTACK_WHILE_MOVING_TARGET:
     property: read-only
+  MODIFIER_PROPERTY_AVOID_ATTACK_PROCS:
+    property: read-only
   MODIFIER_PROPERTY_AVOID_DAMAGE:
     property: read-only
   MODIFIER_PROPERTY_AVOID_DAMAGE_AFTER_REDUCTIONS:
@@ -7246,9 +7372,13 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE:
     property: read-only
+  MODIFIER_PROPERTY_BASEATTACK_POSTBONUS:
+    property: read-only
   MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_BASEDAMAGEOUTGOING_PERCENTAGE_UNIQUE:
+    property: read-only
+  MODIFIER_PROPERTY_BASE_ARMOR_PER_AGI_BONUS_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_BASE_ATTACK_TIME_CONSTANT:
     property: read-only
@@ -7256,7 +7386,19 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_BASE_ATTACK_TIME_PERCENTAGE:
     property: read-only
+  MODIFIER_PROPERTY_BASE_HP_REGEN_PER_STR_BONUS_PERCENTAGE:
+    property: read-only
   MODIFIER_PROPERTY_BASE_MANA_REGEN:
+    property: read-only
+  MODIFIER_PROPERTY_BASE_MP_REGEN_PER_INT_BONUS_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_BASE_MRES_PER_INT_BONUS_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_BECOME_AGILITY:
+    property: read-only
+  MODIFIER_PROPERTY_BECOME_INTELLIGENCE:
+    property: read-only
+  MODIFIER_PROPERTY_BECOME_STRENGTH:
     property: read-only
   MODIFIER_PROPERTY_BECOME_UNIVERSAL:
     property: read-only
@@ -7266,9 +7408,13 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_BONUS_DAY_VISION_PERCENTAGE:
     property: read-only
+  MODIFIER_PROPERTY_BONUS_LOTUS_HEAL:
+    property: read-only
   MODIFIER_PROPERTY_BONUS_NIGHT_VISION:
     property: read-only
   MODIFIER_PROPERTY_BONUS_NIGHT_VISION_UNIQUE:
+    property: read-only
+  MODIFIER_PROPERTY_BONUS_UPHILL_MISS_CHANCE:
     property: read-only
   MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE:
     property: read-only
@@ -7277,6 +7423,8 @@ globals:
   MODIFIER_PROPERTY_BOUNTY_CREEP_MULTIPLIER:
     property: read-only
   MODIFIER_PROPERTY_BOUNTY_OTHER_MULTIPLIER:
+    property: read-only
+  MODIFIER_PROPERTY_BUYBACK_PENALTY_PERCENT:
     property: read-only
   MODIFIER_PROPERTY_CAN_ATTACK_TREES:
     property: read-only
@@ -7292,6 +7440,12 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_CHANGE_ABILITY_VALUE:
     property: read-only
+  MODIFIER_PROPERTY_CONSUMABLE_USE_SPEED:
+    property: read-only
+  MODIFIER_PROPERTY_CONVERT_ATTACK_PHYSICAL_TO_PURE:
+    property: read-only
+  MODIFIER_PROPERTY_CONVERT_MANA_COST_TO_HEALTH_COST:
+    property: read-only
   MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_ONGOING:
@@ -7299,6 +7453,14 @@ globals:
   MODIFIER_PROPERTY_COOLDOWN_PERCENTAGE_STACKING:
     property: read-only
   MODIFIER_PROPERTY_COOLDOWN_REDUCTION_CONSTANT:
+    property: read-only
+  MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_CHANCE:
+    property: read-only
+  MODIFIER_PROPERTY_CREATE_BONUS_ILLUSION_COUNT:
+    property: read-only
+  MODIFIER_PROPERTY_CREEP_DENY_PERCENT:
+    property: read-only
+  MODIFIER_PROPERTY_CRITICAL_STRIKE_BONUS:
     property: read-only
   MODIFIER_PROPERTY_DAMAGEOUTGOING_PERCENTAGE:
     property: read-only
@@ -7314,13 +7476,15 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_DISABLE_HEALING:
     property: read-only
+  MODIFIER_PROPERTY_DISABLE_MANA_GAIN:
+    property: read-only
   MODIFIER_PROPERTY_DISABLE_TURNING:
+    property: read-only
+  MODIFIER_PROPERTY_DISASSEMBLE_ANYTHING:
     property: read-only
   MODIFIER_PROPERTY_DODGE_PROJECTILE:
     property: read-only
   MODIFIER_PROPERTY_DONT_GIVE_VISION_OF_ATTACKER:
-    property: read-only
-  MODIFIER_PROPERTY_DO_NOT_SINK_AFTER_DEATH:
     property: read-only
   MODIFIER_PROPERTY_EVASION_CONSTANT:
     property: read-only
@@ -7344,13 +7508,25 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_FIXED_DAY_VISION:
     property: read-only
+  MODIFIER_PROPERTY_FIXED_MANA_REGEN:
+    property: read-only
   MODIFIER_PROPERTY_FIXED_NIGHT_VISION:
+    property: read-only
+  MODIFIER_PROPERTY_FORBID_ILLUSIONS:
     property: read-only
   MODIFIER_PROPERTY_FORCE_DRAW_MINIMAP:
     property: read-only
   MODIFIER_PROPERTY_FORCE_MAX_HEALTH:
     property: read-only
+  MODIFIER_PROPERTY_FORCE_MAX_MANA:
+    property: read-only
+  MODIFIER_PROPERTY_FORCE_NETWORK_TRANSMIT:
+    property: read-only
+  MODIFIER_PROPERTY_FOW_TEAM:
+    property: read-only
   MODIFIER_PROPERTY_GOLD_RATE_BOOST:
+    property: read-only
+  MODIFIER_PROPERTY_HAS_BONUS_NEUTRAL_ITEM_CHOICE:
     property: read-only
   MODIFIER_PROPERTY_HEALTHBAR_PIPS:
     property: read-only
@@ -7370,11 +7546,17 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE:
     property: read-only
+  MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_SOURCE_UNIQUE:
+    property: read-only
   MODIFIER_PROPERTY_HEAL_AMPLIFY_PERCENTAGE_TARGET:
+    property: read-only
+  MODIFIER_PROPERTY_HEROFACET_OVERRIDE:
     property: read-only
   MODIFIER_PROPERTY_HP_REGEN_AMPLIFY_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_HP_REGEN_CAN_BE_NEGATIVE:
+    property: read-only
+  MODIFIER_PROPERTY_HP_REGEN_MULTIPLIER_PRE_AMPLIFICATION:
     property: read-only
   MODIFIER_PROPERTY_IGNORE_ATTACKSPEED_LIMIT:
     property: read-only
@@ -7402,6 +7584,10 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT:
     property: read-only
+  MODIFIER_PROPERTY_INNATE_DAMAGE_BLOCK_PCT_OVERRIDE:
+    property: read-only
+  MODIFIER_PROPERTY_INVENTORY_SLOT_RESTRICTED:
+    property: read-only
   MODIFIER_PROPERTY_INVISIBILITY_ATTACK_BEHAVIOR_EXCEPTION:
     property: read-only
   MODIFIER_PROPERTY_INVISIBILITY_LEVEL:
@@ -7412,13 +7598,21 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_IS_SHARD:
     property: read-only
+  MODIFIER_PROPERTY_ITEM_SELLBACK_COST:
+    property: read-only
+  MODIFIER_PROPERTY_KILL_STREAK_BONUS_GOLD_PERCENTAGE:
+    property: read-only
   MODIFIER_PROPERTY_KNOCKBACK_AMPLIFICATION_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_LIFESTEAL_AMPLIFY_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_LIFETIME_FRACTION:
     property: read-only
+  MODIFIER_PROPERTY_MAGICAL_ARMOR_PIERCING_PERCENTAGE_TARGET:
+    property: read-only
   MODIFIER_PROPERTY_MAGICAL_CONSTANT_BLOCK:
+    property: read-only
+  MODIFIER_PROPERTY_MAGICAL_LIFESTEAL:
     property: read-only
   MODIFIER_PROPERTY_MAGICAL_RESISTANCE_BASE_REDUCTION:
     property: read-only
@@ -7431,6 +7625,8 @@ globals:
   MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE:
     property: read-only
   MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DIRECT_MODIFICATION:
+    property: read-only
+  MODIFIER_PROPERTY_MANACOST_OVERRIDE:
     property: read-only
   MODIFIER_PROPERTY_MANACOST_PERCENTAGE:
     property: read-only
@@ -7452,11 +7648,17 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_MAX_DEBUFF_DURATION:
     property: read-only
+  MODIFIER_PROPERTY_MIN_ATTRIBUTE_LEVEL:
+    property: read-only
   MODIFIER_PROPERTY_MIN_HEALTH:
+    property: read-only
+  MODIFIER_PROPERTY_MIN_MANA:
     property: read-only
   MODIFIER_PROPERTY_MIN_PHYSICAL_ARMOR:
     property: read-only
   MODIFIER_PROPERTY_MISS_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_MISS_PERCENTAGE_TARGET:
     property: read-only
   MODIFIER_PROPERTY_MODEL_CHANGE:
     property: read-only
@@ -7492,13 +7694,25 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_MOVESPEED_LIMIT:
     property: read-only
+  MODIFIER_PROPERTY_MOVESPEED_MAX_BONUS_CONSTANT:
+    property: read-only
+  MODIFIER_PROPERTY_MOVESPEED_MAX_OVERRIDE:
+    property: read-only
+  MODIFIER_PROPERTY_MOVESPEED_MIN_OVERRIDE:
+    property: read-only
+  MODIFIER_PROPERTY_MOVESPEED_POST_MULTIPLIER_BONUS_CONSTANT:
+    property: read-only
   MODIFIER_PROPERTY_MOVESPEED_REDUCTION_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE:
     property: read-only
+  MODIFIER_PROPERTY_MP_REGEN_AMPLIFY_PERCENTAGE_UNIQUE:
+    property: read-only
   MODIFIER_PROPERTY_MP_RESTORE_AMPLIFY_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_NEGATIVE_EVASION_CONSTANT:
+    property: read-only
+  MODIFIER_PROPERTY_NO_FREE_TP_SCROLL_ON_DEATH:
     property: read-only
   MODIFIER_PROPERTY_OVERRIDE_ABILITY_SPECIAL:
     property: read-only
@@ -7508,11 +7722,13 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE:
     property: read-only
-  MODIFIER_PROPERTY_OVERRIDE_ANIMATION_WEIGHT:
-    property: read-only
   MODIFIER_PROPERTY_OVERRIDE_ATTACK_DAMAGE:
     property: read-only
   MODIFIER_PROPERTY_OVERRIDE_ATTACK_MAGICAL:
+    property: read-only
+  MODIFIER_PROPERTY_PACK_RAT:
+    property: read-only
+  MODIFIER_PROPERTY_PERCENTAGE_DEATHGOLDCOST:
     property: read-only
   MODIFIER_PROPERTY_PERSISTENT_INVISIBILITY:
     property: read-only
@@ -7528,11 +7744,15 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS_UNIQUE_ACTIVE:
     property: read-only
+  MODIFIER_PROPERTY_PHYSICAL_ARMOR_PIERCING_PERCENTAGE_TARGET:
+    property: read-only
   MODIFIER_PROPERTY_PHYSICAL_ARMOR_TOTAL_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK:
     property: read-only
   MODIFIER_PROPERTY_PHYSICAL_CONSTANT_BLOCK_SPECIAL:
+    property: read-only
+  MODIFIER_PROPERTY_PHYSICAL_LIFESTEAL:
     property: read-only
   MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE:
     property: read-only
@@ -7549,6 +7769,8 @@ globals:
   MODIFIER_PROPERTY_PREATTACK_TARGET_CRITICALSTRIKE:
     property: read-only
   MODIFIER_PROPERTY_PREREDUCE_INCOMING_DAMAGE_MULT:
+    property: read-only
+  MODIFIER_PROPERTY_PRESERVE_NEUTRAL_ITEM_PASSIVES:
     property: read-only
   MODIFIER_PROPERTY_PRESERVE_PARTICLES_ON_MODEL_CHANGE:
     property: read-only
@@ -7576,11 +7798,15 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_PROJECTILE_SPEED_BONUS_PERCENTAGE:
     property: read-only
+  MODIFIER_PROPERTY_PROJECTILE_SPEED_TARGET:
+    property: read-only
   MODIFIER_PROPERTY_PROVIDES_FOW_POSITION:
+    property: read-only
+  MODIFIER_PROPERTY_PSEUDORANDOM_BONUS:
     property: read-only
   MODIFIER_PROPERTY_RADAR_COOLDOWN_REDUCTION:
     property: read-only
-  MODIFIER_PROPERTY_RAT_PACK:
+  MODIFIER_PROPERTY_REDIRECT_SPELL:
     property: read-only
   MODIFIER_PROPERTY_REFLECT_SPELL:
     property: read-only
@@ -7594,7 +7820,19 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_RESPAWNTIME_STACKING:
     property: read-only
-  MODIFIER_PROPERTY_SLOW_RESISTANCE:
+  MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION:
+    property: read-only
+  MODIFIER_PROPERTY_RESTORATION_AMPLIFICATION_UNIQUE:
+    property: read-only
+  MODIFIER_PROPERTY_SHARE_XPRUNE:
+    property: read-only
+  MODIFIER_PROPERTY_SKIP_ATTACK_REGULATOR:
+    property: read-only
+  MODIFIER_PROPERTY_SLOW_RESISTANCE_APPLIES_TO_ATTACKS:
+    property: read-only
+  MODIFIER_PROPERTY_SLOW_RESISTANCE_STACKING:
+    property: read-only
+  MODIFIER_PROPERTY_SLOW_RESISTANCE_UNIQUE:
     property: read-only
   MODIFIER_PROPERTY_SPELLS_REQUIRE_HP:
     property: read-only
@@ -7602,9 +7840,13 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_CREEP:
     property: read-only
+  MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_TARGET:
+    property: read-only
   MODIFIER_PROPERTY_SPELL_AMPLIFY_PERCENTAGE_UNIQUE:
     property: read-only
   MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE:
+    property: read-only
+  MODIFIER_PROPERTY_SPELL_LIFESTEAL_AMPLIFY_PERCENTAGE_UNIQUE:
     property: read-only
   MODIFIER_PROPERTY_SPELL_REDIRECT_TARGET:
     property: read-only
@@ -7632,15 +7874,23 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_SUPER_ILLUSION_WITH_ULTIMATE:
     property: read-only
+  MODIFIER_PROPERTY_SUPPRESS_ATTACK_PROCS:
+    property: read-only
   MODIFIER_PROPERTY_SUPPRESS_CLEAVE:
     property: read-only
+  MODIFIER_PROPERTY_SUPPRESS_CRIT:
+    property: read-only
   MODIFIER_PROPERTY_SUPPRESS_FULLSCREEN_DEATH_FX:
+    property: read-only
+  MODIFIER_PROPERTY_SUPPRESS_INCOMING_CRIT:
     property: read-only
   MODIFIER_PROPERTY_SUPPRESS_TELEPORT:
     property: read-only
   MODIFIER_PROPERTY_TEMPEST_DOUBLE:
     property: read-only
   MODIFIER_PROPERTY_TICK_GOLD_MULTIPLIER:
+    property: read-only
+  MODIFIER_PROPERTY_TIER_TOKEN_REROLL:
     property: read-only
   MODIFIER_PROPERTY_TOOLTIP:
     property: read-only
@@ -7649,6 +7899,8 @@ globals:
   MODIFIER_PROPERTY_TOTALDAMAGEOUTGOING_PERCENTAGE:
     property: read-only
   MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK:
+    property: read-only
+  MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_STACKING:
     property: read-only
   MODIFIER_PROPERTY_TOTAL_CONSTANT_BLOCK_UNAVOIDABLE_PRE_ARMOR:
     property: read-only
@@ -7668,11 +7920,17 @@ globals:
     property: read-only
   MODIFIER_PROPERTY_UNIT_STATS_NEEDS_REFRESH:
     property: read-only
+  MODIFIER_PROPERTY_UPGRADE_NEUTRAL_ARTIFACTS:
+    property: read-only
+  MODIFIER_PROPERTY_VISION_DEGREES_RESTRICTION:
+    property: read-only
   MODIFIER_PROPERTY_VISUAL_Z_DELTA:
     property: read-only
   MODIFIER_PROPERTY_VISUAL_Z_SPEED_BASE_OVERRIDE:
     property: read-only
   MODIFIER_PROPERTY_XP_DURING_DEATH:
+    property: read-only
+  MODIFIER_PROPERTY_XP_FOUNTAIN_COUNTDOWN_TIME_OVERRIDE:
     property: read-only
   MODIFIER_STATE_ALLOW_PATHING_THROUGH_BASE_BLOCKER:
     property: read-only
@@ -7683,6 +7941,10 @@ globals:
   MODIFIER_STATE_ALLOW_PATHING_THROUGH_OBSTRUCTIONS:
     property: read-only
   MODIFIER_STATE_ALLOW_PATHING_THROUGH_TREES:
+    property: read-only
+  MODIFIER_STATE_ATTACKS_ARE_MELEE:
+    property: read-only
+  MODIFIER_STATE_ATTACKS_DONT_REVEAL:
     property: read-only
   MODIFIER_STATE_ATTACK_ALLIES:
     property: read-only
@@ -7699,6 +7961,10 @@ globals:
   MODIFIER_STATE_CANNOT_TARGET_BUILDINGS:
     property: read-only
   MODIFIER_STATE_CANNOT_TARGET_ENEMIES:
+    property: read-only
+  MODIFIER_STATE_CAN_USE_BACKPACK_ITEMS:
+    property: read-only
+  MODIFIER_STATE_CASTS_IGNORE_CHANNELING:
     property: read-only
   MODIFIER_STATE_COMMAND_RESTRICTED:
     property: read-only
@@ -7742,6 +8008,8 @@ globals:
     property: read-only
   MODIFIER_STATE_MUTED:
     property: read-only
+  MODIFIER_STATE_NEUTRALS_DONT_ATTACK:
+    property: read-only
   MODIFIER_STATE_NIGHTMARED:
     property: read-only
   MODIFIER_STATE_NOT_ON_MINIMAP:
@@ -7753,8 +8021,6 @@ globals:
   MODIFIER_STATE_NO_HEALTH_BAR_FOR_ENEMIES:
     property: read-only
   MODIFIER_STATE_NO_HEALTH_BAR_FOR_OTHER_PLAYERS:
-    property: read-only
-  MODIFIER_STATE_NO_INVISIBILITY_VISUALS:
     property: read-only
   MODIFIER_STATE_NO_TEAM_MOVE_TO:
     property: read-only
@@ -7852,6 +8118,8 @@ globals:
     property: read-only
   OVERHEAD_ALERT_EVADE:
     property: read-only
+  OVERHEAD_ALERT_FORCE_MISS:
+    property: read-only
   OVERHEAD_ALERT_GOLD:
     property: read-only
   OVERHEAD_ALERT_HEAL:
@@ -7859,12 +8127,6 @@ globals:
   OVERHEAD_ALERT_INCOMING_DAMAGE:
     property: read-only
   OVERHEAD_ALERT_ITEM_RECEIVED:
-    property: read-only
-  OVERHEAD_ALERT_LAST_HIT_CLOSE:
-    property: read-only
-  OVERHEAD_ALERT_LAST_HIT_EARLY:
-    property: read-only
-  OVERHEAD_ALERT_LAST_HIT_MISS:
     property: read-only
   OVERHEAD_ALERT_MAGICAL_BLOCK:
     property: read-only
@@ -9364,8 +9626,6 @@ globals:
   QUEST_TEXT_REPLACE_VALUE_ROUND:
     property: read-only
   QUEST_TEXT_REPLACE_VALUE_TARGET_VALUE:
-    property: read-only
-  RELOAD:
     property: read-only
   Rad2Deg:
     args:
@@ -10918,6 +11178,32 @@ globals:
     property: read-only
   json.version:
     property: read-only
+  k_ECustomCameraEventFlags_FadeIn:
+    property: read-only
+  k_ECustomCameraEventFlags_FadeOut:
+    property: read-only
+  k_ECustomCameraEventFlags_LetterboxOff:
+    property: read-only
+  k_ECustomCameraEventFlags_LetterboxOn:
+    property: read-only
+  k_ECustomCameraEventFlags_Lock:
+    property: read-only
+  k_ECustomCameraEventFlags_Pitch:
+    property: read-only
+  k_ECustomCameraEventFlags_Position:
+    property: read-only
+  k_ECustomCameraEventFlags_PositionPlayerHero:
+    property: read-only
+  k_ECustomCameraEventFlags_ResetDefault:
+    property: read-only
+  k_ECustomCameraEventFlags_SpecificPlayer:
+    property: read-only
+  k_ECustomCameraEventFlags_Unlock:
+    property: read-only
+  k_ECustomCameraEventFlags_Yaw:
+    property: read-only
+  k_ECustomCameraEventFlags_Zoom:
+    property: read-only
   max:
     args:
     - type: number
@@ -10994,3 +11280,5 @@ globals:
     args:
     - type: table
     - type: table
+lua_versions:
+- luajit
