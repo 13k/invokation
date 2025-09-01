@@ -68,14 +68,6 @@ export type PropertyDescriptors = {
   [K in keyof Properties]: PropertyDescriptor<K>;
 };
 
-export interface Base {
-  id: ComboId;
-  heroLevel: number;
-  talents: TalentSelection;
-  tags: string[];
-  items: string[];
-}
-
 export interface Properties {
   [Property.Specialty]: Specialty;
   [Property.Stance]: Stance;
@@ -87,15 +79,30 @@ export type PropertiesL10n = {
   [K in keyof Properties]: string;
 };
 
-export interface NetworkCombo extends Base, Properties {
+export interface NetworkCombo {
+  id: ComboId;
+  specialty: Specialty;
+  stance: Stance;
+  damage_rating: DamageRating;
+  difficulty_rating: DifficultyRating;
+  hero_level: number;
   orbs: [number, number, number];
+  talents: TalentSelection;
+  items: string[];
+  tags: string[];
   sequence: NetworkStep[];
 }
 
-export interface Combo extends NetworkCombo {
+export interface Combo extends Properties {
+  id: ComboId;
+  heroLevel: number;
+  orbs: [number, number, number];
   orbsByName: Record<OrbName, number>;
-  sequence: Step[];
+  talents: TalentSelection;
+  items: string[];
+  tags: string[];
   tagset: Set<string>;
+  sequence: Step[];
   l10n: ComboL10n;
 }
 
