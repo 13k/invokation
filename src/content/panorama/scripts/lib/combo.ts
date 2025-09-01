@@ -83,8 +83,11 @@ export interface NetworkCombo {
   id: ComboId;
   specialty: Specialty;
   stance: Stance;
+  // biome-ignore lint/style/useNamingConvention: network data
   damage_rating: DamageRating;
+  // biome-ignore lint/style/useNamingConvention: network data
   difficulty_rating: DifficultyRating;
+  // biome-ignore lint/style/useNamingConvention: network data
   hero_level: number;
   orbs: [number, number, number];
   talents: TalentSelection;
