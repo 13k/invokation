@@ -46,7 +46,7 @@ end
 --- @field delay number
 --- @field paused boolean
 --- @field at number
---- @field onError (fun(err: string): string)
+--- @field on_error (fun(err: string): string)
 --- @field private callback_wrapper (fun(): any...)
 local Timer = class("Timer")
 
@@ -58,7 +58,7 @@ local Timer = class("Timer")
 --- @field delay? number # Delay start time (in seconds). `nil`, `0` or negative number means it starts immediately
 --- @field realtime? boolean # If `true`, uses real clock (ignores pauses) (default: `false`)
 --- @field paused? boolean # If `true`, the timer starts paused and must be manually unpaused with [Unpause] (default: `false`)
---- @field onError? fun(err: string): string # Error handler function. If `nil`, uses [default_error_handler] (default: `nil`)
+--- @field on_error? fun(err: string): string # Error handler function. If `nil`, uses [default_error_handler] (default: `nil`)
 
 --- @param options invk.dota2.TimerOptions
 function Timer:initialize(options)
@@ -67,7 +67,7 @@ function Timer:initialize(options)
   self.args = options.args or {}
   self.realtime = val.non_nil(options.realtime, false)
   self.delay = options.delay or 0
-  self.onError = options.onError or M.default_error_handler
+  self.on_error = options.on_error or M.default_error_handler
   self.paused = val.non_nil(options.paused, false)
   self.at = (options.at or self:now()) + self.delay
 
@@ -103,17 +103,17 @@ function M:process_timer(timer)
     return
   end
 
-  local removeTimer = true
-  local success, result = xpcall(timer.callbackWrapper, timer.onError)
+  local remove_timer = true
+  local success, result = xpcall(timer.callback_wrapper, timer.on_error)
 
   if not success then
     handle_error(timer, result)
   elseif type(result) == "number" then
     timer.at = timer.at + result
-    removeTimer = false
+    remove_timer = false
   end
 
-  if removeTimer then
+  if remove_timer then
     self.timers[timer.id] = nil
   end
 end
@@ -135,10 +135,10 @@ end
 --- ```lua
 --- -- Immediately calls `obj.fn(obj, 13)` (equivalent to `obj:fn(13)`),
 --- -- if `fn` returns a number, repeats at that interval
---- Create({callback = obj.fn, args = {obj, 13}})
+--- create({callback = obj.fn, args = {obj, 13}})
 ---
 --- -- 10 seconds delayed, run once using game time (respect pauses)
---- Create({
+--- create({
 ---   delay = 10.0,
 ---   callback = function()
 ---     print("Hello. I'm running 10 seconds after when I was started.")
@@ -146,7 +146,7 @@ end
 --- })
 ---
 --- -- 10 second delayed, run once regardless of pauses
---- Create({
+--- create({
 ---   delay = 10.0,
 ---   realtime = true,
 ---   callback = function()
@@ -155,7 +155,7 @@ end
 --- })
 ---
 --- -- At a specific time, run once using game time (respect pauses)
---- Create({
+--- create({
 ---   at = GameRules:GetGameTime() + 10.0,
 ---   callback = function()
 ---     print("Hello. I'm running when I was scheduled to run.")
@@ -163,7 +163,7 @@ end
 --- })
 ---
 --- -- At a specific time, run once using real time (regardless of pauses)
---- Create({
+--- create({
 ---   at = Time() + 10.0,
 ---   realtime = true,
 ---   callback = function()
@@ -172,7 +172,7 @@ end
 --- })
 ---
 --- -- At a specific time, 10 second delay from that time, run once using game time (respect pauses)
---- Create({
+--- create({
 ---   at = GameRules:GetGameTime() + 30.0,
 ---   delay = 10.0,
 ---   callback = function()
@@ -182,7 +182,7 @@ end
 ---
 --- -- A timer running every second that starts 5 seconds in the future.
 --- -- Uses game time, respecting pauses.
---- Create({
+--- create({
 ---   delay = 5.0,
 ---   callback = function()
 ---     print("Hello. I'm running 5 seconds after you called me and then every second thereafter.")
@@ -191,7 +191,7 @@ end
 --- })
 ---
 --- -- A timer running every second that starts after 2 minutes regardless of pauses
---- Create({
+--- create({
 ---   id = "uniqueTimerId",
 ---   delay = 120.0,
 ---   realtime = true,

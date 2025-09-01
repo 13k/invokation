@@ -5,7 +5,6 @@ local Ability = require("invk.dota2.ability")
 local COMMANDS = require("invk.const.commands")
 local CUSTOM_EVENTS = require("invk.const.custom_events")
 local Combos = require("invk.combo.combos")
-local CustomEvents = require("invk.dota2.custom_events")
 local DamageInstance = require("invk.dota2.damage_instance")
 local Env = require("invk.game_mode.env")
 local INVOKER = require("invk.const.invoker")
@@ -19,6 +18,7 @@ local PRECACHE = require("invk.const.precache")
 local S = require("invk.const.settings")
 local Timers = require("invk.dota2.timers")
 local Unit = require("invk.dota2.unit")
+local custom_ev = require("invk.dota2.custom_events")
 local func = require("invk.lang.function")
 local rand = require("invk.lang.random")
 local tbl = require("invk.lang.table")
@@ -336,7 +336,7 @@ end
 --- @param method_name string
 --- @return CustomGameEventListenerID
 function M:subscribe_to_custom_event(event, method_name)
-  return CustomEvents.subscribe(event, self:method_handler(method_name))
+  return custom_ev.subscribe(event, self:method_handler(method_name))
 end
 
 function M:register_game_events()
@@ -386,7 +386,7 @@ local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
 
 --- Called when the overall game state has changed.
---- @param payload table
+--- @param payload dota2.events.game_rules_state_change
 function M:_OnGameRulesStateChange(payload)
   if self._reentrant then
     return
@@ -421,12 +421,8 @@ function M:_OnGameRulesStateChange(payload)
   end
 end
 
---- @class invk.game_mode.events.PlayerConnectFull
---- @field PlayerID integer # Player id
---- @field userid integer # User id
-
 --- Called once when the player fully connects and becomes "Ready" during loading.
---- @param payload invk.game_mode.events.PlayerConnectFull
+--- @param payload dota2.events.player_connect_full
 function M:_OnConnectFull(payload)
   self:d("_OnConnectFull", { payload = payload })
 
@@ -450,11 +446,8 @@ function M:_OnConnectFull(payload)
   end
 end
 
---- @class invk.game_mode.events.NpcSpawned
---- @field entindex integer # Unit entity index
-
 --- Called when an NPC has spawned somewhere in game, including heroes.
---- @param payload invk.game_mode.events.NpcSpawned
+--- @param payload dota2.events.npc_spawned
 function M:_OnNPCSpawned(payload)
   self:d("_OnNPCSpawned", { payload = payload })
 
@@ -470,13 +463,8 @@ function M:_OnNPCSpawned(payload)
   end
 end
 
---- @class invk.game_events.OnEntityKilled
---- @field entindex_killed integer # Victim (unit) entity index
---- @field entindex_attacker? integer # Attacker (unit) entity index
---- @field entindex_inflictor? integer # Inflictor (item, ability, etc) entity index
-
 --- Called when an entity was killed.
---- @param payload invk.game_events.OnEntityKilled
+--- @param payload dota2.events.entity_killed
 function M:_OnEntityKilled(payload)
   self:d("_OnEntityKilled", { payload = payload })
 
@@ -563,7 +551,7 @@ function M:OnHeroInGame(hero)
     variant = hero:GetHeroFacetID(),
   }
 
-  CustomEvents.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_IN_GAME, player, payload)
+  custom_ev.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_IN_GAME, player, payload)
 end
 
 --- Called once and only once when the game completely begins (about 0:00 on the clock).
@@ -571,15 +559,8 @@ function M:OnGameInProgress()
   self:d("OnGameInProgress")
 end
 
---- @class invk.game_events.OnEntityHurt
---- @field damage number # Damage amount
---- @field damagebits integer # Damage flags
---- @field entindex_killed integer # Victim (unit) entity index
---- @field entindex_attacker integer # Attacker (unit) entity index
---- @field entindex_inflictor integer # Inflictor (item, ability, etc) entity index
-
 --- An entity has been hurt.
---- @param payload invk.game_events.OnEntityHurt
+--- @param payload dota2.events.entity_hurt
 function M:OnEntityHurt(payload)
   self:d("OnEntityHurt", { payload = payload })
 
@@ -603,13 +584,8 @@ function M:OnEntityHurt(payload)
   self.combos:on_entity_hurt(damage)
 end
 
---- @class invk.game_events.OnItemPurchased
---- @field PlayerID integer # Player id
---- @field itemname string # Item name
---- @field itemcost integer # Item cost
-
 --- An item was purchased by a player.
---- @param payload invk.game_events.OnItemPurchased
+--- @param payload dota2.events.dota_item_purchased
 function M:OnItemPurchased(payload)
   self:d("OnItemPurchased", { payload = payload })
 
@@ -625,23 +601,14 @@ function M:OnItemPurchased(payload)
   })
 end
 
---- @class invk.game_events.OnAbilityCastBegins
---- @field PlayerID integer # Player id
---- @field abilityname string # Ability name
-
 --- Called whenever an ability begins its PhaseStart phase (but before it is actually cast).
---- @param payload invk.game_events.OnAbilityCastBegins
+--- @param payload dota2.events.dota_player_begin_cast
 function M:OnAbilityCastBegins(payload)
   self:d("OnAbilityCastBegins", { payload = payload })
 end
 
---- @class invk.game_events.OnAbilityUsed
---- @field PlayerID integer # Player id
---- @field caster_entindex integer # Caster (unit) entity index
---- @field abilityname string # Ability name
-
 --- An ability was used by a player (including items).
---- @param payload invk.game_events.OnAbilityUsed
+--- @param payload dota2.events.dota_player_used_ability
 function M:OnAbilityUsed(payload)
   self:d("OnAbilityUsed", { payload = payload })
 
@@ -651,30 +618,26 @@ function M:OnAbilityUsed(payload)
     inspect(payload)
   )
 
-  local caster = Unit(EntIndexToHScript(payload.caster_entindex))
-  local abilityEnt = caster:FindAbilityOrItem(payload.abilityname)
+  local caster = Unit:new(EntIndexToHScript(payload.caster_entindex))
+  local ability_ent = caster:find_ability_or_item(payload.abilityname)
 
-  if abilityEnt == nil then
+  if ability_ent == nil then
     errorf(ERRF_ABILITY_OR_ITEM_NOT_FOUND, payload.abilityname, caster.name)
   end
 
-  local ability = Ability(abilityEnt)
+  local ability = Ability:new(ability_ent)
 
   self.combos:on_ability_used(player, caster, ability)
 end
 
 --- A non-player entity (necro-book, chen creep, etc) used an ability.
--- @tparam table payload
--- @tparam int payload.caster_entindex Caster (unit) entity index
--- @tparam string payload.abilityname Ability name
+--- @param payload dota2.events.dota_non_player_used_ability
 function M:OnNonPlayerUsedAbility(payload)
   self:d("OnNonPlayerUsedAbility", { payload = payload })
 end
 
 --- A channelled ability finished by either completing or being interrupted.
--- @tparam table payload
--- @tparam string payload.abilityname Ability name
--- @tparam int payload.interrupted `1` if ability was interrupted
+--- @param payload dota2.events.dota_ability_channel_finished
 function M:OnAbilityChannelFinished(payload)
   self:d("OnAbilityChannelFinished", { payload = payload })
 end
@@ -737,7 +700,8 @@ end
 function M:OnComboRestart(player, payload)
   self:d("OnComboRestart", { player = player:GetPlayerID(), payload = payload })
 
-  local options = { hardReset = payload.hardReset == 1 }
+  --- @type invk.combo.hero.TeardownOptions
+  local options = { hard_reset = payload.hardReset == 1 }
 
   self.combos:on_restart(player, options)
 end
@@ -782,7 +746,7 @@ function M:OnItemPickerQuery(player, payload)
 
   local response = { items = self.items_kv:search(payload.query) }
 
-  CustomEvents.send_player(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_RESPONSE, player, response)
+  custom_ev.send_player(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_RESPONSE, player, response)
 end
 
 -- }}}

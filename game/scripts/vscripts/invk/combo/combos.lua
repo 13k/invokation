@@ -364,10 +364,13 @@ function M:on_pre_finish(player)
 
   combo_comms.send_pre_finish(player, combo)
 
+  local this = self
+
   Timers:create({
     delay = combo.wait.duration,
-    callback = self.on_finish,
-    args = { self, player },
+    callback = function()
+      this:on_finish(player)
+    end,
   })
 end
 
