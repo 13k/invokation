@@ -193,13 +193,16 @@ end
 --- Called when an NPC has spawned somewhere in game, including heroes.
 --- @param payload dota2.events.npc_spawned
 function M:_on_npc_spawned(payload)
-  self:d("_on_npc_spawned", { payload = payload })
-
   -- if self._reentrant then
   --   return
   -- end
 
   local npc = EntIndexToHScript(payload.entindex) --[[@as CDOTA_BaseNPC?]]
+
+  self:d("_on_npc_spawned", {
+    payload = payload,
+    unit = npc and npc:GetUnitName() or "<unknown>",
+  })
 
   if npc ~= nil and npc:IsRealHero() and not self._first_spawned then
     self._first_spawned = true

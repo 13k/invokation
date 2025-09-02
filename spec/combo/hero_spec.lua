@@ -267,50 +267,6 @@ describe("invk.combo.hero", function()
         mocks:reset("PlayerResource", "ReplaceHeroWithNoTransfer")
       end)
 
-      it("removes all hero's items", function()
-        local hero = F.dota_hero_invoker(nil, { items = { "item_shivas_guard", "item_refresher" } })
-        local player = F.dota_player({ hero = hero })
-
-        combo_hero.teardown(player, { hard_reset = true })
-
-        assert.same({}, hero.inventory)
-      end)
-
-      it("resets hero abilities", function()
-        local abilities = {
-          [AbilityName.QUAS] = 7,
-          [AbilityName.WEX] = 4,
-          [AbilityName.EXORT] = 6,
-          [AbilityName.COLD_SNAP] = 1,
-          [AbilityName.SUN_STRIKE] = 1,
-          [AbilityName.TALENT_L10_RIGHT] = 1,
-          [AbilityName.TALENT_L10_LEFT] = 0,
-          [AbilityName.TALENT_L15_RIGHT] = 1,
-          [AbilityName.TALENT_L15_LEFT] = 0,
-          [AbilityName.TALENT_L20_RIGHT] = 1,
-          [AbilityName.TALENT_L20_LEFT] = 0,
-          [AbilityName.TALENT_L25_RIGHT] = 1,
-          [AbilityName.TALENT_L25_LEFT] = 0,
-        }
-
-        local hero = F.dota_hero_invoker(nil, { abilities = abilities })
-        local player = F.dota_player({ hero = hero })
-
-        combo_hero.teardown(player, { hard_reset = true })
-
-        for _, name in ipairs(INVOKER.ORB_ABILITIES) do
-          assert.equal(0, dota2_h.require_ability(hero, name):GetLevel())
-        end
-
-        for _, name in ipairs(INVOKER.TALENT_ABILITIES) do
-          assert.equal(0, dota2_h.require_ability(hero, name):GetLevel())
-        end
-
-        assert.equal(1, dota2_h.require_ability(hero, AbilityName.COLD_SNAP):GetLevel())
-        assert.equal(1, dota2_h.require_ability(hero, AbilityName.SUN_STRIKE):GetLevel())
-        assert.equal(1, hero:GetAbilityPoints())
-      end)
-
       it("replaces hero with a new one", function()
         local hero = F.dota_hero_invoker()
         local player = F.dota_player({ player_id = 31, hero = hero })

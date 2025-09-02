@@ -47,12 +47,6 @@ function M.teardown(base_player, options)
   end
 
   if opts.hard_reset then
-    local invoker = Invoker:new(player.hero)
-
-    unit:remove_items()
-    -- Orbs reset must come before hero replacement
-    invoker:reset_abilities()
-    unit:set_ability_points(1)
     player:replace_hero(player.hero:GetUnitName())
   else
     unit:purge()

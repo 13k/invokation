@@ -37,12 +37,12 @@ function M:replace_hero(hero_name, options)
 
   GameRules:SetSpeechUseSpawnInsteadOfRespawnConcept(true)
 
-  local hero = PlayerResource:ReplaceHeroWithNoTransfer(self.id, hero_name, gold, xp) --[[@as CDOTA_BaseNPC_Hero]]
+  PlayerResource:ReplaceHeroWithNoTransfer(self.id, hero_name, gold, xp)
 
   GameRules:SetSpeechUseSpawnInsteadOfRespawnConcept(false)
 
   self.hero:RemoveSelf()
-  self.hero = hero
+  self.hero = self.entity:GetAssignedHero()
 
   return self.hero
 end
