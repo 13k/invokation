@@ -1,8 +1,8 @@
 local class = require("middleclass")
 
 local COMMANDS = require("invk.const.commands")
-local CUSTOM_EVENTS = require("invk.const.custom_events")
 local Combos = require("invk.combo.combos")
+local CustomEvents = require("invk.game_mode.custom_events")
 local Env = require("invk.game_mode.env")
 local GameEvents = require("invk.game_mode.game_events")
 local INVOKER = require("invk.const.invoker")
@@ -15,7 +15,6 @@ local NetTable = require("invk.dota2.net_table")
 local PRECACHE = require("invk.const.precache")
 local S = require("invk.const.settings")
 local Timers = require("invk.dota2.timers")
-local custom_ev = require("invk.dota2.custom_events")
 local func = require("invk.lang.function")
 local game_mode = require("invk.game_mode.game_mode")
 local game_rules = require("invk.game_mode.game_rules")
@@ -32,10 +31,11 @@ local DEFAULT_ENV = Env.is_dev_mode() and Env.DEVELOPMENT or Env.PRODUCTION
 --- @field players { [PlayerID]: CDOTAPlayerController? }
 --- @field items_kv invk.dota2.kv.ItemsKeyValues
 --- @field net_tables { [invk.net_table.Name]: invk.dota2.NetTable }
+--- @field game_mode CDOTABaseGameMode
 --- @field game_events invk.game_mode.GameEvents
+--- @field custom_events invk.game_mode.CustomEvents
 --- @field combos invk.combo.Combos
 --- @field logger invk.Logger
---- @field private game_mode CDOTABaseGameMode
 --- @field private _reentrant boolean
 local M = class("invk.GameMode")
 
@@ -85,6 +85,7 @@ function M:initialize(options)
   end)
 
   self.game_events = GameEvents:new(self, { logger = self.logger })
+  self.custom_events = CustomEvents:new(self, { logger = self.logger })
 
   self.combos = Combos:new(self.net_tables[NET_TABLES.Name.MAIN], { logger = self.logger })
 end
@@ -92,6 +93,8 @@ end
 --- @param fn_name string
 --- @return fun(...: any): any...
 function M:fn_handler(fn_name)
+  assertf(type(self[fn_name]) == "function", "%s.%s is not a function", self.class.name, fn_name)
+
   if self.env == Env.DEVELOPMENT then
     return func.lookupbyname(self, fn_name)
   end
@@ -119,7 +122,7 @@ function M:activate()
   self:setup_game_mode()
 
   self.game_events:register()
-  self:register_custom_events()
+  self.custom_events:register()
 
   self:register_commands()
   self:register_convars()
@@ -139,87 +142,12 @@ function M:post_load_precache()
   self:d("  (precache) post-load")
 end
 
---- net_tables {{{
-
-function M:setup_net_tables()
-  self:d("  (net_tables) setup")
-
-  -- main/hero_data
-  do
-    local net_table = self.net_tables[NET_TABLES.Name.MAIN]
-
-    net_table:set(net_table.keys.HERO_DATA, INVOKER:serialize())
-  end
-
-  -- hero/key_values
-  do
-    local net_table = self.net_tables[NET_TABLES.Name.HERO]
-
-    net_table:set(net_table.keys.KEY_VALUES, INVOKER.KEY_VALUES.data)
-  end
-
-  -- abilities/key_values
-  do
-    local net_table = self.net_tables[NET_TABLES.Name.ABILITIES]
-
-    net_table:set(net_table.keys.KEY_VALUES, INVOKER.KEY_VALUES:abilities_data())
-  end
+--- @param user_id integer
+--- @param player CDOTAPlayerController
+function M:add_player_user(user_id, player)
+  self.users[user_id] = player
+  self.players[player:GetPlayerID()] = player
 end
-
---- }}}
---- game_rules {{{
-
-function M:setup_game_rules()
-  self:d("  (GameRules) setup")
-
-  game_rules.setup(self.env)
-end
-
---- }}}
---- game_mode {{{
-
-function M:setup_game_mode()
-  self:d("  (GameMode) setup")
-
-  self.game_mode = game_mode.setup()
-end
-
---- }}}
---- events {{{
-
---- @param event string
---- @param method_name string
---- @return CustomGameEventListenerID
-function M:subscribe_to_custom_event(event, method_name)
-  return custom_ev.subscribe(event, self:method_handler(method_name))
-end
-
-function M:register_custom_events()
-  self:d("  (custom_events) register listeners")
-
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_PLAYER_QUIT_REQUEST, "OnPlayerQuitRequest")
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "OnCombosReload")
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBO_START, "OnComboStart")
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBO_STOP, "OnComboStop")
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_COMBO_RESTART, "OnComboRestart")
-  self:subscribe_to_custom_event(
-    CUSTOM_EVENTS.EVENT_FREESTYLE_HERO_LEVEL_UP,
-    "OnFreestyleHeroLevelUp"
-  )
-
-  self:subscribe_to_custom_event(
-    CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_START,
-    "OnCombatLogCaptureStart"
-  )
-
-  self:subscribe_to_custom_event(
-    CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_STOP,
-    "OnCombatLogCaptureStop"
-  )
-  self:subscribe_to_custom_event(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_REQUEST, "OnItemPickerQuery")
-end
-
--- events.game {{{
 
 local WARNF_MISSING_TEAM_COLOR =
   "Attempted to set custom player color for player %d and team %d, but the team color is not configured."
@@ -243,109 +171,50 @@ function M:set_team_colors()
   end
 end
 
---- @param user_id integer
---- @param player CDOTAPlayerController
-function M:add_player_user(user_id, player)
-  self.users[user_id] = player
-  self.players[player:GetPlayerID()] = player
+--- net_tables {{{
+
+function M:setup_net_tables()
+  self:d("  (net_tables) setup")
+
+  -- main/hero_data
+  do
+    local nt = self.net_tables[NET_TABLES.Name.MAIN]
+
+    nt:set(nt.keys.HERO_DATA, INVOKER:serialize())
+  end
+
+  -- hero/key_values
+  do
+    local nt = self.net_tables[NET_TABLES.Name.HERO]
+
+    nt:set(nt.keys.KEY_VALUES, INVOKER.KEY_VALUES.data)
+  end
+
+  -- abilities/key_values
+  do
+    local nt = self.net_tables[NET_TABLES.Name.ABILITIES]
+
+    nt:set(nt.keys.KEY_VALUES, INVOKER.KEY_VALUES:abilities_data())
+  end
 end
 
--- }}}
--- events.custom {{{
+--- }}}
+--- game_rules {{{
 
---- Handles player quit request events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.PlayerQuitRequest
-function M:OnPlayerQuitRequest(player, payload)
-  self:d("OnPlayerQuitRequest", { player = player:GetPlayerID(), payload = payload })
+function M:setup_game_rules()
+  self:d("  (GameRules) setup")
 
-  SendToServerConsole("disconnect")
+  game_rules.setup(self.env)
 end
 
---- Handles combos reload events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.CombosReloadPayload
-function M:OnCombosReload(player, payload)
-  self:d("OnCombosReload", { player = player:GetPlayerID(), payload = payload })
-  self.combos:load()
+--- }}}
+--- game_mode {{{
+
+function M:setup_game_mode()
+  self:d("  (GameMode) setup")
+
+  self.game_mode = game_mode.setup()
 end
-
---- Handles combo start events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.ComboStartPayload
-function M:OnComboStart(player, payload)
-  self:d("OnComboStart", { player = player:GetPlayerID(), payload = payload })
-
-  local combo = self.combos:create(payload.id)
-
-  self.combos:on_start(player, combo)
-end
-
---- Handles combo stop events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.ComboStopPayload
-function M:OnComboStop(player, payload)
-  self:d("OnComboStop", { player = player:GetPlayerID(), payload = payload })
-
-  self.combos:on_stop(player)
-end
-
---- Handles combo restart events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.ComboRestartPayload
-function M:OnComboRestart(player, payload)
-  self:d("OnComboRestart", { player = player:GetPlayerID(), payload = payload })
-
-  --- @type invk.combo.hero.TeardownOptions
-  local options = { hard_reset = payload.hardReset == 1 }
-
-  self.combos:on_restart(player, options)
-end
-
---- Handles freestyle hero level up events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.FreestyleHeroLevelUpPayload
-function M:OnFreestyleHeroLevelUp(player, payload)
-  self:d("OnFreestyleHeroLevelUp", { player = player:GetPlayerID(), payload = payload })
-
-  local options = {
-    level = payload.level,
-    max_level = payload.maxLevel == 1,
-  }
-
-  self.combos:freestyle_hero_level_up(player, options)
-end
-
---- Handles combat log capture start events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.CombatLogCaptureStartPayload
-function M:OnCombatLogCaptureStart(player, payload)
-  self:d("OnCombatLogCaptureStart", { player = player:GetPlayerID(), payload = payload })
-
-  self.combos:start_capturing_abilities(player)
-end
-
---- Handles combat log capture stop events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.CombatLogCaptureStopPayload
-function M:OnCombatLogCaptureStop(player, payload)
-  self:d("OnCombatLogCaptureStop", { player = player:GetPlayerID(), payload = payload })
-
-  self.combos:stop_capturing_abilities(player)
-end
-
---- Handles item picker query events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.ItemPickerQueryPayload
-function M:OnItemPickerQuery(player, payload)
-  self:d("OnItemPickerQuery", { player = player:GetPlayerID(), payload = payload })
-
-  local response = { items = self.items_kv:search(payload.query) }
-
-  custom_ev.send_player(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_RESPONSE, player, response)
-end
-
--- }}}
 
 --- }}}
 --- commands {{{

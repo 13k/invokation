@@ -39,30 +39,30 @@ end
 function M:register()
   self:d("register listeners")
 
-  self:listen_to_game_event("dota_item_purchased", "_on_dota_item_purchased")
-  self:listen_to_game_event("dota_player_used_ability", "_on_dota_player_used_ability")
-  self:listen_to_game_event("entity_hurt", "_on_entity_hurt")
-  self:listen_to_game_event("game_rules_state_change", "_on_game_rules_state_change")
-  self:listen_to_game_event("npc_spawned", "_on_npc_spawned")
-  self:listen_to_game_event("player_connect_full", "_on_player_connect_full")
+  self:listen("dota_item_purchased", "_on_dota_item_purchased")
+  self:listen("dota_player_used_ability", "_on_dota_player_used_ability")
+  self:listen("entity_hurt", "_on_entity_hurt")
+  self:listen("game_rules_state_change", "_on_game_rules_state_change")
+  self:listen("npc_spawned", "_on_npc_spawned")
+  self:listen("player_connect_full", "_on_player_connect_full")
 end
 
---- @param name string
+--- @param fn_name string
 --- @return fun(...: any): any...
-function M:fn_handler(name)
-  assertf(type(self[name]) == "function", "%s.%s is not a function", self.class.name, name)
+function M:fn_handler(fn_name)
+  assertf(type(self[fn_name]) == "function", "%s.%s is not a function", self.class.name, fn_name)
 
   if self.game.env == Env.DEVELOPMENT then
-    return func.lookupbyname(self, name)
+    return func.lookupbyname(self, fn_name)
   end
 
-  return self[name]
+  return self[fn_name]
 end
 
 --- @param event string
 --- @param method_name string
 --- @return EventListenerID
-function M:listen_to_game_event(event, method_name)
+function M:listen(event, method_name)
   return ListenToGameEvent(event, self:fn_handler(method_name), self)
 end
 

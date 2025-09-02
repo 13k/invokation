@@ -138,7 +138,7 @@ M.EVENT_ITEM_PICKER_QUERY_REQUEST = "invk_item_picker_query_request"
 
 --- Payload for event `EVENT_ITEM_PICKER_QUERY_RESPONSE`
 --- @class invk.custom_events.ItemPickerQueryResponsePayload
---- @field items table<string, table>[] # Items found
+--- @field items invk.dota2.KeyValues # Items found
 
 --- Item picker query response
 M.EVENT_ITEM_PICKER_QUERY_RESPONSE = "invk_item_picker_query_response"
