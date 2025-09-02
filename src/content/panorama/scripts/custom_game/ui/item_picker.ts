@@ -1,12 +1,7 @@
 import type { ItemPickerQueryResponse } from "@invokation/panorama-lib/custom_events";
 import { CustomGameEvent } from "@invokation/panorama-lib/custom_events";
 import type { Action } from "@invokation/panorama-lib/sequence";
-import {
-  AddClassAction,
-  ParallelSequence,
-  RemoveClassAction,
-  Sequence,
-} from "@invokation/panorama-lib/sequence";
+import { AddClassAction, ParallelSequence, RemoveClassAction, Sequence } from "@invokation/panorama-lib/sequence";
 
 import type { Elements, Outputs } from "../component";
 import { Component } from "../component";
@@ -80,11 +75,11 @@ class ItemPicker extends Component<ItemPickerElements, never, ItemPickerOutputs>
       const shopItem = this.shopItems.get(itemName);
 
       if (shopItem == null) {
-        throw new Error(`Could not find shop item panel for item ${itemName}`);
+        this.warn(`Could not find shop item panel for item ${itemName}`);
       }
 
       return shopItem;
-    });
+    }).filter((panel) => panel != null);
 
     this.highlight(shopItems);
   }
