@@ -20,11 +20,6 @@ function M:initialize(name, data)
 end
 
 --- Checks if the item matches the given search query.
----
---- It searches for matches in these entries:
----
---- * `ItemShopTags`
----
 --- @param query string # Query string
 --- @return boolean
 function M:matches_query(query)

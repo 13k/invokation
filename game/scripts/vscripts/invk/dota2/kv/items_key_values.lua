@@ -5,18 +5,7 @@ local KeyValues = require("invk.dota2.kv.key_values")
 local tbl = require("invk.lang.table")
 
 local KV_PATH = "scripts/npc/items.txt"
-local ITEM_KEY_PATT = "^item_"
-
---- @param value invk.dota2.kv.Value
---- @param key string
---- @return invk.dota2.kv.ItemKeyValues?
-local function parse_item_entry(value, key)
-  if key:match(ITEM_KEY_PATT) and type(value) == "table" then
-    return ItemKeyValues:new(key, value)
-  else
-    return nil
-  end
-end
+local ITEM_KEY_PREFIX = "item_"
 
 --- Collection of [invk.dota2.kv.ItemKeyValues].
 --- @class invk.dota2.kv.ItemsKeyValues : middleclass.Class
@@ -34,20 +23,33 @@ end
 --- Constructor.
 --- @param data invk.dota2.KeyValues # KeyValues data
 function M:initialize(data)
-  self.data = tbl.map(data, parse_item_entry)
+  self.data = tbl.map(data, M.parse_item_entry)
+end
+
+--- @private
+--- @param value invk.dota2.kv.Value
+--- @param key string
+--- @return invk.dota2.kv.ItemKeyValues?
+function M.parse_item_entry(value, key)
+  if key:sub(1, #ITEM_KEY_PREFIX) == ITEM_KEY_PREFIX and type(value) == "table" then
+    return ItemKeyValues:new(key, value)
+  end
+
+  return nil
 end
 
 --- Searches for item KeyValues matching the given query.
 --- @param query string # Query string
---- @return invk.dota2.KeyValues # A table of found entries
+--- @return invk.dota2.KeyValues # Table of found items
 function M:search(query)
-  return tbl.map(self.data, function(item)
-    if item:MatchesQuery(query) then
-      return item.data
-    else
-      return nil
+  return tbl.map(
+    self.data,
+    --- @param item invk.dota2.kv.ItemKeyValues
+    --- @return invk.dota2.KeyValues?
+    function(item)
+      return item:matches_query(query) and item.data or nil
     end
-  end)
+  )
 end
 
 return M
