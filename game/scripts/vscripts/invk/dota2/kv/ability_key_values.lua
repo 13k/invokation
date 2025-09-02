@@ -3,7 +3,7 @@ local class = require("middleclass")
 local KeyValues = require("invk.dota2.kv.key_values")
 
 --- AbilityKeyValues class.
---- @class invk.dota2.kv.AbilityKeyValues : middleclass.Class, invk.dota2.kv.KeyValues
+--- @class invk.dota2.kv.AbilityKeyValues : invk.dota2.kv.KeyValues
 --- @field name string
 --- @field kv invk.dota2.KeyValues
 local M = class("invk.dota2.kv.AbilityKeyValues", KeyValues)

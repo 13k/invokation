@@ -118,9 +118,7 @@ function M:get_strings(key, sep)
 
   local strings = str.split(s, sep)
 
-  strings = tbl.map(strings, str.trim)
-
-  return strings
+  return tbl.lmap(strings, str.trim)
 end
 
 return M

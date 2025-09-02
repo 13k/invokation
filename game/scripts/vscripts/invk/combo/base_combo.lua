@@ -106,9 +106,14 @@ end
 
 --- @return integer[]
 function M:next_steps_ids()
-  return tbl.map(self:next_steps(), function(step)
-    return step.id
-  end)
+  return tbl.lmap(
+    self:next_steps(),
+    --- @param step invk.combo.ComboStep
+    --- @return integer
+    function(step)
+      return step.id
+    end
+  )
 end
 
 --- Progresses the combo with the given ability if possible.

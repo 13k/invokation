@@ -55,7 +55,7 @@ M.EVENTS = {
 local function step_events(steps, step)
   local next_ids = step.next or {}
 
-  return tbl.map(next_ids, function(next_id)
+  return tbl.lmap(next_ids, function(next_id)
     local next_step = assertf(steps[next_id], "invalid next_id %d", next_id)
 
     --- @type invk.combo.Event
@@ -122,7 +122,7 @@ function M:initialize(id, specs, options)
   self.id = id
   self.logger = opts.logger
   self.clock = opts.clock
-  self.sequence = tbl.map(specs, func.ctor(ComboStep))
+  self.sequence = tbl.lmap(specs, func.ctor(ComboStep))
 
   local first_step = assert(self.sequence[1], "received empty sequence")
 

@@ -242,18 +242,17 @@ function M.filter(t, filter)
   end)
 end
 
---- Map table entries with the given map function.
---- @generic K1, V1, K2, V2
---- @param t { [K1]: V1 }
---- @param map (fun(value: V1, key: K1): V2?)
---- @return { [K2]: V2 }
---- @overload fun(t: V1[], map: (fun(value: V1, index: integer): V2?)): V2[]
+--- Map table values with the given mapping function.
+--- @generic K, V1, V2
+--- @param t { [K]: V1 }
+--- @param map (fun(value: V1, key: K): V2?)
+--- @return { [K]: V2 }
 function M.map(t, map)
   if t == nil then
     return {}
   end
 
-  --- @type { [K2]: V2 }
+  --- @type { [K]: V2 }
   local res = {}
 
   for k1, v1 in pairs(t) do
@@ -268,14 +267,38 @@ function M.map(t, map)
   return res
 end
 
+--- Map list values with the given mapping function.
+---
+--- Alias of [map].
+--- @generic V1, V2
+--- @param t V1[]
+--- @param map (fun(value: V1, index: integer): V2?)
+--- @return V2[]
+function M.lmap(t, map)
+  return M.map(t, map)
+end
+
+--- Transform table entries with the given mapping function.
+---
 --- Alias of [map].
 --- @generic K1, V1, K2, V2
 --- @param t { [K1]: V1 }
---- @param transform (fun(value: V1, key: K1): K2?, V2?)
+--- @param map (fun(value: V1, key: K1): K2?, V2?)
 --- @return { [K2]: V2 }
---- @overload fun(t: V1[], map: (fun(value: V1, index: integer): K2?, V2?)): { [K2]: V2 }
-function M.transform(t, transform)
-  return M.map(t, transform)
+function M.transform(t, map)
+  return M.map(t, map)
+end
+
+--- Transform a list of values into a table of mapped keys and values using the given mapping
+--- function.
+---
+--- Alias of [map].
+--- @generic K, V1, V2
+--- @param t V1[]
+--- @param map (fun(value: V1, index: integer): K?, V2?)
+--- @return { [K]: V2 }
+function M.ltransform(t, map)
+  return M.map(t, map)
 end
 
 --- Reduce table values with the given reduce function.

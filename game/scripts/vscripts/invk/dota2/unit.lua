@@ -206,7 +206,7 @@ function M:add_items_by_name(items, options)
     items = tbl.diff(items, self:item_names())
   end
 
-  return tbl.map(items, function(name)
+  return tbl.lmap(items, function(name)
     return self.entity:AddItemByName(name)
   end)
 end

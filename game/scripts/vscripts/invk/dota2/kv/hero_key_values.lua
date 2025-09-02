@@ -9,34 +9,10 @@ local KV_HEROES_PATH = "scripts/npc/npc_heroes.txt"
 local KV_ABILITIES_PATH_PATT = "scripts/npc/heroes/%s.txt"
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
---- @param value invk.dota2.kv.Value
---- @param key string
---- @return integer?, string?
-local function parse_ability_entry(value, key)
-  if type(value) ~= "string" or value == "" then
-    return nil
-  end
-
-  local m_ability_id = key:match(ABILITY_KEY_PATT)
-
-  if m_ability_id == nil then
-    return nil
-  end
-
-  local ability_id = tonumber(m_ability_id)
-
-  if ability_id == nil then
-    return nil
-  end
-
-  --- @cast ability_id integer
-  return ability_id, value
-end
-
 --- HeroKeyValues class.
---- @class invk.dota2.kv.HeroKeyValues : middleclass.Class, invk.dota2.kv.KeyValues
+--- @class invk.dota2.kv.HeroKeyValues : invk.dota2.kv.KeyValues
 --- @field name string
---- @field abilities { [invk.dota2.invoker.AbilityName]: invk.dota2.kv.AbilityKeyValues }
+--- @field abilities { [string]: invk.dota2.kv.AbilityKeyValues }
 --- @field talents invk.dota2.talents.Map
 --- @field load fun(class: invk.dota2.kv.HeroKeyValues, name: string): invk.dota2.kv.HeroKeyValues
 local M = class("invk.dota2.kv.HeroKeyValues", KeyValues)
@@ -63,8 +39,8 @@ function M:initialize(name, hero, abilities)
   self.name = name
   self.abilities = {}
 
-  --- @type invk.dota2.invoker.AbilityName[]
-  local abilities_names = tbl.map(self.data, parse_ability_entry)
+  --- @type { [integer]: string }
+  local abilities_names = tbl.transform(self.data, M.parse_ability_entry)
   local talents_start = self:require_integer("AbilityTalentStart")
   local regular_abilities = tbl.slice(abilities_names, 1, talents_start - 1)
   local talent_abilities = tbl.slice(abilities_names, talents_start)
@@ -78,11 +54,40 @@ function M:initialize(name, hero, abilities)
   self.talents = talents.names_array_to_enums_table(talent_abilities)
 end
 
+--- @private
+--- @param value invk.dota2.kv.Value
+--- @param key string
+--- @return integer?, string?
+function M.parse_ability_entry(value, key)
+  if type(value) ~= "string" or value == "" then
+    return nil, nil
+  end
+
+  local match_id = key:match(ABILITY_KEY_PATT)
+
+  if match_id == nil then
+    return nil, nil
+  end
+
+  local id = tonumber(match_id) --[[@as integer?]]
+
+  if id == nil then
+    return nil, nil
+  end
+
+  return id, value
+end
+
 --- @return invk.dota2.KeyValues
 function M:abilities_data()
-  return tbl.map(self.abilities, function(kv)
-    return kv.data
-  end)
+  return tbl.map(
+    self.abilities,
+    --- @param kv invk.dota2.kv.AbilityKeyValues
+    --- @return invk.dota2.KeyValues
+    function(kv)
+      return kv.data
+    end
+  )
 end
 
 return M

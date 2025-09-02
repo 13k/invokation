@@ -88,7 +88,7 @@ function M.names_array_to_enums_table(names)
     #LIST
   )
 
-  return tbl.transform(names, function(name, i)
+  return tbl.ltransform(names, function(name, i)
     return LIST[i], name
   end)
 end

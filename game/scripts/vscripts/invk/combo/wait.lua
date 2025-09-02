@@ -45,7 +45,7 @@ function M.ability_wait(ability)
     return wait
   end
 
-  local special_waits = tbl.map(special_keys, function(special_key)
+  local special_waits = tbl.lmap(special_keys, function(special_key)
     return ability:get_special_value_for(special_key) or 0
   end)
 
