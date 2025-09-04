@@ -1,40 +1,40 @@
-local rand = require("invokation.lang.random")
+local Mock = require("support.mock")
 
-describe("function", function()
+local rand = require("invk.lang.random")
+
+describe("invk.lang.random", function()
   describe(".seed", function()
-    local spyMathRandomSeed
+    local mocks = Mock()
 
     before_each(function()
-      spyMathRandomSeed = spy.on(math, "randomseed")
+      mocks:spy("math", math, "randomseed")
     end)
 
     after_each(function()
-      spyMathRandomSeed:revert()
+      mocks:revert("math", "randomseed")
     end)
 
     it("seeds `math`s random with the given value", function()
       rand.seed(13)
 
-      assert.spy(spyMathRandomSeed).was.called_with(13)
+      mocks:assert("math", "randomseed").called_with(13)
     end)
 
     describe("with default value", function()
-      local stubTime
-
       before_each(function()
         -- selene: allow(global_usage)
-        stubTime = stub.new(_G, "Time", 31)
+        mocks:stub("_G", _G, "Time", 31)
       end)
 
       after_each(function()
-        stubTime:revert()
+        mocks:revert("_G", "Time")
       end)
 
       it("seeds `math`s random with a default value", function()
         rand.seed()
 
-        assert.stub(stubTime).was_called(1)
-        assert.spy(spyMathRandomSeed).was.called_with(31)
+        mocks:assert("_G", "Time").called(1)
+        mocks:assert("math", "randomseed").called_with(31)
       end)
     end)
   end)

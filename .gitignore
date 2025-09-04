@@ -1,17 +1,20 @@
 # project
+
 /.env*
 /tmp/*
 !/tmp/.keep
+
 # lua
-/.lua-version
-/.luarocks
-/lua
-/lua_modules
-/luarocks
+
+/.lux
+
 # javascript/typescript
-/.node-version
+
 /node_modules
+*.tsbuildinfo
+
 # game
+
 /content/panorama/scripts/*
 /game/*
 !/game/resource

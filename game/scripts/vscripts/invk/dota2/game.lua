@@ -1,0 +1,1 @@
+--- @alias invk.dota2.ClockFn (fun(): number)

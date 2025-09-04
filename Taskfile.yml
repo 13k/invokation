@@ -10,6 +10,7 @@ vars:
   TASKS_SRC_PATH: "src/tasks"
   TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/main.ts"
   TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
+  LX_ARGS: "--lua-version jit"
 
 tasks:
   default:
@@ -82,7 +83,7 @@ tasks:
 
   test:vscripts:
     desc: Test vscripts
-    cmd: luarocks test
+    cmd: lx {{ .LX_ARGS }} test -- {{ .CLI_ARGS }}
 
   format:panorama:
     desc: Format all panorama files

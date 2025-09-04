@@ -21,13 +21,11 @@
         "useSimplifiedLogicExpression": "warn"
       },
       "correctness": {
-        "noConstantMathMinMaxClamp": "warn",
         "noNewSymbol": "error",
         "noUndeclaredVariables": "error",
         "noUnusedImports": "warn",
         "noUnusedPrivateClassMembers": "warn",
-        "noUnusedVariables": "warn",
-        "useArrayLiterals": "warn"
+        "noUnusedVariables": "warn"
       },
       "style": {
         "noDefaultExport": "warn",

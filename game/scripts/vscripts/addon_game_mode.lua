@@ -1,13 +1,14 @@
-require("invokation.lang.stub")
-require("invokation.dota2.classes")
+require("invk.lang.stub")
+require("invk.lang.global")
+require("compat53.init")
 
-local GameMode = require("invokation.GameMode")
+local GameMode = require("invk.game_mode")
 
 function Precache(context)
-  GameMode.Precache(context)
+  GameMode.precache(context)
 end
 
 function Activate()
-  GameRules.Invokation = GameMode()
-  GameRules.Invokation:Activate()
+  GameRules.Invokation = GameMode:new()
+  GameRules.Invokation:activate()
 end

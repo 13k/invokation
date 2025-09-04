@@ -7,13 +7,13 @@
     "lodash-es": "^4.17.21"
   },
   "devDependencies": {
-    "@moddota/panorama-types": "^1.33.0",
-    "@tsconfig/bun": "^1.0.6",
+    "@moddota/panorama-types": "^1.38.1",
+    "@tsconfig/bun": "^1.0.8",
     "@tsconfig/strictest": "^2.0.5",
     "@types/core-js": "^2.5.8",
     "@types/lodash-es": "^4.17.12"
   },
   "peerDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.9.2"
   }
 }

@@ -5,9 +5,9 @@ specification for commit messages.
 
 ## Requirements
 
-- [lua](https://lua.org) 5.1 (same version as Dota 2)
-- [luarocks](https://luarocks.org)
-- [node](https://nodejs.org) LTS + npm
+- [luajit](https://luajit.org) 2.1 (same version as Dota 2)
+- [lux](https://nvim-neorocks.github.io)
+- [bun](https://bun.com)
 - [task](https://taskfile.dev)
 - [git-cliff](https://git-cliff.org) (releases only)
 
@@ -22,52 +22,8 @@ DOTA2_PATH="/path/to/dota2"
 - Install node packages:
 
 ```shell
-npm install
+bun install
 ```
-
-- Initialize luarocks:
-
-```shell
-luarocks init --local
-```
-
-- Add `<project_dir>/lua_modules/bin` to the `PATH`.
-
----
-
-### A note about rocks tree isolation
-
-Custom rocks trees defined with `rocks_trees` in a LuaRocks user config
-(usually at `$HOME/.config/luarocks/config.lua` or `$HOME/.luarocks/config.lua`)
-will get added to the project's `rocks_trees` config too
-(this is a LuaRocks specific behavior).
-
-To truly isolate the project tree from everything else, I recommend appending
-the following to `<PROJECT_ROOT>/.luarocks/config-5.1.lua`
-(after running `luarocks init`):
-
-```lua
-rocks_trees = {}
-```
-
-Then verify LuaRocks is using only the projects rocks tree by running:
-
-```shell
-luarocks config rocks_trees
-```
-
-It should print something like this:
-
-```lua
-{
-   {
-      name = "project",
-      root = "<PROJECT_ROOT>/lua_modules"
-   }
-}
-```
-
----
 
 ## Testing
 
@@ -99,8 +55,8 @@ task build
 
   - Update version strings
 
-    - `game/scripts/vscripts/invokation/const/metadata.lua`
-    - `src/content/panorama/scripts/lib/constants.ts`
+    - `game/scripts/vscripts/invk/const/metadata.lua`
+    - `src/content/panorama/scripts/lib/meta.ts`
 
   - Commit changes with `chore(release)` label
 

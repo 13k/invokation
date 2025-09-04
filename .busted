@@ -15,10 +15,11 @@ return {
   default = {
     ROOT = { "./spec" },
     recursive = true,
+    verbose = true,
+    output = "htest",
   },
   _all = {
     verbose = true,
-    coverage = true,
     helper = "./spec/helper.lua",
     lpath = lpath,
   },

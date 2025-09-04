@@ -1,9 +1,32 @@
 ---
 name: invokation
+base: lua53
 globals:
+  # string.format(fmt: string, ...)
+  F:
+    args:
+      - type: string
+      - type: ...
+        required: false
+  # tostring(value: any)
+  S:
+    args:
+      - type: any
+  # assertf(expr: any, fmt: string, ...)
+  assertf:
+    args:
+      - type: any
+      - type: string
+      - type: ...
+        required: false
+  # errorf(fmt: string, ...)
+  errorf:
+    args:
+      - type: string
+      - type: ...
+        required: false
   GameRules.Invokation:
     property: override-fields
     any: true
-  GameMode:
-    property: new-fields
+  EntityFramework:
     any: true

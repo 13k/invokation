@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
+  "runtime": {
+    "pathStrict": true,
+    "special": {
+      "assertf": "assert",
+      "errorf": "error"
+    },
+    "requirePattern": [
+      "?.lua",
+      "?/init.lua"
+    ],
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "ignoreDir": [
+      ".busted",
+      ".lux",
+      "tmp"
+    ],
+    "workspaceRoots": [
+      "game/scripts/vscripts",
+      "spec"
+    ],
+    "library": [
+      ".luacats",
+      "game/scripts/vscripts/compat53",
+      "game/scripts/vscripts/fsm.lua",
+      "game/scripts/vscripts/inspect.lua",
+      "game/scripts/vscripts/middleclass.lua",
+      ".lux/jit/test_dependencies/jit/01a3c364614bddff7370223a5a9c4580f8e62d144384148444c518ec5367a59b-mediator_lua@1.1.2-0/src",
+      ".lux/jit/test_dependencies/jit/092886a00e3c7cb9cb944528116da6ce7d5e4a25b9d198735ac1b1307f77dca5-bit32@5.3.5-1/src",
+      ".lux/jit/test_dependencies/jit/287e827f4a088d41bba04af5f61a13614346c16fe8150eb7c4246e67d6fd163e-lua-term@0.8-1/src",
+      ".lux/jit/test_dependencies/jit/316ac0b30e04e86a253d64886f3b110bd0508267474e6b58a3b973bd6857dbf4-penlight@1.14.0-3/src",
+      ".lux/jit/test_dependencies/jit/455cd98d50c6191a9685cffcda4ce783efbb957934625e134c39f43bd5df6818-luassert@1.9.0-1/src",
+      ".lux/jit/test_dependencies/jit/47b12edcdc032232157ace97bddf34bddd17f6f458095885e62bbd602ad9e9ec-luasystem@0.6.3-1/src",
+      ".lux/jit/test_dependencies/jit/4e9592a499c9ced4f8ce366db9db7d9c0dd1424ea8d4c8c16c1550ea3a61a696-say@1.4.1-3/src",
+      ".lux/jit/test_dependencies/jit/672112d42de52914cd6daaac8a86cf906f80360bd81d6ad0a1df51224d74e9d4-busted-htest@1.0.0-2/src",
+      ".lux/jit/test_dependencies/jit/6ce29c2c535c40246c386c056f24689344cddb56ec397473931431e6b67694d2-say@1.4.1-3/src",
+      ".lux/jit/test_dependencies/jit/832fd9862ce671c0c9777855d4c8b19f9ad9c2679fb5466c3a183785a51b76b0-luafilesystem@1.8.0-1/src",
+      ".lux/jit/test_dependencies/jit/8a29d183b38f69620275ab4765d677ada24ff5f96f48d2018d0ee7bcd8ad057e-busted@2.2.0-1/src",
+      ".lux/jit/test_dependencies/jit/9a3c8a33388fd17cf44291697753b48efba841849e4a92dc37c4f7a4c6877c86-compat53@0.14.4-1/src",
+      ".lux/jit/test_dependencies/jit/a6c5176043cb3de56336b7de119443dbb3d9e024be1d50e06289ad4b4959a2da-lua_cliargs@3.0.2-1/src",
+      ".lux/jit/test_dependencies/jit/c82b26bea8099fcea79b4e243145c4cf2597abdde010248e02fcd273e490e1bb-penlight@1.14.0-3/src",
+      ".lux/jit/test_dependencies/jit/d792a2d7b67521e3af5c323f99f9c5b20625b649826613bdf93854482c22dd1b-moses@2.1.0-1/src",
+      ".lux/jit/test_dependencies/jit/e4f17b9e67313bbd5e90f425672fc8998dd0bfa43335f7c57ed2de7a799e07a6-dkjson@2.8-1/src"
+    ]
+  }
+}

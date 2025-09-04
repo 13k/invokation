@@ -1,3 +1,4 @@
+/game/scripts/vscripts/compat53/**
 /game/scripts/vscripts/fsm.lua
-/game/scripts/vscripts/moses.lua
-/game/scripts/vscripts/pl/**
+/game/scripts/vscripts/inspect.lua
+/game/scripts/vscripts/middleclass.lua

@@ -1,4 +1,3 @@
--- selene: allow(incorrect_standard_library_use)
 CustomGameEventManager = {}
 
 function CustomGameEventManager:RegisterListener(_event, _callback) end
