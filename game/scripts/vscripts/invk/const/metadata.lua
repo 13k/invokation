@@ -10,7 +10,7 @@ local M = {}
 M.package = "Invokation"
 
 --- Package version
-M.version = "0.5.3"
+M.version = "0.5.4"
 
 --- Package description
 M.description = {
