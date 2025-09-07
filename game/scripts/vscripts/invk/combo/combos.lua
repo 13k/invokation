@@ -104,6 +104,12 @@ function M:player_state(player)
   return self.state[id]
 end
 
+--- @param player CDOTAPlayerController
+--- @return boolean
+function M:has_active_combo(player)
+  return self:player_state(player).combo ~= nil
+end
+
 --- @private
 --- @param player CDOTAPlayerController
 --- @return invk.combo.BaseCombo

@@ -33,6 +33,8 @@ import type {
   ItemPickerQuery,
   ItemPickerQueryResponse,
   PlayerHeroInGame,
+  PlayerHeroFacetRequest,
+  PlayerHeroFacetResponse,
   PlayerQuitRequest,
 } from "./custom_events";
 
@@ -72,6 +74,8 @@ declare global {
 
   interface CustomGameEventDeclarations {
     [CustomGameEvent.PlayerHeroInGame]: PlayerHeroInGame;
+    [CustomGameEvent.PlayerHeroFacetRequest]: PlayerHeroFacetRequest;
+    [CustomGameEvent.PlayerHeroFacetResponse]: PlayerHeroFacetResponse;
     [CustomGameEvent.PlayerQuitRequest]: PlayerQuitRequest;
     [CustomGameEvent.CombosReload]: CombosReload;
     [CustomGameEvent.ComboStart]: ComboStart;

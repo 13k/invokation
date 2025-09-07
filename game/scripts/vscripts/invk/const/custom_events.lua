@@ -3,10 +3,25 @@
 local M = {}
 
 --- Payload for event `EVENT_PLAYER_HERO_IN_GAME`
---- @class invk.custom_events.PlayerHeroInGame
+--- @class invk.custom_events.PlayerHeroInGame : invk.game_mode.PlayerHero
 
 --- Player picked a hero
 M.EVENT_PLAYER_HERO_IN_GAME = "invk_player_hero_in_game"
+
+--- Payload for event `EVENT_PLAYER_HERO_FACET_REQUEST`
+--- @class invk.custom_events.PlayerHeroFacetRequest
+--- @field variant invk.dota2.invoker.FacetVariant
+
+--- Player selected a hero facet
+M.EVENT_PLAYER_HERO_FACET_REQUEST = "invk_player_hero_facet_request"
+
+--- Payload for event `EVENT_PLAYER_HERO_FACET_RESPONSE`
+--- @class invk.custom_events.PlayerHeroFacetResponse
+--- @field hero? invk.game_mode.PlayerHero
+--- @field error? string
+
+--- Response to event `EVENT_PLAYER_HERO_FACET_REQUEST`
+M.EVENT_PLAYER_HERO_FACET_RESPONSE = "invk_player_hero_facet_response"
 
 --- Payload for event `EVENT_PLAYER_QUIT_REQUEST`
 --- @class invk.custom_events.PlayerQuitRequest

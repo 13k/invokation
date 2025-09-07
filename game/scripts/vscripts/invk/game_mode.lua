@@ -24,11 +24,21 @@ local tbl = require("invk.lang.table")
 local LOGNAME = "invk"
 local DEFAULT_ENV = Env.is_dev_mode() and Env.DEVELOPMENT or Env.PRODUCTION
 
+--- @class invk.game_mode.PlayerState
+--- @field user_id EntityIndex
+--- @field entity CDOTAPlayerController
+--- @field hero? invk.game_mode.PlayerHero
+
+--- @class invk.game_mode.PlayerHero
+--- @field id integer
+--- @field name string
+--- @field facet invk.dota2.invoker.FacetId
+--- @field variant invk.dota2.invoker.FacetVariant
+
 --- Main class for the game.
 --- @class invk.GameMode : middleclass.Class, invk.log.Mixin
 --- @field env invk.Env
---- @field users { [integer]: CDOTAPlayerController? }
---- @field players { [PlayerID]: CDOTAPlayerController? }
+--- @field players { [PlayerID]: invk.game_mode.PlayerState? }
 --- @field items_kv invk.dota2.kv.ItemsKeyValues
 --- @field net_tables { [invk.net_table.Name]: invk.dota2.NetTable }
 --- @field game_mode CDOTABaseGameMode
@@ -72,7 +82,6 @@ function M:initialize(options)
   self._reentrant = false
 
   self.env = opts.env or DEFAULT_ENV
-  self.users = {}
   self.players = {}
 
   self.logger =
@@ -145,8 +154,39 @@ end
 --- @param user_id integer
 --- @param player CDOTAPlayerController
 function M:add_player_user(user_id, player)
-  self.users[user_id] = player
-  self.players[player:GetPlayerID()] = player
+  self.players[player:GetPlayerID()] = {
+    entity = player,
+    user_id = user_id,
+  }
+end
+
+--- @param hero CDOTA_BaseNPC_Hero
+--- @return invk.game_mode.PlayerHero?
+function M:update_player_hero(hero)
+  local player = hero:GetPlayerOwner()
+
+  if not player then
+    self:warnf("uniq %q doesn't have a player owner", hero:GetUnitName())
+    return
+  end
+
+  local state = self.players[player:GetPlayerID()]
+
+  if not state then
+    self:warnf("unknown player %d", player:GetPlayerID())
+    return nil
+  end
+
+  local facet_id = hero:GetHeroFacetID() --[[@as invk.dota2.invoker.FacetId]]
+
+  state.hero = {
+    id = hero:GetHeroID(),
+    name = hero:GetUnitName(),
+    facet = facet_id,
+    variant = INVOKER.FacetVariant.from_id(facet_id),
+  }
+
+  return state.hero
 end
 
 local WARNF_MISSING_TEAM_COLOR =

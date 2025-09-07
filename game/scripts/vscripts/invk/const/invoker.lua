@@ -13,6 +13,40 @@ local function skip_serialize(name)
   SKIP_SERIALIZATION[name] = true
 end
 
+local FACET_VARIANT_BASE = 317827579904
+
+--- @enum invk.dota2.invoker.FacetVariant
+local FacetVariant = {
+  -- invoker_quas_focus
+  Quas = FACET_VARIANT_BASE + 1,
+  -- invoker_wex_focus
+  Wex = FACET_VARIANT_BASE + 2,
+  -- invoker_exort_focus
+  Exort = FACET_VARIANT_BASE + 3,
+}
+
+--- @param id invk.dota2.invoker.FacetId
+--- @return invk.dota2.invoker.FacetVariant
+function FacetVariant.from_id(id)
+  return (id + FACET_VARIANT_BASE) --[[@as invk.dota2.invoker.FacetVariant]]
+end
+
+--- @enum invk.dota2.invoker.FacetId
+local FacetId = {
+  -- invoker_quas_focus
+  Quas = 1,
+  -- invoker_wex_focus
+  Wex = 2,
+  -- invoker_exort_focus
+  Exort = 3,
+}
+
+--- @param variant invk.dota2.invoker.FacetVariant
+--- @return invk.dota2.invoker.FacetId
+function FacetId.from_variant(variant)
+  return (variant - FACET_VARIANT_BASE) --[[@as invk.dota2.invoker.FacetId]]
+end
+
 --- Invoker constants.
 --- @class invk.const.invoker
 --- @field private __serialized invk.dota2.KeyValues?
@@ -47,6 +81,9 @@ end
   M.KEY_VALUES = hero_kv
 
   skip_serialize("KEY_VALUES")
+
+  M.FacetVariant = FacetVariant
+  M.FacetId = FacetId
 
   --- @class invk.dota2.invoker.AbilityNames
   --- @field TALENT_L10_RIGHT invk.dota2.invoker.AbilityName # Level 10 right talent ability name

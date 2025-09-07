@@ -4,21 +4,29 @@
 .TopBarRoot {
   flow-children: right;
   width: 100%;
-  height: 42px;
+  height: 64px;
+  margin-left: 100px;
 }
 
 .TopBar {
   flow-children: right;
   align: left top;
   margin-top: 13px;
+  margin-left: 16px;
+  padding: 4px;
+  padding-right: 8px;
+  background-color: #cccccc11;
+  border-radius: 8px;
 }
 
 .TopBarButton {
-  width: 30px;
-  height: 30px;
-  margin-left: 16px;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
   vertical-align: top;
   tooltip-position: bottom;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
   background-size: contain;
   opacity: 0.5;
   wash-color: #cdf;
@@ -32,16 +40,8 @@
 }
 
 #BtnQuit {
-  align: right top;
-  margin-top: 13px;
-  margin-right: 32px;
   background-image: controlsQuitIcon;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-}
-
-.Netgraph #BtnQuit {
-  margin-right: 200px;
+  background-size: 115%;
 }
 
 #BtnQuit:hover {
@@ -50,4 +50,22 @@
 
 #BtnQuit.Activated {
   sound: "ui.menu_quit";
+}
+
+#DropdownHeroFacet {
+	width: 24px;
+	height: 40px;
+  margin-top: 8px;
+  margin-left: 8px;
+	horizontal-align: center;
+	vertical-align: center;
+}
+
+#BtnDebug {
+  visibility: collapse;
+  background-image: url("s2r://panorama/images/topbar/bug_png.vtex");
+}
+
+.Development #BtnDebug {
+  visibility: visible;
 }

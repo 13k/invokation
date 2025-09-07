@@ -24,6 +24,29 @@ M.UNIVERSAL_SHOP_MODE = true
 --- @type boolean
 M.ALLOW_SAME_HERO_SELECTION = true
 
+--- Enabled auto launch for custom game setup.
+---
+--- The game will launch after [AUTO_LAUNCH_DELAY] seconds.
+---
+--- `GameRules:EnableCustomGameSetupAutoLaunch(bool)`
+--- @type boolean
+M.ENABLE_AUTO_LAUNCH = true
+
+--- Set the amount of time to wait for auto launch (default: 30, disable: 0).
+---
+--- `GameRules:SetCustomGameSetupAutoLaunchDelay(float)`
+M.AUTO_LAUNCH_DELAY = 10
+
+--- Force all players to use the specified hero and disable the normal hero
+--- selection process (e.g. `"npc_dota_hero_axe"`).
+---
+--- Must be used before hero selection. Set to `nil` to allow players to pick their own hero.
+---
+--- `GameMode:SetCustomGameForceHero(pHeroName)`
+--- @type string?
+M.FORCE_PICKED_HERO = UNITS.INVOKER
+-- M.FORCE_PICKED_HERO = nil
+
 --- Sets the amount of time players have to pick their hero.
 ---
 --- `GameRules:SetHeroSelectionTime(float)`
@@ -32,7 +55,7 @@ M.HERO_SELECTION_TIME = 0
 --- Sets amount of penalty time before randoming a hero
 ---
 --- `GameRules:SetHeroSelectPenaltyTime(float)`
-M.HERO_SELECTION_PENALTY_TIME = 3
+M.HERO_SELECTION_PENALTY_TIME = 0
 
 --- Sets the amount of time players have between the hero selection and entering the showcase phase.
 ---
@@ -49,10 +72,35 @@ M.SHOWCASE_TIME = 0
 --- `GameRules:SetPreGameTime(float)`
 M.PRE_GAME_TIME = 0
 
+--- Set the amount of remaining time, in seconds, for custom game setup (disable: 0, infinite: -1).
+---
+--- `GameRules:SetCustomGameSetupRemainingTime(float)`
+M.GAME_SETUP_TIME = 0
+
+--- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
+---
+--- If set to 0, players will not be assigned a "valid" team (their team value
+--- will be set to `DOTA_TEAM_NOTEAM`).
+---
+--- If set to -1, `GameRules:FinishCustomGameSetup` must be called manually.
+---
+--- `GameRules:SetCustomGameSetupTimeout(float)`
+M.GAME_SETUP_TIMEOUT = 1
+
+--- Lock team assignemnt.
+---
+--- If team assignment is locked players cannot change teams.
+---
+--- The host can still unlock the teams.
+---
+--- `GameRules:LockCustomGameSetupTeamAssignment(bool)`
+--- @type boolean
+M.LOCK_TEAM_SETUP = true
+
 --- Sets the amount of time players have between the game ending and the server disconnecting them.
 ---
 --- `GameRules:SetPostGameTime(float)`
-M.POST_GAME_TIME = 60
+M.POST_GAME_TIME = 5
 
 --- Sets the tree regrow time in seconds.
 ---
@@ -117,44 +165,6 @@ M.ENABLE_GAME_START_MUSIC = true
 ---
 --- `GameRules:SetRuneSpawnTime(float)`
 M.RUNE_SPAWN_TIME = 120
-
---- Enabled auto launch for custom game setup.
----
---- The game will launch after [AUTO_LAUNCH_DELAY] seconds.
----
---- `GameRules:EnableCustomGameSetupAutoLaunch(bool)`
---- @type boolean
-M.ENABLE_AUTO_LAUNCH = true
-
---- Set the amount of time to wait for auto launch (default: 30, disable: 0).
----
---- `GameRules:SetCustomGameSetupAutoLaunchDelay(float)`
-M.AUTO_LAUNCH_DELAY = 10
-
---- Set the amount of remaining time, in seconds, for custom game setup (disable: 0, infinite: -1).
----
---- `GameRules:SetCustomGameSetupRemainingTime(float)`
-M.GAME_SETUP_TIME = 0
-
---- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
----
---- If set to 0, players will not be assigned a "valid" team (their team value
---- will be set to `DOTA_TEAM_NOTEAM`).
----
---- If set to -1, `GameRules:FinishCustomGameSetup` must be called manually.
----
---- `GameRules:SetCustomGameSetupTimeout(float)`
-M.GAME_SETUP_TIMEOUT = 1
-
---- Lock team assignemnt.
----
---- If team assignment is locked players cannot change teams.
----
---- The host can still unlock the teams.
----
---- `GameRules:LockCustomGameSetupTeamAssignment(bool)`
---- @type boolean
-M.LOCK_TEAM_SETUP = true
 
 --- Should we use custom team colors?
 --- @type boolean
@@ -412,14 +422,6 @@ M.DISABLE_STASH_PURCHASING = true
 --- @type boolean
 M.DISABLE_ANNOUNCER = true
 
---- Force all players to use the specified hero and disable the normal hero
---- selection process (e.g. `"npc_dota_hero_axe"`).
----
---- Must be used before hero selection. Set to `nil` to allow players to pick their own hero.
----
---- `GameMode:SetCustomGameForceHero(pHeroName)`
-M.FORCE_PICKED_HERO = UNITS.INVOKER
-
 --- Set a fixed delay for all players to respawn after (-1 for default).
 ---
 --- `GameMode:SetFixedRespawnTime(flFixedRespawnTime)`
@@ -579,7 +581,7 @@ M.TEAM_COLORS = {
 --- ```
 --- @type { [DOTATeam_t]: integer }
 M.CUSTOM_TEAM_PLAYER_COUNT = {
-  [DOTA_TEAM_GOODGUYS] = 1,
+  [DOTA_TEAM_GOODGUYS] = 10,
   [DOTA_TEAM_BADGUYS] = 0,
   [DOTA_TEAM_CUSTOM_1] = 0,
   [DOTA_TEAM_CUSTOM_2] = 0,

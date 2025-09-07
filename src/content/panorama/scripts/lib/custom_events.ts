@@ -1,5 +1,6 @@
 import { Cache } from "./cache";
 import type { ComboId, Metrics } from "./combo";
+import type { FacetId, FacetVariant } from "./dota2/invoker";
 import type { KeyValues } from "./kv";
 import { Logger } from "./logger";
 
@@ -141,6 +142,8 @@ export enum GameEvent {
 export enum CustomGameEvent {
   // player
   PlayerHeroInGame = "invk_player_hero_in_game",
+  PlayerHeroFacetRequest = "invk_player_hero_facet_request",
+  PlayerHeroFacetResponse = "invk_player_hero_facet_response",
   PlayerQuitRequest = "invk_player_quit_request",
   // combos
   CombosReload = "invk_combos_reload",
@@ -170,10 +173,22 @@ export interface ViewerRender {
   id: ComboId;
 }
 
-export interface PlayerHeroInGame {
-  id: number;
+export interface PlayerHero {
+  id: HeroID;
   name: string;
-  variant: number;
+  facet: FacetId;
+  variant: FacetVariant;
+}
+
+export interface PlayerHeroInGame extends PlayerHero { }
+
+export interface PlayerHeroFacetRequest {
+  variant: FacetVariant;
+}
+
+export interface PlayerHeroFacetResponse {
+  error?: string;
+  hero?: PlayerHero
 }
 
 export type PlayerQuitRequest = Record<string, never>;

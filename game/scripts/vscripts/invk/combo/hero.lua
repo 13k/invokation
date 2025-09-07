@@ -1,4 +1,3 @@
-local Invoker = require("invk.dota2.invoker")
 local LIMITS = require("invk.const.limits")
 local Player = require("invk.dota2.player")
 local SOUND_EVENTS = require("invk.const.sound_events")
@@ -47,7 +46,7 @@ function M.teardown(base_player, options)
   end
 
   if opts.hard_reset then
-    player:replace_hero(player.hero:GetUnitName())
+    player:replace_hero_variant()
   else
     unit:purge()
     unit:give_max_health()

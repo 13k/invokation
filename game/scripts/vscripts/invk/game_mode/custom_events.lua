@@ -3,6 +3,7 @@ local class = require("middleclass")
 local CUSTOM_EVENTS = require("invk.const.custom_events")
 local Env = require("invk.game_mode.env")
 local Logger = require("invk.logger")
+local Player = require("invk.dota2.player")
 local custom_ev = require("invk.dota2.custom_events")
 local func = require("invk.lang.function")
 
@@ -31,6 +32,7 @@ end
 function M:register()
   self:d("register listeners")
 
+  self:subscribe(CUSTOM_EVENTS.EVENT_PLAYER_HERO_FACET_REQUEST, "on_player_hero_facet_request")
   self:subscribe(CUSTOM_EVENTS.EVENT_PLAYER_QUIT_REQUEST, "on_player_quit_request")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "on_combos_reload")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBO_START, "on_combo_start")
@@ -65,6 +67,38 @@ end
 --- @return CustomGameEventListenerID
 function M:subscribe(event, method_name)
   return custom_ev.subscribe(event, self:method_handler(method_name))
+end
+
+--- Handles hero facet selection events.
+--- @param player CDOTAPlayerController
+--- @param payload invk.custom_events.PlayerHeroFacetRequest
+function M:on_player_hero_facet_request(player, payload)
+  self:d("on_player_hero_facet_request", { player = player:GetPlayerID(), payload = payload })
+
+  if self.game.combos:has_active_combo(player) then
+    --- @type invk.custom_events.PlayerHeroFacetResponse
+    local response = {
+      error = "Cannot change facet during active combo",
+    }
+
+    custom_ev.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_FACET_RESPONSE, player, response)
+
+    return
+  end
+
+  local game = self.game
+  local pplayer = Player:new(player)
+
+  pplayer:replace_hero_variant(payload.variant, nil, function(hero)
+    local player_hero = game:update_player_hero(hero)
+
+    --- @type invk.custom_events.PlayerHeroFacetResponse
+    local response = {
+      hero = player_hero,
+    }
+
+    custom_ev.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_FACET_RESPONSE, player, response)
+  end)
 end
 
 --- Handles player quit request events.

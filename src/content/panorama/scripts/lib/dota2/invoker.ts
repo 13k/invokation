@@ -1,5 +1,8 @@
 export const HERO_ID = 74 as HeroID;
 
+export type FacetId = number & { readonly __tag__: "FacetId"; };
+export type FacetVariant = number & { readonly __tag__: "FacetVariant"; };
+
 export enum Ability {
   Quas = "invoker_quas",
   Wex = "invoker_wex",
