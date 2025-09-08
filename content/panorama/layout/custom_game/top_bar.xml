@@ -10,33 +10,18 @@
   <Panel class="TopBarRoot">
     <Panel class="TopBar">
       <Button
-        class="TopBarButton DOTAShowDashboardButton"
-        onactivate="DOTAHUDShowDashboard()"
-        onmouseover="UIShowTextTooltip(#DOTA_HUD_BackToDashboard)"
-        onmouseout="UIHideTextTooltip()"
-      />
-
-      <Button
-        class="TopBarButton SettingsButton"
-        onactivate="DOTAShowSettingsPopup()"
-        onmouseover="UIShowTextTooltip(#DOTA_HUD_Settings)"
-        onmouseout="UIHideTextTooltip()"
-      />
-
-      <Button
         id="BtnShowGameInfo"
         class="TopBarButton InfoIcon"
         onmouseover="UIShowTextTooltip(#DOTA_Custom_Game_Info)"
         onmouseout="UIHideTextTooltip()"
       />
-    </Panel>
 
-    <!-- Intentionally left outside `.TopBar` so it can be aligned to the right -->
-    <Button
-      id="BtnQuit"
-      class="TopBarButton"
-      onmouseover="UIShowTextTooltip(#dota_dashboard_quit)"
-      onmouseout="UIHideTextTooltip()"
-    />
+      <Button
+        id="BtnQuit"
+        class="TopBarButton"
+        onmouseover="UIShowTextTooltip(#dota_dashboard_quit)"
+        onmouseout="UIHideTextTooltip()"
+      />
+    </Panel>
   </Panel>
 </root>

@@ -1,5 +1,3 @@
-import { CustomGameEvent } from "@invokation/panorama-lib/custom_events";
-
 import type { Elements } from "./component";
 import { Component } from "./component";
 import { LayoutId } from "./layout";
@@ -48,7 +46,8 @@ class TopBar extends Component<TopBarElements> {
 
   onBtnQuit(): void {
     this.debug("onBtnQuit");
-    this.sendServer(CustomGameEvent.PlayerQuitRequest, {});
+
+    Game.LeaveCurrentGame();
   }
 }
 
