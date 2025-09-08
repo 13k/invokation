@@ -37,8 +37,8 @@ function M.setup()
   game_mode:SetHudCombatEventsDisabled(S.DISABLE_COMBAT_EVENTS_HUD)
   game_mode:SetKillingSpreeAnnouncerDisabled(S.DISABLE_KILLING_SPREE_ANNOUNCER)
   game_mode:SetLoseGoldOnDeath(S.LOSE_GOLD_ON_DEATH)
-  game_mode:SetMaximumAttackSpeed(S.MAXIMUM_ATTACK_SPEED)
-  game_mode:SetMinimumAttackSpeed(S.MINIMUM_ATTACK_SPEED)
+  -- game_mode:SetMaximumAttackSpeed(S.MAXIMUM_ATTACK_SPEED)
+  -- game_mode:SetMinimumAttackSpeed(S.MINIMUM_ATTACK_SPEED)
   game_mode:SetPauseEnabled(S.ENABLE_PAUSE)
   game_mode:SetPowerRuneSpawnInterval(S.POWER_RUNE_SPAWN_INTERVAL)
   game_mode:SetRecommendedItemsDisabled(S.RECOMMENDED_BUILDS_DISABLED)
@@ -54,14 +54,12 @@ function M.setup()
   game_mode:SetUseDefaultDOTARuneSpawnLogic(S.USE_DEFAULT_DOTA_RUNE_SPAWN_LOGIC)
   game_mode:SetWeatherEffectsDisabled(S.DISABLE_WEATHER_EFFECTS)
 
-  -- Must be set before `SetUseCustomHeroLevels`
-  game_mode:SetCustomXPRequiredToReachNextLevel(S.XP_PER_LEVEL_TABLE)
-  game_mode:SetUseCustomHeroLevels(S.USE_CUSTOM_HERO_LEVELS)
+  if S.USE_CUSTOM_HERO_LEVELS then
+    -- Must be set before `SetUseCustomHeroLevels`
+    game_mode:SetCustomXPRequiredToReachNextLevel(S.XP_PER_LEVEL_TABLE)
+  end
 
-  -- gameMode:SetCustomAttributeDerivedStatValue(nStatType, flNewValue)
-  -- gameMode:SetHUDVisible(iHUDElement, bVisible)
-  -- gameMode:SetKillableTombstones(S.KILLABLE_TOMBSTONES)
-  -- gameMode:SetTopBarTeamValue(iTeam, nValue)
+  game_mode:SetUseCustomHeroLevels(S.USE_CUSTOM_HERO_LEVELS)
 
   if S.FORCE_PICKED_HERO ~= nil then
     game_mode:SetCustomGameForceHero(S.FORCE_PICKED_HERO)
