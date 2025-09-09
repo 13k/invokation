@@ -13,7 +13,6 @@ local func = require("invk.lang.function")
 --- @class invk.game_mode.GameEvents : middleclass.Class, invk.log.Mixin
 --- @field game invk.GameMode
 --- @field logger? invk.Logger
---- @field private _first_spawned boolean
 --- @field private _first_player_loaded boolean
 local M = class("invk.game_mode.GameEvents")
 
@@ -26,7 +25,6 @@ M:include(Logger.Mixin)
 --- @param options? invk.game_mode.GameEventsOptions
 function M:initialize(game, options)
   self.game = game
-  self._first_spawned = false
   self._first_player_loaded = false
 
   local opts = options or {}
@@ -204,8 +202,7 @@ function M:_on_npc_spawned(payload)
     unit = npc and npc:GetUnitName() or "<unknown>",
   })
 
-  if npc ~= nil and npc:IsRealHero() and not self._first_spawned then
-    self._first_spawned = true
+  if payload.is_respawn == 0 and npc ~= nil and npc:IsRealHero() then
     self:on_hero_in_game(npc)
   end
 end
@@ -224,11 +221,15 @@ function M:on_hero_in_game(hero)
 
   local player = hero:GetPlayerOwner()
 
+  if player == nil then
+    return
+  end
+
   --- @type invk.custom_events.PlayerHeroInGame
   local payload = {
     id = hero:GetHeroID(),
     name = hero:GetUnitName(),
-    variant = hero:GetHeroFacetID(),
+    facet_id = hero:GetHeroFacetID(),
   }
 
   custom_ev.send_player(CUSTOM_EVENTS.EVENT_PLAYER_HERO_IN_GAME, player, payload)
