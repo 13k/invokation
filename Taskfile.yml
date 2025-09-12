@@ -101,7 +101,8 @@ tasks:
 
   format:panorama:layouts:
     desc: Format panorama layouts
-    cmd: bun x -- prettier --write '{{ .PANORAMA_LAYOUTS_SRC_PATH }}/**/*.xml'
+    dir: "{{ .PANORAMA_LAYOUTS_SRC_PATH }}"
+    cmd: bun x -- prettier --write {{ .CLI_ARGS }} "**/*.xml"
 
   lint:panorama:layouts:
     desc: Lint panorama layouts
@@ -109,26 +110,32 @@ tasks:
 
   format:panorama:scripts:
     desc: Format panorama scripts
-    cmd: bun x -- @biomejs/biome format --write --config-path "{{ .PANORAMA_SCRIPTS_SRC_PATH }}" "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    dir: "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    cmd: bun x -- "@biomejs/biome" format --write {{ .CLI_ARGS }}
 
   lint:panorama:scripts:
     desc: Lint panorama scripts
-    cmd: bun x -- @biomejs/biome check --config-path "{{ .PANORAMA_SCRIPTS_SRC_PATH }}" "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    dir: "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
+    cmd: bun x -- "@biomejs/biome" check {{ .CLI_ARGS }}
 
   format:panorama:styles:
     desc: Format panorama styles
+    dir: "{{ .PANORAMA_STYLES_SRC_PATH }}"
     cmds:
-      - bun x -- stylelint --fix "{{ .PANORAMA_STYLES_SRC_PATH }}"
-      - bun x -- prettier --write '{{ .PANORAMA_STYLES_SRC_PATH }}/**/*.css'
+      - bun x -- stylelint --fix {{ .CLI_ARGS }} .
+      - bun x -- prettier --write {{ .CLI_ARGS }} "**/*.css"
 
   lint:panorama:styles:
     desc: Lint panorama styles
-    cmd: bun x -- stylelint "{{ .PANORAMA_STYLES_SRC_PATH }}"
+    dir: "{{ .PANORAMA_STYLES_SRC_PATH }}"
+    cmd: bun x -- stylelint {{ .CLI_ARGS }} .
 
   format:tasks:
     desc: Format tasks
-    cmd: bun x -- @biomejs/biome format --write --config-path "{{ .TASKS_SRC_PATH }}" "{{ .TASKS_SRC_PATH }}"
+    dir: "{{ .TASKS_SRC_PATH }}"
+    cmd: bun x -- "@biomejs/biome" format --write {{ .CLI_ARGS }}
 
   lint:tasks:
     desc: Lint tasks
-    cmd: bun x -- @biomejs/biome check --config-path "{{ .TASKS_SRC_PATH }}" "{{ .TASKS_SRC_PATH }}"
+    dir: "{{ .TASKS_SRC_PATH }}"
+    cmd: bun x -- "@biomejs/biome" check {{ .CLI_ARGS }}
