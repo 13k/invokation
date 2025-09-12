@@ -1,6 +1,3 @@
-import at from "lodash-es/at";
-import random from "lodash-es/random";
-
 import type { Combo, ComboId, Metrics, Step, StepId } from "@invokation/panorama-lib/combo";
 import { StaticId } from "@invokation/panorama-lib/combo";
 import type {
@@ -24,9 +21,11 @@ import {
   RemoveClassAction,
   RunFunctionAction,
   Sequence,
-  SetDialogVariableAction,
+  SetDialogVariableLocStringAction,
   StaggeredSequence,
 } from "@invokation/panorama-lib/sequence";
+import at from "lodash-es/at";
+import random from "lodash-es/random";
 
 import type { ChallengeComboStep } from "./challenge/combo_step";
 import type { ComboScore, ComboScoreInputs } from "./combo_score";
@@ -460,9 +459,9 @@ class Challenge extends Component<ChallengeElements> {
   }
 
   updateHudVisibilityTooltipAction(mode: HudMode): Action {
-    const hudVisibilityTooltip = l10n.lp(l10n.Key.HudVisibilityPrefix, mode);
+    const key = l10n.pKey(l10n.Key.HudVisibilityPrefix, mode);
 
-    return new SetDialogVariableAction(this.panel, DialogVar.HudVisibility, hudVisibilityTooltip);
+    return new SetDialogVariableLocStringAction(this.panel, DialogVar.HudVisibility, key);
   }
 
   switchHudSeq(prevMode: HudMode, nextMode: HudMode): Sequence {
@@ -534,7 +533,7 @@ class Challenge extends Component<ChallengeElements> {
 
   countdownWaitAction(wait: number): Action {
     const animate = new ParallelSequence()
-      .animateDialogVariableInt(
+      .animateDialogVariableInteger(
         this.elements.waitProgress,
         DialogVar.WaitProgressValue,
         wait,
@@ -614,7 +613,7 @@ class Challenge extends Component<ChallengeElements> {
       .wait(0.25)
       .runFn(() => this.runProgress(id, {}, next));
 
-    this.debugFn(() => ["start", { id, actions: seq.deepSize() }]);
+    this.debugFn(() => ["start", { id, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -632,7 +631,7 @@ class Challenge extends Component<ChallengeElements> {
 
     const seq = new Sequence().add(this.hideAction()).add(this.hideTimerAction());
 
-    this.debugFn(() => ["stop", { id, actions: seq.deepSize() }]);
+    this.debugFn(() => ["stop", { id, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -665,7 +664,7 @@ class Challenge extends Component<ChallengeElements> {
       seq.add(this.progressWhenInProgressAction(metrics, next));
     }
 
-    this.debugFn(() => ["progress", { id, metrics, next, actions: seq.deepSize() }]);
+    this.debugFn(() => ["progress", { id, metrics, next, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -690,7 +689,7 @@ class Challenge extends Component<ChallengeElements> {
       .add(this.updateScoreSummaryAction(options))
       .add(this.countdownWaitAction(wait));
 
-    this.debugFn(() => ["preFinish", { id, actions: seq.deepSize(), ...options }]);
+    this.debugFn(() => ["preFinish", { id, len: seq.deepLength, ...options }]);
 
     seq.run();
   }
@@ -714,7 +713,7 @@ class Challenge extends Component<ChallengeElements> {
       .add(this.showSplashAction(state))
       .add(this.updateScoreSummaryAction(options));
 
-    this.debugFn(() => ["finish", { id, state, actions: seq.deepSize(), ...options }]);
+    this.debugFn(() => ["finish", { id, state, len: seq.deepLength, ...options }]);
 
     seq.run();
   }
@@ -746,7 +745,7 @@ class Challenge extends Component<ChallengeElements> {
       .add(this.bumpStepPanelsAction(expectedSteps))
       .add(this.hideTimerAction());
 
-    this.debugFn(() => ["fail", { id, state, ability, expected, actions: seq.deepSize() }]);
+    this.debugFn(() => ["fail", { id, state, ability, expected, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -759,7 +758,7 @@ class Challenge extends Component<ChallengeElements> {
     const next = this.hudMode;
     const seq = this.switchHudSeq(prev, next);
 
-    this.debugFn(() => ["cycleHud", { prev, next, actions: seq.deepSize() }]);
+    this.debugFn(() => ["cycleHud", { prev, next, len: seq.deepLength }]);
 
     seq.run();
   }

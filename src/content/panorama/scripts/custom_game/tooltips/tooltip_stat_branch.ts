@@ -309,7 +309,7 @@ class TooltipStatBranch extends Component<
       .add(...this.renderRowsActions())
       .add(this.selectBranchesAction());
 
-    this.debugFn(() => ["render()", { selected: this.selected?.value, actions: seq.deepSize() }]);
+    this.debugFn(() => ["render()", { selected: this.selected?.value, len: seq.deepLength }]);
 
     seq.run();
   }

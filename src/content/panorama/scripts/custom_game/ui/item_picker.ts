@@ -1,7 +1,12 @@
 import type { ItemPickerQueryResponse } from "@invokation/panorama-lib/custom_events";
 import { CustomGameEvent } from "@invokation/panorama-lib/custom_events";
 import type { Action } from "@invokation/panorama-lib/sequence";
-import { AddClassAction, ParallelSequence, RemoveClassAction, Sequence } from "@invokation/panorama-lib/sequence";
+import {
+  AddClassAction,
+  ParallelSequence,
+  RemoveClassAction,
+  Sequence,
+} from "@invokation/panorama-lib/sequence";
 
 import type { Elements, Outputs } from "../component";
 import { Component } from "../component";
@@ -71,15 +76,17 @@ class ItemPicker extends Component<ItemPickerElements, never, ItemPickerOutputs>
 
     this.debug("onQueryResponse()", itemNames);
 
-    const shopItems = itemNames.map((itemName) => {
-      const shopItem = this.shopItems.get(itemName);
+    const shopItems = itemNames
+      .map((itemName) => {
+        const shopItem = this.shopItems.get(itemName);
 
-      if (shopItem == null) {
-        this.warn(`Could not find shop item panel for item ${itemName}`);
-      }
+        if (shopItem == null) {
+          this.warn(`Could not find shop item panel for item ${itemName}`);
+        }
 
-      return shopItem;
-    }).filter((panel) => panel != null);
+        return shopItem;
+      })
+      .filter((panel) => panel != null);
 
     this.highlight(shopItems);
   }
@@ -189,7 +196,7 @@ class ItemPicker extends Component<ItemPickerElements, never, ItemPickerOutputs>
       .add(this.clearItemsAction())
       .add(this.highlightItemsAction(shopItems));
 
-    this.debugFn(() => ["highlight()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["highlight()", { len: seq.deepLength }]);
 
     seq.run();
   }

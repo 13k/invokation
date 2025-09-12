@@ -144,7 +144,7 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
 
     this.debugFn(() => [
       "select()",
-      { heroId: this.heroId, selected: this.talents?.value, actions: seq.deepSize() },
+      { heroId: this.heroId, selected: this.talents?.value, len: seq.deepLength },
     ]);
 
     seq.run();
@@ -156,7 +156,7 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
       new ParallelSequence(),
     );
 
-    this.debugFn(() => ["reset()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["reset()", { len: seq.deepLength }]);
 
     seq.run();
   }

@@ -1,15 +1,14 @@
 import type { SyncSubprocess } from "bun";
 
 import type { Command, OptionValues } from "commander";
-
-import { Config } from "../config";
 import type { ConfigOptions } from "../config";
+import { Config } from "../config";
 import type { CaptureOptions, ExecOptions } from "../exec";
 import { capture, exec, parseShell } from "../exec";
 import type { Logger } from "../logger";
 import { LOGGER } from "../logger";
-import { Path, ROOT_DIR } from "../path";
 import type { PathLike } from "../path";
+import { Path, ROOT_DIR } from "../path";
 
 const ENV_DOTA2_PATH = "DOTA2_PATH";
 const ENV_RESOURCE_COMPILER = "RESOURCE_COMPILER";

@@ -1,5 +1,83 @@
 export const HERO_ID = 74 as HeroID;
 
+export interface Facet {
+  id: FacetId;
+  variant: FacetVariant;
+  name: FacetName;
+}
+
+export enum FacetId {
+  Quas = 1,
+  Wex = 2,
+  Exort = 3,
+}
+
+export function FacetIdObject(id: FacetId): Facet {
+  switch (id) {
+    case FacetId.Quas:
+      return { id: FacetId.Quas, variant: FacetVariant.Quas, name: FacetName.Quas };
+    case FacetId.Wex:
+      return { id: FacetId.Wex, variant: FacetVariant.Wex, name: FacetName.Wex };
+    case FacetId.Exort:
+      return { id: FacetId.Exort, variant: FacetVariant.Exort, name: FacetName.Exort };
+    default:
+      throw new Error(`Invalid facet id ${id}`);
+  }
+}
+
+export enum FacetVariant {
+  Quas = 0x4a00000001,
+  Wex = 0x4a00000002,
+  Exort = 0x4a00000003,
+}
+
+export function ParseFacetVariant(s: string): FacetVariant | null {
+  const n = Number.parseInt(s, 10);
+
+  switch (n) {
+    case FacetVariant.Quas:
+      return FacetVariant.Quas;
+    case FacetVariant.Wex:
+      return FacetVariant.Wex;
+    case FacetVariant.Exort:
+      return FacetVariant.Exort;
+    default:
+      return null;
+  }
+}
+
+export function FacetVariantObject(variant: FacetVariant): Facet {
+  switch (variant) {
+    case FacetVariant.Quas:
+      return { id: FacetId.Quas, variant: FacetVariant.Quas, name: FacetName.Quas };
+    case FacetVariant.Wex:
+      return { id: FacetId.Wex, variant: FacetVariant.Wex, name: FacetName.Wex };
+    case FacetVariant.Exort:
+      return { id: FacetId.Exort, variant: FacetVariant.Exort, name: FacetName.Exort };
+    default:
+      throw new Error(`Invalid facet variant ${variant}`);
+  }
+}
+
+export enum FacetName {
+  Quas = "invoker_focus_quas",
+  Wex = "invoker_focus_wex",
+  Exort = "invoker_focus_exort",
+}
+
+export function FacetNameObject(name: FacetName): Facet {
+  switch (name) {
+    case FacetName.Quas:
+      return { id: FacetId.Quas, variant: FacetVariant.Quas, name: FacetName.Quas };
+    case FacetName.Wex:
+      return { id: FacetId.Wex, variant: FacetVariant.Wex, name: FacetName.Wex };
+    case FacetName.Exort:
+      return { id: FacetId.Exort, variant: FacetVariant.Exort, name: FacetName.Exort };
+    default:
+      throw new Error(`Invalid facet name '${name}'`);
+  }
+}
+
 export enum Ability {
   Quas = "invoker_quas",
   Wex = "invoker_wex",

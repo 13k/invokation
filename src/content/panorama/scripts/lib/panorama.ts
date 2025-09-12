@@ -1,4 +1,11 @@
+import type { FacetId } from "./dota2/invoker";
 import { isItemAbility } from "./dota2/items";
+
+export interface Position {
+  x: number;
+  y: number;
+  z: number;
+}
 
 export enum PanelType {
   Panel = "Panel",
@@ -63,6 +70,11 @@ export enum PanelType {
   CustomLayoutPanel = "CustomLayoutPanel",
 }
 
+export interface FacetDropDown extends Panel {
+  // biome-ignore lint/style/useNamingConvention: builtin type
+  Init(heroId: HeroID, facetId: FacetId): void;
+}
+
 export type PanelEventListener = () => void;
 
 export enum UiEvent {
@@ -91,13 +103,31 @@ export type UiEventListener = (...args: unknown[]) => void;
 
 export enum SoundEvent {
   Death = "ui.death_stinger",
+  InvokationFacetAmbientQuas = "Invokation.Facet.Quas.Ambient",
+  InvokationFacetAmbientWex = "Invokation.Facet.Wex.Ambient",
+  InvokationFacetAmbientExort = "Invokation.Facet.Exort.Ambient",
   InvokationFreestyleStart = "Invokation.Freestyle.Start",
+  InvokerCastGlacier = "Hero_Invoker.Glacier.Cast",
+  InvokerCastTornado = "Hero_Invoker.Tornado.Cast",
+  InvokerCastCataclysm = "Hero_Invoker.Cataclysm.Charge",
+  InvokerCastCataclysmIgnite = "Hero_Invoker.Cataclysm.Ignite",
   InvokerKidTakeoverSfx = "kidvoker_takeover_sfx",
   InvokerKidTakeoverStinger = "kidvoker_takeover_stinger",
   ShopClose = "Shop.PanelDown",
   ShopOpen = "Shop.PanelUp",
   UiRolloverDown = "ui_rollover_md_down",
   UiRolloverUp = "ui_rollover_md_up",
+}
+
+export enum GameCssClass {
+  ScenePanelLoaded = "SceneLoaded",
+}
+
+export enum GameEntityInput {
+  Start = "Start",
+  StopEndcap = "StopPlayEndCap",
+  SetAnimation = "SetAnimation",
+  SetControlPoint = "SetControlPoint",
 }
 
 export type SerializableParams = string | Record<string, unknown>;
@@ -174,6 +204,14 @@ export function createAbilityOrItemImage(parent: Panel, id: string, abilityName:
   return createAbilityImage(parent, id, abilityName);
 }
 
+export function createScene(
+  parent: Panel,
+  id: string,
+  properties?: Record<string, string>,
+): ScenePanel {
+  return $.CreatePanel(PanelType.ScenePanel, parent, id, properties);
+}
+
 export function serializeParams(params: SerializableParams): string {
   if (typeof params === "string") {
     return params;
@@ -194,4 +232,8 @@ export function debugPanel(panel: Panel | undefined): DebugPanel {
   const { id, type, layoutfile } = panel;
 
   return { id, type, layoutfile };
+}
+
+export function controlPointParam(index: number, pos: Position) {
+  return `${index}: ${pos.x} ${pos.y} ${pos.z}`;
 }

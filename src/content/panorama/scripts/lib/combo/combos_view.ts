@@ -1,5 +1,5 @@
 import type { Combo, Properties } from "../combo";
-import { Property, matchesAbility, matchesItem, matchesTags } from "../combo";
+import { matchesAbility, matchesItem, matchesTags, Property } from "../combo";
 
 export type PropertiesFilter = Partial<Properties>;
 

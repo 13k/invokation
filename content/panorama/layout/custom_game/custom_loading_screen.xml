@@ -7,9 +7,9 @@
     <include src="file://{resources}/styles/custom_game/custom_loading_screen.css" />
   </styles>
 
-  <Panel class="Root" hittest="false">
+  <Panel class="root" hittest="false">
     <DOTAScenePanel
-      id="TitleFX"
+      id="title-fx"
       map="backgrounds/dashboard_parallax_plus"
       camera="camera"
       renderdeferred="false"
@@ -18,12 +18,12 @@
       hittest="false"
     />
 
-    <Panel class="TitlePanel" hittest="false">
-      <Label class="Title" text="#addon_game_name" hittest="false" />
+    <Panel class="title-panel" hittest="false">
+      <Label class="title" text="#addon_game_name" hittest="false" />
     </Panel>
 
     <DOTAScenePanel
-      id="Scene"
+      id="scene"
       map="custom_game/scenes/loading_screen"
       light="light"
       camera="camera"

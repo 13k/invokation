@@ -54,7 +54,7 @@ export const CONFIG: { [K in keyof typeof DotaDefaultUIElement_t]: boolean } = {
   // biome-ignore lint/style/useNamingConvention: builtin type
   DOTA_DEFAULT_UI_QUICK_STATS: false,
   // biome-ignore lint/style/useNamingConvention: builtin type
-  DOTA_DEFAULT_UI_PREGAME_STRATEGYUI: false,
+  DOTA_DEFAULT_UI_PREGAME_STRATEGYUI: true,
   // biome-ignore lint/style/useNamingConvention: builtin type
   DOTA_DEFAULT_UI_KILLCAM: false,
   // biome-ignore lint/style/useNamingConvention: builtin type

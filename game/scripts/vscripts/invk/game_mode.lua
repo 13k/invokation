@@ -27,6 +27,7 @@ local DEFAULT_ENV = Env.is_dev_mode() and Env.DEVELOPMENT or Env.PRODUCTION
 --- Main class for the game.
 --- @class invk.GameMode : middleclass.Class, invk.log.Mixin
 --- @field env invk.Env
+--- @field state DOTA_GameState
 --- @field users { [integer]: CDOTAPlayerController? }
 --- @field players { [PlayerID]: CDOTAPlayerController? }
 --- @field items_kv invk.dota2.kv.ItemsKeyValues
@@ -72,6 +73,7 @@ function M:initialize(options)
   self._reentrant = false
 
   self.env = opts.env or DEFAULT_ENV
+  self.state = DOTA_GAMERULES_STATE_INIT
   self.users = {}
   self.players = {}
 

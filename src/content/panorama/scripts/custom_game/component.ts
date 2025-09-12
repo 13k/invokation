@@ -17,10 +17,10 @@ import type {
   UiEventListener,
 } from "@invokation/panorama-lib/panorama";
 import {
-  UiEvent,
   createPanel,
   debugPanel,
   serializeParams,
+  UiEvent,
 } from "@invokation/panorama-lib/panorama";
 import { prefixOnce } from "@invokation/panorama-lib/util/prefixOnce";
 import { uniqueId } from "@invokation/panorama-lib/util/uniqueId";
@@ -394,6 +394,26 @@ export abstract class Component<
     }
 
     return elements;
+  }
+
+  findParent(id: string, maxDepth = 100): Panel | null {
+    let i = 0;
+    let panel: Panel | null = this.panel;
+
+    while (panel) {
+      if (i > maxDepth) {
+        break;
+      }
+
+      if (panel.id === id) {
+        return panel;
+      }
+
+      panel = panel.GetParent();
+      i++;
+    }
+
+    return null;
   }
 
   attrStr<T>(attr: string, defaultValue: string): T {

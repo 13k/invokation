@@ -1,96 +1,60 @@
 import "core-js";
 
-// game events
-import type {
-  // biome-ignore lint/correctness/noUnusedImports: false positive (type import)
-  GameEvent,
-  PopupAbilityPickerSubmit,
-  PopupItemPickerSubmit,
-  PopupTextEntrySubmit,
-  ViewerRender,
-} from "./custom_events";
-
-// custom events
-import type {
-  CombatLogAbilityUsed,
-  CombatLogCaptureStart,
-  CombatLogCaptureStop,
-  CombatLogClear,
-  ComboFinished,
-  ComboInProgress,
-  ComboPreFinish,
-  ComboProgress,
-  ComboRestart,
-  ComboStart,
-  ComboStarted,
-  ComboStepError,
-  ComboStop,
-  ComboStopped,
-  CombosReload,
-  // biome-ignore lint/correctness/noUnusedImports: false positive (type import)
-  CustomGameEvent,
-  FreestyleHeroLevelUp,
-  ItemPickerQuery,
-  ItemPickerQueryResponse,
-  PlayerHeroInGame,
-  PlayerQuitRequest,
-} from "./custom_events";
-
-// biome-ignore lint/correctness/noUnusedImports: false positive (type import)
-import type { CustomNetTable } from "./custom_net_tables";
+import type { CombosCollection } from "./combo/combos_collection";
+import * as cev from "./custom_events";
+import { CustomNetTable } from "./custom_net_tables";
 import type { Table as TableAbilities } from "./custom_net_tables/abilities";
 import type { Table as TableHero } from "./custom_net_tables/hero";
 import type { Table as TableInvokation } from "./custom_net_tables/invokation";
-
-import type { CombosCollection } from "./combo/combos_collection";
 import type { AbilitiesKeyValues, HeroData, HeroKeyValues } from "./net_table/key_listener";
 
 declare global {
   // ----- Missing types from `@moddota/panorama-types` -----
 
-  // biome-ignore lint/style/useNamingConvention: builtin type
-  interface CScriptBindingPR_Game {
-    /** Get the bool value of the specific convar. Asserts if invalid and returns false */
-    // biome-ignore lint/style/useNamingConvention: builtin type
-    GetConvarBool(cvar: string): boolean;
-    /** Get the int value of the specific convar. Asserts if invalid and returns 0 */
-    // biome-ignore lint/style/useNamingConvention: builtin type
-    GetConvarInt(cvar: string): number;
-    /** Get the float value of the specific convar. Asserts if invalid and returns 0.0 */
-    // biome-ignore lint/style/useNamingConvention: builtin type
-    GetConvarFloat(cvar: string): number;
-  }
+  // interface CScriptBindingPR_Game {
+  //   /** Get the bool value of the specific convar. Asserts if invalid and returns false */
+  //   // biome-ignore lint/style/useNamingConvention: builtin type
+  //   GetConvarBool(cvar: string): boolean;
+  //   /** Get the int value of the specific convar. Asserts if invalid and returns 0 */
+  //   // biome-ignore lint/style/useNamingConvention: builtin type
+  //   GetConvarInt(cvar: string): number;
+  //   /** Get the float value of the specific convar. Asserts if invalid and returns 0.0 */
+  //   // biome-ignore lint/style/useNamingConvention: builtin type
+  //   GetConvarFloat(cvar: string): number;
+  // }
 
   // ----- Custom events declarations -----
 
   interface GameEventDeclarations {
-    [GameEvent.ViewerRender]: ViewerRender;
-    [GameEvent.PopupAbilityPickerSubmit]: PopupAbilityPickerSubmit;
-    [GameEvent.PopupItemPickerSubmit]: PopupItemPickerSubmit;
-    [GameEvent.PopupTextEntrySubmit]: PopupTextEntrySubmit;
+    [cev.GameEvent.FacetSelect]: cev.FacetSelect;
+    [cev.GameEvent.ViewerRender]: cev.ViewerRender;
+    [cev.GameEvent.PopupAbilityPickerSubmit]: cev.PopupAbilityPickerSubmit;
+    [cev.GameEvent.PopupItemPickerSubmit]: cev.PopupItemPickerSubmit;
+    [cev.GameEvent.PopupTextEntrySubmit]: cev.PopupTextEntrySubmit;
   }
 
   interface CustomGameEventDeclarations {
-    [CustomGameEvent.PlayerHeroInGame]: PlayerHeroInGame;
-    [CustomGameEvent.PlayerQuitRequest]: PlayerQuitRequest;
-    [CustomGameEvent.CombosReload]: CombosReload;
-    [CustomGameEvent.ComboStart]: ComboStart;
-    [CustomGameEvent.ComboStarted]: ComboStarted;
-    [CustomGameEvent.ComboStop]: ComboStop;
-    [CustomGameEvent.ComboStopped]: ComboStopped;
-    [CustomGameEvent.ComboInProgress]: ComboInProgress;
-    [CustomGameEvent.ComboProgress]: ComboProgress;
-    [CustomGameEvent.ComboStepError]: ComboStepError;
-    [CustomGameEvent.ComboPreFinish]: ComboPreFinish;
-    [CustomGameEvent.ComboFinish]: ComboFinished;
-    [CustomGameEvent.ComboRestart]: ComboRestart;
-    [CustomGameEvent.FreestyleHeroLevelUp]: FreestyleHeroLevelUp;
-    [CustomGameEvent.CombatLogAbilityUsed]: CombatLogAbilityUsed;
-    [CustomGameEvent.CombatLogClear]: CombatLogClear;
-    [CustomGameEvent.CombatLogCaptureStart]: CombatLogCaptureStart;
-    [CustomGameEvent.CombatLogCaptureStop]: CombatLogCaptureStop;
-    [CustomGameEvent.ItemPickerQueryRequest]: ItemPickerQuery;
-    [CustomGameEvent.ItemPickerQueryResponse]: ItemPickerQueryResponse;
+    [cev.CustomGameEvent.PlayerHeroInGame]: cev.PlayerHeroInGame;
+    [cev.CustomGameEvent.PlayerFacetSelect]: cev.PlayerFacetSelect;
+    [cev.CustomGameEvent.PlayerQuitRequest]: cev.PlayerQuitRequest;
+    [cev.CustomGameEvent.CombosReload]: cev.CombosReload;
+    [cev.CustomGameEvent.ComboStart]: cev.ComboStart;
+    [cev.CustomGameEvent.ComboStarted]: cev.ComboStarted;
+    [cev.CustomGameEvent.ComboStop]: cev.ComboStop;
+    [cev.CustomGameEvent.ComboStopped]: cev.ComboStopped;
+    [cev.CustomGameEvent.ComboInProgress]: cev.ComboInProgress;
+    [cev.CustomGameEvent.ComboProgress]: cev.ComboProgress;
+    [cev.CustomGameEvent.ComboStepError]: cev.ComboStepError;
+    [cev.CustomGameEvent.ComboPreFinish]: cev.ComboPreFinish;
+    [cev.CustomGameEvent.ComboFinish]: cev.ComboFinished;
+    [cev.CustomGameEvent.ComboRestart]: cev.ComboRestart;
+    [cev.CustomGameEvent.FreestyleHeroLevelUp]: cev.FreestyleHeroLevelUp;
+    [cev.CustomGameEvent.CombatLogAbilityUsed]: cev.CombatLogAbilityUsed;
+    [cev.CustomGameEvent.CombatLogClear]: cev.CombatLogClear;
+    [cev.CustomGameEvent.CombatLogCaptureStart]: cev.CombatLogCaptureStart;
+    [cev.CustomGameEvent.CombatLogCaptureStop]: cev.CombatLogCaptureStop;
+    [cev.CustomGameEvent.ItemPickerQueryRequest]: cev.ItemPickerQuery;
+    [cev.CustomGameEvent.ItemPickerQueryResponse]: cev.ItemPickerQueryResponse;
   }
 
   // ----- Custom net tables declarations -----
@@ -103,7 +67,6 @@ declare global {
 
   // ----- Custom UI config declarations -----
 
-  // biome-ignore lint/style/useNamingConvention: external type
   interface CustomUIConfig {
     invk: {
       // biome-ignore lint/style/useNamingConvention: constant
@@ -115,7 +78,7 @@ declare global {
       // biome-ignore lint/style/useNamingConvention: constant
       HERO_KV: HeroKeyValues;
 
-      hero: PlayerHeroInGame | null;
+      hero: cev.PlayerHeroInGame | null;
     };
   }
 }

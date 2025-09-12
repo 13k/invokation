@@ -1,29 +1,97 @@
 @import url("s2r://panorama/styles/dashboard_page_shared.css");
 @import url("file://{resources}/styles/shared/variables.css");
 
-.Root {
+@define bgColor0: #14181d;
+@define bgColor1: #0b0c0e;
+
+@define facetColorNoneAccent: #d6dad7;
+@define facetColorNoneSecondary: #79867c;
+
+@define facetGradientNone: gradient(
+  linear,
+  0% 0%,
+  100% 100%,
+  from(bgColor1),
+  color-stop(0.400, bgColor1),
+  color-stop(0.403, facetColorNoneSecondary),
+  color-stop(0.410, facetColorNoneAccent),
+  color-stop(0.650, facetColorNoneAccent),
+  color-stop(0.660, facetColorNoneSecondary),
+  color-stop(0.663, bgColor1),
+  to(bgColor1)
+);
+
+@define facetGradientQuas: gradient(
+  linear,
+  0% 0%,
+  100% 100%,
+  from(bgColor1),
+  color-stop(0.400, bgColor1),
+  color-stop(0.403, quasTextColor),
+  color-stop(0.410, quasAccentColor),
+  color-stop(0.650, quasAccentColor),
+  color-stop(0.660, quasTextColor),
+  color-stop(0.663, bgColor1),
+  to(bgColor1)
+);
+
+@define facetGradientWex: gradient(
+  linear,
+  0% 0%,
+  100% 100%,
+  from(bgColor1),
+  color-stop(0.400, bgColor1),
+  color-stop(0.403, wexTextColor),
+  color-stop(0.410, wexAccentColor),
+  color-stop(0.650, wexAccentColor),
+  color-stop(0.660, wexTextColor),
+  color-stop(0.663, bgColor1),
+  to(bgColor1)
+);
+
+@define facetGradientExort: gradient(
+  linear,
+  0% 0%,
+  100% 100%,
+  from(bgColor1),
+  color-stop(0.400, bgColor1),
+  color-stop(0.403, exortTextColor),
+  color-stop(0.410, exortAccentColor),
+  color-stop(0.650, exortAccentColor),
+  color-stop(0.660, exortTextColor),
+  color-stop(0.663, bgColor1),
+  to(bgColor1)
+);
+
+.root {
   width: 100%;
   height: 100%;
-  background-color: #14181d;
+  background-color: bgColor0;
 }
 
-.Root.Initialize {
-  background-color: gradient(
-    linear,
-    0% 0%,
-    100% 100%,
-    from(#0b0c0e),
-    color-stop(0.3, #14181d),
-    color-stop(0.303, #6c829c),
-    color-stop(0.31, #99b8dd),
-    color-stop(0.55, #99b8dd),
-    color-stop(0.56, #6c829c),
-    color-stop(0.563, #14181d),
-    to(#0b0c0e)
-  );
+.root.splash {
+  transition-timing-function: linear;
+  transition-duration: 0.66s;
+  transition-property: background-color;
 }
 
-#TitleFX {
+.root.splash-init {
+  background-color: facetGradientNone;
+}
+
+.root.facet-quas {
+  background-color: facetGradientQuas;
+}
+
+.root.facet-wex {
+  background-color: facetGradientWex;
+}
+
+.root.facet-exort {
+  background-color: facetGradientExort;
+}
+
+#title-fx {
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -33,11 +101,11 @@
   transform: translateX(64px) translateY(64px) translateZ(-40px);
 }
 
-#TitleFX.SceneLoaded {
+#title-fx.SceneLoaded {
   opacity: 1;
 }
 
-.TitlePanel {
+.title-panel {
   width: 300px;
   height: 300px;
   margin-top: 64px;
@@ -49,7 +117,7 @@
   animation-iteration-count: infinite;
 }
 
-.Title {
+.title {
   align: center center;
   width: 100%;
   font-family: titleFont;
@@ -63,16 +131,21 @@
   letter-spacing: -2px;
 }
 
-#Scene {
+#scene {
   width: 100%;
   height: 100%;
-  margin-left: -200px;
   opacity: 0;
-  transform: translateZ(-30px);
 }
 
-#Scene.SceneLoaded {
+#scene.SceneLoaded {
   opacity: 1;
+}
+
+#facet-scene {
+  align: right bottom;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes 'SunstrikeGlow' {

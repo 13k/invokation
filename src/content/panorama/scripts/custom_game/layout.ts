@@ -7,22 +7,19 @@ import type { CustomUiManifest } from "./custom_ui_manifest";
 import type { Freestyle } from "./freestyle";
 import type { Picker } from "./picker";
 import type { PickerCombo } from "./picker/combo";
-import type { TopBar } from "./top_bar";
-import type { Viewer } from "./viewer";
-import type { ViewerComboStep } from "./viewer/combo_step";
-import type { ViewerProperties } from "./viewer/properties";
-
-import type { InvokerSpellCard } from "./ui/invoker_spell_card";
-import type { ItemPicker } from "./ui/item_picker";
-import type { TagSelect } from "./ui/tag_select";
-import type { TalentsDisplay } from "./ui/talents_display";
-
 import type { PopupGameInfo } from "./popups/popup_game_info";
 import type { PopupInvokerAbilityPicker } from "./popups/popup_invoker_ability_picker";
 import type { PopupItemPicker } from "./popups/popup_item_picker";
 import type { PopupTextEntry } from "./popups/popup_text_entry";
-
 import type { TooltipStatBranch } from "./tooltips/tooltip_stat_branch";
+import type { TopBar } from "./top_bar";
+import type { InvokerSpellCard } from "./ui/invoker_spell_card";
+import type { ItemPicker } from "./ui/item_picker";
+import type { TagSelect } from "./ui/tag_select";
+import type { TalentsDisplay } from "./ui/talents_display";
+import type { Viewer } from "./viewer";
+import type { ViewerComboStep } from "./viewer/combo_step";
+import type { ViewerProperties } from "./viewer/properties";
 
 export enum LayoutId {
   // Components

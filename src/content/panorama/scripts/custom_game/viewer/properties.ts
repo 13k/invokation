@@ -65,11 +65,15 @@ class ViewerProperties extends Component<ViewerPropertiesElements, ViewerPropert
     }
 
     return new ParallelSequence()
-      .setDialogVariableInt(this.panel, DialogVar.HeroLevel, this.combo.heroLevel)
-      .setDialogVariable(this.panel, DialogVar.Specialty, this.combo.l10n.specialty)
-      .setDialogVariable(this.panel, DialogVar.Stance, this.combo.l10n.stance)
-      .setDialogVariable(this.panel, DialogVar.DamageRating, this.combo.l10n.damageRating)
-      .setDialogVariable(this.panel, DialogVar.DifficultyRating, this.combo.l10n.difficultyRating);
+      .setDialogVariableInteger(this.panel, DialogVar.HeroLevel, this.combo.heroLevel)
+      .setDialogVariableString(this.panel, DialogVar.Specialty, this.combo.l10n.specialty)
+      .setDialogVariableString(this.panel, DialogVar.Stance, this.combo.l10n.stance)
+      .setDialogVariableString(this.panel, DialogVar.DamageRating, this.combo.l10n.damageRating)
+      .setDialogVariableString(
+        this.panel,
+        DialogVar.DifficultyRating,
+        this.combo.l10n.difficultyRating,
+      );
   }
 
   setAttributesAction(): Action {
@@ -107,7 +111,7 @@ class ViewerProperties extends Component<ViewerPropertiesElements, ViewerPropert
       .add(this.setAttributesAction())
       .add(this.setClassesAction());
 
-    this.debugFn(() => ["render()", { id, actions: seq.deepSize() }]);
+    this.debugFn(() => ["render()", { id, len: seq.deepLength }]);
 
     seq.run();
   }

@@ -175,6 +175,8 @@ end
 --- @param payload dota2.events.game_rules_state_change
 function M:on_game_rules_state_change(state, payload)
   self:d("on_game_rules_state_change", { state = state, payload = payload })
+
+  self.game.state = state
 end
 
 --- Called once and only once after all players have loaded into the game,
@@ -217,7 +219,10 @@ end
 ---
 --- @param hero CDOTA_BaseNPC_Hero
 function M:on_hero_in_game(hero)
-  self:d("on_hero_in_game", { hero = hero:GetUnitName() })
+  self:d("on_hero_in_game", {
+    player = hero:GetPlayerOwnerID(),
+    hero = hero:GetUnitName(),
+  })
 
   local player = hero:GetPlayerOwner()
 

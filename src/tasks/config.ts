@@ -85,8 +85,8 @@ export class Config {
 
 // https://steamdb.info/app/570/config
 function configDota2(baseDir: Path, resourceCompilerOpt?: string[]): ConfigDota2 {
-  let gameBinPath: Path | undefined = undefined;
-  let sdkBinPath: Path | undefined = undefined;
+  let gameBinPath: Path | undefined;
+  let sdkBinPath: Path | undefined;
   let resourceCompiler: string[] | undefined = resourceCompilerOpt;
 
   if (PLATFORM.isWsl || PLATFORM.isWindows) {

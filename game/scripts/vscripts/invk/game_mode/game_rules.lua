@@ -10,12 +10,13 @@ function M.setup(env)
   -- launch
 
   if env == Env.DEVELOPMENT then
-    GameRules:EnableCustomGameSetupAutoLaunch(true)
     GameRules:LockCustomGameSetupTeamAssignment(true)
+    -- GameRules:EnableCustomGameSetupAutoLaunch(true)
+    GameRules:EnableCustomGameSetupAutoLaunch(false)
     GameRules:SetCustomGameSetupAutoLaunchDelay(0)
   else
-    GameRules:EnableCustomGameSetupAutoLaunch(S.ENABLE_AUTO_LAUNCH)
     GameRules:LockCustomGameSetupTeamAssignment(S.LOCK_TEAM_SETUP)
+    GameRules:EnableCustomGameSetupAutoLaunch(S.ENABLE_AUTO_LAUNCH)
     GameRules:SetCustomGameSetupAutoLaunchDelay(S.AUTO_LAUNCH_DELAY)
   end
 

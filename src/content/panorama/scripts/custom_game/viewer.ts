@@ -279,7 +279,7 @@ class Viewer extends Component<ViewerElements> {
   render(): void {
     const seq = new Sequence().add(this.renderAction());
 
-    this.debugFn(() => ["render()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["render()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -294,7 +294,7 @@ class Viewer extends Component<ViewerElements> {
 
     const seq = new Sequence().add(this.renderAction()).add(this.openAction());
 
-    this.debugFn(() => ["view()", { id, actions: seq.deepSize() }]);
+    this.debugFn(() => ["view()", { id, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -302,7 +302,7 @@ class Viewer extends Component<ViewerElements> {
   close(): void {
     const seq = new Sequence().add(this.closeAction());
 
-    this.debugFn(() => ["close()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["close()", { len: seq.deepLength }]);
 
     seq.run();
   }

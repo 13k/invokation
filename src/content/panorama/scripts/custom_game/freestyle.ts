@@ -189,7 +189,7 @@ class Freestyle extends Component<FreestyleElements> {
       .wait(Timing.StartDelay)
       .add(this.showAction());
 
-    this.debugFn(() => ["start()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["start()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -197,7 +197,7 @@ class Freestyle extends Component<FreestyleElements> {
   stop(): void {
     const seq = new Sequence().add(this.hideAction());
 
-    this.debugFn(() => ["stop()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["stop()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -210,7 +210,7 @@ class Freestyle extends Component<FreestyleElements> {
 
     const seq = new Sequence().add(this.updateScoreSummaryAction(options));
 
-    this.debugFn(() => ["progress()", { actions: seq.deepSize(), ...options }]);
+    this.debugFn(() => ["progress()", { len: seq.deepLength, ...options }]);
 
     seq.run();
   }

@@ -1,5 +1,6 @@
 import { Cache } from "./cache";
 import type { ComboId, Metrics } from "./combo";
+import type { Facet, FacetId } from "./dota2/invoker";
 import type { KeyValues } from "./kv";
 import { Logger } from "./logger";
 
@@ -12,7 +13,6 @@ type ListenerPayload<K extends CustomEvent, F = object> = NetworkedData<
 export type CustomEventListener<K extends CustomEvent> = (payload: ListenerPayload<K>) => void;
 
 declare global {
-  // biome-ignore lint/style/useNamingConvention: external type
   interface CustomUIConfig {
     // biome-ignore lint/style/useNamingConvention: constant
     CUSTOM_EVENTS_SUBSCRIPTIONS: Cache<GameEventListenerID>;
@@ -130,6 +130,8 @@ export function sendClientSide<K extends GameEvent>(
 // ----- Custom events definitions -----
 
 export enum GameEvent {
+  // facets
+  FacetSelect = "invk_facet_select",
   // combo viewer
   ViewerRender = "invk_viewer_render",
   // popups
@@ -141,6 +143,7 @@ export enum GameEvent {
 export enum CustomGameEvent {
   // player
   PlayerHeroInGame = "invk_player_hero_in_game",
+  PlayerFacetSelect = "invk_player_facet_select",
   PlayerQuitRequest = "invk_player_quit_request",
   // combos
   CombosReload = "invk_combos_reload",
@@ -166,6 +169,10 @@ export enum CustomGameEvent {
   ItemPickerQueryResponse = "invk_item_picker_query_response",
 }
 
+export interface FacetSelect {
+  id: FacetId;
+}
+
 export interface ViewerRender {
   id: ComboId;
 }
@@ -175,6 +182,8 @@ export interface PlayerHeroInGame {
   name: string;
   variant: number;
 }
+
+export interface PlayerFacetSelect extends Facet {}
 
 export type PlayerQuitRequest = Record<string, never>;
 

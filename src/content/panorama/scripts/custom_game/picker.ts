@@ -1,5 +1,3 @@
-import camelCase from "lodash-es/camelCase";
-
 import type {
   Combo,
   ComboId,
@@ -26,7 +24,7 @@ import type {
 } from "@invokation/panorama-lib/custom_events";
 import { CustomGameEvent, GameEvent } from "@invokation/panorama-lib/custom_events";
 import * as l10n from "@invokation/panorama-lib/l10n";
-import { SoundEvent, createLabel } from "@invokation/panorama-lib/panorama";
+import { createLabel, SoundEvent } from "@invokation/panorama-lib/panorama";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import {
   AddOptionAction,
@@ -40,6 +38,7 @@ import {
 import { parseEnumValue } from "@invokation/panorama-lib/util/enum";
 import { pascalCase } from "@invokation/panorama-lib/util/pascalCase";
 import { uniqueId } from "@invokation/panorama-lib/util/uniqueId";
+import camelCase from "lodash-es/camelCase";
 
 import type { Elements } from "./component";
 import { Component } from "./component";
@@ -635,7 +634,7 @@ class Picker extends Component<PickerElements> {
     const size = this.combosView.size;
     const seq = this.renderCombosSeq();
 
-    this.debugFn(() => ["renderCombos()", { combos: size, actions: seq.deepSize() }]);
+    this.debugFn(() => ["renderCombos()", { combos: size, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -643,7 +642,7 @@ class Picker extends Component<PickerElements> {
   renderFilters(): void {
     const seq = this.renderFiltersSeq();
 
-    this.debugFn(() => ["renderFilters()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["renderFilters()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -657,7 +656,7 @@ class Picker extends Component<PickerElements> {
       .playSoundEffect(SoundEvent.ShopOpen)
       .removeClass(this.elements.slideout, CssClass.DrawerClosed);
 
-    this.debugFn(() => ["open()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["open()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -671,7 +670,7 @@ class Picker extends Component<PickerElements> {
       .playSoundEffect(SoundEvent.ShopClose)
       .addClass(this.elements.slideout, CssClass.DrawerClosed);
 
-    this.debugFn(() => ["close()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["close()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -685,7 +684,7 @@ class Picker extends Component<PickerElements> {
       .playSoundEffect(SoundEvent.UiRolloverUp)
       .removeClass(this.elements.slideout, CssClass.FiltersClosed);
 
-    this.debugFn(() => ["openFilters()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["openFilters()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -699,7 +698,7 @@ class Picker extends Component<PickerElements> {
       .playSoundEffect(SoundEvent.UiRolloverDown)
       .addClass(this.elements.slideout, CssClass.FiltersClosed);
 
-    this.debugFn(() => ["closeFilters()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["closeFilters()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -717,7 +716,7 @@ class Picker extends Component<PickerElements> {
 
     seq.runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["filterByTags()", { tags: this.filterTags, actions: seq.deepSize() }]);
+    this.debugFn(() => ["filterByTags()", { tags: this.filterTags, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -728,7 +727,7 @@ class Picker extends Component<PickerElements> {
       .enable(this.elements.filterItemResetBtn)
       .runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["filterByItem()", { item: name, actions: seq.deepSize() }]);
+    this.debugFn(() => ["filterByItem()", { item: name, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -739,7 +738,7 @@ class Picker extends Component<PickerElements> {
       .enable(this.elements.filterAbilityResetBtn)
       .runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["filterByAbility()", { ability: name, actions: seq.deepSize() }]);
+    this.debugFn(() => ["filterByAbility()", { ability: name, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -754,7 +753,7 @@ class Picker extends Component<PickerElements> {
       .runFn(this.enableFiltering.bind(this))
       .runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["resetFilters()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["resetFilters()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -764,7 +763,7 @@ class Picker extends Component<PickerElements> {
       .add(this.resetItemFilterAction())
       .runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["resetItemFilter()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["resetItemFilter()", { len: seq.deepLength }]);
 
     seq.run();
   }
@@ -774,7 +773,7 @@ class Picker extends Component<PickerElements> {
       .add(this.resetAbilityFilterAction())
       .runFn(this.onFilterSubmit.bind(this));
 
-    this.debugFn(() => ["resetAbilityFilter()", { actions: seq.deepSize() }]);
+    this.debugFn(() => ["resetAbilityFilter()", { len: seq.deepLength }]);
 
     seq.run();
   }

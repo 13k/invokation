@@ -1,11 +1,8 @@
-// ----------------------------------------------------------------------------
-// Valve's sequence_actions.js
-// ----------------------------------------------------------------------------
+import type { Position } from "./panorama";
+import { controlPointParam, GameEntityInput, GameCssClass } from "./panorama";
 
-// Sequence actions are objects that you can use to queue up work to happen in a
-// sequence over time.
+export class StopSequence { }
 
-// Base action, which is something that will tick per-frame for a while until it's done.
 export abstract class Action {
   protected actions: Action[] = [];
 
@@ -14,11 +11,23 @@ export abstract class Action {
 
     if (action == null) {
       throw new Error(
-        `${this.constructor.name}: invalid action index=${index} actions=${this.actions.length}`,
+        `${this.constructor.name}: invalid action index=${index} actions=${this.length}`,
       );
     }
 
     return action;
+  }
+
+  get isEmpty(): boolean {
+    return this.length === 0;
+  }
+
+  get length(): number {
+    return this.actions.length;
+  }
+
+  get deepLength(): number {
+    return this.actions.reduce((size, action) => size + action.deepLength, 1);
   }
 
   add(...actions: Action[]): this {
@@ -27,43 +36,89 @@ export abstract class Action {
     return this;
   }
 
-  // The start function is called before the action starts executing.
   start(): void {
     return;
   }
 
-  // The update function is called once per frame until it returns false signalling that the action is done.
+  // return `false` to finish the action.
   update(): boolean {
     return false;
   }
 
-  // After the update function is complete, the finish function is called
   finish(): void {
     return;
   }
+}
 
-  get isEmpty(): boolean {
-    return this.actions.length === 0;
+// runners {{{
+
+abstract class Runner extends Action {
+  protected stopped: boolean = false;
+
+  stop(): void {
+    this.stopped = true;
   }
 
-  deepSize(): number {
-    return this.actions.reduce((size, action) => size + action.deepSize(), 1);
+  run(): void {
+    this.start();
+    this.loop();
+  }
+
+  loop(): void {
+    const tick = () => {
+      try {
+        if (this.update()) {
+          $.Schedule(0.0, tick);
+        } else {
+          this.finish();
+        }
+      } catch (err: unknown) {
+        // sequence stopped
+        if (err instanceof StopSequence) {
+          $.Msg("Runner : StopSequence");
+
+          this.stopped = true;
+
+          return this.finish();
+        }
+
+        if (err instanceof Error) {
+          this.#logError(err);
+        }
+
+        throw err;
+      }
+    };
+
+    tick();
+  }
+
+  #logError(err: Error) {
+    if (err.stack != null) {
+      $.Warning(err.stack);
+    }
+
+    if (err.cause instanceof Error) {
+      this.#logError(err.cause);
+    }
   }
 }
 
-class RunSequentialActions extends Action {
+class SequenceRunner extends Runner {
   #index = 0;
   #running = false;
-  #stop = false;
 
   override start(): void {
     this.#index = 0;
     this.#running = false;
-    this.#stop = false;
   }
 
   override update(): boolean {
-    while (this.#index < this.actions.length) {
+    if (this.stopped) {
+      return false;
+    }
+
+    while (this.#index < this.length) {
       const action = this.nth(this.#index);
 
       if (!this.#running) {
@@ -72,12 +127,8 @@ class RunSequentialActions extends Action {
         this.#running = true;
       }
 
-      try {
-        if (action.update()) {
-          return true;
-        }
-      } catch (err: unknown) {
-        return this.#handleError(err);
+      if (action.update()) {
+        return true;
       }
 
       action.finish();
@@ -90,11 +141,11 @@ class RunSequentialActions extends Action {
   }
 
   override finish(): void {
-    if (this.#stop) {
+    if (this.stopped) {
       return;
     }
 
-    while (this.#index < this.actions.length) {
+    while (this.#index < this.length) {
       const action = this.nth(this.#index);
 
       if (!this.#running) {
@@ -111,119 +162,13 @@ class RunSequentialActions extends Action {
       this.#index++;
     }
   }
-
-  #handleError(err: unknown): boolean {
-    if (err instanceof StopSequence) {
-      const skipCount = this.actions.length - this.#index + 1;
-
-      $.Msg("StopSequence", { current: this.#index, skipped: skipCount });
-
-      this.#stop = true;
-
-      return false;
-    }
-
-    throw err;
-  }
 }
 
-// Action to run multiple actions all at once. The action is complete once all sub actions are done.
-class RunParallelActions extends Action {
-  #actionsFinished: boolean[] = [];
-
-  override start(): void {
-    this.#actionsFinished = new Array(this.actions.length);
-
-    for (const [i, action] of this.actions.entries()) {
-      this.#actionsFinished[i] = false;
-
-      action.start();
-    }
-  }
-
-  override update(): boolean {
-    let anyTicking = false;
-
-    for (const [i, action] of this.actions.entries()) {
-      if (!this.#actionsFinished[i]) {
-        if (action.update()) {
-          anyTicking = true;
-        } else {
-          action.finish();
-
-          this.#actionsFinished[i] = true;
-        }
-      }
-    }
-
-    return anyTicking;
-  }
-
-  override finish(): void {
-    for (const [i, action] of this.actions.entries()) {
-      if (!this.#actionsFinished[i]) {
-        action.finish();
-
-        this.#actionsFinished[i] = true;
-      }
-    }
-  }
-}
-
-// Action to rum multiple actions in parallel, but with a slight stagger start between each of them
-class RunStaggeredActions extends Action {
-  #delay: number;
-  #runParallel: RunParallelActions;
-
-  constructor(delay: number) {
-    super();
-
-    this.#delay = delay;
-    this.#runParallel = new RunParallelActions();
-  }
-
-  override start(): void {
-    for (const [i, action] of this.actions.entries()) {
-      const delay = i * this.#delay;
-
-      if (delay > 0) {
-        const seq = new RunSequentialActions();
-
-        seq.add(new WaitAction(delay));
-        seq.add(action);
-
-        this.#runParallel.add(seq);
-      } else {
-        this.#runParallel.add(action);
-      }
-    }
-
-    this.#runParallel.start();
-  }
-
-  override update(): boolean {
-    return this.#runParallel.update();
-  }
-
-  override finish(): void {
-    this.#runParallel.finish();
-  }
-}
-
-// Runs a set of actions but stops as soon as any of them are finished.  continueOtherActions is a bool
-// that determines whether to continue ticking the remaining actions, or whether to just finish them immediately.
-class RunUntilSingleActionFinishedAction extends Action {
-  #keepRunning = false;
+class ParallelRunner extends Runner {
   #finished: boolean[] = [];
 
-  constructor(keepRunning: boolean) {
-    super();
-
-    this.#keepRunning = keepRunning;
-  }
-
   override start(): void {
-    this.#finished = new Array(this.actions.length);
+    this.#finished = new Array(this.length);
 
     for (const [i, action] of this.actions.entries()) {
       this.#finished[i] = false;
@@ -233,7 +178,109 @@ class RunUntilSingleActionFinishedAction extends Action {
   }
 
   override update(): boolean {
-    if (this.isEmpty) {
+    if (this.stopped) {
+      return false;
+    }
+
+    let anyTicking = false;
+
+    for (const [i, action] of this.actions.entries()) {
+      if (!this.#finished[i]) {
+        if (action.update()) {
+          anyTicking = true;
+        } else {
+          action.finish();
+
+          this.#finished[i] = true;
+        }
+      }
+    }
+
+    return anyTicking;
+  }
+
+  override finish(): void {
+    if (this.stopped) {
+      return;
+    }
+
+    for (const [i, action] of this.actions.entries()) {
+      if (!this.#finished[i]) {
+        action.finish();
+
+        this.#finished[i] = true;
+      }
+    }
+  }
+}
+
+class StaggeredRunner extends Runner {
+  #runner: SequenceRunner;
+  #wait: number;
+  #delay: number;
+
+  constructor(delay: number, wait: number = 0.0) {
+    super();
+
+    this.#runner = new SequenceRunner();
+    this.#wait = wait;
+    this.#delay = delay;
+  }
+
+  override start(): void {
+    if (this.#wait > 0) {
+      this.#runner.add(new WaitAction(this.#wait));
+    }
+
+    const staggered = new ParallelRunner();
+
+    for (const [i, action] of this.actions.entries()) {
+      const delay = i * this.#delay;
+
+      if (delay > 0) {
+        const seq = new SequenceRunner();
+
+        seq.add(new WaitAction(delay));
+        seq.add(action);
+
+        staggered.add(seq);
+      } else {
+        staggered.add(action);
+      }
+    }
+
+    this.#runner.add(staggered);
+    this.#runner.start();
+  }
+
+  override stop(): void {
+    this.#runner.stop();
+  }
+
+  override update(): boolean {
+    return this.#runner.update();
+  }
+
+  override finish(): void {
+    this.#runner.finish();
+  }
+}
+
+class ParallelAnyRunner extends Runner {
+  #finished: boolean[] = [];
+
+  override start(): void {
+    this.#finished = new Array(this.length);
+
+    for (const [i, action] of this.actions.entries()) {
+      this.#finished[i] = false;
+
+      action.start();
+    }
+  }
+
+  override update(): boolean {
+    if (this.stopped || this.isEmpty) {
       return false;
     }
 
@@ -252,42 +299,118 @@ class RunUntilSingleActionFinishedAction extends Action {
   }
 
   override finish(): void {
-    if (this.#keepRunning) {
-      // If we want to make sure the rest tick out, then build a new RunParallelActions of all
-      // the remaining actions, then have it tick out separately.
-      const runParallel = new RunParallelActions();
+    if (this.stopped) {
+      return;
+    }
 
-      for (const [i, action] of this.actions.entries()) {
-        if (!this.#finished[i]) {
-          runParallel.add(action);
-        }
-      }
-
-      if (!runParallel.isEmpty) {
-        UpdateSingleActionUntilFinished(runParallel);
-      }
-    } else {
-      // Just finish each action immediately
-      for (const [i, action] of this.actions.entries()) {
-        if (!this.#finished[i]) {
-          action.finish();
-        }
+    for (const [i, action] of this.actions.entries()) {
+      if (!this.#finished[i]) {
+        action.finish();
       }
     }
   }
 }
 
-export class PanelAction<T extends Panel> extends Action {
-  protected panel: T;
+export type ConditionalPredicate = () => boolean;
 
-  constructor(panel: T) {
+class ConditionalRunner<T extends Runner> extends Runner {
+  #inner: T;
+  #predicate: ConditionalPredicate;
+
+  constructor(inner: T, predicate: ConditionalPredicate) {
     super();
 
-    this.panel = panel;
+    this.#inner = inner;
+    this.#predicate = predicate;
+  }
+
+  override get isEmpty(): boolean {
+    return this.#inner.isEmpty;
+  }
+
+  override get length(): number {
+    return this.#inner.length;
+  }
+
+  override get deepLength(): number {
+    return this.#inner.deepLength;
+  }
+
+  override add(...actions: Action[]): this {
+    this.#inner.add(...actions);
+
+    return this;
+  }
+
+  override start(): void {
+    this.#inner.start();
+  }
+
+  override stop(): void {
+    this.#inner.stop();
+  }
+
+  override update(): boolean {
+    if (!this.#predicate()) {
+      $.Msg("ConditionalRunner : stop");
+
+      this.#inner.stop();
+    }
+
+    return this.#inner.update();
+  }
+
+  override finish(): void {
+    this.#inner.finish();
   }
 }
 
-// Action to wait for some amount of seconds before resuming
+// runners }}}
+// actions {{{
+
+export class NoopAction extends Action {
+  override update(): boolean {
+    return false;
+  }
+}
+
+export class PrintAction extends Action {
+  args: unknown[];
+
+  constructor(...args: unknown[]) {
+    super();
+
+    this.args = args;
+  }
+
+  override update(): boolean {
+    $.Msg(...this.args);
+
+    return false;
+  }
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: can't know types ahead of time
+type RunFunction = (...args: any[]) => void;
+
+export class RunFunctionAction<F extends RunFunction> extends Action {
+  #fn: F;
+  #args: Parameters<F>;
+
+  constructor(fn: F, ...args: Parameters<F>) {
+    super();
+
+    this.#fn = fn;
+    this.#args = args;
+  }
+
+  override update(): boolean {
+    this.#fn(...this.#args);
+
+    return false;
+  }
+}
+
 export class WaitAction extends Action {
   #duration: number;
   #endTimestamp = 0;
@@ -307,7 +430,6 @@ export class WaitAction extends Action {
   }
 }
 
-// Action to wait a single frame
 export class WaitOneFrameAction extends Action {
   #updated = false;
 
@@ -326,7 +448,74 @@ export class WaitOneFrameAction extends Action {
   }
 }
 
-// Action that waits for a specific event type to be fired on the given panel.
+export class WaitActionAction extends Action {
+  #action: Action;
+  #timeout: number;
+  #runner: ParallelAnyRunner;
+
+  constructor(action: Action, timeout: number) {
+    super();
+
+    this.#action = action;
+    this.#timeout = timeout;
+    this.#runner = new ParallelAnyRunner();
+  }
+
+  override start(): void {
+    this.#runner.add(new WaitAction(this.#timeout));
+    this.#runner.add(this.#action);
+    this.#runner.start();
+  }
+
+  override update(): boolean {
+    return this.#runner.update();
+  }
+
+  override finish(): void {
+    this.#runner.finish();
+  }
+}
+
+class PanelAction<T extends Panel> extends Action {
+  protected panel: T;
+
+  constructor(panel: T) {
+    super();
+
+    this.panel = panel;
+  }
+}
+
+export class SetAttributeAction<T extends Panel, K extends keyof T> extends PanelAction<T> {
+  #attribute: K;
+  #value: T[K];
+
+  constructor(panel: T, attribute: K, value: T[K]) {
+    super(panel);
+
+    this.#attribute = attribute;
+    this.#value = value;
+  }
+
+  override update(): boolean {
+    this.panel[this.#attribute] = this.#value;
+
+    return false;
+  }
+}
+
+export class EnableAction<T extends Panel> extends SetAttributeAction<T, "enabled"> {
+  constructor(panel: T) {
+    super(panel, "enabled", true);
+  }
+}
+
+export class DisableAction<T extends Panel> extends SetAttributeAction<T, "enabled"> {
+  constructor(panel: T) {
+    super(panel, "enabled", false);
+  }
+}
+
 export class WaitEventAction<T extends Panel> extends PanelAction<T> {
   #eventName: string;
   #receivedEvent = false;
@@ -350,39 +539,6 @@ export class WaitEventAction<T extends Panel> extends PanelAction<T> {
   }
 }
 
-// Run an action until it's complete, or until it hits a timeout. continueAfterTimeout is a bool
-// determining whether to continue ticking the action after it has timed out
-export class WaitActionAction extends Action {
-  #action: Action;
-  #timeoutDuration: number;
-  #continueAfterTimeout: boolean;
-  #runner: RunUntilSingleActionFinishedAction;
-
-  constructor(action: Action, timeoutDuration: number, continueAfterTimeout: boolean) {
-    super();
-
-    this.#action = action;
-    this.#timeoutDuration = timeoutDuration;
-    this.#continueAfterTimeout = continueAfterTimeout;
-    this.#runner = new RunUntilSingleActionFinishedAction(this.#continueAfterTimeout);
-  }
-
-  override start(): void {
-    this.#runner.add(this.#action);
-    this.#runner.add(new WaitAction(this.#timeoutDuration));
-    this.#runner.start();
-  }
-
-  override update(): boolean {
-    return this.#runner.update();
-  }
-
-  override finish(): void {
-    this.#runner.finish();
-  }
-}
-
-// Action to add a CSS class to a panel
 export class AddClassAction<T extends Panel> extends PanelAction<T> {
   #cssClass: string;
 
@@ -399,7 +555,6 @@ export class AddClassAction<T extends Panel> extends PanelAction<T> {
   }
 }
 
-// Action to remove a CSS class to a panel
 export class RemoveClassAction<T extends Panel> extends PanelAction<T> {
   #cssClass: string;
 
@@ -416,7 +571,6 @@ export class RemoveClassAction<T extends Panel> extends PanelAction<T> {
   }
 }
 
-// Switch a CSS class on a panel
 export class SwitchClassAction<T extends Panel> extends PanelAction<T> {
   #original: string;
   #replacement: string;
@@ -435,7 +589,25 @@ export class SwitchClassAction<T extends Panel> extends PanelAction<T> {
   }
 }
 
-// Action to wait for a class to appear on a panel
+export class ReplaceClassAction<T extends Panel> extends PanelAction<T> {
+  #original: string;
+  #replacement: string;
+
+  constructor(panel: T, original: string, replacement: string) {
+    super(panel);
+
+    this.#original = original;
+    this.#replacement = replacement;
+  }
+
+  override update(): boolean {
+    this.panel.RemoveClass(this.#original);
+    this.panel.AddClass(this.#replacement);
+
+    return false;
+  }
+}
+
 export class WaitClassAction<T extends Panel> extends PanelAction<T> {
   #cssClass: string;
 
@@ -450,38 +622,153 @@ export class WaitClassAction<T extends Panel> extends PanelAction<T> {
   }
 }
 
-// Action to set an integer dialog variable
-export class SetDialogVariableIntAction<T extends Panel> extends PanelAction<T> {
-  #dvar: string;
-  #value: number;
+export enum DialogVariableType {
+  String,
+  LocString,
+  PluralLocString,
+  Integer,
+  Time,
+}
 
-  constructor(panel: T, dvar: string, value: number) {
+interface DialogVariableArgs {
+  [DialogVariableType.String]: [string];
+  [DialogVariableType.LocString]: [string];
+  [DialogVariableType.PluralLocString]: [string, number];
+  [DialogVariableType.Integer]: [number];
+  [DialogVariableType.Time]: [number];
+}
+
+interface DialogVariableString {
+  args: DialogVariableArgs[DialogVariableType.String];
+}
+
+interface DialogVariableLocString {
+  args: DialogVariableArgs[DialogVariableType.LocString];
+}
+
+interface DialogVariablePluralLocString {
+  args: DialogVariableArgs[DialogVariableType.PluralLocString];
+}
+
+interface DialogVariableInteger {
+  args: DialogVariableArgs[DialogVariableType.Integer];
+}
+
+interface DialogVariableTime {
+  args: DialogVariableArgs[DialogVariableType.Time];
+}
+
+export class SetDialogVariableAction<
+  P extends Panel,
+  T extends DialogVariableType,
+> extends PanelAction<P> {
+  type: DialogVariableType;
+  name: string;
+  args: DialogVariableArgs[T];
+
+  constructor(panel: P, type: T, name: string, ...args: DialogVariableArgs[T]) {
     super(panel);
 
-    this.#dvar = dvar;
-    this.#value = value;
+    this.type = type;
+    this.name = name;
+    this.args = args;
+  }
+
+  #isString(): this is DialogVariableString {
+    return this.type === DialogVariableType.String;
+  }
+
+  #isLocString(): this is DialogVariableLocString {
+    return this.type === DialogVariableType.LocString;
+  }
+
+  #isPluralLocString(): this is DialogVariablePluralLocString {
+    return this.type === DialogVariableType.PluralLocString;
+  }
+
+  #isInteger(): this is DialogVariableInteger {
+    return this.type === DialogVariableType.Integer;
+  }
+
+  #isTime(): this is DialogVariableTime {
+    return this.type === DialogVariableType.Time;
   }
 
   override update(): boolean {
-    this.panel.SetDialogVariableInt(this.#dvar, this.#value);
+    if (this.#isString()) {
+      this.panel.SetDialogVariable(this.name, this.args[0]);
+    } else if (this.#isLocString()) {
+      this.panel.SetDialogVariableLocString(this.name, this.args[0]);
+    } else if (this.#isPluralLocString()) {
+      this.panel.SetDialogVariablePluralLocStringInt(this.name, this.args[0], this.args[1]);
+    } else if (this.#isInteger()) {
+      this.panel.SetDialogVariableInt(this.name, this.args[0]);
+    } else if (this.#isTime()) {
+      this.panel.SetDialogVariableTime(this.name, this.args[0]);
+    } else {
+      throw new Error(`invalid dialog variable type ${this.type}`);
+    }
 
     return false;
   }
 }
 
-// Action to animate an integer dialog variable over some duration of seconds
-export class AnimateDialogVariableIntAction<T extends Panel> extends PanelAction<T> {
-  #dvar: string;
+export class SetDialogVariableStringAction<T extends Panel> extends SetDialogVariableAction<
+  T,
+  DialogVariableType.String
+> {
+  constructor(panel: T, name: string, value: string) {
+    super(panel, DialogVariableType.String, name, value);
+  }
+}
+
+export class SetDialogVariableLocStringAction<T extends Panel> extends SetDialogVariableAction<
+  T,
+  DialogVariableType.LocString
+> {
+  constructor(panel: T, name: string, key: string) {
+    super(panel, DialogVariableType.LocString, name, key);
+  }
+}
+
+export class SetDialogVariablePluralLocStringAction<
+  T extends Panel,
+> extends SetDialogVariableAction<T, DialogVariableType.PluralLocString> {
+  constructor(panel: T, name: string, key: string, count: number) {
+    super(panel, DialogVariableType.PluralLocString, name, key, count);
+  }
+}
+
+export class SetDialogVariableIntegerAction<T extends Panel> extends SetDialogVariableAction<
+  T,
+  DialogVariableType.Integer
+> {
+  constructor(panel: T, name: string, value: number) {
+    super(panel, DialogVariableType.Integer, name, value);
+  }
+}
+
+export class SetDialogVariableTimeAction<T extends Panel> extends SetDialogVariableAction<
+  T,
+  DialogVariableType.Time
+> {
+  constructor(panel: T, name: string, value: number) {
+    super(panel, DialogVariableType.Time, name, value);
+  }
+}
+
+export class AnimateDialogVariableIntegerAction<T extends Panel> extends PanelAction<T> {
+  #name: string;
   #startValue: number;
   #endValue: number;
   #duration: number;
   #startTimestamp = 0;
   #endTimestamp = 0;
 
-  constructor(panel: T, dvar: string, startValue: number, endValue: number, duration: number) {
+  constructor(panel: T, name: string, startValue: number, endValue: number, duration: number) {
     super(panel);
 
-    this.#dvar = dvar;
+    this.#name = name;
     this.#startValue = startValue;
     this.#endValue = endValue;
     this.#duration = duration;
@@ -502,7 +789,7 @@ export class AnimateDialogVariableIntAction<T extends Panel> extends PanelAction
     const ratio = (now - this.#startTimestamp) / (this.#endTimestamp - this.#startTimestamp);
 
     this.panel.SetDialogVariableInt(
-      this.#dvar,
+      this.#name,
       this.#startValue + (this.#endValue - this.#startValue) * ratio,
     );
 
@@ -510,11 +797,10 @@ export class AnimateDialogVariableIntAction<T extends Panel> extends PanelAction
   }
 
   override finish(): void {
-    this.panel.SetDialogVariableInt(this.#dvar, this.#endValue);
+    this.panel.SetDialogVariableInt(this.#name, this.#endValue);
   }
 }
 
-// Action to set a progress bar's value
 export class SetProgressBarValueAction extends PanelAction<ProgressBar> {
   #value: number;
 
@@ -531,7 +817,6 @@ export class SetProgressBarValueAction extends PanelAction<ProgressBar> {
   }
 }
 
-// Action to animate a progress bar
 export class AnimateProgressBarAction extends PanelAction<ProgressBar> {
   #startValue: number;
   #endValue: number;
@@ -571,7 +856,6 @@ export class AnimateProgressBarAction extends PanelAction<ProgressBar> {
   }
 }
 
-// Action to animate a progress bar	with middle
 export class AnimateProgressBarWithMiddleAction extends PanelAction<ProgressBarWithMiddle> {
   #startValue: number;
   #endValue: number;
@@ -616,7 +900,6 @@ export class AnimateProgressBarWithMiddleAction extends PanelAction<ProgressBarW
   }
 }
 
-// Action to play a sound effect
 export class PlaySoundEffectAction extends Action {
   #soundName: string;
 
@@ -628,180 +911,6 @@ export class PlaySoundEffectAction extends Action {
 
   override update(): boolean {
     $.DispatchEvent("PlaySoundEffect", this.#soundName);
-
-    return false;
-  }
-}
-
-// ----------------------------------------------------------------------------
-
-// Helper function to asynchronously tick a single action until it's finished, then call finish on it.
-function UpdateSingleActionUntilFinished(action: Action): void {
-  const run = () => {
-    try {
-      if (action.update()) {
-        $.Schedule(0.0, run);
-      } else {
-        action.finish();
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        warnStack(err);
-      }
-
-      throw err;
-    }
-  };
-
-  run();
-}
-
-// Call RunSingleAction to start a single action and continue ticking it until it's done
-function RunSingleAction(action: Action): void {
-  action.start();
-
-  UpdateSingleActionUntilFinished(action);
-}
-
-function warnStack(err: Error) {
-  if (err.stack != null) {
-    $.Warning(err.stack);
-  }
-
-  if (err.cause instanceof Error) {
-    warnStack(err.cause);
-  }
-}
-
-// ----------------------------------------------------------------------------
-// END sequence_actions.js
-// ----------------------------------------------------------------------------
-
-export class NoopAction extends Action {
-  override update(): boolean {
-    return false;
-  }
-}
-
-// Action to print a debug message
-export class PrintAction extends Action {
-  args: unknown[];
-
-  constructor(...args: unknown[]) {
-    super();
-
-    this.args = args;
-  }
-
-  override update(): boolean {
-    $.Msg(...this.args);
-
-    return false;
-  }
-}
-
-// biome-ignore lint/suspicious/noExplicitAny: can't know types ahead of time
-type RunFunction = (...args: any[]) => void;
-
-// Action that simply runs a passed in function. You may include extra arguments and they will be passed to the called function.
-export class RunFunctionAction<F extends RunFunction> extends Action {
-  #fn: F;
-  #args: Parameters<F>;
-
-  constructor(fn: F, ...args: Parameters<F>) {
-    super();
-
-    this.#fn = fn;
-    this.#args = args;
-  }
-
-  override update(): boolean {
-    this.#fn(...this.#args);
-
-    return false;
-  }
-}
-
-export class ReplaceClassAction<T extends Panel> extends PanelAction<T> {
-  #original: string;
-  #replacement: string;
-
-  constructor(panel: T, original: string, replacement: string) {
-    super(panel);
-
-    this.#original = original;
-    this.#replacement = replacement;
-  }
-
-  override update(): boolean {
-    this.panel.RemoveClass(this.#original);
-    this.panel.AddClass(this.#replacement);
-
-    return false;
-  }
-}
-
-export class SetAttributeAction<T extends Panel, K extends keyof T> extends PanelAction<T> {
-  #attribute: K;
-  #value: T[K];
-
-  constructor(panel: T, attribute: K, value: T[K]) {
-    super(panel);
-
-    this.#attribute = attribute;
-    this.#value = value;
-  }
-
-  override update(): boolean {
-    this.panel[this.#attribute] = this.#value;
-
-    return false;
-  }
-}
-
-export class EnableAction<T extends Panel> extends SetAttributeAction<T, "enabled"> {
-  constructor(panel: T) {
-    super(panel, "enabled", true);
-  }
-}
-
-export class DisableAction<T extends Panel> extends SetAttributeAction<T, "enabled"> {
-  constructor(panel: T) {
-    super(panel, "enabled", false);
-  }
-}
-
-export class SetDialogVariableAction<T extends Panel> extends PanelAction<T> {
-  #dvar: string;
-  #value: string;
-
-  constructor(panel: T, dvar: string, value: string) {
-    super(panel);
-
-    this.#dvar = dvar;
-    this.#value = value;
-  }
-
-  override update(): boolean {
-    this.panel.SetDialogVariable(this.#dvar, this.#value);
-
-    return false;
-  }
-}
-
-export class SetDialogVariableTimeAction<T extends Panel> extends PanelAction<T> {
-  #dvar: string;
-  #value: number;
-
-  constructor(panel: T, dvar: string, value: number) {
-    super(panel);
-
-    this.#dvar = dvar;
-    this.#value = value;
-  }
-
-  override update(): boolean {
-    this.panel.SetDialogVariableTime(this.#dvar, this.#value);
 
     return false;
   }
@@ -933,38 +1042,99 @@ export class FireEntityInputAction extends PanelAction<ScenePanel> {
   }
 }
 
-abstract class SequenceBase<T extends Action> extends Action {
-  protected action: T;
+export class EmitSoundAction extends Action {
+  #soundName: string;
+  #callback: ((id: number) => void) | undefined;
 
-  constructor(action: T) {
+  constructor(soundName: string, callback?: (id: number) => void) {
     super();
 
-    this.action = action;
+    this.#soundName = soundName;
+    this.#callback = callback;
+  }
+
+  override update(): boolean {
+    const id = Game.EmitSound(this.#soundName);
+
+    if (this.#callback) {
+      this.#callback(id);
+    }
+
+    return false;
+  }
+}
+
+export class StopSoundAction extends Action {
+  #soundHandle: number;
+
+  constructor(soundHandle: number) {
+    super();
+
+    this.#soundHandle = soundHandle;
+  }
+
+  override update(): boolean {
+    Game.StopSound(this.#soundHandle);
+
+    return false;
+  }
+}
+
+// actions }}}
+// sequences {{{
+
+abstract class SequenceBase<T extends Runner> extends Runner {
+  #inner: T;
+
+  constructor(runner: T) {
+    super();
+
+    this.#inner = runner;
+  }
+
+  // ----- Runner API -----
+
+  override get isEmpty(): boolean {
+    return this.#inner.isEmpty;
+  }
+
+  override get length(): number {
+    return this.#inner.length;
+  }
+
+  override get deepLength(): number {
+    return this.#inner.deepLength;
   }
 
   override add(...actions: Action[]): this {
-    this.action.add(...actions);
+    this.#inner.add(...actions);
 
     return this;
   }
 
   override start(): void {
-    this.action.start();
+    this.#inner.start();
+  }
+
+  override stop(): void {
+    this.#inner.stop();
   }
 
   override update(): boolean {
-    return this.action.update();
+    return this.#inner.update();
   }
 
   override finish(): void {
-    this.action.finish();
-  }
-
-  run(): void {
-    RunSingleAction(this.action);
+    this.#inner.finish();
   }
 
   // ----- actions -----
+
+  tap(tapFn: (seq: this) => void): this {
+    tapFn(this);
+
+    return this;
+  }
 
   noop(): this {
     return this.add(new NoopAction());
@@ -986,12 +1156,28 @@ abstract class SequenceBase<T extends Action> extends Action {
     return this.add(new WaitOneFrameAction());
   }
 
+  waitAction(action: Action, timeout: number): this {
+    return this.add(new WaitActionAction(action, timeout));
+  }
+
+  enable<T extends Panel>(panel: T): this {
+    return this.add(new EnableAction(panel));
+  }
+
+  disable<T extends Panel>(panel: T): this {
+    return this.add(new DisableAction(panel));
+  }
+
+  focus<T extends Panel>(panel: T): this {
+    return this.add(new FocusAction(panel));
+  }
+
   waitEvent<T extends Panel>(panel: T, eventName: string): this {
     return this.add(new WaitEventAction(panel, eventName));
   }
 
-  waitAction(action: Action, timeoutDuration: number, continueAfterTimeout: boolean): this {
-    return this.add(new WaitActionAction(action, timeoutDuration, continueAfterTimeout));
+  waitClass<T extends Panel>(panel: T, cssClass: string): this {
+    return this.add(new WaitClassAction(panel, cssClass));
   }
 
   addClass<T extends Panel>(panel: T, cssClass: string): this {
@@ -1010,16 +1196,12 @@ abstract class SequenceBase<T extends Action> extends Action {
     return this.add(new ReplaceClassAction(panel, original, replacement));
   }
 
-  waitClass<T extends Panel>(panel: T, cssClass: string): this {
-    return this.add(new WaitClassAction(panel, cssClass));
+  removeChildren<T extends Panel>(panel: T): this {
+    return this.add(new RemoveChildrenAction(panel));
   }
 
   deleteAsync<T extends Panel>(panel: T, delay: number): this {
     return this.add(new DeleteAsyncAction(panel, delay));
-  }
-
-  removeChildren<T extends Panel>(panel: T): this {
-    return this.add(new RemoveChildrenAction(panel));
   }
 
   scrollToTop<T extends Panel>(panel: T): this {
@@ -1030,42 +1212,52 @@ abstract class SequenceBase<T extends Action> extends Action {
     return this.add(new ScrollToBottomAction(panel));
   }
 
-  enable<T extends Panel>(panel: T): this {
-    return this.add(new EnableAction(panel));
-  }
-
-  disable<T extends Panel>(panel: T): this {
-    return this.add(new DisableAction(panel));
-  }
-
-  focus<T extends Panel>(panel: T): this {
-    return this.add(new FocusAction(panel));
-  }
-
   setAttribute<T extends Panel, K extends keyof T>(panel: T, attribute: K, value: T[K]): this {
     return this.add(new SetAttributeAction(panel, attribute, value));
   }
 
-  setDialogVariable<T extends Panel>(panel: T, dvar: string, value: string): this {
-    return this.add(new SetDialogVariableAction(panel, dvar, value));
-  }
-
-  setDialogVariableInt<T extends Panel>(panel: T, dvar: string, value: number): this {
-    return this.add(new SetDialogVariableIntAction(panel, dvar, value));
-  }
-
-  setDialogVariableTime<T extends Panel>(panel: T, dvar: string, value: number): this {
-    return this.add(new SetDialogVariableTimeAction(panel, dvar, value));
-  }
-
-  animateDialogVariableInt<T extends Panel>(
+  setDialogVariable<T extends Panel>(
     panel: T,
-    dvar: string,
+    type: DialogVariableType,
+    name: string,
+    ...args: DialogVariableArgs[typeof type]
+  ): this {
+    return this.add(new SetDialogVariableAction(panel, type, name, ...args));
+  }
+
+  setDialogVariableString<T extends Panel>(panel: T, name: string, value: string): this {
+    return this.add(new SetDialogVariableStringAction(panel, name, value));
+  }
+
+  setDialogVariableLocString<T extends Panel>(panel: T, name: string, key: string): this {
+    return this.add(new SetDialogVariableLocStringAction(panel, name, key));
+  }
+
+  setDialogVariablePluralLocString<T extends Panel>(
+    panel: T,
+    name: string,
+    key: string,
+    count: number,
+  ): this {
+    return this.add(new SetDialogVariablePluralLocStringAction(panel, name, key, count));
+  }
+
+  setDialogVariableInteger<T extends Panel>(panel: T, name: string, value: number): this {
+    return this.add(new SetDialogVariableIntegerAction(panel, name, value));
+  }
+
+  setDialogVariableTime<T extends Panel>(panel: T, name: string, value: number): this {
+    return this.add(new SetDialogVariableTimeAction(panel, name, value));
+  }
+
+  animateDialogVariableInteger<T extends Panel>(
+    panel: T,
+    name: string,
     start: number,
     end: number,
     duration: number,
   ): this {
-    return this.add(new AnimateDialogVariableIntAction(panel, dvar, start, end, duration));
+    return this.add(new AnimateDialogVariableIntegerAction(panel, name, start, end, duration));
   }
 
   setProgressBarValue(panel: ProgressBar, value: number): this {
@@ -1106,8 +1298,20 @@ abstract class SequenceBase<T extends Action> extends Action {
     return this.add(new SelectOptionAction(panel, optionId));
   }
 
+  emitSound(soundName: string, callback?: (id: number) => void): this {
+    return this.add(new EmitSoundAction(soundName, callback));
+  }
+
+  stopSound(soundHandle: number): this {
+    return this.add(new StopSoundAction(soundHandle));
+  }
+
   playSoundEffect(soundName: string): this {
     return this.add(new PlaySoundEffectAction(soundName));
+  }
+
+  waitSceneLoad(panel: ScenePanel): this {
+    return this.waitClass(panel, GameCssClass.ScenePanelLoaded);
   }
 
   fireEntityInput(
@@ -1118,30 +1322,184 @@ abstract class SequenceBase<T extends Action> extends Action {
   ): this {
     return this.add(new FireEntityInputAction(panel, entityName, inputName, inputArg));
   }
+
+  startEntity(panel: ScenePanel, entityName: string): this {
+    return this.fireEntityInput(panel, entityName, GameEntityInput.Start, "");
+  }
+
+  stopEntityEndcap(panel: ScenePanel, entityName: string): this {
+    return this.fireEntityInput(panel, entityName, GameEntityInput.StopEndcap, "");
+  }
+
+  setEntityAnimation(panel: ScenePanel, entityName: string, animation: string): this {
+    return this.fireEntityInput(panel, entityName, GameEntityInput.SetAnimation, animation);
+  }
+
+  setEntityControlPoint(
+    panel: ScenePanel,
+    entityName: string,
+    index: number,
+    pos: Position
+  ): this {
+    return this.fireEntityInput(
+      panel,
+      entityName,
+      GameEntityInput.SetControlPoint,
+      controlPointParam(index, pos),
+    );
+  }
+
+  // ----- nested sequences -----
+
+  seq(fn: (seq: Sequence) => void): this {
+    const seq = new Sequence();
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  seqAfter(wait: number, fn: (seq: Sequence) => void): this {
+    return this.seq((seq) => {
+      seq.wait(wait);
+      fn(seq);
+    });
+  }
+
+  seqWhile(
+    predicate: ConditionalPredicate,
+    fn: ((seq: ConditionalSequence) => void)
+  ): this {
+    const seq = new ConditionalSequence(predicate);
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  parallel(
+    fn: ((seq: ParallelSequence) => void)
+  ): this {
+    const seq = new ParallelSequence();
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  parallelAfter(wait: number, fn: (seq: ParallelSequence) => void): this {
+    return this.seqAfter(wait, (seq) => { seq.parallel(fn) });
+  }
+
+  parallelWhile(
+    predicate: ConditionalPredicate,
+    fn: ((seq: ConditionalParallelSequence) => void)
+  ): this {
+    const seq = new ConditionalParallelSequence(predicate);
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  parallelAny(fn: ((seq: ParallelAnySequence) => void)): this {
+    const seq = new ParallelAnySequence();
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  parallelAnyWhile(
+    predicate: ConditionalPredicate,
+    fn: ((seq: ConditionalParallelAnySequence) => void)
+  ): this {
+    const seq = new ConditionalParallelAnySequence(predicate);
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  stagger(delay: number, wait: number, fn: ((seq: StaggeredSequence) => void)): this {
+    const seq = new StaggeredSequence(delay, wait);
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
+
+  staggerNow(delay: number, fn: ((seq: StaggeredSequence) => void)): this {
+    const seq = new StaggeredSequence(delay);
+
+    fn(seq);
+
+    this.add(seq);
+
+    return this;
+  }
 }
 
-export class Sequence extends SequenceBase<RunSequentialActions> {
+export class Sequence extends SequenceBase<SequenceRunner> {
   constructor() {
-    super(new RunSequentialActions());
+    super(new SequenceRunner());
   }
 }
 
-export class ParallelSequence extends SequenceBase<RunParallelActions> {
+export class ConditionalSequence extends SequenceBase<ConditionalRunner<SequenceRunner>> {
+  constructor(predicate: ConditionalPredicate) {
+    super(new ConditionalRunner(new SequenceRunner(), predicate));
+  }
+}
+
+export class ParallelSequence extends SequenceBase<ParallelRunner> {
   constructor() {
-    super(new RunParallelActions());
+    super(new ParallelRunner());
   }
 }
 
-export class ParallelAnySequence extends SequenceBase<RunUntilSingleActionFinishedAction> {
-  constructor(keepRunning: boolean) {
-    super(new RunUntilSingleActionFinishedAction(keepRunning));
+export class ConditionalParallelSequence extends SequenceBase<ConditionalRunner<ParallelRunner>> {
+  constructor(predicate: ConditionalPredicate) {
+    super(new ConditionalRunner(new ParallelRunner(), predicate));
   }
 }
 
-export class StaggeredSequence extends SequenceBase<RunStaggeredActions> {
-  constructor(delay: number) {
-    super(new RunStaggeredActions(delay));
+export class ParallelAnySequence extends SequenceBase<ParallelAnyRunner> {
+  constructor() {
+    super(new ParallelAnyRunner());
   }
 }
 
-export class StopSequence {}
+export class ConditionalParallelAnySequence extends SequenceBase<ConditionalRunner<ParallelAnyRunner>> {
+  constructor(predicate: ConditionalPredicate) {
+    super(new ConditionalRunner(new ParallelAnyRunner(), predicate));
+  }
+}
+
+export class StaggeredSequence extends SequenceBase<StaggeredRunner> {
+  constructor(delay: number, wait: number = 0.0) {
+    super(new StaggeredRunner(delay, wait));
+  }
+}
+
+export class ConditionalStaggeredSequence extends SequenceBase<ConditionalRunner<StaggeredRunner>> {
+  constructor(delay: number, wait: number, predicate: ConditionalPredicate) {
+    super(new ConditionalRunner(new StaggeredRunner(delay, wait), predicate));
+  }
+}
+
+// sequences }}}

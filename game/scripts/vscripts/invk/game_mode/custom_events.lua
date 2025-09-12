@@ -40,6 +40,7 @@ function M:register()
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_START, "on_combat_log_capture_start")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBAT_LOG_CAPTURE_STOP, "on_combat_log_capture_stop")
   self:subscribe(CUSTOM_EVENTS.EVENT_ITEM_PICKER_QUERY_REQUEST, "on_item_picker_query")
+  self:subscribe("invk_player_facet_select", "on_player_facet_select")
 end
 
 --- @param fn_name string
@@ -65,6 +66,50 @@ end
 --- @return CustomGameEventListenerID
 function M:subscribe(event, method_name)
   return custom_ev.subscribe(event, self:method_handler(method_name))
+end
+
+--- @class invk.custom_events.PlayerFacetSelect
+--- @field id integer
+--- @field variant integer
+--- @field name string
+
+--- @param player CDOTAPlayerController
+--- @param payload invk.custom_events.PlayerFacetSelect
+function M:on_player_facet_select(player, payload)
+  self:d("on_player_facet_select", { player = player:GetPlayerID(), payload = payload })
+
+  if self.game.state ~= DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
+    self:warnf("received event %q outside custom game setup state", "invk_player_facet_select")
+    return
+  end
+
+  local player_id = player:GetPlayerID()
+  local hero_name = require("invk.const.units").INVOKER
+
+  DebugCreateHeroWithVariant(
+    player,
+    hero_name,
+    payload.id,
+    player:GetTeam(),
+    true,
+    --- @diagnostic disable-next-line: param-type-not-match
+    --- @param hero CDOTA_BaseNPC_Hero
+    function(hero)
+      local fake_owner = hero:GetPlayerOwner()
+      local fake_owner_id = fake_owner:GetPlayerID()
+
+      hero:SetPlayerID(player_id)
+      hero:SetOwner(player)
+      hero:SetControllableByPlayer(player_id, true)
+
+      player:SetTeam(DOTA_TEAM_GOODGUYS)
+      player:SetAssignedHeroEntity(hero)
+
+      DisconnectClient(fake_owner_id, true)
+      GameRules:RemoveFakeClient(fake_owner_id)
+      GameRules:FinishCustomGameSetup()
+    end
+  )
 end
 
 --- Handles player quit request events.

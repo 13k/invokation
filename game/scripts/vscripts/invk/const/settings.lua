@@ -32,7 +32,7 @@ M.LOCK_TEAM_SETUP = true
 ---
 --- `GameRules:SetCustomGameSetupRemainingTime(float)`
 --- @type number
-M.GAME_SETUP_TIME = 0
+M.GAME_SETUP_TIME = -1
 
 --- Setup (pre-gameplay) phase timeout (instant: 0, infinite: -1).
 ---
@@ -43,7 +43,7 @@ M.GAME_SETUP_TIME = 0
 ---
 --- `GameRules:SetCustomGameSetupTimeout(float)`
 --- @type number
-M.GAME_SETUP_TIMEOUT = 1
+M.GAME_SETUP_TIMEOUT = -1
 
 --- Sets the amount of time players have to pick their hero.
 ---
@@ -70,7 +70,8 @@ M.ALLOW_SAME_HERO_SELECTION = true
 ---
 --- `GameMode:SetCustomGameForceHero(pHeroName)`
 --- @type string?
-M.FORCE_PICKED_HERO = UNITS.INVOKER
+-- M.FORCE_PICKED_HERO = UNITS.INVOKER
+M.FORCE_PICKED_HERO = nil
 
 --- Sets the amount of time players have between the hero selection and entering the showcase phase.
 ---

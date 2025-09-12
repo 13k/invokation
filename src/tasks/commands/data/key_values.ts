@@ -114,7 +114,7 @@ Parse and convert a KeyValues file \
     assert(doc != null, message("document is null"));
     assert(typeof doc === "object", message("document is not an object"));
 
-    let kind: Kind | undefined = undefined;
+    let kind: Kind | undefined;
 
     for (const key of Object.values(Kind)) {
       if (key in doc) {

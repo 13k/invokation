@@ -1,5 +1,3 @@
-import sortedIndex from "lodash-es/sortedIndex";
-
 import { UiEvent } from "@invokation/panorama-lib/panorama";
 import {
   AddClassAction,
@@ -9,6 +7,7 @@ import {
   Sequence,
   StaggeredSequence,
 } from "@invokation/panorama-lib/sequence";
+import sortedIndex from "lodash-es/sortedIndex";
 
 import type { Elements, Inputs } from "./component";
 import { Component } from "./component";

@@ -1,0 +1,19 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/game_setup.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/game_setup.css" />
+  </styles>
+
+  <Panel class="root" hittest="false">
+    <Panel id="controls">
+      <DOTAUIHeroFacetDropdown id="facet-picker" />
+
+      <Button id="play" disabled="true">
+        <Label text="PLAY" />
+      </Button>
+    </Panel>
+  </Panel>
+</root>

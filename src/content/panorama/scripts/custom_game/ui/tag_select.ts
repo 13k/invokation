@@ -1,5 +1,3 @@
-import kebabCase from "lodash-es/kebabCase";
-
 import type { PopupTextEntrySubmit } from "@invokation/panorama-lib/custom_events";
 import { GameEvent } from "@invokation/panorama-lib/custom_events";
 import * as l10n from "@invokation/panorama-lib/l10n";
@@ -13,6 +11,7 @@ import {
   StopSequence,
 } from "@invokation/panorama-lib/sequence";
 import { uniqueId } from "@invokation/panorama-lib/util/uniqueId";
+import kebabCase from "lodash-es/kebabCase";
 
 import type { Elements, Inputs, Outputs } from "../component";
 import { Component } from "../component";
@@ -318,7 +317,7 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
   renderOptions(): void {
     const seq = new Sequence().add(this.renderOptionsAction());
 
-    this.debugFn(() => ["renderOptions()", { options: this.options, actions: seq.deepSize() }]);
+    this.debugFn(() => ["renderOptions()", { options: this.options, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -327,7 +326,7 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
     const tag = normalizeTag(rawTag);
     const seq = new Sequence().add(this.addTagAction(tag)).runFn(this.notifyChange.bind(this));
 
-    this.debugFn(() => ["addTag()", { tag, actions: seq.deepSize() }]);
+    this.debugFn(() => ["addTag()", { tag, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -336,7 +335,7 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
     const tag = normalizeTag(rawTag);
     const seq = new Sequence().add(this.removeTagAction(tag)).runFn(this.notifyChange.bind(this));
 
-    this.debugFn(() => ["removeTag()", { tag, actions: seq.deepSize() }]);
+    this.debugFn(() => ["removeTag()", { tag, len: seq.deepLength }]);
 
     seq.run();
   }
@@ -344,7 +343,7 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
   clearTags(): void {
     const seq = new Sequence().add(this.clearTagsAction()).runFn(this.notifyChange.bind(this));
 
-    this.debugFn(() => ["clearTags()", { tags: this.tags.size, actions: seq.deepSize() }]);
+    this.debugFn(() => ["clearTags()", { tags: this.tags.size, len: seq.deepLength }]);
 
     seq.run();
   }
