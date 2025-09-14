@@ -1,6 +1,6 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
+@import url('file://{resources}/styles/shared/panelstyles.css');
 
 @define scoreWidth: 250px;
 @define scoreHeight: 120px;
@@ -24,7 +24,7 @@
   height: 100%;
   padding-top: 80px;
   padding-bottom: 80px;
-  background-color: comboPanelGradient;
+  background-color: gradient(linear, 0% 50%, 100% 50%, from(#00000000), to(#000000ee));
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
@@ -141,7 +141,7 @@
 .ChallengeControls .ChallengeControlIcon:hover {
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
-  background-color: panelTranslucentHoverGradient;
+  background-color: gPanelTranslucentHover;
 }
 
 .ChallengeControls .ChallengeIconButton {
@@ -155,7 +155,7 @@
 }
 
 .ChallengeControls .ChallengeIconButton.Activated {
-  sound: "ui_quit_menu_fadeout";
+  sound: 'ui_quit_menu_fadeout';
 }
 
 .ChallengeControls .InfoIcon {

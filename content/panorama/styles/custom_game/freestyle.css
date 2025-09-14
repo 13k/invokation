@@ -1,6 +1,6 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
+@import url('file://{resources}/styles/shared/panelstyles.css');
 
 @define scoreWidth: 275px;
 @define scoreHeight: 120px;
@@ -37,7 +37,7 @@
 .FreestyleControls .FreestyleControlIcon:hover {
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
-  background-color: panelTranslucentHoverGradient;
+  background-color: gPanelTranslucentHover;
 }
 
 .FreestyleControls .FreestyleIconButton {
@@ -51,7 +51,7 @@
 }
 
 .FreestyleControls .FreestyleIconButton.Activated {
-  sound: "ui_quit_menu_fadeout";
+  sound: 'ui_quit_menu_fadeout';
 }
 
 .FreestyleControls .FullRefreshIcon {

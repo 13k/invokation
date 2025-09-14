@@ -1,4 +1,4 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('file://{resources}/styles/shared/variables.css');
 
 @define counterWidth: 250px;
 @define counterHeight: 120px;

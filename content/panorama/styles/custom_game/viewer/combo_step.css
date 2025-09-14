@@ -1,4 +1,4 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('file://{resources}/styles/shared/variables.css');
 
 .ViewerComboStepRoot {
   flow-children: right;
@@ -9,7 +9,7 @@
   width: 48px;
   height: 48px;
   background-color: #000d;
-  box-shadow: goldColorBright 0 0 2px 2px;
+  box-shadow: cGoldBright 0 0 2px 2px;
 }
 
 .ViewerComboStepRoot.ComboStepOptional .ViewerComboStepIcon {

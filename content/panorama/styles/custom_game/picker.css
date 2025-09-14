@@ -1,6 +1,6 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
+@import url('file://{resources}/styles/shared/panelstyles.css');
 
 /*
 pickerCombosWidth = combosWidth + thumbWidth
@@ -57,13 +57,27 @@ pickerClosedWidth = thumbWidth
   height: thumbHeight;
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
-  background-color: pickerThumbGradient;
+  background-color: gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(cTextQuas),
+    color-stop(0.33, cTextWex),
+    to(cTextExort)
+  );
   box-shadow: none;
   vertical-align: center;
 }
 
 .PickerThumb:hover {
-  background-color: pickerThumbHoverGradient;
+  background-color: gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(cTextQuasDD),
+    color-stop(0.33, cTextWexDD),
+    to(cTextExortDD)
+  );
 }
 
 .PickerThumb .PanelSlideThumbArrow {
@@ -171,7 +185,7 @@ pickerClosedWidth = thumbWidth
   overflow: noclip scroll;
 }
 
-#PickerCombos verticalscrollbar {
+#PickerCombos #VerticalScrollBar {
   horizontal-align: left;
 }
 

@@ -1,6 +1,6 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/panelstyles.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
+@import url('file://{resources}/styles/shared/panelstyles.css');
 
 /* clWidth = ((clCellSize + (2 * clCellMargin)) * clColumns) + (2 * clPadding) + clScrollWidth */
 
@@ -98,7 +98,7 @@
   color: white;
   font-weight: bold;
   font-size: 16px;
-  font-family: defaultFont;
+  font-family: fDefault;
   letter-spacing: 2px;
   text-overflow: shrink;
   text-shadow: 1px 1px 0 3 #0006;

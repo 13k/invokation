@@ -1,4 +1,4 @@
-@import url("s2r://panorama/styles/popups/popups_shared.css");
+@import url('s2r://panorama/styles/popups/popups_shared.css');
 
 @define backgroundColor: gradient(linear, 0% 0%, 0% 25%, from(#232326), to(#1c1d20));
 @define backgroundColorStep0: gradient(linear, 0% 0%, 0% 25%, from(#32383677), to(#000e));
@@ -11,7 +11,7 @@
   box-shadow: #0009 0 0 8px 0;
 }
 
-@keyframes "links-and-more-button-focus" {
+@keyframes 'links-and-more-button-focus' {
   0% {
     background-color: backgroundColorStep0;
   }

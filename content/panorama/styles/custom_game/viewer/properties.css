@@ -1,6 +1,6 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
-@import url("file://{resources}/styles/shared/rating.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
+@import url('file://{resources}/styles/shared/rating.css');
 
 @define fgColor: #3c1b18;
 @define fgColorBright: #3c1b18; /* fgColor&99 */

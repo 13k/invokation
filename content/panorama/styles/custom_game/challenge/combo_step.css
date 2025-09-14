@@ -1,11 +1,11 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('file://{resources}/styles/shared/variables.css');
 
 .ChallengeComboStepRoot {
   align: center center;
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  border: 3px solid goldColor;
+  border: 3px solid cGold;
   background-color: #241200;
   wash-color: #666e;
   opacity-mask: softEdgeBoxMask;
@@ -54,7 +54,7 @@
   vertical-align: center;
 }
 
-@keyframes "ChallengeComboStepBump" {
+@keyframes 'ChallengeComboStepBump' {
   0% {
     opacity: 0;
     pre-transform-scale2d: 0;

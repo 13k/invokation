@@ -1,4 +1,4 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('file://{resources}/styles/shared/variables.css');
 
 .root {
   align: center center;
@@ -54,9 +54,9 @@
     linear,
     0% 100%,
     100% 100%,
-    from(quasAccentColorDark),
-    color-stop(0.5, wexAccentColorDark),
-    to(exortAccentColorDark)
+    from(cQuasAccentDark),
+    color-stop(0.5, cWexAccentDark),
+    to(cExortAccentDark)
   );
 }
 

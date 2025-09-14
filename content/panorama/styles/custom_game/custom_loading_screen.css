@@ -1,5 +1,11 @@
-@import url("s2r://panorama/styles/dashboard_page_shared.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('s2r://panorama/styles/dashboard_page_shared.css');
+@import url('file://{resources}/styles/shared/variables.css');
+
+@define gInvkSun: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6,
+  #ff9100c2), to(#00000000));
+
+@define gInvkSunFading: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6,
+  #ce7909c2), to(#00000000));
 
 .Root {
   width: 100%;
@@ -42,7 +48,7 @@
   height: 300px;
   margin-top: 64px;
   margin-left: 64px;
-  background-color: invokationSunGradient;
+  background-color: gInvkSun;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -55,7 +61,7 @@
   color: #bbb6ae;
   font-weight: semi-bold;
   font-size: 80px;
-  font-family: titleFont;
+  font-family: fTitle;
   letter-spacing: -2px;
   text-align: center;
   text-overflow: shrink;
@@ -75,16 +81,16 @@
   opacity: 1;
 }
 
-@keyframes "SunstrikeGlow" {
+@keyframes 'SunstrikeGlow' {
   0% {
-    background-color: invokationSunGradient;
+    background-color: gInvkSun;
   }
 
   50% {
-    background-color: invokationSunFadingGradient;
+    background-color: gInvkSunFading;
   }
 
   100% {
-    background-color: invokationSunGradient;
+    background-color: gInvkSun;
   }
 }

@@ -1,5 +1,5 @@
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
 
 .TopBarRoot {
   flow-children: right;
@@ -46,5 +46,5 @@
 }
 
 #BtnQuit.Activated {
-  sound: "ui.menu_quit";
+  sound: 'ui.menu_quit';
 }

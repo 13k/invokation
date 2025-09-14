@@ -2,10 +2,10 @@
  * Shamelessly ripped from Valve's Invoker kid persona leaf page.
  **/
 
-@import url("s2r://panorama/styles/dotastyles.css");
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('s2r://panorama/styles/dotastyles.css');
+@import url('file://{resources}/styles/shared/variables.css');
 
-@define fgColor: #3c1b18;
+@define cText: #3c1b18;
 
 .ViewerRoot {
   width: 100%;
@@ -74,7 +74,7 @@
   width: 555px;
   margin-left: 45px;
   padding: 0 25px;
-  color: fgColor;
+  color: cText;
   font-weight: black;
   font-size: 21px;
   letter-spacing: 2px;
@@ -102,7 +102,7 @@
 #ViewerDescription {
   width: 100%;
   margin-top: 18px;
-  color: fgColor;
+  color: cText;
   font-weight: semi-bold;
   font-size: 18px;
   line-height: 21px;
@@ -116,7 +116,7 @@
 }
 
 .ViewerSection .SectionLabel {
-  color: fgColor;
+  color: cText;
   font-weight: semi-bold;
   font-size: 18px;
 }
@@ -130,7 +130,7 @@
 .ViewerSection .SectionHeader .SectionLabel {
   font-weight: bold;
   font-size: 24px;
-  text-shadow: 1px 1px 2px 1 fgColor;
+  text-shadow: 1px 1px 2px 1 cText;
   text-transform: uppercase;
 }
 
@@ -161,7 +161,7 @@
   align: right bottom;
   margin-right: 8px;
   margin-bottom: 4px;
-  color: fgColor;
+  color: cText;
   font-weight: bold;
   font-size: 28px;
   text-shadow: 1px 1px 1px #fffd;
@@ -216,7 +216,7 @@
   width: 206px;
   height: 49px;
   border-top: 1px solid #faa46a;
-  background-color: viewerPlayButtonGradient;
+  background-color: gradient(linear, 0% 100%, 0% 0%, from(#af5417cc), to(#af5417cc));
   box-shadow: #27110250 0 0 12px;
   opacity: 0.9;
   wash-color: #9992;
@@ -225,7 +225,7 @@
 }
 
 .ViewerButtons .PlayButton:hover {
-  background-color: viewerPlayButtonHoverGradient;
+  background-color: gradient(linear, 0% 100%, 0% 0%, from(#af5417), to(#af5417));
 }
 
 .ViewerButtons .PlayButton:active {

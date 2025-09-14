@@ -1,11 +1,11 @@
-@import url("file://{resources}/styles/shared/variables.css");
+@import url('file://{resources}/styles/shared/variables.css');
 
 .TranslucentPanel {
-  background-color: panelTranslucentGradient;
+  background-color: gPanelTranslucent;
 }
 
 .TransparentPanel {
-  background-color: panelTransparentGradient;
+  background-color: gPanelTransparent;
 }
 
 .PanelTitle {
@@ -13,7 +13,7 @@
   color: white;
   font-weight: bold;
   font-size: 16px;
-  font-family: defaultFont;
+  font-family: fDefault;
   letter-spacing: 2px;
   text-align: center;
   text-overflow: shrink;
