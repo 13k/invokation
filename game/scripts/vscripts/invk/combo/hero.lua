@@ -1,4 +1,3 @@
-local Invoker = require("invk.dota2.invoker")
 local LIMITS = require("invk.const.limits")
 local Player = require("invk.dota2.player")
 local SOUND_EVENTS = require("invk.const.sound_events")
