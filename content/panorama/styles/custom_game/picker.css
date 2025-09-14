@@ -31,9 +31,9 @@ pickerClosedWidth = thumbWidth
   width: pickerTotalWidth;
   height: pickerHeight;
   margin-top: pickerMarginTop;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.2s;
   transition-property: width;
+  transition-timing-function: ease-in-out;
 }
 
 #PickerSlideout.FiltersClosed {
@@ -55,11 +55,11 @@ pickerClosedWidth = thumbWidth
 .PickerThumb {
   width: thumbWidth;
   height: thumbHeight;
-  vertical-align: center;
-  background-color: pickerThumbGradient;
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
+  background-color: pickerThumbGradient;
   box-shadow: none;
+  vertical-align: center;
 }
 
 .PickerThumb:hover {
@@ -86,9 +86,9 @@ pickerClosedWidth = thumbWidth
 }
 
 .PickerTitleContainer .RefreshButton {
+  visibility: collapse;
   width: 24px;
   height: 24px;
-  visibility: collapse;
   background-size: 100%;
 }
 
@@ -106,11 +106,11 @@ pickerClosedWidth = thumbWidth
   height: 50px;
   margin-top: 10px;
   background-image: invokerCardHud;
-  background-repeat: no-repeat;
   background-size: 100%;
-  transition-timing-function: ease-in-out;
+  background-repeat: no-repeat;
   transition-duration: 0.18s;
   transition-property: brightness, saturation;
+  transition-timing-function: ease-in-out;
 }
 
 .PickerFreestyleButton:hover {
@@ -125,13 +125,13 @@ pickerClosedWidth = thumbWidth
 .PickerFreestyleButton .PickerFreestyleLabel {
   align: center center;
   margin-top: 2px;
-  font-weight: bold;
   color: #000;
+  font-weight: bold;
+  letter-spacing: 2px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 0 0 3px 3 #0003;
   text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
 .PickerFreestyleButton:hover .PickerFreestyleLabel {
@@ -171,7 +171,7 @@ pickerClosedWidth = thumbWidth
   overflow: noclip scroll;
 }
 
-#PickerCombos VerticalScrollBar {
+#PickerCombos verticalscrollbar {
   horizontal-align: left;
 }
 
@@ -200,8 +200,8 @@ pickerClosedWidth = thumbWidth
 .PickerFilters .PickerFilterResetButton {
   width: 12px;
   height: 12px;
-  padding: 0;
   margin: 0 0 0 6px;
+  padding: 0;
   vertical-align: center;
   wash-color: #ff808088;
 }
@@ -229,8 +229,8 @@ pickerClosedWidth = thumbWidth
 }
 
 .PickerFilters .PopupPickerLabel {
-  padding: 0;
   margin: 0 0 4px;
+  padding: 0;
   vertical-align: center;
 }
 

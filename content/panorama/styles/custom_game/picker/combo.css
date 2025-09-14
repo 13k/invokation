@@ -6,8 +6,8 @@
 .PickerComboRoot {
   flow-children: down;
   width: 100%;
-  padding: 10px;
   margin-top: 10px;
+  padding: 10px;
   border-radius: 4px;
 }
 
@@ -26,8 +26,8 @@
 .PickerComboRoot .PanelTitleContainer {
   height: fit-children;
   padding: 0;
-  background-color: none;
   border: 0;
+  background-color: none;
 }
 
 .PickerComboRoot .PanelTitle {
@@ -41,10 +41,10 @@
 }
 
 .PickerComboRoot .FinishedIcon {
+  visibility: collapse;
   width: 24px;
   height: 24px;
   vertical-align: center;
-  visibility: collapse;
   tooltip-body-position: 50% 10%;
   tooltip-position: right;
   background-image: controlsCheckShadowIcon;
@@ -93,13 +93,13 @@
 }
 
 .PickerComboRoot .StanceIcon {
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: #888;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.2s;
   transition-property: wash-color;
+  transition-timing-function: ease-in-out;
 }
 
 .PickerComboRoot.stance_offensive .StanceIcon {
@@ -113,8 +113,8 @@
 .PickerComboRoot .HeroLevelIcon {
   width: 32px;
   height: 32px;
-  background-color: #121212;
   border-radius: 50%;
+  background-color: #121212;
 }
 
 .PickerComboRoot:hover .HeroLevelIcon {
@@ -125,9 +125,9 @@
   align: center center;
   width: 14px;
   margin-top: 3px;
-  font-size: 14px;
-  font-weight: normal;
   color: #e7d291;
+  font-weight: normal;
+  font-size: 14px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 0 0 3px 3.7 #ec780e24;
@@ -157,9 +157,9 @@
   width: 100%;
   height: 0;
   margin-top: 10px;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.2s;
   transition-property: height;
+  transition-timing-function: ease-in-out;
 }
 
 .PickerComboRoot:hover .PlayButton {

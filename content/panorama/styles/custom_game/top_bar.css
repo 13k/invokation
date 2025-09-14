@@ -14,8 +14,8 @@
   margin-top: 13px;
   padding: 4px;
   padding-right: 8px;
-  background-color: #cccccc11;
   border-radius: 8px;
+  background-color: #cccccc11;
 }
 
 .TopBarButton {
@@ -27,9 +27,9 @@
   background-size: 90%;
   opacity: 0.5;
   wash-color: #cdf;
-	transition-timing-function: ease-in-out;
-	transition-duration: 0.2s;
-	transition-property: wash-color,opacity;
+  transition-duration: 0.2s;
+  transition-property: wash-color, opacity;
+  transition-timing-function: ease-in-out;
 }
 
 .TopBarButton:hover {
@@ -42,7 +42,7 @@
 }
 
 #BtnQuit:hover {
-	wash-color: #f43;
+  wash-color: #f43;
 }
 
 #BtnQuit.Activated {

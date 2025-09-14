@@ -140,13 +140,13 @@ class PopupTextEntry extends Component<PopupTextEntryElements, never, never, Pop
 
   get hasBodyElement(): boolean {
     return (
-      this.hasBody() ||
-      this.hasImage() ||
-      this.hasEconItem() ||
-      this.hasHeroId() ||
-      this.hasHero() ||
-      this.hasAbility() ||
-      this.hasItem()
+      this.hasBody()
+      || this.hasImage()
+      || this.hasEconItem()
+      || this.hasHeroId()
+      || this.hasHero()
+      || this.hasAbility()
+      || this.hasItem()
     );
   }
 

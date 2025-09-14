@@ -54,22 +54,22 @@
 
 #ChallengeSplash {
   align: left top;
+  visibility: collapse;
   width: 0;
   max-width: 0;
   height: splashHeight;
   margin-top: 200px;
   margin-left: 100px;
   overflow: clip noclip;
-  visibility: collapse;
-  transition-timing-function: ease-out;
   transition-duration: 0.15s;
   transition-property: max-width, width;
+  transition-timing-function: ease-out;
 }
 
 #ChallengeSplash.Show {
+  visibility: visible;
   width: splashWidth;
   max-width: splashWidth;
-  visibility: visible;
 }
 
 #ChallengeSplash .ChallengeSplashFX {
@@ -88,15 +88,15 @@
   width: 100%;
   margin-top: 70px;
   margin-left: -50px;
-  font-size: 48px;
+  color: #bd42cf;
   font-style: italic;
   font-weight: black;
-  color: #bd42cf;
+  font-size: 48px;
+  letter-spacing: 10px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 3px 3px 6px #04272c;
   text-transform: uppercase;
-  letter-spacing: 10px;
 }
 
 #ChallengeSplash.success .ChallengeSplashTitle {
@@ -139,9 +139,9 @@
 }
 
 .ChallengeControls .ChallengeControlIcon:hover {
-  background-color: panelTranslucentHoverGradient;
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
+  background-color: panelTranslucentHoverGradient;
 }
 
 .ChallengeControls .ChallengeIconButton {
@@ -150,8 +150,8 @@
   margin: 0;
   vertical-align: center;
   tooltip-position: top;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 .ChallengeControls .ChallengeIconButton.Activated {
@@ -181,10 +181,10 @@
 }
 
 .ChallengeControls .FullRefreshIcon.Activated {
-  animation-name: SpinnerRotate;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
+  animation-name: SpinnerRotate;
 }
 
 .ChallengeControls .CloseButton {
@@ -234,8 +234,8 @@
 #ChallengeWaitProgressBar {
   width: 100%;
   height: 100%;
-  background-color: #000c;
   border-radius: 50%;
+  background-color: #000c;
 }
 
 #ChallengeWaitProgressBar_FG {
@@ -248,16 +248,16 @@
   align: center center;
   width: 34px;
   height: 34px;
-  background-color: black;
   border-radius: 50%;
+  background-color: black;
 }
 
 #ChallengeWaitProgress .ChallengeWaitProgressText {
   align: center center;
   width: 80px;
-  font-size: 16px;
-  font-weight: bold;
   color: white;
+  font-weight: bold;
+  font-size: 16px;
   text-align: center;
 }
 
@@ -270,10 +270,10 @@
 
 #ChallengeScore.Failed {
   wash-color: #000c;
-  animation-name: StunPortrait;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
+  animation-name: StunPortrait;
 }
 
 #ChallengeTimer {
@@ -281,9 +281,9 @@
   width: 140px;
   height: 58px;
   margin-right: timerMarginRight;
+  transform: translateY(0);
   transition-duration: 0.2s;
   transition-property: transform;
-  transform: translateY(0);
 }
 
 #ChallengeTimer.Hide {
@@ -300,8 +300,8 @@
 #ChallengeTimerLabel {
   width: 100%;
   margin-top: 12px;
-  font-size: 26px;
   color: white;
+  font-size: 26px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: -1px 2px 1px 2 #333333b0;

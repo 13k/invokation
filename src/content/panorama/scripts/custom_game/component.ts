@@ -17,10 +17,10 @@ import type {
   UiEventListener,
 } from "@invokation/panorama-lib/panorama";
 import {
-  UiEvent,
   createPanel,
   debugPanel,
   serializeParams,
+  UiEvent,
 } from "@invokation/panorama-lib/panorama";
 import { prefixOnce } from "@invokation/panorama-lib/util/prefixOnce";
 import { uniqueId } from "@invokation/panorama-lib/util/uniqueId";
@@ -82,8 +82,7 @@ type LayoutData<K extends LayoutId> = Components[K] extends Component<
   infer I,
   infer O,
   infer P
->
-  ? Data<Components[K], E, I, O, P>
+> ? Data<Components[K], E, I, O, P>
   : never;
 
 export enum ParamType {
@@ -286,7 +285,7 @@ export abstract class Component<
     const subscriptions = customEvents.unsubscribeAllSiblings(this.id);
 
     this.debugFn(() =>
-      (subscriptions?.size ?? 0) > 0 ? ["unsubscribe.siblings", subscriptions] : null,
+      (subscriptions?.size ?? 0) > 0 ? ["unsubscribe.siblings", subscriptions] : null
     );
   }
 

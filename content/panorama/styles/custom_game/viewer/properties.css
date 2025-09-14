@@ -3,6 +3,7 @@
 @import url("file://{resources}/styles/shared/rating.css");
 
 @define fgColor: #3c1b18;
+@define fgColorBright: #3c1b18; /* fgColor&99 */
 
 .ViewerPropertiesRoot {
   flow-children: down;
@@ -18,9 +19,9 @@
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesLabel {
-  font-size: 18px;
-  font-weight: semi-bold;
   color: fgColor;
+  font-weight: semi-bold;
+  font-size: 18px;
   vertical-align: center;
 }
 
@@ -39,26 +40,26 @@
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.HeroLevelIcon {
   background-image: controlsEscalationArrowIcon;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: fgColor;
 }
 
 .ViewerPropertiesRoot .HeroLevelBadge {
   width: 30px;
   height: 32px;
-  background-color: #121212;
   border-radius: 50%;
+  background-color: #121212;
 }
 
 .ViewerPropertiesRoot .HeroLevelBadge .HeroLevelLabel {
   align: center center;
   width: 14px;
   margin-top: 3px;
-  font-size: 14px;
-  font-weight: normal;
   color: #e7d291;
+  font-weight: normal;
+  font-size: 14px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 0 0 3px 3.7 #ec780e24;
@@ -66,36 +67,36 @@
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.SpecialtyIcon {
   background-image: controlsFilterSupportIcon;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: fgColor;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.StanceIcon {
   background-image: controlsFilterCarryIcon;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: fgColor;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.AttackDamageIcon {
   background-image: controlsFilterMeleeIcon;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: fgColor;
 }
 
 .ViewerPropertiesRoot .ViewerPropertiesIcon.DifficultyIcon {
   background-image: controlsFilterComplexityIcon;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
+  background-repeat: no-repeat;
   wash-color: fgColor;
 }
 
 .ViewerPropertiesRoot .Rating .RatingActive {
-  wash-color: fgColor&99;
+  wash-color: fgColorBright;
 }

@@ -27,11 +27,11 @@
 
 .RefreshButton {
   horizontal-align: left;
+  visibility: collapse;
   width: 36px;
   height: 36px;
   margin-top: -4px;
   margin-left: -4px;
-  visibility: collapse;
   wash-color: #fff;
 }
 
@@ -60,8 +60,8 @@
   width: 100%;
   height: 100%;
   background-image: viewerBackground;
-  background-repeat: no-repeat;
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .ViewerInformationBody {
@@ -72,16 +72,16 @@
 
 #ViewerTitle {
   width: 555px;
-  padding: 0 25px;
   margin-left: 45px;
-  font-size: 21px;
-  font-weight: black;
+  padding: 0 25px;
   color: fgColor;
+  font-weight: black;
+  font-size: 21px;
+  letter-spacing: 2px;
   text-align: center;
   text-overflow: shrink;
   text-shadow: 0 0 5px 1px #000;
   text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
 #ViewerScrollPanel {
@@ -102,10 +102,10 @@
 #ViewerDescription {
   width: 100%;
   margin-top: 18px;
-  font-size: 18px;
-  font-weight: semi-bold;
-  line-height: 21px;
   color: fgColor;
+  font-weight: semi-bold;
+  font-size: 18px;
+  line-height: 21px;
   text-align: left;
 }
 
@@ -116,9 +116,9 @@
 }
 
 .ViewerSection .SectionLabel {
-  font-size: 18px;
-  font-weight: semi-bold;
   color: fgColor;
+  font-weight: semi-bold;
+  font-size: 18px;
 }
 
 .ViewerSection .SectionHeader {
@@ -128,8 +128,8 @@
 }
 
 .ViewerSection .SectionHeader .SectionLabel {
-  font-size: 24px;
   font-weight: bold;
+  font-size: 24px;
   text-shadow: 1px 1px 2px 1 fgColor;
   text-transform: uppercase;
 }
@@ -161,9 +161,9 @@
   align: right bottom;
   margin-right: 8px;
   margin-bottom: 4px;
-  font-size: 28px;
-  font-weight: bold;
   color: fgColor;
+  font-weight: bold;
+  font-size: 28px;
   text-shadow: 1px 1px 1px #fffd;
   opacity-mask: softEdgeBoxIrregularMask;
 }
@@ -215,8 +215,8 @@
 .ViewerButtons .PlayButton {
   width: 206px;
   height: 49px;
-  background-color: viewerPlayButtonGradient;
   border-top: 1px solid #faa46a;
+  background-color: viewerPlayButtonGradient;
   box-shadow: #27110250 0 0 12px;
   opacity: 0.9;
   wash-color: #9992;
@@ -234,12 +234,12 @@
 
 .ViewerButtons .PlayButton .PlayLabel {
   width: 100%;
-  font-size: 24px;
-  font-weight: bold;
   color: #d5d7d7;
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 2px;
   vertical-align: center;
 }
 
@@ -253,12 +253,12 @@
 
 #ViewerTitle .sub-title,
 #ViewerDescription .sub-title {
-  font-size: 18px;
   font-weight: bold;
+  font-size: 18px;
 }
 
 #ViewerTitle .intro-text,
 #ViewerDescription .intro-text {
-  font-size: 21px;
   font-weight: bold;
+  font-size: 21px;
 }

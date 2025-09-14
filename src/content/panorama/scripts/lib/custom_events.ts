@@ -12,7 +12,6 @@ type ListenerPayload<K extends CustomEvent, F = object> = NetworkedData<
 export type CustomEventListener<K extends CustomEvent> = (payload: ListenerPayload<K>) => void;
 
 declare global {
-  // biome-ignore lint/style/useNamingConvention: external type
   interface CustomUIConfig {
     // biome-ignore lint/style/useNamingConvention: constant
     CUSTOM_EVENTS_SUBSCRIPTIONS: Cache<GameEventListenerID>;

@@ -1,7 +1,12 @@
 import type { ItemPickerQueryResponse } from "@invokation/panorama-lib/custom_events";
 import { CustomGameEvent } from "@invokation/panorama-lib/custom_events";
 import type { Action } from "@invokation/panorama-lib/sequence";
-import { AddClassAction, ParallelSequence, RemoveClassAction, Sequence } from "@invokation/panorama-lib/sequence";
+import {
+  AddClassAction,
+  ParallelSequence,
+  RemoveClassAction,
+  Sequence,
+} from "@invokation/panorama-lib/sequence";
 
 import type { Elements, Outputs } from "../component";
 import { Component } from "../component";

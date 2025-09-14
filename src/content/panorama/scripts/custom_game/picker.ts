@@ -26,7 +26,7 @@ import type {
 } from "@invokation/panorama-lib/custom_events";
 import { CustomGameEvent, GameEvent } from "@invokation/panorama-lib/custom_events";
 import * as l10n from "@invokation/panorama-lib/l10n";
-import { SoundEvent, createLabel } from "@invokation/panorama-lib/panorama";
+import { createLabel, SoundEvent } from "@invokation/panorama-lib/panorama";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import {
   AddOptionAction,
@@ -541,7 +541,7 @@ class Picker extends Component<PickerElements> {
     const actions = this.combosView.map((combo) =>
       this.elements.combos
         ? this.createComboPanelAction(this.elements.combos, combo)
-        : new NoopAction(),
+        : new NoopAction()
     );
 
     return new Sequence().add(...actions);
@@ -572,8 +572,9 @@ class Picker extends Component<PickerElements> {
 
     const actions = pd.values.map(
       (value) =>
-        new AddOptionAction(dropDown, () =>
-          this.createPropertyFilterOption(dropDown, pd.name, value),
+        new AddOptionAction(
+          dropDown,
+          () => this.createPropertyFilterOption(dropDown, pd.name, value),
         ),
     );
 

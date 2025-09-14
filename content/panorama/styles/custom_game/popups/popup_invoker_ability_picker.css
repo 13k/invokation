@@ -15,12 +15,12 @@
 }
 
 .PopupInvokerAbilityPickerSelectionChoice {
-  font-size: 22px;
   color: #bfd2ee;
+  font-size: 22px;
+  letter-spacing: 2px;
   text-align: left;
   text-overflow: shrink;
   text-transform: uppercase;
-  letter-spacing: 2px;
   vertical-align: center;
 }
 

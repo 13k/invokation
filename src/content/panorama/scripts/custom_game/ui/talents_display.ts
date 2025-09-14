@@ -1,5 +1,5 @@
 import type { TalentSelection } from "@invokation/panorama-lib/dota2/talents";
-import { TalentLevel, TalentSide, Talents } from "@invokation/panorama-lib/dota2/talents";
+import { TalentLevel, Talents, TalentSide } from "@invokation/panorama-lib/dota2/talents";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import { ParallelSequence } from "@invokation/panorama-lib/sequence";
 

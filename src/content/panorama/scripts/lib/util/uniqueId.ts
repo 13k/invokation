@@ -1,5 +1,4 @@
 declare global {
-  // biome-ignore lint/style/useNamingConvention: external type
   interface CustomUIConfig {
     // biome-ignore lint/style/useNamingConvention: constant
     UNIQUE_IDS: Map<string, number>;

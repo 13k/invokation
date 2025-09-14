@@ -15,12 +15,12 @@
 }
 
 .UIItemPickerSelectionChoice {
-  font-size: 22px;
   color: #bfd2ee;
+  font-size: 22px;
+  letter-spacing: 2px;
   text-align: left;
   text-overflow: shrink;
   text-transform: uppercase;
-  letter-spacing: 2px;
   vertical-align: center;
 }
 
@@ -32,8 +32,8 @@
 
 .UIItemPickerSearchBox .UIItemPickerSearchTextEntry {
   width: fill-parent-flow(1);
-  background-color: none;
   border: 0;
+  background-color: none;
 }
 
 .UIItemPickerSearchBox .UIItemPickerSearchTextEntry #PlaceholderText {
@@ -45,10 +45,10 @@
   width: 27px;
   height: 27px;
   margin: 0 8px;
-  vertical-align: center;
   background-image: controlsSearchIcon;
-  background-repeat: no-repeat;
   background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: center;
   wash-color: #4f4f4f;
   transition-duration: 0.1s;
   transition-property: wash-color;

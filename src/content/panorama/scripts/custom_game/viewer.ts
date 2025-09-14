@@ -264,7 +264,7 @@ class Viewer extends Component<ViewerElements> {
     }
 
     const actions = this.combo.sequence.map((step) =>
-      this.createStepPanelAction(this.elements.sequence, step),
+      this.createStepPanelAction(this.elements.sequence, step)
     );
 
     return new Sequence().removeChildren(this.elements.sequence).add(...actions);

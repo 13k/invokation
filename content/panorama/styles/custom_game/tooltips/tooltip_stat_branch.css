@@ -4,7 +4,7 @@
 
 #Contents {
   padding: 12px 12px 8px;
-  background-color: gradient(linear, 0% 0%, 0% 100%, from (#181b1d), to (#22292f));
+  background-color: gradient(linear, 0% 0%, 0% 100%, from(#181b1d), to(#22292f));
 }
 
 .TooltipStatBranchRoot {
@@ -19,9 +19,9 @@
   margin-top: 6px;
   margin-bottom: 4px;
   color: #e1e1e1;
+  letter-spacing: 2px;
   text-shadow: 0 0 4px 2 #000;
   text-transform: uppercase;
-  letter-spacing: 2px;
   vertical-align: top;
 }
 
@@ -42,14 +42,14 @@
 
 .TooltipStatBranchRow .Branch.BranchLeft {
   padding-right: 20px;
-  background-color: gradient(linear, 0% 0%, 100% 0%, from (#0e1011), to (#22292f00));
+  background-color: gradient(linear, 0% 0%, 100% 0%, from(#0e1011), to(#22292f00));
 }
 
 .TooltipStatBranchRow .Branch.BranchRight {
   horizontal-align: right;
   padding-left: 20px;
   tooltip-position: right;
-  background-color: gradient(linear, 0% 0%, 100% 0%, from (#22292f00), to (#0e1011));
+  background-color: gradient(linear, 0% 0%, 100% 0%, from(#22292f00), to(#0e1011));
 }
 
 .TooltipStatBranchRow .Branch .BranchChoice {
@@ -63,9 +63,9 @@
 
 .TooltipStatBranchRow .Branch .StatBonusLabel {
   horizontal-align: middle;
+  color: #676e70;
   font-size: 15px;
   line-height: 16px;
-  color: #676e70;
   text-align: center;
   text-overflow: clip;
   text-shadow: 1px 1px 2px 2 #0006;
@@ -88,9 +88,9 @@
   height: 52px;
   margin-bottom: -1px;
   background-image: statBranchLevelBgHud;
-  background-repeat: no-repeat;
   background-position: center;
   background-size: 80% 80%;
+  background-repeat: no-repeat;
 }
 
 .TooltipStatBranchRow .CenterNode .HeroLevelLabel {
@@ -99,10 +99,10 @@
   width: 30px;
   margin-top: 14px;
   margin-right: 1px;
-  font-family: monospaceNumbersFont;
-  font-size: 20px;
-  font-weight: normal;
   color: #e7d291;
+  font-weight: normal;
+  font-size: 20px;
+  font-family: monospaceNumbersFont;
   text-align: center;
   text-shadow: 0 0 3px 3.7 #ec780e24;
 }

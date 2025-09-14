@@ -1,7 +1,7 @@
 import type { HeroData } from "@invokation/panorama-lib/custom_net_tables/invokation";
 import type { Ability } from "@invokation/panorama-lib/dota2/invoker";
 import type { TalentMap, TalentSelection } from "@invokation/panorama-lib/dota2/talents";
-import { TalentLevel, TalentSide, Talents } from "@invokation/panorama-lib/dota2/talents";
+import { TalentLevel, Talents, TalentSide } from "@invokation/panorama-lib/dota2/talents";
 import { createPanelSnippet } from "@invokation/panorama-lib/panorama";
 import type { Action } from "@invokation/panorama-lib/sequence";
 import { ParallelSequence, Sequence } from "@invokation/panorama-lib/sequence";
@@ -329,7 +329,7 @@ class TooltipStatBranch extends Component<
           level,
           side,
           class: CLASSES.branchSelected[side],
-        }),
+        })
       );
 
       seq.removeClass(row, CLASSES.branchSelected[side]);
@@ -340,7 +340,7 @@ class TooltipStatBranch extends Component<
         level,
         side,
         class: CLASSES.branchSelected[side],
-      }),
+      })
     );
 
     seq.addClass(row, CLASSES.branchSelected[side]);

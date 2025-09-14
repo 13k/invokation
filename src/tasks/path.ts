@@ -35,12 +35,12 @@ export abstract class Path {
     throw new UnknownPlatformError();
   }
 
-  protected ctor(): new (..._parts: PathLike[]) => this {
-    return Object.getPrototypeOf(this).constructor;
-  }
-
   protected new(path: string): this {
     return new (this.ctor())(path);
+  }
+
+  protected ctor(): new(..._parts: PathLike[]) => this {
+    return Object.getPrototypeOf(this).constructor;
   }
 
   toString(): string {

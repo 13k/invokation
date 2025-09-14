@@ -108,7 +108,7 @@ class Freestyle extends Component<FreestyleElements> {
 
   onBtnRestart(isHardReset: boolean): void {
     this.debugFn(() => ["onBtnRestart()", { isHardReset }]);
-    this.sendRestart(!!isHardReset);
+    this.sendRestart(isHardReset);
   }
 
   onBtnStop(): void {

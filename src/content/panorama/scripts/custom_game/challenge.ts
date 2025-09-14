@@ -389,7 +389,7 @@ class Challenge extends Component<ChallengeElements> {
     }
 
     const actions = this.combo.sequence.map((step) =>
-      this.createStepPanelAction(this.elements.sequence, step),
+      this.createStepPanelAction(this.elements.sequence, step)
     );
 
     return new Sequence().add(...actions);
@@ -468,8 +468,9 @@ class Challenge extends Component<ChallengeElements> {
   switchHudSeq(prevMode: HudMode, nextMode: HudMode): Sequence {
     const prevClass = HUD_VISIBILITY_CLASSES[prevMode];
     const nextClass = HUD_VISIBILITY_CLASSES[nextMode];
-    const heroHudFn =
-      nextMode === HudMode.NoHands ? this.hideActionPanelUi : this.showActionPanelUi;
+    const heroHudFn = nextMode === HudMode.NoHands
+      ? this.hideActionPanelUi
+      : this.showActionPanelUi;
 
     return new Sequence()
       .add(this.updateHudVisibilityTooltipAction(nextMode))
@@ -561,9 +562,9 @@ class Challenge extends Component<ChallengeElements> {
 
     if (!nextSteps.every((s): s is Step => s != null)) {
       throw new Error(
-        `Failed to pick next steps from combo ${this.combo.id}: steps count = ${
-          this.combo.sequence.length
-        }, indices = [${next.join(", ")}]`,
+        `Failed to pick next steps from combo ${this.combo.id}: steps count = ${this.combo.sequence.length}, indices = [${
+          next.join(", ")
+        }]`,
       );
     }
 
@@ -732,9 +733,9 @@ class Challenge extends Component<ChallengeElements> {
 
     if (!expectedSteps.every((s): s is Step => s != null)) {
       throw new Error(
-        `Failed to pick steps from combo ${id}: steps count = ${
-          this.combo.sequence.length
-        }, indices = [${expected.join(", ")}]`,
+        `Failed to pick steps from combo ${id}: steps count = ${this.combo.sequence.length}, indices = [${
+          expected.join(", ")
+        }]`,
       );
     }
 
@@ -768,7 +769,7 @@ class Challenge extends Component<ChallengeElements> {
 
   restart(isHardReset: boolean): void {
     this.debugFn(() => ["restart", { isHardReset }]);
-    this.sendRestart(!!isHardReset);
+    this.sendRestart(isHardReset);
   }
 
   stop(): void {

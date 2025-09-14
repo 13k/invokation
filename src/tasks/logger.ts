@@ -8,11 +8,11 @@ import type { ColorStyle } from "./colors";
 import { colorStyle } from "./colors";
 
 type Levels = {
-  [K in keyof config.CliConfigSetLevels as string extends K
-    ? never
-    : number extends K
-      ? never
-      : K]: config.CliConfigSetLevels[K];
+  [
+    K in keyof config.CliConfigSetLevels as string extends K ? never
+      : number extends K ? never
+      : K
+  ]: config.CliConfigSetLevels[K];
 };
 
 type Level = keyof Levels;
@@ -30,7 +30,7 @@ export interface Options {
 }
 
 export type Fields = Map<string, unknown>;
-export const Fields: new (_fields?: FieldsLike) => Fields = Map;
+export const Fields: new(_fields?: FieldsLike) => Fields = Map;
 export type FieldsLike = Iterable<[string, unknown]>;
 
 const LEVELS = config.cli.levels;
@@ -167,8 +167,9 @@ export class Logger {
   }
 
   fields(fields: FieldsLike | Record<string, unknown>): Logger {
-    const it: FieldsLike =
-      Symbol.iterator in fields ? (fields as FieldsLike) : Object.entries(fields);
+    const it: FieldsLike = Symbol.iterator in fields
+      ? (fields as FieldsLike)
+      : Object.entries(fields);
 
     return this.#fork(undefined, it);
   }

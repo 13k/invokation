@@ -35,9 +35,9 @@
 }
 
 .FreestyleControls .FreestyleControlIcon:hover {
-  background-color: panelTranslucentHoverGradient;
   border-right: 1px solid #444b;
   border-left: 1px solid #444b;
+  background-color: panelTranslucentHoverGradient;
 }
 
 .FreestyleControls .FreestyleIconButton {
@@ -46,8 +46,8 @@
   margin: 0;
   vertical-align: center;
   tooltip-position: top;
-  background-repeat: no-repeat;
   background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 .FreestyleControls .FreestyleIconButton.Activated {
@@ -60,10 +60,10 @@
 }
 
 .FreestyleControls .FullRefreshIcon.Activated {
-  animation-name: SpinnerRotate;
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: 1;
+  animation-name: SpinnerRotate;
 }
 
 .FreestyleControls .CloseButton {
@@ -76,9 +76,9 @@
 }
 
 .FreestyleControls .LevelMaxButton {
+  transform: rotateZ(-90deg);
   background-image: controlsDoubleArrowRightIcon;
   background-size: 30px 30px;
-  transform: rotateZ(-90deg);
 }
 
 .FreestyleControls .FreestyleControlIcon .Grey {

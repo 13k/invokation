@@ -7,9 +7,13 @@
 @define offWhite: #ccccccff;
 @define selectedTextBackgroundColor: #66666633;
 @define goldColor: #ffcc33;
+@define goldColorBright: #ffcc33; /* goldColor&cc */
 
-@define dotalevelgradient: gradient(linear, 0% 0%, 0% 100%, from(#bbcaea), color-stop(0.5, #ffffff), color-stop(0.5, #d9dfec), to(#bbcaea));
-@define dotaplaytimegradient: gradient(linear, 0% 0%, 0% 100%, from(#3db451), color-stop(0.5, #beffc7), color-stop(0.5, #91d69a), to(#3db451));
+@define dotalevelgradient: gradient(linear, 0% 0%, 0% 100%, from(#bbcaea), color-stop(0.5, #ffffff),
+  color-stop(0.5, #d9dfec), to(#bbcaea));
+
+@define dotaplaytimegradient: gradient(linear, 0% 0%, 0% 100%, from(#3db451), color-stop(0.5,
+  #beffc7), color-stop(0.5, #91d69a), to(#3db451));
 
 @define HeroSlot0Color: #3375ffff;
 @define HeroSlot1Color: #66ffbfff;
@@ -44,13 +48,14 @@
 @define winnerGreen: #88ff88;
 @define loserRed: #ff4433;
 
-@define dotaPlusGold: #B78946;
-@define dotaPlusLightGold: #DCD086;
+@define dotaPlusGold: #b78946;
+@define dotaPlusLightGold: #dcd086;
 @define dotaPlusBrown: #433620;
-@define dotaPlusGoldGradient: gradient(linear, 0% 0%, 0% 100%, from(#B78946), to(#DCD086));
+@define dotaPlusGoldGradient: gradient(linear, 0% 0%, 0% 100%, from(#b78946), to(#dcd086));
 @define dotaPlusGoldGradientHover: gradient(linear, 0% 0%, 0% 100%, from(#d8a253), to(#ecdf90));
 @define dotaPlusGoldGradientActive: gradient(linear, 0% 0%, 0% 100%, from(#ca974d), to(#dfd388));
-@define dotaPlusBgGradient: gradient(linear, 0% 0%, 0% 100%, from(dotaPlusBrown), color-stop(0.5, #141b21EF), to(#141b21EF));
+@define dotaPlusBgGradient: gradient(linear, 0% 0%, 0% 100%, from(dotaPlusBrown), color-stop(0.5,
+  #141b21ef), to(#141b21ef));
 
 @define proVerifiedColor: #ffcc33;
 
@@ -70,27 +75,39 @@
 
 /***** invokation *****/
 
-@define linkText: #9862E9;
+@define linkText: #9862e9;
 
 @define quasAccentColor: #33a7e9;
+@define quasAccentColorDark: #33a7e9; /* quasAccentColor & 07 */
 @define wexAccentColor: #eb07e1;
+@define wexAccentColorDark: #eb07e1; /* wexAccentColor & 07 */
 @define exortAccentColor: #e7ac10;
+@define exortAccentColorDark: #e7ac10; /* exortAccentColor & 07 */
 @define quasTextColor: #88c5e9;
 @define wexTextColor: #c284bf;
 @define exortTextColor: #c69a25;
 
-@define invokationSunGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ff9100c2), to(#00000000));
-@define invokationSunFadingGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1), color-stop(0.6, #ce7909c2), to(#00000000));
+@define invokationSunGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1),
+  color-stop(0.6, #ff9100c2), to(#00000000));
+@define invokationSunFadingGradient: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#2b1d10f1),
+  color-stop(0.6, #ce7909c2), to(#00000000));
 
 @define panelTranslucentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2ef7), to(#191e1eff));
 @define panelTransparentGradient: gradient(linear, 0% 0%, 0% 100%, from(#292e2e80), to(#191e1edd));
-@define panelTranslucentHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(#3f4646f7), to(#191e1eff));
+@define panelTranslucentHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(#3f4646f7),
+  to(#191e1eff));
 
-@define pickerThumbGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor), color-stop(0.33, wexTextColor), to(exortTextColor));
-@define pickerThumbHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor&dd), color-stop(0.33, wexTextColor&dd), to(exortTextColor&dd));
+@define pickerThumbGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor), color-stop(0.33,
+  wexTextColor), to(exortTextColor));
+@define pickerThumbHoverGradient: gradient(linear, 0% 0%, 0% 100%, from(quasTextColor&dd),
+  color-stop(0.33, wexTextColor&dd), to(exortTextColor&dd));
 
-@define specialtyQuasWexGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, wexAccentColor), to(wexAccentColor&44));
-@define specialtyQuasExortGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44), color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, exortAccentColor), to(exortAccentColor&44));
+@define specialtyQuasWexGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44),
+  color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, wexAccentColor),
+  to(wexAccentColor&44));
+@define specialtyQuasExortGradient: gradient(linear, 0% 0%, 100% 100%, from(quasAccentColor&44),
+  color-stop(0.49, quasAccentColor), color-stop(0.5, #000), color-stop(0.51, exortAccentColor),
+  to(exortAccentColor&44));
 
 @define viewerPlayButtonGradient: gradient(linear, 0% 100%, 0% 0%, from(#af5417cc), to(#af5417cc));
 @define viewerPlayButtonHoverGradient: gradient(linear, 0% 100%, 0% 0%, from(#af5417), to(#af5417));
@@ -105,7 +122,8 @@
 @define defaultFont: Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
 
 /* Default sans-serif font, but with monospace numbers. Useful for things like countdowns or numbers that need to line up in columns. */
-@define monospaceNumbersFont: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO 540,Gulim,MingLiU;
+@define monospaceNumbersFont: RadianceM,Radiance,FZLanTingHei-R-GBK,TH Sarabun New,YDYGO
+  540,Gulim,MingLiU;
 
 /* Default serif font, with fallbacks for other languages */
 @define titleFont: Reaver,Goudy Trajan Medium,FZKai-Z03,TH Sarabun New,YDYGO 540;
@@ -118,19 +136,24 @@
  ******************************************************************************/
 
 @define controlsArrowRightIcon: url("s2r://panorama/images/control_icons/arrow_right_png.vtex");
-@define controlsArrowDropdownUpIcon: url("s2r://panorama/images/control_icons/arrow_dropdown_up_png.vtex");
+@define controlsArrowDropdownUpIcon:
+  url("s2r://panorama/images/control_icons/arrow_dropdown_up_png.vtex");
 @define controlsArrowPopoutIcon: url("s2r://panorama/images/control_icons/arrow_popout_png.vtex");
 @define controlsCheckIcon: url("s2r://panorama/images/control_icons/check_png.vtex");
 @define controlsCheckShadowIcon: url("s2r://panorama/images/control_icons/check_shadow_png.vtex");
 @define controlsCloseIcon: url("s2r://panorama/images/control_icons/x_close_png.vtex");
 @define controlsCloseBoldIcon: url("s2r://panorama/images/control_icons/purgatory_png.vtex");
-@define controlsDoubleArrowRightIcon: url("s2r://panorama/images/control_icons/double_arrow_right_png.vtex");
-@define controlsEscalationArrowIcon: url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
+@define controlsDoubleArrowRightIcon:
+  url("s2r://panorama/images/control_icons/double_arrow_right_png.vtex");
+@define controlsEscalationArrowIcon:
+  url("s2r://panorama/images/control_icons/escalation_arrow_psd.vtex");
 @define controlsEyeIcon: url("s2r://panorama/images/control_icons/eye_png.vtex");
 @define controlsFilterCarryIcon: url("s2r://panorama/images/control_icons/filter_carry_png.vtex");
-@define controlsFilterComplexityIcon: url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
+@define controlsFilterComplexityIcon:
+  url("s2r://panorama/images/control_icons/filter_complexity_png.vtex");
 @define controlsFilterMeleeIcon: url("s2r://panorama/images/control_icons/filter_melee_png.vtex");
-@define controlsFilterSupportIcon: url("s2r://panorama/images/control_icons/filter_support_png.vtex");
+@define controlsFilterSupportIcon:
+  url("s2r://panorama/images/control_icons/filter_support_png.vtex");
 @define controlsPlusIcon: url("s2r://panorama/images/control_icons/plus_png.vtex");
 @define controlsPlusThinIcon: url("s2r://panorama/images/control_icons/plus_thin_png.vtex");
 @define controlsQuitIcon: url("s2r://panorama/images/control_icons/quit_png.vtex");
@@ -138,12 +161,15 @@
 @define controlsTocIcon: url("s2r://panorama/images/control_icons/toc_psd.vtex");
 
 @define statusClockIcon: url("s2r://panorama/images/status_icons/clock_psd.vtex");
-@define statusLoadingThrobberRoundIcon: url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
+@define statusLoadingThrobberRoundIcon:
+  url("s2r://panorama/images/status_icons/loadingthrobber_round_psd.vtex");
 
 @define dotaPlusChallengeIcon: url("s2r://panorama/images/dota_plus/challanges_icon_png.vtex");
-@define dotaPlusChatWheelIcon: url("s2r://panorama/images/dota_plus/icon_chatwheel_plus_reward_png.vtex");
+@define dotaPlusChatWheelIcon:
+  url("s2r://panorama/images/dota_plus/icon_chatwheel_plus_reward_png.vtex");
 @define dotaPlusCurrencyIcon: url("s2r://panorama/images/dota_plus/currency_icon_png.vtex");
-@define dotaPlusCurrencySmallIcon: url("s2r://panorama/images/dota_plus/currency_icon_small_png.vtex");
+@define dotaPlusCurrencySmallIcon:
+  url("s2r://panorama/images/dota_plus/currency_icon_small_png.vtex");
 @define dotaPlusLogo: url("s2r://panorama/images/dota_plus/dotaplus_logo_png.vtex");
 @define dotaPlusLogoSmall: url("s2r://panorama/images/dota_plus/dotaplus_logo_small_png.vtex");
 @define dotaPlusRelicIcon: url("s2r://panorama/images/dota_plus/relic_icon_png.vtex");
@@ -170,12 +196,15 @@
 @define arcanaShakerV2Char8: url("s2r://panorama/images/hud/arcana/es/numbers/combo_8_v2_png.vtex");
 @define arcanaShakerV2Char9: url("s2r://panorama/images/hud/arcana/es/numbers/combo_9_v2_png.vtex");
 @define arcanaShakerV2CharX: url("s2r://panorama/images/hud/arcana/es/numbers/combo_x_v2_png.vtex");
-@define arcanaShakerSummaryBackground: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_png.vtex");
-@define arcanaShakerV2SummaryBackground: url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_v2_png.vtex");
+@define arcanaShakerSummaryBackground:
+  url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_png.vtex");
+@define arcanaShakerV2SummaryBackground:
+  url("s2r://panorama/images/hud/arcana/es/es_arcana_summary_bg_v2_png.vtex");
 
 /***** invokation *****/
 
-@define stanceOffensiveIcon: url("s2r://panorama/images/status_icons/modifier_kill_effect_psd.vtex");
+@define stanceOffensiveIcon:
+  url("s2r://panorama/images/status_icons/modifier_kill_effect_psd.vtex");
 @define stanceDefensiveIcon: url("s2r://panorama/images/hud/reborn/icon_armor_psd.vtex");
 @define damageRatingIcon: url("s2r://panorama/images/hud/reborn/icon_damage_psd.vtex");
 @define difficultyRatingIcon: url("s2r://panorama/images/hud/reborn/icon_speed_psd.vtex");
@@ -186,7 +215,8 @@
 
 @define invokerCardHud: url("s2r://panorama/images/hud/invokercard_psd.vtex");
 @define statBranchBgLargeHud: url("s2r://panorama/images/hud/reborn/stat_branch_large_png.vtex");
-@define statBranchBgButtonHud: url("s2r://panorama/images/hud/reborn/statbranch_button_bg_all_off_psd.vtex");
+@define statBranchBgButtonHud:
+  url("s2r://panorama/images/hud/reborn/statbranch_button_bg_all_off_psd.vtex");
 @define statBranchPipBg: url("s2r://panorama/images/hud/reborn/statbranch_pip_psd.vtex");
 @define statBranchPip25: url("s2r://panorama/images/hud/reborn/statbranch_button_pip25_psd.vtex");
 @define statBranchPip20: url("s2r://panorama/images/hud/reborn/statbranch_button_pip20_psd.vtex");
@@ -204,7 +234,8 @@
  * Backgrounds
  ******************************************************************************/
 
-@define loadingScreenBackground: url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
+@define loadingScreenBackground:
+  url("s2r://panorama/images/loadingscreens/artgerm_invoker/loadingscreen_tga.vtex");
 @define pickerBackground: url("s2r://panorama/images/backgrounds/gallery_background_png.vtex");
 @define viewerBackground: url("file://{images}/custom_game/viewer/paper-bg.png");
 
@@ -220,13 +251,17 @@
 @define gradientLeftRightMask: url("s2r://panorama/images/masks/gradient_leftright_png.vtex");
 @define gradientRightLeftMask: url("s2r://panorama/images/masks/gradient_rightleft_png.vtex");
 @define gradientTopDownMask: url("s2r://panorama/images/masks/gradient_topdown_png.vtex");
-@define softEdgeBoxIrregularMask: url("s2r://panorama/images/masks/softedge_box_irregular_png.vtex");
+@define softEdgeBoxIrregularMask:
+  url("s2r://panorama/images/masks/softedge_box_irregular_png.vtex");
 @define softEdgeBoxMask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
 @define softEdgeCircleMask: url("s2r://panorama/images/masks/softedge_circle_png.vtex");
-@define softEdgeCircleSharperMask: url("s2r://panorama/images/masks/softedge_circle_sharper_png.vtex");
+@define softEdgeCircleSharperMask:
+  url("s2r://panorama/images/masks/softedge_circle_sharper_png.vtex");
 @define softEdgeCircleSharpMask: url("s2r://panorama/images/masks/softedge_circle_sharp_png.vtex");
 @define softEdgeVerticalMask: url("s2r://panorama/images/masks/softedge_vertical_png.vtex");
-@define softEdgeVerticalSofterMask: url("s2r://panorama/images/masks/softedge_vertical_softer_png.vtex");
+@define softEdgeVerticalSofterMask:
+  url("s2r://panorama/images/masks/softedge_vertical_softer_png.vtex");
 @define softEdgeVScrollMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_psd.vtex");
-@define softEdgeVScrollWideMask: url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
+@define softEdgeVScrollWideMask:
+  url("s2r://panorama/images/masks/softedge_vertical_vscroll_wide_psd.vtex");
 @define textVignetteMask: url("s2r://panorama/images/masks/textvignette_psd.vtex");

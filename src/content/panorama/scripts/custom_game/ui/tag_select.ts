@@ -307,7 +307,7 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
 
   clearTagsAction(): Action {
     const actions = Array.from(this.tags).map((tag) =>
-      this.removeTagAction(tag, { immediate: true }),
+      this.removeTagAction(tag, { immediate: true })
     );
 
     return new ParallelSequence().add(...actions);

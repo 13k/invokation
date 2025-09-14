@@ -20,9 +20,9 @@
   flow-children: down;
   width: 246px;
   margin: 4px;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.22s;
   transition-property: width;
+  transition-timing-function: ease-in-out;
 }
 
 .ability {
@@ -54,9 +54,9 @@
     linear,
     0% 100%,
     100% 100%,
-    from(quasAccentColor&07),
-    color-stop(0.5, wexAccentColor&07),
-    to(exortAccentColor&07)
+    from(quasAccentColorDark),
+    color-stop(0.5, wexAccentColorDark),
+    to(exortAccentColorDark)
   );
 }
 

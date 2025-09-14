@@ -17,14 +17,14 @@
   height: 100%;
   overflow: noclip;
   background-image: statBranchBgButtonHud;
-  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #StatBranchGraphics {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #StatBranchChannel {
@@ -55,12 +55,12 @@
   width: 100%;
   height: 100%;
   background-image: statBranchPipBg;
-  background-repeat: no-repeat;
   background-size: 100%;
+  background-repeat: no-repeat;
   opacity: 0;
-  transition-timing-function: ease-in-out;
   transition-duration: 0s;
   transition-property: opacity;
+  transition-timing-function: ease-in-out;
 }
 
 .StatBranchPip.LeftBranchPip {

@@ -20,9 +20,9 @@
   z-index: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(95, 55, 3, 0.1);
   background-image: arcanaShakerSummaryBackground;
   background-size: 100%;
+  background-color: rgba(95, 55, 3, 0.1);
   opacity-mask: softEdgeBoxIrregularMask;
 }
 
@@ -40,9 +40,9 @@
 .ComboScoreRoot .ComboScoreDigitContainer .ComboScoreDigitX {
   width: 22px;
   background-image: arcanaShakerCharX;
-  background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigitX {
@@ -53,9 +53,9 @@
   width: 38px;
   height: 59px;
   background-image: arcanaShakerChar1;
-  background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .ComboScoreRoot.Level2 .ComboScoreDigitContainer .ComboScoreDigit {
@@ -161,9 +161,9 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
   transition-property: opacity;
+  transition-timing-function: ease-in-out;
 }
 
 .ComboScoreRoot.ShowCounter > .ComboScoreCounter {
@@ -211,9 +211,9 @@
 }
 
 #ComboScoreCounterTicker .ComboScoreDigit {
-  transition-timing-function: ease-in-out;
   transition-duration: 0.1s;
   transition-property: pre-transform-scale2d, background-image;
+  transition-timing-function: ease-in-out;
   pre-transform-scale2d: 0.9;
 }
 
@@ -225,15 +225,15 @@
   z-index: 10;
   horizontal-align: center;
   margin-top: 65px;
-  font-size: 13px;
+  color: #d5f9fe;
   font-style: italic;
   font-weight: bold;
+  font-size: 13px;
   line-height: 13px;
-  color: #d5f9fe;
+  letter-spacing: 2.5px;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
-  letter-spacing: 2.5px;
   vertical-align: bottom;
 }
 
@@ -241,9 +241,9 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition-timing-function: ease-in-out;
   transition-duration: 0.3s;
   transition-property: opacity;
+  transition-timing-function: ease-in-out;
 }
 
 .ComboScoreRoot.ShowSummary > .ComboScoreSummary {
@@ -285,7 +285,6 @@
   vertical-align: bottom;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 #ComboScoreSummaryCountDisplay .ComboScoreDigit {
   height: 28px;
 }
@@ -333,13 +332,13 @@
 
 .ComboScoreRoot > .ComboScoreSummary > .ComboScoreContent > .ComboScoreCount > .ComboScoreLabel {
   margin-left: 5px;
-  font-size: 13px;
-  font-weight: bolder;
   color: #fff;
+  font-weight: bolder;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
-  letter-spacing: 2px;
   vertical-align: center;
 }
 
@@ -358,7 +357,6 @@
   width: 70%;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 #ComboScoreSummaryDamageTicker .ComboScoreDigit {
   margin-top: -3px;
 }
@@ -367,11 +365,11 @@
   align: center center;
   margin-top: -5px;
   margin-left: 0;
-  font-size: 13px;
-  font-weight: bolder;
   color: #fff;
+  font-weight: bolder;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-align: center;
   text-shadow: 2px 2px 0 #1b4c44;
   text-transform: uppercase;
-  letter-spacing: 2px;
 }

@@ -25,9 +25,9 @@
 }
 
 .PopupTitle {
-  font-family: titleFont;
-  font-weight: semi-bold;
   color: white;
+  font-weight: semi-bold;
+  font-family: titleFont;
 }
 
 .PopupDescription {
@@ -66,28 +66,28 @@
 }
 
 .GameInfoLinkButton:hover {
-  background-color: #222;
   border-top: 1px solid #333;
   border-right: 1px solid #000;
   border-bottom: 1px solid #000;
   border-left: 1px solid #333;
+  background-color: #222;
 }
 
 .GameInfoLinkButton:active {
-  background-color: #444;
   border-top: 1px solid #666;
   border-right: 1px solid #333;
   border-bottom: 1px solid #333;
   border-left: 1px solid #666;
+  background-color: #444;
 }
 
 .GameInfoMetaText {
   height: 18px;
-  font-size: 18px;
-  font-weight: normal;
   color: linkText;
-  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 18px;
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .GameInfoArrowIcon {
@@ -95,9 +95,9 @@
   height: 16px;
   margin-top: 2px;
   margin-left: 2px;
-  vertical-align: center;
   background-image: controlsArrowPopoutIcon;
   background-size: 16px 16px;
+  vertical-align: center;
   wash-color: #ddd;
 }
 

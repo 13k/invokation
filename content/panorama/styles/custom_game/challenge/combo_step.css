@@ -5,16 +5,16 @@
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  background-color: #241200;
   border: 3px solid goldColor;
+  background-color: #241200;
   wash-color: #666e;
   opacity-mask: softEdgeBoxMask;
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.3s;
-  transition-property: width, height, wash-color, opacity, pre-transform-scale2d;
   animation-duration: 0.31s;
   animation-timing-function: ease-in;
   animation-iteration-count: 1;
+  transition-duration: 0.3s;
+  transition-property: width, height, wash-color, opacity, pre-transform-scale2d;
+  transition-timing-function: ease-in-out;
   pre-transform-scale2d: 0;
 }
 
@@ -28,10 +28,10 @@
 }
 
 .ChallengeComboStepRoot.ChallengeComboStepBump {
+  animation-delay: 0s;
+  animation-name: ChallengeComboStepBump;
   transition-delay: 0s;
   transition-duration: 0.175s, 0.12s;
-  animation-name: ChallengeComboStepBump;
-  animation-delay: 0s;
   pre-transform-scale2d: 1;
 }
 
@@ -54,7 +54,7 @@
   vertical-align: center;
 }
 
-@keyframes 'ChallengeComboStepBump' {
+@keyframes "ChallengeComboStepBump" {
   0% {
     opacity: 0;
     pre-transform-scale2d: 0;
