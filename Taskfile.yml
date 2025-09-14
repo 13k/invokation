@@ -3,16 +3,18 @@ version: 3
 dotenv: [".env"]
 
 vars:
-  PANORAMA_LAYOUTS_SRC_PATH: "content/panorama/layout"
-  PANORAMA_SCRIPTS_SRC_PATH: "src/content/panorama/scripts"
-  PANORAMA_STYLES_SRC_PATH: "content/panorama/styles"
-  VSCRIPTS_SRC_PATH: "game/scripts/vscripts"
-  TASKS_SRC_PATH: "src/tasks"
-  TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/main.ts"
-  TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
   LX_LUA_VERSION: "jit"
   LX_ARGS: "--lua-version {{ .LX_LUA_VERSION }}"
-  EMMYLUA_CONFIG: "{{ .ROOT_DIR }}/.emmyrc.json"
+  SRC_PANO_LAYOUTS: '{{ joinPath .ROOT_DIR "content" "panorama" "layout" }}'
+  SRC_PANO_SCRIPTS: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "scripts" }}'
+  SRC_PANO_STYLES: '{{ joinPath .ROOT_DIR "content" "panorama" "styles" }}'
+  SRC_VSCRIPTS: '{{ joinPath .ROOT_DIR "game" "scripts" "vscripts" }}'
+  SRC_TASKS: '{{ joinPath .ROOT_DIR "src" "tasks" }}'
+  TASKS_ENTRYPOINT: '{{ joinPath .SRC_TASKS "main.ts" }}'
+  TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
+  EMMYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".emmyrc.json" }}'
+  STYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".stylua.toml" }}'
+  SELENE_CONFIG: '{{ joinPath .ROOT_DIR "selene.toml" }}'
 
 tasks:
   default:
@@ -77,13 +79,13 @@ tasks:
 
   format:vscripts:
     desc: Format vscripts
-    cmd: stylua --verify "{{ .VSCRIPTS_SRC_PATH }}"
+    cmd: stylua --verify --config-path "{{ .STYLUA_CONFIG }}" "{{ .SRC_VSCRIPTS }}"
 
   lint:vscripts:
     desc: Lint vscripts
     cmds:
-      - emmylua_check -c "{{ .EMMYLUA_CONFIG }}" "{{ .VSCRIPTS_SRC_PATH }}"
-      - selene "{{ .VSCRIPTS_SRC_PATH }}"
+      - emmylua_check --config "{{ .EMMYLUA_CONFIG }}" "{{ .SRC_VSCRIPTS }}"
+      - selene --config "{{ .SELENE_CONFIG }}" "{{ .SRC_VSCRIPTS }}"
 
   test:vscripts:
     desc: Test vscripts
@@ -105,8 +107,7 @@ tasks:
 
   format:panorama:layouts:
     desc: Format panorama layouts
-    dir: "{{ .PANORAMA_LAYOUTS_SRC_PATH }}"
-    cmd: bun x -- prettier --write {{ .CLI_ARGS }} "**/*.xml"
+    cmd: dprint fmt '{{ joinPath .SRC_PANO_LAYOUTS "**" }}'
 
   lint:panorama:layouts:
     desc: Lint panorama layouts
@@ -114,32 +115,27 @@ tasks:
 
   format:panorama:scripts:
     desc: Format panorama scripts
-    dir: "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
-    cmd: bun x -- "@biomejs/biome" format --write {{ .CLI_ARGS }}
+    cmd: dprint fmt '{{ joinPath .SRC_PANO_SCRIPTS "**" }}'
 
   lint:panorama:scripts:
     desc: Lint panorama scripts
-    dir: "{{ .PANORAMA_SCRIPTS_SRC_PATH }}"
-    cmd: bun x -- "@biomejs/biome" check {{ .CLI_ARGS }}
+    dir: "{{ .SRC_PANO_SCRIPTS }}"
+    cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
 
   format:panorama:styles:
     desc: Format panorama styles
-    dir: "{{ .PANORAMA_STYLES_SRC_PATH }}"
-    cmds:
-      - bun x -- stylelint --fix {{ .CLI_ARGS }} .
-      - bun x -- prettier --write {{ .CLI_ARGS }} "**/*.css"
+    cmd: dprint fmt '{{ joinPath .SRC_PANO_STYLES "**" }}'
 
   lint:panorama:styles:
     desc: Lint panorama styles
-    dir: "{{ .PANORAMA_STYLES_SRC_PATH }}"
-    cmd: bun x -- stylelint {{ .CLI_ARGS }} .
+    dir: "{{ .SRC_PANO_STYLES }}"
+    cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
 
   format:tasks:
     desc: Format tasks
-    dir: "{{ .TASKS_SRC_PATH }}"
-    cmd: bun x -- "@biomejs/biome" format --write {{ .CLI_ARGS }}
+    cmd: dprint fmt '{{ joinPath .SRC_TASKS "**" }}'
 
   lint:tasks:
     desc: Lint tasks
-    dir: "{{ .TASKS_SRC_PATH }}"
-    cmd: bun x -- "@biomejs/biome" check {{ .CLI_ARGS }}
+    dir: "{{ .SRC_TASKS }}"
+    cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}

@@ -1,0 +1,81 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+  },
+  "files": {
+    "includes": [
+      "**/*.css",
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.json",
+      "**/*.jsonc",
+      "**/*.ts",
+      "**/*.mts",
+      "**/*.xml",
+    ],
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+      },
+    },
+  },
+  "formatter": {
+    "enabled": false,
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        // css
+        "useGenericFontNames": "off",
+      },
+      "complexity": {
+        // javascript
+        "noExcessiveCognitiveComplexity": "info",
+        "noForEach": "warn",
+        "noImplicitCoercions": "error",
+        "noUselessStringConcat": "error",
+        "noVoid": "warn",
+        "useSimplifiedLogicExpression": "warn",
+        "useWhile": "warn",
+      },
+      "correctness": {
+        // css
+        "noUnknownFunction": "off",
+        "noUnknownProperty": "off",
+        "noUnknownPseudoClass": "off",
+        "noUnknownTypeSelector": "off",
+      },
+      "style": {
+        // javascript
+        "noDefaultExport": "warn",
+        "noNegationElse": "warn",
+        "noParameterProperties": "error",
+        "useBlockStatements": "error",
+        "useCollapsedElseIf": "error",
+        "useCollapsedIf": "error",
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": { "syntax": "shorthand" },
+        },
+        "useNamingConvention": "warn",
+        "useShorthandAssign": "error",
+      },
+      "suspicious": {
+        // javascript
+        "noMisrefactoredShorthandAssign": "warn",
+        // css
+        "noUnknownAtRules": "off",
+      },
+      "nursery": {
+        "recommended": true,
+      },
+    },
+  },
+}

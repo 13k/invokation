@@ -1,10 +1,10 @@
 std = ".selene/busted+.selene/dota2+.selene/dota2-custom-game"
 exclude = [
-  ".lux/**",
-  ".luacats/**",
-  "game/scripts/vscripts/compat53/**",
-  "game/scripts/vscripts/fsm.lua",
-  "game/scripts/vscripts/inspect.lua",
-  "game/scripts/vscripts/middleclass.lua",
-  "tmp/**",
+  "**/.lux/**",
+  "**/.luacats/**",
+  "**/game/scripts/vscripts/compat53/**",
+  "**/game/scripts/vscripts/fsm.lua",
+  "**/game/scripts/vscripts/inspect.lua",
+  "**/game/scripts/vscripts/middleclass.lua",
+  "**/tmp/**",
 ]
