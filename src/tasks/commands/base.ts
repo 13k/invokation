@@ -2,14 +2,14 @@ import type { SyncSubprocess } from "bun";
 
 import type { Command, OptionValues } from "commander";
 
-import { Config } from "../config";
 import type { ConfigOptions } from "../config";
+import { Config } from "../config";
 import type { CaptureOptions, ExecOptions } from "../exec";
 import { capture, exec, parseShell } from "../exec";
 import type { Logger } from "../logger";
 import { LOGGER } from "../logger";
-import { Path, ROOT_DIR } from "../path";
 import type { PathLike } from "../path";
+import { Path, ROOT_DIR } from "../path";
 
 const ENV_DOTA2_PATH = "DOTA2_PATH";
 const ENV_RESOURCE_COMPILER = "RESOURCE_COMPILER";
@@ -112,6 +112,8 @@ export abstract class BaseCommand<Args, Options extends OptionValues> {
   }
 
   protected exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): SyncSubprocess {
+    this.log.fields({ cmd, args }).debug("exec run");
+
     return exec(
       cmd.toString(),
       args.map((arg) => arg.toString()),
@@ -120,6 +122,8 @@ export abstract class BaseCommand<Args, Options extends OptionValues> {
   }
 
   protected capture(cmd: PathLike, args: PathLike[] = [], options?: CaptureOptions): string {
+    this.log.fields({ cmd, args }).debug("exec capture");
+
     return capture(
       cmd.toString(),
       args.map((arg) => arg.toString()),

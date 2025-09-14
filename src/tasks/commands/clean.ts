@@ -18,7 +18,6 @@ export class CleanCommand extends BaseCommand<Args, Options> {
       .option("-n, --dry-run", "Only print paths that would be removed", false);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   override parseArgs(..._args: unknown[]): Args {
     return null;
   }

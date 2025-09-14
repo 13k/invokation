@@ -129,11 +129,17 @@ Accepts environment variables. \
     const libDir = srcDir.join("lib");
     const customGameDir = srcDir.join("custom_game");
 
-    this.log.label(Label.Check).fields({ srcDir: libDir }).info("panorama scripts");
+    this.log
+      .label(Label.Check)
+      .fields({ srcDir: libDir })
+      .info("panorama 'lib' scripts");
 
     await this.tscBuild(libDir.toString());
 
-    this.log.label(Label.Check).fields({ srcDir: customGameDir }).info("panorama scripts");
+    this.log
+      .label(Label.Check)
+      .fields({ srcDir: customGameDir })
+      .info("panorama 'custom_game' scripts");
 
     await this.tscBuild(customGameDir.toString());
   }
