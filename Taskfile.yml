@@ -10,7 +10,9 @@ vars:
   TASKS_SRC_PATH: "src/tasks"
   TASKS_ENTRYPOINT: "{{ .TASKS_SRC_PATH }}/main.ts"
   TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
-  LX_ARGS: "--lua-version jit"
+  LX_LUA_VERSION: "jit"
+  LX_ARGS: "--lua-version {{ .LX_LUA_VERSION }}"
+  EMMYLUA_CONFIG: "{{ .ROOT_DIR }}/.emmyrc.json"
 
 tasks:
   default:
@@ -79,7 +81,9 @@ tasks:
 
   lint:vscripts:
     desc: Lint vscripts
-    cmd: selene "{{ .VSCRIPTS_SRC_PATH }}"
+    cmds:
+      - emmylua_check -c "{{ .EMMYLUA_CONFIG }}" "{{ .VSCRIPTS_SRC_PATH }}"
+      - selene "{{ .VSCRIPTS_SRC_PATH }}"
 
   test:vscripts:
     desc: Test vscripts
