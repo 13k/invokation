@@ -1,0 +1,58 @@
+@use "../../dota2";
+@use "../../ui";
+@use "../../vars";
+
+.root--ui--tag-select {
+  flow-children: down;
+  width: 100%;
+
+  #options {
+    width: 100%;
+  }
+
+  .option {
+    width: 120px;
+  }
+
+  #tag-list {
+    flow-children: right-wrap;
+    width: 100%;
+  }
+
+  .tag {
+    flow-children: right;
+    height: 36px;
+    margin-top: 8px;
+    margin-left: 8px;
+    padding: 4px 6px 2px;
+    border: 1px solid #666;
+    border-radius: 2px;
+    transition-duration: 0.2s;
+    transition-property: opacity;
+
+    &:disabled {
+      opacity: 0;
+    }
+  }
+
+  .tag-label {
+    margin-top: 3px;
+    font-size: 18px;
+    vertical-align: center;
+  }
+
+  .tag-remove-button {
+    @include ui.icon(vars.$icon-controls-quit);
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+    vertical-align: center;
+    wash-color: #ccc;
+
+    &:hover {
+      wash-color: #fff;
+    }
+  }
+}
+
+@include dota2.style;

@@ -23,23 +23,23 @@ const { HERO_DATA } = GameUI.CustomUIConfig().invk;
 const LEVELS = [TalentLevel.Tier4, TalentLevel.Tier3, TalentLevel.Tier2, TalentLevel.Tier1];
 const SIDES = [TalentSide.Right, TalentSide.Left];
 
-const BRANCH_ROW_SNIPPET = "TooltipStatBranchRow";
-const BRANCH_ROW_ID_PREFIX = "TooltipStatBranchRow";
+const BRANCH_ROW_SNIPPET = "row";
+const BRANCH_ROW_ID_PREFIX = "row";
 const BRANCH_ROW_VAR_LEVEL = "level";
 
 const CLASSES = {
-  branchRowChoiceLabel: "StatBonusLabel",
+  branchRowChoiceLabel: "stat-bonus-label",
   branchRowSides: {
-    [TalentSide.Right]: "BranchRight",
-    [TalentSide.Left]: "BranchLeft",
+    [TalentSide.Right]: "branch-right",
+    [TalentSide.Left]: "branch-left",
   },
   branchSelected: {
-    [TalentSide.Right]: "BranchRightSelected",
-    [TalentSide.Left]: "BranchLeftSelected",
+    [TalentSide.Right]: "branch-right-selected",
+    [TalentSide.Left]: "branch-left-selected",
   },
 };
 
-const branchRowId = (level: TalentLevel) => `${BRANCH_ROW_ID_PREFIX}${level}`;
+const branchRowId = (level: TalentLevel) => `${BRANCH_ROW_ID_PREFIX}-${level}`;
 
 export type { TooltipStatBranch };
 

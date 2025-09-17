@@ -7,14 +7,14 @@
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="ChallengeRoot HudVisible Hide" hittest="false">
-    <Panel class="ChallengeCombo" hittest="false">
-      <Panel id="ChallengeSequence" hittest="false" />
+  <Panel class="root--challenge hud-visible hide" hittest="false">
+    <Panel class="combo" hittest="false">
+      <Panel id="sequence" hittest="false" />
     </Panel>
 
-    <Panel id="ChallengeSplash" hittest="false" hittestchildren="false">
+    <Panel id="splash" hittest="false" hittestchildren="false">
       <DOTAScenePanel
-        class="ChallengeSplashFX"
+        class="splash-fx"
         map="backgrounds/pregame_phase"
         camera="camera"
         renderdeferred="false"
@@ -23,78 +23,79 @@
         require-composition-layer="true"
       />
 
-      <Panel class="ChallengeSplashBox">
+      <Panel class="splash-box">
         <Label
-          id="ChallengeSplashTitle"
-          class="ChallengeSplashTitle"
+          id="splash-title"
+          class="splash-title"
           text="#invk_combo_splash__start__title__1"
         />
+
         <Label
-          id="ChallengeSplashHelp"
-          class="ChallengeSplashHelp"
+          id="splash-help"
+          class="splash-help"
           text="#invk_combo_splash__start__help__1"
         />
       </Panel>
     </Panel>
 
-    <Panel id="ChallengeWaitProgress" class="Hide">
-      <CircularProgressBar id="ChallengeWaitProgressBar" />
-      <Panel class="ChallengeWaitProgressBarOverlay" />
-      <Label class="ChallengeWaitProgressText" text="{d:wait_seconds}" />
+    <Panel id="wait-progress" class="hide">
+      <CircularProgressBar id="wait-progressbar" />
+      <Panel class="wait-progressbar-overlay" />
+      <Label class="wait-progress-text" text="{d:wait_seconds}" />
     </Panel>
 
-    <Panel id="ChallengeScore" />
+    <Panel id="score" />
 
-    <Panel class="ChallengeControls TranslucentPanel" hittest="false">
-      <Panel class="ChallengeControlIcon">
+    <Panel class="controls" hittest="false">
+      <Panel class="control-icon">
         <Button
-          id="BtnShowDetails"
-          class="InfoIcon ChallengeIconButton Grey"
+          id="btn-show-details"
+          class="icon-button icon-details grey"
           onmouseover="UIShowTextTooltip(#invk_combo_tooltip_details)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
 
-      <Panel class="ChallengeControlIcon">
+      <Panel class="control-icon">
         <Button
-          id="BtnCycleHUD"
-          class="EyeIcon ChallengeIconButton Grey"
+          id="btn-cycle-hud"
+          class="icon-button icon-cycle-hud grey"
           onmouseover="UIShowTextTooltip(#invk_combo_tooltip_hud)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
 
-      <Panel class="ChallengeControlIcon">
+      <Panel class="control-icon">
         <Button
-          id="BtnRestart"
-          class="RefreshButton ChallengeIconButton Blue"
+          id="btn-restart"
+          class="icon-button icon-restart blue"
           onmouseover="UIShowTextTooltip(#invk_controls_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
 
-      <Panel class="ChallengeControlIcon">
+      <Panel class="control-icon">
         <Button
-          id="BtnFullRestart"
-          class="FullRefreshIcon ChallengeIconButton Bronze"
+          id="btn-full-restart"
+          class="icon-button icon-full-restart bronze"
           onmouseover="UIShowTextTooltip(#invk_controls_full_restart)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
 
-      <Panel class="ChallengeControlIcon">
+      <Panel class="control-icon">
         <Button
-          id="BtnStop"
-          class="CloseButton ChallengeIconButton Red"
+          id="btn-stop"
+          class="icon-button icon-stop red"
           onmouseover="UIShowTextTooltip(#invk_controls_stop)"
           onmouseout="UIHideTextTooltip()"
         />
       </Panel>
     </Panel>
 
-    <Panel id="ChallengeTimer" class="Hide">
-      <Panel class="ChallengeTimerBackground" />
-      <Label id="ChallengeTimerLabel" hittest="false" />
+    <Panel id="timer" class="hide">
+      <Panel class="timer-bg" />
+      <Label id="timer-label" hittest="false" />
     </Panel>
   </Panel>
 </root>

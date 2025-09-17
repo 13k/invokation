@@ -20,19 +20,19 @@ export interface TalentsDisplayInputs extends Inputs {
   };
 }
 
+export type { TalentsDisplay };
+
 enum CssClass {
-  BranchSelectedLeft = "LeftBranchSelected",
-  BranchSelectedRight = "RightBranchSelected",
+  BranchSelectedLeft = "left-branch-selected",
+  BranchSelectedRight = "right-branch-selected",
 }
 
 const LEVELS = [TalentLevel.Tier1, TalentLevel.Tier2, TalentLevel.Tier3, TalentLevel.Tier4];
 
-const BranchRowClass = {
+const BRANCH_ROW_CLASS = {
   [TalentSide.Left]: CssClass.BranchSelectedLeft,
   [TalentSide.Right]: CssClass.BranchSelectedRight,
 };
-
-export type { TalentsDisplay };
 
 class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInputs> {
   talents: Talents | undefined;
@@ -42,10 +42,10 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
   constructor() {
     super({
       elements: {
-        statRow10: "StatRow10",
-        statRow15: "StatRow15",
-        statRow20: "StatRow20",
-        statRow25: "StatRow25",
+        statRow10: "row-10",
+        statRow15: "row-15",
+        statRow20: "row-20",
+        statRow25: "row-25",
       },
       panelEvents: {
         $: {
@@ -116,15 +116,15 @@ class TalentsDisplay extends Component<TalentsDisplayElements, TalentsDisplayInp
     return Object.values(TalentSide).reduce(
       (seq, side) =>
         this.talents?.isSelected(level, side)
-          ? seq.addClass(this.row(level), BranchRowClass[side])
-          : seq.removeClass(this.row(level), BranchRowClass[side]),
+          ? seq.addClass(this.row(level), BRANCH_ROW_CLASS[side])
+          : seq.removeClass(this.row(level), BRANCH_ROW_CLASS[side]),
       new ParallelSequence(),
     );
   }
 
   resetLevelAction(level: TalentLevel): Action {
     return Object.values(TalentSide).reduce(
-      (seq, side) => seq.removeClass(this.row(level), BranchRowClass[side]),
+      (seq, side) => seq.removeClass(this.row(level), BRANCH_ROW_CLASS[side]),
       new ParallelSequence(),
     );
   }

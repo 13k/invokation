@@ -1,0 +1,214 @@
+@use "sass:map";
+
+@use "../anim";
+@use "../layout";
+@use "../panel";
+@use "../util";
+@use "../vars";
+
+$splash-width: 800px;
+
+.root--challenge {
+  width: 100%;
+  height: 100%;
+
+  .combo {
+    horizontal-align: right;
+    width: 150px;
+    height: 100%;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background-color: util.gradient-vertical(#00000000, #000000ee);
+    opacity: 1;
+    transition-duration: 0.75s;
+    transition-property: opacity;
+  }
+
+  &.hide, &.hud-hide-sequence, &.hud-no-hands {
+    .combo {
+      opacity: 0;
+    }
+  }
+
+  &.hud-visible:not(.hide) {
+    .combo {
+      opacity: 1;
+    }
+  }
+
+  #sequence {
+    flow-children: down;
+    width: 100%;
+    height: 100%;
+    padding-top: 30px;
+    overflow: clip scroll;
+    opacity-mask: vars.$mask-softedge-vscroll;
+  }
+
+  #splash {
+    align: left top;
+    visibility: collapse;
+    width: 0;
+    max-width: 0;
+    height: 200px;
+    margin-top: 200px;
+    margin-left: 100px;
+    overflow: clip noclip;
+    transition-duration: 0.15s;
+    transition-property: max-width, width;
+    transition-timing-function: ease-out;
+
+    &.show {
+      visibility: visible;
+      width: $splash-width;
+      max-width: $splash-width;
+    }
+
+    .splash-fx {
+      width: 100%;
+      height: 150%;
+      opacity-mask: vars.$mask-softedge-box-irregular;
+    }
+
+    .splash-box {
+      flow-children: down;
+      min-width: $splash-width;
+      height: 100%;
+    }
+
+    .splash-title {
+      width: 100%;
+      margin-top: 70px;
+      margin-left: -50px;
+      color: #bd42cf;
+      font-style: italic;
+      font-weight: black;
+      font-size: 48px;
+      letter-spacing: 10px;
+      text-align: center;
+      text-overflow: shrink;
+      text-shadow: 3px 3px 6px #04272c;
+      text-transform: uppercase;
+    }
+
+    &.success .splash-title {
+      color: #42cf49;
+      text-shadow: 3px 3px 6px #162c5a;
+    }
+
+    &.failure .splash-title {
+      color: #d44b21;
+      text-shadow: 3px 3px 6px #474303;
+    }
+
+    .splash-help {
+      horizontal-align: left;
+      margin-top: 10px;
+      margin-left: 280px;
+      color: #ccc;
+      text-align: left;
+      text-shadow: 1px 1px 2px #000;
+    }
+  }
+
+  .controls {
+    @include panel.combo-controls;
+  }
+
+  &.hide .controls {
+    opacity: 0;
+  }
+
+  &.hud-hide-sequence .icon-details {
+    wash-color: #646464;
+  }
+
+  &.hud-no-hands .icon-details {
+    wash-color: #3e3e3e;
+  }
+
+  #wait-progress {
+    align: center top;
+    width: 40px;
+    height: 40px;
+    margin: 120px 0 0 210px;
+
+    &.hide {
+      opacity: 0;
+    }
+
+    .wait-progressbar-overlay {
+      align: center center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background-color: black;
+    }
+
+    .wait-progress-text {
+      align: center center;
+      width: 80px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+
+  #wait-progressbar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #000c;
+  }
+
+  #wait-progressbar-fg {
+    width: 100%;
+    height: 100%;
+    background-color: #ffad32;
+  }
+
+  #score {
+    align: center top;
+    width: 250px;
+    height: 120px;
+    margin-top: 100px;
+
+    &.failed {
+      wash-color: #000c;
+
+      @include anim.stun-portrait;
+    }
+  }
+
+  #timer {
+    align: right top;
+    width: 140px;
+    height: 58px;
+    margin-right: 200px;
+    transform: translateY(0);
+    transition-duration: 0.2s;
+    transition-property: transform;
+
+    &.hide {
+      transform: translateY(-64px);
+    }
+
+    .timer-bg {
+      width: 100%;
+      height: 100%;
+      background-image: vars.$hud-timer-bg;
+      background-size: 100%;
+    }
+  }
+
+  #timer-label {
+    width: 100%;
+    margin-top: 12px;
+    color: white;
+    font-size: 26px;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: -1px 2px 1px 2 #333333b0;
+  }
+}

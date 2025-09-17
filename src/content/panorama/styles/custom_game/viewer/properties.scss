@@ -1,0 +1,92 @@
+@use "../../panel";
+@use "../../ui";
+@use "../../vars";
+
+$fg-color: #3c1b18;
+$fg-color-bright: #3c1b18; /* fg-color & 99 */
+
+.root {
+  flow-children: down;
+  width: 100%;
+  height: 230px;
+  padding: 15px;
+}
+
+.row {
+  flow-children: right;
+  width: 100%;
+  height: 40px;
+}
+
+.label {
+  color: $fg-color;
+  font-weight: semi-bold;
+  font-size: 18px;
+  vertical-align: center;
+}
+
+.value {
+  align: right center;
+}
+
+.hero-level-badge {
+  width: 30px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #121212;
+
+  .hero-level-label {
+    align: center center;
+    width: 14px;
+    margin-top: 3px;
+    color: #e7d291;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: vars.$font-monospace;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: 0 0 3px 3.7 #ec780e24;
+  }
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  margin: 6px 8px;
+  vertical-align: center;
+  tooltip-body-position: 50% 10%;
+  tooltip-position: left;
+
+  &.hero-level-icon {
+    @include ui.icon(vars.$icon-controls-escalation-arrow);
+    wash-color: $fg-color;
+  }
+
+  &.specialty-icon {
+    @include ui.icon(vars.$icon-controls-filter-support);
+    wash-color: $fg-color;
+  }
+
+  &.stance-icon {
+    @include ui.icon(vars.$icon-controls-filter-carry);
+    wash-color: $fg-color;
+  }
+
+  &.attack-damage-icon {
+    @include ui.icon(vars.$icon-controls-filter-melee);
+    wash-color: $fg-color;
+  }
+
+  &.difficulty-icon {
+    @include ui.icon(vars.$icon-controls-filter-complexity);
+    wash-color: $fg-color;
+  }
+}
+
+.rating {
+  @include panel.rating("rating-active");
+
+  .rating-active {
+    wash-color: $fg-color-bright;
+  }
+}

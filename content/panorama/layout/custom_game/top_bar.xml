@@ -7,18 +7,18 @@
     <include src="file://{resources}/styles/custom_game/top_bar.css" />
   </styles>
 
-  <Panel class="TopBarRoot">
-    <Panel class="TopBar">
+  <Panel class="root">
+    <Panel id="top-bar">
       <Button
-        id="BtnShowGameInfo"
-        class="TopBarButton InfoIcon"
+        id="btn-game-info"
+        class="button info-icon"
         onmouseover="UIShowTextTooltip(#DOTA_Custom_Game_Info)"
         onmouseout="UIHideTextTooltip()"
       />
 
       <Button
-        id="BtnQuit"
-        class="TopBarButton"
+        id="btn-quit"
+        class="button"
         onmouseover="UIShowTextTooltip(#dota_dashboard_quit)"
         onmouseout="UIHideTextTooltip()"
       />

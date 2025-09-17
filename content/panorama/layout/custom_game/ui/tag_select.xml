@@ -8,16 +8,16 @@
   </styles>
 
   <snippets>
-    <snippet name="UITagSelectTag">
-      <Panel class="UITagSelectTag" hittest="false">
-        <Label class="UITagSelectTagLabel" text="{s:value}" hittest="false" />
-        <Button id="UITagSelectTagRemoveButton" class="UITagSelectTagRemoveButton" />
+    <snippet name="tag">
+      <Panel class="tag" hittest="false">
+        <Label class="tag-label" text="{s:value}" hittest="false" />
+        <Button id="tag-remove-button" class="tag-remove-button" />
       </Panel>
     </snippet>
   </snippets>
 
-  <Panel class="UITagSelectRoot" hittest="false">
-    <DropDown id="UITagSelectOptions" />
-    <Panel id="UITagSelectTagList" hittest="false" />
+  <Panel class="root--ui--tag-select" hittest="false">
+    <DropDown id="options" />
+    <Panel id="tag-list" hittest="false" />
   </Panel>
 </root>

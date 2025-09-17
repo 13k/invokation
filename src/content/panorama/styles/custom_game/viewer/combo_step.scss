@@ -1,0 +1,30 @@
+@use "../../vars";
+
+.root {
+  flow-children: right;
+  padding: 8px;
+}
+
+#icon-button {
+  width: 48px;
+  height: 48px;
+  background-color: #000d;
+  box-shadow: vars.$cl-gold-bright 0 0 2px 2px;
+}
+
+.optional #icon-button {
+  box-shadow: #000 0 0 2px 2px;
+}
+
+#image {
+  vertical-align: center;
+}
+
+#description {
+  width: fill-parent-flow(1);
+  margin-left: 8px;
+  color: #3c1b18;
+  font-weight: semi-bold;
+  font-size: 18px;
+  vertical-align: center;
+}

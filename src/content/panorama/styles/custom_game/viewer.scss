@@ -1,0 +1,262 @@
+// ******************************************************************************
+// * Combo Viewer (shamelessly rippped from Invoker kid persona page)
+// ******************************************************************************
+
+@use "../dota2";
+@use "../layout";
+@use "../ui";
+@use "../util";
+@use "../vars";
+
+$cl-text: #3c1b18;
+
+@include layout.flow;
+
+.root--viewer {
+  width: 100%;
+  height: 100%;
+
+  #viewer {
+    horizontal-align: right;
+    width: 640px;
+    height: 840px;
+    margin-top: 80px;
+    margin-right: 180px;
+    opacity: 1;
+    transition-duration: 0s;
+    transition-property: opacity;
+  }
+
+  &.closed #viewer {
+    opacity: 0;
+    transition-duration: 1s;
+  }
+
+  #btn-close {
+    @include ui.btn-close(36px);
+    horizontal-align: right;
+    margin-top: -4px;
+    margin-right: -4px;
+    wash-color: #fff;
+  }
+
+  #btn-reload {
+    @include ui.btn-refresh(36px);
+    horizontal-align: left;
+    visibility: collapse;
+    width: 36px;
+    height: 36px;
+    margin-top: -4px;
+    margin-left: -4px;
+    wash-color: #fff;
+  }
+
+  &.development #btn-reload {
+    visibility: visible;
+  }
+
+  #information-background {
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-image: vars.$bg-viewer;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  #information-body {
+    flow-children: down;
+    width: 100%;
+    margin-top: 60px;
+  }
+
+  #title {
+    width: 555px;
+    margin-left: 45px;
+    padding: 0 25px;
+    color: $cl-text;
+    font-weight: black;
+    font-size: 21px;
+    letter-spacing: 2px;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: 0 0 5px 1px #000;
+    text-transform: uppercase;
+  }
+
+  #scroll-panel {
+    align: center top;
+    width: 80%;
+    height: 600px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    overflow: squish scroll;
+    opacity-mask: vars.$mask-softedge-vscroll-wide;
+  }
+
+  #properties-section {
+    horizontal-align: center;
+    width: 65%;
+  }
+
+  #description {
+    width: 100%;
+    margin-top: 18px;
+    color: $cl-text;
+    font-weight: semi-bold;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: left;
+  }
+
+  .section {
+    flow-children: down;
+    width: 100%;
+    margin-top: 20px;
+
+    .section-label {
+      color: $cl-text;
+      font-weight: semi-bold;
+      font-size: 18px;
+    }
+
+    .section-header {
+      flow-children: right;
+      width: 100%;
+      margin-bottom: 8px;
+
+      .section-label {
+        font-weight: bold;
+        font-size: 24px;
+        text-shadow: 1px 1px 2px 1 $cl-text;
+        text-transform: uppercase;
+      }
+    }
+
+    .section-row {
+      flow-children: right;
+      width: 100%;
+    }
+  }
+
+  #abilities-build {
+    flow-children: right;
+    horizontal-align: center;
+    margin-top: 22px;
+    margin-bottom: 10px;
+
+    .orb {
+      width: vars.$ability-circle-size;
+      height: vars.$ability-circle-size;
+      margin-left: 8px;
+      border-radius: vars.$ability-circle-border-radius;
+      box-shadow: #1c1d20ee 0 0 8px 0;
+    }
+
+    .orb-label {
+      align: right bottom;
+      margin-right: 8px;
+      margin-bottom: 4px;
+      color: $cl-text;
+      font-weight: bold;
+      font-size: 28px;
+      text-shadow: 1px 1px 1px #fffd;
+      opacity-mask: vars.$mask-softedge-box-irregular;
+    }
+  }
+
+  #talents {
+    horizontal-align: middle;
+    vertical-align: middle;
+    tooltip-body-position: 33%;
+    tooltip-position: left;
+  }
+
+  #sequence {
+    flow-children: down;
+    margin-top: 26px;
+  }
+
+  #footer {
+    horizontal-align: center;
+    margin-bottom: 60px;
+    vertical-align: bottom;
+  }
+
+  .buttons {
+    flow-children: right;
+    horizontal-align: center;
+  }
+
+  #btn-play {
+    width: 206px;
+    height: 49px;
+    border-top: 1px solid #faa46a;
+    background-color: util.gradient-vertical(#af5417cc, #af5417cc);
+    box-shadow: #27110250 0 0 12px;
+    opacity: 0.9;
+    wash-color: #9992;
+    transition-duration: 0.2s;
+    transition-property: background-color;
+
+    &:hover {
+      background-color: util.gradient-vertical(#af5417, #af5417);
+    }
+
+    &:active {
+      wash-color: white;
+    }
+
+    .play-label {
+      width: 100%;
+      color: #d5d7d7;
+      font-weight: bold;
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-align: center;
+      text-transform: uppercase;
+      vertical-align: center;
+    }
+
+    &:hover .play-label {
+      color: white;
+    }
+  }
+
+  // Classes used within HTML content
+
+  #title, #description {
+    .sub-title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .intro-text {
+      font-weight: bold;
+      font-size: 21px;
+    }
+
+    .video {
+      width: 500px;
+      height: 250px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
+    }
+
+    .image {
+      max-width: 500px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
+    }
+
+    .inline-image {
+      max-height: 200px;
+      margin: 8px 10px 20px 0;
+      box-shadow: fill 0 2px 8px 0 rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+@include dota2.style;

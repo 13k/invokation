@@ -1,0 +1,193 @@
+@use "../../layout";
+@use "../../panel";
+@use "../../ui";
+@use "../../vars";
+
+@include layout.flow;
+
+.root--picker--combo {
+  flow-children: down;
+  width: 100%;
+  height: fit-children;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #111f;
+  }
+
+  &.finished {
+    background-color: #7771;
+
+    &:hover {
+      background-color: #111f;
+    }
+  }
+
+  .title-container {
+    @include panel.title-container("title");
+    height: fit-children;
+    padding: 0;
+    border: 0;
+    background-color: none;
+
+    .title {
+      font-size: 14px;
+      text-align: left;
+      vertical-align: center;
+    }
+  }
+
+  &.finished .title {
+    margin-left: 12px;
+  }
+
+  #finished-icon {
+    @include ui.icon(vars.$icon-controls-check-shadow);
+    visibility: collapse;
+    width: 24px;
+    height: 24px;
+    vertical-align: center;
+    tooltip-body-position: 50% 10%;
+    tooltip-position: right;
+    wash-color: vars.$cl-dota-plus-light-gold;
+  }
+
+  &.finished #finished-icon {
+    visibility: visible;
+    wash-color: vars.$cl-dota-plus-gold;
+  }
+
+  #info-container {
+    flow-children: right;
+    margin-top: 8px;
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+    margin: 6px 8px;
+    vertical-align: center;
+    tooltip-body-position: 50% 10%;
+    tooltip-position: right;
+  }
+
+  .info-icon {
+    @include ui.icon-info;
+    margin-right: 0;
+    margin-left: 0;
+
+    &:hover {
+      wash-color: #fff;
+    }
+  }
+
+  .specialty-icon {
+    border-radius: 50%;
+  }
+
+  &.specialty-qw .specialty-icon {
+    background-color: gradient(
+      linear,
+      0% 0%,
+      100% 100%,
+      from(vars.$cl-quas-accent44),
+      color-stop(0.49, vars.$cl-quas-accent),
+      color-stop(0.5, #000),
+      color-stop(0.51, vars.$cl-wex-accent),
+      to(vars.$cl-wex-accent44)
+    );
+  }
+
+  &.specialty-qe .specialty-icon {
+    background-color: gradient(
+      linear,
+      0% 0%,
+      100% 100%,
+      from(vars.$cl-quas-accent44),
+      color-stop(0.49, vars.$cl-quas-accent),
+      color-stop(0.5, #000),
+      color-stop(0.51, vars.$cl-exort-accent),
+      to(vars.$cl-exort-accent44)
+    );
+  }
+
+  .stance-icon {
+    wash-color: #888;
+  }
+
+  &.stance-offensive .stance-icon {
+    @include ui.icon(vars.$icon-stance-offensive);
+  }
+
+  &.stance-defensive .stance-icon {
+    @include ui.icon(vars.$icon-stance-defensive);
+  }
+
+  .hero-level-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #121212;
+  }
+
+  &:hover .hero-level-icon {
+    background-color: #222;
+  }
+
+  #hero-level-label {
+    align: center center;
+    width: 14px;
+    margin-top: 3px;
+    color: #e7d291;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: vars.$font-monospace;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: 0 0 3px 3.7 #ec780e24;
+  }
+
+  .ratings {
+    flow-children: down;
+    margin-left: 8px;
+    vertical-align: center;
+
+    .rating {
+      @include panel.rating("rating-active");
+    }
+
+    .attack-damage-icon {
+      width: 16px;
+      height: 16px;
+
+      @include ui.icon(vars.$icon-damage-rating);
+    }
+
+    .difficulty-icon {
+      width: 16px;
+      height: 16px;
+
+      @include ui.icon(vars.$icon-difficulty-rating);
+    }
+  }
+
+  #btn-play {
+    @include ui.btn-flat;
+    width: 100%;
+    height: 0;
+    margin-top: 10px;
+    transition-duration: 0.2s;
+    transition-property: height;
+    transition-timing-function: ease-in-out;
+
+    .btn-text {
+      horizontal-align: center;
+    }
+  }
+
+  &:hover #btn-play {
+    height: 24px;
+  }
+}

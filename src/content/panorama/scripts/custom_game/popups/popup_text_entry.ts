@@ -39,12 +39,12 @@ enum Param {
 }
 
 enum CssClass {
-  BodyEnabled = "BodyEnabled",
-  ImageEnabled = "ImageIconEnabled",
-  EconItemEnabled = "EconItemIconEnabled",
-  HeroEnabled = "HeroIconEnabled",
-  AbilityEnabled = "AbilityIconEnabled",
-  ItemEnabled = "ItemIconEnabled",
+  BodyEnabled = "has-body",
+  ImageEnabled = "has-image",
+  EconItemEnabled = "has-econ-item",
+  HeroEnabled = "has-hero",
+  AbilityEnabled = "has-ability",
+  ItemEnabled = "has-item",
 }
 
 enum DialogVar {
@@ -58,14 +58,14 @@ class PopupTextEntry extends Component<PopupTextEntryElements, never, never, Pop
   constructor() {
     super({
       elements: {
-        textEntry: "PopupTextEntryTextEntry",
-        image: "PopupTextEntryImage",
-        econItemImage: "PopupTextEntryEconItemImage",
-        heroImage: "PopupTextEntryHeroImage",
-        abilityImage: "PopupTextEntryAbilityImage",
-        itemImage: "PopupTextEntryItemImage",
-        btnSubmit: "PopupTextEntrySubmit",
-        btnCancel: "PopupTextEntryCancel",
+        image: "image",
+        econItemImage: "econ-item-image",
+        heroImage: "hero-image",
+        abilityImage: "ability-image",
+        itemImage: "item-image",
+        textEntry: "text-entry",
+        btnSubmit: "btn-submit",
+        btnCancel: "btn-cancel",
       },
       panelEvents: {
         $: {

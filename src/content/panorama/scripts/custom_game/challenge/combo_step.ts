@@ -10,9 +10,9 @@ export interface ChallengeComboStepInputs extends ComboStepInputs {
 }
 
 enum CssClass {
-  Active = "ChallengeComboStepActive",
-  Error = "ChallengeComboStepError",
-  Bump = "ChallengeComboStepBump",
+  Active = "active",
+  Error = "error",
+  Bump = "bump",
 }
 
 export type { ChallengeComboStep };

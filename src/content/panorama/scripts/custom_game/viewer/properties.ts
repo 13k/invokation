@@ -25,9 +25,7 @@ enum DialogVar {
   DifficultyRating = "difficulty_rating",
 }
 
-const ratingCssClass = (value: number) => `rating_${value}`;
-
-export type { ViewerProperties };
+const ratingCssClass = (value: number) => `rating-${value}`;
 
 class ViewerProperties extends Component<ViewerPropertiesElements, ViewerPropertiesInputs> {
   combo: Combo | undefined;
@@ -35,11 +33,11 @@ class ViewerProperties extends Component<ViewerPropertiesElements, ViewerPropert
   constructor() {
     super({
       elements: {
-        heroLevelLabel: "ViewerPropertiesHeroLevelLabel",
-        specialtyLabel: "ViewerPropertiesSpecialtyLabel",
-        stanceLabel: "ViewerPropertiesStanceLabel",
-        damageRating: "ViewerPropertiesDamageRating",
-        difficultyRating: "ViewerPropertiesDifficultyRating",
+        heroLevelLabel: "hero-level-label",
+        specialtyLabel: "specialty-label",
+        stanceLabel: "stance-label",
+        damageRating: "damage-rating",
+        difficultyRating: "difficulty-rating",
       },
       inputs: {
         setCombo: (payload) => this.setCombo(payload),
@@ -112,6 +110,8 @@ class ViewerProperties extends Component<ViewerPropertiesElements, ViewerPropert
     seq.run();
   }
 }
+
+export type { ViewerProperties };
 
 (() => {
   new ViewerProperties();

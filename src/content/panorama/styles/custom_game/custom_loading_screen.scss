@@ -1,0 +1,109 @@
+@use "../anim";
+@use "../vars";
+
+.root {
+  width: 100%;
+  height: 100%;
+  background-color: #14181d;
+}
+
+.root.splash {
+  background-color: gradient(
+    linear,
+    0% 0%,
+    100% 100%,
+    from(#0b0c0e),
+    color-stop(0.3, #14181d),
+    color-stop(0.303, #6c829c),
+    color-stop(0.31, #99b8dd),
+    color-stop(0.55, #99b8dd),
+    color-stop(0.56, #6c829c),
+    color-stop(0.563, #14181d),
+    to(#0b0c0e)
+  );
+}
+
+#title-fx {
+  width: 100%;
+  height: 100%;
+  transform: translateX(64px) translateY(64px) translateZ(-40px);
+  opacity: 0;
+  transition-duration: 0.4s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+}
+
+#title-fx.SceneLoaded {
+  opacity: 1;
+}
+
+$grad-sun: gradient(
+  radial,
+  50% 50%,
+  0% 0%,
+  50% 50%,
+  from(#2b1d10f1),
+  color-stop(0.6, #ff9100c2),
+  to(#00000000)
+);
+
+$grad-sun-fade: gradient(
+  radial,
+  50% 50%,
+  0% 0%,
+  50% 50%,
+  from(#2b1d10f1),
+  color-stop(0.6, #ce7909c2),
+  to(#00000000)
+);
+
+.panel-title {
+  width: 300px;
+  height: 300px;
+  margin-top: 64px;
+  margin-left: 64px;
+  background-color: $grad-sun;
+
+  @include anim.animate(
+    "sunstrike-glow",
+    $duration: 4s,
+    $timing: ease-in-out,
+    $count: infinite
+  ) {
+    0% {
+      background-color: $grad-sun;
+    }
+    50% {
+      background-color: $grad-sun-fade;
+    }
+    100% {
+      background-color: $grad-sun;
+    }
+  }
+
+  .title {
+    align: center center;
+    width: 100%;
+    color: #bbb6ae;
+    font-weight: semi-bold;
+    font-size: 80px;
+    font-family: vars.$font-title;
+    letter-spacing: -2px;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: 2px 4px 4px #000;
+    text-transform: uppercase;
+  }
+}
+
+#scene {
+  width: 100%;
+  height: 100%;
+  margin-left: -200px;
+  transform: translateZ(-30px);
+  opacity: 0;
+}
+
+#scene.SceneLoaded {
+  opacity: 1;
+}

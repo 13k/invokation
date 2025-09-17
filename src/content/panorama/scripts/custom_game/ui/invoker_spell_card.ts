@@ -80,7 +80,7 @@ class InvokerSpellCard extends Component<InvokerSpellCardElements, never, Invoke
         throw "unreachable";
       }
 
-      const rowId = `row${i}`;
+      const rowId = `row-${i}`;
       const rowPanel = $.CreatePanel("Panel", this.elements.rows, rowId);
 
       rowPanel.AddClass(CssClass.Row);
@@ -92,7 +92,7 @@ class InvokerSpellCard extends Component<InvokerSpellCardElements, never, Invoke
           continue;
         }
 
-        const colId = `row${i}-col${j}`;
+        const colId = `row-${i}-col-${j}`;
         const colPanel = $.CreatePanel("Panel", rowPanel, colId);
 
         colPanel.AddClass(CssClass.Column);

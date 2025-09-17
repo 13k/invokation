@@ -7,35 +7,35 @@
     <include src="file://{resources}/styles/custom_game/ui/talents_display.css" />
   </styles>
 
-  <Panel class="UITalentsDisplayRoot">
-    <Panel class="StatBranchContainer">
-      <Panel id="StatBranchBGBranchWell" />
+  <Panel class="root">
+    <Panel id="branch-container">
+      <Panel id="well" />
 
       <Panel
-        id="StatBranchGraphics"
+        id="graphics"
         require-composition-layer="true"
         always-cache-composition-layer="true"
       >
-        <Panel id="StatBranchChannel">
-          <Panel id="StatPipContainer">
-            <Panel id="StatRow25" class="StatBranchRow">
-              <Panel class="StatBranchPip LeftBranchPip" />
-              <Panel class="StatBranchPip RightBranchPip" />
+        <Panel id="channel">
+          <Panel id="pip-container">
+            <Panel id="row-25" class="row">
+              <Panel class="pip pip-left" />
+              <Panel class="pip pip-right" />
             </Panel>
 
-            <Panel id="StatRow20" class="StatBranchRow">
-              <Panel class="StatBranchPip LeftBranchPip" />
-              <Panel class="StatBranchPip RightBranchPip" />
+            <Panel id="row-20" class="row">
+              <Panel class="pip pip-left" />
+              <Panel class="pip pip-right" />
             </Panel>
 
-            <Panel id="StatRow15" class="StatBranchRow">
-              <Panel class="StatBranchPip LeftBranchPip" />
-              <Panel class="StatBranchPip RightBranchPip" />
+            <Panel id="row-15" class="row">
+              <Panel class="pip pip-left" />
+              <Panel class="pip pip-right" />
             </Panel>
 
-            <Panel id="StatRow10" class="StatBranchRow">
-              <Panel class="StatBranchPip LeftBranchPip" />
-              <Panel class="StatBranchPip RightBranchPip" />
+            <Panel id="row-10" class="row">
+              <Panel class="pip pip-left" />
+              <Panel class="pip pip-right" />
             </Panel>
           </Panel>
         </Panel>

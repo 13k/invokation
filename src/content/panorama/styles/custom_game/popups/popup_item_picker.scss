@@ -1,0 +1,8 @@
+@use "../../popup";
+
+.root {
+  @include popup.popup;
+  flow-children: down;
+  align: center center;
+  padding: 0 0 20px;
+}

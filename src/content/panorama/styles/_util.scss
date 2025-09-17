@@ -1,0 +1,25 @@
+@use "sass:map";
+
+@function box-width($width, $padding) {
+  @return $width + map.get($padding, "left") + map.get($padding, "right");
+}
+
+@function gradient-horizontal($from, $to, $left: 0%, $right: 100%) {
+  @return gradient(linear, $left 0%, $right 0%, from($from), to($to));
+}
+
+@function gradient-vertical($from, $to, $top: 0%, $bottom: 100%) {
+  @return gradient(linear, 0% $top, 0% $bottom, from($from), to($to));
+}
+
+@mixin expand-box-property($property, $map) {
+  @each $key, $value in $map {
+    $prop-name: "#{$property}-#{$key}";
+
+    @if $property == "border-color" {
+      $prop-name: "border-#{$key}-color";
+    }
+
+    #{$prop-name}: $value;
+  }
+}

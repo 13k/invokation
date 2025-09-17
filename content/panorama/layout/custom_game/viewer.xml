@@ -7,87 +7,90 @@
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="ViewerRoot Hide" hittest="false">
-    <Panel class="Viewer" hittest="false">
-      <Button id="BtnClose" class="CloseButton" />
-      <Button id="BtnReload" class="RefreshButton" />
+  <Panel class="root--viewer closed" hittest="false">
+    <Panel id="viewer" hittest="false">
+      <Button id="btn-close" />
+      <Button id="btn-reload" />
 
-      <Panel class="ViewerInformationBackground" hittest="false" />
+      <Panel id="information-background" hittest="false" />
 
-      <Panel class="ViewerInformationBody" hittest="false">
-        <Label id="ViewerTitle" html="true" hittest="false" />
+      <Panel id="information-body" hittest="false">
+        <Label id="title" html="true" hittest="false" />
 
-        <Panel id="ViewerScrollPanel" class="TopBottomFlow">
-          <Panel id="ViewerPropertiesSection" class="ViewerSection" hittest="false" />
+        <Panel id="scroll-panel" class="flow-down">
+          <Panel id="properties-section" class="section" hittest="false" />
 
-          <Label id="ViewerDescription" html="true" hittest="false" />
+          <Label id="description" html="true" hittest="false" />
 
-          <Panel class="ViewerSection ViewerAbilitiesBuildSection" hittest="false">
-            <Panel class="SectionHeader" hittest="false">
+          <Panel class="section abilities-build-section" hittest="false">
+            <Panel class="section-header" hittest="false">
               <Label
-                class="SectionLabel"
+                class="section-label"
                 text="#invk_viewer_abilities_build_title"
                 hittest="false"
               />
             </Panel>
 
-            <Panel class="ViewerAbilitiesBuild" hittest="false">
-              <Panel id="ViewerTalents" class="AbilityCircle" />
-              <!-- <DOTAUITalentDisplay id="ViewerTalents" /> -->
+            <Panel id="abilities-build" hittest="false">
+              <Panel id="talents" class="orb" />
+              <!-- <DOTAUITalentDisplay id="talents" /> -->
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+              <Panel class="orb" hittest="false">
                 <DOTAAbilityImage
-                  id="ViewerOrbQuas"
+                  id="orb-quas"
                   abilityname="invoker_quas"
                   onmouseout="DOTAHideAbilityTooltip()"
                 />
-                <Label id="ViewerOrbQuasLabel" class="ViewerOrbLabel" hittest="false" />
+
+                <Label id="orb-quas-label" class="orb-label" hittest="false" />
               </Panel>
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+              <Panel class="orb" hittest="false">
                 <DOTAAbilityImage
-                  id="ViewerOrbWex"
+                  id="orb-wex"
                   abilityname="invoker_wex"
                   onmouseout="DOTAHideAbilityTooltip()"
                 />
-                <Label id="ViewerOrbWexLabel" class="ViewerOrbLabel" hittest="false" />
+
+                <Label id="orb-wex-label" class="orb-label" hittest="false" />
               </Panel>
 
-              <Panel class="ViewerOrb AbilityCircle" hittest="false">
+              <Panel class="orb" hittest="false">
                 <DOTAAbilityImage
-                  id="ViewerOrbExort"
+                  id="orb-exort"
                   abilityname="invoker_exort"
                   onmouseout="DOTAHideAbilityTooltip()"
                 />
-                <Label id="ViewerOrbExortLabel" class="ViewerOrbLabel" hittest="false" />
+
+                <Label id="orb-exort-label" class="orb-label" hittest="false" />
               </Panel>
             </Panel>
           </Panel>
 
-          <Panel class="ViewerSection ViewerSequenceSection" hittest="false">
-            <Panel class="SectionHeader" hittest="false">
+          <Panel class="section sequence-section" hittest="false">
+            <Panel class="section-header" hittest="false">
               <Label
-                class="SectionLabel"
+                class="section-label"
                 text="#invk_viewer_sequence_title"
                 hittest="false"
               />
             </Panel>
 
             <Label
-              class="SectionLabel"
+              class="section-label"
               text="#invk_viewer_sequence_disclaimer"
               hittest="false"
             />
 
-            <Panel id="ViewerSequence" hittest="false" />
+            <Panel id="sequence" hittest="false" />
           </Panel>
         </Panel>
       </Panel>
 
-      <Panel class="ViewerFooter" hittest="false">
-        <Panel class="ViewerButtons" hittest="false">
-          <Button id="BtnPlay" class="PlayButton">
-            <Label class="PlayLabel" text="#invk_controls_play" hittest="false" />
+      <Panel id="footer" hittest="false">
+        <Panel class="buttons" hittest="false">
+          <Button id="btn-play">
+            <Label class="play-label" text="#invk_controls_play" hittest="false" />
           </Button>
         </Panel>
       </Panel>

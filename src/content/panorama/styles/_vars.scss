@@ -1,0 +1,380 @@
+@use "asset";
+
+// ******************************************************************************
+// * Colors
+// ******************************************************************************
+
+$cl-text-link: #9862e9;
+
+$cl-gold: #ffcc33;
+$cl-gold-bright: #ffcc33; // cl-gold & cc
+$cl-dota-plus-gold: #b78946;
+$cl-dota-plus-light-gold: #dcd086;
+
+$cl-quas-accent: #33a7e9;
+$cl-quas-accent-dark: #33a7e9; // cl-quas-accent & 07
+$cl-quas-accent44: #33a7e9; // cl-quas-accent & 44
+$cl-quas-text: #88c5e9;
+$cl-quas-text-dd: #88c5e9; // cl-quas-text & dd
+
+$cl-wex-accent: #eb07e1;
+$cl-wex-accent-dark: #eb07e1; // cl-wex-accent & 07
+$cl-wex-accent44: #eb07e1; // cl-wex-accent & 44
+$cl-wex-text: #c284bf;
+$cl-wex-text-dd: #c284bf; // cl-wex-text & dd
+
+$cl-exort-accent: #e7ac10;
+$cl-exort-accent-dark: #e7ac10; // cl-exort-accent & 07
+$cl-exort-accent44: #e7ac10; // cl-exort-accent & 44
+$cl-exort-text: #c69a25;
+$cl-exort-text-dd: #c69a25; // cl-exort-text & dd
+
+// ******************************************************************************
+// * Fonts
+// ******************************************************************************
+
+$font-title: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
+$font-default: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
+$font-monospace: RadianceM, Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
+
+// ******************************************************************************
+// * Icons
+// ******************************************************************************
+
+$icon-controls-arrow-dropdown-up: asset.game-img-url("control_icons/arrow_dropdown_up_png.vtex");
+$icon-controls-arrow-popout: asset.game-img-url("control_icons/arrow_popout_png.vtex");
+$icon-controls-check-shadow: asset.game-img-url("control_icons/check_shadow_png.vtex");
+$icon-controls-close: asset.game-img-url("control_icons/x_close_grey_psd.vtex");
+$icon-controls-double-arrow-left: asset.game-img-url("control_icons/double_arrow_left_png.vtex");
+$icon-controls-double-arrow-right: asset.game-img-url("control_icons/double_arrow_right_png.vtex");
+$icon-controls-escalation-arrow: asset.game-img-url("control_icons/escalation_arrow_psd.vtex");
+$icon-controls-expand-collapse: asset.game-img-url("control_icons/expand_collapse_png.vtex");
+$icon-controls-eye: asset.game-img-url("control_icons/eye_png.vtex");
+$icon-controls-filter-carry: asset.game-img-url("control_icons/filter_carry_png.vtex");
+$icon-controls-filter-complexity: asset.game-img-url("control_icons/filter_complexity_png.vtex");
+$icon-controls-filter-melee: asset.game-img-url("control_icons/filter_melee_png.vtex");
+$icon-controls-filter-support: asset.game-img-url("control_icons/filter_support_png.vtex");
+$icon-controls-info: asset.game-img-url("control_icons/24px/info.vsvg");
+$icon-controls-quit: asset.game-img-url("control_icons/quit_png.vtex");
+$icon-controls-refresh: asset.game-img-url("control_icons/refresh_psd.vtex");
+$icon-controls-search: asset.game-img-url("control_icons/icon_search_png.vtex");
+
+$icon-status-loading: asset.game-img-url("status_icons/loadingthrobber_round_psd.vtex");
+
+// ***** invokation *****
+
+$icon-stance-offensive: asset.game-img-url("status_icons/modifier_kill_effect_psd.vtex");
+$icon-stance-defensive: asset.game-img-url("hud/reborn/icon_armor_psd.vtex");
+$icon-damage-rating: asset.game-img-url("hud/reborn/icon_damage_psd.vtex");
+$icon-difficulty-rating: asset.game-img-url("hud/reborn/icon_speed_psd.vtex");
+
+// ******************************************************************************
+// * HUD
+// ******************************************************************************
+
+$hud-invoker-card: asset.game-img-url("hud/invokercard_psd.vtex");
+$hud-timer-bg: asset.game-img-url("hud/reborn/bg_timer_psd.vtex");
+$hud-ult-cooldown: asset.game-img-url("hud/reborn/ult_cooldown_psd.vtex");
+$hud-ult-ready: asset.game-img-url("hud/reborn/ult_ready_psd.vtex");
+
+$ability-circle-size: 64px;
+$ability-circle-border-radius: $ability-circle-size / 2;
+
+// ******************************************************************************
+// * Backgrounds
+// ******************************************************************************
+
+$bg-picker: asset.game-img-url("backgrounds/gallery_background_png.vtex");
+$bg-viewer: asset.custom-img-url("viewer/paper-bg.png");
+
+// ******************************************************************************
+// * Masks
+// ******************************************************************************
+
+$mask-gradient-left-right: asset.game-img-url("masks/gradient_leftright_png.vtex");
+$mask-softedge-box: asset.game-img-url("masks/softedge_box_png.vtex");
+$mask-softedge-box-irregular: asset.game-img-url("masks/softedge_box_irregular_png.vtex");
+$mask-softedge-vscroll: asset.game-img-url("masks/softedge_vertical_vscroll_psd.vtex");
+$mask-softedge-vscroll-wide: asset.game-img-url("masks/softedge_vertical_vscroll_wide_psd.vtex");
+
+// ******************************************************************************
+// * Sounds
+// ******************************************************************************
+
+$snd-btn-click: "ui_generic_button_click";
+$snd-dialog-slide: "ui_custom_lobby_dialog_slide";
+$snd-friends-slidein: "ui_friends_slide_in";
+$snd-quit-fadeout: "ui_quit_menu_fadeout";
+$snd-quit: "ui.menu_quit";
+$snd-select-blue: "ui_select_blue";
+
+// ******************************************************************************
+// * Buttons
+// ******************************************************************************
+
+$btn-bevel-colors: (
+  "&": (
+    "regular": (
+      "border-color": (
+        "top": #555555,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #494949
+      ),
+      "background": ("from": #373d45, "to": #4d5860)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #aaaaaa77,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #aaaaaa33
+      ),
+      "background": ("from": #4c5561, "to": #6c7d88)
+    ),
+    "active": (
+      "border-color": (
+        "top": #222222,
+        "right": #444444,
+        "bottom": #666666,
+        "left": #303030
+      ),
+      "background": ("from": #393939, "to": #555555),
+      "sound": "ui_generic_button_click"
+    ),
+    "disabled": (
+      "wash-color": #aaaaaa,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border-color": (
+        "top": #355639,
+        "right": #214123,
+        "bottom": #1e371e,
+        "left": #2c4d30
+      ),
+      "background": ("from": #2a481f, "to": #226326)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #030503,
+        "right": #244426,
+        "bottom": #1e371d,
+        "left": #000000
+      ),
+      "background": ("from": #226528, "to": #288a36)
+    ),
+    "active": (
+      "border-color": (
+        "top": #132416,
+        "right": #264a29,
+        "bottom": #386b3b,
+        "left": #192f1b
+      ),
+      "background": ("from": #1f3d25, "to": #2b562c)
+    )
+  ),
+  "dark-green": (
+    "regular": (
+      "border-color": (
+        "top": #223524,
+        "right": #132615,
+        "bottom": #091009,
+        "left": #2c4d30
+      ),
+      "background": ("from": #1a2c13, "to": #18441b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #000000,
+        "right": #152716,
+        "bottom": #172a16,
+        "left": #000000
+      ),
+      "background": ("from": #17421b, "to": #185321)
+    ),
+    "active": (
+      "border-color": (
+        "top": #09110a,
+        "right": #172c19,
+        "bottom": #1f3820,
+        "left": #0f1b10
+      ),
+      "background": ("from": #132416, "to": #183019)
+    )
+  ),
+  "bronze": (
+    "regular": (
+      "border-color": (
+        "top": #e0a75e,
+        "right": #8f6b3c,
+        "bottom": #8d683a,
+        "left": #dca35b
+      ),
+      "background": ("from": #b9894c, "to": #dca157)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #f2b362,
+        "right": #966f3e,
+        "bottom": #966f3e,
+        "left": #edb062
+      ),
+      "background": ("from": #dda45a, "to": #fcb965)
+    ),
+    "active": (
+      "border-color": (
+        "top": #684e2d,
+        "right": #906c3f,
+        "bottom": #977242,
+        "left": #6d522f
+      ),
+      "background": ("from": #4d391f, "to": #9b713c)
+    ),
+    "disabled": ("saturation": 0.75)
+  ),
+  "plus": (
+    "regular": (
+      "border-color": (
+        "top": #b4a442,
+        "right": #756f45,
+        "bottom": #635e3b,
+        "left": #aea463
+      ),
+      "background": ("from": #877f4f, "to": #a79c5b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #cab84b,
+        "right": #8e8755,
+        "bottom": #7c764b,
+        "left": #c6bb72
+      ),
+      "background": ("from": #a79d63, "to": #c2b56b)
+    ),
+    "active": (
+      "border-color": (
+        "top": #635e3b,
+        "right": #aea463,
+        "bottom": #b4a442,
+        "left": #756f45
+      ),
+      "background": ("from": #877f4f, "to": #a79c5b),
+      "color": #dcd086
+    ),
+    "disabled": ("saturation": 0.75)
+  )
+);
+
+$btn-popup-colors: (
+  "&": (
+    "regular": (
+      "border": (
+        "top": 1px solid #ffffff44,
+        "right": 1px solid #4e5b60,
+        "bottom": 1px solid #00000088,
+        "left": 1px solid #4e5b60
+      ),
+      "background": ("from": #5a6c75, "to": #3d4a50)
+    ),
+    "hover": ("background": ("from": #a9c8da, "to": #596b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #00000088,
+        "right": 1px solid #00000088,
+        "bottom": 1px solid #aaaaaa44,
+        "left": 1px solid #00000088
+      ),
+      "background": ("from": #272f33, "to": #5a6c75),
+      "sound": $snd-quit-fadeout
+    ),
+    "disabled": (
+      "wash-color": #999999,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border": (
+        "top": 1px solid #859d6e,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #294211,
+        "left": 1px solid #496922
+      ),
+      "background": ("from": #5e842c, "to": #40621d)
+    ),
+    "hover": ("background": ("from": #9eb46c, "to": #60823d)),
+    "active": (
+      "border": (
+        "top": 1px solid #294211,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #859d6e,
+        "left": 1px solid #496922
+      ),
+      "background": ("from": #204200, "to": #5e842c)
+    )
+  ),
+  "blue": (
+    "regular": (
+      "border": (
+        "top": 1px solid #80bceb,
+        "right": 1px solid #507693,
+        "bottom": 1px solid #273a48,
+        "left": 1px solid #507693
+      ),
+      "background": ("from": #65a9db, "to": #2b4b75)
+    ),
+    "hover": ("background": ("from": #9ccaf4, "to": #2b4b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #273a48,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #567e9e,
+        "left": 1px solid #496922
+      ),
+      "background": ("from": #2b4b75, "to": #65a9db)
+    )
+  ),
+  "grey": (
+    "regular": (
+      "border": (
+        "top": 1px solid #858585,
+        "right": 1px solid #292929,
+        "bottom": 1px solid #292929,
+        "left": 1px solid #707070
+      ),
+      "background": ("from": #585858, "to": #3f3f3f)
+    ),
+    "hover": ("background": ("from": #787878, "to": #5f5f5f)),
+    "active": (
+      "border": (
+        "top": 1px solid #292929,
+        "right": 1px solid #707070,
+        "bottom": 1px solid #858585,
+        "left": 1px solid #292929
+      ),
+      "background": ("from": #3f3f3f, "to": #585858)
+    )
+  )
+);
+
+$combo-controls-colors: (
+  "grey": (
+    "regular": #aaa,
+    "hover": #fff
+  ),
+  "blue": (
+    "regular": #65a9db,
+    "hover": #acc6d8
+  ),
+  "bronze": (
+    "regular": #dca157,
+    "hover": #dca157
+  ),
+  "red": (
+    "regular": #db6565,
+    "hover": #db6565
+  )
+);

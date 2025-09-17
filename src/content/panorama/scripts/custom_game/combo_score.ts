@@ -65,11 +65,11 @@ interface PanelWithDigit extends Panel {
 }
 
 enum CssClass {
-  Digit = "ComboScoreDigit",
-  DigitHidden = "ComboScoreDigitHidden",
-  CounterBump = "CounterBump",
-  CounterShow = "ShowCounter",
-  SummaryShow = "ShowSummary",
+  Digit = "digit",
+  DigitHidden = "digit-hidden",
+  CounterBump = "counter-bump",
+  CounterShow = "show-counter",
+  SummaryShow = "show-summary",
 }
 
 enum Timing {
@@ -117,11 +117,11 @@ class ComboScore extends Component<ComboScoreElements, ComboScoreInputs> {
   constructor() {
     super({
       elements: {
-        counterTicker: "ComboScoreCounterTicker",
-        summaryCountDisplay: "ComboScoreSummaryCountDisplay",
-        summaryDamageTicker: "ComboScoreSummaryDamageTicker",
-        counterFx: "ComboScoreCounterFX",
-        summaryFx: "ComboScoreSummaryFX",
+        counterTicker: "counter-ticker",
+        summaryCountDisplay: "summary-count-display",
+        summaryDamageTicker: "summary-damage-ticker",
+        counterFx: "counter-fx",
+        summaryFx: "summary-fx",
       },
       uiEvents: {
         counterFx: {

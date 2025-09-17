@@ -13,8 +13,8 @@ class ViewerComboStep extends ComboStep<ViewerComboStepElements> {
   constructor() {
     super({
       elements: {
-        button: "ComboStepIconButton",
-        descriptionLabel: "ViewerComboStepDescription",
+        button: "btn-icon",
+        descriptionLabel: "description",
       },
     });
   }

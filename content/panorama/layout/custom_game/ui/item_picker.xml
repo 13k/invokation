@@ -7,20 +7,18 @@
     <include src="file://{resources}/styles/custom_game/ui/item_picker.css" />
   </styles>
 
-  <Panel class="UIItemPickerRoot">
-    <Panel class="UIItemPickerHeader">
-      <Label class="UIItemPickerSelectionChoice" text="#invk_item_picker_choose" />
-      <Panel class="FillWidth" />
-      <Panel id="UIItemPickerSearch" class="UIItemPickerSearchBox">
-        <TextEntry
-          id="UIItemPickerSearchTextEntry"
-          class="UIItemPickerSearchTextEntry"
-          placeholder="#DOTA_Shop_Search_Field_Default"
-        />
-        <Button class="UIItemPickerSearchButton" />
+  <Panel class="root">
+    <Panel class="header">
+      <Label class="selection-choice" text="#invk_item_picker_choose" />
+
+      <Panel class="fill-width" />
+
+      <Panel id="search">
+        <TextEntry id="search-text-entry" placeholder="#DOTA_Shop_Search_Field_Default" />
+        <Button class="search-button" />
       </Panel>
     </Panel>
 
-    <DOTAGameItemTable id="GameItemTable" />
+    <DOTAGameItemTable id="game-item-table" />
   </Panel>
 </root>

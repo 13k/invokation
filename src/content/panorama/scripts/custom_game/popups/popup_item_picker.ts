@@ -15,7 +15,7 @@ export interface PopupItemPickerParams extends Params {
 }
 
 enum PanelId {
-  ItemPicker = "PopupItemPickerUIItemPicker",
+  ItemPicker = "ui-item-picker",
 }
 
 const INVALID_CHANNEL = "<invalid>";
@@ -35,8 +35,8 @@ class PopupItemPicker extends Component<
   constructor() {
     super({
       elements: {
-        itemPickerContainer: "PopupItemPickerUIItemPickerContainer",
-        btnClose: "PopupItemPickerClose",
+        itemPickerContainer: "ui-item-picker-container",
+        btnClose: "btn-close",
       },
       panelEvents: {
         $: {

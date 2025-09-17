@@ -31,12 +31,12 @@ export interface FreestyleElements extends Elements {
 }
 
 enum PanelId {
-  ComboScore = "ComboScore",
+  ComboScore = "score",
 }
 
 enum CssClass {
-  Hide = "Hide",
-  ComboScore = "Level2",
+  Hide = "hide",
+  ComboScore = "level2",
 }
 
 enum Timing {
@@ -51,12 +51,12 @@ class Freestyle extends Component<FreestyleElements> {
   constructor() {
     super({
       elements: {
-        score: "FreestyleScore",
-        btnLevelUp: "BtnLevelUp",
-        btnLevelMax: "BtnLevelMax",
-        btnRestart: "BtnRestart",
-        btnFullRestart: "BtnFullRestart",
-        btnStop: "BtnStop",
+        score: "score",
+        btnLevelUp: "btn-level-up",
+        btnLevelMax: "btn-level-max",
+        btnRestart: "btn-restart",
+        btnFullRestart: "btn-full-restart",
+        btnStop: "btn-stop",
       },
       customEvents: {
         [CustomGameEvent.ComboStarted]: (payload) => this.onComboStarted(payload),

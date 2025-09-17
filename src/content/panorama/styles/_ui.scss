@@ -1,0 +1,403 @@
+@use "sass:meta";
+@use "sass:map";
+@use "sass:selector";
+@use "sass:string";
+
+@use "anim";
+@use "util";
+@use "vars";
+
+// text {{{
+
+@mixin link {
+  color: vars.$cl-text-link;
+}
+
+// text }}}
+// icons {{{
+
+@mixin icon($image, $size: contain, $tex-size: null) {
+  background-image: $image;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @if meta.type-of($size) == string {
+    background-size: #{string.unquote($size)};
+  } @else {
+    background-size: $size;
+  }
+
+  @if $tex-size {
+    background-texture-size: $tex-size;
+  }
+}
+
+@mixin icon-quit($size: 32px) {
+  @include icon(vars.$icon-controls-quit, $tex-size: $size);
+}
+
+@mixin icon-info($size: 32px) {
+  @include icon(vars.$icon-controls-info, $tex-size: $size);
+}
+
+@mixin icon-eye($size: 32px) {
+  @include icon(vars.$icon-controls-eye, $tex-size: $size);
+}
+
+@mixin icon-arrow-dropdown($size: 32px) {
+  @include icon(vars.$icon-controls-arrow-dropdown-up, $tex-size: $size);
+}
+
+@mixin icon-double-arrow-right($size: 32px) {
+  @include icon(vars.$icon-controls-double-arrow-right, $tex-size: $size);
+}
+
+// icons }}}
+// buttons {{{
+
+// .CloseButton (dotastyles.css)
+@mixin btn-close($size: 48px, $bg-size: 24px) {
+  width: $size;
+  height: $size;
+  margin: 4px;
+  transition-duration: 0.1s;
+  transition-property: background-color, background-size, pre-transform-scale2d, wash-color;
+  transition-timing-function: ease-in;
+  wash-color: #888;
+
+  @include icon(vars.$icon-controls-close, $size, $tex-size: $bg-size);
+
+  &:hover {
+    wash-color: #bbbbbb;
+  }
+
+  &:active {
+    wash-color: white;
+    background-size: $bg-size * 0.85;
+    sound: vars.$snd-friends-slidein;
+  }
+}
+
+// .RefreshButton (dotastyles.css)
+@mixin btn-refresh($size: 32px) {
+  @include icon(vars.$icon-controls-refresh, $tex-size: $size);
+
+  &:active {
+    @include anim.animate(
+      "btn-refresh-rotate",
+      $duration: 0.55s,
+      $timing: ease-in-out,
+      $delay: 0.15s,
+      $count: 1,
+      $direction: reverse
+    ) {
+      from {
+        transform: rotateZ(0deg);
+      }
+      to {
+        transform: rotateZ(180deg);
+      }
+    }
+  }
+}
+
+@mixin btn-full-refresh($size: 32px) {
+  @include icon(vars.$icon-status-loading, $tex-size: $size);
+
+  &:active {
+    @include anim.spinner-rotate(
+      "btn-full-refresh-rotate",
+      $timing: ease-in-out,
+      $delay: 0.1s,
+      $count: 1
+    );
+  }
+}
+
+// .BlueButton (dotastyles.css)
+@mixin btn-blue {
+  height: 34px;
+  margin: 8px;
+  border: 1px solid #3366aa55;
+  background-color: #3366aa11;
+
+  &:enabled:hover {
+    border: 1px solid #22aaffaa;
+    background-color: #3366aa44;
+  }
+
+  &:active {
+    background-color: #23468a44;
+    sound: vars.$snd-select-blue;
+  }
+
+  &:disabled {
+    wash-color: #000000dd;
+    saturation: 0;
+  }
+
+  .btn-text {
+    margin: 0px 24px 0px 24px;
+    color: #66aadd;
+    font-size: 16px;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  &:enabled:hover .btn-text {
+    color: white;
+  }
+
+  &:active .btn-text {
+    color: #76baed;
+  }
+}
+
+// .ButtonDark (dotastyles.css)
+@mixin btn-dark {
+  min-width: 192px;
+  min-height: 36px;
+  border: 2px solid #5e686966;
+  background-color: util.gradient-vertical(#191e1e, #292e2e);
+  transition-duration: 0.1s;
+  transition-property: border, background-color;
+  transition-timing-function: linear;
+
+  &:enabled:hover {
+    border: 2px solid #5e6869ff;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+  }
+
+  // malva-ignore
+  &:hover Label {
+    color: white;
+  }
+
+  &:active {
+    border: 2px solid #5e686922;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+    sound: vars.$snd-btn-click;
+  }
+
+  &:disabled {
+    border: 2px solid #111111;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+  }
+
+  // malva-ignore
+  Label {
+    margin-top: 2px;
+    color: #7f8b8d;
+    text-transform: uppercase;
+    horizontal-align: center;
+    padding-right: 8px;
+    padding-left: 8px;
+    text-align: center;
+    text-shadow: 0px 0px 6px 1.0 #000000;
+    vertical-align: middle;
+    transition-duration: 0.1s;
+    transition-property: color;
+    transition-timing-function: linear;
+  }
+
+  // malva-ignore
+  &:active Label {
+    transform: translateY(1px);
+  }
+
+  // malva-ignore
+  &:disabled Label {
+    color: #5d676933;
+  }
+
+  &.small {
+    min-height: 32px;
+    padding: 0px;
+    border-radius: 3px;
+  }
+
+  // malva-ignore
+  &.small Label {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+}
+
+// .FlatButton (dotastyles.css)
+@mixin btn-flat {
+  height: 28px;
+  margin: 8px;
+  background-color: #202626;
+
+  &:hover {
+    background-color: #333d3c;
+  }
+
+  &:active {
+    background-color: #181c1c;
+    sound: vars.$snd-select-blue;
+  }
+
+  .btn-text {
+    margin: 4px 24px 0px 24px;
+    color: #737e7e;
+    font-size: 16px;
+    letter-spacing: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  &:hover .btn-text {
+    color: white;
+  }
+
+  &:active .btn-text {
+    color: #6c6c6c;
+  }
+}
+
+// .ButtonBevel (dotastyles.css)
+@mixin btn-bevel {
+  min-width: 192px;
+  min-height: 36px;
+  padding: 4px 10px;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: #00000055 0px 0px 4px 0px;
+  transition-duration: 0.05s;
+  transition-property: background-color, opacity;
+  transition-timing-function: linear;
+
+  @each $name, $variants in vars.$btn-bevel-colors {
+    @include btn-color-variant($name, $variants);
+  }
+
+  .btn-text {
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    horizontal-align: center;
+    text-align: center;
+    text-shadow: 2px 2px 0px 1.0 #000000;
+    vertical-align: middle;
+    transition-duration: 0.35s;
+    transition-property: color;
+    transition-timing-function: ease-in-out;
+  }
+
+  &:active .btn-text {
+    transform: translateY(1px);
+  }
+
+  &:disabled .btn-text {
+    color: #333333;
+  }
+}
+
+// ToggleButton.ExpandCollapseToggleButton (dotastyles.css)
+@mixin btn-collapsible-toggle {
+  margin: 0px;
+  padding: 0px;
+
+  .TickBox {
+    width: 19px;
+    height: 19px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px solid transparent;
+    background-image: vars.$icon-controls-expand-collapse;
+    background-size: 100% 100%;
+    background-color: none;
+    box-shadow: none;
+    vertical-align: middle;
+    wash-color: #888888;
+    transform: rotateZ(-90deg);
+    transition-duration: 0.2s;
+    transition-property: transform;
+  }
+
+  &:hover .TickBox {
+    border: 0px solid transparent;
+  }
+
+  &:selected .TickBox {
+    width: 19px;
+    height: 19px;
+    border: 0px solid transparent;
+    background-image: vars.$icon-controls-expand-collapse;
+    background-size: 100% 100%;
+    background-color: none;
+    box-shadow: none;
+    vertical-align: middle;
+    wash-color: #888888;
+    transform: rotateZ(0deg);
+    transition-duration: 0.2s;
+    transition-property: transform;
+  }
+}
+
+// .Spinner (dotastyles.css)
+@mixin btn-spinner($size: 28px) {
+  width: $size;
+  height: $size;
+
+  @include icon(vars.$icon-status-loading, $tex-size: $size);
+  @include anim.spinner-rotate("SpinnerRotate");
+}
+
+@mixin btn-color-variant($name, $variants) {
+  $self: "&";
+
+  @if $name != "&" {
+    $self: "&.#{$name}";
+  }
+
+  @if map.has-key($variants, "regular") {
+    #{$self} {
+      @include _btn-style(map.get($variants, "regular"));
+    }
+  }
+
+  @if map.has-key($variants, "hover") {
+    #{$self}:enabled:hover {
+      @include _btn-style(map.get($variants, "hover"));
+    }
+  }
+
+  @if map.has-key($variants, "active") {
+    #{$self}:active {
+      @include _btn-style(map.get($variants, "active"));
+    }
+  }
+
+  @if map.has-key($variants, "disabled") {
+    #{$self}:disabled {
+      @include _btn-style(map.get($variants, "disabled"));
+    }
+  }
+}
+
+@mixin _btn-style($style) {
+  color: map.get($style, "color");
+  wash-color: map.get($style, "wash-color");
+  saturation: map.get($style, "saturation");
+  sound: map.get($style, "sound");
+
+  @if map.has-key($style, "border") {
+    @include util.expand-box-property("border", map.get($style, "border"));
+  }
+
+  @if map.has-key($style, "border-color") {
+    @include util.expand-box-property("border-color", map.get($style, "border-color"));
+  }
+
+  @if map.has-key($style, "background") {
+    background-color: util.gradient-vertical(
+      map.get($style, "background", "from"),
+      map.get($style, "background", "to")
+    );
+  }
+}
+
+// buttons }}}

@@ -70,20 +70,20 @@ export interface PickerElements extends Elements {
 }
 
 enum PanelId {
-  TagSelect = "PickerFilterTags",
-  PopupItemPicker = "PickerPopupItemPicker",
-  PopupInvokerAbilityPicker = "PickerPopupInvokerAbilityPicker",
+  TagSelect = "filter-tags",
+  PopupItemPicker = "popup-item-picker",
+  PopupInvokerAbilityPicker = "popup-invoker-ability-picker",
 }
 
 enum CssClass {
-  ComboPanel = "PickerCombo",
-  DrawerClosed = "DrawerClosed",
-  FiltersClosed = "FiltersClosed",
+  ComboPanel = "combo",
+  DrawerClosed = "drawer-closed",
+  FiltersClosed = "filters-closed",
 }
 
 const { COMBOS } = GameUI.CustomUIConfig().invk;
 
-const COMBO_PANEL_ID_PREFIX = "PickerCombo";
+const COMBO_PANEL_ID_PREFIX = "combo";
 const PROPERTY_FILTER_ATTRIBUTE = "value";
 const PROPERTY_FILTER_OPTION_DEFAULT = "all";
 const PROPERTY_FILTER_NOT_SELECTED = {
@@ -108,25 +108,25 @@ class Picker extends Component<PickerElements> {
   constructor() {
     super({
       elements: {
-        btnFreestyle: "BtnFreestyle",
-        btnReload: "BtnReload",
-        btnResetFilters: "BtnResetFilters",
-        btnShowAbilityFilter: "BtnShowAbilityFilter",
-        btnShowItemFilter: "BtnShowItemFilter",
-        btnToggle: "BtnToggle",
-        btnToggleFilters: "BtnToggleFilters",
-        combos: "PickerCombos",
-        filterAbilityImage: "PickerFilterAbilityImage",
-        filterAbilityResetBtn: "PickerFilterAbilityResetButton",
-        filterDamageRating: "PickerFilterDamageRating",
-        filterDifficultyRating: "PickerFilterDifficultyRating",
-        filterItemImg: "PickerFilterItemImage",
-        filterItemResetBtn: "PickerFilterItemResetButton",
-        filterSpecialty: "PickerFilterSpecialty",
-        filterStance: "PickerFilterStance",
-        filterTagsContainer: "PickerFilterTagsContainer",
-        filterTagsResetBtn: "PickerFilterTagsResetButton",
-        slideout: "PickerSlideout",
+        btnFreestyle: "btn-freestyle",
+        btnReload: "btn-reload",
+        btnResetFilters: "btn-reset-filters",
+        btnShowAbilityFilter: "btn-filter-ability",
+        btnShowItemFilter: "btn-filter-item",
+        btnToggle: "btn-toggle",
+        btnToggleFilters: "btn-toggle-filters",
+        slideout: "picker",
+        combos: "combos",
+        filterAbilityImage: "filter-ability-image",
+        filterAbilityResetBtn: "btn-filter-ability-reset",
+        filterDamageRating: "filter-damage-rating",
+        filterDifficultyRating: "filter-difficulty-rating",
+        filterItemImg: "filter-item-image",
+        filterItemResetBtn: "btn-filter-item-reset",
+        filterSpecialty: "filter-specialty",
+        filterStance: "filter-stance",
+        filterTagsContainer: "filter-tags-container",
+        filterTagsResetBtn: "btn-filter-tags-reset",
       },
       customEvents: {
         [CustomGameEvent.ComboStarted]: (payload) => this.onComboStarted(payload),

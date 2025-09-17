@@ -16,24 +16,24 @@ export interface CombatLogElements extends Elements {
 }
 
 enum PanelId {
-  RowPrefix = "CombatLogRow",
-  IconPrefix = "CombatLogIcon",
-  IconImagePrefix = "Image",
+  RowPrefix = "row",
+  IconPrefix = "icon",
+  IconImagePrefix = "image",
 }
 
 enum CssClass {
-  Closed = "Closed",
-  Row = "CombatLogRow",
-  Icon = "CombatLogIcon",
-  IconImage = "CombatLogIconImage",
+  Closed = "closed",
+  Row = "row",
+  Icon = "icon",
+  IconImage = "icon-image",
 }
 
 const ICON_IMAGE_SCALING = "stretch-to-fit-y-preserve-aspect";
 const GRID_COLUMNS = 20;
 
-const rowId = (index: number) => `${PanelId.RowPrefix}${index}`;
-const iconId = (row: number, col: number) => [PanelId.IconPrefix, row, col].join("_");
-const iconImageId = (iconId: string) => `${iconId}_${PanelId.IconImagePrefix}`;
+const rowId = (index: number) => `${PanelId.RowPrefix}-${index}`;
+const iconId = (row: number, col: number) => [PanelId.IconPrefix, row, col].join("-");
+const iconImageId = (iconId: string) => `${iconId}-${PanelId.IconImagePrefix}`;
 
 export type { CombatLog };
 
@@ -44,10 +44,10 @@ class CombatLog extends Component<CombatLogElements> {
   constructor() {
     super({
       elements: {
-        contents: "CombatLogContents",
-        skipInvocations: "CombatLogFilterInvocations",
-        btnToggle: "BtnToggle",
-        btnClear: "BtnClear",
+        contents: "contents",
+        skipInvocations: "filter-invocations",
+        btnToggle: "btn-toggle",
+        btnClear: "btn-clear",
       },
       customEvents: {
         [CustomGameEvent.CombatLogAbilityUsed]: (payload) => this.onAbilityUsed(payload),

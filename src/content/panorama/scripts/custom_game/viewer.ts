@@ -39,12 +39,12 @@ export interface ViewerElements extends Elements {
 }
 
 enum PanelId {
-  Properties = "ViewerProperties",
+  Properties = "properties",
 }
 
 enum CssClass {
-  Closed = "Hide",
-  OptionalStep = "ComboStepOptional",
+  Closed = "closed",
+  OptionalStep = "optional",
 }
 
 const { COMBOS } = GameUI.CustomUIConfig().invk;
@@ -58,21 +58,21 @@ class Viewer extends Component<ViewerElements> {
   constructor() {
     super({
       elements: {
-        scrollPanel: "ViewerScrollPanel",
-        propertiesSection: "ViewerPropertiesSection",
-        titleLabel: "ViewerTitle",
-        descriptionLabel: "ViewerDescription",
-        sequence: "ViewerSequence",
-        talents: "ViewerTalents",
-        orbQuas: "ViewerOrbQuas",
-        orbQuasLabel: "ViewerOrbQuasLabel",
-        orbWex: "ViewerOrbWex",
-        orbWexLabel: "ViewerOrbWexLabel",
-        orbExort: "ViewerOrbExort",
-        orbExortLabel: "ViewerOrbExortLabel",
-        btnClose: "BtnClose",
-        btnReload: "BtnReload",
-        btnPlay: "BtnPlay",
+        scrollPanel: "scroll-panel",
+        propertiesSection: "properties-section",
+        titleLabel: "title",
+        descriptionLabel: "description",
+        sequence: "sequence",
+        talents: "talents",
+        orbQuas: "orb-quas",
+        orbQuasLabel: "orb-quas-label",
+        orbWex: "orb-wex",
+        orbWexLabel: "orb-wex-label",
+        orbExort: "orb-exort",
+        orbExortLabel: "orb-exort-label",
+        btnClose: "btn-close",
+        btnReload: "btn-reload",
+        btnPlay: "btn-play",
       },
       customEvents: {
         [GameEvent.ViewerRender]: (payload) => this.onViewerRender(payload),

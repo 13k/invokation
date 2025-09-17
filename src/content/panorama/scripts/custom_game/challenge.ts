@@ -52,18 +52,18 @@ export interface ChallengeElements extends Elements {
 }
 
 enum PanelId {
-  ComboScore = "ComboScore",
+  ComboScore = "score",
 }
 
 enum CssClass {
-  Hide = "Hide",
-  ComboScore = "Level2",
-  StepOptional = "ComboStepOptional",
-  SplashShow = "Show",
+  Hide = "hide",
+  ComboScore = "level2",
+  StepOptional = "optional",
+  SplashShow = "show",
   SplashStart = "start",
   SplashSuccess = "success",
   SplashFailure = "failure",
-  ScoreFailure = "Failed",
+  ScoreFailure = "failed",
 }
 
 enum Timing {
@@ -111,9 +111,9 @@ const HUD_MODES_CYCLE: { [E in HudMode]: HudMode } = {
 };
 
 const HUD_VISIBILITY_CLASSES = {
-  [HudMode.Visible]: "HudVisible",
-  [HudMode.HideSequence]: "HudHideSequence",
-  [HudMode.NoHands]: "HudNoHands",
+  [HudMode.Visible]: "hud-visible",
+  [HudMode.HideSequence]: "hud-hide-sequence",
+  [HudMode.NoHands]: "hud-no-hands",
 };
 
 enum DialogVar {
@@ -142,20 +142,20 @@ class Challenge extends Component<ChallengeElements> {
   constructor() {
     super({
       elements: {
-        sequence: "ChallengeSequence",
-        splash: "ChallengeSplash",
-        splashTitle: "ChallengeSplashTitle",
-        splashHelp: "ChallengeSplashHelp",
-        score: "ChallengeScore",
-        timer: "ChallengeTimer",
-        timerLabel: "ChallengeTimerLabel",
-        waitProgress: "ChallengeWaitProgress",
-        waitProgressBar: "ChallengeWaitProgressBar",
-        btnShowDetails: "BtnShowDetails",
-        btnCycleHud: "BtnCycleHUD",
-        btnRestart: "BtnRestart",
-        btnFullRestart: "BtnFullRestart",
-        btnStop: "BtnStop",
+        sequence: "sequence",
+        splash: "splash",
+        splashTitle: "splash-title",
+        splashHelp: "splash-help",
+        score: "score",
+        timer: "timer",
+        timerLabel: "timer-label",
+        waitProgress: "wait-progress",
+        waitProgressBar: "wait-progressbar",
+        btnShowDetails: "btn-show-details",
+        btnCycleHud: "btn-cycle-hud",
+        btnRestart: "btn-restart",
+        btnFullRestart: "btn-full-restart",
+        btnStop: "btn-stop",
       },
       customEvents: {
         [CustomGameEvent.ComboStarted]: (payload) => this.onComboStarted(payload),
@@ -283,7 +283,7 @@ class Challenge extends Component<ChallengeElements> {
       throw new Error("Tried to createStepPanel() without combo");
     }
 
-    const id = `combo_step_${step.name}_${step.id}`;
+    const id = `combo-step-${step.name}-${step.id}`;
     const component = this.create(LayoutId.ChallengeComboStep, id, parent);
 
     if (!step.required) {
@@ -561,10 +561,12 @@ class Challenge extends Component<ChallengeElements> {
     const nextSteps = at(this.combo.sequence, next);
 
     if (!nextSteps.every((s): s is Step => s != null)) {
+      const { id, sequence: { length } } = this.combo;
+      const indices = next.join(", ");
+
       throw new Error(
-        `Failed to pick next steps from combo ${this.combo.id}: steps count = ${this.combo.sequence.length}, indices = [${
-          next.join(", ")
-        }]`,
+        `Failed to pick next steps from combo ${id}: \
+        steps count = ${length}, indices = [${indices}]`,
       );
     }
 
@@ -733,8 +735,7 @@ class Challenge extends Component<ChallengeElements> {
 
     if (!expectedSteps.every((s): s is Step => s != null)) {
       throw new Error(
-        `Failed to pick steps from combo ${id}: steps count = ${this.combo.sequence.length}, indices = [${
-          expected.join(", ")
+        `Failed to pick steps from combo ${id}: steps count = ${this.combo.sequence.length}, indices = [${expected.join(", ")
         }]`,
       );
     }

@@ -7,25 +7,25 @@
     <include src="file://{resources}/styles/custom_game/combat_log.css" />
   </styles>
 
-  <Panel class="CombatLogRoot Closed" hittest="false">
-    <Panel class="CombatLog TransparentPanel">
-      <Panel id="CombatLogContents" />
+  <Panel class="root closed" hittest="false">
+    <Panel class="combat-log">
+      <Panel id="contents" />
 
-      <Panel class="CombatLogBar">
-        <ToggleButton id="BtnToggle" class="CombatLogThumb ExpandCollapseToggleButton">
-          <Label class="CombatLogTitle" text="#invk_combat_log_title" hittest="false" />
+      <Panel class="bar">
+        <ToggleButton id="btn-toggle" class="thumb">
+          <Label class="title" text="#invk_combat_log_title" hittest="false" />
         </ToggleButton>
 
-        <Panel class="CombatLogBarActions">
+        <Panel class="bar-actions">
           <ToggleButton
-            id="CombatLogFilterInvocations"
-            class="CombatLogBarItem Checkbox"
+            id="filter-invocations"
+            class="bar-item"
             text="#invk_combat_log_filter_invocations"
             selected="true"
           />
 
-          <Button id="BtnClear" class="CombatLogBarItem ClearButton BlueButton">
-            <Label text="#invk_combat_log_clear" hittest="false" />
+          <Button id="btn-clear" class="bar-item">
+            <Label class="btn-text" text="#invk_combat_log_clear" hittest="false" />
           </Button>
         </Panel>
       </Panel>

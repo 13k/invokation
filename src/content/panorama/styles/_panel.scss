@@ -1,0 +1,217 @@
+@use "sass:map";
+
+@use "ui";
+@use "util";
+@use "vars";
+
+@mixin translucent {
+  background-color: util.gradient-vertical(#292e2ef7, #191e1eff);
+}
+
+@mixin translucent-hover {
+  background-color: util.gradient-vertical(#3f4646f7, #191e1eff);
+}
+
+@mixin transparent {
+  background-color: util.gradient-vertical(#292e2e80, #191e1edd);
+}
+
+@mixin title {
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: vars.$font-default;
+  letter-spacing: 2px;
+  text-align: center;
+  text-overflow: shrink;
+  text-shadow: 1px 1px 0 3 #0006;
+  text-transform: uppercase;
+}
+
+@mixin title-container($class-title) {
+  flow-children: right;
+  width: 100%;
+  height: 32px;
+  padding-top: 6px;
+  padding-left: 5px;
+  border-bottom: 1px solid #222;
+  background-color: #0003;
+
+  .#{$class-title} {
+    @include title;
+    width: fill-parent-flow(1);
+    padding-top: 0;
+    padding-left: 0;
+  }
+}
+
+@mixin drawer-slide(
+  $width-open,
+  $width-closed,
+  $class-closed,
+  $class-thumb,
+  $class-thumb-arrow
+) {
+  width: $width-open;
+  transition-duration: 0.2s;
+  transition-property: width;
+  transition-timing-function: ease-in-out;
+
+  .#{$class-thumb} {
+    width: 32px;
+    height: 96px;
+    transform: translateX(0px);
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background-color: #181818cc;
+    box-shadow: #000000aa 0px 0px 8px 0px;
+    vertical-align: middle;
+    horizontal-align: right;
+
+    &:hover {
+      background-color: #383838cc;
+    }
+
+    .#{$class-thumb-arrow} {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      horizontal-align: right;
+      background-image: vars.$icon-controls-double-arrow-left;
+      background-position: 0% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      wash-color: #91aba6;
+      transform: translateX(-9px);
+      transition-delay: 0.0s;
+      transition-duration: 0.25s;
+      transition-property: transform, wash-color;
+      transition-timing-function: ease-in-out;
+    }
+
+    &:hover .#{$class-thumb-arrow} {
+      transform: translateX(-12px);
+      wash-color: white;
+    }
+  }
+
+  &.#{$class-closed} {
+    width: $width-closed;
+
+    .#{$class-thumb} {
+      .#{$class-thumb-arrow} {
+        transform: rotateZ(180deg) translateX(-9px);
+      }
+
+      &:hover .#{$class-thumb-arrow} {
+        transform: translateX(6px) rotateZ(180deg);
+        wash-color: white;
+      }
+    }
+  }
+}
+
+@mixin combo-controls {
+  flow-children: right;
+  align: left bottom;
+  margin-left: 80px;
+  opacity: 1;
+  transition-duration: 0.75s;
+  transition-property: opacity;
+
+  @include translucent;
+
+  .control-icon {
+    width: 64px;
+    height: 64px;
+    transition-duration: 0.2s;
+    transition-property: background-color;
+
+    &:hover {
+      border-right: 1px solid #444b;
+      border-left: 1px solid #444b;
+
+      @include translucent-hover;
+    }
+  }
+
+  .icon-button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    vertical-align: center;
+    tooltip-position: top;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+
+    &:active {
+      sound: vars.$snd-quit-fadeout;
+    }
+
+    &.icon-details {
+      @include ui.icon-info(30px);
+    }
+
+    &.icon-cycle-hud {
+      @include ui.icon-eye(32px);
+    }
+
+    &.icon-level-up {
+      @include ui.icon-arrow-dropdown(48px);
+    }
+
+    &.icon-level-max {
+      transform: rotateZ(-90deg);
+
+      @include ui.icon-double-arrow-right(30px);
+    }
+
+    &.icon-restart {
+      @include ui.btn-refresh(32px);
+    }
+
+    &.icon-full-restart {
+      @include ui.btn-full-refresh(28px);
+    }
+
+    &.icon-stop {
+      @include ui.btn-close(64px, 32px);
+    }
+
+    @each $name, $colors in vars.$combo-controls-colors {
+      &.#{$name} {
+        wash-color: map.get($colors, "regular");
+
+        &:hover {
+          wash-color: map.get($colors, "hover");
+        }
+      }
+    }
+  }
+}
+
+@mixin rating($class-active) {
+  width: 80px;
+  height: 16px;
+  background-image: vars.$hud-ult-cooldown;
+  background-position: 0% 0%;
+  background-size: contain;
+  background-repeat: repeat-x;
+  vertical-align: center;
+
+  .#{$class-active} {
+    width: 0;
+    height: 100%;
+    background-image: vars.$hud-ult-ready;
+    background-position: 0% 0%;
+    background-size: contain;
+    background-repeat: repeat-x;
+  }
+
+  @for $i from 1 through 5 {
+    &.rating-#{$i} .#{$class-active} {
+      width: $i * 16px;
+    }
+  }
+}

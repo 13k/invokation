@@ -7,73 +7,74 @@
     <include src="file://{resources}/styles/custom_game/picker/combo.css" />
   </styles>
 
-  <Panel class="PickerComboRoot">
-    <Panel class="PanelTitleContainer">
+  <Panel class="root--picker--combo">
+    <Panel class="title-container">
       <Button
-        class="FinishedIcon"
+        id="finished-icon"
         onmouseover="UIShowTextTooltip(#invk_combo_tooltip_finished)"
         onmouseout="UIHideTextTooltip()"
       />
-      <Label id="PickerComboTitle" class="PanelTitle" hittest="false" />
+
+      <Label id="title" class="title" hittest="false" />
     </Panel>
 
-    <Panel class="PickerComboInfoContainer">
+    <Panel id="info-container">
       <Button
-        class="PickerComboIcon HeroLevelIcon"
+        class="icon hero-level-icon"
         onmouseover="UIShowTextTooltip(#invk_combo_tooltip_hero_level)"
         onmouseout="UIHideTextTooltip()"
       >
-        <Label
-          id="PickerComboHeroLevelLabel"
-          class="HeroLevelLabel MonoNumbersFont"
-          hittest="false"
-        />
+        <Label id="hero-level-label" hittest="false" />
       </Button>
 
       <Button
-        id="BtnShowDetails"
-        class="PickerComboIcon InfoIcon"
+        id="btn-details"
+        class="icon info-icon"
         onmouseover="UIShowTextTooltip(#invk_combo_tooltip_details)"
         onmouseout="UIHideTextTooltip()"
       />
+
       <Button
-        class="PickerComboIcon SpecialtyIcon"
+        class="icon specialty-icon"
         onmouseover="UIShowTextTooltip(#invk_combo_tooltip_specialty)"
         onmouseout="UIHideTextTooltip()"
       />
+
       <Button
-        class="PickerComboIcon StanceIcon"
+        class="icon stance-icon"
         onmouseover="UIShowTextTooltip(#invk_combo_tooltip_stance)"
         onmouseout="UIHideTextTooltip()"
       />
 
-      <Panel class="PickerComboRatings">
-        <Panel class="LeftRightFlow">
+      <Panel class="ratings">
+        <Panel class="flow-right">
           <Button
-            class="AttackDamageIcon"
+            class="attack-damage-icon"
             onmouseover="UIShowTextTooltip(#invk_combo_tooltip_damage_rating)"
             onmouseout="UIHideTextTooltip()"
           />
-          <Panel id="PickerComboDamageRating" class="Rating">
-            <Panel class="RatingActive" />
+
+          <Panel id="damage-rating" class="rating">
+            <Panel class="rating-active" />
           </Panel>
         </Panel>
 
-        <Panel class="LeftRightFlow">
+        <Panel class="flow-right">
           <Button
-            class="DifficultyIcon"
+            class="difficulty-icon"
             onmouseover="UIShowTextTooltip(#invk_combo_tooltip_difficulty_rating)"
             onmouseout="UIHideTextTooltip()"
           />
-          <Panel id="PickerComboDifficultyRating" class="Rating">
-            <Panel class="RatingActive" />
+
+          <Panel id="difficulty-rating" class="rating">
+            <Panel class="rating-active" />
           </Panel>
         </Panel>
       </Panel>
     </Panel>
 
-    <Button id="BtnPlay" class="PlayButton FlatButton">
-      <Label class="PlayLabel" text="#invk_controls_play" hittest="false" />
+    <Button id="btn-play">
+      <Label class="btn-text" text="#invk_controls_play" hittest="false" />
     </Button>
   </Panel>
 </root>

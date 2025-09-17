@@ -1,4 +1,4 @@
-import snakeCase from "lodash-es/snakeCase";
+import kebabCase from "lodash-es/kebabCase";
 
 import type { Combo, ComboId, Properties } from "@invokation/panorama-lib/combo";
 import { Property } from "@invokation/panorama-lib/combo";
@@ -29,7 +29,7 @@ export interface PickerComboOutputs extends Outputs {
 }
 
 enum CssClass {
-  Finished = "PickerComboFinished",
+  Finished = "finished",
 }
 
 enum DialogVar {
@@ -48,12 +48,12 @@ class PickerCombo extends Component<PickerComboElements, PickerComboInputs, Pick
   constructor() {
     super({
       elements: {
-        titleLabel: "PickerComboTitle",
-        heroLevelLabel: "PickerComboHeroLevelLabel",
-        damageRating: "PickerComboDamageRating",
-        difficultyRating: "PickerComboDifficultyRating",
-        btnShowDetails: "BtnShowDetails",
-        btnPlay: "BtnPlay",
+        titleLabel: "title",
+        heroLevelLabel: "hero-level-label",
+        damageRating: "damage-rating",
+        difficultyRating: "difficulty-rating",
+        btnShowDetails: "btn-details",
+        btnPlay: "btn-play",
       },
       panelEvents: {
         btnShowDetails: { onactivate: () => this.onBtnShowDetails() },
@@ -182,10 +182,10 @@ const propertyCssClass = <K extends keyof Properties>(prop: K, value: Properties
       break;
     }
     default:
-      baseClass = snakeCase(prop);
+      baseClass = kebabCase(prop);
   }
 
-  return `${baseClass}_${value}`;
+  return `${baseClass}-${value}`;
 };
 
 (() => {

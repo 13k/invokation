@@ -1,0 +1,19 @@
+@function game-url($path) {
+  @return url("s2r://panorama/#{$path}");
+}
+
+@function game-style-url($name) {
+  @return game-url("styles/#{$name}");
+}
+
+@function game-img-url($name) {
+  @return game-url("images/#{$name}");
+}
+
+@function custom-url($path) {
+  @return url("file://{resources}/#{$path}");
+}
+
+@function custom-img-url($path) {
+  @return url("file://{images}/custom_game/#{$path}");
+}

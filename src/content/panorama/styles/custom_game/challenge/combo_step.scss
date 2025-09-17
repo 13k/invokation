@@ -1,0 +1,72 @@
+@use "../../anim";
+@use "../../vars";
+
+.root {
+  align: center center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  border: 3px solid vars.$cl-gold;
+  background-color: #241200;
+  wash-color: #666e;
+  opacity-mask: vars.$mask-softedge-box;
+  animation-duration: 0.31s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
+  transition-duration: 0.3s;
+  transition-property: width, height, wash-color, opacity, pre-transform-scale2d;
+  transition-timing-function: ease-in-out;
+  pre-transform-scale2d: 0;
+
+  &.invocation {
+    width: 40px;
+    height: 40px;
+  }
+
+  &.optional {
+    border: 3px solid #666;
+  }
+
+  &.active {
+    width: 72px;
+    height: 72px;
+    wash-color: #ffff;
+  }
+
+  &.error {
+    wash-color: #f00e;
+  }
+
+  &.bump {
+    transition-delay: 0s;
+    transition-duration: 0.175s, 0.12s;
+    pre-transform-scale2d: 1;
+
+    @include anim.animate(
+      "step-bump",
+      $delay: 0s
+    ) {
+      0% {
+        opacity: 0;
+        pre-transform-scale2d: 0;
+      }
+      50% {
+        opacity: 1;
+        pre-transform-scale2d: 1.25;
+      }
+      100% {
+        opacity: 1;
+        pre-transform-scale2d: 1;
+      }
+    }
+  }
+}
+
+#icon-button {
+  width: 100%;
+  height: 100%;
+}
+
+#image {
+  vertical-align: center;
+}

@@ -1,0 +1,1127 @@
+// dprint-ignore-file
+
+@use "vars";
+
+$baseBorder: #444444ff;
+$LighterGrey: #B0BCC2;
+$bluegreyTextReg: #748B8B;
+
+@mixin style {
+  Label
+  {
+    color: $LighterGrey;
+    font-size: 18px;
+  }
+
+  Label,
+  TextEntry
+  {
+    font-family: vars.$font-default;
+  }
+
+  DropDown,
+  DOTASettingsEnumDropDown
+  {
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#292e2e), to(#191e1e));
+    background-image: url("s2r://panorama/images/control_icons/arrow_dropdown_png.vtex");
+    background-repeat: no-repeat;
+    background-position: right 38px 35%;
+    background-size: 32px 32px;
+    box-shadow: #00000055 0px 0px 1px 3px ;
+    border: 2px solid #5e686966;
+    font-size: 24px;
+    width: 320px;
+    height: 41px;
+    padding: 4px 8px;
+    z-index: 1;
+    transition-property: background-color, border;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+  }
+
+  DropDown:enabled:hover:not(:parentdisabled),
+  DOTASettingsEnumDropDown:enabled:hover
+  {
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#393e3e), to(#292e2e));
+  }
+
+  DropDown:focus .TickBox,
+  DOTASettingsEnumDropDown:focus .TickBox
+  {
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  DropDown:disabled
+  {
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#292e2e), to(#191e1e));
+    border: 2px solid #3b414266;
+    background-image: url("s2r://panorama/images/control_icons/arrow_dropdown_disabled_png.vtex");
+  }
+
+  DropDown.DropDownMenuVisible:focus,
+  DOTASettingsEnumDropDown.DropDownMenuVisible:focus
+  {
+    animation-name: none;
+  }
+
+  DropDown Label,
+  DOTASettingsEnumDropDown Label
+  {
+    width: 100%;
+    margin: 3px 29px 0px 6px;
+    font-size: 18px;
+    transition-property: color;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+  }
+
+  DropDown:focus Label,
+  DOTASettingsEnumDropDown:focus Label
+  {
+    color: white;
+  }
+
+  DropDown:disabled Label
+  {
+    color: #444444;
+  }
+
+  DropDown.DropDownMenuVisible:focus Label,
+  DOTASettingsEnumDropDown.DropDownMenuVisible:focus Label
+  {
+    color: white;
+  }
+
+  DropDown.ThinDropDown
+  {
+    height: 32px;
+    background-size: 24px 24px;
+    background-position: right 32px 35%;
+  }
+
+  .ThinDropDown Label
+  {
+    font-size: 18px;
+  }
+
+  DropDownMenu
+  {
+    width: 320px;
+    flow-children: down;
+    background-color: #3d4448;
+    color: #e1e1e1;
+    font-size: 28px;
+    overflow: squish scroll;
+    z-index: 0;
+    transform: translateY(-40px);
+    opacity: 0.0;
+    transition-property: opacity, transform;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in;
+    box-shadow: fill #00000066 0px 0px 6px 0px ;
+  }
+
+  DropDownMenu Label
+  {
+    width: 100%;
+    padding: 6px 0px 2px 0px;
+    margin-top: 0px 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-left: 16px;
+    color: #ffffff99;
+    background-color: #3d4448;
+    font-size: 18px;
+    font-weight: normal;
+    z-index: 0;
+    border-top: 1px solid #00000066;
+    border-bottom: 1px solid #00000066;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  DropDownMenu Label:hover
+  {
+    background-color: #585e62;
+  }
+
+  DropDownMenu.DropDownMenuVisible
+  {
+    opacity: 1.0;
+    max-height: 480px;
+    transition-property: box-shadow;
+    transform: translateY(0px);
+  }
+
+  VerticalScrollBar,
+  HTMLVerticalScrollBar
+  {
+    width: 8px;
+    height: 100%;
+    horizontal-align: right;
+    layout-position: fixed;
+    transition-property: transform;
+  }
+
+  .GuildPage VerticalScrollBar,
+  HTMLVerticalScrollBar
+  {
+    width: 6px;
+    background-color: #ffffff02;
+    margin-right: 14px;
+  }
+
+  VerticalScrollBar .ScrollThumb,
+  HTMLVerticalScrollBar .ScrollThumb
+  {
+    width: 8px;
+    min-height: 32px;
+    background-color: #566767;
+    border-top: 1px solid #aaaaaa22;
+    border-right: 1px solid #000000aa;
+    transition-property: position;
+    transition-property: background-color, transform, position;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+  }
+
+  .GuildPage VerticalScrollBar .ScrollThumb,
+  HTMLVerticalScrollBar .ScrollThumb
+  {
+    background-color: #c4c4c433;
+  }
+
+  VerticalScrollBar:hover .ScrollThumb,
+  HTMLVerticalScrollBar:hover .ScrollThumb
+  {
+    background-color: #566767;
+  }
+
+  VerticalScrollBar:active .ScrollThumb,
+  HTMLVerticalScrollBar:active .ScrollThumb
+  {
+    background-color: #566767;
+  }
+
+  .GuildPage VerticalScrollBar:hover .ScrollThumb,
+  HTMLVerticalScrollBar:hover .ScrollThumb
+  {
+    background-color: #c4c4c499;
+  }
+
+  .GuildPage VerticalScrollBar:active .ScrollThumb,
+  HTMLVerticalScrollBar:active .ScrollThumb
+  {
+    background-color: #c4c4c4;
+  }
+
+  HorizontalScrollBar,
+  HTMLHorizontalScrollBar
+  {
+    height: 12px;
+    width: 100%;
+    vertical-align: bottom;
+    box-shadow: fill #00000055 2px -1px 3px 1px ;
+    layout-position: fixed;
+    transition-property: transform;
+  }
+
+  HorizontalScrollBar .ScrollThumb,
+  HTMLHorizontalScrollBar .ScrollThumb
+  {
+    height: 12px;
+    min-width: 32px;
+    border-top: 1px solid #aaaaaa22;
+    border-bottom: 1px solid #000000aa;
+    background-color: #566767;
+    transition-property: background-color, transform, position;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+  }
+
+  HorizontalScrollBar:hover .ScrollThumb,
+  HTMLHorizontalScrollBar:hover .ScrollThumb
+  {
+    background-color: #566767;
+  }
+
+  HorizontalScrollBar:active .ScrollThumb,
+  HTMLHorizontalScrollBar:active .ScrollThumb
+  {
+    background-color: #566767;
+  }
+
+  VerticalScrollBar,
+  VerticalScrollBar .ScrollThumb,
+  HorizontalScrollBar,
+  HorizontalScrollBar .ScrollThumb HTMLHorizontalScrollBar,
+  HTMLHorizontalScrollBar .ScrollThumb,
+  HTMLVerticalScrollBar,
+  HTMLVerticalScrollBar .ScrollThumb
+  {
+    transition-duration: 0.20s;
+    transition-timing-function: ease-in-out;
+  }
+
+  VerticalScrollBar.MouseDown,
+  VerticalScrollBar.MouseDown .ScrollThumb,
+  HorizontalScrollBar.MouseDown,
+  HorizontalScrollBar.MouseDown .ScrollThumb HTMLHorizontalScrollBar.MouseDown,
+  HTMLHorizontalScrollBar.MouseDown .ScrollThumb,
+  HTMLVerticalScrollBar.MouseDown,
+  HTMLVerticalScrollBar.MouseDown .ScrollThumb
+  {
+    transition-duration: 0.0s;
+  }
+
+  ToggleButton,
+  CycleButton,
+  DOTASettingsCheckbox
+  {
+    flow-children: right;
+    padding: 1px 4px;
+    color: white;
+    transition-property: background-color, box-shadow, color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+  }
+
+  ToggleButton .TickBox,
+  CycleButton .TickBox,
+  DOTASettingsCheckbox .TickBox
+  {
+    width: 18px;
+    height: 18px;
+    vertical-align: center;
+    background-color: black;
+    border: 2px solid #5e686966;
+    box-shadow: #00000055 0px 0px 1px 3px ;
+    transition-property: background-color, box-shadow, color, border, background-image, wash-color, pre-transform-scale2d;
+    transition-duration: 0.20s;
+    transition-timing-function: ease-in-out;
+  }
+
+  ToggleButton:selected .TickBox,
+  CycleButton:selected .TickBox,
+  DOTASettingsCheckbox:selected .TickBox
+  {
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#e7f6f5), to(#a0d6d7));
+    border: 3px solid #000000;
+    box-shadow: #5b62bf77 0px 0px 8px 0px ;
+  }
+
+  ToggleButton:hover .TickBox,
+  CycleButton:hover .TickBox,
+  DOTASettingsCheckbox:hover .TickBox
+  {
+    border: 2px solid #697879;
+  }
+
+  ToggleButton Label,
+  CycleButton Label,
+  DOTASettingsCheckbox Label
+  {
+    margin-left: 8px;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0.3px;
+    transition-property: color;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+  }
+
+  ToggleButton:enabled:hover Label,
+  ToggleButton:enabled:hover Label,
+  DOTASettingsCheckbox:enabled:hover Label
+  {
+    color: #d2d6d1;
+  }
+
+  ToggleButton:selected Label,
+  ToggleButton:selected Label,
+  DOTASettingsCheckbox:selected Label
+  {
+    color: whitesmoke;
+  }
+
+  ToggleButton:disabled Label,
+  ToggleButton:disabled Label,
+  DOTASettingsCheckbox:disabled Label
+  {
+    color: #333333;
+  }
+
+  ToggleButton:disabled .TickBox,
+  CycleButton:disabled .TickBox,
+  DOTASettingsCheckbox:disabled .TickBox
+  {
+    border-color: #333333;
+  }
+
+  ToggleButton:disabled:selected .TickBox,
+  CycleButton:disabled:selected .TickBox,
+  DOTASettingsCheckbox:disabled:selected .TickBox
+  {
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#222222), to(#333333));
+    border: 3px solid #000000;
+    box-shadow: #33333377 0px 0px 8px 0px;
+  }
+
+  RadioButton
+  {
+    background-color: none;
+    flow-children: right;
+    color: white;
+    transition-property: background-color, box-shadow, color, brightness;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+  }
+
+  RadioButton > .RadioBox
+  {
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    background-color: gradient(radial, 50% 50%, 0% 0%, 10% 10%, from(#000000), to(#000000));
+    border: 2px solid #5e686966;
+    box-shadow: #00000055 0px 0px 1px 3px ;
+    transition-property: background-color, box-shadow, color, border;
+    transition-duration: 0.20s;
+    transition-timing-function: ease-in-out;
+  }
+
+  RadioButton:selected > .RadioBox
+  {
+    background-color: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#e7f6f5), to(#333399));
+    border: 3px solid #000000;
+    box-shadow: #5b62bf77 0px 0px 6px 0px ;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+  }
+
+  RadioButton:enabled:hover > .RadioBox
+  {
+    border: 2px solid #697879;
+  }
+
+  RadioButton:enabled:selected:hover > .RadioBox
+  {
+    border: 3px solid #000000;
+  }
+
+  RadioButton > Label
+  {
+    color: $LighterGrey;
+    margin-left: 4px;
+    transition-property: color;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+  }
+
+  DOTASettingsEnum RadioButton > Label
+  {
+    font-size: 18px;
+    color: LightGrey;
+  }
+
+  RadioButton:selected > Label
+  {
+    color: whitesmoke;
+    transition-property: color, text-shadow;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+  }
+
+  RadioButton:enabled:hover > Label
+  {
+    color: whitesmoke;
+    transition-property: color;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+  }
+
+  RadioButton:disabled > .RadioBox
+  {
+    color: transparent;
+    box-shadow: #33333377 0px 0px 8px 0px ;
+    background-color: #00000000;
+  }
+
+  RadioButton:disabled:selected > .RadioBox
+  {
+    background-color: gradient(radial, 50% 50%, 0% 0%, 50% 50%, from(#e7f6f533), to(#33339933));
+  }
+
+  RadioButton:disabled > Label
+  {
+    color: #333333;
+  }
+
+  TextEntry
+  {
+    border: 1px solid $baseBorder;
+    width: 352px;
+    height: 36px;
+    padding: 5px 7px 3px 7px;
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#111111FF), to(#222222FF));
+    color: white;
+    font-size: 20px;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  TextEntry:disabled
+  {
+    border-color: #44444440;
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#11111140), to(#22222240));
+    color: #999999ff;
+  }
+
+  TextEntry #PlaceholderText
+  {
+    opacity: 1.0;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+    margin-top: 2px;
+    color: #555555;
+    font-size: 18px;
+  }
+
+  TextEntry:focus #PlaceholderText,
+  TextEntry.HasInput #PlaceholderText
+  {
+    opacity: 0.0;
+  }
+
+  TextEntryIMEControls
+  {
+    flow-children: down;
+  }
+
+  TextEntryAutocomplete
+  {
+    width: 320px;
+    flow-children: down;
+    background-color: #3d4448;
+    color: #e1e1e1;
+    font-size: 28px;
+    overflow: squish scroll;
+    z-index: 0;
+    opacity: 1.0;
+    box-shadow: fill #00000066 0px 0px 6px 0px ;
+  }
+
+  TextEntryAutocomplete > Label
+  {
+    width: 100%;
+    padding: 6px 0px 2px 0px;
+    margin-top: 0px 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-left: 16px;
+    color: #ffffff99;
+    background-color: #3d4448;
+    font-size: 18px;
+    font-weight: normal;
+    z-index: 0;
+    border-top: 1px solid #00000066;
+    border-bottom: 1px solid #00000066;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  TextEntryAutocomplete > Label:hover
+  {
+    background-color: #585e62;
+  }
+
+  TextEntryAutocomplete > Label:focus
+  {
+    background-color: #585e62;
+  }
+
+  TextEntry.ThinTextEntry
+  {
+    height: 32px;
+    font-size: 18px;
+  }
+
+  Slider,
+  RangeSlider
+  {
+    width: 30px;
+    height: 130px;
+    margin-bottom: 20px;
+  }
+
+  #SliderTrack
+  {
+    height: 120px;
+    width: 16px;
+    background-color: #283842;
+    align: center center;
+    background-color: black;
+    border: 2px solid #5e686966;
+    box-shadow: #00000055 0px 0px 1px 3px ;
+    z-index: 2;
+  }
+
+  SlottedSlider.HorizontalSlider .SliderNotch
+  {
+    margin-top: 14px;
+    border-bottom: 2px solid #5e686966;
+    border-left:2px solid #5e686966;
+    border-right:2px solid #5e686966;
+    background-color: black;
+    width: 12px;
+    height: 12px;
+    vertical-align: bottom;
+    z-index: 3;
+  }
+
+  #SliderTrackProgress
+  {
+    width: 10px;
+    height: 99%;
+    background-color: gradient(linear, 0% 100%, 0% 0%, from(#222222FF), to(#444f52FF));
+    align: center center;
+    border-radius: 3px;
+    z-index: 3;
+  }
+
+  #SliderTrackRangeFill
+  {
+    width: 10px;
+    height: 99%;
+    align: center center;
+    z-index: 3;
+  }
+
+  #SliderTrackRangeFillInner
+  {
+    align: center center;
+    background-color: gradient(linear, 0% 100%, 0% 0%, from(#222222FF), to(#444f52FF));
+    width: 100%;
+    height: 100%;
+  }
+
+  .SliderThumb
+  {
+    background-color: gradient(radial, 50% 50%, -5% -5%, 60% 60%, from(#91a5b9), to(#444f52));
+    border-radius: 13%;
+    width: 30px;
+    height: 16px;
+    box-shadow: fill black 1px 1px 13px 0px;
+    z-index: 6;
+  }
+
+  .SliderThumb:hover
+  {
+    background-color: gradient(radial, 50% 50%, -5% -5%, 60% 60%, from(#b8c5d3), to(#444f52));
+  }
+
+  Slider.HorizontalSlider,
+  SlottedSlider.HorizontalSlider,
+  RangeSlider.HorizontalSlider
+  {
+    width: 420px;
+    height: 30px;
+  }
+
+  Slider.HorizontalSlider #SliderTrack,
+  SlottedSlider.HorizontalSlider #SliderTrack,
+  RangeSlider.HorizontalSlider #SliderTrack
+  {
+    height: 16px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  Slider.HorizontalSlider #SliderTrackProgress,
+  SlottedSlider.HorizontalSlider #SliderTrackProgress,
+  RangeSlider.HorizontalSlider #SliderTrackRangeFill
+  {
+    width: 100%;
+    height: 10px;
+    background-color: gradient(linear, 0% 0%, 100% 0%, from(#222222FF), to(#444f52FF));
+    box-shadow: inset black -2px 1px 3px 0px;
+    margin-left: 1px;
+  }
+
+  Slider.HorizontalSlider #SliderTrackProgress:disabled,
+  SlottedSlider.HorizontalSlider #SliderTrackProgress:disabled,
+  RangeSlider.HorizontalSlider #SliderTrackRangeFill:disabled
+  {
+    width: 100%;
+    height: 10px;
+    background-color: gradient(linear, 0% 0%, 100% 0%, from(#010101FF), to(#333333FF));
+    box-shadow: inset black -2px 1px 3px 0px;
+    margin-left: 1px;
+  }
+
+  Slider.HorizontalSlider .SliderThumb,
+  SlottedSlider.HorizontalSlider .SliderThumb,
+  RangeSlider.HorizontalSlider .SliderThumb
+  {
+    background-color: gradient(radial, 50% 50%, -5% -5%, 60% 60%, from(#91a5b9), to(#444f52));
+    border-radius: 13%;
+    width: 16px;
+    height: 30px;
+  }
+
+  Slider.HorizontalSlider .SliderThumb:hover,
+  SlottedSlider.HorizontalSlider .SliderThumb:hover,
+  RangeSlider.HorizontalSlider .SliderThumb:hover
+  {
+    background-color: gradient(radial, 50% 50%, -5% -5%, 60% 60%, from(#b8c5d3), to(#444f52));
+  }
+
+  Slider.HorizontalSlider .SliderThumb:disabled,
+  SlottedSlider.HorizontalSlider .SliderThumb:disabled,
+  RangeSlider.HorizontalSlider .SliderThumb:disabled
+  {
+    background-color: #333333;
+  }
+
+  SimpleContextMenu .ContextMenuBody
+  {
+    padding: 5px;
+    flow-children: down;
+    width: 230px;
+    opacity: 1.0;
+    background-color: #212828;
+    border: 2px solid black;
+    box-shadow: fill 4px 4px 4px #0009;
+  }
+
+  SimpleContextMenu.Wider .ContextMenuBody
+  {
+    width: 250px;
+  }
+
+  SimpleContextMenu.ExtraWide .ContextMenuBody
+  {
+    width: 300px;
+  }
+
+  SimpleContextMenu .ContextMenuBody Button
+  {
+    width: 100%;
+    padding: 6px 10px 6px 10px;
+    margin: 0px 0px;
+    border: 1px solid black;
+    background-color: #00000040;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+  }
+
+  SimpleContextMenu .ContextMenuBody Label
+  {
+    horizontal-align: left;
+  }
+
+  SimpleContextMenu .ContextMenuBody Button:enabled:hover
+  {
+    background-color: #00000080;
+  }
+
+  SimpleContextMenu .ContextMenuBody Button:enabled:hover Label
+  {
+    color: white;
+  }
+
+  SimpleContextMenu .ContextMenuBody Button:disabled Label
+  {
+    color: #444444;
+  }
+
+  ProgressBar
+  {
+    width: 320px;
+    height: 22px;
+    border-radius: 8px;
+    background-color: #000000ff;
+    overflow: noclip;
+  }
+
+  ProgressBar .ProgressBarNotch
+  {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: gray;
+    z-index: 3;
+    transform: translateX(-3px) translateY(11px);
+  }
+
+  ProgressBar .ProgressBarNotch.Activated
+  {
+    background-color: white;
+  }
+
+  ProgressBar .ProgressBarNotch.Hidden
+  {
+    opacity: 0;
+  }
+
+  .ProgressBarLeft
+  {
+    background-color: #ffffff33;
+  }
+
+  EdgeScroller.CanScrollHorizontal
+  {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  EdgeScroller.CanScrollVertical
+  {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  EdgeScrollBar
+  {
+    width: 100%;
+    height: 100%;
+    layout-position: fixed;
+    transition-property: transform;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.2s;
+  }
+
+  EdgeScrollBar .EdgeScrollButton
+  {
+    background-color: #ffffff10;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    wash-color: #999999;
+    transition-property: wash-color;
+    transition-duration: 0.1s;
+  }
+
+  EdgeScrollBar .EdgeScrollButton:hover
+  {
+    wash-color: #cccccc;
+  }
+
+  EdgeScrollBar .EdgeScrollButton:active
+  {
+    wash-color: #ffffff;
+  }
+
+  EdgeScrollBar.Horizontal .EdgeScrollButton
+  {
+    width: 16px;
+    height: 100%;
+  }
+
+  EdgeScrollBar.Horizontal #MinButton
+  {
+    horizontal-align: left;
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_left_png.vtex");
+  }
+
+  EdgeScrollBar.Horizontal #MaxButton
+  {
+    horizontal-align: right;
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_right_png.vtex");
+  }
+
+  EdgeScrollBar.Vertical .EdgeScrollButton
+  {
+    width: 100%;
+    height: 16px;
+  }
+
+  EdgeScrollBar.Vertical #MinButton
+  {
+    vertical-align: top;
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_up_png.vtex");
+  }
+
+  EdgeScrollBar.Vertical #MaxButton
+  {
+    vertical-align: bottom;
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_down_png.vtex");
+  }
+
+  EdgeScrollBar.AtMinimum #MinButton,
+  EdgeScrollBar.AtMaximum #MaxButton
+  {
+    visibility: collapse;
+  }
+
+  NumberEntry:not(.CustomStyling)
+  {
+    flow-children: right;
+    width: 100px;
+    height: 36px;
+  }
+
+  NumberEntry:not(.CustomStyling) #TextEntry
+  {
+    width: fill-parent-flow(1.0);
+    height: 100%;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButtons
+  {
+    flow-children: down;
+    margin-left: 2px;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButton
+  {
+    width: 17px;
+    height: 17px;
+    border: 1px solid baseBorder;
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#111111FF), to(#222222FF));
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButtonImage
+  {
+    visibility: collapse;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButtonLabel
+  {
+    text-align: center;
+    vertical-align: middle;
+    horizontal-align: center;
+    margin-top: -3px;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButton:disabled
+  {
+    brightness: 0.5;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButton:hover:enabled
+  {
+    brightness: 2.0;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButton:active
+  {
+    brightness: 1.5;
+  }
+
+  NumberEntry:not(.CustomStyling) .ChangeValueButton__Increment
+  {
+    margin-bottom: 2px;
+  }
+
+  DOTAItemImage
+  {
+    background-image: url("s2r://panorama/images/items/emptyitembg_png.vtex");
+    background-repeat: no-repeat;
+    background-size: 100% 99%;
+  }
+
+  DOTAGameItemsPage DOTAItemImage
+  {
+    background-image: none;
+    background-color: black;
+  }
+
+  DOTAItemImage #RecipeOutputImage
+  {
+    opacity: 1;
+    saturation: 0.25;
+    brightness: 2.0;
+    pre-transform-scale2d: .7;
+    transform: rotateZ(-8deg) rotateY(30deg) translateX(2px) translateY(1px);
+    border-radius: 1px;
+    opacity-mask: url("s2r://panorama/images/masks/softedge_box_png.vtex");
+    width: 100%;
+    height: 100%;
+  }
+
+  #RecipeContainer
+  {
+    wash-color: #d8984bff;
+    width: 100%;
+    height: 100%;
+    contrast: .9;
+    background-color: black;
+    opacity-mask: url("s2r://panorama/images/items/recipe_opacity_mask_nopurchase_psd.vtex");
+    overflow: clip;
+  }
+
+  DOTAShopItem .CanPurchase #RecipeContainer,
+  DOTAShopItem .AvailableAtOtherShop #RecipeContainer
+  {
+    opacity-mask: url("s2r://panorama/images/items/recipe_opacity_mask_nopurchase_psd.vtex");
+  }
+
+  AsyncDataPanel > .AsyncContainer
+  {
+    width: 100%;
+    height: 100%;
+    visibility: collapse;
+  }
+
+  AsyncDataPanel.AsyncFailureState > .AsyncFailureContainer,
+  AsyncDataPanel.AsyncLoadingState > .AsyncLoadingContainer,
+  AsyncDataPanel.AsyncSuccessState > .AsyncSuccessContainer
+  {
+    visibility: visible;
+  }
+
+  AsyncDataPanel > .AsyncFailureContainer Label
+  {
+    color: $bluegreyTextReg;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 16px;
+    vertical-align: middle;
+    horizontal-align: center;
+    text-align: center;
+    padding: 0px 8px;
+  }
+
+  AsyncDataPanel > .AsyncLoadingContainer
+  {
+    horizontal-align: center;
+  }
+
+  AsyncDataPanel > .AsyncLoadingContainer .Wrapper
+  {
+    flow-children: down;
+    horizontal-align: center;
+    vertical-align: center;
+  }
+
+  AsyncDataPanel > .AsyncLoadingContainer .Spinner
+  {
+    horizontal-align: center;
+    wash-color: #999;
+  }
+
+  AsyncDataPanel > .AsyncLoadingContainer Label
+  {
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 16px;
+    horizontal-align: center;
+    text-align: center;
+    padding: 0px 8px;
+    margin-top: 6px;
+  }
+
+  @at-root {
+    @keyframes 'arrowprogressbar_arrow_scroll_right'
+    {
+      0%
+      {
+        transform: translateX(-8px);
+      }
+
+      100%
+      {
+        transform: translateX(0px);
+      }
+
+    }
+
+    @keyframes 'arrowprogressbar_arrow_scroll_left'
+    {
+      0%
+      {
+        transform: translateX(0px);
+      }
+
+      100%
+      {
+        transform: translateX(-8px);
+      }
+    }
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar
+  {
+    height: 25px;
+    border: 3px solid #111617;
+    padding: -2px;
+    border-radius: 3px;
+    background-color: #3E464A;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar .ProgressBarLeft
+  {
+    border-radius: 2px;
+    border: 2px solid black;
+    background-color: gradient(linear, 0% 0%, 0% 100%, from(#EFF2FA), to(#BFCBE7));
+    transition-property: position,width;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar .ProgressBarMiddle
+  {
+    padding-left: -2px;
+    padding-right: -2px;
+    overflow: noclip;
+    flow-children: right;
+    transition-property: position,width;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar .ProgressBarMiddle .ProgressBarMiddleContent
+  {
+    width: fill-parent-flow(1.0);
+    height: 100%;
+    max-width: 300px;
+    max-height: 50px;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    background-color: gradient(linear, 0% 100%, 0% 0%, from(#AFDF8F), to(#6BCB6B));
+    border-radius: 2px;
+    border: 2px solid black;
+    overflow: clip;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar .ProgressBarMiddle .ProgressBarMiddleScroll
+  {
+    width: 350px;
+    height: 100%;
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_right_png.vtex");
+    background-size: 10px 14px;
+    background-repeat: repeat no-repeat;
+    background-position: 50% 25%;
+    opacity: 0.4;
+    wash-color: #d0ffd0;
+    animation-name: arrowprogressbar_arrow_scroll_right;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 0.3s;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar .ProgressBarRight
+  {
+    background-color: #00000000;
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar.ScrollLeft .ProgressBarMiddle .ProgressBarMiddleContent
+  {
+    background-color: gradient(linear, 0% 100%, 0% 0%, from(#813403), to(#DD3C1C));
+  }
+
+  ProgressBarWithMiddle.AnimatedArrowProgressBar.ScrollLeft .ProgressBarMiddle .ProgressBarMiddleScroll
+  {
+    background-image: url("s2r://panorama/images/control_icons/arrow_solid_left_png.vtex");
+    animation-name: arrowprogressbar_arrow_scroll_left;
+    opacity: 0.35;
+    wash-color: #ff9090;
+  }
+}

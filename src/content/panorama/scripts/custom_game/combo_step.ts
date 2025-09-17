@@ -24,12 +24,12 @@ export interface ComboStepInputs extends Inputs {
 }
 
 export enum PanelId {
-  Image = "ComboStepImage",
+  Image = "image",
 }
 
 enum CssClass {
-  ComboOptional = "ComboOptional",
-  StepInvocation = "ComboStepInvocation",
+  ComboOptional = "optional",
+  StepInvocation = "invocation",
 }
 
 /**
@@ -49,7 +49,7 @@ export abstract class ComboStep<
   constructor({ elements, inputs, panelEvents, ...options }: Options<E, I, P> = {}) {
     super({
       elements: {
-        button: "ComboStepIconButton",
+        button: "icon-button",
         ...elements,
       } as ElementsOptions<E>,
       inputs: {

@@ -7,92 +7,68 @@
     <include src="file://{resources}/styles/custom_game/viewer/properties.css" />
   </styles>
 
-  <Panel class="ViewerPropertiesRoot" hittest="false">
-    <Panel class="ViewerPropertiesRow" hittest="false">
+  <Panel class="root" hittest="false">
+    <Panel class="row" hittest="false">
       <Button
-        class="ViewerPropertiesIcon HeroLevelIcon"
+        class="icon hero-level-icon"
         onmouseover="DOTAShowTextTooltip(#invk_combo_tooltip_hero_level)"
         onmouseout="DOTAHideTextTooltip()"
       />
-      <Label
-        class="ViewerPropertiesLabel"
-        text="#invk_combo_properties__hero_level"
-        hittest="false"
-      />
-      <Button class="ViewerPropertiesValue HeroLevelBadge">
-        <Label
-          id="ViewerPropertiesHeroLevelLabel"
-          class="HeroLevelLabel MonoNumbersFont"
-          hittest="false"
-        />
+
+      <Label class="label" text="#invk_combo_properties__hero_level" hittest="false" />
+
+      <Button class="value hero-level-badge">
+        <Label id="hero-level-label" class="hero-level-label" hittest="false" />
       </Button>
     </Panel>
 
-    <Panel class="ViewerPropertiesRow" hittest="false">
+    <Panel class="row" hittest="false">
       <Button
-        class="ViewerPropertiesIcon SpecialtyIcon"
+        class="icon specialty-icon"
         onmouseover="DOTAShowTextTooltip(#invk_combo_tooltip_specialty)"
         onmouseout="DOTAHideTextTooltip()"
       />
-      <Label
-        class="ViewerPropertiesLabel"
-        text="#invk_combo_properties__specialty"
-        hittest="false"
-      />
-      <Label
-        id="ViewerPropertiesSpecialtyLabel"
-        class="ViewerPropertiesValue ViewerPropertiesLabel"
-        hittest="false"
-      />
+
+      <Label class="label" text="#invk_combo_properties__specialty" hittest="false" />
+      <Label id="specialty-label" class="value label" hittest="false" />
     </Panel>
 
-    <Panel class="ViewerPropertiesRow" hittest="false">
+    <Panel class="row" hittest="false">
       <Button
-        class="ViewerPropertiesIcon StanceIcon"
+        class="icon stance-icon"
         onmouseover="DOTAShowTextTooltip(#invk_combo_tooltip_stance)"
         onmouseout="DOTAHideTextTooltip()"
       />
-      <Label
-        class="ViewerPropertiesLabel"
-        text="#invk_combo_properties__stance"
-        hittest="false"
-      />
-      <Label
-        id="ViewerPropertiesStanceLabel"
-        class="ViewerPropertiesValue ViewerPropertiesLabel"
-        hittest="false"
-      />
+
+      <Label class="label" text="#invk_combo_properties__stance" hittest="false" />
+      <Label id="stance-label" class="value label" hittest="false" />
     </Panel>
 
-    <Panel class="ViewerPropertiesRow" hittest="false">
+    <Panel class="row" hittest="false">
       <Button
-        class="ViewerPropertiesIcon AttackDamageIcon"
+        class="icon attack-damage-icon"
         onmouseover="DOTAShowTextTooltip(#invk_combo_tooltip_damage_rating)"
         onmouseout="DOTAHideTextTooltip()"
       />
-      <Label
-        class="ViewerPropertiesLabel"
-        text="#invk_combo_properties__damage_rating"
-        hittest="false"
-      />
-      <Panel id="ViewerPropertiesDamageRating" class="ViewerPropertiesValue Rating">
+
+      <Label class="label" text="#invk_combo_properties__damage_rating" hittest="false" />
+
+      <Panel id="damage-rating" class="value rating">
         <Panel class="RatingActive" />
       </Panel>
     </Panel>
 
-    <Panel class="ViewerPropertiesRow" hittest="false">
+    <Panel class="row" hittest="false">
       <Button
-        class="ViewerPropertiesIcon DifficultyIcon"
+        class="icon difficulty-icon"
         onmouseover="DOTAShowTextTooltip(#invk_combo_tooltip_difficulty_rating)"
         onmouseout="DOTAHideTextTooltip()"
       />
-      <Label
-        class="ViewerPropertiesLabel"
-        text="#invk_combo_properties__difficulty_rating"
-        hittest="false"
-      />
-      <Panel id="ViewerPropertiesDifficultyRating" class="ViewerPropertiesValue Rating">
-        <Panel class="RatingActive" />
+
+      <Label class="label" text="#invk_combo_properties__difficulty_rating" hittest="false" />
+
+      <Panel id="difficulty-rating" class="value rating">
+        <Panel class="rating-active" />
       </Panel>
     </Panel>
   </Panel>

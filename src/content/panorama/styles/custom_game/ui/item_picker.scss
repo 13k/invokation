@@ -1,0 +1,73 @@
+@use "../../dota2";
+@use "../../layout";
+@use "../../vars";
+
+@include layout.size;
+
+.root {
+  flow-children: down;
+  width: 1132px;
+  height: 820px;
+}
+
+.header {
+  flow-children: right;
+  width: 100%;
+  padding: 16px 16px 12px;
+  background-color: #0007;
+}
+
+.selection-choice {
+  color: #bfd2ee;
+  font-size: 22px;
+  letter-spacing: 2px;
+  text-align: left;
+  text-overflow: shrink;
+  text-transform: uppercase;
+  vertical-align: center;
+}
+
+#search {
+  flow-children: right;
+  width: 300px;
+  background-color: black;
+
+  .search-button {
+    width: 27px;
+    height: 27px;
+    margin: 0 8px;
+    background-image: vars.$icon-controls-search;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: center;
+    wash-color: #4f4f4f;
+    transition-duration: 0.1s;
+    transition-property: wash-color;
+
+    &:hover {
+      wash-color: #ccc;
+    }
+
+    &:active {
+      wash-color: #fff;
+    }
+  }
+}
+
+#search-text-entry {
+  width: fill-parent-flow(1);
+  border: 0;
+  background-color: none;
+
+  #PlaceholderText {
+    margin-top: 2px;
+    color: #8a8a8a;
+  }
+}
+
+#game-item-table {
+  horizontal-align: center;
+  margin-top: 16px;
+}
+
+@include dota2.style;

@@ -8,31 +8,31 @@
   </styles>
 
   <snippets>
-    <snippet name="TooltipStatBranchRow">
-      <Panel class="TooltipStatBranchRow">
-        <Panel class="Branch BranchLeft">
-          <Button class="BranchChoice" disabled="true">
-            <Label class="StatBonusLabel" />
+    <snippet name="row">
+      <Panel class="row">
+        <Panel class="branch branch-left">
+          <Button class="branch-choice" disabled="true">
+            <Label class="stat-bonus-label" />
           </Button>
         </Panel>
 
-        <Panel class="Branch BranchRight">
-          <Button class="BranchChoice" disabled="true">
-            <Label class="StatBonusLabel" />
+        <Panel class="branch branch-right">
+          <Button class="branch-choice" disabled="true">
+            <Label class="stat-bonus-label" />
           </Button>
         </Panel>
 
-        <Panel class="CenterNode">
-          <Panel class="LevelBG">
-            <Label text="{s:level}" class="HeroLevelLabel" />
+        <Panel class="center-node">
+          <Panel class="level-bg">
+            <Label text="{s:level}" class="hero-level-label" />
           </Panel>
         </Panel>
       </Panel>
     </snippet>
   </snippets>
 
-  <Tooltip class="TooltipStatBranchRoot">
-    <Label class="TooltipStatBranchTitle" text="#DOTA_StatBranch_TooltipTitle" />
-    <Panel id="TooltipStatBranchContainer" />
+  <Tooltip class="root">
+    <Label class="title" text="#DOTA_StatBranch_TooltipTitle" />
+    <Panel id="container" />
   </Tooltip>
 </root>

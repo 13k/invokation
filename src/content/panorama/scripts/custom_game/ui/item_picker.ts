@@ -23,13 +23,13 @@ export interface ItemPickerOutputs extends Outputs {
 }
 
 enum PanelId {
-  SectionList = "ShopItemSectionItemList",
+  SectionList = "ShopItemSectionItemList", // builtin
 }
 
 enum CssClass {
-  Section = "ShopItemSection",
-  TableEnableHighlight = "HighlightItemsMatchingName",
-  ItemHighlight = "Highlighted",
+  Section = "ShopItemSection", // builtin
+  TableEnableHighlight = "HighlightItemsMatchingName", // builtin
+  ItemHighlight = "Highlighted", // builtin
 }
 
 interface ShopItemPanel {
@@ -48,8 +48,8 @@ class ItemPicker extends Component<ItemPickerElements, never, ItemPickerOutputs>
   constructor() {
     super({
       elements: {
-        table: "GameItemTable",
-        search: "UIItemPickerSearchTextEntry",
+        table: "game-item-table",
+        search: "search-text-entry",
       },
       customEvents: {
         [CustomGameEvent.ItemPickerQueryResponse]: (payload) => this.onQueryResponse(payload),

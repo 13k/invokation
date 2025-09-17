@@ -8,11 +8,7 @@ export interface TopBarElements extends Elements {
 }
 
 enum PanelId {
-  PopupGameInfo = "PopupGameInfo",
-}
-
-enum CssClass {
-  Netgraph = "Netgraph",
+  PopupGameInfo = "popup-game-info",
 }
 
 export type { TopBar };
@@ -21,18 +17,14 @@ class TopBar extends Component<TopBarElements> {
   constructor() {
     super({
       elements: {
-        btnShowGameInfo: "BtnShowGameInfo",
-        btnQuit: "BtnQuit",
+        btnShowGameInfo: "btn-game-info",
+        btnQuit: "btn-quit",
       },
       panelEvents: {
         btnShowGameInfo: { onactivate: () => this.onBtnShowGameInfo() },
         btnQuit: { onactivate: () => this.onBtnQuit() },
       },
     });
-
-    if (Game.GetConvarBool("dota_hud_netgraph")) {
-      this.panel.AddClass(CssClass.Netgraph);
-    }
 
     this.debug("init");
   }

@@ -12,7 +12,7 @@ interface CustomLoadingScreenElements extends Elements {
 
 enum CssClass {
   SceneLoaded = "SceneLoaded",
-  BackgroundSplash = "Initialize",
+  BackgroundSplash = "splash",
 }
 
 enum Timing {
@@ -26,7 +26,7 @@ class CustomLoadingScreen extends Component<CustomLoadingScreenElements> {
   constructor() {
     super({
       elements: {
-        scene: "Scene",
+        scene: "scene",
       },
       uiEvents: {
         scene: {

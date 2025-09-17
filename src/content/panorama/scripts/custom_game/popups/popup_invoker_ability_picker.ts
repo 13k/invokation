@@ -35,8 +35,8 @@ class PopupInvokerAbilityPicker extends Component<
   constructor() {
     super({
       elements: {
-        abilities: "PopupInvokerAbilityPickerAbilityList",
-        btnClose: "PopupInvokerAbilityPickerClose",
+        abilities: "ability-list",
+        btnClose: "btn-close",
       },
       panelEvents: {
         $: {

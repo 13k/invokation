@@ -7,19 +7,16 @@
     <include src="file://{resources}/styles/custom_game/popups/popup_invoker_ability_picker.css" />
   </styles>
 
-  <Popup class="PopupInvokerAbilityPickerRoot PopupPanel" popupbackground="dim">
-    <Panel class="PopupInvokerAbilityPickerHeader">
-      <Label
-        class="PopupInvokerAbilityPickerSelectionChoice"
-        text="#invk_ability_picker_choose"
-      />
+  <Popup class="root" popupbackground="dim">
+    <Panel class="header">
+      <Label class="selection-choice" text="#invk_ability_picker_choose" />
     </Panel>
 
-    <Panel id="PopupInvokerAbilityPickerAbilityList" />
+    <Panel id="ability-list" />
 
-    <Panel class="PopupButtonRow">
-      <Button id="PopupInvokerAbilityPickerClose" class="PopupButton">
-        <Label text="#DOTA_Close" />
+    <Panel class="popup-button-row">
+      <Button id="btn-close" class="popup-button">
+        <Label class="popup-button-text" text="#DOTA_Close" />
       </Button>
     </Panel>
   </Popup>

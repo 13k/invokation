@@ -8,11 +8,11 @@
     <include src="file://{resources}/styles/custom_game/combo_score.css" />
   </styles>
 
-  <Panel class="ComboScoreRoot" hittest="false" hittestchildren="false">
-    <Panel class="ComboScoreCounter">
-      <Panel class="ComboScoreSplashBackground">
+  <Panel class="root--combo-score" hittest="false" hittestchildren="false">
+    <Panel id="counter">
+      <Panel class="splash-background">
         <DOTAScenePanel
-          id="ComboScoreCounterFX"
+          id="counter-fx"
           camera="camera"
           renderdeferred="false"
           rendershadows="false"
@@ -22,21 +22,22 @@
         />
       </Panel>
 
-      <Panel class="ComboScoreContent">
-        <Panel id="ComboScoreCounterTicker" class="ComboScoreDigitContainer">
-          <Panel class="ComboScoreDigitX" />
-          <Panel class="ComboScoreDigit" />
-          <Panel class="ComboScoreDigit" />
-          <Panel class="ComboScoreDigit" />
+      <Panel class="content">
+        <Panel id="counter-ticker" class="digit-container">
+          <Panel class="digit-x" />
+          <Panel class="digit" />
+          <Panel class="digit" />
+          <Panel class="digit" />
         </Panel>
-        <Label class="ComboScoreLabel" text="#invk_combo_counter_title" />
+
+        <Label class="label" text="#invk_combo_counter_title" />
       </Panel>
     </Panel>
 
-    <Panel class="ComboScoreSummary">
-      <Panel class="ComboScoreSplashBackground">
+    <Panel id="summary">
+      <Panel class="splash-background">
         <DOTAScenePanel
-          id="ComboScoreSummaryFX"
+          id="summary-fx"
           camera="camera"
           renderdeferred="false"
           rendershadows="false"
@@ -46,26 +47,28 @@
         />
       </Panel>
 
-      <Panel class="ComboScoreContent">
-        <Panel class="ComboScoreCount">
-          <Panel id="ComboScoreSummaryCountDisplay" class="ComboScoreDigitContainer">
-            <Panel class="ComboScoreDigitX" />
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
+      <Panel class="content">
+        <Panel class="count">
+          <Panel id="summary-count-display" class="digit-container">
+            <Panel class="digit-x" />
+            <Panel class="digit" />
+            <Panel class="digit" />
+            <Panel class="digit" />
           </Panel>
-          <Label class="ComboScoreLabel" text="#invk_combo_counter_title" />
+
+          <Label class="label" text="#invk_combo_counter_title" />
         </Panel>
 
-        <Panel class="ComboScoreDamage">
-          <Panel id="ComboScoreSummaryDamageTicker" class="ComboScoreDigitContainer">
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
-            <Panel class="ComboScoreDigit" />
+        <Panel class="damage">
+          <Panel id="summary-damage-ticker" class="digit-container">
+            <Panel class="digit" />
+            <Panel class="digit" />
+            <Panel class="digit" />
+            <Panel class="digit" />
+            <Panel class="digit" />
           </Panel>
-          <Label class="ComboScoreLabel" text="#invk_combo_counter_damage_label" />
+
+          <Label class="label" text="#invk_combo_counter_damage_label" />
         </Panel>
       </Panel>
     </Panel>

@@ -15,8 +15,12 @@
 
 # game
 
-/content/panorama/scripts/*
+/content/panorama/scripts/**
+/content/panorama/styles/**
+
 /game/*
 !/game/resource
 !/game/scripts
 !/game/addoninfo.txt
+
+/src/content/panorama/styles/**/build.json

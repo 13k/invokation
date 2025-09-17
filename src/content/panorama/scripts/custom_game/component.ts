@@ -103,7 +103,7 @@ export interface ParamDescriptor {
 }
 
 enum CssClass {
-  Development = "Development",
+  Development = "development",
 }
 
 export abstract class Component<

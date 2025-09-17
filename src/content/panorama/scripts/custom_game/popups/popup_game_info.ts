@@ -16,10 +16,10 @@ class PopupGameInfo extends Component<PopupGameInfoElements> {
   constructor() {
     super({
       elements: {
-        versionLabel: "GameInfoVersionLabel",
-        btnClose: "GameInfoClose",
-        btnOpenHomepage: "GameInfoOpenHomepage",
-        btnOpenChangelog: "GameInfoOpenChangelog",
+        versionLabel: "version-label",
+        btnClose: "btn-close",
+        btnOpenHomepage: "btn-open-homepage",
+        btnOpenChangelog: "btn-open-changelog",
       },
       panelEvents: {
         $: {

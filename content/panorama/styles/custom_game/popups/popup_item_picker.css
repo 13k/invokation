@@ -1,8 +1,0 @@
-@import url('s2r://panorama/styles/dotastyles.css');
-@import url('file://{resources}/styles/custom_game/popups/popups_shared.css');
-
-.PopupItemPickerRoot {
-  flow-children: down;
-  align: center center;
-  padding: 0 0 20px;
-}

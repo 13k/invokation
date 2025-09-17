@@ -36,19 +36,21 @@ export interface TagSelectOutputs extends Outputs {
   };
 }
 
+export type { TagSelect };
+
 enum Snippet {
-  Tag = "UITagSelectTag",
+  Tag = "tag",
 }
 
 enum PanelId {
-  PopupTextEntry = "TagSelectPopupTextEntry",
-  TagRemoveButton = "UITagSelectTagRemoveButton",
-  TagPrefix = "UITagSelectTag",
-  OptionPrefix = "UITagSelectOption",
+  PopupTextEntry = "popup-text-entry",
+  TagRemoveButton = "tag-remove-button",
+  TagPrefix = "tag",
+  OptionPrefix = "option",
 }
 
 enum CssClass {
-  Option = "UITagSelectOption",
+  Option = "option",
 }
 
 interface UiOption {
@@ -59,12 +61,12 @@ interface UiOption {
 const UI_OPTIONS = {
   // biome-ignore lint/style/useNamingConvention: const
   EMPTY: {
-    id: `${PanelId.OptionPrefix}Empty`,
+    id: `${PanelId.OptionPrefix}-empty`,
     text: "",
   },
   // biome-ignore lint/style/useNamingConvention: const
   TEXT_ENTRY: {
-    id: `${PanelId.OptionPrefix}TextEntry`,
+    id: `${PanelId.OptionPrefix}-text-entry`,
     text: l10n.l(l10n.Key.TagSelectOptionTextEntry),
   },
 };
@@ -77,8 +79,6 @@ const normalizeTag = (tag: string): string => kebabCase(tag);
 const tagId = (tag: string): string => `${PanelId.TagPrefix}:${tag}`;
 const optionId = (option: string): string => `${PanelId.OptionPrefix}:${option}`;
 
-export type { TagSelect };
-
 class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectOutputs> {
   options: Set<string> = new Set();
   tags: Set<string> = new Set();
@@ -88,8 +88,8 @@ class TagSelect extends Component<TagSelectElements, TagSelectInputs, TagSelectO
   constructor() {
     super({
       elements: {
-        list: "UITagSelectTagList",
-        options: "UITagSelectOptions",
+        list: "tag-list",
+        options: "options",
       },
       inputs: {
         setOptions: (payload) => this.setOptions(payload),
