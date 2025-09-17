@@ -2,8 +2,8 @@ import type fs from "node:fs";
 import path from "node:path";
 
 import fse from "fs-extra";
-import { glob } from "glob";
 import type { GlobOptionsWithFileTypesUnset } from "glob";
+import { glob } from "glob";
 
 import { capture } from "./exec";
 import { PLATFORM, UnknownPlatformError } from "./platform";
@@ -39,7 +39,7 @@ export abstract class Path {
     return new (this.ctor())(path);
   }
 
-  protected ctor(): new(..._parts: PathLike[]) => this {
+  protected ctor(): new (..._parts: PathLike[]) => this {
     return Object.getPrototypeOf(this).constructor;
   }
 

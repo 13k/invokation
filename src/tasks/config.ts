@@ -70,7 +70,7 @@ export class Config {
     };
   }
 
-  customGameContentRelPath(srcPath: Path): Path {
+  contentRelPath(srcPath: Path): Path {
     const {
       sources: { contentDir: srcDir },
       customGame: { contentDir: destDir },

@@ -46,19 +46,25 @@ async function main(): Promise<number> {
   return 0;
 }
 
+function logError(err: unknown) {
+  if (err instanceof AggregateError) {
+    for (const inner of err.errors) {
+      logError(inner);
+    }
+  } else if (err instanceof Error) {
+    LOGGER.error(err.message);
+  } else {
+    console.error(err);
+  }
+}
+
 if (import.meta.main) {
   temp.track();
 
   try {
     await main();
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      LOGGER.error(error.message);
-      LOGGER.debug(error);
-    } else {
-      console.error(error);
-    }
-
+  } catch (err: unknown) {
+    logError(err);
     process.exit(1);
   }
 }

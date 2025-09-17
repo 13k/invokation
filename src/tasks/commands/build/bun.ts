@@ -1,50 +1,61 @@
-import type { BuildArtifact } from "bun";
+import type { Logger } from "../../logger";
+import { Label } from "../../logger";
+import { Path } from "../../path";
 
-import { Label, type Logger } from "../../logger";
-import type { Path } from "../../path";
-
-export async function build(srcDir: Path, outDir: Path, log?: Logger): Promise<void> {
-  log?.label(Label.Compile).fields({ srcDir, outDir }).info("bun building");
-
-  const glob = new Bun.Glob("**/*.ts");
-  const paths = await Array.fromAsync(glob.scan(srcDir.toString()));
-  const entrypoints = paths.map((p) => srcDir.join(p).toString());
-
-  log?.fields({ entrypoints }).debug("entrypoints");
-
-  const build = await Bun.build({
-    target: "browser",
-    format: "esm",
-    entrypoints,
-    root: srcDir.toString(),
-    outdir: outDir.toString(),
-    sourcemap: "inline",
-    minify: { syntax: true },
-  });
-
-  if (!build.success) {
-    throw new AggregateError(build.logs, "Build failed");
-  }
-
-  for (const artifact of build.outputs) {
-    if (artifact.kind === "entry-point") {
-      // FIXME: this is garbage
-      postProcess(artifact);
-    }
-
-    log?.fields({ path: artifact.path }).debug("artifact");
-  }
+interface Source {
+  srcPath: Path;
+  srcRelPath: Path;
+  destPath: Path;
+  destRelPath: Path;
 }
 
-async function postProcess(artifact: BuildArtifact): Promise<void> {
-  const src = await artifact.text();
-  const modified = `
+export async function build(srcDir: Path, destDir: Path, log?: Logger): Promise<void> {
+  const srcPaths = await srcDir.glob("**/*.ts", { nodir: true });
+  const sources = srcPaths.map((srcPath) => {
+    const filename = `${srcPath.basename(".ts")}.js`;
+    const srcRelPath = srcDir.relative(srcPath);
+    const srcRelDir = srcRelPath.dirname();
+    const destRelPath = srcRelDir.join(filename);
+    const destPath = destDir.join(destRelPath);
+
+    const src: Source = {
+      srcPath,
+      srcRelPath,
+      destPath,
+      destRelPath,
+    };
+
+    return src;
+  });
+
+  const entrypoints = sources.map(src => src.srcPath.toString());
+
+  const build = await Bun.build({
+    throw: true,
+    target: "browser",
+    format: "esm",
+    root: srcDir.toString(),
+    outdir: destDir.toString(),
+    entrypoints,
+    sourcemap: "inline",
+    minify: { syntax: true },
+    banner: `
 ((root) => {
   root.globalThis = root.global = root;
 })(this);
+`,
+  });
 
-${src}
-`;
+  if (log != null && build.logs.length > 0) {
+    for (const message of build.logs) {
+      log.warn(message);
+    }
+  }
 
-  await Bun.write(artifact.path, modified);
+  for (const src of sources) {
+    log
+      ?.label(Label.BuildStep)
+      .fields({ src: src.srcRelPath, dest: src.destRelPath })
+      .info("artifact");
+  }
 }

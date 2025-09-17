@@ -7,7 +7,7 @@
   "malva": {
     "lineBreak": "lf",
     "declarationOrder": "smacss",
-    "quotes": "preferSingle",
+    "quotes": "preferDouble",
   },
   "markdown": {
     "textWrap": "always",

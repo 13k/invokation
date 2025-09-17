@@ -8,6 +8,8 @@ import { parseShell } from "../../exec";
 import { Label } from "../../logger";
 import { BaseCommand } from "../base";
 import { build as bunBuild } from "./bun";
+import { build as grassBuild } from "./grass";
+import { build as tscBuild } from "./tsc";
 
 export interface Args {
   parts: BuildPart[];
@@ -19,8 +21,9 @@ export interface Options {
 }
 
 enum BuildPart {
-  PanoramaScripts = "panorama-scripts",
   Maps = "maps",
+  PanoramaScripts = "panorama-scripts",
+  PanoramaStyles = "panorama-styles",
   Resources = "resources",
 }
 
@@ -28,8 +31,9 @@ function parseBuildPart(value: string, previous?: BuildPart[]): BuildPart[] {
   const part = value as BuildPart;
 
   switch (part) {
-    case BuildPart.PanoramaScripts:
     case BuildPart.Maps:
+    case BuildPart.PanoramaScripts:
+    case BuildPart.PanoramaStyles:
     case BuildPart.Resources:
       break;
     default: {
@@ -83,12 +87,16 @@ Accepts environment variables. \
 
     for (const part of parts) {
       switch (part) {
-        case BuildPart.PanoramaScripts: {
-          await this.compilePanoramaScripts();
-          break;
-        }
         case BuildPart.Maps: {
           await this.compileMaps();
+          break;
+        }
+        case BuildPart.PanoramaScripts: {
+          await this.buildPanoramaScripts();
+          break;
+        }
+        case BuildPart.PanoramaStyles: {
+          await this.buildPanoramaStyles();
           break;
         }
         case BuildPart.Resources: {
@@ -119,43 +127,64 @@ Accepts environment variables. \
     return cmd;
   }
 
-  async compilePanoramaScripts(): Promise<void> {
+  async buildPanoramaScripts(): Promise<void> {
     await this.typecheckPanoramaScripts();
     await this.bundlePanoramaScripts();
   }
 
+  async buildPanoramaStyles(): Promise<void> {
+    const srcDir = this.config.sources.srcDir.join("content", "panorama", "styles");
+    const destDir = this.config.sources.contentDir.join("panorama", "styles");
+
+    this.log
+      .label(Label.Build)
+      .fields({
+        srcDir: this.config.rootDir.relative(srcDir),
+        destDir: this.config.rootDir.relative(destDir),
+      })
+      .info("panorama styles");
+
+    await grassBuild(srcDir, destDir, {
+      force: this.options.force ?? false,
+      log: this.log,
+    });
+  }
+
   async typecheckPanoramaScripts(): Promise<void> {
     const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts");
-    const libDir = srcDir.join("lib");
     const customGameDir = srcDir.join("custom_game");
 
     this.log
       .label(Label.Check)
-      .fields({ srcDir: libDir })
-      .info("panorama 'lib' scripts");
+      .fields({ srcDir: this.config.rootDir.relative(customGameDir) })
+      .info("panorama scripts");
 
-    await this.tscBuild(libDir.toString());
+    const options = {
+      force: this.options.force ?? false,
+      log: this.log,
+    };
 
-    this.log
-      .label(Label.Check)
-      .fields({ srcDir: customGameDir })
-      .info("panorama 'custom_game' scripts");
-
-    await this.tscBuild(customGameDir.toString());
+    await tscBuild(customGameDir, options);
   }
 
   async bundlePanoramaScripts(): Promise<void> {
     const srcDir = this.config.sources.srcDir.join("content", "panorama", "scripts", "custom_game");
-    const outDir = this.config.sources.contentDir.join("panorama", "scripts", "custom_game");
+    const destDir = this.config.sources.contentDir.join("panorama", "scripts", "custom_game");
 
-    this.log.label(Label.Compile).fields({ srcDir }).info("panorama scripts");
+    this.log
+      .label(Label.Build)
+      .fields({
+        srcDir: this.config.rootDir.relative(srcDir),
+        destDir: this.config.rootDir.relative(destDir),
+      })
+      .info("panorama scripts");
 
-    await bunBuild(srcDir, outDir, this.log);
+    await bunBuild(srcDir, destDir, this.log);
   }
 
   async compileMaps(): Promise<void> {
     const mapsPatt = this.config.sources.contentDir.join("maps", "*");
-    const relPatt = this.config.customGameContentRelPath(mapsPatt).toString();
+    const relPatt = this.config.contentRelPath(mapsPatt).toString();
 
     this.log.fields({ mapsPath: mapsPatt, relPath: relPatt }).debug("compileMaps()");
     this.log.label(Label.Compile).fields({ pattern: relPatt }).info("maps");
@@ -175,7 +204,7 @@ Accepts environment variables. \
 
     const inputArgs = srcResourcesPaths.flatMap((p) => [
       "-i",
-      this.config.customGameContentRelPath(p).join("*").toString(),
+      this.config.contentRelPath(p).join("*").toString(),
     ]);
 
     this.log.label(Label.Compile).info("resources");
@@ -204,21 +233,6 @@ Accepts environment variables. \
       "-i",
       relPath,
     ]);
-  }
-
-  async tscBuild(srcDir: string): Promise<void> {
-    const args = ["x", "--", "tsc", "--build", "--verbose"];
-
-    if (this.options.force) {
-      args.push("--force");
-    }
-
-    args.push(srcDir);
-
-    this.exec("bun", args, {
-      echo: true,
-      log: this.log,
-    });
   }
 
   async resourceCompiler(args: string[]): Promise<void> {

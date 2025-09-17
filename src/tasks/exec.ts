@@ -1,4 +1,9 @@
-import type { SpawnOptions as BunSpawnOptions } from "bun";
+import type {
+  NullSyncSubprocess,
+  ReadableSyncSubprocess,
+  SpawnOptions as BunSpawnOptions,
+  SyncSubprocess,
+} from "bun";
 
 import shellQuote from "shell-quote";
 
@@ -8,7 +13,11 @@ export interface SpawnOptions extends BunSpawnOptions.OptionsObject {
   log?: Logger | undefined;
 }
 
-export function spawnSync(cmd: string, args: string[] = [], options?: SpawnOptions) {
+export function spawnSync(
+  cmd: string,
+  args: string[] = [],
+  options?: SpawnOptions,
+): SyncSubprocess {
   const { log, ...spawnOptions } = options ?? {};
   const spawnCmd = [cmd, ...args];
 
@@ -21,7 +30,7 @@ export interface ExecOptions extends SpawnOptions {
   echo?: boolean | undefined;
 }
 
-export function exec(cmd: string, args: string[] = [], options?: ExecOptions) {
+export function exec(cmd: string, args: string[] = [], options?: ExecOptions): NullSyncSubprocess {
   const { echo, ...spawnOptions } = options ?? {};
 
   if (echo) {
@@ -42,8 +51,8 @@ export interface CaptureOptions {
   log?: Logger | undefined;
 }
 
-export function capture(cmd: string, args: string[] = [], options?: CaptureOptions) {
-  const process = spawnSync(cmd, args, {
+export function capture(cmd: string, args: string[] = [], options?: CaptureOptions): string {
+  const process: ReadableSyncSubprocess = spawnSync(cmd, args, {
     stdin: "ignore",
     stdout: "pipe",
     stderr: "pipe",

@@ -1,4 +1,4 @@
-import type { SyncSubprocess } from "bun";
+import type { NullSyncSubprocess } from "bun";
 
 import type { Command, OptionValues } from "commander";
 
@@ -111,7 +111,7 @@ export abstract class BaseCommand<Args, Options extends OptionValues> {
     return Bun.which(cmd.toString());
   }
 
-  protected exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): SyncSubprocess {
+  protected exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): NullSyncSubprocess {
     this.log.fields({ cmd, args }).debug("exec run");
 
     return exec(

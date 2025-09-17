@@ -7,11 +7,12 @@ vars:
   LX_ARGS: "--lua-version {{ .LX_LUA_VERSION }}"
   SRC_PANO_LAYOUTS: '{{ joinPath .ROOT_DIR "content" "panorama" "layout" }}'
   SRC_PANO_SCRIPTS: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "scripts" }}'
-  SRC_PANO_STYLES: '{{ joinPath .ROOT_DIR "content" "panorama" "styles" }}'
+  SRC_PANO_STYLES: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "styles" }}'
   SRC_VSCRIPTS: '{{ joinPath .ROOT_DIR "game" "scripts" "vscripts" }}'
   SRC_TASKS: '{{ joinPath .ROOT_DIR "src" "tasks" }}'
   TASKS_ENTRYPOINT: '{{ joinPath .SRC_TASKS "main.ts" }}'
   TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
+  TASKS_RUN: 'bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }}'
   EMMYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".emmyrc.json" }}'
   STYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".stylua.toml" }}'
   SELENE_CONFIG: '{{ joinPath .ROOT_DIR "selene.toml" }}'
@@ -45,37 +46,43 @@ tasks:
 
   clean:
     desc: Remove all compiled, generated and linked files
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} clean
+    cmd: "{{ .TASKS_RUN }} clean"
 
   link:
     desc: Link source files to game directories
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} link
+    cmd: "{{ .TASKS_RUN }} link"
 
   launch:game:
     desc: Launch Dota2
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} launch game
+    cmd: "{{ .TASKS_RUN }} launch game"
 
   launch:sdk:
     desc: Launch SDK (Workshop Tools)
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} launch sdk
+    cmd: "{{ .TASKS_RUN }} launch sdk"
 
   build:
     desc: Build everything
     deps: [link]
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build
+    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }}"
 
   build:maps:
     desc: Build maps
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build maps
+    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} maps"
 
   build:panorama:scripts:
     desc: Build panorama scripts
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build panorama-scripts
+    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} panorama-scripts"
+
+  build:panorama:styles:
+    desc: Build panorama styles
+    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} panorama-styles"
 
   build:resources:
-    deps: [build:panorama:scripts]
     desc: Build resources
-    cmd: bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }} build resources
+    cmds:
+      - task: "build:panorama:styles"
+      - task: "build:panorama:scripts"
+      - "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} resources"
 
   format:vscripts:
     desc: Format vscripts

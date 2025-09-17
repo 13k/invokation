@@ -1,4 +1,4 @@
-import _ from "lodash-es";
+import * as _ from "lodash-es";
 import type { TransformableInfo } from "logform";
 import * as emoji from "node-emoji";
 import tb from "triple-beam";
@@ -9,9 +9,9 @@ import { colorStyle } from "./colors";
 
 type Levels = {
   [
-    K in keyof config.CliConfigSetLevels as string extends K ? never
-      : number extends K ? never
-      : K
+  K in keyof config.CliConfigSetLevels as string extends K ? never
+  : number extends K ? never
+  : K
   ]: config.CliConfigSetLevels[K];
 };
 
@@ -30,7 +30,7 @@ export interface Options {
 }
 
 export type Fields = Map<string, unknown>;
-export const Fields: new(_fields?: FieldsLike) => Fields = Map;
+export const Fields: new (_fields?: FieldsLike) => Fields = Map;
 export type FieldsLike = Iterable<[string, unknown]>;
 
 const LEVELS = config.cli.levels;
@@ -44,6 +44,8 @@ const LEVEL_LENGTH = _.chain(LEVELS)
 const LEVEL_PADDING = _.mapValues(LEVELS, (_v, k) => LEVEL_LENGTH - k.length);
 
 export enum Label {
+  Build = "build",
+  BuildStep = " + build",
   Check = "check",
   Compile = "compile",
   Copy = "copy",
@@ -54,6 +56,8 @@ export enum Label {
 }
 
 const LABEL_EMOJI: Record<Label, string | undefined> = {
+  [Label.Build]: ":wrench:",
+  [Label.BuildStep]: ":nut_and_bolt:",
   [Label.Check]: ":eyeglasses:",
   [Label.Compile]: ":rocket:",
   [Label.Copy]: ":cat2:",
@@ -64,6 +68,8 @@ const LABEL_EMOJI: Record<Label, string | undefined> = {
 };
 
 const LABEL_STYLES: Record<Label, ColorStyle> = {
+  [Label.Build]: colorStyle(220),
+  [Label.BuildStep]: colorStyle(221),
   [Label.Check]: colorStyle(163),
   [Label.Compile]: colorStyle(214),
   [Label.Copy]: colorStyle(142),
