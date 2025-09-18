@@ -1,66 +1,52 @@
-@use "anim";
-@use "ui";
+@use "sass:map";
+
+@use "button" as btn;
 @use "util";
-@use "vars";
+@use "vars" as v;
+
+$padding: (
+  "top": 32px,
+  "right": 64px,
+  "bottom": 32px,
+  "left": 64px
+);
 
 // .PopupPanel (core:popups/popups_shared.css)
 @mixin popup {
-  $grad-bg: util.gradient-vertical(#232326, #1c1d20, $bottom: 25%);
+  @include util.expand-box-property("padding", $padding);
   flow-children: down;
   align: center center;
   min-width: 450px;
-  padding-top: 32px;
-  padding-right: 64px;
-  padding-bottom: 32px;
-  padding-left: 64px;
   border: 2px solid #32383677;
-  background-color: $grad-bg;
+  background-color: util.gradient-vertical(#232326, #1c1d20, $bottom: 25%);
   box-shadow: #0009 0 0 8px 0;
   opacity: 1.0;
   transition-delay: 0.0s;
   transition-duration: 0.2s;
-  transition-property: background-color, box-shadow, opacity, transform, pre-transform-scale2d;
+  transition-property: box-shadow, opacity, transform, pre-transform-scale2d;
   transition-timing-function: ease-in;
 
-  @include anim.animate(
-    "popup-links",
-    $duration: 0.6s,
-    $timing: ease-in-out,
-    $delay: 0s,
-    $count: 1,
-    $direction: normal
-  ) {
-    0% {
-      background-color: util.gradient-vertical(#a9c8daee, #000000ee);
-    }
-
-    50% {
-      background-color: util.gradient-vertical(#272d2eee, #131617ee);
-    }
-
-    100% {
-      background-color: util.gradient-vertical(#272d2eee, #131617ee);
-    }
-  }
-
-  &.Hidden {
+  &.#{v.$class-popup-hidden} {
     transform: translateY(-10px);
     box-shadow: 0 0 0px transparent;
     opacity: 0.0;
     pre-transform-scale2d: 1.25;
-    sound: vars.$snd-dialog-slide;
+    sound: v.$snd-dialog-slide;
   }
 
-  &.WideMode {
+  &.#{v.$class-screen-wide} {
     min-width: 800px;
   }
 
-  .popup-close-button {
-    @include ui.btn-close(30px);
+  .popup-close-btn {
+    @include btn.primary;
+    z-index: 1;
+    ignore-parent-flow: true;
     align: right top;
-    margin-top: -16px;
-    margin-right: -48px;
-    wash-color: #ddd;
+    margin-top: -(map.get($padding, "top") / 2);
+    margin-right: -(map.get($padding, "right") / 2);
+    padding-right: 10px;
+    padding-left: 10px;
   }
 
   .popup-title {
@@ -68,7 +54,7 @@
     color: white;
     font-weight: semi-bold;
     font-size: 30px;
-    font-family: vars.$font-title;
+    font-family: v.$font-title;
     horizontal-align: center;
   }
 
@@ -83,40 +69,14 @@
     horizontal-align: center;
   }
 
-  .popup-button-row {
+  .popup-btn-row {
     flow-children: right;
     horizontal-align: center;
     margin-top: 25px;
     margin-bottom: 20px;
   }
 
-  .popup-button {
-    min-width: 192px;
-    margin: 8px;
-    padding: 5px 10px 5px 10px;
-    border: 1px solid black;
-    transition-delay: 0.0s;
-    transition-duration: 0.1s;
-    transition-property: background-color, wash-color;
-    transition-timing-function: linear;
-
-    @each $name, $spec in vars.$btn-popup-colors {
-      @include ui.btn-color-variant($name, $spec);
-    }
-
-    .popup-button-text {
-      color: white;
-      font-size: 24px;
-      horizontal-align: center;
-      vertical-align: middle;
-    }
-
-    &:disabled .popup-button-text {
-      color: #999999;
-    }
-
-    &:active .popup-button-text {
-      transform: translateY(1px);
-    }
+  .popup-btn {
+    @include btn.primary;
   }
 }

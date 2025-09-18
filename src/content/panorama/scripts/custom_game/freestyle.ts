@@ -31,7 +31,7 @@ export interface FreestyleElements extends Elements {
 }
 
 enum PanelId {
-  ComboScore = "score",
+  ComboScore = "score-inner",
 }
 
 enum CssClass {

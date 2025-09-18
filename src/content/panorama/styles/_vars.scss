@@ -1,4 +1,15 @@
+@use "sass:color";
+
 @use "asset";
+@use "util";
+
+// ******************************************************************************
+// * Built-in classes
+// ******************************************************************************
+
+$class-btn-pressed: "Activated";
+$class-popup-hidden: "Hidden";
+$class-screen-wide: "WideMode";
 
 // ******************************************************************************
 // * Colors
@@ -6,36 +17,73 @@
 
 $cl-text-link: #9862e9;
 
+$cl-grey-light: #8b989e;
+$cl-grey-lighter: #b0bcc2;
+$cl-grey-lightest: #dae2e5;
+
 $cl-gold: #ffcc33;
-$cl-gold-bright: #ffcc33; // cl-gold & cc
+$cl-gold-80: color.change($cl-gold, $alpha: 0.80);
 $cl-dota-plus-gold: #b78946;
-$cl-dota-plus-light-gold: #dcd086;
+$cl-dota-plus-gold-light: #dcd086;
 
 $cl-quas-accent: #33a7e9;
-$cl-quas-accent-dark: #33a7e9; // cl-quas-accent & 07
-$cl-quas-accent44: #33a7e9; // cl-quas-accent & 44
-$cl-quas-text: #88c5e9;
-$cl-quas-text-dd: #88c5e9; // cl-quas-text & dd
-
+$cl-quas-accent-27: color.change($cl-quas-accent, $alpha: 0.27);
 $cl-wex-accent: #eb07e1;
-$cl-wex-accent-dark: #eb07e1; // cl-wex-accent & 07
-$cl-wex-accent44: #eb07e1; // cl-wex-accent & 44
-$cl-wex-text: #c284bf;
-$cl-wex-text-dd: #c284bf; // cl-wex-text & dd
-
+$cl-wex-accent-27: color.change($cl-wex-accent, $alpha: 0.27);
 $cl-exort-accent: #e7ac10;
-$cl-exort-accent-dark: #e7ac10; // cl-exort-accent & 07
-$cl-exort-accent44: #e7ac10; // cl-exort-accent & 44
-$cl-exort-text: #c69a25;
-$cl-exort-text-dd: #c69a25; // cl-exort-text & dd
+$cl-exort-accent-27: color.change($cl-exort-accent, $alpha: 0.27);
+
+// gradients
+
+$grd-grey: util.gradient-vertical(#373f43, #21272a);
+$grd-grey-inverted: util.gradient-vertical(#21272a, #373f43);
+$grd-light-grey: util.gradient-vertical(#525f65, #2f363a);
+$grd-light-grey-inverted: util.gradient-vertical(#2f363a, #525f65);
+$grd-lighter-grey: util.gradient-vertical(#7c8b92, #4b555a);
+$grd-lighter-grey-inverted: util.gradient-vertical(#4b555a, #7c8b92);
+$grd-dark-grey: util.gradient-vertical(#262c30, #121719);
+$grd-dark-grey-inverted: util.gradient-vertical(#121719, #262c30);
+$grd-green: util.gradient-vertical(#5aa15e, #406c55);
+$grd-green-inverted: util.gradient-vertical(#406c55, #5aa15e);
+$grd-blue: util.gradient-vertical(#3782a4, #235777);
+$grd-blue-inverted: util.gradient-vertical(#235777, #3782a4);
+$grd-purple: util.gradient-vertical(#2d4f86, #1b355e);
+$grd-purple-inverted: util.gradient-vertical(#1b355e, #2d4f86);
+$grd-orange: util.gradient-vertical(#a35234, #713a25);
+$grd-orange-inverted: util.gradient-vertical(#713a25, #a35234);
+$grd-yellow: util.gradient-vertical(#e9ba52, #a67d2a);
+$grd-yellow-inverted: util.gradient-vertical(#a67d2a, #e9ba52);
+$grd-gold: util.gradient-vertical(#ffebb1, (0.45, #c6a562), (0.55, #ae9259), #dcb870);
+$grd-gold-inverted: util.gradient-vertical(#dcb870, (0.45, #ae9259), (0.55, #c6a562), #ffebb1);
+$grd-ruby: util.gradient-vertical(#da5e4d, (0.45, #88392e), (0.55, #70271d), #3f1611);
+$grd-ruby-inverted: util.gradient-vertical(#3f1611, (0.45, #70271d), (0.55, #88392e), #da5e4d);
+$grd-platinum: util.gradient-vertical(#f4e6d0, (0.45, #d1b992), (0.55, #9d937f), #d1b992);
+$grd-platinum-inverted: util.gradient-vertical(#d1b992, (0.45, #9d937f), (0.55, #d1b992), #f4e6d0);
+$grd-shards: util.gradient-vertical(#433620, #141b21);
+$grd-shards-inverted: util.gradient-vertical(#141b21, #433620);
+$grd-border-white-soft: util.gradient-vertical(#ffffff08, #ffffff03);
+$grd-border-white-medium: util.gradient-vertical(#ffffff20, #ffffff06);
+$grd-border-white-strong: util.gradient-vertical(#ffffff40, #ffffff08);
 
 // ******************************************************************************
 // * Fonts
 // ******************************************************************************
 
+$font-text: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
 $font-title: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
-$font-default: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
 $font-monospace: RadianceM, Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
+$font-comic: Bangers, Radiance, FZLanTingHei-R-GBK, TH Sarabun New, YDYGO 540, Gulim, MingLiU;
+$font-diretide1: Creepster, Valve Radus, Radiance, FZKai-Z03, TH Sarabun New, YDYGO 540;
+$font-diretide2: UnifrakturCook, Valve Radus, Radiance, FZKai-Z03, TH Sarabun New, YDYGO 540;
+$font-diretide3: Grenze, Valve Radus, Radiance, FZKai-Z03, TH Sarabun New, YDYGO 540;
+$font-underlords:
+  ravenhook,
+  Radiance,
+  FZLanTingHei-R-GBK,
+  TH Sarabun New,
+  YDYGO 540,
+  Gulim,
+  MingLiU;
 
 // ******************************************************************************
 // * Icons
@@ -45,6 +93,7 @@ $icon-controls-arrow-dropdown-up: asset.game-img-url("control_icons/arrow_dropdo
 $icon-controls-arrow-popout: asset.game-img-url("control_icons/arrow_popout_png.vtex");
 $icon-controls-check-shadow: asset.game-img-url("control_icons/check_shadow_png.vtex");
 $icon-controls-close: asset.game-img-url("control_icons/x_close_grey_psd.vtex");
+$icon-controls-close2: asset.game-img-url("control_icons/24px/x_close.vsvg");
 $icon-controls-double-arrow-left: asset.game-img-url("control_icons/double_arrow_left_png.vtex");
 $icon-controls-double-arrow-right: asset.game-img-url("control_icons/double_arrow_right_png.vtex");
 $icon-controls-escalation-arrow: asset.game-img-url("control_icons/escalation_arrow_psd.vtex");
@@ -56,10 +105,14 @@ $icon-controls-filter-melee: asset.game-img-url("control_icons/filter_melee_png.
 $icon-controls-filter-support: asset.game-img-url("control_icons/filter_support_png.vtex");
 $icon-controls-info: asset.game-img-url("control_icons/24px/info.vsvg");
 $icon-controls-quit: asset.game-img-url("control_icons/quit_png.vtex");
+$icon-controls-random-dice: asset.game-img-url("control_icons/random_dice_psd.vtex");
 $icon-controls-refresh: asset.game-img-url("control_icons/refresh_psd.vtex");
 $icon-controls-search: asset.game-img-url("control_icons/icon_search_png.vtex");
 
 $icon-status-loading: asset.game-img-url("status_icons/loadingthrobber_round_psd.vtex");
+
+$icon-facet-no-vision: asset.game-img-url("hud/facets/icons/no_vision_png.vtex");
+$icon-facet-vision: asset.game-img-url("hud/facets/icons/vision_png.vtex");
 
 // ***** invokation *****
 
@@ -106,259 +159,12 @@ $snd-dialog-slide: "ui_custom_lobby_dialog_slide";
 $snd-friends-slidein: "ui_friends_slide_in";
 $snd-quit-fadeout: "ui_quit_menu_fadeout";
 $snd-quit: "ui.menu_quit";
+$snd-rollover: "ui_rollover_micro";
 $snd-select-blue: "ui_select_blue";
 
 // ******************************************************************************
 // * Buttons
 // ******************************************************************************
-
-$btn-bevel-colors: (
-  "&": (
-    "regular": (
-      "border-color": (
-        "top": #555555,
-        "right": #404040,
-        "bottom": #333333,
-        "left": #494949
-      ),
-      "background": ("from": #373d45, "to": #4d5860)
-    ),
-    "hover": (
-      "border-color": (
-        "top": #aaaaaa77,
-        "right": #404040,
-        "bottom": #333333,
-        "left": #aaaaaa33
-      ),
-      "background": ("from": #4c5561, "to": #6c7d88)
-    ),
-    "active": (
-      "border-color": (
-        "top": #222222,
-        "right": #444444,
-        "bottom": #666666,
-        "left": #303030
-      ),
-      "background": ("from": #393939, "to": #555555),
-      "sound": "ui_generic_button_click"
-    ),
-    "disabled": (
-      "wash-color": #aaaaaa,
-      "saturation": 0
-    )
-  ),
-  "green": (
-    "regular": (
-      "border-color": (
-        "top": #355639,
-        "right": #214123,
-        "bottom": #1e371e,
-        "left": #2c4d30
-      ),
-      "background": ("from": #2a481f, "to": #226326)
-    ),
-    "hover": (
-      "border-color": (
-        "top": #030503,
-        "right": #244426,
-        "bottom": #1e371d,
-        "left": #000000
-      ),
-      "background": ("from": #226528, "to": #288a36)
-    ),
-    "active": (
-      "border-color": (
-        "top": #132416,
-        "right": #264a29,
-        "bottom": #386b3b,
-        "left": #192f1b
-      ),
-      "background": ("from": #1f3d25, "to": #2b562c)
-    )
-  ),
-  "dark-green": (
-    "regular": (
-      "border-color": (
-        "top": #223524,
-        "right": #132615,
-        "bottom": #091009,
-        "left": #2c4d30
-      ),
-      "background": ("from": #1a2c13, "to": #18441b)
-    ),
-    "hover": (
-      "border-color": (
-        "top": #000000,
-        "right": #152716,
-        "bottom": #172a16,
-        "left": #000000
-      ),
-      "background": ("from": #17421b, "to": #185321)
-    ),
-    "active": (
-      "border-color": (
-        "top": #09110a,
-        "right": #172c19,
-        "bottom": #1f3820,
-        "left": #0f1b10
-      ),
-      "background": ("from": #132416, "to": #183019)
-    )
-  ),
-  "bronze": (
-    "regular": (
-      "border-color": (
-        "top": #e0a75e,
-        "right": #8f6b3c,
-        "bottom": #8d683a,
-        "left": #dca35b
-      ),
-      "background": ("from": #b9894c, "to": #dca157)
-    ),
-    "hover": (
-      "border-color": (
-        "top": #f2b362,
-        "right": #966f3e,
-        "bottom": #966f3e,
-        "left": #edb062
-      ),
-      "background": ("from": #dda45a, "to": #fcb965)
-    ),
-    "active": (
-      "border-color": (
-        "top": #684e2d,
-        "right": #906c3f,
-        "bottom": #977242,
-        "left": #6d522f
-      ),
-      "background": ("from": #4d391f, "to": #9b713c)
-    ),
-    "disabled": ("saturation": 0.75)
-  ),
-  "plus": (
-    "regular": (
-      "border-color": (
-        "top": #b4a442,
-        "right": #756f45,
-        "bottom": #635e3b,
-        "left": #aea463
-      ),
-      "background": ("from": #877f4f, "to": #a79c5b)
-    ),
-    "hover": (
-      "border-color": (
-        "top": #cab84b,
-        "right": #8e8755,
-        "bottom": #7c764b,
-        "left": #c6bb72
-      ),
-      "background": ("from": #a79d63, "to": #c2b56b)
-    ),
-    "active": (
-      "border-color": (
-        "top": #635e3b,
-        "right": #aea463,
-        "bottom": #b4a442,
-        "left": #756f45
-      ),
-      "background": ("from": #877f4f, "to": #a79c5b),
-      "color": #dcd086
-    ),
-    "disabled": ("saturation": 0.75)
-  )
-);
-
-$btn-popup-colors: (
-  "&": (
-    "regular": (
-      "border": (
-        "top": 1px solid #ffffff44,
-        "right": 1px solid #4e5b60,
-        "bottom": 1px solid #00000088,
-        "left": 1px solid #4e5b60
-      ),
-      "background": ("from": #5a6c75, "to": #3d4a50)
-    ),
-    "hover": ("background": ("from": #a9c8da, "to": #596b75)),
-    "active": (
-      "border": (
-        "top": 1px solid #00000088,
-        "right": 1px solid #00000088,
-        "bottom": 1px solid #aaaaaa44,
-        "left": 1px solid #00000088
-      ),
-      "background": ("from": #272f33, "to": #5a6c75),
-      "sound": $snd-quit-fadeout
-    ),
-    "disabled": (
-      "wash-color": #999999,
-      "saturation": 0
-    )
-  ),
-  "green": (
-    "regular": (
-      "border": (
-        "top": 1px solid #859d6e,
-        "right": 1px solid #496922,
-        "bottom": 1px solid #294211,
-        "left": 1px solid #496922
-      ),
-      "background": ("from": #5e842c, "to": #40621d)
-    ),
-    "hover": ("background": ("from": #9eb46c, "to": #60823d)),
-    "active": (
-      "border": (
-        "top": 1px solid #294211,
-        "right": 1px solid #496922,
-        "bottom": 1px solid #859d6e,
-        "left": 1px solid #496922
-      ),
-      "background": ("from": #204200, "to": #5e842c)
-    )
-  ),
-  "blue": (
-    "regular": (
-      "border": (
-        "top": 1px solid #80bceb,
-        "right": 1px solid #507693,
-        "bottom": 1px solid #273a48,
-        "left": 1px solid #507693
-      ),
-      "background": ("from": #65a9db, "to": #2b4b75)
-    ),
-    "hover": ("background": ("from": #9ccaf4, "to": #2b4b75)),
-    "active": (
-      "border": (
-        "top": 1px solid #273a48,
-        "right": 1px solid #496922,
-        "bottom": 1px solid #567e9e,
-        "left": 1px solid #496922
-      ),
-      "background": ("from": #2b4b75, "to": #65a9db)
-    )
-  ),
-  "grey": (
-    "regular": (
-      "border": (
-        "top": 1px solid #858585,
-        "right": 1px solid #292929,
-        "bottom": 1px solid #292929,
-        "left": 1px solid #707070
-      ),
-      "background": ("from": #585858, "to": #3f3f3f)
-    ),
-    "hover": ("background": ("from": #787878, "to": #5f5f5f)),
-    "active": (
-      "border": (
-        "top": 1px solid #292929,
-        "right": 1px solid #707070,
-        "bottom": 1px solid #858585,
-        "left": 1px solid #292929
-      ),
-      "background": ("from": #3f3f3f, "to": #585858)
-    )
-  )
-);
 
 $combo-controls-colors: (
   "grey": (

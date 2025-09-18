@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/viewer/properties.css" />
   </styles>
 
-  <Panel class="root" hittest="false">
+  <Panel class="--viewer--properties" hittest="false">
     <Panel class="row" hittest="false">
       <Button
         class="icon hero-level-icon"
@@ -54,7 +54,7 @@
       <Label class="label" text="#invk_combo_properties__damage_rating" hittest="false" />
 
       <Panel id="damage-rating" class="value rating">
-        <Panel class="RatingActive" />
+        <Panel class="rating-active" />
       </Panel>
     </Panel>
 

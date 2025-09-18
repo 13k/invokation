@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/top_bar.css" />
   </styles>
 
-  <Panel class="root">
+  <Panel class="--top-bar">
     <Panel id="top-bar">
       <Button
         id="btn-game-info"

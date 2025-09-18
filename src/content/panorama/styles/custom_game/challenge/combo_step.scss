@@ -1,7 +1,15 @@
 @use "../../anim";
 @use "../../vars";
 
-.root {
+// parent
+$class-optional: "optional";
+$class-invocation: "invocation";
+// self
+$class-active: "active";
+$class-error: "error";
+$class-bump: "bump";
+
+.--challenge--combo-step {
   align: center center;
   width: 64px;
   height: 64px;
@@ -18,26 +26,26 @@
   transition-timing-function: ease-in-out;
   pre-transform-scale2d: 0;
 
-  &.invocation {
+  &.#{$class-invocation} {
     width: 40px;
     height: 40px;
   }
 
-  &.optional {
+  &.#{$class-optional} {
     border: 3px solid #666;
   }
 
-  &.active {
+  &.#{$class-active} {
     width: 72px;
     height: 72px;
     wash-color: #ffff;
   }
 
-  &.error {
+  &.#{$class-error} {
     wash-color: #f00e;
   }
 
-  &.bump {
+  &.#{$class-bump} {
     transition-delay: 0s;
     transition-duration: 0.175s, 0.12s;
     pre-transform-scale2d: 1;
@@ -60,13 +68,13 @@
       }
     }
   }
-}
 
-#icon-button {
-  width: 100%;
-  height: 100%;
-}
+  #icon-button {
+    width: 100%;
+    height: 100%;
+  }
 
-#image {
-  vertical-align: center;
+  #image {
+    vertical-align: center;
+  }
 }

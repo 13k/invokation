@@ -52,7 +52,7 @@ export interface ChallengeElements extends Elements {
 }
 
 enum PanelId {
-  ComboScore = "score",
+  ComboScore = "score-inner",
 }
 
 enum CssClass {

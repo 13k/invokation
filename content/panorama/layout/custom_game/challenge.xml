@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/challenge.css" />
   </styles>
 
-  <Panel class="root--challenge hud-visible hide" hittest="false">
+  <Panel class="--challenge hud-visible hide" hittest="false">
     <Panel class="combo" hittest="false">
       <Panel id="sequence" hittest="false" />
     </Panel>

@@ -1,0 +1,74 @@
+@use "../../ui";
+
+$class-body: "has-body";
+$class-image: "has-image";
+$class-econ-item: "has-econ-item";
+$class-hero: "has-hero";
+$class-ability: "has-ability";
+$class-item: "has-item";
+$class-multiline: "multiline";
+
+.--popups--text-entry {
+  .body {
+    flow-children: right;
+    horizontal-align: center;
+    visibility: collapse;
+  }
+
+  &.#{$class-body} .body {
+    visibility: visible;
+  }
+
+  .icon-container {
+    vertical-align: center;
+  }
+
+  .icon-image {
+    visibility: collapse;
+    width: 80px;
+    margin-right: 15px;
+  }
+
+  &.#{$class-image} #image {
+    visibility: visible;
+  }
+
+  &.#{$class-econ-item} #econ-item-image {
+    visibility: visible;
+  }
+
+  &.#{$class-hero} #hero-image {
+    visibility: visible;
+  }
+
+  &.#{$class-ability} #ability-image {
+    visibility: visible;
+  }
+
+  &.#{$class-item} #item-image {
+    visibility: visible;
+  }
+
+  .body-label {
+    align: center center;
+    max-width: 400px;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  &.#{$class-econ-item} .body-label {
+    text-align: left;
+  }
+
+  #text-entry {
+    horizontal-align: center;
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  &.#{$class-multiline} #text-entry {
+    height: 128px;
+    white-space: normal;
+  }
+}

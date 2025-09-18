@@ -1,13 +1,13 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/popups/popup_text_entry.js" />
+    <include src="file://{resources}/scripts/custom_game/popups/text_entry.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/popups/popup_text_entry.css" />
+    <include src="file://{resources}/styles/custom_game/popups/text_entry.css" />
   </styles>
 
-  <Popup class="root Hidden" popupbackground="dim">
+  <Popup class="--popups--text-entry Hidden" popupbackground="dim">
     <Label class="popup-title" text="{s:title}" />
 
     <Panel class="body" hittest="false">
@@ -49,13 +49,13 @@
 
     <TextEntry id="text-entry" />
 
-    <Panel class="popup-button-row">
-      <Button id="btn-submit" class="popup-button">
-        <Label class="popup-button-text" text="#DOTA_Ok" />
+    <Panel class="popup-btn-row">
+      <Button id="btn-submit" class="popup-btn">
+        <Label class="btn-label" text="#DOTA_Ok" />
       </Button>
 
-      <Button id="btn-cancel" class="popup-button">
-        <Label class="popup-button-text" text="#DOTA_Cancel" />
+      <Button id="btn-cancel" class="popup-btn">
+        <Label class="btn-label" text="#DOTA_Cancel" />
       </Button>
     </Panel>
   </Popup>

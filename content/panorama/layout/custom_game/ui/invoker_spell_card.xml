@@ -18,7 +18,7 @@
     </snippet>
   </snippets>
 
-  <Panel class="root">
+  <Panel class="--ui--invoker-spell-card">
     <Panel id="rows" />
   </Panel>
 </root>

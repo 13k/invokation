@@ -1,0 +1,19 @@
+<root>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/popups/item_picker.js" />
+  </scripts>
+
+  <styles>
+    <include src="file://{resources}/styles/custom_game/popups/item_picker.css" />
+  </styles>
+
+  <Popup class="--popups--item-picker" popupbackground="dim">
+    <Panel id="ui-item-picker-container" />
+
+    <Panel class="popup-btn-row">
+      <Button id="btn-close" class="popup-btn">
+        <Label class="btn-label" text="#DOTA_Close" />
+      </Button>
+    </Panel>
+  </Popup>
+</root>

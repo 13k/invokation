@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/freestyle.css" />
   </styles>
 
-  <Panel class="root--freestyle hide" hittest="false">
+  <Panel class="--freestyle hide" hittest="false">
     <Panel class="controls" hittest="false">
       <Panel class="control-icon">
         <Button

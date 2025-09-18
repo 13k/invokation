@@ -1,53 +1,59 @@
+@use "../button" as btn;
 @use "../ui";
-@use "../vars";
+@use "../vars" as v;
 
-.root {
+.--top-bar {
   flow-children: right;
   width: 100%;
   height: 64px;
   margin-left: 100px;
-}
 
-#top-bar {
-  flow-children: right;
-  align: left top;
-  margin-top: 13px;
-  padding: 4px;
-  padding-right: 8px;
-  border-radius: 8px;
-  background-color: #cccccc11;
+  #top-bar {
+    flow-children: right;
+    align: left top;
+    margin-top: 13px;
+    padding: 4px;
+    padding-right: 8px;
+    border-radius: 8px;
+    background-color: #cccccc11;
 
-  .button {
-    width: 24px;
-    height: 24px;
-    margin-left: 8px;
-    background-size: 90%;
-    vertical-align: top;
-    opacity: 0.5;
-    transition-duration: 0.2s;
-    transition-property: opacity, wash-color;
-    transition-timing-function: ease-in-out;
-    wash-color: #cdf;
-    tooltip-position: bottom;
+    .button {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+      background-size: 90%;
+      vertical-align: top;
+      opacity: 0.5;
+      transition-duration: 0.2s;
+      transition-property: opacity, wash-color;
+      transition-timing-function: ease-in-out;
+      wash-color: #cdf;
+      tooltip-position: bottom;
 
-    &:hover {
-      opacity: 1;
+      &:hover {
+        opacity: 1;
+      }
+
+      &.info-icon {
+        @include btn.icon(v.$icon-controls-info, 24px);
+
+        &:hover {
+          wash-color: #fff;
+        }
+      }
     }
 
-    &.info-icon {
-      @include ui.icon-info;
+    #btn-quit {
+      @include btn.icon(v.$icon-controls-quit, 28px);
+      margin-right: 4px;
+
+      &:hover {
+        wash-color: #f43;
+      }
+
+      &:active {
+        sound: v.$snd-quit;
+      }
     }
-  }
-}
-
-#btn-quit {
-  @include ui.icon-quit(24px);
-
-  &:hover {
-    wash-color: #f43;
-  }
-
-  &:active {
-    sound: vars.$snd-quit;
   }
 }

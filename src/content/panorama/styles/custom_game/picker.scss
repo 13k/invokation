@@ -1,9 +1,10 @@
+@use "../button" as btn;
 @use "../dota2";
 @use "../layout";
 @use "../panel";
 @use "../ui";
 @use "../util";
-@use "../vars";
+@use "../vars" as v;
 
 @include layout.flow;
 @include layout.vis;
@@ -34,7 +35,7 @@ $combos-width: $combos-width + $thumb-width;
 $picker-width: $combos-width + $filters-width + $thumb-width;
 $closed-width: $thumb-width;
 
-.root--picker {
+.--picker {
   width: 100%;
   height: 100%;
 
@@ -64,7 +65,7 @@ $closed-width: $thumb-width;
       flow-children: down;
       width: fill-parent-flow(1);
       height: 100%;
-      background-image: vars.$bg-picker;
+      background-image: v.$bg-picker;
       background-size: 100%;
 
       @include panel.translucent;
@@ -90,27 +91,8 @@ $closed-width: $thumb-width;
       height: 100%;
       border-top-right-radius: 24px;
       border-bottom-right-radius: 24px;
-      background-color: gradient(
-        linear,
-        0% 0%,
-        0% 100%,
-        from(vars.$cl-quas-text),
-        color-stop(0.33, vars.$cl-wex-text),
-        to(vars.$cl-exort-text)
-      );
       box-shadow: none;
       vertical-align: center;
-
-      &:hover {
-        background-color: gradient(
-          linear,
-          0% 0%,
-          0% 100%,
-          from(vars.$cl-quas-text-dd),
-          color-stop(0.33, vars.$cl-wex-text-dd),
-          to(vars.$cl-exort-text-dd)
-        );
-      }
 
       .thumb-arrow {
         horizontal-align: right;
@@ -126,7 +108,7 @@ $closed-width: $thumb-width;
   }
 
   #btn-reload {
-    @include ui.btn-refresh;
+    @include btn.refresh;
     width: 24px;
     height: 24px;
   }
@@ -136,7 +118,7 @@ $closed-width: $thumb-width;
   }
 
   #btn-toggle-filters {
-    @include ui.btn-collapsible-toggle;
+    @include btn.collapsible-toggle;
     align: right center;
     margin-right: 12px;
     wash-color: #ccc;
@@ -159,7 +141,7 @@ $closed-width: $thumb-width;
     width: 170px;
     height: 50px;
     margin-top: 10px;
-    background-image: vars.$hud-invoker-card;
+    background-image: v.$hud-invoker-card;
     background-size: 100%;
     background-repeat: no-repeat;
     transition-duration: 0.18s;
@@ -240,7 +222,7 @@ $closed-width: $thumb-width;
     }
 
     .filter-reset-button {
-      @include ui.btn-close(12px);
+      @include btn.close(12px);
       margin: 0 0 0 6px;
       padding: 0;
       vertical-align: center;
@@ -266,8 +248,8 @@ $closed-width: $thumb-width;
       vertical-align: center;
     }
 
-    .popup-button {
-      @include ui.btn-bevel;
+    .popup-btn {
+      @include btn.bevel;
       flow-children: down;
       min-width: 0;
       min-height: 0;
@@ -292,7 +274,7 @@ $closed-width: $thumb-width;
   }
 
   #btn-reset-filters {
-    @include ui.btn-dark;
+    @include btn.dark;
     min-width: 142px;
   }
 }

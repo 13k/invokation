@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/challenge/combo_step.css" />
   </styles>
 
-  <Panel class="root">
+  <Panel class="--challenge--combo-step">
     <Button id="icon-button" />
   </Panel>
 </root>

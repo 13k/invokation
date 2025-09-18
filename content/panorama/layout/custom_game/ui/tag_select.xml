@@ -16,7 +16,7 @@
     </snippet>
   </snippets>
 
-  <Panel class="root--ui--tag-select" hittest="false">
+  <Panel class="--ui--tag-select" hittest="false">
     <DropDown id="options" />
     <Panel id="tag-list" hittest="false" />
   </Panel>

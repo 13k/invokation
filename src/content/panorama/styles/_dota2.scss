@@ -1,22 +1,21 @@
 // dprint-ignore-file
 
-@use "vars";
+@use "vars" as v;
 
 $baseBorder: #444444ff;
-$LighterGrey: #B0BCC2;
 $bluegreyTextReg: #748B8B;
 
 @mixin style {
   Label
   {
-    color: $LighterGrey;
+    color: v.$cl-grey-lighter;
     font-size: 18px;
   }
 
   Label,
   TextEntry
   {
-    font-family: vars.$font-default;
+    font-family: v.$font-text;
   }
 
   DropDown,
@@ -414,7 +413,7 @@ $bluegreyTextReg: #748B8B;
 
   RadioButton > Label
   {
-    color: $LighterGrey;
+    color: v.$cl-grey-lighter;
     margin-left: 4px;
     transition-property: color;
     transition-duration: 0.2s;
@@ -424,7 +423,7 @@ $bluegreyTextReg: #748B8B;
   DOTASettingsEnum RadioButton > Label
   {
     font-size: 18px;
-    color: LightGrey;
+    color: v.$cl-grey-light;
   }
 
   RadioButton:selected > Label
@@ -881,7 +880,7 @@ $bluegreyTextReg: #748B8B;
   {
     width: 17px;
     height: 17px;
-    border: 1px solid baseBorder;
+    border: 1px solid $baseBorder;
     background-color: gradient(linear, 0% 0%, 0% 100%, from(#111111FF), to(#222222FF));
   }
 

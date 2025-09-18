@@ -2,17 +2,18 @@
 // * Combo Viewer (shamelessly rippped from Invoker kid persona page)
 // ******************************************************************************
 
+@use "../button" as btn;
 @use "../dota2";
 @use "../layout";
 @use "../ui";
 @use "../util";
-@use "../vars";
+@use "../vars" as v;
 
 $cl-text: #3c1b18;
 
 @include layout.flow;
 
-.root--viewer {
+.--viewer {
   width: 100%;
   height: 100%;
 
@@ -33,15 +34,17 @@ $cl-text: #3c1b18;
   }
 
   #btn-close {
-    @include ui.btn-close(36px);
-    horizontal-align: right;
+    @include btn.close2(36px);
+    width: 36px;
+    height: 36px;
     margin-top: -4px;
     margin-right: -4px;
+    horizontal-align: right;
     wash-color: #fff;
   }
 
   #btn-reload {
-    @include ui.btn-refresh(36px);
+    @include btn.refresh(36px);
     horizontal-align: left;
     visibility: collapse;
     width: 36px;
@@ -59,7 +62,7 @@ $cl-text: #3c1b18;
     z-index: -1;
     width: 100%;
     height: 100%;
-    background-image: vars.$bg-viewer;
+    background-image: v.$bg-viewer;
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -91,7 +94,7 @@ $cl-text: #3c1b18;
     padding-right: 20px;
     padding-bottom: 10px;
     overflow: squish scroll;
-    opacity-mask: vars.$mask-softedge-vscroll-wide;
+    opacity-mask: v.$mask-softedge-vscroll-wide;
   }
 
   #properties-section {
@@ -146,10 +149,10 @@ $cl-text: #3c1b18;
     margin-bottom: 10px;
 
     .orb {
-      width: vars.$ability-circle-size;
-      height: vars.$ability-circle-size;
+      width: v.$ability-circle-size;
+      height: v.$ability-circle-size;
       margin-left: 8px;
-      border-radius: vars.$ability-circle-border-radius;
+      border-radius: v.$ability-circle-border-radius;
       box-shadow: #1c1d20ee 0 0 8px 0;
     }
 
@@ -161,7 +164,7 @@ $cl-text: #3c1b18;
       font-weight: bold;
       font-size: 28px;
       text-shadow: 1px 1px 1px #fffd;
-      opacity-mask: vars.$mask-softedge-box-irregular;
+      opacity-mask: v.$mask-softedge-box-irregular;
     }
   }
 

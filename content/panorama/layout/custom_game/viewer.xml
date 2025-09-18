@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/viewer.css" />
   </styles>
 
-  <Panel class="root--viewer closed" hittest="false">
+  <Panel class="--viewer closed" hittest="false">
     <Panel id="viewer" hittest="false">
       <Button id="btn-close" />
       <Button id="btn-reload" />

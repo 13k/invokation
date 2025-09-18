@@ -8,7 +8,7 @@
     <include src="file://{resources}/styles/custom_game/combo_score.css" />
   </styles>
 
-  <Panel class="root--combo-score" hittest="false" hittestchildren="false">
+  <Panel class="--combo-score" hittest="false" hittestchildren="false">
     <Panel id="counter">
       <Panel class="splash-background">
         <DOTAScenePanel

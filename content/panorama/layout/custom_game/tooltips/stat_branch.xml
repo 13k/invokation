@@ -1,10 +1,10 @@
 <root>
   <scripts>
-    <include src="file://{resources}/scripts/custom_game/tooltips/tooltip_stat_branch.js" />
+    <include src="file://{resources}/scripts/custom_game/tooltips/stat_branch.js" />
   </scripts>
 
   <styles>
-    <include src="file://{resources}/styles/custom_game/tooltips/tooltip_stat_branch.css" />
+    <include src="file://{resources}/styles/custom_game/tooltips/stat_branch.css" />
   </styles>
 
   <snippets>
@@ -31,7 +31,7 @@
     </snippet>
   </snippets>
 
-  <Tooltip class="root">
+  <Tooltip class="--tooltips--stat-branch">
     <Label class="title" text="#DOTA_StatBranch_TooltipTitle" />
     <Panel id="container" />
   </Tooltip>

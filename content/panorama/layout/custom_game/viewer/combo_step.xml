@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/viewer/combo_step.css" />
   </styles>
 
-  <Panel class="root">
+  <Panel class="--viewer--combo-step">
     <Button id="btn-icon" />
     <Label id="description" html="true" hittest="false" />
   </Panel>

@@ -40,7 +40,6 @@ class CustomLoadingScreen extends Component<CustomLoadingScreenElements> {
 
   start() {
     new Sequence()
-      .waitClass(this.elements.scene, CssClass.SceneLoaded)
       .playSoundEffect(SoundEvent.InvokerKidTakeoverStinger)
       .playSoundEffect(SoundEvent.InvokerKidTakeoverSfx)
       .wait(Timing.KidSplash)

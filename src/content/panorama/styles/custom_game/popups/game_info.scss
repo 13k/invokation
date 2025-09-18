@@ -1,0 +1,91 @@
+@use "../../popup";
+@use "../../ui";
+@use "../../vars";
+
+.--popups--game-info {
+  @include popup.popup;
+  flow-children: none;
+  align: center center;
+  width: 1300px;
+
+  .popup-description {
+    horizontal-align: center;
+    width: 600px;
+    text-align: center;
+  }
+
+  .popup-btn-row {
+    margin-top: 0;
+  }
+
+  .contents {
+    flow-children: down;
+    width: 100%;
+    padding: 32px;
+    overflow: squish scroll;
+  }
+
+  .orbs-scene {
+    horizontal-align: center;
+    width: 768px;
+    height: 256px;
+  }
+
+  .separator {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-top: 1px solid #444;
+  }
+
+  .meta-item {
+    margin-right: 16px;
+    vertical-align: center;
+  }
+
+  .meta-text {
+    @include ui.link;
+    height: 18px;
+    font-weight: normal;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .btn-link {
+    flow-children: right;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+
+    &:hover {
+      border-top: 1px solid #333;
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
+      border-left: 1px solid #333;
+      background-color: #222;
+    }
+
+    &:active {
+      border-top: 1px solid #666;
+      border-right: 1px solid #333;
+      border-bottom: 1px solid #333;
+      border-left: 1px solid #666;
+      background-color: #444;
+    }
+  }
+
+  .arrow-icon {
+    @include ui.icon(vars.$icon-controls-arrow-popout);
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    margin-left: 2px;
+    vertical-align: center;
+    wash-color: #ddd;
+  }
+
+  .btn-link:hover .arrow-icon {
+    wash-color: #fff;
+  }
+}

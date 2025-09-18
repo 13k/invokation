@@ -1,6 +1,6 @@
 @use "../../popup";
 
-.root {
+.--popups--item-picker {
   @include popup.popup;
   flow-children: down;
   align: center center;

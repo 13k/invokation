@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/picker.css" />
   </styles>
 
-  <Panel class="root--picker" hittest="false">
+  <Panel class="--picker" hittest="false">
     <Panel id="picker" class="drawer-closed filters-closed" hittest="false">
       <Panel class="contents" hittest="false">
         <Panel class="title-container">
@@ -101,7 +101,7 @@
                   />
                 </Panel>
 
-                <Button id="btn-filter-item" class="popup-button">
+                <Button id="btn-filter-item" class="popup-btn">
                   <DOTAItemImage id="filter-item-image" />
                 </Button>
               </Panel>
@@ -119,7 +119,7 @@
                   />
                 </Panel>
 
-                <Button id="btn-filter-ability" class="popup-button">
+                <Button id="btn-filter-ability" class="popup-btn">
                   <DOTAAbilityImage id="filter-ability-image" />
                 </Button>
               </Panel>

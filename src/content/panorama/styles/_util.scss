@@ -1,15 +1,48 @@
+@use "sass:list";
 @use "sass:map";
+@use "sass:meta";
 
 @function box-width($width, $padding) {
   @return $width + map.get($padding, "left") + map.get($padding, "right");
 }
 
-@function gradient-horizontal($from, $to, $left: 0%, $right: 100%) {
-  @return gradient(linear, $left 0%, $right 0%, from($from), to($to));
+@function _gradient-stops($colors) {
+  $len: list.length($colors);
+
+  @if list.length($colors) < 2 {
+    @error "gradient requires at least 2 positional arguments";
+  }
+
+  $from: list.nth($colors, 1);
+  $to: list.nth($colors, -1);
+  $color-stops: (from($from));
+
+  @for $i from 2 to $len {
+    $stop: list.nth($colors, $i);
+    $color-stops: list.append($color-stops, color-stop($stop...), $separator: comma);
+  }
+
+  $color-stops: list.append($color-stops, to($to), $separator: comma);
+
+  @return $color-stops;
 }
 
-@function gradient-vertical($from, $to, $top: 0%, $bottom: 100%) {
-  @return gradient(linear, 0% $top, 0% $bottom, from($from), to($to));
+@function gradient-horizontal($colors...) {
+  $kwargs: map.merge(("left": 0%, "right": 100%), meta.keywords($colors));
+  $left: map.get($kwargs, "left");
+  $right: map.get($kwargs, "right");
+  $color-stops: _gradient-stops($colors);
+
+  @return gradient(linear, $left 0%, $right 0%, $color-stops...);
+}
+
+@function gradient-vertical($colors...) {
+  $kwargs: map.merge(("top": 0%, "bottom": 100%), meta.keywords($colors));
+  $top: map.get($kwargs, "top");
+  $bottom: map.get($kwargs, "bottom");
+  $color-stops: _gradient-stops($colors);
+
+  @return gradient(linear, 0% $top, 0% $bottom, $color-stops...);
 }
 
 @mixin expand-box-property($property, $map) {

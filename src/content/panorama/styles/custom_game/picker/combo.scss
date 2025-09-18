@@ -1,11 +1,12 @@
+@use "../../button" as btn;
 @use "../../layout";
 @use "../../panel";
 @use "../../ui";
-@use "../../vars";
+@use "../../vars" as v;
 
 @include layout.flow;
 
-.root--picker--combo {
+.--picker--combo {
   flow-children: down;
   width: 100%;
   height: fit-children;
@@ -44,19 +45,19 @@
   }
 
   #finished-icon {
-    @include ui.icon(vars.$icon-controls-check-shadow);
+    @include ui.icon-check;
     visibility: collapse;
     width: 24px;
     height: 24px;
     vertical-align: center;
     tooltip-body-position: 50% 10%;
     tooltip-position: right;
-    wash-color: vars.$cl-dota-plus-light-gold;
+    wash-color: v.$cl-dota-plus-gold-light;
   }
 
   &.finished #finished-icon {
     visibility: visible;
-    wash-color: vars.$cl-dota-plus-gold;
+    wash-color: v.$cl-dota-plus-gold;
   }
 
   #info-container {
@@ -74,9 +75,10 @@
   }
 
   .info-icon {
-    @include ui.icon-info;
+    @include ui.icon-info(26px);
     margin-right: 0;
     margin-left: 0;
+    wash-color: v.$cl-grey-light;
 
     &:hover {
       wash-color: #fff;
@@ -92,11 +94,11 @@
       linear,
       0% 0%,
       100% 100%,
-      from(vars.$cl-quas-accent44),
-      color-stop(0.49, vars.$cl-quas-accent),
+      from(v.$cl-quas-accent-27),
+      color-stop(0.49, v.$cl-quas-accent),
       color-stop(0.5, #000),
-      color-stop(0.51, vars.$cl-wex-accent),
-      to(vars.$cl-wex-accent44)
+      color-stop(0.51, v.$cl-wex-accent),
+      to(v.$cl-wex-accent-27)
     );
   }
 
@@ -105,11 +107,11 @@
       linear,
       0% 0%,
       100% 100%,
-      from(vars.$cl-quas-accent44),
-      color-stop(0.49, vars.$cl-quas-accent),
+      from(v.$cl-quas-accent-27),
+      color-stop(0.49, v.$cl-quas-accent),
       color-stop(0.5, #000),
-      color-stop(0.51, vars.$cl-exort-accent),
-      to(vars.$cl-exort-accent44)
+      color-stop(0.51, v.$cl-exort-accent),
+      to(v.$cl-exort-accent-27)
     );
   }
 
@@ -118,11 +120,11 @@
   }
 
   &.stance-offensive .stance-icon {
-    @include ui.icon(vars.$icon-stance-offensive);
+    @include ui.icon(v.$icon-stance-offensive);
   }
 
   &.stance-defensive .stance-icon {
-    @include ui.icon(vars.$icon-stance-defensive);
+    @include ui.icon(v.$icon-stance-defensive);
   }
 
   .hero-level-icon {
@@ -143,7 +145,7 @@
     color: #e7d291;
     font-weight: normal;
     font-size: 14px;
-    font-family: vars.$font-monospace;
+    font-family: v.$font-monospace;
     text-align: center;
     text-overflow: shrink;
     text-shadow: 0 0 3px 3.7 #ec780e24;
@@ -162,27 +164,28 @@
       width: 16px;
       height: 16px;
 
-      @include ui.icon(vars.$icon-damage-rating);
+      @include ui.icon(v.$icon-damage-rating);
     }
 
     .difficulty-icon {
       width: 16px;
       height: 16px;
 
-      @include ui.icon(vars.$icon-difficulty-rating);
+      @include ui.icon(v.$icon-difficulty-rating);
     }
   }
 
   #btn-play {
-    @include ui.btn-flat;
+    @include btn.flat;
     width: 100%;
     height: 0;
     margin-top: 10px;
+    border-radius: 4px;
     transition-duration: 0.2s;
     transition-property: height;
     transition-timing-function: ease-in-out;
 
-    .btn-text {
+    .btn-label {
       horizontal-align: center;
     }
   }

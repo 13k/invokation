@@ -1,6 +1,8 @@
+@use "../dota2";
+@use "../button" as btn;
 @use "../panel";
 @use "../ui";
-@use "../vars";
+@use "../vars" as v;
 
 $columns: 20;
 $padding: 5px;
@@ -15,117 +17,120 @@ $translate-y: -($height - 50) px;
 
 $class-closed: "closed";
 
-.root {
+.--combat-log {
   width: 100%;
   height: 100%;
-}
 
-.combat-log {
-  flow-children: down;
-  align: center top;
-  width: $width;
-  height: $height;
-  transform: translateY(0);
-  transition: transform 0.25s ease-in-out 0s;
+  #combat-log {
+    flow-children: down;
+    align: center top;
+    width: $width;
+    height: $height;
+    transform: translateY(0);
+    transition: transform 0.25s ease-in-out 0s;
 
-  @include panel.transparent;
-}
+    @include panel.transparent;
+  }
 
-.#{$class-closed} .combat-log {
-  transform: translateY($translate-y);
-}
+  &.#{$class-closed} #combat-log {
+    transform: translateY($translate-y);
+  }
 
-#contents {
-  flow-children: down;
-  width: 100%;
-  height: fill-parent-flow(1);
-  padding: $padding $padding 0 $padding;
-  overflow: clip scroll;
-}
-
-.row {
-  flow-children: right;
-}
-
-.icon {
-  width: $cell-size;
-  height: $cell-size;
-  margin: $cell-margin;
-  background-color: #000d;
-  box-shadow: #222 -2px -2px 4px 4px;
-
-  .icon-image {
+  #contents {
+    flow-children: down;
     width: 100%;
-    vertical-align: center;
+    height: fill-parent-flow(1);
+    padding: $padding $padding 0 $padding;
+    overflow: clip scroll;
+  }
+
+  .row {
+    flow-children: right;
+  }
+
+  .icon {
+    width: $cell-size;
+    height: $cell-size;
+    margin: $cell-margin;
+    background-color: #000d;
+    box-shadow: #222 -2px -2px 4px 4px;
+
+    .icon-image {
+      width: 100%;
+      vertical-align: center;
+    }
+  }
+
+  .bar {
+    flow-children: right;
+    width: 100%;
+    height: 50px;
+    padding: 0 8px;
+    border-top: 1px solid #222;
+    background-color: #0003;
+  }
+
+  .thumb {
+    align: left center;
+
+    @include btn.collapsible-toggle;
+
+    &:selected:hover {
+      wash-color: #f43;
+    }
+
+    $thumb-width: 19px;
+    $thumb-height: 19px;
+
+    .TickBox {
+      width: $thumb-width;
+      height: $thumb-height;
+      wash-color: #d8d8d8;
+      transform: rotateZ(0deg) translateY(3px);
+    }
+
+    &:selected .TickBox {
+      width: $thumb-width;
+      height: $thumb-height;
+      wash-color: #d8d8d8;
+      transform: rotateZ(180deg) translateY(0);
+    }
+
+    .title {
+      align: left center;
+      color: white;
+      font-weight: semi-bold;
+      font-size: 16px;
+      font-family: v.$font-text;
+      letter-spacing: 2px;
+      text-overflow: shrink;
+      text-shadow: 1px 1px 0 3 #0006;
+      text-transform: uppercase;
+      transition: brightness 0.2s ease-in-out 0s;
+    }
+  }
+
+  .bar-actions {
+    flow-children: right;
+    horizontal-align: right;
+    height: 100%;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out 0s;
+
+    .bar-item {
+      margin-right: 8px;
+      vertical-align: center;
+    }
+  }
+
+  #btn-clear {
+    @include btn.blue;
+    margin: 0;
+  }
+
+  &.#{$class-closed} .bar-actions {
+    opacity: 0;
   }
 }
 
-.bar {
-  flow-children: right;
-  width: 100%;
-  height: 50px;
-  padding: 0 8px;
-  border-top: 1px solid #222;
-  background-color: #0003;
-}
-
-.thumb {
-  horizontal-align: left;
-  vertical-align: center;
-
-  @include ui.btn-collapsible-toggle;
-
-  &:selected:hover {
-    wash-color: #f43;
-  }
-
-  $thumb-width: 19px;
-  $thumb-height: 19px;
-
-  .TickBox {
-    width: $thumb-width;
-    height: $thumb-height;
-    wash-color: #d8d8d8;
-    transform: rotateZ(0deg) translateY(3px);
-  }
-
-  &:selected .TickBox {
-    width: $thumb-width;
-    height: $thumb-height;
-    wash-color: #d8d8d8;
-    transform: rotateZ(180deg) translateY(0);
-  }
-}
-
-.title {
-  horizontal-align: left;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  font-family: vars.$font-default;
-  letter-spacing: 2px;
-  text-overflow: shrink;
-  text-shadow: 1px 1px 0 3 #0006;
-  text-transform: uppercase;
-  vertical-align: center;
-}
-
-.bar-actions {
-  flow-children: right;
-  horizontal-align: right;
-  height: 100%;
-
-  .bar-item {
-    margin-right: 8px;
-    vertical-align: center;
-  }
-}
-
-#btn-clear {
-  @include ui.btn-blue;
-  margin: 0;
-}
-
-.#{$class-closed} .bar-actions {
-  visibility: collapse;
-}
+@include dota2.style;

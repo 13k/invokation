@@ -1,0 +1,994 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@use "anim";
+@use "asset";
+@use "ui";
+@use "util";
+@use "vars" as v;
+
+@mixin _pressed {
+  transition-duration: 0.15s;
+  transition-property: pre-transform-scale2d;
+  transition-timing-function: ease-in;
+
+  &:enabled:active {
+    pre-transform-scale2d: 0.85;
+    sound: v.$snd-btn-click;
+  }
+}
+
+@mixin variant($name, $variants) {
+  $self: "&";
+
+  @if $name != "&" {
+    $self: "&.#{$name}";
+  }
+
+  @if map.has-key($variants, "regular") {
+    #{$self} {
+      @include _variant-style(map.get($variants, "regular"));
+    }
+  }
+
+  @if map.has-key($variants, "hover") {
+    #{$self}:enabled:hover {
+      @include _variant-style(map.get($variants, "hover"));
+    }
+  }
+
+  @if map.has-key($variants, "active") {
+    #{$self}:active {
+      @include _variant-style(map.get($variants, "active"));
+    }
+  }
+
+  @if map.has-key($variants, "disabled") {
+    #{$self}:disabled {
+      @include _variant-style(map.get($variants, "disabled"));
+    }
+  }
+}
+
+@mixin _variant-style($style) {
+  @each $key, $value in $style {
+    @if ($key == "background-color") {
+      @if meta.type-of($value) == map {
+        #{$key}: util.gradient-vertical(map.get($value, "from"), map.get($value, "to"));
+      } @else {
+        #{$key}: $value;
+      }
+    } @else if meta.type-of($value) == map {
+      @include util.expand-box-property($key, $value);
+    } @else {
+      #{$key}: $value;
+    }
+  }
+}
+
+$primary-variants: (
+  "&": (
+    "regular": (
+      "background-color": v.$grd-light-grey,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "hover": ("brightness": 2),
+    "active": (
+      "background-color": v.$grd-light-grey-inverted,
+      "transition-duration": 0.05s,
+      "brightness": 0.8,
+      "sound": v.$snd-btn-click
+    ),
+    "disabled": (
+      "opacity": 0.3,
+      "brightness": 0.5,
+      "saturation": 0.0
+    )
+  ),
+  "light-grey": (
+    "regular": (
+      "background-color": v.$grd-light-grey,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-light-grey-inverted)
+  ),
+  "dark-grey": (
+    "regular": (
+      "background-color": v.$grd-dark-grey,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": v.$grd-dark-grey-inverted)
+  ),
+  "blue": (
+    "regular": (
+      "background-color": v.$grd-blue,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-blue-inverted)
+  ),
+  "light-blue": (
+    "regular": (
+      "background-color": ("from": #3598c3, "to": #25245c),
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": ("from": #25245c, "to": #3598c3))
+  ),
+  "pink": (
+    "regular": (
+      "background-color": ("from": #8d3086, "to": #48245c),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #48245c, "to": #8d3086))
+  ),
+  "teal": (
+    "regular": (
+      "background-color": ("from": #41c99e, "to": #1c6762),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #1c6762, "to": #41c99e))
+  ),
+  "ti23-blue": (
+    "regular": (
+      "background-color": ("from": #2d9ed0, "to": #0a5993),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #0a5993, "to": #2d9ed0))
+  ),
+  "ti24-green": (
+    "regular": (
+      "background-color": ("from": #0d4721, "to": #01201a),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #01201a, "to": #0d4721))
+  ),
+  "ti24-light-green": (
+    "regular": (
+      "background-color": ("from": #3eac40, "to": #04431a),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #04431a, "to": #3eac40))
+  ),
+  "dark-red": (
+    "regular": (
+      "background-color": ("from": #943339, "to": #662627),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #662627, "to": #943339))
+  ),
+  "green": (
+    "regular": (
+      "background-color": v.$grd-green,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-green-inverted)
+  ),
+  "orange": (
+    "regular": (
+      "background-color": v.$grd-orange,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-orange-inverted)
+  ),
+  "yellow": (
+    "regular": (
+      "background-color": v.$grd-yellow,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-yellow-inverted)
+  ),
+  "dota-plus": (
+    "regular": (
+      "background-color": ("from": #a1793d, "to": #5b4216),
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": ("from": #5b4216, "to": #a1793d))
+  ),
+  "purple": (
+    "regular": (
+      "background-color": v.$grd-purple,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-purple-inverted)
+  ),
+  "gold": (
+    "regular": (
+      "background-color": v.$grd-gold,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-gold-inverted)
+  ),
+  "ruby": (
+    "regular": (
+      "background-color": v.$grd-ruby,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-ruby-inverted)
+  ),
+  "shards": (
+    "regular": (
+      "background-color": v.$grd-shards,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": v.$grd-shards-inverted)
+  ),
+  "platinum": (
+    "regular": (
+      "background-color": v.$grd-platinum,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-platinum-inverted)
+  ),
+  "red": (
+    "regular": (
+      "background-color": ("from": #ff6046, "to": #b5433c),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #b5433c, "to": #ff6046))
+  ),
+  "magenta": (
+    "regular": (
+      "background-color": ("from": #d668bb, "to": #671d89),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #671d89, "to": #d668bb))
+  )
+);
+
+// .ButtonPrimary (dotastyles.css)
+@mixin primary {
+  flow-children: right;
+  height: 34px;
+  padding: 0px 16px;
+  border: 1px solid white;
+  border-radius: 3px;
+  border-brush: v.$grd-border-white-soft;
+  background-image: asset.game-img-url("backgrounds/background_play_button_2x.png");
+  background-size: cover;
+  background-color: v.$grd-light-grey;
+  background-img-opacity: 0.3;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+  transition-duration: 0.1s;
+  transition-property: background-color, border, brightness, opacity, transform;
+  transition-timing-function: ease;
+
+  @each $name, $variant in $primary-variants {
+    @include variant($name, $variant);
+  }
+
+  &.wide {
+    padding: 0px 24px;
+  }
+
+  &.circle {
+    width: 34px;
+    padding: 2px;
+    border-radius: 120px;
+  }
+
+  .btn-label {
+    color: white;
+    font-size: 16px;
+    horizontal-align: center;
+    margin: -1px 0px 1px;
+    line-height: 20px;
+    letter-spacing: 1.5px;
+    text-align: center;
+    text-overflow: shrink;
+    text-shadow: 0px 1px 4px #000000;
+    text-transform: uppercase;
+    vertical-align: center;
+    opacity: 0.8;
+    transition-duration: 0.05s, 0.1s;
+    transition-property: transform, text-shadow, opacity;
+    transition-timing-function: ease;
+  }
+
+  %media {
+    width: 20px;
+    height: 20px;
+    margin: 0px 4px;
+    vertical-align: center;
+    transition-duration: 0.05s;
+    transition-property: transform, img-shadow;
+    transition-timing-function: ease;
+    wash-color: v.$cl-grey-lightest;
+  }
+
+  .btn-image {
+    img-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+
+    @extend %media;
+  }
+
+  .btn-movie {
+    @extend %media;
+  }
+
+  &:hover:enabled {
+    .btn-label {
+      color: white;
+      opacity: 1;
+    }
+
+    .btn-image, .btn-movie {
+      wash-color: white;
+    }
+  }
+
+  &:active:enabled {
+    .btn-label {
+      transform: translateY(0.5px);
+    }
+
+    .btn-image, .btn-movie {
+      transform: translateY(0.5px);
+    }
+  }
+
+  &:disabled {
+    .btn-label {
+      opacity: 1;
+    }
+  }
+
+  &.large {
+    height: 48px;
+    padding: 0px 28px;
+
+    &.wide {
+      padding: 0px 40px;
+    }
+
+    &.circle {
+      width: 48px;
+      padding: 6px;
+      border-radius: 120px;
+    }
+
+    .btn-label {
+      color: white;
+      font-weight: semi-bold;
+      font-size: 20px;
+      line-height: 24px;
+      opacity: 0.8;
+    }
+
+    .btn-image, .btn-movie {
+      width: 24px;
+      height: 24px;
+      margin: 0px 4px;
+      wash-color: white;
+    }
+  }
+
+  &.small {
+    height: 24px;
+    padding: 0px 6px;
+
+    .btn-label {
+      margin: 0px;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: 1px;
+    }
+
+    .btn-image, .btn-movie {
+      width: 18px;
+      height: 18px;
+      margin: 0px 2px;
+      wash-color: v.$cl-grey-lighter;
+    }
+
+    &.wide {
+      padding: 0px 16px;
+    }
+
+    &.circle {
+      width: 24px;
+      padding: 2px;
+      border-radius: 120px;
+    }
+  }
+
+  &.gold {
+    .btn-label {
+      opacity: 1;
+    }
+  }
+
+  &.ruby {
+    .btn-label {
+      opacity: 1;
+    }
+  }
+
+  &.shards {
+    .btn-label {
+      color: v.$cl-dota-plus-gold-light;
+      opacity: 1;
+    }
+  }
+
+  &.platinum {
+    .btn-label {
+      opacity: 1;
+    }
+  }
+
+  &.magenta {
+    .btn-image {
+      wash-color: whitesmoke;
+    }
+  }
+}
+
+@mixin icon($icon, $size: 32px) {
+  @include _pressed;
+  @include ui.icon($icon, $size);
+}
+
+@mixin _close($size) {
+  @include _pressed;
+  transition-property: pre-transform-scale2d, wash-color;
+  transition-timing-function: ease-in;
+  wash-color: #888;
+
+  &:hover {
+    wash-color: #bbbbbb;
+  }
+
+  &:enabled:active {
+    wash-color: white;
+    sound: v.$snd-friends-slidein;
+  }
+}
+
+@mixin close($size: 48px) {
+  @include ui.icon-close($size);
+  @include _close($size);
+}
+
+@mixin close2($size: 48px) {
+  @include ui.icon-close2($size);
+  @include _close($size);
+}
+
+// .RefreshButton (dotastyles.css)
+@mixin refresh($size: 32px) {
+  @include ui.icon(v.$icon-controls-refresh, $size);
+
+  &.#{v.$class-btn-pressed} {
+    @include anim.spinner-rotate(
+      "btn-refresh-rotate",
+      $duration: 0.5s,
+      $delay: 0.1s,
+      $count: 1,
+      $timing: linear
+    );
+  }
+}
+
+@mixin full-refresh($size: 32px) {
+  @include ui.icon(v.$icon-status-loading, $size);
+
+  &.#{v.$class-btn-pressed} {
+    @include anim.spinner-rotate(
+      "btn-full-refresh-rotate",
+      $duration: 0.5s,
+      $delay: 0.1s,
+      $count: 1,
+      $timing: linear
+    );
+  }
+}
+
+// .BlueButton (dotastyles.css)
+@mixin blue {
+  @include _pressed;
+  height: 34px;
+  margin: 8px;
+  border: 1px solid #3366aa55;
+  background-color: #3366aa11;
+
+  &:enabled:hover {
+    border: 1px solid #22aaffaa;
+    background-color: #3366aa44;
+  }
+
+  &:enabled:active {
+    background-color: #23468a44;
+    sound: v.$snd-select-blue;
+  }
+
+  &:disabled {
+    wash-color: #000000dd;
+    saturation: 0;
+  }
+
+  .btn-label {
+    margin: 0px 24px 0px 24px;
+    color: #66aadd;
+    font-size: 16px;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  &:enabled:hover .btn-label {
+    color: white;
+  }
+
+  &:enabled:active .btn-label {
+    color: #76baed;
+  }
+}
+
+// .ButtonDark (dotastyles.css)
+@mixin dark {
+  @include _pressed;
+  border: 2px solid #5e686966;
+  background-color: util.gradient-vertical(#191e1e, #292e2e);
+  transition-duration: 0.1s;
+  transition-property: border, background-color;
+  transition-timing-function: linear;
+
+  &:enabled:hover {
+    border: 2px solid #5e6869ff;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+  }
+
+  &:enabled:active {
+    border: 2px solid #5e686922;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+    sound: v.$snd-btn-click;
+  }
+
+  &:disabled {
+    border: 2px solid #111111;
+    background-color: util.gradient-vertical(#191e1e, #292e2e);
+  }
+
+  // malva-ignore
+  Label {
+    margin-top: 2px;
+    color: #7f8b8d;
+    text-transform: uppercase;
+    horizontal-align: center;
+    padding-right: 8px;
+    padding-left: 8px;
+    text-align: center;
+    text-shadow: 0px 0px 6px 1.0 #000000;
+    vertical-align: middle;
+    transition-duration: 0.1s;
+    transition-property: color;
+    transition-timing-function: linear;
+  }
+
+  // malva-ignore
+  &:enabled:hover Label {
+    color: white;
+  }
+
+  // malva-ignore
+  &:enabled:active Label {
+    transform: translateY(1px);
+  }
+
+  // malva-ignore
+  &:disabled Label {
+    color: #5d676933;
+  }
+
+  &.small {
+    min-height: 32px;
+    padding: 0px;
+    border-radius: 3px;
+  }
+
+  // malva-ignore
+  &.small Label {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+}
+
+// .FlatButton (dotastyles.css)
+@mixin flat {
+  @include _pressed;
+  background-color: #202626;
+
+  &:enabled:hover {
+    background-color: #333d3c;
+  }
+
+  &:enabled:active {
+    background-color: #181c1c;
+    sound: v.$snd-select-blue;
+  }
+
+  .btn-label {
+    margin: 4px 24px 0px 24px;
+    color: #737e7e;
+    font-weight: semi-bold;
+    font-size: 16px;
+    letter-spacing: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  &:enabled:hover .btn-label {
+    color: white;
+  }
+
+  &:enabled:active .btn-label {
+    color: #6c6c6c;
+  }
+}
+
+$bevel-variants: (
+  "&": (
+    "regular": (
+      "border-color": (
+        "top": #555555,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #494949
+      ),
+      "background-color": ("from": #373d45, "to": #4d5860)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #aaaaaa77,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #aaaaaa33
+      ),
+      "background-color": ("from": #4c5561, "to": #6c7d88)
+    ),
+    "active": (
+      "border-color": (
+        "top": #222222,
+        "right": #444444,
+        "bottom": #666666,
+        "left": #303030
+      ),
+      "background-color": ("from": #393939, "to": #555555),
+      "sound": v.$snd-btn-click
+    ),
+    "disabled": (
+      "wash-color": #aaaaaa,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border-color": (
+        "top": #355639,
+        "right": #214123,
+        "bottom": #1e371e,
+        "left": #2c4d30
+      ),
+      "background-color": ("from": #2a481f, "to": #226326)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #030503,
+        "right": #244426,
+        "bottom": #1e371d,
+        "left": #000000
+      ),
+      "background-color": ("from": #226528, "to": #288a36)
+    ),
+    "active": (
+      "border-color": (
+        "top": #132416,
+        "right": #264a29,
+        "bottom": #386b3b,
+        "left": #192f1b
+      ),
+      "background-color": ("from": #1f3d25, "to": #2b562c)
+    )
+  ),
+  "dark-green": (
+    "regular": (
+      "border-color": (
+        "top": #223524,
+        "right": #132615,
+        "bottom": #091009,
+        "left": #2c4d30
+      ),
+      "background-color": ("from": #1a2c13, "to": #18441b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #000000,
+        "right": #152716,
+        "bottom": #172a16,
+        "left": #000000
+      ),
+      "background-color": ("from": #17421b, "to": #185321)
+    ),
+    "active": (
+      "border-color": (
+        "top": #09110a,
+        "right": #172c19,
+        "bottom": #1f3820,
+        "left": #0f1b10
+      ),
+      "background-color": ("from": #132416, "to": #183019)
+    )
+  ),
+  "bronze": (
+    "regular": (
+      "border-color": (
+        "top": #e0a75e,
+        "right": #8f6b3c,
+        "bottom": #8d683a,
+        "left": #dca35b
+      ),
+      "background-color": ("from": #b9894c, "to": #dca157)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #f2b362,
+        "right": #966f3e,
+        "bottom": #966f3e,
+        "left": #edb062
+      ),
+      "background-color": ("from": #dda45a, "to": #fcb965)
+    ),
+    "active": (
+      "border-color": (
+        "top": #684e2d,
+        "right": #906c3f,
+        "bottom": #977242,
+        "left": #6d522f
+      ),
+      "background-color": ("from": #4d391f, "to": #9b713c)
+    ),
+    "disabled": ("saturation": 0.75)
+  ),
+  "plus": (
+    "regular": (
+      "border-color": (
+        "top": #b4a442,
+        "right": #756f45,
+        "bottom": #635e3b,
+        "left": #aea463
+      ),
+      "background-color": ("from": #877f4f, "to": #a79c5b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #cab84b,
+        "right": #8e8755,
+        "bottom": #7c764b,
+        "left": #c6bb72
+      ),
+      "background-color": ("from": #a79d63, "to": #c2b56b)
+    ),
+    "active": (
+      "border-color": (
+        "top": #635e3b,
+        "right": #aea463,
+        "bottom": #b4a442,
+        "left": #756f45
+      ),
+      "background-color": ("from": #877f4f, "to": #a79c5b),
+      "color": #dcd086
+    ),
+    "disabled": ("saturation": 0.75)
+  )
+);
+
+// .ButtonBevel (dotastyles.css)
+@mixin bevel {
+  @include _pressed;
+  min-width: 192px;
+  min-height: 36px;
+  padding: 4px 10px;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: #00000055 0px 0px 4px 0px;
+  transition-duration: 0.05s;
+  transition-property: background-color, opacity;
+  transition-timing-function: linear;
+
+  @each $name, $variant in $bevel-variants {
+    @include variant($name, $variant);
+  }
+
+  .btn-label {
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    horizontal-align: center;
+    text-align: center;
+    text-shadow: 2px 2px 0px 1.0 #000000;
+    vertical-align: middle;
+    transition-duration: 0.35s;
+    transition-property: color;
+    transition-timing-function: ease-in-out;
+  }
+
+  &:enabled:active .btn-label {
+    transform: translateY(1px);
+  }
+
+  &:disabled .btn-label {
+    color: #333333;
+  }
+}
+
+// ToggleButton.ExpandCollapseToggleButton (dotastyles.css)
+@mixin collapsible-toggle {
+  margin: 0px;
+  padding: 0px;
+
+  .TickBox {
+    width: 19px;
+    height: 19px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px solid transparent;
+    background-image: v.$icon-controls-expand-collapse;
+    background-size: 100% 100%;
+    background-color: none;
+    box-shadow: none;
+    vertical-align: middle;
+    wash-color: #888888;
+    transform: rotateZ(-90deg);
+    transition-duration: 0.2s;
+    transition-property: transform;
+  }
+
+  &:hover .TickBox {
+    border: 2px solid transparent;
+  }
+
+  &:selected .TickBox {
+    width: 19px;
+    height: 19px;
+    border: 0px solid transparent;
+    background-image: v.$icon-controls-expand-collapse;
+    background-size: 100% 100%;
+    background-color: none;
+    box-shadow: none;
+    vertical-align: middle;
+    wash-color: #888888;
+    transform: rotateZ(0deg);
+    transition-duration: 0.2s;
+    transition-property: transform;
+  }
+}
+
+// .Spinner (dotastyles.css)
+@mixin spinner($size: 28px) {
+  @include ui.icon(v.$icon-status-loading, $size);
+  @include anim.spinner-rotate("btn-spinner-rotate");
+}
+
+$popup-variants: (
+  "&": (
+    "regular": (
+      "border": (
+        "top": 1px solid #ffffff44,
+        "right": 1px solid #4e5b60,
+        "bottom": 1px solid #00000088,
+        "left": 1px solid #4e5b60
+      ),
+      "background-color": ("from": #5a6c75, "to": #3d4a50)
+    ),
+    "hover": ("background-color": ("from": #a9c8da, "to": #596b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #00000088,
+        "right": 1px solid #00000088,
+        "bottom": 1px solid #aaaaaa44,
+        "left": 1px solid #00000088
+      ),
+      "background-color": ("from": #272f33, "to": #5a6c75),
+      "sound": v.$snd-quit-fadeout
+    ),
+    "disabled": (
+      "wash-color": #999999,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border": (
+        "top": 1px solid #859d6e,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #294211,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #5e842c, "to": #40621d)
+    ),
+    "hover": ("background-color": ("from": #9eb46c, "to": #60823d)),
+    "active": (
+      "border": (
+        "top": 1px solid #294211,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #859d6e,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #204200, "to": #5e842c)
+    )
+  ),
+  "blue": (
+    "regular": (
+      "border": (
+        "top": 1px solid #80bceb,
+        "right": 1px solid #507693,
+        "bottom": 1px solid #273a48,
+        "left": 1px solid #507693
+      ),
+      "background-color": ("from": #65a9db, "to": #2b4b75)
+    ),
+    "hover": ("background-color": ("from": #9ccaf4, "to": #2b4b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #273a48,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #567e9e,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #2b4b75, "to": #65a9db)
+    )
+  ),
+  "grey": (
+    "regular": (
+      "border": (
+        "top": 1px solid #858585,
+        "right": 1px solid #292929,
+        "bottom": 1px solid #292929,
+        "left": 1px solid #707070
+      ),
+      "background-color": ("from": #585858, "to": #3f3f3f)
+    ),
+    "hover": ("background-color": ("from": #787878, "to": #5f5f5f)),
+    "active": (
+      "border": (
+        "top": 1px solid #292929,
+        "right": 1px solid #707070,
+        "bottom": 1px solid #858585,
+        "left": 1px solid #292929
+      ),
+      "background-color": ("from": #3f3f3f, "to": #585858)
+    )
+  )
+);
+
+@mixin popup {
+  @include _pressed;
+  min-width: 192px;
+  margin: 8px;
+  padding: 5px 10px 5px 10px;
+  border: 1px solid black;
+  transition-delay: 0.0s;
+  transition-duration: 0.1s;
+  transition-property: background-color, wash-color;
+  transition-timing-function: linear;
+
+  @each $name, $variant in $popup-variants {
+    @include variant($name, $variant);
+  }
+
+  .popup-btn-label {
+    color: white;
+    font-size: 24px;
+    horizontal-align: center;
+    vertical-align: middle;
+  }
+
+  &:enabled:active .popup-btn-label {
+    transform: translateY(1px);
+  }
+
+  &:disabled .popup-btn-label {
+    color: #999999;
+  }
+}

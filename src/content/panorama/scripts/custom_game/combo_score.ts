@@ -452,7 +452,8 @@ class ComboScore extends Component<ComboScoreElements, ComboScoreInputs> {
   }
 }
 
-const digitClass = (digit: string): string => `digit_${digit}`;
+const digitClass = (digit: string): string => `digit-${digit}`;
+
 const eachUpdateDigitsOperations = (
   panel: Panel,
   value: number,

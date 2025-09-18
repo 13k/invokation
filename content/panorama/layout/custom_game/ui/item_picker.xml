@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/ui/item_picker.css" />
   </styles>
 
-  <Panel class="root">
+  <Panel class="--ui--item-picker">
     <Panel class="header">
       <Label class="selection-choice" text="#invk_item_picker_choose" />
 

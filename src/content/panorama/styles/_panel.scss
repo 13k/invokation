@@ -1,8 +1,9 @@
 @use "sass:map";
 
+@use "button" as btn;
 @use "ui";
 @use "util";
-@use "vars";
+@use "vars" as v;
 
 @mixin translucent {
   background-color: util.gradient-vertical(#292e2ef7, #191e1eff);
@@ -21,7 +22,7 @@
   color: white;
   font-weight: bold;
   font-size: 16px;
-  font-family: vars.$font-default;
+  font-family: v.$font-text;
   letter-spacing: 2px;
   text-align: center;
   text-overflow: shrink;
@@ -74,20 +75,18 @@
     }
 
     .#{$class-thumb-arrow} {
+      @include ui.icon-darrow-left;
       width: 16px;
       height: 16px;
-      vertical-align: middle;
-      horizontal-align: right;
-      background-image: vars.$icon-controls-double-arrow-left;
-      background-position: 0% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      wash-color: #91aba6;
       transform: translateX(-9px);
+      background-position: 0% 50%;
+      horizontal-align: right;
+      vertical-align: middle;
       transition-delay: 0.0s;
       transition-duration: 0.25s;
       transition-property: transform, wash-color;
       transition-timing-function: ease-in-out;
+      wash-color: #91aba6;
     }
 
     &:hover .#{$class-thumb-arrow} {
@@ -116,15 +115,20 @@
   flow-children: right;
   align: left bottom;
   margin-left: 80px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
 
-  @include translucent;
+  @include transparent;
+
+  $btn-size: 64px;
+  $icon-size: $btn-size / 2;
 
   .control-icon {
-    width: 64px;
-    height: 64px;
+    width: $btn-size;
+    height: $btn-size;
     transition-duration: 0.2s;
     transition-property: background-color;
 
@@ -142,44 +146,42 @@
     margin: 0;
     vertical-align: center;
     tooltip-position: top;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-
-    &:active {
-      sound: vars.$snd-quit-fadeout;
-    }
 
     &.icon-details {
-      @include ui.icon-info(30px);
+      @include btn.icon(v.$icon-controls-info, $icon-size);
+      background-size: $icon-size * 0.8;
+
+      &:enabled:active {
+        sound: v.$snd-rollover;
+      }
     }
 
     &.icon-cycle-hud {
-      @include ui.icon-eye(32px);
+      @include btn.icon(v.$icon-facet-vision, $icon-size);
     }
 
     &.icon-level-up {
-      @include ui.icon-arrow-dropdown(48px);
+      @include btn.icon(v.$icon-controls-arrow-dropdown-up, $icon-size);
     }
 
     &.icon-level-max {
+      @include btn.icon(v.$icon-controls-double-arrow-right, $icon-size);
       transform: rotateZ(-90deg);
-
-      @include ui.icon-double-arrow-right(30px);
     }
 
     &.icon-restart {
-      @include ui.btn-refresh(32px);
+      @include btn.refresh($icon-size);
     }
 
     &.icon-full-restart {
-      @include ui.btn-full-refresh(28px);
+      @include btn.full-refresh($icon-size);
     }
 
     &.icon-stop {
-      @include ui.btn-close(64px, 32px);
+      @include btn.close2($icon-size);
     }
 
-    @each $name, $colors in vars.$combo-controls-colors {
+    @each $name, $colors in v.$combo-controls-colors {
       &.#{$name} {
         wash-color: map.get($colors, "regular");
 
@@ -194,7 +196,7 @@
 @mixin rating($class-active) {
   width: 80px;
   height: 16px;
-  background-image: vars.$hud-ult-cooldown;
+  background-image: v.$hud-ult-cooldown;
   background-position: 0% 0%;
   background-size: contain;
   background-repeat: repeat-x;
@@ -203,7 +205,7 @@
   .#{$class-active} {
     width: 0;
     height: 100%;
-    background-image: vars.$hud-ult-ready;
+    background-image: v.$hud-ult-ready;
     background-position: 0% 0%;
     background-size: contain;
     background-repeat: repeat-x;

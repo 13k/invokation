@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/picker/combo.css" />
   </styles>
 
-  <Panel class="root--picker--combo">
+  <Panel class="--picker--combo">
     <Panel class="title-container">
       <Button
         id="finished-icon"
@@ -74,7 +74,7 @@
     </Panel>
 
     <Button id="btn-play">
-      <Label class="btn-text" text="#invk_controls_play" hittest="false" />
+      <Label class="btn-label" text="#invk_controls_play" hittest="false" />
     </Button>
   </Panel>
 </root>

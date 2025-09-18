@@ -7,7 +7,7 @@
     <include src="file://{resources}/styles/custom_game/ui/talents_display.css" />
   </styles>
 
-  <Panel class="root">
+  <Panel class="--ui--talents-display">
     <Panel id="branch-container">
       <Panel id="well" />
 

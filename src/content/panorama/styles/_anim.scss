@@ -40,28 +40,32 @@
   $name,
   $duration: 1.0s,
   $delay: null,
-  $timing: linear,
+  $count: infinite,
   $direction: reverse,
-  $count: infinite
+  $timing: linear
 ) {
   @include animate(
     $name: $name,
     $duration: $duration,
     $delay: $delay,
-    $timing: $timing,
+    $count: $count,
     $direction: $direction,
-    $count: $count
+    $timing: $timing
   ) {
     0% {
-      transform: rotateZ(359.9deg);
+      transform: rotateZ(90deg);
     }
 
     50% {
       transform: rotateZ(180deg);
     }
 
+    75% {
+      transform: rotateZ(270deg);
+    }
+
     100% {
-      transform: rotateZ(0.1deg);
+      transform: rotateZ(360deg);
     }
   }
 }
@@ -70,15 +74,15 @@
   $name: "stun-portrait",
   $duration: 1.0s,
   $delay: null,
-  $timing: linear,
-  $count: 1
+  $count: 1,
+  $timing: linear
 ) {
   @include animate(
     $name: $name,
     $duration: $duration,
     $delay: $delay,
-    $timing: $timing,
-    $count: $count
+    $count: $count,
+    $timing: $timing
   ) {
     0% {
       transform: translateX(-24px);
