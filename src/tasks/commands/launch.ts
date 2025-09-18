@@ -104,7 +104,7 @@ export class LaunchCommand extends BaseCommand<Args, Options> {
 
     this.log.info(`Launching ${this.args.tool}`);
 
-    this.exec(cmd, execArgs, { cwd: cwd.toString(), echo: true, log: this.log });
+    await this.exec(cmd, execArgs, { cwd: cwd.toString(), log: this.log });
   }
 
   async execGame(args: PathLike[]): Promise<void> {

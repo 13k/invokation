@@ -10,12 +10,11 @@ vars:
   SRC_PANO_STYLES: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "styles" }}'
   SRC_VSCRIPTS: '{{ joinPath .ROOT_DIR "game" "scripts" "vscripts" }}'
   SRC_TASKS: '{{ joinPath .ROOT_DIR "src" "tasks" }}'
-  TASKS_ENTRYPOINT: '{{ joinPath .SRC_TASKS "main.ts" }}'
-  TASKS_DEBUG_FLAGS: '{{ empty .DEBUG | ternary "" "--debug" }}'
-  TASKS_RUN: 'bun run -- "{{ .TASKS_ENTRYPOINT }}" {{ .TASKS_DEBUG_FLAGS }}'
   EMMYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".emmyrc.json" }}'
   STYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".stylua.toml" }}'
   SELENE_CONFIG: '{{ joinPath .ROOT_DIR "selene.toml" }}'
+  TASKS_ENTRYPOINT: '{{ joinPath .SRC_TASKS "main.ts" }}'
+  TASKS_RUN: 'bun run -- "{{ .TASKS_ENTRYPOINT }}"'
 
 tasks:
   default:
@@ -46,43 +45,81 @@ tasks:
 
   clean:
     desc: Remove all compiled, generated and linked files
-    cmd: "{{ .TASKS_RUN }} clean"
+    cmd: "{{ .TASKS_RUN }} clean {{ .CLI_ARGS }}"
 
   link:
     desc: Link source files to game directories
-    cmd: "{{ .TASKS_RUN }} link"
+    cmd: "{{ .TASKS_RUN }} link {{ .CLI_ARGS }}"
 
   launch:game:
     desc: Launch Dota2
-    cmd: "{{ .TASKS_RUN }} launch game"
+    cmd: "{{ .TASKS_RUN }} launch {{ .CLI_ARGS }} game"
 
   launch:sdk:
     desc: Launch SDK (Workshop Tools)
-    cmd: "{{ .TASKS_RUN }} launch sdk"
+    cmd: "{{ .TASKS_RUN }} launch {{ .CLI_ARGS }} sdk"
+
+  _build:
+    internal: true
+    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} {{ .ARGS }}"
 
   build:
     desc: Build everything
-    deps: [link]
-    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }}"
+    cmd: { task: "_build" }
 
-  build:maps:
-    desc: Build maps
-    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} maps"
-
-  build:panorama:scripts:
+  build:scripts:
     desc: Build panorama scripts
-    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} panorama-scripts"
-
-  build:panorama:styles:
-    desc: Build panorama styles
-    cmd: "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} panorama-styles"
-
-  build:resources:
-    desc: Build resources
     cmds:
-      - task: "build:panorama:styles"
-      - task: "build:panorama:scripts"
-      - "{{ .TASKS_RUN }} build {{ .CLI_ARGS }} resources"
+      - task: "_build"
+        vars: { ARGS: "scripts" }
+
+  build:styles:
+    desc: Build panorama styles
+    cmds:
+      - task: "_build"
+        vars: { ARGS: "styles" }
+
+  _compile:
+    internal: true
+    cmd: "{{ .TASKS_RUN }} compile {{ .CLI_ARGS }} {{ .ARGS }}"
+
+  compile:
+    desc: Compile everything
+    deps: [build]
+    cmds:
+      - task: "_compile"
+
+  compile:maps:
+    desc: Compile maps
+    cmds:
+      - task: "_compile"
+        vars: { ARGS: "maps" }
+
+  compile:panorama:
+    desc: Compile all panorama resources
+    cmds:
+      - task: "_compile"
+        vars: { ARGS: "panorama" }
+
+  compile:scripts:
+    desc: Compile panorama scripts
+    cmds:
+      - task: "build:scripts"
+      - task: "_compile"
+        vars: { ARGS: "scripts" }
+
+  compile:styles:
+    desc: Compile panorama styles
+    cmds:
+      - task: "build:styles"
+      - task: "_compile"
+        vars: { ARGS: "styles" }
+
+  compile:resources:
+    desc: Compile resources
+    cmds:
+      - task: "_compile"
+        vars: { ARGS: "resources" }
 
   format:vscripts:
     desc: Format vscripts

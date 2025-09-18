@@ -1,10 +1,8 @@
-import type { NullSyncSubprocess } from "bun";
-
 import type { Command, OptionValues } from "commander";
 
 import type { ConfigOptions } from "../config";
 import { Config } from "../config";
-import type { CaptureOptions, ExecOptions } from "../exec";
+import type { CaptureOptions, ExecOptions, ExecProcess, Writable } from "../exec";
 import { capture, exec, parseShell } from "../exec";
 import type { Logger } from "../logger";
 import { LOGGER } from "../logger";
@@ -111,20 +109,28 @@ export abstract class BaseCommand<Args, Options extends OptionValues> {
     return Bun.which(cmd.toString());
   }
 
-  protected exec(cmd: PathLike, args: PathLike[] = [], options?: ExecOptions): NullSyncSubprocess {
+  protected async exec<In extends Writable>(
+    cmd: PathLike,
+    args: PathLike[] = [],
+    options?: ExecOptions<In>,
+  ): Promise<ExecProcess<In>> {
     this.log.fields({ cmd, args }).debug("exec run");
 
-    return exec(
+    return await exec(
       cmd.toString(),
       args.map((arg) => arg.toString()),
       options,
     );
   }
 
-  protected capture(cmd: PathLike, args: PathLike[] = [], options?: CaptureOptions): string {
+  protected async capture<In extends Writable>(
+    cmd: PathLike,
+    args: PathLike[] = [],
+    options?: CaptureOptions<In>,
+  ): Promise<string> {
     this.log.fields({ cmd, args }).debug("exec capture");
 
-    return capture(
+    return await capture(
       cmd.toString(),
       args.map((arg) => arg.toString()),
       options,

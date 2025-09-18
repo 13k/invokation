@@ -5,13 +5,21 @@ import type { Logger } from "../../logger";
 import { Label } from "../../logger";
 import { Path } from "../../path";
 
+const GRASS_EXE = "grass";
+
 export interface BuildOptions {
   force?: boolean;
   log?: Logger;
 }
 
 async function grass(srcPath: Path, destPath: Path, log?: Logger): Promise<void> {
-  exec("grass", [srcPath.toString(), destPath.toString()], { echo: true, log });
+  await exec(GRASS_EXE, [srcPath.toString(), destPath.toString()], { log });
+}
+
+async function compilerVersion(log?: Logger): Promise<string> {
+  const out = await capture(GRASS_EXE, ["--version"], { log, trim: true });
+
+  return out.replace(/^grass /, "");
 }
 
 interface BuildInfo {
@@ -108,13 +116,9 @@ export async function build(
     return;
   }
 
-  const version = capture("grass", ["--version"], { log })
-    .replace("grass ", "")
-    .trimEnd();
-
   const info: BuildInfo = {
     files: [],
-    version,
+    version: await compilerVersion(log),
   };
 
   const buildDir = Path.new(await temp.mkdir("invk.grass-build."));

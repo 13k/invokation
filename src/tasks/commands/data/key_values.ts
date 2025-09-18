@@ -103,9 +103,7 @@ Parse and convert a KeyValues file \
       this.args.output,
     ];
 
-    this.exec(cmd, args, {
-      echo: true,
-    });
+    await this.exec(cmd, args);
   }
 
   validate(doc: unknown): Kind {

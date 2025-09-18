@@ -1,6 +1,6 @@
 import type { Logger } from "../../logger";
 import { Label } from "../../logger";
-import { Path } from "../../path";
+import type { Path } from "../../path";
 
 interface Source {
   srcPath: Path;

@@ -17,7 +17,7 @@ function pathLikeStrings(parts: PathLike[]): string[] {
 
 export abstract class Path {
   protected abstract path: string;
-  abstract parsed: path.ParsedPath;
+  protected abstract parsed: path.ParsedPath;
 
   static new(...parts: PathLike[]): Path {
     if (PLATFORM.isWsl) {
@@ -35,7 +35,7 @@ export abstract class Path {
     throw new UnknownPlatformError();
   }
 
-  protected new(path: string): this {
+  protected create(path: string): this {
     return new (this.ctor())(path);
   }
 
@@ -64,7 +64,7 @@ export abstract class Path {
   }
 
   root(): this | undefined {
-    return this.parsed.root ? new (this.ctor())(this.parsed.root) : undefined;
+    return this.parsed.root ? this.create(this.parsed.root) : undefined;
   }
 
   abstract basename(ext?: string): this;
@@ -127,7 +127,7 @@ export abstract class Path {
 
 export class PosixPath extends Path {
   protected path: string;
-  parsed: path.ParsedPath;
+  protected parsed: path.ParsedPath;
 
   constructor(...parts: PathLike[]) {
     super();
@@ -137,11 +137,11 @@ export class PosixPath extends Path {
   }
 
   override basename(ext?: string): this {
-    return this.new(path.posix.basename(this.toString(), ext));
+    return this.create(path.posix.basename(this.toString(), ext));
   }
 
   override dirname(): this {
-    return this.new(path.posix.dirname(this.toString()));
+    return this.create(path.posix.dirname(this.toString()));
   }
 
   override ext(): string | undefined {
@@ -151,21 +151,21 @@ export class PosixPath extends Path {
   }
 
   override join(...parts: PathLike[]): this {
-    return this.new(path.posix.join(this.toString(), ...pathLikeStrings(parts)));
+    return this.create(path.posix.join(this.toString(), ...pathLikeStrings(parts)));
   }
 
   override relative(to: PathLike): this {
-    return this.new(path.posix.relative(this.toString(), to.toString()));
+    return this.create(path.posix.relative(this.toString(), to.toString()));
   }
 
   override resolve(): this {
-    return this.new(path.posix.resolve(this.toString()));
+    return this.create(path.posix.resolve(this.toString()));
   }
 }
 
 export class WindowsPath extends Path {
   protected path: string;
-  parsed: path.ParsedPath;
+  protected parsed: path.ParsedPath;
 
   constructor(...parts: PathLike[]) {
     super();
@@ -175,11 +175,11 @@ export class WindowsPath extends Path {
   }
 
   override basename(ext?: string): this {
-    return this.new(path.win32.basename(this.toString(), ext));
+    return this.create(path.win32.basename(this.toString(), ext));
   }
 
   override dirname(): this {
-    return this.new(path.win32.dirname(this.toString()));
+    return this.create(path.win32.dirname(this.toString()));
   }
 
   override ext(): string | undefined {
@@ -189,19 +189,19 @@ export class WindowsPath extends Path {
   }
 
   override join(...parts: PathLike[]): this {
-    return this.new(path.win32.join(this.toString(), ...pathLikeStrings(parts)));
+    return this.create(path.win32.join(this.toString(), ...pathLikeStrings(parts)));
   }
 
   override relative(to: PathLike): this {
-    return this.new(path.win32.relative(this.toString(), to.toString()));
+    return this.create(path.win32.relative(this.toString(), to.toString()));
   }
 
   override resolve(): this {
-    return this.new(path.win32.resolve(this.toString()));
+    return this.create(path.win32.resolve(this.toString()));
   }
 
   namespaced(): this {
-    return this.new(path.win32.toNamespacedPath(this.toString()));
+    return this.create(path.win32.toNamespacedPath(this.toString()));
   }
 
   isUnc(): boolean {
@@ -210,16 +210,16 @@ export class WindowsPath extends Path {
 }
 
 export class WslPosixPath extends PosixPath {
-  windows(options: { absolute: boolean } = { absolute: false }) {
-    const path = wslpath(this.toString(), { windows: true, ...options });
+  async windows(options: { absolute: boolean } = { absolute: false }): Promise<WslWindowsPath> {
+    const path = await wslpath(this.toString(), { windows: true, ...options });
 
     return new WslWindowsPath(path);
   }
 }
 
 export class WslWindowsPath extends WindowsPath {
-  posix(options: { absolute: boolean } = { absolute: false }) {
-    const path = wslpath(this.toString(), { unix: true, ...options });
+  async posix(options: { absolute: boolean } = { absolute: false }): Promise<WslPosixPath> {
+    const path = await wslpath(this.toString(), { unix: true, ...options });
 
     return new WslPosixPath(path);
   }
@@ -233,7 +233,7 @@ interface WslPathOptions {
   absolute?: boolean;
 }
 
-function wslpath(path: string, options: WslPathOptions = {}) {
+async function wslpath(path: string, options: WslPathOptions = {}): Promise<string> {
   const args: string[] = [];
 
   if (options.unix) {
@@ -248,7 +248,7 @@ function wslpath(path: string, options: WslPathOptions = {}) {
 
   args.push(path);
 
-  return capture(WSLPATH_BIN, args).trim();
+  return await capture(WSLPATH_BIN, args, { trim: true });
 }
 
 function rootDir(): Path {

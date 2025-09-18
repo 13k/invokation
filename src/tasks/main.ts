@@ -5,6 +5,7 @@ import temp from "temp";
 
 import { BuildCommand } from "./commands/build";
 import { CleanCommand } from "./commands/clean";
+import { CompileCommand } from "./commands/compile";
 import { DataCommand } from "./commands/data";
 import { LaunchCommand } from "./commands/launch";
 import { LinkCommand } from "./commands/link";
@@ -31,9 +32,10 @@ async function parseArgs(): Promise<void> {
 
   new BuildCommand(program);
   new CleanCommand(program);
+  new CompileCommand(program);
   new DataCommand(program);
-  new LinkCommand(program);
   new LaunchCommand(program);
+  new LinkCommand(program);
 
   await program.parseAsync();
 }

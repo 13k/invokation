@@ -16,8 +16,5 @@ export async function build(srcDir: Path, options?: BuildOptions): Promise<void>
 
   args.push(srcDir.toString());
 
-  exec("bun", args, {
-    echo: true,
-    log: options?.log,
-  });
+  await exec("bun", args, { log: options?.log });
 }

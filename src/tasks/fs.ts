@@ -111,7 +111,7 @@ export class Link implements LinkAttributes {
     assert(this.dest.isWslPosix(), "expected WSL path");
 
     const { type, path: src } = await this.#remapSource(options);
-    const dest = this.dest.windows({ absolute: true });
+    const dest = await this.dest.windows({ absolute: true });
 
     await this.dest.dirname().mkdir({ recursive: true });
 
@@ -122,7 +122,7 @@ export class Link implements LinkAttributes {
     assert(this.src.isWslPosix(), "expected WSL path");
 
     const type = this.type;
-    const path = this.src.windows({ absolute: true });
+    const path = await this.src.windows({ absolute: true });
 
     // convert
     //   - [Windows/local path] `C:\foo` to `\\?\C:\foo`
@@ -170,10 +170,15 @@ export class Link implements LinkAttributes {
   }
 }
 
-async function pwshLink(type: LinkType, src: WindowsPath, dest: WindowsPath, log?: Logger) {
+async function pwshLink(
+  type: LinkType,
+  src: WindowsPath,
+  dest: WindowsPath,
+  log?: Logger,
+): Promise<void> {
   const args = ["-Command", `New-Item -ItemType "${type}" -Target "${src}" -Path "${dest}"`];
 
-  exec(POWERSHELL_BIN, args, { log });
+  await exec(POWERSHELL_BIN, args, { log });
 }
 
 /*
@@ -202,6 +207,6 @@ if ($drive.DisplayRoot -ne "$path") {
 
   const args = ["-Command", psCmd];
 
-  exec(POWERSHELL_BIN, args, { log });
+  await exec(POWERSHELL_BIN, args, { log });
 }
 */
