@@ -2,6 +2,7 @@
 @use "../../layout";
 @use "../../vars";
 
+@include dota2.style;
 @include layout.size;
 
 .--ui--item-picker {
@@ -69,5 +70,3 @@
     margin-top: 16px;
   }
 }
-
-@include dota2.style;

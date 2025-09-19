@@ -6,6 +6,7 @@
 @use "../util";
 @use "../vars" as v;
 
+@include dota2.style;
 @include layout.flow;
 @include layout.vis;
 
@@ -278,5 +279,3 @@ $closed-width: $thumb-width;
     min-width: 142px;
   }
 }
-
-@include dota2.style;

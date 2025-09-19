@@ -50,7 +50,7 @@
     <TextEntry id="text-entry" />
 
     <Panel class="popup-btn-row">
-      <Button id="btn-submit" class="popup-btn">
+      <Button id="btn-submit" class="popup-btn light-blue">
         <Label class="btn-label" text="#DOTA_Ok" />
       </Button>
 

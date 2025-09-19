@@ -78,5 +78,10 @@ $padding: (
 
   .popup-btn {
     @include btn.primary;
+    margin-left: 16px;
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }

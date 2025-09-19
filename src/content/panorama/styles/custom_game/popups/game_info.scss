@@ -5,7 +5,6 @@
 .--popups--game-info {
   @include popup.popup;
   flow-children: none;
-  align: center center;
   width: 1300px;
 
   .popup-description {

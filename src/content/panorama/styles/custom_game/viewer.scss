@@ -9,9 +9,10 @@
 @use "../util";
 @use "../vars" as v;
 
-$cl-text: #3c1b18;
-
+@include dota2.style;
 @include layout.flow;
+
+$cl-text: #3c1b18;
 
 .--viewer {
   width: 100%;
@@ -261,5 +262,3 @@ $cl-text: #3c1b18;
     }
   }
 }
-
-@include dota2.style;

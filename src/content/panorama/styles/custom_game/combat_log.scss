@@ -4,6 +4,8 @@
 @use "../ui";
 @use "../vars" as v;
 
+@include dota2.style;
+
 $columns: 20;
 $padding: 5px;
 $cell-size: 32px;
@@ -132,5 +134,3 @@ $class-closed: "closed";
     opacity: 0;
   }
 }
-
-@include dota2.style;

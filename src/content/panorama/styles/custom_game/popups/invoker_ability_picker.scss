@@ -2,9 +2,7 @@
 
 .--popups--invoker-ability-picker {
   @include popup.popup;
-  flow-children: down;
-  align: center center;
-  padding: 0 0 20px;
+  padding: 0 0 20px 0;
 
   .header {
     flow-children: right;

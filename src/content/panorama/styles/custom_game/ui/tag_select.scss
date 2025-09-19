@@ -2,6 +2,8 @@
 @use "../../ui";
 @use "../../vars";
 
+@include dota2.style;
+
 .--ui--tag-select {
   flow-children: down;
   width: 100%;
@@ -54,5 +56,3 @@
     }
   }
 }
-
-@include dota2.style;
