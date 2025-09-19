@@ -74,8 +74,8 @@ $class-right-selected: "right-branch-selected";
     horizontal-align: right;
   }
 
-  &.#{$class-left-selected} .pip-left,
-  &.#{$class-right-selected} .pip-right {
+  .#{$class-left-selected} .pip-left,
+  .#{$class-right-selected} .pip-right {
     opacity: 1;
   }
 

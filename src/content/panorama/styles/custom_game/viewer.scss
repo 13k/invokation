@@ -2,6 +2,8 @@
 // * Combo Viewer (shamelessly rippped from Invoker kid persona page)
 // ******************************************************************************
 
+@use "sass:color";
+
 @use "../button" as btn;
 @use "../dota2";
 @use "../layout";
@@ -12,7 +14,8 @@
 @include dota2.style;
 @include layout.flow;
 
-$cl-text: #3c1b18;
+$cl-accent: #af5417;
+$cl-text: color.change($cl-accent, $lightness: 17%);
 
 .--viewer {
   width: 100%;
@@ -41,7 +44,6 @@ $cl-text: #3c1b18;
     margin-top: -4px;
     margin-right: -4px;
     horizontal-align: right;
-    wash-color: #fff;
   }
 
   #btn-reload {
@@ -52,7 +54,6 @@ $cl-text: #3c1b18;
     height: 36px;
     margin-top: -4px;
     margin-left: -4px;
-    wash-color: #fff;
   }
 
   &.development #btn-reload {
@@ -95,7 +96,17 @@ $cl-text: #3c1b18;
     padding-right: 20px;
     padding-bottom: 10px;
     overflow: squish scroll;
-    opacity-mask: v.$mask-softedge-vscroll-wide;
+    opacity-mask: v.$mask-softedge-vertical;
+
+    #VerticalScrollBar {
+      .ScrollThumb {
+        background-color: color.change($cl-accent, $alpha: 0.66);
+
+        &:hover {
+          background-color: color.change($cl-accent, $alpha: 0.95);
+        }
+      }
+    }
   }
 
   #properties-section {
@@ -196,7 +207,7 @@ $cl-text: #3c1b18;
     width: 206px;
     height: 49px;
     border-top: 1px solid #faa46a;
-    background-color: util.gradient-vertical(#af5417cc, #af5417cc);
+    background-color: util.gradient-vertical(#af541766, #af5417cc, $top: 100%, $bottom: 0%);
     box-shadow: #27110250 0 0 12px;
     opacity: 0.9;
     wash-color: #9992;
@@ -204,7 +215,7 @@ $cl-text: #3c1b18;
     transition-property: background-color;
 
     &:hover {
-      background-color: util.gradient-vertical(#af5417, #af5417);
+      background-color: #af5417;
     }
 
     &:active {
