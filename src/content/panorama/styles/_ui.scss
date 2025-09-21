@@ -7,14 +7,9 @@
 @use "util";
 @use "vars" as v;
 
-// text {{{
-
 @mixin link {
   color: v.$cl-text-link;
 }
-
-// text }}}
-// icons {{{
 
 @mixin icon($image, $size: contain, $tex-size: null) {
   background-image: $image;
@@ -31,41 +26,3 @@
     background-texture-size: $tex-size;
   }
 }
-
-@mixin icon-close($size: 32px) {
-  @include icon(v.$icon-controls-close, $size);
-}
-
-@mixin icon-close2($size: 32px) {
-  @include icon(v.$icon-controls-close2, $size);
-}
-
-@mixin icon-quit($size: 32px) {
-  @include icon(v.$icon-controls-quit, $size);
-}
-
-@mixin icon-info($size: 32px) {
-  @include icon(v.$icon-controls-info, $size);
-}
-
-@mixin icon-eye($size: 32px) {
-  @include icon(v.$icon-controls-eye, $size);
-}
-
-@mixin icon-check($size: 32px) {
-  @include icon(v.$icon-controls-check-shadow, $size);
-}
-
-@mixin icon-arrow-dropdown($size: 32px) {
-  @include icon(v.$icon-controls-arrow-dropdown-up, $size);
-}
-
-@mixin icon-darrow-left($size: 32px) {
-  @include icon(v.$icon-controls-double-arrow-left, $size);
-}
-
-@mixin icon-darrow-right($size: 32px) {
-  @include icon(v.$icon-controls-double-arrow-right, $size);
-}
-
-// icons }}}

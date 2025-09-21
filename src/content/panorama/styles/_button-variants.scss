@@ -1,0 +1,417 @@
+@use "vars" as v;
+
+$primary: (
+  "self": (
+    "regular": (
+      "background-color": v.$grd-light-grey,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "hover": ("brightness": 2),
+    "active": (
+      "background-color": v.$grd-light-grey-inverted,
+      "transition-duration": 0.05s,
+      "brightness": 0.8,
+      "sound": v.$snd-btn-click
+    ),
+    "disabled": (
+      "opacity": 0.3,
+      "brightness": 0.5,
+      "saturation": 0.0
+    )
+  ),
+  "light-grey": (
+    "regular": (
+      "background-color": v.$grd-light-grey,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-light-grey-inverted)
+  ),
+  "dark-grey": (
+    "regular": (
+      "background-color": v.$grd-dark-grey,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": v.$grd-dark-grey-inverted)
+  ),
+  "blue": (
+    "regular": (
+      "background-color": v.$grd-blue,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-blue-inverted)
+  ),
+  "light-blue": (
+    "regular": (
+      "background-color": ("from": #3598c3, "to": #25245c),
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": ("from": #25245c, "to": #3598c3))
+  ),
+  "pink": (
+    "regular": (
+      "background-color": ("from": #8d3086, "to": #48245c),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #48245c, "to": #8d3086))
+  ),
+  "teal": (
+    "regular": (
+      "background-color": ("from": #41c99e, "to": #1c6762),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #1c6762, "to": #41c99e))
+  ),
+  "ti23-blue": (
+    "regular": (
+      "background-color": ("from": #2d9ed0, "to": #0a5993),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #0a5993, "to": #2d9ed0))
+  ),
+  "ti24-green": (
+    "regular": (
+      "background-color": ("from": #0d4721, "to": #01201a),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #01201a, "to": #0d4721))
+  ),
+  "ti24-light-green": (
+    "regular": (
+      "background-color": ("from": #3eac40, "to": #04431a),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #04431a, "to": #3eac40))
+  ),
+  "dark-red": (
+    "regular": (
+      "background-color": ("from": #943339, "to": #662627),
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": ("from": #662627, "to": #943339))
+  ),
+  "green": (
+    "regular": (
+      "background-color": v.$grd-green,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-green-inverted)
+  ),
+  "orange": (
+    "regular": (
+      "background-color": v.$grd-orange,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-orange-inverted)
+  ),
+  "yellow": (
+    "regular": (
+      "background-color": v.$grd-yellow,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-yellow-inverted)
+  ),
+  "dota-plus": (
+    "regular": (
+      "background-color": ("from": #a1793d, "to": #5b4216),
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": ("from": #5b4216, "to": #a1793d))
+  ),
+  "purple": (
+    "regular": (
+      "background-color": v.$grd-purple,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-purple-inverted)
+  ),
+  "gold": (
+    "regular": (
+      "background-color": v.$grd-gold,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-gold-inverted)
+  ),
+  "ruby": (
+    "regular": (
+      "background-color": v.$grd-ruby,
+      "border-brush": v.$grd-border-white-medium
+    ),
+    "active": ("background-color": v.$grd-ruby-inverted)
+  ),
+  "shards": (
+    "regular": (
+      "background-color": v.$grd-shards,
+      "border-brush": v.$grd-border-white-soft
+    ),
+    "active": ("background-color": v.$grd-shards-inverted)
+  ),
+  "platinum": (
+    "regular": (
+      "background-color": v.$grd-platinum,
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": v.$grd-platinum-inverted)
+  ),
+  "red": (
+    "regular": (
+      "background-color": ("from": #ff6046, "to": #b5433c),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #b5433c, "to": #ff6046))
+  ),
+  "magenta": (
+    "regular": (
+      "background-color": ("from": #d668bb, "to": #671d89),
+      "border-brush": v.$grd-border-white-strong
+    ),
+    "active": ("background-color": ("from": #671d89, "to": #d668bb))
+  )
+);
+
+$bevel: (
+  "self": (
+    "regular": (
+      "border-color": (
+        "top": #555555,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #494949
+      ),
+      "background-color": ("from": #373d45, "to": #4d5860)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #aaaaaa77,
+        "right": #404040,
+        "bottom": #333333,
+        "left": #aaaaaa33
+      ),
+      "background-color": ("from": #4c5561, "to": #6c7d88)
+    ),
+    "active": (
+      "border-color": (
+        "top": #222222,
+        "right": #444444,
+        "bottom": #666666,
+        "left": #303030
+      ),
+      "background-color": ("from": #393939, "to": #555555),
+      "sound": v.$snd-btn-click
+    ),
+    "disabled": (
+      "wash-color": #aaaaaa,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border-color": (
+        "top": #355639,
+        "right": #214123,
+        "bottom": #1e371e,
+        "left": #2c4d30
+      ),
+      "background-color": ("from": #2a481f, "to": #226326)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #030503,
+        "right": #244426,
+        "bottom": #1e371d,
+        "left": #000000
+      ),
+      "background-color": ("from": #226528, "to": #288a36)
+    ),
+    "active": (
+      "border-color": (
+        "top": #132416,
+        "right": #264a29,
+        "bottom": #386b3b,
+        "left": #192f1b
+      ),
+      "background-color": ("from": #1f3d25, "to": #2b562c)
+    )
+  ),
+  "dark-green": (
+    "regular": (
+      "border-color": (
+        "top": #223524,
+        "right": #132615,
+        "bottom": #091009,
+        "left": #2c4d30
+      ),
+      "background-color": ("from": #1a2c13, "to": #18441b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #000000,
+        "right": #152716,
+        "bottom": #172a16,
+        "left": #000000
+      ),
+      "background-color": ("from": #17421b, "to": #185321)
+    ),
+    "active": (
+      "border-color": (
+        "top": #09110a,
+        "right": #172c19,
+        "bottom": #1f3820,
+        "left": #0f1b10
+      ),
+      "background-color": ("from": #132416, "to": #183019)
+    )
+  ),
+  "bronze": (
+    "regular": (
+      "border-color": (
+        "top": #e0a75e,
+        "right": #8f6b3c,
+        "bottom": #8d683a,
+        "left": #dca35b
+      ),
+      "background-color": ("from": #b9894c, "to": #dca157)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #f2b362,
+        "right": #966f3e,
+        "bottom": #966f3e,
+        "left": #edb062
+      ),
+      "background-color": ("from": #dda45a, "to": #fcb965)
+    ),
+    "active": (
+      "border-color": (
+        "top": #684e2d,
+        "right": #906c3f,
+        "bottom": #977242,
+        "left": #6d522f
+      ),
+      "background-color": ("from": #4d391f, "to": #9b713c)
+    ),
+    "disabled": ("saturation": 0.75)
+  ),
+  "plus": (
+    "regular": (
+      "border-color": (
+        "top": #b4a442,
+        "right": #756f45,
+        "bottom": #635e3b,
+        "left": #aea463
+      ),
+      "background-color": ("from": #877f4f, "to": #a79c5b)
+    ),
+    "hover": (
+      "border-color": (
+        "top": #cab84b,
+        "right": #8e8755,
+        "bottom": #7c764b,
+        "left": #c6bb72
+      ),
+      "background-color": ("from": #a79d63, "to": #c2b56b)
+    ),
+    "active": (
+      "border-color": (
+        "top": #635e3b,
+        "right": #aea463,
+        "bottom": #b4a442,
+        "left": #756f45
+      ),
+      "background-color": ("from": #877f4f, "to": #a79c5b),
+      "color": #dcd086
+    ),
+    "disabled": ("saturation": 0.75)
+  )
+);
+
+$popup: (
+  "self": (
+    "regular": (
+      "border": (
+        "top": 1px solid #ffffff44,
+        "right": 1px solid #4e5b60,
+        "bottom": 1px solid #00000088,
+        "left": 1px solid #4e5b60
+      ),
+      "background-color": ("from": #5a6c75, "to": #3d4a50)
+    ),
+    "hover": ("background-color": ("from": #a9c8da, "to": #596b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #00000088,
+        "right": 1px solid #00000088,
+        "bottom": 1px solid #aaaaaa44,
+        "left": 1px solid #00000088
+      ),
+      "background-color": ("from": #272f33, "to": #5a6c75),
+      "sound": v.$snd-quit-fadeout
+    ),
+    "disabled": (
+      "wash-color": #999999,
+      "saturation": 0
+    )
+  ),
+  "green": (
+    "regular": (
+      "border": (
+        "top": 1px solid #859d6e,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #294211,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #5e842c, "to": #40621d)
+    ),
+    "hover": ("background-color": ("from": #9eb46c, "to": #60823d)),
+    "active": (
+      "border": (
+        "top": 1px solid #294211,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #859d6e,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #204200, "to": #5e842c)
+    )
+  ),
+  "blue": (
+    "regular": (
+      "border": (
+        "top": 1px solid #80bceb,
+        "right": 1px solid #507693,
+        "bottom": 1px solid #273a48,
+        "left": 1px solid #507693
+      ),
+      "background-color": ("from": #65a9db, "to": #2b4b75)
+    ),
+    "hover": ("background-color": ("from": #9ccaf4, "to": #2b4b75)),
+    "active": (
+      "border": (
+        "top": 1px solid #273a48,
+        "right": 1px solid #496922,
+        "bottom": 1px solid #567e9e,
+        "left": 1px solid #496922
+      ),
+      "background-color": ("from": #2b4b75, "to": #65a9db)
+    )
+  ),
+  "grey": (
+    "regular": (
+      "border": (
+        "top": 1px solid #858585,
+        "right": 1px solid #292929,
+        "bottom": 1px solid #292929,
+        "left": 1px solid #707070
+      ),
+      "background-color": ("from": #585858, "to": #3f3f3f)
+    ),
+    "hover": ("background-color": ("from": #787878, "to": #5f5f5f)),
+    "active": (
+      "border": (
+        "top": 1px solid #292929,
+        "right": 1px solid #707070,
+        "bottom": 1px solid #858585,
+        "left": 1px solid #292929
+      ),
+      "background-color": ("from": #3f3f3f, "to": #585858)
+    )
+  )
+);

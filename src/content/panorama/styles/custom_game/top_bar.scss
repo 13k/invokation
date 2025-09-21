@@ -17,7 +17,7 @@
     border-radius: 8px;
     background-color: #cccccc11;
 
-    .button {
+    .btn {
       width: 24px;
       height: 24px;
       margin-left: 8px;
@@ -27,31 +27,30 @@
       transition-duration: 0.2s;
       transition-property: opacity, wash-color;
       transition-timing-function: ease-in-out;
-      wash-color: #cdf;
       tooltip-position: bottom;
 
       &:hover {
         opacity: 1;
       }
+    }
 
-      &.info-icon {
-        @include btn.icon(v.$icon-controls-info, 24px);
+    #btn-game-info {
+      @include btn.info(24px);
+    }
 
-        &:hover {
-          wash-color: #fff;
-        }
-      }
+    #btn-combat-log {
+      @include btn.icon(v.$icon-controls-armory, 24px);
     }
 
     #btn-quit {
-      @include btn.icon(v.$icon-controls-quit, 28px);
+      @include btn.close-circle(24px);
       margin-right: 4px;
 
       &:hover {
         wash-color: #f43;
       }
 
-      &:active {
+      &:enabled:active {
         sound: v.$snd-quit;
       }
     }

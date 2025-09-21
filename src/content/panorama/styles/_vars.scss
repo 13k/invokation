@@ -89,11 +89,13 @@ $font-underlords:
 // * Icons
 // ******************************************************************************
 
+$icon-controls-armory: asset.game-img-url("control_icons/armory_new_icon.vsvg");
 $icon-controls-arrow-dropdown-up: asset.game-img-url("control_icons/arrow_dropdown_up_png.vtex");
 $icon-controls-arrow-popout: asset.game-img-url("control_icons/arrow_popout_png.vtex");
-$icon-controls-check-shadow: asset.game-img-url("control_icons/check_shadow_png.vtex");
-$icon-controls-close: asset.game-img-url("control_icons/x_close_grey_psd.vtex");
-$icon-controls-close2: asset.game-img-url("control_icons/24px/x_close.vsvg");
+$icon-controls-check-circle: asset.game-img-url("control_icons/24px/check_circle.vsvg");
+$icon-controls-check: asset.game-img-url("control_icons/24px/check.vsvg");
+$icon-controls-close-circle: asset.game-img-url("control_icons/24px/x_close_filled.vsvg");
+$icon-controls-close: asset.game-img-url("control_icons/24px/x_close.vsvg");
 $icon-controls-double-arrow-left: asset.game-img-url("control_icons/double_arrow_left_png.vtex");
 $icon-controls-double-arrow-right: asset.game-img-url("control_icons/double_arrow_right_png.vtex");
 $icon-controls-escalation-arrow: asset.game-img-url("control_icons/escalation_arrow_psd.vtex");
@@ -103,8 +105,8 @@ $icon-controls-filter-carry: asset.game-img-url("control_icons/filter_carry_png.
 $icon-controls-filter-complexity: asset.game-img-url("control_icons/filter_complexity_png.vtex");
 $icon-controls-filter-melee: asset.game-img-url("control_icons/filter_melee_png.vtex");
 $icon-controls-filter-support: asset.game-img-url("control_icons/filter_support_png.vtex");
-$icon-controls-info: asset.game-img-url("control_icons/24px/info.vsvg");
-$icon-controls-quit: asset.game-img-url("control_icons/quit_png.vtex");
+$icon-controls-info-circle: asset.game-img-url("control_icons/24px/info.vsvg");
+$icon-controls-info: asset.game-img-url("control_icons/24px/info_ghost.vsvg");
 $icon-controls-random-dice: asset.game-img-url("control_icons/random_dice_psd.vtex");
 $icon-controls-refresh: asset.game-img-url("control_icons/refresh_psd.vtex");
 $icon-controls-search: asset.game-img-url("control_icons/icon_search_png.vtex");

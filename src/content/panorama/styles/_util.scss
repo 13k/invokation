@@ -45,6 +45,34 @@
   @return gradient(linear, 0% $top, 0% $bottom, $color-stops...);
 }
 
+@function merge-transition($left, $right) {
+  $left: $left or ();
+  $right: $right or ();
+  $props-left: map.get($left, "property") or ();
+  $transition: map.merge($left, $right);
+  $props: map.get($transition, "property") or ();
+
+  @each $prop in $props-left {
+    @if list.index($props, $prop) == null {
+      $props: list.append($props, $prop, $separator: comma);
+    }
+  }
+
+  $transition: map.set($transition, "property", $props);
+
+  @return $transition;
+}
+
+@mixin expand-map($map, $prefix: null) {
+  @each $key, $value in $map {
+    @if $prefix != null {
+      $key: "#{$prefix}-#{$key}";
+    }
+
+    #{$key}: $value;
+  }
+}
+
 @mixin expand-box-property($property, $map) {
   @each $key, $value in $map {
     $prop-name: "#{$property}-#{$key}";

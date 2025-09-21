@@ -38,7 +38,7 @@ $cl-text: color.change($cl-accent, $lightness: 17%);
   }
 
   #btn-close {
-    @include btn.close2(36px);
+    @include btn.close(36px);
     width: 36px;
     height: 36px;
     margin-top: -4px;

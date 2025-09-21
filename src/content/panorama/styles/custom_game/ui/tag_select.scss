@@ -1,6 +1,6 @@
+@use "../../button" as btn;
 @use "../../dota2";
 @use "../../ui";
-@use "../../vars";
 
 @include dota2.style;
 
@@ -44,7 +44,7 @@
   }
 
   .tag-remove-button {
-    @include ui.icon(vars.$icon-controls-quit);
+    @include btn.close(14px);
     width: 14px;
     height: 14px;
     margin-left: 2px;

@@ -223,10 +223,13 @@ $closed-width: $thumb-width;
     }
 
     .filter-reset-button {
-      @include btn.close(12px);
-      margin: 0 0 0 6px;
+      @include btn.close-circle(12px);
+      width: 12px;
+      height: 12px;
+      margin: 0 0 0 2px;
       padding: 0;
-      vertical-align: center;
+      vertical-align: top;
+      horizontal-align: left;
       wash-color: #ff808088;
 
       &:hover {
@@ -244,7 +247,7 @@ $closed-width: $thumb-width;
     }
 
     .popup-label {
-      margin: 0 0 4px;
+      margin: 0 0 4px 0;
       padding: 0;
       vertical-align: center;
     }

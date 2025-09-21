@@ -11,14 +11,14 @@
     <Panel id="top-bar">
       <Button
         id="btn-game-info"
-        class="button info-icon"
+        class="btn info-icon"
         onmouseover="UIShowTextTooltip(#DOTA_Custom_Game_Info)"
         onmouseout="UIHideTextTooltip()"
       />
 
       <Button
         id="btn-quit"
-        class="button"
+        class="btn"
         onmouseover="UIShowTextTooltip(#dota_dashboard_quit)"
         onmouseout="UIHideTextTooltip()"
       />

@@ -75,7 +75,7 @@
     }
 
     .#{$class-thumb-arrow} {
-      @include ui.icon-darrow-left;
+      @include ui.icon(v.$icon-controls-double-arrow-left);
       width: 16px;
       height: 16px;
       transform: translateX(-9px);
@@ -178,7 +178,7 @@
     }
 
     &.icon-stop {
-      @include btn.close2($icon-size);
+      @include btn.close($icon-size);
     }
 
     @each $name, $colors in v.$combo-controls-colors {
