@@ -140,7 +140,6 @@ export enum GameEvent {
 export enum CustomGameEvent {
   // player
   PlayerHeroInGame = "invk_player_hero_in_game",
-  PlayerQuitRequest = "invk_player_quit_request",
   // combos
   CombosReload = "invk_combos_reload",
   ComboStart = "invk_combo_start",
@@ -174,8 +173,6 @@ export interface PlayerHeroInGame {
   name: string;
   variant: number;
 }
-
-export type PlayerQuitRequest = Record<string, never>;
 
 export type CombosReload = Record<string, never>;
 

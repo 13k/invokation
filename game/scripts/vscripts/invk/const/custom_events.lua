@@ -8,12 +8,6 @@ local M = {}
 --- Player picked a hero
 M.EVENT_PLAYER_HERO_IN_GAME = "invk_player_hero_in_game"
 
---- Payload for event `EVENT_PLAYER_QUIT_REQUEST`
---- @class invk.custom_events.PlayerQuitRequest
-
---- Player requested to leave
-M.EVENT_PLAYER_QUIT_REQUEST = "invk_player_quit_request"
-
 --- Payload for event `EVENT_COMBOS_RELOAD`
 --- @class invk.custom_events.CombosReloadPayload
 

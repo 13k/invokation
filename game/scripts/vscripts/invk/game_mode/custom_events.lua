@@ -31,7 +31,6 @@ end
 function M:register()
   self:d("register listeners")
 
-  self:subscribe(CUSTOM_EVENTS.EVENT_PLAYER_QUIT_REQUEST, "on_player_quit_request")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBOS_RELOAD, "on_combos_reload")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBO_START, "on_combo_start")
   self:subscribe(CUSTOM_EVENTS.EVENT_COMBO_STOP, "on_combo_stop")
@@ -65,15 +64,6 @@ end
 --- @return CustomGameEventListenerID
 function M:subscribe(event, method_name)
   return custom_ev.subscribe(event, self:method_handler(method_name))
-end
-
---- Handles player quit request events.
---- @param player CDOTAPlayerController
---- @param payload invk.custom_events.PlayerQuitRequest
-function M:on_player_quit_request(player, payload)
-  self:d("on_player_quit_request", { player = player:GetPlayerID(), payload = payload })
-
-  SendToServerConsole("disconnect")
 end
 
 --- Handles combos reload events.
