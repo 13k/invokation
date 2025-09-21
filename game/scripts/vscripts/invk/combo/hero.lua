@@ -91,11 +91,7 @@ function M.level_up(base_player, options)
     target_level = unit:get_level() + 1
   end
 
-  if target_level == LIMITS.MAX_HERO_LEVEL then
-    HeroMaxLevel(player.hero)
-  else
-    unit:hero_level_up_to(target_level, { play_effects = true })
-  end
+  unit:hero_level_up_to(target_level, { play_effects = true })
 end
 
 return M
