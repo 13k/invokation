@@ -186,6 +186,11 @@ end
 --- Called once and only once when the game completely begins (about 0:00 on the clock).
 function M:on_game_in_progress()
   self:d("on_game_in_progress")
+
+  -- selene: allow(incorrect_standard_library_use)
+  GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, "item_aghanims_shard", 1, -1)
+  -- selene: allow(incorrect_standard_library_use)
+  GameRules:IncreaseItemStock(DOTA_TEAM_BADGUYS, "item_aghanims_shard", 1, -1)
 end
 
 --- Called when an NPC has spawned somewhere in game, including heroes.
