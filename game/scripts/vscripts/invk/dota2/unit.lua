@@ -1,7 +1,9 @@
 local class = require("middleclass")
 
 local INVENTORY = require("invk.const.inventory")
+local ITEMS = require("invk.const.items")
 local LIMITS = require("invk.const.limits")
+local MODIFIERS = require("invk.const.modifiers")
 local tbl = require("invk.lang.table")
 local val = require("invk.lang.value")
 
@@ -83,7 +85,7 @@ end
 --- Levels up the hero unit.
 --- @param level integer # Target level (if current level is higher, does nothing)
 --- @param options? invk.dota.unit.HeroLevelUpOptions # Options table (default: `{}`)
-function M:hero_level_up_to(level, options)
+function M:hero_level_up(level, options)
   local hero = self:require_hero()
   local opts = options or {}
   local play_effects = val.non_nil(opts.play_effects, false)
@@ -327,6 +329,18 @@ function M:end_ability_cooldowns()
   self:for_each_ability(function(ability)
     ability:EndCooldown()
   end)
+end
+
+function M:add_aghanims_shard()
+  if not self.entity:FindModifierByName(MODIFIERS.aghanims_shard) then
+    self.entity:AddItemByName(ITEMS.aghanims_shard)
+  end
+end
+
+function M:add_aghanims_scepter_consumed()
+  if not self.entity:FindModifierByName(MODIFIERS.aghanims_scepter_consumed) then
+    self.entity:AddItemByName(ITEMS.aghanims_scepter_consumed)
+  end
 end
 
 ----------------------------------------------------------------------------------------------------

@@ -95,6 +95,7 @@ M.EVENT_COMBO_RESTART = "invk_combo_restart"
 --- @class invk.custom_events.FreestyleHeroLevelUpPayload
 --- @field level? integer # Level up to specified level
 --- @field maxLevel? integer # Level up to max level (`1`: yes, `0`: no) (default: `0`)
+--- @field ultraMax? integer # Give everything to hero (levels, aghs, talents) (`1`: yes, `0`: no) (default: `0`)
 
 --- Freestyle hero level up
 M.EVENT_FREESTYLE_HERO_LEVEL_UP = "invk_freestyle_hero_level_up"

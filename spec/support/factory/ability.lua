@@ -1,7 +1,10 @@
 local Ability = require("invk.dota2.ability")
 
---- @param attributes support.dota2.CDOTABaseAbility_attributes
---- @param options? support.factory.dota_ability.Options
+--- @class F.ability.Attributes : F.dota_ability.Attributes
+--- @class F.ability.Options : F.dota_ability.Options
+
+--- @param attributes F.ability.Attributes
+--- @param options? F.ability.Options
 --- @return invk.dota2.Ability
 return function(attributes, options)
   local F = require("support.factory")

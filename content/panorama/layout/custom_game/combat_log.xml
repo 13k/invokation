@@ -8,25 +8,27 @@
   </styles>
 
   <Panel class="--combat-log closed" hittest="false">
-    <Button id="btn-close" class="small light-grey">
-      <Image class="btn-icon" src="s2r://panorama/images/control_icons/24px/x_close.vsvg" />
-    </Button>
+    <Panel id="container">
+      <Button id="btn-close" class="small light-grey">
+        <Image class="btn-icon" src="s2r://panorama/images/control_icons/24px/x_close.vsvg" />
+      </Button>
 
-    <Panel id="combat-log">
-      <Panel id="contents" />
+      <Panel id="combat-log">
+        <Panel id="contents" />
 
-      <Panel class="bar">
-        <Panel class="bar-actions">
-          <ToggleButton
-            id="filter-invocations"
-            class="bar-item"
-            text="#invk_combat_log_filter_invocations"
-            selected="true"
-          />
+        <Panel class="bar">
+          <Panel class="bar-actions">
+            <ToggleButton
+              id="filter-invocations"
+              class="bar-item"
+              text="#invk_combat_log_filter_invocations"
+              selected="true"
+            />
 
-          <Button id="btn-clear" class="bar-item">
-            <Label class="btn-label" text="#invk_combat_log_clear" hittest="false" />
-          </Button>
+            <Button id="btn-clear" class="bar-item">
+              <Label class="btn-label" text="#invk_combat_log_clear" hittest="false" />
+            </Button>
+          </Panel>
         </Panel>
       </Panel>
     </Panel>

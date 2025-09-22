@@ -2,12 +2,14 @@ local m = require("moses")
 
 local CDOTABaseAbility = require("support.dota2.CDOTABaseAbility")
 
---- @class support.factory.dota_ability.Options
+--- @class F.dota_ability.Attributes : T.dota2.CDOTABaseAbility.Attributes
+
+--- @class F.dota_ability.Options
 --- @field hero? string
 
---- @param attributes support.dota2.CDOTABaseAbility_attributes
---- @param options? support.factory.dota_ability.Options
---- @return support.dota2.CDOTABaseAbility
+--- @param attributes F.dota_ability.Attributes
+--- @param options? F.dota_ability.Options
+--- @return T.dota2.CDOTABaseAbility
 return function(attributes, options)
   local opts = options or {}
 

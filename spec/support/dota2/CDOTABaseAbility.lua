@@ -3,7 +3,7 @@ local m = require("moses")
 
 local CBaseEntity = require("support.dota2.CBaseEntity")
 
---- @class support.dota2.CDOTABaseAbility : support.dota2.CBaseEntity, CDOTABaseAbility
+--- @class T.dota2.CDOTABaseAbility : T.dota2.CBaseEntity, CDOTABaseAbility
 --- @field index integer
 --- @field is_item boolean
 --- @field level integer
@@ -13,7 +13,7 @@ local CBaseEntity = require("support.dota2.CBaseEntity")
 --- @field MaxLevel integer
 local CDOTABaseAbility = class(CBaseEntity)
 
---- @class (partial) support.dota2.CDOTABaseAbility_attributes : support.dota2.CBaseEntity_attributes
+--- @class (partial) T.dota2.CDOTABaseAbility.Attributes : T.dota2.CBaseEntity.Attributes
 --- @field index? integer
 --- @field is_item? boolean
 --- @field level? integer
@@ -22,13 +22,13 @@ local CDOTABaseAbility = class(CBaseEntity)
 --- @field AbilityDuration? number
 --- @field MaxLevel? integer
 
---- @type support.dota2.CDOTABaseAbility_attributes
+--- @type T.dota2.CDOTABaseAbility.Attributes
 local ATTRIBUTES = {
   level = 0,
   MaxLevel = 1,
 }
 
---- @param attributes support.dota2.CDOTABaseAbility_attributes
+--- @param attributes T.dota2.CDOTABaseAbility.Attributes
 function CDOTABaseAbility:_init(attributes)
   self:super(m.extend({}, ATTRIBUTES, attributes or {}))
 end
@@ -97,6 +97,7 @@ function CDOTABaseAbility:GetSpecialValueFor(key)
   return m.path(self, "special", key)
 end
 
+--- @diagnostic disable-next-line: unused
 function CDOTABaseAbility:EndCooldown() end
 
 return CDOTABaseAbility

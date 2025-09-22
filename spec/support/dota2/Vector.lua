@@ -1,6 +1,8 @@
+--# selene: allow(unscoped_variables)
+
 local class = require("pl.class")
 
---- @class support.dota2.Vector : Vector
+--- @class T.dota2.Vector : Vector
 Vector = class()
 
 --- @param x number

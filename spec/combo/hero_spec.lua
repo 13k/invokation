@@ -9,6 +9,7 @@ local dota2_h = require("support.dota2.helpers")
 local Combo = require("invk.combo.combo")
 local INVOKER = require("invk.const.invoker")
 local LIMITS = require("invk.const.limits")
+local MODIFIERS = require("invk.const.modifiers")
 local S = require("invk.combo.spec")
 local SOUND_EVENTS = require("invk.const.sound_events")
 local combo_hero = require("invk.combo.hero")
@@ -53,7 +54,7 @@ describe("invk.combo.hero", function()
 
     it("runs the combo setup", function()
       local unit = F.hero_invoker()
-      local hero = unit.entity --[[@as support.dota2.CDOTA_BaseNPC_Hero]]
+      local hero = unit.entity --[[@as T.dota2.CDOTA_BaseNPC_Hero]]
       local player = F.dota_player({ hero = hero })
 
       combo_hero.setup(player, combo)
@@ -128,7 +129,7 @@ describe("invk.combo.hero", function()
 
     it("resets hero items cooldowns", function()
       local unit = F.hero_invoker(nil, { items = { "item_shivas_guard", "item_refresher" } })
-      local hero = unit.entity
+      local hero = unit.entity --[[@as T.dota2.CDOTA_BaseNPC_Hero]]
 
       assert.is_false(m.isEmpty(hero.inventory))
 
@@ -345,16 +346,38 @@ describe("invk.combo.hero", function()
     end)
 
     describe("with max_level option", function()
-      it("levels up the player hero, abilities and talents to max level", function()
+      it("levels up the player hero to max level", function()
         assert.equal(3, hero:GetLevel())
         assert.equal(0, hero:GetAbilityPoints())
 
-        -- selene: allow(global_usage)
-        local spy_hero_max_level = spy.on(_G, "HeroMaxLevel")
-
         combo_hero.level_up(player, { max_level = true })
 
-        assert.spy(spy_hero_max_level).called(1)
+        assert.equal(LIMITS.MAX_HERO_LEVEL, hero:GetLevel())
+        assert.equal(27, hero:GetAbilityPoints())
+
+        for _, name in ipairs(INVOKER.ORB_ABILITIES) do
+          local ability = dota2_h.require_ability(hero, name)
+
+          assert.equal(1, ability:GetLevel())
+        end
+
+        for _, name in ipairs(INVOKER.TALENT_ABILITIES) do
+          local ability = dota2_h.require_ability(hero, name)
+
+          assert.equal(0, ability:GetLevel())
+        end
+
+        assert.equal(1, dota2_h.require_ability(hero, AbilityName.COLD_SNAP):GetLevel())
+        assert.equal(1, dota2_h.require_ability(hero, AbilityName.SUN_STRIKE):GetLevel())
+      end)
+    end)
+
+    describe("with ultra_max option", function()
+      it("levels up the player hero, abilities and talents to max level and gives items", function()
+        assert.equal(3, hero:GetLevel())
+        assert.equal(0, hero:GetAbilityPoints())
+
+        combo_hero.level_up(player, { ultra_max = true })
 
         assert.equal(LIMITS.MAX_HERO_LEVEL, hero:GetLevel())
         assert.equal(0, hero:GetAbilityPoints())
@@ -373,6 +396,9 @@ describe("invk.combo.hero", function()
 
         assert.equal(1, dota2_h.require_ability(hero, AbilityName.COLD_SNAP):GetLevel())
         assert.equal(1, dota2_h.require_ability(hero, AbilityName.SUN_STRIKE):GetLevel())
+
+        assert.is_not_nil(hero:FindModifierByName(MODIFIERS.aghanims_shard))
+        assert.is_not_nil(hero:FindModifierByName(MODIFIERS.aghanims_scepter_consumed))
       end)
     end)
   end)

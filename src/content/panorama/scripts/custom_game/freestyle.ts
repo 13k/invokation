@@ -26,6 +26,7 @@ export interface FreestyleElements extends Elements {
   score: Panel;
   btnLevelUp: Button;
   btnLevelMax: Button;
+  btnUltraMax: Button;
   btnRestart: Button;
   btnFullRestart: Button;
   btnStop: Button;
@@ -56,6 +57,7 @@ class Freestyle extends Component<FreestyleElements> {
         score: "score",
         btnLevelUp: "btn-level-up",
         btnLevelMax: "btn-level-max",
+        btnUltraMax: "btn-ultra-max",
         btnRestart: "btn-restart",
         btnFullRestart: "btn-full-restart",
         btnStop: "btn-stop",
@@ -68,6 +70,7 @@ class Freestyle extends Component<FreestyleElements> {
       panelEvents: {
         btnLevelUp: { onactivate: () => this.onBtnLevelUp() },
         btnLevelMax: { onactivate: () => this.onBtnLevelMax() },
+        btnUltraMax: { onactivate: () => this.onBtnUltraMax() },
         btnRestart: { onactivate: () => this.onBtnRestart(false) },
         btnFullRestart: { onactivate: () => this.onBtnRestart(true) },
         btnStop: { onactivate: () => this.onBtnStop() },
@@ -109,7 +112,7 @@ class Freestyle extends Component<FreestyleElements> {
   }
 
   onBtnRestart(isHardReset: boolean): void {
-    this.debugFn(() => ["onBtnRestart()", { isHardReset }]);
+    this.debug("onBtnRestart()", { isHardReset });
     this.sendRestart(isHardReset);
   }
 
@@ -119,11 +122,18 @@ class Freestyle extends Component<FreestyleElements> {
   }
 
   onBtnLevelUp(): void {
+    this.debug("onBtnLevelUp()");
     this.sendLevelUp({ maxLevel: false });
   }
 
   onBtnLevelMax(): void {
+    this.debug("onBtnLevelMax()");
     this.sendLevelUp({ maxLevel: true });
+  }
+
+  onBtnUltraMax(): void {
+    this.debug("onBtnUltraMax()");
+    this.sendLevelUp({ ultraMax: true });
   }
 
   // ----- Helpers -----

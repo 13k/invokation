@@ -232,7 +232,8 @@ export interface ComboRestart {
 }
 
 export interface FreestyleHeroLevelUp {
-  maxLevel: boolean;
+  maxLevel?: boolean;
+  ultraMax?: boolean;
 }
 
 export interface CombatLogAbilityUsed {

@@ -5,22 +5,25 @@ local CBaseEntity = require("support.dota2.CBaseEntity")
 local F = require("support.factory")
 
 local INVENTORY = require("invk.const.inventory")
+local ITEMS = require("invk.const.items")
+local MODIFIERS = require("invk.const.modifiers")
 
---- @class support.dota2.CDOTA_BaseNPC : support.dota2.CBaseEntity, CDOTA_BaseNPC
+--- @class T.dota2.CDOTA_BaseNPC : T.dota2.CBaseEntity, CDOTA_BaseNPC
 --- @field level integer
 --- @field max_health integer
 --- @field health integer
 --- @field max_mana integer
 --- @field mana integer
---- @field abilities { n: integer, [integer]: support.dota2.CDOTABaseAbility }
+--- @field modifiers CDOTA_Buff[]
+--- @field abilities { n: integer, [integer]: T.dota2.CDOTABaseAbility }
 --- @field talent_ability_start integer
 --- @field talent_ability_end integer
 --- @field has_inventory boolean
---- @field inventory { [DOTAScriptInventorySlot_t]: support.dota2.CDOTA_Item }
---- @field player_owner support.dota2.CDOTAPlayerController
+--- @field inventory { [DOTAScriptInventorySlot_t]: T.dota2.CDOTA_Item }
+--- @field player_owner T.dota2.CDOTAPlayerController
 local CDOTA_BaseNPC = class(CBaseEntity)
 
---- @class (partial) support.dota2.CDOTA_BaseNPC_attributes : support.dota2.CBaseEntity_attributes
+--- @class (partial) T.dota2.CDOTA_BaseNPC.Attributes : T.dota2.CBaseEntity.Attributes
 --- @field has_inventory? boolean
 --- @field level? integer
 --- @field max_health? integer
@@ -29,7 +32,7 @@ local CDOTA_BaseNPC = class(CBaseEntity)
 --- @field mana? integer
 --- @field [string] any
 
---- @type support.dota2.CDOTA_BaseNPC_attributes
+--- @type T.dota2.CDOTA_BaseNPC.Attributes
 local ATTRIBUTES = {
   has_inventory = false,
   level = 1,
@@ -41,15 +44,16 @@ local ATTRIBUTES = {
 
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
---- @param attributes support.dota2.CDOTA_BaseNPC_attributes
+--- @param attributes T.dota2.CDOTA_BaseNPC.Attributes
 function CDOTA_BaseNPC:_init(attributes)
-  --- @type support.dota2.CDOTA_BaseNPC_attributes
+  --- @type T.dota2.CDOTA_BaseNPC.Attributes
   local attrs = m.extend({}, ATTRIBUTES, attributes)
 
   self:super(attrs)
 
   self.abilities = { n = 0 }
   self.inventory = {}
+  self.modifiers = {}
   self.talent_ability_start = 0
   self.talent_ability_end = 0
 
@@ -182,12 +186,37 @@ function CDOTA_BaseNPC:AddAbility(name)
   return ability
 end
 
+function CDOTA_BaseNPC:FindModifierByName(name)
+  for _, mod in ipairs(self.modifiers) do
+    if mod.name == name then
+      return mod
+    end
+  end
+
+  return nil
+end
+
+-- not part of Dota2's scripting API
+function CDOTA_BaseNPC:add_modifier(name)
+  local mod = self:FindModifierByName(name)
+
+  if mod ~= nil then
+    return mod
+  end
+
+  mod = F.dota_buff({ name = name })
+
+  self.modifiers[#self.modifiers + 1] = mod
+
+  return mod
+end
+
 function CDOTA_BaseNPC:HasInventory()
   return self.has_inventory
 end
 
 -- not part of Dota2's scripting API
---- @param predicate fun(item: support.dota2.CDOTA_Item?, slot: DOTAScriptInventorySlot_t): boolean
+--- @param predicate fun(item: T.dota2.CDOTA_Item?, slot: DOTAScriptInventorySlot_t): boolean
 --- @return DOTAScriptInventorySlot_t?
 function CDOTA_BaseNPC:find_inventory_slot(predicate)
   if not self:HasInventory() then
@@ -240,18 +269,26 @@ end
 
 function CDOTA_BaseNPC:AddItemByName(name)
   if not self:HasInventory() then
-    return nil
+    error(string.format("CDOTA_BaseNPC %q has no inventory", self:GetUnitName()))
   end
 
   local slot = self:find_free_inventory_slot()
 
   if slot == nil then
-    return nil
+    error(string.format("CDOTA_BaseNPC %q has space left in inventory", self:GetUnitName()))
   end
 
-  self.inventory[slot] = F.dota_item({ name = name })
+  local item = F.dota_item({ name = name })
 
-  return self.inventory[slot]
+  if name == ITEMS.aghanims_shard then
+    self:add_modifier(MODIFIERS.aghanims_shard)
+  elseif name == ITEMS.aghanims_scepter_consumed then
+    self:add_modifier(MODIFIERS.aghanims_scepter_consumed)
+  else
+    self.inventory[slot] = item
+  end
+
+  return item
 end
 
 function CDOTA_BaseNPC:RemoveItem(item)
@@ -266,7 +303,10 @@ function CDOTA_BaseNPC:RemoveItem(item)
   end
 end
 
+--- @diagnostic disable-next-line: unused
 function CDOTA_BaseNPC:Hold() end
+
+--- @diagnostic disable-next-line: unused
 function CDOTA_BaseNPC:Purge(
   _removeBuffs,
   _removeDebuffs,
@@ -276,6 +316,7 @@ function CDOTA_BaseNPC:Purge(
 )
 end
 
+--- @diagnostic disable-next-line: unused
 function CDOTA_BaseNPC:SetIdleAcquire(_value) end
 
 return CDOTA_BaseNPC

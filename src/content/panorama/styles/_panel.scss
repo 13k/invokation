@@ -165,12 +165,15 @@
     }
 
     &.icon-level-up {
-      @include btn.icon(v.$icon-controls-arrow-dropdown-up, $icon-size);
+      @include btn.icon(v.icon-chevron("up"), $icon-size);
     }
 
     &.icon-level-max {
-      @include btn.icon(v.$icon-controls-double-arrow-right, $icon-size);
-      transform: rotateZ(-90deg);
+      @include btn.icon(v.icon-chevron("up", "double"), $icon-size);
+    }
+
+    &.icon-ultra-max {
+      @include btn.icon(v.icon-chevron("up", "fancy"), $icon-size);
     }
 
     &.icon-restart {

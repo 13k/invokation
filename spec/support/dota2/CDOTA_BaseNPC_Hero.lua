@@ -5,18 +5,18 @@ local CDOTA_BaseNPC = require("support.dota2.CDOTA_BaseNPC")
 
 local LIMITS = require("invk.const.limits")
 
---- @class support.dota2.CDOTA_BaseNPC_Hero : support.dota2.CDOTA_BaseNPC, CDOTA_BaseNPC_Hero
+--- @class T.dota2.CDOTA_BaseNPC_Hero : T.dota2.CDOTA_BaseNPC, CDOTA_BaseNPC_Hero
 --- @field ability_points integer
 --- @field gold_reliable integer
 --- @field gold_unreliable integer
 local CDOTA_BaseNPC_Hero = class(CDOTA_BaseNPC)
 
---- @class (partial) support.dota2.CDOTA_BaseNPC_Hero_attributes : support.dota2.CDOTA_BaseNPC_attributes
+--- @class (partial) T.dota2.CDOTA_BaseNPC_Hero.Attributes : T.dota2.CDOTA_BaseNPC.Attributes
 --- @field ability_points? integer
 --- @field gold_reliable? integer
 --- @field gold_unreliable? integer
 
---- @type support.dota2.CDOTA_BaseNPC_Hero_attributes
+--- @type T.dota2.CDOTA_BaseNPC_Hero.Attributes
 local ATTRIBUTES = {
   has_inventory = true,
   ability_points = 1,
@@ -24,7 +24,7 @@ local ATTRIBUTES = {
   gold_unreliable = 0,
 }
 
---- @param attributes support.dota2.CDOTA_BaseNPC_Hero_attributes
+--- @param attributes T.dota2.CDOTA_BaseNPC_Hero.Attributes
 function CDOTA_BaseNPC_Hero:_init(attributes)
   self:super(m.extend({}, ATTRIBUTES, attributes))
 end
@@ -35,12 +35,7 @@ function CDOTA_BaseNPC_Hero:HeroLevelUp(_playEffects)
   end
 
   self:set_level(self:GetLevel() + 1)
-
-  if self:GetLevel() == LIMITS.MAX_HERO_LEVEL then
-    self:max_level()
-  else
-    self:SetAbilityPoints(self:GetAbilityPoints() + 1)
-  end
+  self:SetAbilityPoints(self:GetAbilityPoints() + 1)
 end
 
 function CDOTA_BaseNPC_Hero:GetGold()

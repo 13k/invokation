@@ -2,7 +2,7 @@ local class = require("pl.class")
 
 local CBaseEntity = require("support.dota2.CBaseEntity")
 
---- @class support.dota2.CDOTABaseGameMode : support.dota2.CBaseEntity, CDOTABaseGameMode
+--- @class T.dota2.CDOTABaseGameMode : T.dota2.CBaseEntity, CDOTABaseGameMode
 local CDOTABaseGameMode = class(CBaseEntity)
 
 function CDOTABaseGameMode:_init()

@@ -2,16 +2,16 @@ local class = require("pl.class")
 
 local CDOTABaseAbility = require("support.dota2.CDOTABaseAbility")
 
---- @class support.dota2.CDOTA_Item : support.dota2.CDOTABaseAbility, CDOTA_Item
+--- @class T.dota2.CDOTA_Item : T.dota2.CDOTABaseAbility, CDOTA_Item
 --- @field slot DOTAScriptInventorySlot_t
---- @field purchaser support.dota2.CDOTA_BaseNPC_Hero
+--- @field purchaser T.dota2.CDOTA_BaseNPC_Hero
 local CDOTA_Item = class(CDOTABaseAbility)
 
---- @class support.dota2.CDOTA_Item_attributes : support.dota2.CDOTABaseAbility_attributes
+--- @class T.dota2.CDOTA_Item.Attributes : T.dota2.CDOTABaseAbility.Attributes
 --- @field slot? DOTAScriptInventorySlot_t
---- @field purchaser? support.dota2.CDOTA_BaseNPC_Hero
+--- @field purchaser? T.dota2.CDOTA_BaseNPC_Hero
 
---- @param attributes support.dota2.CDOTA_Item_attributes
+--- @param attributes T.dota2.CDOTA_Item.Attributes
 function CDOTA_Item:_init(attributes)
   self:super(attributes)
 end

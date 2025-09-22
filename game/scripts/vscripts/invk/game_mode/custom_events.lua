@@ -115,6 +115,7 @@ function M:on_freestyle_hero_level_up(player, payload)
   self.game.combos:freestyle_hero_level_up(player, {
     level = payload.level,
     max_level = payload.maxLevel == 1,
+    ultra_max = payload.ultraMax == 1,
   })
 end
 

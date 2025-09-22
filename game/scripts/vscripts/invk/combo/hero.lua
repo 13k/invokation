@@ -1,3 +1,4 @@
+local Invoker = require("invk.dota2.invoker")
 local LIMITS = require("invk.const.limits")
 local Player = require("invk.dota2.player")
 local SOUND_EVENTS = require("invk.const.sound_events")
@@ -15,7 +16,7 @@ function M.setup(base_player, combo)
   local player = Player:new(base_player)
   local unit = Unit:new(player.hero)
 
-  unit:hero_level_up_to(combo.hero_level)
+  unit:hero_level_up(combo.hero_level)
   unit:add_items_by_name(combo.items, { only_missing = true })
 
   if combo.gold ~= nil and combo.gold > 0 then
@@ -72,6 +73,7 @@ end
 --- @class invk.combo.LevelUpOptions
 --- @field level? integer # Level up to specified level
 --- @field max_level? boolean # Level up to max level (default: `false`)
+--- @field ultra_max? boolean # Give everything to hero (levels, aghs, talents) (default: `false`)
 
 --- Levels a player's hero up.
 --- @param base_player CDOTAPlayerController # Player
@@ -80,18 +82,29 @@ function M.level_up(base_player, options)
   local opts = options or {}
   local player = Player:new(base_player)
   local unit = Unit:new(player.hero)
-  --- @type integer
-  local target_level
 
-  if opts.level ~= nil then
-    target_level = opts.level
-  elseif opts.max_level then
-    target_level = LIMITS.MAX_HERO_LEVEL
+  if opts.ultra_max then
+    local invoker = Invoker:new(player.hero)
+
+    HeroMaxLevel(player.hero)
+
+    invoker:level_up_orbs({ max_level = true })
+    unit:add_aghanims_shard()
+    unit:add_aghanims_scepter_consumed()
   else
-    target_level = unit:get_level() + 1
-  end
+    --- @type integer
+    local target_level
 
-  unit:hero_level_up_to(target_level, { play_effects = true })
+    if opts.max_level then
+      target_level = LIMITS.MAX_HERO_LEVEL
+    elseif opts.level ~= nil then
+      target_level = opts.level
+    else
+      target_level = unit:get_level() + 1
+    end
+
+    unit:hero_level_up(target_level, { play_effects = true })
+  end
 end
 
 return M

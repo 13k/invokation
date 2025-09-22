@@ -6,6 +6,8 @@
 
 @include dota2.style;
 
+$floating-panel-margin: 12px;
+
 $columns: 20;
 $padding: 5px;
 $cell-size: 32px;
@@ -18,8 +20,9 @@ $height: 300px;
 $class-closed: "closed";
 
 .--combat-log {
-  align: left top;
-  margin: 24px 0 0 256px;
+  align: middle top;
+  width: 100%;
+  margin-top: 24px;
   background-color: none;
   opacity: 1;
   transition-delay: 0.1s;
@@ -29,6 +32,12 @@ $class-closed: "closed";
 
   &.#{$class-closed} {
     opacity: 0;
+  }
+
+  #container {
+    align: middle top;
+    width: $width + $floating-panel-margin;
+    height: $height + $floating-panel-margin;
   }
 
   #btn-close {
@@ -45,10 +54,10 @@ $class-closed: "closed";
 
   #combat-log {
     flow-children: down;
-    align: center center;
+    align: middle top;
     width: $width;
     height: $height;
-    margin: 12px 12px 0 0;
+    margin: $floating-panel-margin;
     border-radius: 6px;
 
     @include panel.transparent;

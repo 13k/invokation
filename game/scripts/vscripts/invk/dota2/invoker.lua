@@ -100,7 +100,7 @@ end
 
 --- Levels up orb abilities.
 --- @param options? invk.dota2.invoker.LevelUpAbilitiesOptions
-function M:level_up_abilities(options)
+function M:level_up_orbs(options)
   local opts = options or {}
 
   for _, name in ipairs(I.ORB_ABILITIES) do

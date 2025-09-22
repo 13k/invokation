@@ -26,3 +26,9 @@
     background-texture-size: $tex-size;
   }
 }
+
+@mixin icon-chevron($direction, $variant: null, $size: contain, $tex-size: null) {
+  $url: v.icon-chevron($direction, $variant: $variant);
+
+  @include icon($url, $size: $size, $tex-size: $tex-size);
+}

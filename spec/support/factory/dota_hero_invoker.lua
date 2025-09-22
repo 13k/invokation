@@ -2,12 +2,14 @@ local m = require("moses")
 
 local UNITS = require("invk.const.units")
 
---- @class support.factory.dota_hero_invoker.Attributes : support.dota2.CDOTA_BaseNPC_Hero_attributes
+--- @class F.dota_hero_invoker.Attributes : T.dota2.CDOTA_BaseNPC_Hero.Attributes
 --- @field name? string
 
---- @param attributes? support.factory.dota_hero_invoker.Attributes
---- @param options? support.factory.dota_hero.Options
---- @return support.dota2.CDOTA_BaseNPC_Hero
+--- @class F.dota_hero_invoker.Options : F.dota_hero.Options
+
+--- @param attributes? F.dota_hero_invoker.Attributes
+--- @param options? F.dota_hero_invoker.Options
+--- @return T.dota2.CDOTA_BaseNPC_Hero
 return function(attributes, options)
   local F = require("support.factory")
 

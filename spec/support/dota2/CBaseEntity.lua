@@ -3,7 +3,7 @@ local m = require("moses")
 
 local F = require("support.factory")
 
---- @class support.dota2.CBaseEntity : CBaseEntity
+--- @class T.dota2.CBaseEntity : CBaseEntity
 --- @field name string
 --- @field classname string
 --- @field entindex EntityIndex
@@ -13,7 +13,7 @@ local F = require("support.factory")
 --- @field alive boolean
 local CBaseEntity = class()
 
---- @class support.dota2.CBaseEntity_attributes
+--- @class T.dota2.CBaseEntity.Attributes
 --- @field name string
 --- @field classname? string
 --- @field entindex? EntityIndex
@@ -22,10 +22,11 @@ local CBaseEntity = class()
 --- @field removed? boolean
 --- @field alive? boolean
 
---- @param attributes support.dota2.CBaseEntity_attributes
+-- selene: allow(global_usage)
+--- @param attributes T.dota2.CBaseEntity.Attributes
 function CBaseEntity:_init(attributes)
   attributes.classname = attributes.classname or attributes.name
-  attributes.entindex = attributes.entindex or test_NextEntIndex()
+  attributes.entindex = attributes.entindex or _G.__next_ent_idx()
   attributes.team = attributes.team or DOTA_TEAM_NOTEAM
   attributes.origin = attributes.origin or F.vector({ 0, 0, 0 })
   attributes.removed = attributes.removed == nil and false or attributes.removed
@@ -33,7 +34,7 @@ function CBaseEntity:_init(attributes)
 
   m.extend(self, attributes)
 
-  test_SetEntity(self.entindex, self)
+  _G.__set_ent(self.entindex, self)
 end
 
 function CBaseEntity:GetEntityIndex()
@@ -84,7 +85,10 @@ function CBaseEntity:GetTeamNumber()
   return self.team
 end
 
+--- @diagnostic disable-next-line: unused
 function CBaseEntity:StopSound(_event) end
+
+--- @diagnostic disable-next-line: unused
 function CBaseEntity:SetThink() end
 
 return CBaseEntity

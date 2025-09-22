@@ -1,7 +1,10 @@
 local Unit = require("invk.dota2.unit")
 
---- @param attributes support.dota2.CDOTA_BaseNPC_Hero_attributes
---- @param options? support.factory.dota_hero.Options
+--- @class F.hero.Attributes : F.dota_hero.Attributes
+--- @class F.hero.Options : F.dota_hero.Options
+
+--- @param attributes F.hero.Attributes
+--- @param options? F.hero.Options
 --- @return invk.dota2.Unit
 return function(attributes, options)
   local F = require("support.factory")

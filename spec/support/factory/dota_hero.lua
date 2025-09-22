@@ -2,14 +2,16 @@ local m = require("moses")
 
 local CDOTA_BaseNPC_Hero = require("support.dota2.CDOTA_BaseNPC_Hero")
 
---- @class support.factory.dota_hero.Options
+--- @class F.dota_hero.Attributes : T.dota2.CDOTA_BaseNPC_Hero.Attributes
+
+--- @class F.dota_hero.Options
 --- @field gold? integer
 --- @field items? string[]
 --- @field abilities? string[] | { [string]: integer }
 
---- @param attributes support.dota2.CDOTA_BaseNPC_Hero_attributes
---- @param options? support.factory.dota_hero.Options
---- @return support.dota2.CDOTA_BaseNPC_Hero
+--- @param attributes F.dota_hero.Attributes
+--- @param options? F.dota_hero.Options
+--- @return T.dota2.CDOTA_BaseNPC_Hero
 return function(attributes, options)
   local opts = options or {}
   local kv = LoadKeyValues("scripts/npc/npc_heroes.txt")

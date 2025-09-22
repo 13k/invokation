@@ -111,10 +111,55 @@ $icon-controls-random-dice: asset.game-img-url("control_icons/random_dice_psd.vt
 $icon-controls-refresh: asset.game-img-url("control_icons/refresh_psd.vtex");
 $icon-controls-search: asset.game-img-url("control_icons/icon_search_png.vtex");
 
+$icon-controls-chevron-up: asset.game-img-url("control_icons/24px/chevron_up.vsvg");
+$icon-controls-chevron-down: asset.game-img-url("control_icons/24px/chevron_down.vsvg");
+$icon-controls-chevron-left: asset.game-img-url("control_icons/24px/chevron_left.vsvg");
+$icon-controls-chevron-right: asset.game-img-url("control_icons/24px/chevron_right.vsvg");
+
+$icon-controls-chevron-d-up: asset.game-img-url("control_icons/24px/chevron_double_up.vsvg");
+$icon-controls-chevron-d-down: asset.game-img-url("control_icons/24px/chevron_double_down.vsvg");
+$icon-controls-chevron-d-left: asset.game-img-url("control_icons/24px/chevron_double_left.vsvg");
+$icon-controls-chevron-d-right: asset.game-img-url("control_icons/24px/chevron_double_right.vsvg");
+
+$icon-controls-chevron-f-up: asset.game-img-url("control_icons/24px/chevron_fancy_up.vsvg");
+$icon-controls-chevron-f-down: asset.game-img-url("control_icons/24px/chevron_fancy_down.vsvg");
+$icon-controls-chevron-f-left: asset.game-img-url("control_icons/24px/chevron_fancy_left.vsvg");
+$icon-controls-chevron-f-right: asset.game-img-url("control_icons/24px/chevron_fancy_right.vsvg");
+
 $icon-status-loading: asset.game-img-url("status_icons/loadingthrobber_round_psd.vtex");
 
 $icon-facet-no-vision: asset.game-img-url("hud/facets/icons/no_vision_png.vtex");
 $icon-facet-vision: asset.game-img-url("hud/facets/icons/vision_png.vtex");
+
+@function icon-chevron($direction, $variant: null) {
+  $path: "control_icons/24px/chevron";
+
+  @if $variant == "double" {
+    $path: "#{$path}_double";
+  } @else if $variant == "fancy" {
+    $path: "#{$path}_fancy";
+  } @else if $variant != null {
+    @error "Unknown chrevron icon variant #{$variant}";
+  }
+
+  @if $direction == "up" {
+    $path: "#{$path}_up";
+  } @else if $direction == "down" {
+    $path: "#{$path}_down";
+  } @else if $direction == "left" {
+    $path: "#{$path}_left";
+  } @else if $direction == "right" {
+    $path: "#{$path}_right";
+  } @else {
+    @error "Unknown chrevron icon direction #{$direction}";
+  }
+
+  $path: "#{$path}.vsvg";
+
+  @debug "icon-chevron", $path;
+
+  @return asset.game-img-url($path);
+}
 
 // ***** invokation *****
 

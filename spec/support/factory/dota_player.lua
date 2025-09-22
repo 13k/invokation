@@ -1,10 +1,10 @@
 local CDOTAPlayerController = require("support.dota2.CDOTAPlayerController")
 
---- @class support.factory.dota_player.Attributes : support.dota2.CDOTAPlayerController_attributes
---- @field hero? support.dota2.CDOTA_BaseNPC_Hero
+--- @class F.dota_player.Attributes : T.dota2.CDOTAPlayerController.Attributes
+--- @field hero? T.dota2.CDOTA_BaseNPC_Hero
 
---- @param attributes? support.factory.dota_player.Attributes
---- @return support.dota2.CDOTAPlayerController
+--- @param attributes? F.dota_player.Attributes
+--- @return T.dota2.CDOTAPlayerController
 return function(attributes)
   local F = require("support.factory")
 

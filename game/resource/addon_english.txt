@@ -29,6 +29,7 @@
     "invk_controls_stop" "Stop"
     "invk_controls_level_up" "Level Up"
     "invk_controls_level_max" "Level Max"
+    "invk_controls_ultra_max" "Ultra Max!"
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // CombatLog
