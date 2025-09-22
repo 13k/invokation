@@ -138,39 +138,39 @@ tasks:
   format:panorama:
     desc: Format all panorama files
     cmds:
-      - task: format:panorama:layouts
-      - task: format:panorama:scripts
-      - task: format:panorama:styles
+      - task: format:layouts
+      - task: format:scripts
+      - task: format:styles
 
   lint:panorama:
     desc: Lint all panorama files
     cmds:
-      - task: lint:panorama:layouts
-      - task: lint:panorama:scripts
-      - task: lint:panorama:styles
+      - task: lint:layouts
+      - task: lint:scripts
+      - task: lint:styles
 
-  format:panorama:layouts:
+  format:layouts:
     desc: Format panorama layouts
     cmd: dprint fmt '{{ joinPath .SRC_PANO_LAYOUTS "**" }}'
 
-  lint:panorama:layouts:
+  lint:layouts:
     desc: Lint panorama layouts
     cmd: echo "not implemented"
 
-  format:panorama:scripts:
+  format:scripts:
     desc: Format panorama scripts
     cmd: dprint fmt '{{ joinPath .SRC_PANO_SCRIPTS "**" }}'
 
-  lint:panorama:scripts:
+  lint:scripts:
     desc: Lint panorama scripts
     dir: "{{ .SRC_PANO_SCRIPTS }}"
     cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
 
-  format:panorama:styles:
+  format:styles:
     desc: Format panorama styles
     cmd: dprint fmt '{{ joinPath .SRC_PANO_STYLES "**" }}'
 
-  lint:panorama:styles:
+  lint:styles:
     desc: Lint panorama styles
     dir: "{{ .SRC_PANO_STYLES }}"
     cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
