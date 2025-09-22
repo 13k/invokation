@@ -22,6 +22,7 @@ import { Component } from "./component";
 import { LayoutId } from "./layout";
 
 export interface FreestyleElements extends Elements {
+  container: Panel;
   score: Panel;
   btnLevelUp: Button;
   btnLevelMax: Button;
@@ -51,6 +52,7 @@ class Freestyle extends Component<FreestyleElements> {
   constructor() {
     super({
       elements: {
+        container: "container",
         score: "score",
         btnLevelUp: "btn-level-up",
         btnLevelMax: "btn-level-max",

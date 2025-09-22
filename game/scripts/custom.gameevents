@@ -19,6 +19,15 @@
 
 "CustomEvents"
 {
+  "invk_combat_log_toggle"
+  {
+  }
+
+  "invk_combat_log_state"
+  {
+    "open" "bool"
+  }
+
   "invk_viewer_render"
   {
     "id" "uint64"

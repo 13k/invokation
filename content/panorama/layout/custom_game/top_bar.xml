@@ -17,6 +17,13 @@
       />
 
       <Button
+        id="btn-combat-log"
+        class="btn"
+        onmouseover="UIShowTextTooltip(#DOTA_HUD_CombatLog)"
+        onmouseout="UIHideTextTooltip()"
+      />
+
+      <Button
         id="btn-quit"
         class="btn"
         onmouseover="UIShowTextTooltip(#dota_dashboard_quit)"

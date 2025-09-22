@@ -1,5 +1,9 @@
-import type { CombatLogAbilityUsed, CombatLogClear } from "@invokation/panorama-lib/custom_events";
-import { CustomGameEvent } from "@invokation/panorama-lib/custom_events";
+import type {
+  CombatLogAbilityUsed,
+  CombatLogClear,
+  CombatLogToggle,
+} from "@invokation/panorama-lib/custom_events";
+import { CustomGameEvent, GameEvent } from "@invokation/panorama-lib/custom_events";
 import { isInvocationAbility } from "@invokation/panorama-lib/dota2/invoker";
 import { Grid } from "@invokation/panorama-lib/grid";
 import { createAbilityOrItemImage } from "@invokation/panorama-lib/panorama";
@@ -11,7 +15,7 @@ import { Component } from "./component";
 export interface CombatLogElements extends Elements {
   contents: Panel;
   skipInvocations: Panel;
-  btnToggle: ToggleButton;
+  btnClose: Button;
   btnClear: Button;
 }
 
@@ -46,15 +50,16 @@ class CombatLog extends Component<CombatLogElements> {
       elements: {
         contents: "contents",
         skipInvocations: "filter-invocations",
-        btnToggle: "btn-toggle",
+        btnClose: "btn-close",
         btnClear: "btn-clear",
       },
       customEvents: {
+        [GameEvent.CombatLogToggle]: (payload) => this.onToggle(payload),
         [CustomGameEvent.CombatLogAbilityUsed]: (payload) => this.onAbilityUsed(payload),
         [CustomGameEvent.CombatLogClear]: (payload) => this.onClear(payload),
       },
       panelEvents: {
-        btnToggle: { onactivate: () => this.onBtnToggle() },
+        btnClose: { onactivate: () => this.onBtnClose() },
         btnClear: { onactivate: () => this.onBtnClear() },
       },
     });
@@ -66,7 +71,9 @@ class CombatLog extends Component<CombatLogElements> {
     this.debug("init");
   }
 
-  // ----- Event handlers -----
+  onToggle(_payload: CombatLogToggle): void {
+    this.toggle();
+  }
 
   onClear(payload: NetworkedData<CombatLogClear>): void {
     this.debug("onClear()", payload);
@@ -88,19 +95,13 @@ class CombatLog extends Component<CombatLogElements> {
     this.addRow(i);
   }
 
-  onBtnToggle(): void {
-    if (this.isOpen) {
-      this.close();
-    } else {
-      this.open();
-    }
+  onBtnClose(): void {
+    this.close();
   }
 
   onBtnClear(): void {
     this.clear();
   }
-
-  // ----- Helpers -----
 
   bindEvents(): void {
     this.grid.onRowChange(this.onGridRowChange.bind(this));
@@ -179,14 +180,26 @@ class CombatLog extends Component<CombatLogElements> {
     return panel;
   }
 
-  // ----- Action runners -----
-
   open(): void {
-    new Sequence().removeClass(this.panel, CssClass.Closed).run();
+    this.debug("open()");
+
+    this.panel.RemoveClass(CssClass.Closed);
+    this.sendClientSide(GameEvent.CombatLogState, { open: true });
   }
 
   close(): void {
-    new Sequence().addClass(this.panel, CssClass.Closed).run();
+    this.debug("close()");
+
+    this.panel.AddClass(CssClass.Closed);
+    this.sendClientSide(GameEvent.CombatLogState, { open: false });
+  }
+
+  toggle(): void {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open();
+    }
   }
 
   addRow(rowIndex: number): void {

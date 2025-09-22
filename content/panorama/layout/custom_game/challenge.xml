@@ -47,6 +47,8 @@
     <Panel id="score" />
 
     <Panel class="controls" hittest="false">
+      <Panel class="controls-pip" />
+
       <Panel class="control-icon">
         <Button
           id="btn-show-details"

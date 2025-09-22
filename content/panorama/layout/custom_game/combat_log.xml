@@ -8,14 +8,14 @@
   </styles>
 
   <Panel class="--combat-log closed" hittest="false">
+    <Button id="btn-close" class="small light-grey">
+      <Image class="btn-icon" src="s2r://panorama/images/control_icons/24px/x_close.vsvg" />
+    </Button>
+
     <Panel id="combat-log">
       <Panel id="contents" />
 
       <Panel class="bar">
-        <ToggleButton id="btn-toggle" class="thumb">
-          <Label class="title" text="#invk_combat_log_title" hittest="false" />
-        </ToggleButton>
-
         <Panel class="bar-actions">
           <ToggleButton
             id="filter-invocations"

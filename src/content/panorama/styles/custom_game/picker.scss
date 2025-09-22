@@ -30,7 +30,7 @@ $filters-padding: (
 $filters-row-width: 220px;
 $filters-width: util.box-width($filters-row-width, $filters-padding);
 
-$thumb-width: 36px;
+$thumb-width: 28px;
 
 $combos-width: $combos-width + $thumb-width;
 $picker-width: $combos-width + $filters-width + $thumb-width;
@@ -90,20 +90,18 @@ $closed-width: $thumb-width;
     .thumb {
       width: $thumb-width;
       height: 100%;
-      border-top-right-radius: 24px;
-      border-bottom-right-radius: 24px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
       box-shadow: none;
       vertical-align: center;
 
       .thumb-arrow {
         horizontal-align: right;
-        wash-color: #666;
-        transform: translateX(-9px);
+        wash-color: #aaa;
       }
 
       &:hover .thumb-arrow {
         wash-color: black;
-        transform: translateX(-12px);
       }
     }
   }

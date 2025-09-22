@@ -2,11 +2,13 @@
 @use "../ui";
 @use "../vars" as v;
 
+$class-log-open: "combat-log-open";
+
 .--top-bar {
   flow-children: right;
   width: 100%;
   height: 64px;
-  margin-left: 100px;
+  margin-left: 124px;
 
   #top-bar {
     flow-children: right;
@@ -33,26 +35,30 @@
         opacity: 1;
       }
     }
+  }
 
-    #btn-game-info {
-      @include btn.info(24px);
+  #btn-game-info {
+    @include btn.info(24px);
+  }
+
+  #btn-combat-log {
+    @include btn.icon(v.$icon-controls-armory, 24px);
+  }
+
+  &.#{$class-log-open} #btn-combat-log {
+    wash-color: v.$cl-exort-accent;
+  }
+
+  #btn-quit {
+    @include btn.close-circle(24px);
+    margin-right: 4px;
+
+    &:hover {
+      wash-color: #f43;
     }
 
-    #btn-combat-log {
-      @include btn.icon(v.$icon-controls-armory, 24px);
-    }
-
-    #btn-quit {
-      @include btn.close-circle(24px);
-      margin-right: 4px;
-
-      &:hover {
-        wash-color: #f43;
-      }
-
-      &:enabled:active {
-        sound: v.$snd-quit;
-      }
+    &:enabled:active {
+      sound: v.$snd-quit;
     }
   }
 }

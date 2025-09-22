@@ -13,6 +13,8 @@ declare global {
   // ----- Custom events declarations -----
 
   interface GameEventDeclarations {
+    [GameEvent.CombatLogState]: cevt.CombatLogState;
+    [GameEvent.CombatLogToggle]: cevt.CombatLogToggle;
     [GameEvent.ViewerRender]: cevt.ViewerRender;
     [GameEvent.PopupAbilityPickerSubmit]: cevt.PopupAbilityPickerSubmit;
     [GameEvent.PopupItemPickerSubmit]: cevt.PopupItemPickerSubmit;

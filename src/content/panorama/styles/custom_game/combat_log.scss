@@ -13,29 +13,45 @@ $cell-margin: 2px;
 $scroll-width: 10px;
 
 $width: (($cell-size + (2 * $cell-margin)) * $columns) + (2 * $padding) + $scroll-width;
-$height: 200px;
-
-$translate-y: -($height - 50) px;
+$height: 300px;
 
 $class-closed: "closed";
 
 .--combat-log {
-  width: 100%;
-  height: 100%;
+  align: left top;
+  margin: 24px 0 0 256px;
+  background-color: none;
+  opacity: 1;
+  transition-delay: 0.1s;
+  transition-duration: 0.2s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+
+  &.#{$class-closed} {
+    opacity: 0;
+  }
+
+  #btn-close {
+    @include btn.primary;
+    z-index: 1;
+    ignore-parent-flow: true;
+    align: right top;
+    width: 32px;
+
+    .btn-icon {
+      padding: 2px 0;
+    }
+  }
 
   #combat-log {
     flow-children: down;
-    align: center top;
+    align: center center;
     width: $width;
     height: $height;
-    transform: translateY(0);
-    transition: transform 0.25s ease-in-out 0s;
+    margin: 12px 12px 0 0;
+    border-radius: 6px;
 
     @include panel.transparent;
-  }
-
-  &.#{$class-closed} #combat-log {
-    transform: translateY($translate-y);
   }
 
   #contents {
@@ -72,52 +88,10 @@ $class-closed: "closed";
     background-color: #0003;
   }
 
-  .thumb {
-    align: left center;
-
-    @include btn.collapsible-toggle;
-
-    &:selected:hover {
-      wash-color: #f43;
-    }
-
-    $thumb-width: 19px;
-    $thumb-height: 19px;
-
-    .TickBox {
-      width: $thumb-width;
-      height: $thumb-height;
-      wash-color: #d8d8d8;
-      transform: rotateZ(0deg) translateY(3px);
-    }
-
-    &:selected .TickBox {
-      width: $thumb-width;
-      height: $thumb-height;
-      wash-color: #d8d8d8;
-      transform: rotateZ(180deg) translateY(0);
-    }
-
-    .title {
-      align: left center;
-      color: white;
-      font-weight: semi-bold;
-      font-size: 16px;
-      font-family: v.$font-text;
-      letter-spacing: 2px;
-      text-overflow: shrink;
-      text-shadow: 1px 1px 0 3 #0006;
-      text-transform: uppercase;
-      transition: brightness 0.2s ease-in-out 0s;
-    }
-  }
-
   .bar-actions {
     flow-children: right;
     horizontal-align: right;
     height: 100%;
-    opacity: 1;
-    transition: opacity 0.25s ease-in-out 0s;
 
     .bar-item {
       margin-right: 8px;
@@ -128,9 +102,5 @@ $class-closed: "closed";
   #btn-clear {
     @include btn.blue;
     margin: 0;
-  }
-
-  &.#{$class-closed} .bar-actions {
-    opacity: 0;
   }
 }

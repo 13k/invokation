@@ -62,9 +62,7 @@
   .#{$class-thumb} {
     width: 32px;
     height: 96px;
-    transform: translateX(0px);
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-radius: 0 12px 12px 0;
     background-color: #181818cc;
     box-shadow: #000000aa 0px 0px 8px 0px;
     vertical-align: middle;
@@ -78,7 +76,7 @@
       @include ui.icon(v.$icon-controls-double-arrow-left);
       width: 16px;
       height: 16px;
-      transform: translateX(-9px);
+      transform: translateX(-6px);
       background-position: 0% 50%;
       horizontal-align: right;
       vertical-align: middle;
@@ -90,7 +88,7 @@
     }
 
     &:hover .#{$class-thumb-arrow} {
-      transform: translateX(-12px);
+      transform: translateX(-8px);
       wash-color: white;
     }
   }
@@ -100,11 +98,11 @@
 
     .#{$class-thumb} {
       .#{$class-thumb-arrow} {
-        transform: rotateZ(180deg) translateX(-9px);
+        transform: translateX(6px) rotateZ(180deg);
       }
 
       &:hover .#{$class-thumb-arrow} {
-        transform: translateX(6px) rotateZ(180deg);
+        transform: translateX(4px) rotateZ(180deg);
         wash-color: white;
       }
     }
@@ -112,19 +110,25 @@
 }
 
 @mixin combo-controls {
+  z-index: 100;
   flow-children: right;
-  align: left bottom;
-  margin-left: 80px;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
+  align: left top;
+  margin-top: 52px;
+  border-radius: 0 8px 8px 0;
   opacity: 1;
   transition-duration: 0.75s;
   transition-property: opacity;
 
   @include transparent;
 
-  $btn-size: 64px;
+  $btn-size: 42px;
   $icon-size: $btn-size / 2;
+
+  .controls-pip {
+    width: 28px;
+    height: 100%;
+    border-right: 1px solid #fff1;
+  }
 
   .control-icon {
     width: $btn-size;
@@ -145,7 +149,7 @@
     height: 100%;
     margin: 0;
     vertical-align: center;
-    tooltip-position: top;
+    tooltip-position: bottom;
 
     &.icon-details {
       @include btn.icon(v.$icon-controls-info, $icon-size);

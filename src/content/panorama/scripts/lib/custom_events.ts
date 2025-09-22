@@ -129,6 +129,9 @@ export function sendClientSide<K extends GameEvent>(
 // ----- Custom events definitions -----
 
 export enum GameEvent {
+  // combat log
+  CombatLogState = "invk_combat_log_state",
+  CombatLogToggle = "invk_combat_log_toggle",
   // combo viewer
   ViewerRender = "invk_viewer_render",
   // popups
@@ -163,6 +166,12 @@ export enum CustomGameEvent {
   ItemPickerQueryRequest = "invk_item_picker_query_request",
   ItemPickerQueryResponse = "invk_item_picker_query_response",
 }
+
+export interface CombatLogState {
+  open: boolean;
+}
+
+export type CombatLogToggle = Record<string, never>;
 
 export interface ViewerRender {
   id: ComboId;

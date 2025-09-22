@@ -8,53 +8,57 @@
   </styles>
 
   <Panel class="--freestyle hide" hittest="false">
-    <Panel class="controls" hittest="false">
-      <Panel class="control-icon">
-        <Button
-          id="btn-level-up"
-          class="icon-button icon-level-up grey"
-          onmouseover="UIShowTextTooltip(#invk_controls_level_up)"
-          onmouseout="UIHideTextTooltip()"
-        />
+    <Panel id="container">
+      <Panel class="controls" hittest="false">
+        <Panel class="controls-pip" />
+
+        <Panel class="control-icon">
+          <Button
+            id="btn-level-up"
+            class="icon-button icon-level-up grey"
+            onmouseover="UIShowTextTooltip(#invk_controls_level_up)"
+            onmouseout="UIHideTextTooltip()"
+          />
+        </Panel>
+
+        <Panel class="control-icon">
+          <Button
+            id="btn-level-max"
+            class="icon-button icon-level-max grey"
+            onmouseover="UIShowTextTooltip(#invk_controls_level_max)"
+            onmouseout="UIHideTextTooltip()"
+          />
+        </Panel>
+
+        <Panel class="control-icon">
+          <Button
+            id="btn-restart"
+            class="icon-button icon-restart blue"
+            onmouseover="UIShowTextTooltip(#invk_controls_restart)"
+            onmouseout="UIHideTextTooltip()"
+          />
+        </Panel>
+
+        <Panel class="control-icon">
+          <Button
+            id="btn-full-restart"
+            class="icon-button icon-full-restart bronze"
+            onmouseover="UIShowTextTooltip(#invk_controls_full_restart)"
+            onmouseout="UIHideTextTooltip()"
+          />
+        </Panel>
+
+        <Panel class="control-icon">
+          <Button
+            id="btn-stop"
+            class="icon-button icon-stop red"
+            onmouseover="UIShowTextTooltip(#invk_controls_stop)"
+            onmouseout="UIHideTextTooltip()"
+          />
+        </Panel>
       </Panel>
 
-      <Panel class="control-icon">
-        <Button
-          id="btn-level-max"
-          class="icon-button icon-level-max grey"
-          onmouseover="UIShowTextTooltip(#invk_controls_level_max)"
-          onmouseout="UIHideTextTooltip()"
-        />
-      </Panel>
-
-      <Panel class="control-icon">
-        <Button
-          id="btn-restart"
-          class="icon-button icon-restart blue"
-          onmouseover="UIShowTextTooltip(#invk_controls_restart)"
-          onmouseout="UIHideTextTooltip()"
-        />
-      </Panel>
-
-      <Panel class="control-icon">
-        <Button
-          id="btn-full-restart"
-          class="icon-button icon-full-restart bronze"
-          onmouseover="UIShowTextTooltip(#invk_controls_full_restart)"
-          onmouseout="UIHideTextTooltip()"
-        />
-      </Panel>
-
-      <Panel class="control-icon">
-        <Button
-          id="btn-stop"
-          class="icon-button icon-stop red"
-          onmouseover="UIShowTextTooltip(#invk_controls_stop)"
-          onmouseout="UIHideTextTooltip()"
-        />
-      </Panel>
+      <Panel id="score" />
     </Panel>
-
-    <Panel id="score" />
   </Panel>
 </root>

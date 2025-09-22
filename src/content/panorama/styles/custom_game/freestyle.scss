@@ -5,16 +5,17 @@
   width: 100%;
   height: 100%;
 
-  &.hide {
+  #container {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.hide #container {
     visibility: collapse;
   }
 
   .controls {
     @include panel.combo-controls;
-  }
-
-  &.hide .controls {
-    opacity: 0;
   }
 
   #score {
