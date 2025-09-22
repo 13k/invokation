@@ -38,7 +38,7 @@ export async function build(srcDir: Path, destDir: Path, log?: Logger): Promise<
     outdir: destDir.toString(),
     entrypoints,
     sourcemap: "inline",
-    minify: { syntax: true },
+    minify: false,
     banner: `
 ((root) => {
   root.globalThis = root.global = root;
