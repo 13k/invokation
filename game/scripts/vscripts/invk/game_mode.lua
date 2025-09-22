@@ -1,12 +1,10 @@
 local class = require("middleclass")
 
-local COMMANDS = require("invk.const.commands")
 local Combos = require("invk.combo.combos")
 local CustomEvents = require("invk.game_mode.custom_events")
 local Env = require("invk.game_mode.env")
 local GameEvents = require("invk.game_mode.game_events")
 local INVOKER = require("invk.const.invoker")
-local Invoker = require("invk.dota2.invoker")
 local ItemsKeyValues = require("invk.dota2.kv.items_key_values")
 local Logger = require("invk.logger")
 local META = require("invk.const.metadata")
@@ -15,6 +13,7 @@ local NetTable = require("invk.dota2.net_table")
 local PRECACHE = require("invk.const.precache")
 local S = require("invk.const.settings")
 local Timers = require("invk.dota2.timers")
+local commands = require("invk.game_mode.commands.index")
 local func = require("invk.lang.function")
 local game_mode = require("invk.game_mode.game_mode")
 local game_rules = require("invk.game_mode.game_rules")
@@ -219,201 +218,43 @@ end
 --- }}}
 --- commands {{{
 
---- @param method_name string
-function M:command_handler(method_name)
-  return function(command, ...)
-    self:d(command, method_name, ...)
+--- @param id invk.game_mode.command.Id
+--- @return fun(cmd_name: string, ...: string)
+function M:command_handler(id)
+  --- @param name string
+  --- @param ... string
+  return function(name, ...)
+    local args = { ... }
 
-    local callback = self:method_handler(method_name)
+    self:d("console command", {
+      id = id,
+      name = name,
+      args = args,
+    })
+
     local pawn = Convars:GetDOTACommandClient() --[[@as CBasePlayerPawn]]
     local player = pawn:GetController()
+    local cmd = commands[id]:new(self, player, args, { logger = self.logger })
 
-    return callback(player, ...)
+    cmd:run()
   end
 end
 
---- @param cmd invk.game_mode.ConsoleCommmand
-function M:register_command(cmd)
-  Convars:RegisterCommand(cmd.name, self:command_handler(cmd.method), cmd.help, cmd.flags or 0)
+--- @param spec invk.game_mode.command.Spec
+function M:register_command(spec)
+  Convars:RegisterCommand(spec.name, self:command_handler(spec.id), spec.help, spec.flags or 0)
 end
 
 function M:register_commands()
   self:d("  (commands) register commands")
 
-  for _, cmd in ipairs(COMMANDS) do
-    if not cmd.dev or (cmd.dev and self.env == Env.DEVELOPMENT) then
-      self:register_command(cmd)
+  for _, id in pairs(commands.Id) do
+    local cmd = commands[id]
+
+    if not cmd.SPEC.dev or (cmd.SPEC.dev and self.env == Env.DEVELOPMENT) then
+      self:register_command(cmd.SPEC)
     end
   end
-end
-
---- Sets debugging on/off.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param arg? string # `"1"`: enables debugging, `"0"`: disables debugging, `nil`: prints debugging value.
-function M:CommandSetDebug(_player, arg)
-  if arg == "1" then
-    self.logger.level = Logger.Level.DEBUG
-  elseif arg == "0" then
-    self.logger.level = Logger.Level.INFO
-  else
-    print(F("inv_debug = %d", self.logger.level <= Logger.Level.DEBUG and 1 or 0))
-  end
-end
-
---- Placeholder command to run miscellaneous debug code.
----
---- Use `script_reload` to reload after changes.
----
---- @param player CDOTAPlayerController # Player who issued this console command.
---- @param ... any
-function M:CommandDebugMisc(player, ...)
-  local cmd = require("invk.game_mode.commands.debug_misc")
-
-  cmd.run(self, player, ...)
-end
-
---- Dumps Lua version.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @diagnostic disable-next-line: unused
-function M:CommandDumpLuaVersion(_player)
-  print(_VERSION)
-end
-
---- Dumps global value.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param name string # Dot-separated value name
---- @diagnostic disable-next-line: unused
-function M:CommandDumpGlobal(_player, name)
-  if not name then
-    error("Argument <name> is required")
-  end
-
-  local cmd = require("invk.game_mode.commands.globals")
-
-  cmd.dump(name)
-end
-
---- Searches a global value.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param pattern string # Name pattern (uses `string.match` for matching)
---- @diagnostic disable-next-line: unused
-function M:CommandFindGlobal(_player, pattern)
-  if not pattern then
-    error("Argument <pattern> is required")
-  end
-
-  local cmd = require("invk.game_mode.commands.globals")
-
-  cmd.find(pattern)
-end
-
---- Queries items.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param query string # Query string
-function M:CommandItemQuery(_player, query)
-  if not query then
-    error("Argument <query> is required")
-  end
-
-  local cmd = require("invk.game_mode.commands.item")
-
-  cmd.query(self, query)
-end
-
---- Dumps current hero abilities.
---- @param player CDOTAPlayerController # Player who issued this console command
---- @param simple? string # Simple version or verbose
---- @diagnostic disable-next-line: unused
-function M:CommandDumpAbilities(player, simple)
-  local cmd = require("invk.game_mode.commands.dump_abilities")
-
-  cmd.run(player, simple ~= nil)
-end
-
---- Invokes ability by name.
---- @param player CDOTAPlayerController # Player who issued this console command
---- @param ability string # Ability name
---- @diagnostic disable-next-line: unused
-function M:CommandInvokeAbility(player, ability)
-  if not ability then
-    error("Argument <ability> is required")
-  end
-
-  local hero = player:GetAssignedHero()
-  local invoker = Invoker:new(hero)
-
-  invoker:invoke(ability)
-end
-
---- Dumps combo graph in DOT format.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param id string # Combo id
-function M:CommandDumpComboGraph(_player, id)
-  if not id then
-    error("Argument <combo_id> is required")
-  end
-
-  local cmd = require("invk.game_mode.commands.combo")
-
-  cmd.todot(self, id)
-end
-
---- Changes music status.
---- @param player CDOTAPlayerController # Player who issued this console command
---- @param status string # Music status
---- @param intensity string # Music intensity
---- @diagnostic disable-next-line: unused
-function M:CommandChangeMusicStatus(player, status, intensity)
-  if not status or not intensity then
-    error("Arguments <status> and <intensity> are required")
-  end
-
-  local cmd = require("invk.game_mode.commands.music")
-
-  cmd.set_status(player, status, intensity)
-end
-
---- Dumps Invoker ability specials values.
---- @param player CDOTAPlayerController # Player who issued this console command
---- @param only_scaling? string # Dump only values that scale, ignoring fixed values
---- @diagnostic disable-next-line: unused
-function M:CommandDumpSpecials(player, only_scaling)
-  local cmd = require("invk.game_mode.commands.dump_specials")
-
-  cmd.dump(player, { only_scaling = (only_scaling ~= nil) })
-end
-
---- Debug operations on ability specials KeyValues.
---- @param _player CDOTAPlayerController # Player who issued this console command
---- @param op string # Operation name (`dump`, `find_keys`, `find_values`)
---- @param query string # Operation query (dump: path, findKeys: pattern, findValues: pattern)
---- @diagnostic disable-next-line: unused
-function M:CommandDebugSpecials(_player, op, query)
-  local cmd = require("invk.game_mode.commands.debug_specials")
-
-  if op == "dump" then
-    cmd.dump(query)
-  elseif op == "find_keys" then
-    cmd.find_keys(query)
-  elseif op == "find_values" then
-    cmd.find_values(query)
-  else
-    errorf("Invalid op %q", op)
-  end
-end
-
---- Reinserts an ability into the current hero.
---- @param player CDOTAPlayerController # Player who issued this console command
---- @param name string # Ability name
---- @diagnostic disable-next-line: unused
-function M:CommandReinsertAbility(player, name)
-  if not name then
-    error("Argument <name> is required")
-  end
-
-  local cmd = require("invk.game_mode.commands.ability")
-
-  cmd.reinsert(player, name)
 end
 
 --- }}}
