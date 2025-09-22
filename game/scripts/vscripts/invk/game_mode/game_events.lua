@@ -170,11 +170,28 @@ function M:_on_game_rules_state_change(payload)
   end
 end
 
+--- @type { [DOTA_GameState]: string }
+local STATE_NAMES = {
+  [DOTA_GAMERULES_STATE_INIT] = "init",
+  [DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD] = "wait_for_players_to_load",
+  [DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP] = "custom_game_setup",
+  [DOTA_GAMERULES_STATE_PLAYER_DRAFT] = "player_draft",
+  [DOTA_GAMERULES_STATE_HERO_SELECTION] = "hero_selection",
+  [DOTA_GAMERULES_STATE_STRATEGY_TIME] = "strategy_time",
+  [DOTA_GAMERULES_STATE_TEAM_SHOWCASE] = "team_showcase",
+  [DOTA_GAMERULES_STATE_WAIT_FOR_MAP_TO_LOAD] = "wait_for_map_to_load",
+  [DOTA_GAMERULES_STATE_PRE_GAME] = "pre_game",
+  [DOTA_GAMERULES_STATE_SCENARIO_SETUP] = "scenario_setup",
+  [DOTA_GAMERULES_STATE_GAME_IN_PROGRESS] = "game_in_progress",
+  [DOTA_GAMERULES_STATE_POST_GAME] = "post_game",
+  [DOTA_GAMERULES_STATE_DISCONNECT] = "disconnect",
+}
+
 --- The overall game state has changed.
 --- @param state DOTA_GameState
 --- @param payload dota2.events.game_rules_state_change
 function M:on_game_rules_state_change(state, payload)
-  self:d("on_game_rules_state_change", { state = state, payload = payload })
+  self:d("on_game_rules_state_change", { state = STATE_NAMES[state], payload = payload })
 end
 
 --- Called once and only once after all players have loaded into the game,

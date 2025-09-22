@@ -1,5 +1,3 @@
-local UNITS = require("invk.const.units")
-
 --- Game settings.
 --- @class invk.const.settings
 local M = {}
@@ -49,13 +47,13 @@ M.GAME_SETUP_TIMEOUT = 1
 ---
 --- `GameRules:SetHeroSelectionTime(float)`
 --- @type number
-M.HERO_SELECTION_TIME = 0
+M.HERO_SELECTION_TIME = -1
 
 --- Sets amount of penalty time before randoming a hero
 ---
 --- `GameRules:SetHeroSelectPenaltyTime(float)`
 --- @type number
-M.HERO_SELECTION_PENALTY_TIME = 1
+M.HERO_SELECTION_PENALTY_TIME = -1
 
 --- When true, players can repeatedly pick the same hero.
 ---
@@ -70,13 +68,13 @@ M.ALLOW_SAME_HERO_SELECTION = true
 ---
 --- `GameMode:SetCustomGameForceHero(pHeroName)`
 --- @type string?
-M.FORCE_PICKED_HERO = UNITS.INVOKER
+M.FORCE_PICKED_HERO = nil
 
 --- Sets the amount of time players have between the hero selection and entering the showcase phase.
 ---
 --- `GameRules:SetStrategyTime(float)`
 --- @type number
-M.STRATEGY_TIME = 0
+M.STRATEGY_TIME = 90
 
 --- Sets the amount of time players have between the strategy phase and entering the pre-game phase.
 ---
