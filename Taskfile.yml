@@ -9,10 +9,12 @@ vars:
   SRC_PANO_SCRIPTS: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "scripts" }}'
   SRC_PANO_STYLES: '{{ joinPath .ROOT_DIR "src" "content" "panorama" "styles" }}'
   SRC_VSCRIPTS: '{{ joinPath .ROOT_DIR "game" "scripts" "vscripts" }}'
+  SRC_VSCRIPTS_TESTS: '{{ joinPath .ROOT_DIR "spec" }}'
   SRC_TASKS: '{{ joinPath .ROOT_DIR "src" "tasks" }}'
   EMMYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".emmyrc.json" }}'
   STYLUA_CONFIG: '{{ joinPath .ROOT_DIR ".stylua.toml" }}'
   SELENE_CONFIG: '{{ joinPath .ROOT_DIR "selene.toml" }}'
+  SELENE_TESTS_CONFIG: '{{ joinPath .SRC_VSCRIPTS_TESTS "selene.toml" }}'
   TASKS_ENTRYPOINT: '{{ joinPath .SRC_TASKS "main.ts" }}'
   TASKS_RUN: 'bun run -- "{{ .TASKS_ENTRYPOINT }}"'
 
@@ -67,13 +69,13 @@ tasks:
     desc: Build everything
     cmd: { task: "_build" }
 
-  build:scripts:
+  build:pano:scripts:
     desc: Build panorama scripts
     cmds:
       - task: "_build"
         vars: { ARGS: "scripts" }
 
-  build:styles:
+  build:pano:styles:
     desc: Build panorama styles
     cmds:
       - task: "_build"
@@ -101,17 +103,17 @@ tasks:
       - task: "_compile"
         vars: { ARGS: "panorama" }
 
-  compile:scripts:
+  compile:pano:scripts:
     desc: Compile panorama scripts
     cmds:
-      - task: "build:scripts"
+      - task: "build:pano:scripts"
       - task: "_compile"
         vars: { ARGS: "scripts" }
 
-  compile:styles:
+  compile:pano:styles:
     desc: Compile panorama styles
     cmds:
-      - task: "build:styles"
+      - task: "build:pano:styles"
       - task: "_compile"
         vars: { ARGS: "styles" }
 
@@ -128,8 +130,9 @@ tasks:
   lint:vscripts:
     desc: Lint vscripts
     cmds:
-      - emmylua_check --config "{{ .EMMYLUA_CONFIG }}" "{{ .SRC_VSCRIPTS }}"
+      - emmylua_check --config "{{ .EMMYLUA_CONFIG }}" "{{ .ROOT_DIR }}"
       - selene --config "{{ .SELENE_CONFIG }}" "{{ .SRC_VSCRIPTS }}"
+      - selene --config "{{ .SELENE_TESTS_CONFIG }}" "{{ .SRC_VSCRIPTS_TESTS }}"
 
   test:vscripts:
     desc: Test vscripts
@@ -138,42 +141,43 @@ tasks:
   format:panorama:
     desc: Format all panorama files
     cmds:
-      - task: format:layouts
-      - task: format:scripts
-      - task: format:styles
+      - task: format:pano:layouts
+      - task: format:pano:scripts
+      - task: format:pano:styles
 
   lint:panorama:
     desc: Lint all panorama files
     cmds:
-      - task: lint:layouts
-      - task: lint:scripts
-      - task: lint:styles
+      - task: lint:pano:layouts
+      - task: lint:pano:scripts
+      - task: lint:pano:styles
 
-  format:layouts:
+  format:pano:layouts:
     desc: Format panorama layouts
     cmd: dprint fmt '{{ joinPath .SRC_PANO_LAYOUTS "**" }}'
 
-  lint:layouts:
+  lint:pano:layouts:
     desc: Lint panorama layouts
     cmd: echo "not implemented"
 
-  format:scripts:
+  format:pano:scripts:
     desc: Format panorama scripts
     cmd: dprint fmt '{{ joinPath .SRC_PANO_SCRIPTS "**" }}'
 
-  lint:scripts:
+  lint:pano:scripts:
     desc: Lint panorama scripts
     dir: "{{ .SRC_PANO_SCRIPTS }}"
     cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
 
-  format:styles:
+  format:pano:styles:
     desc: Format panorama styles
     cmd: dprint fmt '{{ joinPath .SRC_PANO_STYLES "**" }}'
 
-  lint:styles:
+  lint:pano:styles:
     desc: Lint panorama styles
     dir: "{{ .SRC_PANO_STYLES }}"
-    cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
+    cmd: echo "not implemented"
+    # cmd: bun x -- "@biomejs/biome" lint {{ .CLI_ARGS }}
 
   format:tasks:
     desc: Format tasks
