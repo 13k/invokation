@@ -39,7 +39,7 @@ export abstract class Path {
     return new (this.ctor())(path);
   }
 
-  protected ctor(): new (..._parts: PathLike[]) => this {
+  protected ctor(): new(..._parts: PathLike[]) => this {
     return Object.getPrototypeOf(this).constructor;
   }
 

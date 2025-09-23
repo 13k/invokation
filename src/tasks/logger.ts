@@ -9,9 +9,9 @@ import { colorStyle } from "./colors";
 
 type Levels = {
   [
-  K in keyof config.CliConfigSetLevels as string extends K ? never
-  : number extends K ? never
-  : K
+    K in keyof config.CliConfigSetLevels as string extends K ? never
+      : number extends K ? never
+      : K
   ]: config.CliConfigSetLevels[K];
 };
 
@@ -30,7 +30,7 @@ export interface Options {
 }
 
 export type Fields = Map<string, unknown>;
-export const Fields: new (_fields?: FieldsLike) => Fields = Map;
+export const Fields: new(_fields?: FieldsLike) => Fields = Map;
 export type FieldsLike = Iterable<[string, unknown]>;
 
 const LEVELS = config.cli.levels;

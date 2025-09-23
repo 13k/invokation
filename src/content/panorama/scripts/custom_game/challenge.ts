@@ -735,7 +735,8 @@ class Challenge extends Component<ChallengeElements> {
 
     if (!expectedSteps.every((s): s is Step => s != null)) {
       throw new Error(
-        `Failed to pick steps from combo ${id}: steps count = ${this.combo.sequence.length}, indices = [${expected.join(", ")
+        `Failed to pick steps from combo ${id}: steps count = ${this.combo.sequence.length}, indices = [${
+          expected.join(", ")
         }]`,
       );
     }

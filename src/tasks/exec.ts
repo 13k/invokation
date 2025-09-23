@@ -58,7 +58,7 @@ export async function run<
   return process;
 }
 
-export interface ExecOptions<In extends Writable> extends SpawnOptions<In, "inherit", "inherit"> { }
+export interface ExecOptions<In extends Writable> extends SpawnOptions<In, "inherit", "inherit"> {}
 export type ExecProcess<In extends Writable> = Bun.Subprocess<In, "inherit", "inherit">;
 
 export async function exec<In extends Writable>(
