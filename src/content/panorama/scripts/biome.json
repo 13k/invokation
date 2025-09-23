@@ -1,12 +1,5 @@
 {
   "$schema": "../../../../node_modules/@biomejs/biome/configuration_schema.json",
   "root": false,
-  "extends": "//",
-  "linter": {
-    "rules": {
-      "correctness": {
-        "noUndeclaredVariables": "off"
-      }
-    }
-  }
+  "extends": "//"
 }

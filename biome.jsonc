@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "root": true,
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -37,7 +38,6 @@
       },
       "complexity": {
         // javascript
-        "noExcessiveCognitiveComplexity": "info",
         "noForEach": "warn",
         "noImplicitCoercions": "error",
         "noUselessStringConcat": "error",

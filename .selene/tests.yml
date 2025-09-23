@@ -1,0 +1,10 @@
+---
+name: tests
+base: lua53
+globals:
+  # string.format(fmt: string, ...)
+  sprintf:
+    args:
+      - type: string
+      - type: ...
+        required: false

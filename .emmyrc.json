@@ -1,5 +1,33 @@
 {
   "$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
+  "diagnostics": {
+    "enable": true,
+    "severity": {
+      "access-invisible": "error",
+      "assign-type-mismatch": "error",
+      "circle-doc-class": "error",
+      "discard-returns": "error",
+      "duplicate-doc-field": "error",
+      "duplicate-index": "error",
+      "duplicate-set-field": "error",
+      "duplicate-type": "error",
+      "generic-constraint-mismatch": "error",
+      "incomplete-signature-doc": "error",
+      "missing-fields": "error",
+      "missing-parameter": "error",
+      "missing-return": "error",
+      "missing-return-value": "error",
+      "param-type-not-match": "error",
+      "redefined-label": "error",
+      "redundant-parameter": "error",
+      "redundant-return-value": "error",
+      "return-type-mismatch": "error",
+      "type-not-found": "error",
+      "unbalanced-assignments": "error",
+      "undefined-doc-param": "error",
+      "undefined-field": "error"
+    }
+  },
   "runtime": {
     "pathStrict": true,
     "special": {
@@ -17,6 +45,12 @@
       ".busted",
       ".lux",
       "tmp"
+    ],
+    "ignoreGlobs": [
+      "game/scripts/vscripts/compat53/**",
+      "game/scripts/vscripts/fsm.lua",
+      "game/scripts/vscripts/inspect.lua",
+      "game/scripts/vscripts/middleclass.lua"
     ],
     "workspaceRoots": [
       "game/scripts/vscripts",
@@ -37,6 +71,7 @@
       ".lux/jit/test_dependencies/jit/4e9592a499c9ced4f8ce366db9db7d9c0dd1424ea8d4c8c16c1550ea3a61a696-say@1.4.1-3/src",
       ".lux/jit/test_dependencies/jit/672112d42de52914cd6daaac8a86cf906f80360bd81d6ad0a1df51224d74e9d4-busted-htest@1.0.0-2/src",
       ".lux/jit/test_dependencies/jit/6ce29c2c535c40246c386c056f24689344cddb56ec397473931431e6b67694d2-say@1.4.1-3/src",
+      ".lux/jit/test_dependencies/jit/82150689e986c7bc0ac9fd3826fcadf9e31092106725a0491695e2f28b0d276a-middleclass@4.1.1-0/src",
       ".lux/jit/test_dependencies/jit/832fd9862ce671c0c9777855d4c8b19f9ad9c2679fb5466c3a183785a51b76b0-luafilesystem@1.8.0-1/src",
       ".lux/jit/test_dependencies/jit/8a29d183b38f69620275ab4765d677ada24ff5f96f48d2018d0ee7bcd8ad057e-busted@2.2.0-1/src",
       ".lux/jit/test_dependencies/jit/9a3c8a33388fd17cf44291697753b48efba841849e4a92dc37c4f7a4c6877c86-compat53@0.14.4-1/src",

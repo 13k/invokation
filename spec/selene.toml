@@ -1,4 +1,4 @@
-std = ".selene/dota2+.selene/dota2-custom-game"
+std = "../.selene/dota2+../.selene/dota2-custom-game+../.selene/busted+../.selene/tests"
 exclude = [
   "**/.lux/**",
   "**/.luacats/**",
