@@ -174,6 +174,24 @@
           "source": "sha256-IjNkK1leVtYgbEjUqguVMjbdW+0BHAOCE0pazrVuF50="
         }
       },
+      "82150689e986c7bc0ac9fd3826fcadf9e31092106725a0491695e2f28b0d276a": {
+        "name": "middleclass",
+        "version": "4.1.1-0",
+        "pinned": false,
+        "opt": false,
+        "dependencies": [],
+        "constraint": "==4.1.1",
+        "binaries": [],
+        "source": "luarocks_rockspec+https://luarocks.org/",
+        "source_url": {
+          "type": "url",
+          "url": "https://github.com/kikito/middleclass/archive/v4.1.1.tar.gz"
+        },
+        "hashes": {
+          "rockspec": "sha256-YcFqUk7BBpKVo229pEC/JtBnSsoBlZQ6O76FTBHRv4M=",
+          "source": "sha256-0B5a8qYe64yVM/izsPpmW9itaTwrn7KXsg4/nhbYUIU="
+        }
+      },
       "832fd9862ce671c0c9777855d4c8b19f9ad9c2679fb5466c3a183785a51b76b0": {
         "name": "luafilesystem",
         "version": "1.8.0-1",
@@ -328,6 +346,7 @@
     "entrypoints": [
       "092886a00e3c7cb9cb944528116da6ce7d5e4a25b9d198735ac1b1307f77dca5",
       "672112d42de52914cd6daaac8a86cf906f80360bd81d6ad0a1df51224d74e9d4",
+      "82150689e986c7bc0ac9fd3826fcadf9e31092106725a0491695e2f28b0d276a",
       "8a29d183b38f69620275ab4765d677ada24ff5f96f48d2018d0ee7bcd8ad057e",
       "9a3c8a33388fd17cf44291697753b48efba841849e4a92dc37c4f7a4c6877c86",
       "c82b26bea8099fcea79b4e243145c4cf2597abdde010248e02fcd273e490e1bb",
