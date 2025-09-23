@@ -10,6 +10,8 @@ local ComboStep = require("invk.combo.combo_step")
 local STATES = ComboSequence.STATES
 
 describe("invk.combo.ComboSequence", function()
+  local clock = MockClock:new()
+
   local steps = {
     { id = 1, name = "step1", required = true, next = { 2, 3 } },
     { id = 2, name = "step2", next = { 3 } },
@@ -20,8 +22,6 @@ describe("invk.combo.ComboSequence", function()
   local seq
   --- @type string
   local seq_id
-  --- @type support.dota2.MockClock
-  local clock = MockClock()
 
   before_each(function()
     clock:reset()

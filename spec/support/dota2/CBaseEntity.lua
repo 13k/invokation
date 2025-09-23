@@ -1,9 +1,9 @@
-local class = require("pl.class")
+local class = require("middleclass")
 local m = require("moses")
 
 local F = require("support.factory")
 
---- @class T.dota2.CBaseEntity : CBaseEntity
+--- @class T.dota2.CBaseEntity : middleclass.Class, CBaseEntity
 --- @field name string
 --- @field classname string
 --- @field entindex EntityIndex
@@ -11,7 +11,7 @@ local F = require("support.factory")
 --- @field origin Vector
 --- @field removed boolean
 --- @field alive boolean
-local CBaseEntity = class()
+local CBaseEntity = class("CBaseEntity")
 
 --- @class T.dota2.CBaseEntity.Attributes
 --- @field name string
@@ -24,7 +24,7 @@ local CBaseEntity = class()
 
 -- selene: allow(global_usage)
 --- @param attributes T.dota2.CBaseEntity.Attributes
-function CBaseEntity:_init(attributes)
+function CBaseEntity:initialize(attributes)
   attributes.classname = attributes.classname or attributes.name
   attributes.entindex = attributes.entindex or _G.__next_ent_idx()
   attributes.team = attributes.team or DOTA_TEAM_NOTEAM

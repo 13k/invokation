@@ -40,10 +40,9 @@ local SPEC = {
 }
 
 describe("invk.combo.Combo", function()
+  local clock = MockClock:new()
   --- @type invk.combo.Combo
   local combo
-  --- @type support.dota2.MockClock
-  local clock = MockClock()
 
   local function steps_ids(arr)
     return m.map(arr, function(s)

@@ -16,7 +16,7 @@ return function(attributes, options)
   local opts = options or {}
   local kv = LoadKeyValues("scripts/npc/npc_heroes.txt")
   local attrs = m.extend({}, kv[attributes.name] or {}, attributes)
-  local hero = CDOTA_BaseNPC_Hero(attrs)
+  local hero = CDOTA_BaseNPC_Hero:new(attrs)
 
   if m.isNumber(opts.gold) then
     hero:ModifyGold(opts.gold, true, 0)

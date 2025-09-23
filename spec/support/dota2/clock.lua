@@ -1,16 +1,16 @@
 local assert = require("luassert")
-local class = require("pl.class")
+local class = require("middleclass")
 local spy = require("luassert.spy")
 
---- @class support.dota2.MockClock
+--- @class T.dota2.MockClock : middleclass.Class
 --- @field tick integer
 --- @field paused boolean
 --- @field spy luassert.spy
-local M = class()
+local M = class("T.dota2.MockClock")
 
 --- @param tick? integer
 --- @param paused? boolean
-function M:_init(tick, paused)
+function M:initialize(tick, paused)
   self.tick = tick or 0
   self.paused = paused == nil and false or paused
   self.spy = spy.on(self, "__call")
@@ -38,7 +38,7 @@ function M:reset()
   self.spy:clear()
 end
 
---- @return luassert.spy.assert
+--- @return T.spy.assert
 function M:assert()
   return assert.spy(self.spy)
 end

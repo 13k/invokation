@@ -1,25 +1,25 @@
 local assert = require("luassert")
-local class = require("pl.class")
+local class = require("middleclass")
 local spy = require("luassert.spy")
 local stub = require("luassert.stub")
 
---- @alias support.mock.Factory fun(mock: support.Mock): luassert.spy
---- @alias support.mock.Factories { [string]: support.mock.Factory }
+--- @alias T.mock.Factory fun(mock: T.Mock): luassert.spy
+--- @alias T.mock.Factories { [string]: T.mock.Factory }
 
---- @class support.Mock
+--- @class T.Mock : middleclass.Class
 --- @field private _spies { [string]: { [string]: luassert.spy } }
---- @field private _factories support.mock.Factories
---- @overload fun(factories?: support.mock.Factories): support.Mock
-local Mock = class()
+--- @field private _factories T.mock.Factories
+--- @overload fun(factories?: T.mock.Factories): T.Mock
+local M = class("T.Mock")
 
---- @param factories? support.mock.Factories
-function Mock:_init(factories)
+--- @param factories? T.mock.Factories
+function M:initialize(factories)
   self._spies = {}
   self._factories = factories or {}
 end
 
 --- @param name string
-function Mock:setup(name)
+function M:setup(name)
   self._factories[name](self)
 end
 
@@ -27,7 +27,7 @@ end
 --- @param t table
 --- @param key string
 --- @param ... any
-function Mock:stub(name, t, key, ...)
+function M:stub(name, t, key, ...)
   self._spies[name] = self._spies[name] or {}
   self._spies[name][key] = stub.new(t, key, ...)
 end
@@ -36,7 +36,7 @@ end
 --- @param name string
 --- @param t table
 --- @param key string
-function Mock:_spy(name, t, key)
+function M:_spy(name, t, key)
   self._spies[name] = self._spies[name] or {}
   self._spies[name][key] = spy.on(t, key)
 end
@@ -44,7 +44,7 @@ end
 --- @param name string
 --- @param t table
 --- @param key string | string[]
-function Mock:spy(name, t, key)
+function M:spy(name, t, key)
   if type(key) == "table" then
     for _, k in ipairs(key) do
       self:_spy(name, t, k)
@@ -56,21 +56,21 @@ end
 
 --- @param name string
 --- @param key string
---- @return luassert.spy.assert
-function Mock:assert(name, key)
+--- @return T.spy.assert
+function M:assert(name, key)
   return assert.spy(self._spies[name][key])
 end
 
 --- @private
 --- @param name string
 --- @param key string
-function Mock:_clear(name, key)
+function M:_clear(name, key)
   self._spies[name][key]:clear()
 end
 
 --- @param name string
 --- @param ... string
-function Mock:clear(name, ...)
+function M:clear(name, ...)
   if select("#", ...) == 0 then
     for key, _ in pairs(self._spies[name]) do
       self:_clear(name, key)
@@ -85,13 +85,13 @@ end
 --- @private
 --- @param name string
 --- @param key string
-function Mock:_revert(name, key)
+function M:_revert(name, key)
   self._spies[name][key]:revert()
 end
 
 --- @param name string
 --- @param ... string
-function Mock:revert(name, ...)
+function M:revert(name, ...)
   if select("#", ...) == 0 then
     for key, _ in pairs(self._spies[name]) do
       self:_revert(name, key)
@@ -105,7 +105,7 @@ end
 
 --- @param name? string
 --- @param ... string
-function Mock:reset(name, ...)
+function M:reset(name, ...)
   if name then
     self:clear(name, ...)
     self:revert(name, ...)
@@ -121,4 +121,4 @@ function Mock:reset(name, ...)
   end
 end
 
-return Mock
+return M

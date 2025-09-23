@@ -1,3 +1,4 @@
+require("support.global")
 require("support.luassert_ext")
 require("support.game_mode")
 require("support.dota2")

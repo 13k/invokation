@@ -1,5 +1,12 @@
 --# selene: allow(global_usage)
 
+require("support.dota2.CustomGameEventManager")
+require("support.dota2.Entities")
+require("support.dota2.EntityFramework")
+require("support.dota2.GameRules")
+require("support.dota2.PlayerResource")
+require("support.dota2.Vector")
+
 local m = require("moses")
 
 local Factory = require("support.factory")

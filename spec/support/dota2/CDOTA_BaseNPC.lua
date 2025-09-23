@@ -1,4 +1,4 @@
-local class = require("pl.class")
+local class = require("middleclass")
 local m = require("moses")
 
 local CBaseEntity = require("support.dota2.CBaseEntity")
@@ -14,42 +14,38 @@ local MODIFIERS = require("invk.const.modifiers")
 --- @field health integer
 --- @field max_mana integer
 --- @field mana integer
---- @field modifiers CDOTA_Buff[]
+--- @field modifiers T.dota2.CDOTA_Buff[]
 --- @field abilities { n: integer, [integer]: T.dota2.CDOTABaseAbility }
 --- @field talent_ability_start integer
 --- @field talent_ability_end integer
 --- @field has_inventory boolean
 --- @field inventory { [DOTAScriptInventorySlot_t]: T.dota2.CDOTA_Item }
 --- @field player_owner T.dota2.CDOTAPlayerController
-local CDOTA_BaseNPC = class(CBaseEntity)
+local CDOTA_BaseNPC = class("CDOTA_BaseNPC", CBaseEntity)
 
---- @class (partial) T.dota2.CDOTA_BaseNPC.Attributes : T.dota2.CBaseEntity.Attributes
+--- @class (partial) T.dota2.CDOTA_BaseNPC.Attributes : T.dota2.CBaseEntity.Attributes, invk.dota2.KeyValues
 --- @field has_inventory? boolean
 --- @field level? integer
 --- @field max_health? integer
 --- @field health? integer
 --- @field max_mana? integer
 --- @field mana? integer
---- @field [string] any
-
---- @type T.dota2.CDOTA_BaseNPC.Attributes
-local ATTRIBUTES = {
-  has_inventory = false,
-  level = 1,
-  max_health = 1,
-  health = 1,
-  max_mana = 1,
-  mana = 1,
-}
 
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- @param attributes T.dota2.CDOTA_BaseNPC.Attributes
-function CDOTA_BaseNPC:_init(attributes)
+function CDOTA_BaseNPC:initialize(attributes)
   --- @type T.dota2.CDOTA_BaseNPC.Attributes
-  local attrs = m.extend({}, ATTRIBUTES, attributes)
+  local attrs = m.extend({
+    has_inventory = false,
+    level = 1,
+    max_health = 1,
+    health = 1,
+    max_mana = 1,
+    mana = 1,
+  }, attributes)
 
-  self:super(attrs)
+  CBaseEntity.initialize(self, attrs)
 
   self.abilities = { n = 0 }
   self.inventory = {}
@@ -58,8 +54,14 @@ function CDOTA_BaseNPC:_init(attributes)
   self.talent_ability_end = 0
 
   for key, value in pairs(attrs) do
+    --- @diagnostic disable-next-line: unnecessary-if # attributes can contain any string key
     if key == "AbilityTalentStart" then
-      self.talent_ability_start = value
+      local talent_ability_start = assert(
+        tonumber(value) --[[@as integer?]],
+        sprintf("invalid 'AbilityTalentStart' value: %q", value)
+      )
+
+      self.talent_ability_start = talent_ability_start
     else
       local index_str = key:match(ABILITY_KEY_PATT)
       local index = tonumber(index_str) --[[@as integer?]]
@@ -269,13 +271,13 @@ end
 
 function CDOTA_BaseNPC:AddItemByName(name)
   if not self:HasInventory() then
-    error(string.format("CDOTA_BaseNPC %q has no inventory", self:GetUnitName()))
+    error(sprintf("CDOTA_BaseNPC %q has no inventory", self:GetUnitName()))
   end
 
   local slot = self:find_free_inventory_slot()
 
   if slot == nil then
-    error(string.format("CDOTA_BaseNPC %q has space left in inventory", self:GetUnitName()))
+    error(sprintf("CDOTA_BaseNPC %q has space left in inventory", self:GetUnitName()))
   end
 
   local item = F.dota_item({ name = name })

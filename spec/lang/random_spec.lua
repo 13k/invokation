@@ -4,7 +4,7 @@ local rand = require("invk.lang.random")
 
 describe("invk.lang.random", function()
   describe(".seed", function()
-    local mocks = Mock()
+    local mocks = Mock:new()
 
     before_each(function()
       mocks:spy("math", math, "randomseed")

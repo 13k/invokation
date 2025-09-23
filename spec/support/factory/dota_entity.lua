@@ -5,5 +5,5 @@ local CBaseEntity = require("support.dota2.CBaseEntity")
 --- @param attributes F.dota_entity.Attributes
 --- @return T.dota2.CBaseEntity
 return function(attributes)
-  return CBaseEntity(attributes)
+  return CBaseEntity:new(attributes)
 end

@@ -6,7 +6,7 @@ local combo_sound = require("invk.combo.sound")
 local sound_ev = require("invk.dota2.sound_events")
 
 describe("invk.combo.sound", function()
-  local mocks = Mock()
+  local mocks = Mock:new()
   local player = F.dota_player()
   local entity = F.dota_entity({ name = "ent_dummy" })
   local dummy = { entity = entity } --- @cast dummy invk.dota2.DummyTarget

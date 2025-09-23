@@ -7,15 +7,21 @@ local DummyTarget = require("invk.dota2.dummy_target")
 local UNITS = require("invk.const.units")
 local units = require("invk.dota2.units")
 
+--- @class T.dota2.CDOTA_BaseNPC.WithIndex : T.dota2.CDOTA_BaseNPC
+--- @field __test_index integer
+
 describe("invk.dota2.DummyTarget", function()
-  local mocks = Mock({
+  local mocks = Mock:new({
     ["units.create"] = function(self)
       local i = 0
 
       self:stub("units", units, "create", function()
         i = i + 1
 
-        return F.dota_unit({ name = UNITS.DUMMY_TARGET, __test_index = i })
+        return F.dota_unit({
+          name = UNITS.DUMMY_TARGET,
+          __test_index = i,
+        })
       end)
     end,
   })
@@ -78,7 +84,7 @@ describe("invk.dota2.DummyTarget", function()
     it("does NOT spawn the dummy unit if it exists", function()
       local dummy = DummyTarget:new({ spawn = true })
 
-      assert.is_not_nil(dummy.entity)
+      assert.is_not_nil(dummy.entity) --- @cast dummy.entity T.dota2.CDOTA_BaseNPC.WithIndex
       assert.equal(1, dummy.entity.__test_index)
 
       dummy:spawn()
@@ -100,7 +106,7 @@ describe("invk.dota2.DummyTarget", function()
 
       dummy:spawn()
 
-      assert.is_not_nil(dummy.entity)
+      assert.is_not_nil(dummy.entity) --- @cast dummy.entity T.dota2.CDOTA_BaseNPC.WithIndex
       assert.equal(1, dummy.entity.__test_index)
       mocks:assert("units", "create").called(1)
       mocks:assert("units", "create").called_with(UNITS.DUMMY_TARGET, {
@@ -144,7 +150,7 @@ describe("invk.dota2.DummyTarget", function()
 
       dummy:reset()
 
-      assert.is_not_nil(dummy.entity)
+      assert.is_not_nil(dummy.entity) --- @cast dummy.entity T.dota2.CDOTA_BaseNPC.WithIndex
       assert.equal(1, dummy.entity.__test_index)
       mocks:assert("DummyTarget", "kill").called(1)
       mocks:assert("DummyTarget", "spawn").called(1)
@@ -155,12 +161,12 @@ describe("invk.dota2.DummyTarget", function()
 
       mocks:spy("DummyTarget", dummy, { "kill", "spawn" })
 
-      assert.is_not_nil(dummy.entity)
+      assert.is_not_nil(dummy.entity) --- @cast dummy.entity T.dota2.CDOTA_BaseNPC.WithIndex
       assert.equal(1, dummy.entity.__test_index)
 
       dummy:reset()
 
-      assert.is_not_nil(dummy.entity)
+      assert.is_not_nil(dummy.entity) --- @cast dummy.entity T.dota2.CDOTA_BaseNPC.WithIndex
       assert.equal(2, dummy.entity.__test_index)
       mocks:assert("DummyTarget", "kill").called(1)
       mocks:assert("DummyTarget", "spawn").called(1)

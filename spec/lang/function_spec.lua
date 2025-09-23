@@ -7,7 +7,7 @@ local func = require("invk.lang.function")
 describe("invk.lang.function", function()
   describe(".lookupbyname", function()
     it("creates a wrapper function that performs method lookup by name", function()
-      local mocks = Mock()
+      local mocks = Mock:new()
       local t = {}
 
       t.greet = function(name)

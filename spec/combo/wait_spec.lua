@@ -9,8 +9,9 @@ local Wait = require("invk.combo.wait")
 local AbilityName = INVOKER.AbilityName
 
 describe("invk.combo.Wait", function()
-  --- @type support.dota2.MockClock
-  local clock = MockClock(10, true)
+  -- doesn't need be to reset because it's fixed
+  local clock = MockClock:new(13, true)
+
   --- @type invk.combo.Wait
   local wait
 
@@ -40,15 +41,15 @@ describe("invk.combo.Wait", function()
 
         wait:enqueue(ability1)
 
-        assert.same({ 10.5 }, wait.queue)
+        assert.same({ 13.5 }, wait.queue)
 
         wait:enqueue(ability2)
 
-        assert.same({ 10.5, 10.3 }, wait.queue)
+        assert.same({ 13.5, 13.3 }, wait.queue)
 
         wait:enqueue(ability3)
 
-        assert.same({ 10.5, 10.3, 10.25 }, wait.queue)
+        assert.same({ 13.5, 13.3, 13.25 }, wait.queue)
       end)
     end)
 
@@ -75,15 +76,15 @@ describe("invk.combo.Wait", function()
 
         wait:enqueue(ability_alacrity)
 
-        assert.same({ 14.5 }, wait.queue)
+        assert.same({ 17.5 }, wait.queue)
 
         wait:enqueue(ability_cold_snap)
 
-        assert.same({ 14.5, 13.25 }, wait.queue)
+        assert.same({ 17.5, 16.25 }, wait.queue)
 
         wait:enqueue(ability_sun_strike)
 
-        assert.same({ 14.5, 13.25, 12.6 }, wait.queue)
+        assert.same({ 17.5, 16.25, 15.6 }, wait.queue)
       end)
     end)
   end)
@@ -111,11 +112,11 @@ describe("invk.combo.Wait", function()
       wait:enqueue(ability_cold_snap)
       wait:enqueue(ability_sun_strike)
 
-      assert.same({ 14.5, 13.25, 12.6 }, wait.queue)
+      assert.same({ 17.5, 16.25, 15.6 }, wait.queue)
 
       wait:finish(5.0)
 
-      assert.equal(9.5, wait.duration)
+      assert.equal(12.5, wait.duration)
     end)
   end)
 end)

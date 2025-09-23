@@ -9,6 +9,12 @@ local tbl = require("invk.lang.table")
 --- @todo Use an LRU cache
 local CACHE = {}
 
+--- @alias invk.combo.Machine fsm.Machine<invk.combo.StateName, invk.combo.EventName>
+--- @alias invk.combo.MachineDefinition fsm.Definition<invk.combo.StateName, invk.combo.EventName>
+--- @alias invk.combo.Event fsm.Event<invk.combo.StateName, invk.combo.EventName>
+--- @alias invk.combo.StateName (invk.combo.MetaStateName | string)
+--- @alias invk.combo.EventName (invk.combo.MetaEventName | string)
+
 --- ComboSequence class.
 --- @class invk.combo.ComboSequence : middleclass.Class, invk.log.Mixin
 --- @field id integer
@@ -20,13 +26,11 @@ local CACHE = {}
 --- @field next invk.combo.ComboStep[]
 --- @field enter_times { [invk.combo.StateName]: number? }
 --- @field leave_times { [invk.combo.StateName]: number? }
---- @field fsm any
+--- @field fsm invk.combo.Machine
 --- @field logger? invk.Logger
 local M = class("invk.combo.ComboSequence")
 
 M:include(Logger.Mixin)
-
---- @alias invk.combo.StateName (invk.combo.MetaStateName | string)
 
 --- Sequence state.
 --- @enum invk.combo.MetaStateName
@@ -36,18 +40,11 @@ M.STATES = {
   FINISH = "finish",
 }
 
---- @alias invk.combo.EventName (invk.combo.MetaEventName | string)
-
 --- @enum invk.combo.MetaEventName
 M.EVENTS = {
   PRE_FINISH = "pre_finish",
   FINISH = "finish",
 }
-
---- @class invk.combo.Event
---- @field name invk.combo.EventName
---- @field from invk.combo.StateName
---- @field to invk.combo.StateName
 
 --- @param steps invk.combo.ComboStep[]
 --- @param step invk.combo.ComboStep
@@ -70,6 +67,7 @@ local function step_events(steps, step)
 end
 
 --- @param steps invk.combo.ComboStep[]
+--- @return invk.combo.MachineDefinition
 local function fsm_def(steps)
   local first_step = assert(steps[1], "received empty steps sequence")
   local last_step = assert(steps[#steps], "received empty steps sequence")
@@ -105,7 +103,13 @@ local function fsm_def(steps)
   events[#events + 1] = ev_prefinish
   events[#events + 1] = ev_finish
 
-  return { initial = M.STATES.INITIAL, events = events }
+  --- @type invk.combo.MachineDefinition
+  local def = {
+    initial = M.STATES.INITIAL,
+    events = events,
+  }
+
+  return def
 end
 
 --- @class invk.combo.ComboSequenceOptions

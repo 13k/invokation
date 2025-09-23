@@ -2,7 +2,7 @@ local m = require("moses")
 
 local UNITS = require("invk.const.units")
 
---- @class F.dota_hero_invoker.Attributes : T.dota2.CDOTA_BaseNPC_Hero.Attributes
+--- @class (partial) F.dota_hero_invoker.Attributes : F.dota_hero.Attributes
 --- @field name? string
 
 --- @class F.dota_hero_invoker.Options : F.dota_hero.Options

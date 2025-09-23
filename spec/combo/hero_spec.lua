@@ -1,6 +1,5 @@
 local assert = require("luassert")
 local m = require("moses")
-local spy = require("luassert.spy")
 
 local F = require("support.factory")
 local Mock = require("support.mock")
@@ -77,8 +76,8 @@ describe("invk.combo.hero", function()
   end)
 
   describe(".teardown", function()
-    local mocks = Mock()
-    --- @type CDOTA_Item[]
+    local mocks = Mock:new()
+    --- @type T.dota2.CDOTA_Item[]
     local dropped_items = {}
 
     before_each(function()
@@ -111,20 +110,16 @@ describe("invk.combo.hero", function()
     it("resets hero abilities cooldowns", function()
       local unit = F.hero_invoker()
       local player = F.dota_player({ hero = unit.entity })
-      --- @type luassert.spy[]
-      local spies = {}
 
       unit:for_each_ability(function(ability)
-        spies[#spies + 1] = spy.on(ability, "EndCooldown")
+        mocks:spy(tostring(ability), ability, "EndCooldown")
       end)
-
-      assert.is_false(m.isEmpty(spies))
 
       combo_hero.teardown(player)
 
-      for _, s in ipairs(spies) do
-        assert.spy(s).self.called()
-      end
+      unit:for_each_ability(function(ability)
+        mocks:assert(tostring(ability), "EndCooldown").self.called(1)
+      end)
     end)
 
     it("resets hero items cooldowns", function()
@@ -134,20 +129,16 @@ describe("invk.combo.hero", function()
       assert.is_false(m.isEmpty(hero.inventory))
 
       local player = F.dota_player({ hero = hero })
-      --- @type luassert.spy[]
-      local spies = {}
 
       unit:for_each_item(function(item)
-        spies[#spies + 1] = spy.on(item, "EndCooldown")
+        mocks:spy(tostring(item), item, "EndCooldown")
       end)
-
-      assert.is_false(m.isEmpty(spies))
 
       combo_hero.teardown(player)
 
-      for _, s in ipairs(spies) do
-        assert.spy(s).self.called()
-      end
+      unit:for_each_item(function(item)
+        mocks:assert(tostring(item), "EndCooldown").self.called(1)
+      end)
     end)
 
     describe("with dropped items", function()
@@ -161,15 +152,14 @@ describe("invk.combo.hero", function()
       }
 
       it("removes dropped items owned by the hero", function()
-        --- @type { [CDOTA_Item]: luassert.spy }
-        local item_spies = m.map(dropped_items, function(item)
-          return item, spy.on(item, "RemoveSelf")
-        end)
+        for _, item in ipairs(dropped_items) do
+          mocks:spy(tostring(item), item, "RemoveSelf")
+        end
 
         combo_hero.teardown(player)
 
-        for item, spy in pairs(item_spies) do
-          assert.spy(spy).self.called()
+        for _, item in ipairs(dropped_items) do
+          mocks:assert(tostring(item), "RemoveSelf").self.called(1)
           assert.is_true(item:IsNull())
         end
       end)
@@ -178,26 +168,11 @@ describe("invk.combo.hero", function()
     describe("with spawned units by the hero", function()
       local hero = F.dota_hero_invoker()
       local player = F.dota_player({ hero = hero })
+      --- @type { [string]: T.dota2.CDOTA_BaseNPC }
       local units = {}
-      local unit_spies = {}
-
-      for _, name in pairs(INVOKER.SPAWNED_UNITS) do
-        for _ = 0, 1 do
-          local unit = F.dota_unit({ name = name, player_owner = player })
-
-          units[name] = units[name] or {}
-          units[name][#units[name] + 1] = unit
-
-          unit_spies[name] = unit_spies[name] or {}
-          unit_spies[name][unit] = { RemoveSelf = spy.on(unit, "RemoveSelf") }
-        end
-      end
-
-      --- @type support.Mock
-      local units_mocks = Mock()
 
       before_each(function()
-        units_mocks:stub("Entities", Entities, "FindByName", function(_, start_ent, name)
+        mocks:stub("Entities", Entities, "FindByName", function(_, start_ent, name)
           local ent_idx = start_ent and start_ent:GetEntityIndex() or 0
 
           local unit_idx = m.findIndex(units[name], function(unit)
@@ -206,18 +181,27 @@ describe("invk.combo.hero", function()
 
           return units[name][unit_idx]
         end)
+
+        for _, name in pairs(INVOKER.SPAWNED_UNITS) do
+          local unit = F.dota_unit({ name = name, player_owner = player })
+
+          units[name] = units[name] or {}
+          units[name][#units[name] + 1] = unit
+
+          mocks:spy(tostring(unit), unit, "RemoveSelf")
+        end
       end)
 
       after_each(function()
-        units_mocks:reset()
+        units = {}
       end)
 
       it("removes spawned units by the hero", function()
         combo_hero.teardown(player)
 
-        for _, group in pairs(unit_spies) do
-          for unit, spies in pairs(group) do
-            assert.spy(spies.RemoveSelf).self.called_with()
+        for _, group in pairs(units) do
+          for _, unit in ipairs(group) do
+            mocks:assert(tostring(unit), "RemoveSelf").self.called(1)
             assert.is_true(unit:IsNull())
           end
         end
@@ -229,11 +213,11 @@ describe("invk.combo.hero", function()
         local hero = F.dota_hero_invoker()
         local player = F.dota_player({ hero = hero })
 
-        mocks:spy("hero", hero, "Purge")
+        mocks:spy(tostring(hero), hero, "Purge")
 
         combo_hero.teardown(player)
 
-        mocks:assert("hero", "Purge").self.called_with(true, true, false, true, true)
+        mocks:assert(tostring(hero), "Purge").self.called_with(true, true, false, true, true)
       end)
 
       it("heals the hero to max health", function()
@@ -272,14 +256,16 @@ describe("invk.combo.hero", function()
         local hero = F.dota_hero_invoker()
         local player = F.dota_player({ player_id = 31, hero = hero })
 
-        mocks:spy("hero", hero, "RemoveSelf")
+        mocks:spy(tostring(hero), hero, "RemoveSelf")
 
         combo_hero.teardown(player, { hard_reset = true })
 
         mocks
           :assert("PlayerResource", "ReplaceHeroWithNoTransfer").self
           .called_with(31, INVOKER.UNIT_NAME, -1, 0)
-        mocks:assert("hero", "RemoveSelf").self.called()
+
+        mocks:assert(tostring(hero), "RemoveSelf").self.called(1)
+
         assert.is_true(hero:IsNull())
       end)
     end)
@@ -311,9 +297,9 @@ describe("invk.combo.hero", function()
       [AbilityName.SUN_STRIKE] = 1,
     }
 
-    --- @type CDOTA_BaseNPC_Hero
+    --- @type T.dota2.CDOTA_BaseNPC_Hero
     local hero
-    --- @type CDOTAPlayerController
+    --- @type T.dota2.CDOTAPlayerController
     local player
 
     before_each(function()

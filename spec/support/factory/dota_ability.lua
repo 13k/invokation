@@ -14,11 +14,11 @@ return function(attributes, options)
   local opts = options or {}
 
   if opts.hero then
-    local kv_path = string.format("scripts/npc/heroes/%s.txt", opts.hero)
+    local kv_path = sprintf("scripts/npc/heroes/%s.txt", opts.hero)
     local kv = LoadKeyValues(kv_path)
 
-    attributes = m.extend(attributes, kv[attributes.name] or {})
+    attributes = m.extend({}, attributes, kv[attributes.name] or {})
   end
 
-  return CDOTABaseAbility(attributes)
+  return CDOTABaseAbility:new(attributes)
 end

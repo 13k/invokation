@@ -28,14 +28,15 @@ local State = BaseCombo.State
 local NET_TABLE_CFG = NET_TABLE.Tables[NET_TABLE.Name.MAIN]
 
 describe("invk.combo.Combos", function()
-  local mocks = Mock()
-  --- @type invk.combo.Combos
-  local combos
+  local mocks = Mock:new()
   local net_table = { keys = NET_TABLE_CFG.keys }
   local dummy_spawn = F.dota_entity({ name = "dummy_spawn" })
   local hero_ent = F.dota_hero_invoker()
   local player_ent = F.dota_player({ hero = hero_ent })
   local player_id = player_ent:GetPlayerID()
+
+  --- @type invk.combo.Combos
+  local combos
   --- @type invk.combo.PlayerState
   local player_state
 

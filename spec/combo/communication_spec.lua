@@ -30,14 +30,13 @@ local SPEC = {
 }
 
 describe("invk.combo.communication", function()
+  local clock = MockClock:new()
+  local mocks = Mock:new()
+
   --- @type invk.combo.Combo
   local combo
-  --- @type support.dota2.MockClock
-  local clock = MockClock()
   local player = F.dota_player()
   local ability = F.ability({ name = "ability" })
-  --- @type support.Mock
-  local mocks = Mock()
 
   before_each(function()
     mocks:spy("custom_events", custom_ev, "send_player")
@@ -47,7 +46,7 @@ describe("invk.combo.communication", function()
   end)
 
   after_each(function()
-    mocks:revert("custom_events", "send_player")
+    mocks:reset()
   end)
 
   describe(".send_ability_used", function()

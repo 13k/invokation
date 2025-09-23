@@ -1,4 +1,4 @@
-local class = require("pl.class")
+local class = require("middleclass")
 local m = require("moses")
 
 local CDOTA_BaseNPC = require("support.dota2.CDOTA_BaseNPC")
@@ -9,24 +9,24 @@ local LIMITS = require("invk.const.limits")
 --- @field ability_points integer
 --- @field gold_reliable integer
 --- @field gold_unreliable integer
-local CDOTA_BaseNPC_Hero = class(CDOTA_BaseNPC)
+local CDOTA_BaseNPC_Hero = class("CDOTA_BaseNPC_Hero", CDOTA_BaseNPC)
 
 --- @class (partial) T.dota2.CDOTA_BaseNPC_Hero.Attributes : T.dota2.CDOTA_BaseNPC.Attributes
 --- @field ability_points? integer
 --- @field gold_reliable? integer
 --- @field gold_unreliable? integer
 
---- @type T.dota2.CDOTA_BaseNPC_Hero.Attributes
-local ATTRIBUTES = {
-  has_inventory = true,
-  ability_points = 1,
-  gold_reliable = 0,
-  gold_unreliable = 0,
-}
-
 --- @param attributes T.dota2.CDOTA_BaseNPC_Hero.Attributes
-function CDOTA_BaseNPC_Hero:_init(attributes)
-  self:super(m.extend({}, ATTRIBUTES, attributes))
+function CDOTA_BaseNPC_Hero:initialize(attributes)
+  CDOTA_BaseNPC.initialize(
+    self,
+    m.extend({
+      has_inventory = true,
+      ability_points = 1,
+      gold_reliable = 0,
+      gold_unreliable = 0,
+    }, attributes)
+  )
 end
 
 function CDOTA_BaseNPC_Hero:HeroLevelUp(_playEffects)

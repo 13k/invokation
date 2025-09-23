@@ -1,4 +1,4 @@
-local class = require("pl.class")
+local class = require("middleclass")
 local m = require("moses")
 
 local CBaseEntity = require("support.dota2.CBaseEntity")
@@ -11,7 +11,7 @@ local CBaseEntity = require("support.dota2.CBaseEntity")
 --- @field AbilityBehavior string
 --- @field AbilityDuration number
 --- @field MaxLevel integer
-local CDOTABaseAbility = class(CBaseEntity)
+local CDOTABaseAbility = class("CDOTABaseAbility", CBaseEntity)
 
 --- @class (partial) T.dota2.CDOTABaseAbility.Attributes : T.dota2.CBaseEntity.Attributes
 --- @field index? integer
@@ -22,15 +22,15 @@ local CDOTABaseAbility = class(CBaseEntity)
 --- @field AbilityDuration? number
 --- @field MaxLevel? integer
 
---- @type T.dota2.CDOTABaseAbility.Attributes
-local ATTRIBUTES = {
-  level = 0,
-  MaxLevel = 1,
-}
-
 --- @param attributes T.dota2.CDOTABaseAbility.Attributes
-function CDOTABaseAbility:_init(attributes)
-  self:super(m.extend({}, ATTRIBUTES, attributes or {}))
+function CDOTABaseAbility:initialize(attributes)
+  CBaseEntity.initialize(
+    self,
+    m.extend({
+      level = 0,
+      MaxLevel = 1,
+    }, attributes)
+  )
 end
 
 function CDOTABaseAbility:GetAbilityName()
@@ -77,7 +77,7 @@ function CDOTABaseAbility:CanAbilityBeUpgraded()
   end
 
   if type(self.AbilityBehavior) ~= "string" then
-    -- error(string.format("CDOTABaseAbility: 'AbilityBehavior' is not set (name=%q)", self.name))
+    -- error(sprintf("CDOTABaseAbility: 'AbilityBehavior' is not set (name=%q)", self.name))
     -- hack: talent abilities
     return ABILITY_CAN_BE_UPGRADED
   end
