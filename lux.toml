@@ -13,13 +13,13 @@ license = "MIT"
 [dependencies]
 
 [test_dependencies]
-bit32 = "~> 5.3"
-busted = "~> 2.2"
-busted-htest = "~> 1.0"
-compat53 = "~> 0.14"
+bit32 = "5.3.5.1-1"
+busted = "2.3.0-1"
+busted-htest = "1.0.0-2"
+compat53 = "0.15.1-1"
 middleclass = "4.1.1-0"
-moses = "~> 2.1"
-penlight = "~> 1.14"
+moses = "2.1.0-1"
+penlight = "1.15.0-1"
 
 [run]
 args = ["game/scripts/vscripts/addon_game_mode.lua"]
