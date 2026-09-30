@@ -14,7 +14,7 @@ local CDOTA_BaseNPC_Hero = require("support.dota2.CDOTA_BaseNPC_Hero")
 --- @return T.dota2.CDOTA_BaseNPC_Hero
 return function(attributes, options)
   local opts = options or {}
-  local kv = LoadKeyValues("scripts/npc/npc_heroes.txt")
+  local kv = LoadKeyValues(sprintf("scripts/npc/heroes/%s.txt", attributes.name))
   local attrs = m.extend({}, kv[attributes.name] or {}, attributes)
   local hero = CDOTA_BaseNPC_Hero:new(attrs)
 

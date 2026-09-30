@@ -90,5 +90,7 @@ function EmitAnnouncerSoundForTeamOnLocation(_event, _team, _location) end
 
 --- @param hero_ent T.dota2.CDOTA_BaseNPC_Hero
 function HeroMaxLevel(hero_ent)
+  printf("HeroMaxLevel() : %q", hero_ent.name)
+
   hero_ent:max_level()
 end

@@ -25,7 +25,7 @@ M.SPEC = {
 function M:initialize(game, player, args)
   Base.initialize(self, M.SPEC, game, player, args)
 
-  self.pattern = assert(args[1], "argument <pattern> is required")
+  self.pattern = assertf(args[1], "argument <pattern> is required")
 end
 
 function M:run()

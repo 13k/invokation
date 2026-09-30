@@ -25,7 +25,7 @@ M.SPEC = {
 function M:initialize(game, player, args)
   Base.initialize(self, M.SPEC, game, player, args)
 
-  local combo_id_str = assert(args[1], "argument <combo_id> is required")
+  local combo_id_str = assertf(args[1], "argument <combo_id> is required")
   local combo_id = tonumber(combo_id_str) --[[@as integer?]]
 
   if not combo_id then
@@ -41,7 +41,7 @@ function M:run()
   local combo = self.game.combos:create(self.combo_id) --[[@as invk.combo.Combo?]]
 
   if combo == nil then
-    error("Could not find combo with id %q", self.combo_id)
+    errorf("Could not find combo with id %q", self.combo_id)
   end
 
   print(combo:todot())

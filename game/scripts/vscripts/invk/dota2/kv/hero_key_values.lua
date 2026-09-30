@@ -5,8 +5,7 @@ local KeyValues = require("invk.dota2.kv.key_values")
 local talents = require("invk.dota2.talents")
 local tbl = require("invk.lang.table")
 
-local KV_HEROES_PATH = "scripts/npc/npc_heroes.txt"
-local KV_ABILITIES_PATH_PATT = "scripts/npc/heroes/%s.txt"
+local KV_PATH_PATT = "scripts/npc/heroes/%s.txt"
 local ABILITY_KEY_PATT = "^Ability(%d+)$"
 
 --- HeroKeyValues class.
@@ -20,25 +19,23 @@ local M = class("invk.dota2.kv.HeroKeyValues", KeyValues)
 --- @param name string # Hero unit name
 --- @return invk.dota2.kv.HeroKeyValues
 function M.static:load(name)
-  local heroes = KeyValues:load(KV_HEROES_PATH)
-  local hero = heroes:require_kv(name)
+  local path = F(KV_PATH_PATT, name)
+  local kv = KeyValues:load(path)
+  local hero = kv:require_kv(name)
 
-  local abilities_path = F(KV_ABILITIES_PATH_PATT, name)
-  local abilities = KeyValues:load(abilities_path)
-
-  return self:new(name, hero.data, abilities)
+  return self:new(name, hero.data)
 end
 
 --- Constructor.
 --- @param name string # Hero unit name
---- @param hero invk.dota2.KeyValues # Hero KeyValues data
---- @param abilities invk.dota2.kv.KeyValues # Abilities KeyValues data
-function M:initialize(name, hero, abilities)
-  KeyValues.initialize(self, hero)
+--- @param kv invk.dota2.KeyValues # Hero KeyValues data
+function M:initialize(name, kv)
+  KeyValues.initialize(self, kv)
 
   self.name = name
   self.abilities = {}
 
+  local abilities = self:require_kv("AbilityDefinitions")
   --- @type { [integer]: string }
   local abilities_names = tbl.transform(self.data, M.parse_ability_entry)
   local talents_start = self:require_integer("AbilityTalentStart")

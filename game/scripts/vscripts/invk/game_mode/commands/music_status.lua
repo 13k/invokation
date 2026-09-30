@@ -26,14 +26,14 @@ M.SPEC = {
 function M:initialize(game, player, args)
   Base.initialize(self, M.SPEC, game, player, args)
 
-  local status_str = assert(args[1], "argument <status> is required")
+  local status_str = assertf(args[1], "argument <status> is required")
   local status = tonumber(status_str) --[[@as integer?]]
 
   if not status then
     errorf("Invalid status %q", status_str)
   end
 
-  local intensity_str = assert(args[1], "argument <intensity> is required")
+  local intensity_str = assertf(args[1], "argument <intensity> is required")
   local intensity = tonumber(intensity_str)
 
   if not intensity then

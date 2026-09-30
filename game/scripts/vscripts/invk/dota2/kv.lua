@@ -27,11 +27,11 @@ function M.require_type(ty, value)
   local message = F("expected KeyValues type %q for value %s", ty, inspect(value))
 
   if ty == M.Type.Number then
-    assert(lua_ty == "number", message)
+    assertf(lua_ty == "number", message)
   elseif ty == M.Type.String then
-    assert(lua_ty == "string", message)
+    assertf(lua_ty == "string", message)
   elseif ty == M.Type.KeyValues then
-    assert(lua_ty == "table", message)
+    assertf(lua_ty == "table", message)
   else
     errorf("invalid KeyValues type %q", ty)
   end

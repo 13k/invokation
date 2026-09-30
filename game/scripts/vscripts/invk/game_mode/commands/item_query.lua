@@ -27,7 +27,7 @@ M.SPEC = {
 function M:initialize(game, player, args)
   Base.initialize(self, M.SPEC, game, player, args)
 
-  self.query = assert(args[1], "argument <query> is required")
+  self.query = assertf(args[1], "argument <query> is required")
 end
 
 function M:run()

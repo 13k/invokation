@@ -69,8 +69,8 @@ end
 --- @param steps invk.combo.ComboStep[]
 --- @return invk.combo.MachineDefinition
 local function fsm_def(steps)
-  local first_step = assert(steps[1], "received empty steps sequence")
-  local last_step = assert(steps[#steps], "received empty steps sequence")
+  local first_step = assertf(steps[1], "received empty steps sequence")
+  local last_step = assertf(steps[#steps], "received empty steps sequence")
 
   --- @type invk.combo.Event
   local ev_init = {
@@ -128,7 +128,7 @@ function M:initialize(id, specs, options)
   self.clock = opts.clock
   self.sequence = tbl.lmap(specs, func.ctor(ComboStep))
 
-  local first_step = assert(self.sequence[1], "received empty sequence")
+  local first_step = assertf(self.sequence[1], "received empty sequence")
 
   self.current_id = nil
   self.current = nil

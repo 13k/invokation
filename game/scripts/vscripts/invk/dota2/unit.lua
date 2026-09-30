@@ -27,7 +27,7 @@ end
 
 --- @return CDOTA_BaseNPC_Hero
 function M:require_hero()
-  assert(self.is_hero, "expected hero unit")
+  assertf(self.is_hero, "expected hero unit")
 
   --- @cast self.entity CDOTA_BaseNPC_Hero
   return self.entity

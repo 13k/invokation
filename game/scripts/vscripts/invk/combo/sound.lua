@@ -15,7 +15,7 @@ local MUSIC = {
 --- @param events string[] # Array of event names from which to get a random sample
 --- @return string
 local function random_sound_event(events)
-  local event = assert(events[RandomInt(1, #events)], "RandomInt() returned invalid value")
+  local event = assertf(events[RandomInt(1, #events)], "RandomInt() returned invalid value")
 
   return event
 end

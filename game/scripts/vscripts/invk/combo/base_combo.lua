@@ -86,7 +86,7 @@ end
 --- @return invk.combo.ComboStep? # The current step or `nil`
 --- @diagnostic disable-next-line: unused
 function M:current_step()
-  error(ERR_NOT_IMPLEMENTED)
+  errorf(ERR_NOT_IMPLEMENTED)
 end
 
 --- @return integer?
@@ -101,7 +101,7 @@ end
 --- @return invk.combo.ComboStep[] # Array of next steps
 --- @diagnostic disable-next-line: unused
 function M:next_steps()
-  error(ERR_NOT_IMPLEMENTED)
+  errorf(ERR_NOT_IMPLEMENTED)
 end
 
 --- @return integer[]
@@ -122,7 +122,7 @@ end
 --- @return boolean # `true` if succeeded, `false` otherwise
 --- @diagnostic disable-next-line: unused
 function M:progress(_ability)
-  error(ERR_NOT_IMPLEMENTED)
+  errorf(ERR_NOT_IMPLEMENTED)
 end
 
 --- Marks the combo as failed.
@@ -135,7 +135,7 @@ end
 --- @return boolean # `true` if succeeded, `false` otherwise
 --- @diagnostic disable-next-line: unused
 function M:pre_finish()
-  error(ERR_NOT_IMPLEMENTED)
+  errorf(ERR_NOT_IMPLEMENTED)
 end
 
 --- Finishes the combo if possible.
@@ -143,7 +143,7 @@ end
 --- @return boolean # `true` if succeeded, `false` otherwise
 --- @diagnostic disable-next-line: unused
 function M:finish()
-  error(ERR_NOT_IMPLEMENTED)
+  errorf(ERR_NOT_IMPLEMENTED)
 end
 
 return M

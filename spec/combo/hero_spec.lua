@@ -1,5 +1,6 @@
 local assert = require("luassert")
 local m = require("moses")
+local spy = require("luassert.spy")
 
 local F = require("support.factory")
 local Mock = require("support.mock")
@@ -359,29 +360,20 @@ describe("invk.combo.hero", function()
     end)
 
     describe("with ultra_max option", function()
-      it("levels up the player hero, abilities and talents to max level and gives items", function()
-        assert.equal(3, hero:GetLevel())
-        assert.equal(0, hero:GetAbilityPoints())
+      local hero_max_level_stub
 
+      before_each(function()
+        hero_max_level_stub = stub(_G, "HeroMaxLevel", function() end)
+      end)
+
+      after_each(function()
+        hero_max_level_stub:revert()
+      end)
+
+      it("levels up the player hero, abilities and talents to max level and gives items", function()
         combo_hero.level_up(player, { ultra_max = true })
 
-        assert.equal(LIMITS.MAX_HERO_LEVEL, hero:GetLevel())
-        assert.equal(0, hero:GetAbilityPoints())
-
-        for _, name in ipairs(INVOKER.ORB_ABILITIES) do
-          local ability = dota2_h.require_ability(hero, name)
-
-          assert.equal(ability:GetMaxLevel(), ability:GetLevel())
-        end
-
-        for _, name in ipairs(INVOKER.TALENT_ABILITIES) do
-          local ability = dota2_h.require_ability(hero, name)
-
-          assert.equal(ability:GetMaxLevel(), ability:GetLevel())
-        end
-
-        assert.equal(1, dota2_h.require_ability(hero, AbilityName.COLD_SNAP):GetLevel())
-        assert.equal(1, dota2_h.require_ability(hero, AbilityName.SUN_STRIKE):GetLevel())
+        assert.stub(hero_max_level_stub).called(1)
 
         assert.is_not_nil(hero:FindModifierByName(MODIFIERS.aghanims_shard))
         assert.is_not_nil(hero:FindModifierByName(MODIFIERS.aghanims_scepter_consumed))

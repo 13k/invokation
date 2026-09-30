@@ -12,7 +12,13 @@ local M = class("invk.dota2.kv.KeyValuesBase")
 --- @param path string # KeyValues file path
 --- @return invk.dota2.kv.KeyValues
 function M.static:load(path)
-  return self:new(LoadKeyValues(path))
+  local ok, ret = pcall(LoadKeyValues, path)
+
+  if not ok then
+    errorf("LoadKeyValues() failed with error: %s", ret)
+  end
+
+  return self:new(ret)
 end
 
 --- @param data invk.dota2.KeyValues

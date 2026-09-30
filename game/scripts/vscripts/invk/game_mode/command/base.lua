@@ -54,7 +54,7 @@ end
 --- @abstract
 --- @diagnostic disable-next-line: unused
 function M:run()
-  error("not implemented")
+  errorf("not implemented")
 end
 
 return M

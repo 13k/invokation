@@ -24,11 +24,22 @@ local CDOTABaseAbility = class("CDOTABaseAbility", CBaseEntity)
 
 --- @param attributes T.dota2.CDOTABaseAbility.Attributes
 function CDOTABaseAbility:initialize(attributes)
+  --- @type integer
+  local level = 0
+  --- @type integer
+  local max_level = 0
+
+  if attributes.name == "invoker_invoke" then
+    level = 1
+  elseif attributes.name:match("^special_") then
+    max_level = 1
+  end
+
   CBaseEntity.initialize(
     self,
     m.extend({
-      level = 0,
-      MaxLevel = 1,
+      level = level,
+      MaxLevel = max_level,
     }, attributes)
   )
 end

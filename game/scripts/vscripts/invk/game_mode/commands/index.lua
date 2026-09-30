@@ -15,7 +15,7 @@ local M = setmetatable({}, {
     local ok, mod = pcall(require, F("%s.%s", MOD_BASE, modname))
 
     if not ok then
-      error(F("error loading module %q: %s", modname, mod))
+      errorf("error loading module %q: %s", modname, mod)
     end
 
     self[modname] = mod
