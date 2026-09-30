@@ -13,18 +13,23 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Setup LuaJIT
-        uses: leafo/gh-actions-lua@v10
-        with:
-          luaVersion: "luajit-2.1.0-beta3"
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup LuaRocks
-        uses: leafo/gh-actions-luarocks@v4
-        with:
-          luaVersion: "luajit-2.1.0-beta3"
+      - name: Install lux
+        run: |
+          cargo binstall -y --disable-strategies compile lux-cli
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install LuaJIT
+        run: |
+          lx --lua-version jit install-lua
 
       - name: Test
         run: |
-          luarocks test
+          lx --lua-version jit test
