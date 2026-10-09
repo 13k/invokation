@@ -4,7 +4,7 @@
 	Default_Keys = []
 	DefaultMap = "cottage"
 	DisableIK = false
-	EnablePickRules = false
+	EnablePickRules = true
 	EventGame = false
 	ForceDefaultGuide = false
 	HeroGuidesSupported = true
