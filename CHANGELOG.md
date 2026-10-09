@@ -2,93 +2,128 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.5] - 2026-10-09
+
+### 🚀 Features
+
+- _(panorama)_ Update top bar
+- _(map)_ Replace custom dummy target with hero demo dummy target
+- _(game)_ Make aghanim's shard available to buy early
+- _(game)_ Don't level up orbs on max level up
+- _(panorama)_ Update combo controls and combat log UI
+- _(game)_ Fix initial level and add ultra max level up option
+- _(vscripts)_ Enable hero selection and strategy time for facet selection
+- _(game)_ Enable `EnablePickRules` in addoninfo to fix hero picking
+
+### 🐛 Bug Fixes
+
+- _(vscripts)_ Fix game event `npc_spawned`
+- _(panorama)_ Fix text entry popup
+- _(panorama)_ Fix combo viewer
+- _(vscripts)_ Update hero KeyValues format for patch 7.41f
+
+### 🚜 Refactor
+
+- _(vscripts)_ Reorganize settings
+- _(panorama)_ [**breaking**] Convert styles to SCSS; change classes and ids naming to kebab-case
+- _(panorama)_ Finish/fix refactoring; reorganize popups and tooltips
+- _(panorama)_ Rework buttons and icons
+- _(vscripts)_ Refactor console commands
+
+### 📚 Documentation
+
+- Update CHANGELOG
+- Update README
+
+### 🧪 Testing
+
+- _(vscripts)_ Refactor tests; update types
+
+### ⚙️ Miscellaneous Tasks
+
+- _(lint)_ Upgrade biome
+- Update tasks
+- _(lint)_ Fix lint errors
+- _(tasks)_ Remove eslint directives; add more debug logging
+- _(tasks)_ Use `emmylua_check` when linting vscripts
+- Replace linters and formatters:
+- Format and fix lint errors
+- _(dprint)_ Use single quotes for CSS (Valve implementation sucks)
+- _(panorama)_ Reformat styles
+- Compile panorama styles using `grass`; update panorama scripts building
+- Separate build and resource compilation tasks
+- Remove unused custom event `invk_player_quit_request`
+- Disable panorama script minification
+- Update tasks
+- Update vscripts types; update linters configs; update tsconfigs
+- _(lux)_ Add `middleclass` to test deps
+- Update tasks
+- _(dprint)_ Update plugins
+- Format files
+- Add (empty) taplo config
+- Update bun lockfile with newest bun version
+- _(lux)_ Update lockfile and emmyrc
+- Fix ci workflow
+
 ## [0.5.4] - 2025-09-04
 
 ### 🚀 Features
 
-- *(maps)* Change player start position in `cottage`
-- Add initial support for facets (WIP)
+- _(maps)_ Change player start position in `cottage`
+- Add initial support for facets [wip]
 - Add quit button
-- *(ui)* Reposition combo viewer and keep combo picker open when viewing details
-- improve hero reset
+- _(ui)_ Reposition combo viewer and keep combo picker open when viewing details
 
 ### 🐛 Bug Fixes
 
-- *(panorama)* Fix built-in shop display
-- *(panorama)* Fix combat log toggle icon
-- *(panorama)* Enable aghanims status in HUD
-- *(ui)* Fix talents display in combo viewer (tooltip disabled)
-- *(ui)* Fix missing icon in combo picker
+- _(panorama)_ Fix built-in shop display
+- _(panorama)_ Fix combat log toggle icon
+- _(panorama)_ Enable aghanims status in HUD
+- _(ui)_ Fix talents display in combo viewer (tooltip disabled)
+- _(ui)_ Fix missing icon in combo picker
 - Stop using self-referencing enums
-- *(l10n)* Rework keys; fix filters; refactor tag select code
-- *(ui)*: Fix item picker
+- _(l10n)_ Rework keys; fix filters; refactor tag select code
 
 ### 🚜 Refactor
 
-- *(tasks)* Move tasks to `/src/tasks`
-- *(panorama)* [**breaking**] Migrate scripts to ESM on bun; reorganize components
-- *(tasks)* Filesystem code refactoring:
-- *(vscripts)* [**breaking**] Major vscripts refactoring:
-  - add `compat53`
-  - remove `penlight` and `moses`
-    - add `middleclass` for classes
-    - add `inspect` for value formatting
-    - manually implement table/function/string utils
-  - reorganization
-    - rename top-level module `invokation` to `invk`
-    - extract and reorganize a lot of code
-    - remove a lot of unused code
-    - rewrite/refactor tests support code
-  - types
-    - replace ldoc tags with emmylua_ls tags (LuaCATS)
-  - code style
-    - use snake_case
-  - probably a hell of a lot of other things
+- _(tasks)_ Move tasks to `/src/tasks`
+- _(panorama)_ [**breaking**] Migrate scripts to ESM on bun; reorganize components
+- _(tasks)_ Filesystem code refactoring:
 
 ### 🧪 Testing
 
-- Remove luacov
+- Update luacov config
 
 ### ⚙️ Miscellaneous Tasks
 
 - Update CI workflow
 - [**breaking**] Use `bun` to run tasks
 - [**breaking**] Update tasks to run on `bun`
-- *(lint)* Update biome config
-- *(bun)* Disable auto-install
-- *(lint)* Add biome config for panorama scripts
+- _(lint)_ Update biome config
+- _(bun)_ Disable auto-install
+- _(lint)_ Add biome config for panorama scripts
 - Bundle panorama scripts with bun; fix `data kv` document validation
 - Organize typescript in workspaces
 - Update Taskfile
 - Remove unused code
 - Reorganize biome config
-- *(lint)* Update selene config
+- _(lint)_ Update selene config
 - Remove dead code
 - Fix unique ids/cached objects in development mode
-- [**breaking**] replace luarocks with lux
-- [**breaking**] replace luals with emmylua_ls
-- *(lint)* update luacats types and selene stdlibs
-- [**breaking**] update tasks to use lux
-- update javascript dependencies
-- update selene config
-
-### 📚 Documentation
-
-- update DEVELOPMENT
 
 ## [0.5.3] - 2024-06-02
 
 ### 🐛 Bug Fixes
 
-- *(panorama)* Fix typescript config
-- *(panorama)* Fix typescript errors
-- *(vscript)* Add ceiling to ability number when parsing talents KeyValues
+- _(panorama)_ Fix typescript config
+- _(panorama)_ Fix typescript errors
+- _(vscript)_ Add ceiling to ability number when parsing talents KeyValues
 
 ### 🚜 Refactor
 
-- *(build)* Abstract paths and refactor commands
-- *(panorama)* Fix stylelint errors
-- *(panorama)* Reorganize and modernize scripts
+- _(build)_ Abstract paths and refactor commands
+- _(panorama)_ Fix stylelint errors
+- _(panorama)_ Reorganize and modernize scripts
 - Fix biome errors and rename custom events
 
 ### 📚 Documentation
@@ -104,43 +139,43 @@ All notable changes to this project will be documented in this file.
 ### ⚙️ Miscellaneous Tasks
 
 - Update dev dependencies
-- *(deps)* Add `biome`
+- _(deps)_ Add `biome`
 - Add biome config and update vscode recommended extensions
 - Upgrade required nodejs version to latest LTS
 - Update tsconfig base configs and extends
-- *(deps)* Add `@mojojs/path`
-- *(deps)* Add eslint biome config
-- *(deps)* Upgrade typescript and related
-- *(lint)* Update eslint config
+- _(deps)_ Add `@mojojs/path`
+- _(deps)_ Add eslint biome config
+- _(deps)_ Upgrade typescript and related
+- _(lint)_ Update eslint config
 - Update stylelint config
-- *(deps)* Add `shell-quote`
-- *(deps)* Add `dotenv-expand`
+- _(deps)_ Add `shell-quote`
+- _(deps)_ Add `dotenv-expand`
 - Allow configuration of custom resource compiler command
-- *(panorama)* Fix eslint config
+- _(panorama)_ Fix eslint config
 - Update lint and formatting configs
 - Update make tasks
 - Format files
 - Replace Makefile with Taskfile
 - Disable build in rockspec
-- *(lint)* Update selene config
-- *(panorama)* Fix linting errors
-- *(deps)* Add `core-js` types
+- _(lint)_ Update selene config
+- _(panorama)_ Fix linting errors
+- _(deps)_ Add `core-js` types
 - Update `.ignore`
 - Update Taskfile
-- *(lint)* Replace eslint with biome
-- *(vscode)* Update settings and recommended extensions
-- *(deps)* Remove eslint
-- *(luals)* Add dota2 definitions
-- *(selene)* Update dota2 stdlib
-- *(luals)* Add busted and luassert definitions
-- *(vscript)* Upgrade penlight to 1.13.1
-- *(luals)* Add penlight definitions
+- _(lint)_ Replace eslint with biome
+- _(vscode)_ Update settings and recommended extensions
+- _(deps)_ Remove eslint
+- _(luals)_ Add dota2 definitions
+- _(selene)_ Update dota2 stdlib
+- _(luals)_ Add busted and luassert definitions
+- _(vscript)_ Upgrade penlight to 1.13.1
+- _(luals)_ Add penlight definitions
 - Extract `convert-shops` command to `data shops`; add subcommand `data keyvalues`
-- *(lint)* Update biome config
-- *(lint)* Fix biome errors
-- *(luarocks)* Update test deps
-- *(gh)* Add workflow
-- *(gh)* Enable `workflow_dispatch` on CI workflow
+- _(lint)_ Update biome config
+- _(lint)_ Fix biome errors
+- _(luarocks)_ Update test deps
+- _(gh)_ Add workflow
+- _(gh)_ Enable `workflow_dispatch` on CI workflow
 - Fix ci workflow
 - Add `git-cliff` config
 
@@ -148,7 +183,7 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Bug Fixes
 
-- *(vscript)* Update invoker abilities KeyValues file path
+- _(vscript)_ Update invoker abilities KeyValues file path
 
 ### 📚 Documentation
 
@@ -163,12 +198,12 @@ All notable changes to this project will be documented in this file.
 
 ### 🚀 Features
 
-- *(map)* Update overviews
+- _(map)_ Update overviews
 
 ### 🐛 Bug Fixes
 
-- *(build)* Change `link` command to work with `game` child paths
-- *(panorama)* Remove unused style imports from loading screen
+- _(build)_ Change `link` command to work with `game` child paths
+- _(panorama)_ Remove unused style imports from loading screen
 
 ### 📚 Documentation
 
@@ -178,7 +213,7 @@ All notable changes to this project will be documented in this file.
 ### ⚙️ Miscellaneous Tasks
 
 - Update gitignore
-- *(lsp)* Update config
+- _(lsp)_ Update config
 - Update node packages
 - Update map compilation params
 - Update launch options
@@ -188,30 +223,30 @@ All notable changes to this project will be documented in this file.
 
 ### 🚀 Features
 
-- *(panorama)* Improve popups
-- *(panorama)* Improve combo viewer styles
-- *(panorama)* Improve ability picker and fix linting errors
+- _(panorama)_ Improve popups
+- _(panorama)_ Improve combo viewer styles
+- _(panorama)_ Improve ability picker and fix linting errors
 
 ### 🐛 Bug Fixes
 
-- *(panorama)* Fix damage rating filtering
-- *(panorama)* Update combo score and fix digits values
-- *(panorama)* Fix reentrant event listeners
-- *(panorama)* Patch vendored lodash to not use evaluated code
+- _(panorama)_ Fix damage rating filtering
+- _(panorama)_ Update combo score and fix digits values
+- _(panorama)_ Fix reentrant event listeners
+- _(panorama)_ Patch vendored lodash to not use evaluated code
 
 ### 🚜 Refactor
 
-- *(scripts)* Remove `format-lua` and use `cjs` extension
+- _(scripts)_ Remove `format-lua` and use `cjs` extension
 - [**breaking**] Use npm instead of yarn, add typescript deps and configs
-- *(build)* [**breaking**] Rewrite scripts in typescript and refactor everything
-- *(panorama)* [**breaking**] Rewrite scripts in typescript and refactor everything
-- *(panorama)* [**breaking**] Use typescript compiler to compile and bundle scripts
-- *(panorama)* Automatic `onload` and parameterize component params
-- *(panorama)* Add panel events to components and fix item search
-- *(panorama)* Move script files
-- *(panorama)* Rename `elementEvents` to `uiEvents` component option
-- *(panorama)* Add context panel reference to component options
-- *(panorama)* Use built-in item list in item picker
+- _(build)_ [**breaking**] Rewrite scripts in typescript and refactor everything
+- _(panorama)_ [**breaking**] Rewrite scripts in typescript and refactor everything
+- _(panorama)_ [**breaking**] Use typescript compiler to compile and bundle scripts
+- _(panorama)_ Automatic `onload` and parameterize component params
+- _(panorama)_ Add panel events to components and fix item search
+- _(panorama)_ Move script files
+- _(panorama)_ Rename `elementEvents` to `uiEvents` component option
+- _(panorama)_ Add context panel reference to component options
+- _(panorama)_ Use built-in item list in item picker
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -220,17 +255,17 @@ All notable changes to this project will be documented in this file.
 - [**breaking**] Remove ldoc, update luacov settings, update Makefile
 - Update Makefile
 - Update default repository branch
-- *(stylelint)* Update config
+- _(stylelint)_ Update config
 - Add ability to specify build parts and fix lint warnings
-- *(panorama)* Fix eslint warnings
+- _(panorama)_ Fix eslint warnings
 - Fix build command and refactor commands
 - Add node dev dep `@prettier/plugin-xml`
 - Update editorconfig, eslint, prettier and stylelint configs
-- *(lint)* Move selene configuration files
+- _(lint)_ Move selene configuration files
 - Update `prettier`
 - Update prettier config
-- *(panorama)* Format layout files
-- *(panorama)* Remove unused comments
+- _(panorama)_ Format layout files
+- _(panorama)_ Remove unused comments
 - Update CHANGELOG
 - Bump version to 0.5.0
 
@@ -239,32 +274,33 @@ All notable changes to this project will be documented in this file.
 ### 🚀 Features
 
 - Update map overviews
-- *(scripts)* Update `launch` command
-- *(l10n)* Update note about optional combo steps
+- _(scripts)_ Update `launch` command
+- _(l10n)_ Update note about optional combo steps
 
 ### 🐛 Bug Fixes
 
-- *(vscripts)* Use case-sensitive requires
-- *(l10n)* Localization keys require the "#" prefix
-- *(l10n)* Use "#" prefix in static keys
-- *(vscript)* Add hack to `entity_hurt` game event to fix an issue with units being killed with `ForceKill`
-- *(l10n)* Allow `Localize` to receive a panel as context
-- *(panorama)* Update hard-coded talents
-- *(panorama)* Update talents display UI
-- *(panorama)* Fix (partially) talents display
-- *(panorama)* Improve steps icon borders and fix optional steps showing as required
-- *(panorama)* Improve box-shadow on icons
+- _(vscripts)_ Use case-sensitive requires
+- _(l10n)_ Localization keys require the "#" prefix
+- _(l10n)_ Use "#" prefix in static keys
+- _(vscript)_ Add hack to `entity_hurt` game event to fix an issue with units being killed with
+  `ForceKill`
+- _(l10n)_ Allow `Localize` to receive a panel as context
+- _(panorama)_ Update hard-coded talents
+- _(panorama)_ Update talents display UI
+- _(panorama)_ Fix (partially) talents display
+- _(panorama)_ Improve steps icon borders and fix optional steps showing as required
+- _(panorama)_ Improve box-shadow on icons
 
 ### 🚜 Refactor
 
-- *(scripts)* Move command files to separate directory
+- _(scripts)_ Move command files to separate directory
 - Change nettables constants, add kv nettables and fix lint errors
 
 ### ⚙️ Miscellaneous Tasks
 
-- *(git)* Ignore `/build` and `/.vscode`
-- *(git)* Ignore `/.luarc.json`
-- *(git)* Ignore `/game/*` except source files
+- _(git)_ Ignore `/build` and `/.vscode`
+- _(git)_ Ignore `/.luarc.json`
+- _(git)_ Ignore `/game/*` except source files
 - Update shops
 - Upgrade yarn and editor sdks
 - Upgrade stylelint
@@ -273,8 +309,8 @@ All notable changes to this project will be documented in this file.
 - Replace luacheck with selene
 - Replace lua-format with stylua
 - Update `.ignore`
-- *(vscode)* Use sumneko-lua language server
-- *(lsp)* Add config
+- _(vscode)_ Use sumneko-lua language server
+- _(lsp)_ Add config
 - Format lua files
 - Rebuild cottage map
 - Bump version to 0.4.7
